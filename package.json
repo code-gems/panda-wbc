@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "name": "panda-wbc",
+  "workspaces": [
+    "packages/*"
+  ]
+}
