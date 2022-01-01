@@ -1,0 +1,22 @@
+{
+  "name": "@panda-wbc/panda-flag",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/panda-flag.js",
+  "scripts": {
+    "compile": "tsc",
+    "build": "tsc"
+  },
+  "keywords": [
+    "flags",
+    "country"
+  ],
+  "author": "code-gems",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "lit": "^2.0.2"
+  }
+}
