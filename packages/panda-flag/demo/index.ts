@@ -37,9 +37,11 @@ class DemoPage extends LitElement {
 	`;
 
 	private _flagList: FlagList[] = [
+		{ countryName: "China", countryCode: "cn" },
+		{ countryName: "Hong Kong", countryCode: "hk" },
+		{ countryName: "Indonesia", countryCode: "id" },
 		{ countryName: "Poland", countryCode: "pl" },
 		{ countryName: "Singapore", countryCode: "sg" },
-		{ countryName: "Hong Kong", countryCode: "hk" },
 	];
 
 	protected render() {
