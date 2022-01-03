@@ -1,5 +1,5 @@
 # Welcome to Panda Flag
-Panda Flag is a Lit based web component that adds flags to your UI. Extremaly light-weight and easy to use.
+Panda Flag is a Lit based web component that adds flags to your UI. Extremely lightweight and easy to use.
 Enjoy!
 
 ### Installation
