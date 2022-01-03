@@ -13,6 +13,7 @@ class DemoPage extends LitElement {
 		.table {
 			display: flex;
 			flex-flow: column;
+			width: max-content;
 			width: fit-content;
 			gap: 5px;
 
@@ -40,8 +41,11 @@ class DemoPage extends LitElement {
 		{ countryName: "China", countryCode: "cn" },
 		{ countryName: "Hong Kong", countryCode: "hk" },
 		{ countryName: "Indonesia", countryCode: "id" },
+		{ countryName: "Macau", countryCode: "mo" },
 		{ countryName: "Poland", countryCode: "pl" },
+		{ countryName: "Russia", countryCode: "ru" },
 		{ countryName: "Singapore", countryCode: "sg" },
+		{ countryName: "Taiwan", countryCode: "tw" },
 	];
 
 	protected render() {

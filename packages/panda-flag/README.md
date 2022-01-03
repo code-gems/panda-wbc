@@ -16,4 +16,7 @@ or
 ```
 
 ## Change Log
-TBD
+
+0.0.3 - updated package file with more info
+
+0.0.2 - added new flags [MO, RU, TW]
