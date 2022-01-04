@@ -1,3 +1,4 @@
+// Indonesia
 import { html } from "lit";
 
 export const flagId = html`
@@ -12,7 +13,7 @@ export const flagId = html`
 		xml:space="preserve"
 	>
 		<rect fill="#f43737" width="256" height="96" />
-		<rect fill="#ffffff" y="96" width="256" height="96" />
+		<rect fill="#fafafa" y="96" width="256" height="96" />
 	</svg>
 `;
 
@@ -28,6 +29,6 @@ export const flagIdSquare = html`
 		xml:space="preserve"
 	>
 		<rect fill="#f43737" width="256" height="128" />
-		<rect fill="#ffffff" y="128" width="256" height="128" />
+		<rect fill="#fafafa" y="128" width="256" height="128" />
 	</svg>
 `;

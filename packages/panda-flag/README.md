@@ -17,6 +17,8 @@ or
 
 ## Change Log
 
+0.0.4 - added more flags [DE, FR, HU, IE, IT, MC, NL, UA]
+
 0.0.3 - updated package file with more info
 
 0.0.2 - added new flags [MO, RU, TW]

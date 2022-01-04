@@ -1,7 +1,7 @@
-// Poland
+// Hungary
 import { html } from "lit";
 
-export const flagPl = html`
+export const flagHu = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
@@ -12,12 +12,13 @@ export const flagPl = html`
 		style="enable-background:new 0 0 256 192;"
 		xml:space="preserve"
 	>
-		<rect fill="#fafafa" width="256" height="96" />
-		<rect fill="#f43737" y="96" width="256" height="96" />
+		<rect fill="#f43737" width="256" height="64" />
+		<rect fill="#fafafa" width="256" height="128" y="64" />
+		<rect fill="#028e46" width="256" height="64" y="128" />
 	</svg>
 `;
 
-export const flagPlSquare = html`
+export const flagHuSquare = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +29,8 @@ export const flagPlSquare = html`
 		style="enable-background:new 0 0 256 256;"
 		xml:space="preserve"
 	>
-		<rect fill="#fafafa" width="256" height="128" />
-		<rect fill="#f43737" y="128" width="256" height="128" />
+		<rect fill="#f43737" width="256" height="85" />
+		<rect fill="#fafafa" width="256" height="171" y="85" />
+		<rect fill="#028e46" width="256" height="86" y="171" />
 	</svg>
 `;

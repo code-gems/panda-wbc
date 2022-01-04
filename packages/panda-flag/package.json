@@ -1,15 +1,19 @@
 {
 	"name": "@panda-wbc/panda-flag",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Lit based web component adding flags to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-flag.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
-		"build": "webpack --mode production"
+		"prepublishOnly": "npm run compile && npm version patch"
 	},
 	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"ui component",
 		"flags",
 		"country"
 	],
@@ -24,5 +28,10 @@
 		"webpack": "^5.65.0",
 		"webpack-cli": "^4.9.1",
 		"webpack-dev-server": "^4.7.2"
-	}
+	},
+	"files": [
+		"src/**/*",
+		"demo/**/*",
+		"lib/**/*"
+	]
 }

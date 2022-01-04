@@ -30,6 +30,9 @@ class DemoPage extends LitElement {
 		.table .table-row {
 			border-bottom: 1px dashed var(--panda-border-color-50opc);
 		}
+		.table .table-row:last-child {
+			border-bottom: none;
+		}
 
 		.table .cell {
 			font-size: var(--panda-font-size-s);
@@ -39,13 +42,21 @@ class DemoPage extends LitElement {
 
 	private _flagList: FlagList[] = [
 		{ countryName: "China", countryCode: "cn" },
+		{ countryName: "Germany", countryCode: "de" },
+		{ countryName: "France", countryCode: "fr" },
 		{ countryName: "Hong Kong", countryCode: "hk" },
+		{ countryName: "Hungary", countryCode: "hu" },
 		{ countryName: "Indonesia", countryCode: "id" },
+		{ countryName: "Ireland", countryCode: "ie" },
+		{ countryName: "Italy", countryCode: "it" },
 		{ countryName: "Macau", countryCode: "mo" },
+		{ countryName: "Monaco", countryCode: "mc" },
+		{ countryName: "Holland", countryCode: "nl" },
 		{ countryName: "Poland", countryCode: "pl" },
 		{ countryName: "Russia", countryCode: "ru" },
 		{ countryName: "Singapore", countryCode: "sg" },
 		{ countryName: "Taiwan", countryCode: "tw" },
+		{ countryName: "Ukraine", countryCode: "ua" },
 	];
 
 	protected render() {

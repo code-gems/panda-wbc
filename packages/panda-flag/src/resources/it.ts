@@ -1,7 +1,7 @@
-// Poland
+// Italy
 import { html } from "lit";
 
-export const flagPl = html`
+export const flagIt = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
@@ -12,12 +12,13 @@ export const flagPl = html`
 		style="enable-background:new 0 0 256 192;"
 		xml:space="preserve"
 	>
-		<rect fill="#fafafa" width="256" height="96" />
-		<rect fill="#f43737" y="96" width="256" height="96" />
+		<rect fill="#028e46" width="85" height="192" />
+		<rect fill="#fafafa" width="171" height="192" x="85" />
+		<rect fill="#f43737" width="86" height="192" x="171" />
 	</svg>
 `;
 
-export const flagPlSquare = html`
+export const flagItSquare = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +29,8 @@ export const flagPlSquare = html`
 		style="enable-background:new 0 0 256 256;"
 		xml:space="preserve"
 	>
-		<rect fill="#fafafa" width="256" height="128" />
-		<rect fill="#f43737" y="128" width="256" height="128" />
+		<rect fill="#028e46" width="85" height="256" />
+		<rect fill="#fafafa" width="171" height="256" x="85" />
+		<rect fill="#f43737" width="86" height="256" x="171" />
 	</svg>
 `;
