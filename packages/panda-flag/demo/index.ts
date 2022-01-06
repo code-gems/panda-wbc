@@ -24,7 +24,8 @@ class DemoPage extends LitElement {
 		.table .table-header,
 		.table .table-row {
 			display: grid;
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+			grid-gap: 10px;
 		}
 
 		.table .table-row {
@@ -41,6 +42,7 @@ class DemoPage extends LitElement {
 	`;
 
 	private _flagList: FlagList[] = [
+		{ countryName: "Austria", countryCode: "at" },
 		{ countryName: "China", countryCode: "cn" },
 		{ countryName: "Germany", countryCode: "de" },
 		{ countryName: "France", countryCode: "fr" },
@@ -49,10 +51,14 @@ class DemoPage extends LitElement {
 		{ countryName: "Indonesia", countryCode: "id" },
 		{ countryName: "Ireland", countryCode: "ie" },
 		{ countryName: "Italy", countryCode: "it" },
+		{ countryName: "Japan", countryCode: "jp" },
+		{ countryName: "Luxemburg", countryCode: "lu" },
 		{ countryName: "Macau", countryCode: "mo" },
 		{ countryName: "Monaco", countryCode: "mc" },
 		{ countryName: "Holland", countryCode: "nl" },
+		{ countryName: "Peru", countryCode: "pe" },
 		{ countryName: "Poland", countryCode: "pl" },
+		{ countryName: "Qatar", countryCode: "qa" },
 		{ countryName: "Russia", countryCode: "ru" },
 		{ countryName: "Singapore", countryCode: "sg" },
 		{ countryName: "Taiwan", countryCode: "tw" },
@@ -71,14 +77,13 @@ class DemoPage extends LitElement {
 		this._flagList.forEach(({ countryName, countryCode }) => {
 			listHtml.push(html`
 				<div class="table-row">
+					<div class="cell">${countryName}</div>
+					<div class="cell">${countryCode}</div>
 					<div class="cell">
 						<panda-flag flag="${countryCode}"></panda-flag>
 					</div>
 					<div class="cell">
 						<panda-flag flag="${countryCode}" square></panda-flag>
-					</div>
-					<div class="cell">
-						${countryName}
 					</div>
 				</div>
 			`);
@@ -87,9 +92,10 @@ class DemoPage extends LitElement {
 		return html`
 			<div class="table">
 				<div class="table-header">
-					<div class="cell"></div>
-					<div class="cell"></div>
-					<div class="cell"></div>
+					<div class="cell">Country</div>
+					<div class="cell">Country code</div>
+					<div class="cell">Flag</div>
+					<div class="cell">Flag [square]</div>
 				</div>
 				${listHtml}
 			</div>
