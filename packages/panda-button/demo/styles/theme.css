@@ -1,0 +1,62 @@
+
+body {
+	--panda-font-size-xs: 12px;
+	--panda-font-size-s: 14px;
+	--panda-font-size-m: 16px;
+	--panda-font-size-l: 18px;
+	--panda-font-size-xl: 22px;
+	--panda-font-size-hero: 36px;
+
+	--panda-font-family: "OpenSans";
+	--panda-font-family-light: "OpenSans-Light";
+	--panda-font-family-bold: "OpenSans-Bold";
+
+	--panda-shadw: hsl(221deg 24% 52%);
+	--panda-shadw-0opc: hsl(221deg 24% 52% / 0%);
+	--panda-shadw-10opc: hsl(221deg 24% 52% / 10%);
+	--panda-shadw-20opc: hsl(221deg 24% 52% / 20%);
+	--panda-shadw-30opc: hsl(221deg 24% 52% / 30%);
+	--panda-shadw-40opc: hsl(221deg 24% 52% / 40%);
+	--panda-shadw-50opc: hsl(221deg 24% 52% / 50%);
+	--panda-shadw-60opc: hsl(221deg 24% 52% / 60%);
+	--panda-shadw-70opc: hsl(221deg 24% 52% / 70%);
+	--panda-shadw-80opc: hsl(221deg 24% 52% / 80%);
+	--panda-shadw-90opc: hsl(221deg 24% 52% / 90%);
+
+	--panda-table-bg-color: hsl(223 22% 91%);
+
+	--panda-border-color: hsl(222 14% 49%);
+	--panda-border-color-0opc: hsl(222 14% 49% / 0%);
+	--panda-border-color-10opc: hsl(222 14% 49% / 10%);
+	--panda-border-color-20opc: hsl(222 14% 49% / 20%);
+	--panda-border-color-30opc: hsl(222 14% 49% / 30%);
+	--panda-border-color-40opc: hsl(222 14% 49% / 40%);
+	--panda-border-color-50opc: hsl(222 14% 49% / 50%);
+	--panda-border-color-60opc: hsl(222 14% 49% / 60%);
+	--panda-border-color-70opc: hsl(222 14% 49% / 70%);
+	--panda-border-color-80opc: hsl(222 14% 49% / 80%);
+	--panda-border-color-90opc: hsl(222 14% 49% / 90%);
+
+	padding: 60px;
+	margin: 0px;
+
+	color: hsl(222 14% 49%);
+	font-size: var(--panda-font-size-m);
+	font-family: var(--panda-font-family);
+	background-color: #f2f3f7;
+}
+
+@font-face {
+	font-family: "OpenSans";
+	src: url(./OpenSans-Regular.ttf);
+}
+
+@font-face {
+	font-family: "OpenSans-Bold";
+	src: url(./OpenSans-Bold.ttf);
+}
+
+@font-face {
+	font-family: "OpenSans-Light";
+	src: url(./OpenSans-Light.ttf);
+}

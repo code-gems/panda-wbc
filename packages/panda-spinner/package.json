@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-flag",
-	"version": "0.0.5",
-	"description": "Lit based web component adding flags to your UI",
+	"name": "@panda-wbc/panda-spinner",
+	"version": "0.0.1",
+	"description": "Lit based web component - Adding spinner animations to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-flag.js",
+	"main": "lib/panda-spinner.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
@@ -16,8 +16,10 @@
 		"lit-element",
 		"web component",
 		"ui component",
-		"flags",
-		"country"
+		"spinner",
+		"loading",
+		"animation",
+		"loader"
 	],
 	"author": "code-gems",
 	"license": "MIT",
