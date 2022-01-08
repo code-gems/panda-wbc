@@ -29,6 +29,7 @@ import { flagSg, flagSgSquare } from "./resources/sg";
 import { flagTw, flagTwSquare } from "./resources/tw";
 import { flagUa, flagUaSquare } from "./resources/ua";
 import { flagJp, flagJpSquare } from "./resources/jp";
+import { flagVn, flagVnSquare } from "./resources/vn";
 
 @customElement("panda-flag")
 export class PandaFlag extends LitElement {
@@ -103,6 +104,8 @@ export class PandaFlag extends LitElement {
 				return this.square ? flagTwSquare : flagTw;
 			case "ua":
 				return this.square ? flagUaSquare : flagUa;
+			case "vn":
+				return this.square ? flagVnSquare : flagVn;
 			default:
 				return html`???`;
 		}

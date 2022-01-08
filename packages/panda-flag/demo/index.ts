@@ -63,6 +63,7 @@ class DemoPage extends LitElement {
 		{ countryName: "Singapore", countryCode: "sg" },
 		{ countryName: "Taiwan", countryCode: "tw" },
 		{ countryName: "Ukraine", countryCode: "ua" },
+		{ countryName: "Vietnam", countryCode: "vn" },
 	];
 
 	protected render() {
