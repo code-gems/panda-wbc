@@ -1,27 +1,68 @@
 
 body {
-	--panda-font-size-xs: 12px;
-	--panda-font-size-s: 14px;
-	--panda-font-size-m: 16px;
-	--panda-font-size-l: 18px;
-	--panda-font-size-xl: 22px;
-	--panda-font-size-hero: 36px;
+	/* ====================================================================================================== COLORS */
 
-	--panda-font-family: "OpenSans";
-	--panda-font-family-light: "OpenSans-Light";
-	--panda-font-family-bold: "OpenSans-Bold";
+	/* ACTION COLORS */
 
-	--panda-shadw: hsl(221deg 24% 52%);
-	--panda-shadw-0opc: hsl(221deg 24% 52% / 0%);
-	--panda-shadw-10opc: hsl(221deg 24% 52% / 10%);
-	--panda-shadw-20opc: hsl(221deg 24% 52% / 20%);
-	--panda-shadw-30opc: hsl(221deg 24% 52% / 30%);
-	--panda-shadw-40opc: hsl(221deg 24% 52% / 40%);
-	--panda-shadw-50opc: hsl(221deg 24% 52% / 50%);
-	--panda-shadw-60opc: hsl(221deg 24% 52% / 60%);
-	--panda-shadw-70opc: hsl(221deg 24% 52% / 70%);
-	--panda-shadw-80opc: hsl(221deg 24% 52% / 80%);
-	--panda-shadw-90opc: hsl(221deg 24% 52% / 90%);
+	--panda-action-info: hls(197 100% 90%);
+	--panda-action-info-0opc: hls(197 100% 90% / 0%);
+	--panda-action-info-10opc: hls(197 100% 90% / 10%);
+	--panda-action-info-20opc: hls(197 100% 90% / 20%);
+	--panda-action-info-30opc: hls(197 100% 90% / 30%);
+	--panda-action-info-40opc: hls(197 100% 90% / 40%);
+	--panda-action-info-50opc: hls(197 100% 90% / 50%);
+	--panda-action-info-60opc: hls(197 100% 90% / 60%);
+	--panda-action-info-70opc: hls(197 100% 90% / 70%);
+	--panda-action-info-80opc: hls(197 100% 90% / 80%);
+	--panda-action-info-90opc: hls(197 100% 90% / 90%);
+
+	--panda-action-done: hls(145 100% 90%);
+	--panda-action-done-0opc: hls(145 100% 90% / 0%);
+	--panda-action-done-10opc: hls(145 100% 90% / 10%);
+	--panda-action-done-20opc: hls(145 100% 90% / 20%);
+	--panda-action-done-30opc: hls(145 100% 90% / 30%);
+	--panda-action-done-40opc: hls(145 100% 90% / 40%);
+	--panda-action-done-50opc: hls(145 100% 90% / 50%);
+	--panda-action-done-60opc: hls(145 100% 90% / 60%);
+	--panda-action-done-70opc: hls(145 100% 90% / 70%);
+	--panda-action-done-80opc: hls(145 100% 90% / 80%);
+	--panda-action-done-90opc: hls(145 100% 90% / 90%);
+
+	--panda-action-warn: hls(42 100% 90%);
+	--panda-action-warn-0opc: hls(42 100% 90% / 0%);
+	--panda-action-warn-10opc: hls(42 100% 90% / 10%);
+	--panda-action-warn-20opc: hls(42 100% 90% / 20%);
+	--panda-action-warn-30opc: hls(42 100% 90% / 30%);
+	--panda-action-warn-40opc: hls(42 100% 90% / 40%);
+	--panda-action-warn-50opc: hls(42 100% 90% / 50%);
+	--panda-action-warn-60opc: hls(42 100% 90% / 60%);
+	--panda-action-warn-70opc: hls(42 100% 90% / 70%);
+	--panda-action-warn-80opc: hls(42 100% 90% / 80%);
+	--panda-action-warn-90opc: hls(42 100% 90% / 90%);
+
+	--panda-action-fail: hls(350 81% 96%);
+	--panda-action-fail-0opc: hls(350 81% 96% / 0%);
+	--panda-action-fail-10opc: hls(350 81% 96% / 10%);
+	--panda-action-fail-20opc: hls(350 81% 96% / 20%);
+	--panda-action-fail-30opc: hls(350 81% 96% / 30%);
+	--panda-action-fail-40opc: hls(350 81% 96% / 40%);
+	--panda-action-fail-50opc: hls(350 81% 96% / 50%);
+	--panda-action-fail-60opc: hls(350 81% 96% / 60%);
+	--panda-action-fail-70opc: hls(350 81% 96% / 70%);
+	--panda-action-fail-80opc: hls(350 81% 96% / 80%);
+	--panda-action-fail-90opc: hls(350 81% 96% / 90%);
+
+	--panda-shadow: hsl(0 0% 0%);
+	--panda-shadow-0opc: hsl(0 0% 0% / 0%);
+	--panda-shadow-10opc: hsl(0 0% 0% / 10%);
+	--panda-shadow-20opc: hsl(0 0% 0% / 20%);
+	--panda-shadow-30opc: hsl(0 0% 0% / 30%);
+	--panda-shadow-40opc: hsl(0 0% 0% / 40%);
+	--panda-shadow-50opc: hsl(0 0% 0% / 50%);
+	--panda-shadow-60opc: hsl(0 0% 0% / 60%);
+	--panda-shadow-70opc: hsl(0 0% 0% / 70%);
+	--panda-shadow-80opc: hsl(0 0% 0% / 80%);
+	--panda-shadow-90opc: hsl(0 0% 0% / 90%);
 
 	--panda-table-bg-color: hsl(223 22% 91%);
 
@@ -36,6 +77,26 @@ body {
 	--panda-border-color-70opc: hsl(222 14% 49% / 70%);
 	--panda-border-color-80opc: hsl(222 14% 49% / 80%);
 	--panda-border-color-90opc: hsl(222 14% 49% / 90%);
+
+	/* ===================================================================================================== BUTTONS */
+
+	--panda-button-height-s: 24px;
+	--panda-button-height-m: 30px;
+	--panda-button-height-l: 40px;
+	--panda-button-height-s: 48px;
+
+	/* ======================================================================================================= FONTS */
+
+	--panda-font-size-xs: 12px;
+	--panda-font-size-s: 14px;
+	--panda-font-size-m: 16px;
+	--panda-font-size-l: 18px;
+	--panda-font-size-xl: 22px;
+	--panda-font-size-hero: 36px;
+	
+	--panda-font-family: "OpenSans";
+	--panda-font-family-light: "OpenSans-Light";
+	--panda-font-family-bold: "OpenSans-Bold";
 
 	padding: 60px;
 	margin: 0px;

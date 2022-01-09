@@ -34,7 +34,9 @@ import { flagVn, flagVnSquare } from "./resources/vn";
 @customElement("panda-flag")
 export class PandaFlag extends LitElement {
 	//css styles
-	static styles = styles;
+	static get styles() {
+		return styles;
+	}
 
 	@property({ type: String, attribute: true })
 	flag!: string;

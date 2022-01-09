@@ -13,9 +13,18 @@ class DemoPage extends LitElement {
 				.busy="${false}"
 				@click="${() => this._onButtonClick()}"
 			>
-				<div slot="prefix">P</div>
-				BUTTON
-				<div slot="suffix">S</div>
+				MY BUTTON
+			</panda-button>
+
+			<panda-button
+				.busy="${false}"
+				@click="${() => this._onButtonClick()}"
+			>
+				<div class="icon" slot="prefix">
+					<panda-icon class="icon" icon="arrow-left">P</panda-icon>
+				</div>
+				AWESOME BUTTON
+				<div class="icon" slot="suffix">S</div>
 			</panda-button>
 		`;
 	}

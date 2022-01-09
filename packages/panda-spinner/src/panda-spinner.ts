@@ -6,8 +6,8 @@ import { customElement, property } from "lit/decorators.js";
 export class PandaButton extends LitElement {
 
 
-	@property({ type: Boolean, attribute: true })
-	busy!: boolean;
+	@property({ type: String, attribute: true })
+	spinner!: string;
 
 	protected render() {
 		return html`

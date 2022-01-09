@@ -1,9 +1,8 @@
 {
-	"name": "@panda-wbc/panda-icon",
+	"name": "@panda-wbc/panda-design",
 	"version": "0.0.1",
-	"description": "Lit based web component - icons",
+	"description": "LPanda Desgin - Panda UI components showcase.",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-icon.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
@@ -16,12 +15,16 @@
 		"lit-element",
 		"web component",
 		"ui component",
-		"icons"
+		"flags",
+		"country"
 	],
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.0.2"
+		"lit": "^2.0.2",
+		"@panda/panda-button": "^0.0.1",
+		"@panda/panda-theme": "^0.0.1",
+		"@panda/panda-flag": "^0.0.1"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
