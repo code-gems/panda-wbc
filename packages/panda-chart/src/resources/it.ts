@@ -1,0 +1,36 @@
+// Italy
+import { html } from "lit";
+
+export const flagIt = html`
+	<svg
+		version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		x="0px"
+		y="0px"
+		viewBox="0 0 256 192"
+		style="enable-background:new 0 0 256 192;"
+		xml:space="preserve"
+	>
+		<rect fill="#028e46" width="85" height="192" />
+		<rect fill="#fafafa" width="171" height="192" x="85" />
+		<rect fill="#f43737" width="86" height="192" x="171" />
+	</svg>
+`;
+
+export const flagItSquare = html`
+	<svg
+		version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		x="0px"
+		y="0px"
+		viewBox="0 0 256 256"
+		style="enable-background:new 0 0 256 256;"
+		xml:space="preserve"
+	>
+		<rect fill="#028e46" width="85" height="256" />
+		<rect fill="#fafafa" width="171" height="256" x="85" />
+		<rect fill="#f43737" width="86" height="256" x="171" />
+	</svg>
+`;
