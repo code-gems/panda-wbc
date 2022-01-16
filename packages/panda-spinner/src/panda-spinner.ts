@@ -9,7 +9,9 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 // spinners
+import { circle } from "./resources/circle";
 import { dots } from "./resources/dots";
+import { video } from "./resources/video";
 
 @customElement("panda-spinner")
 export class PandaSpinner extends LitElement {
@@ -31,11 +33,13 @@ export class PandaSpinner extends LitElement {
 
 	_renderSpinner() {
 		switch (this.spinner) {
+			case "circle":
+				return circle;
 			case "dots":
 				return dots;
-
+			case "video":
 			default:
-				return
+				return video;
 		}
 	}
 }
