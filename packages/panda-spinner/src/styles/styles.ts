@@ -4,7 +4,7 @@ export const styles = css`
 	:host {
 		--panda-spinner-width: 30px;
 		--panda-spinner-height: 30px;
-		--panda-spinner-color: #000000;
+		--panda-spinner-color: #ffffff;
 
 		display: inline-block;
 		width: var(--panda-spinner-width);

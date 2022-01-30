@@ -1,9 +1,11 @@
 {
-	"name": "@panda-wbc/panda-button",
+	"name": "@panda-wbc/panda-theme",
 	"version": "0.0.1",
-	"description": "Lit based web component - button",
-	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-button.js",
+	"description": "Themes for Panda components",
+	"main": "lib/panda-theme.js",
+	"directories": {
+		"lib": "lib"
+	},
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
@@ -16,15 +18,13 @@
 		"lit-element",
 		"web component",
 		"panda-wbc",
-		"ui component",
-		"panda-button",
-		"button"
+		"panda-theme",
+		"themes"
 	],
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.0.2",
-		"@panda-wbc/panda-spinner": "^0.0.1"
+		"lit": "^2.0.2"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

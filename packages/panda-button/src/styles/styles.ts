@@ -7,16 +7,16 @@ export const styles = css`
 	}
 
 	.button {
+		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
+		gap: 5px;
 
 		border-radius: var(--panda-button-border-radius);
 		background-color: var(--panda-primary-color);
 	}
 	
 	slot {
-		display: block;
-		padding: 0px 15px;
 		line-height: var(--panda-button-height-m);
 		
 		color: var(--panda-primary-text-color);
@@ -24,9 +24,25 @@ export const styles = css`
 		font-family: var(--panda-font-family-bold);
 	}
 
+	.content {
+		padding: 0px 15px;
+	}
+
 	slot[name="prefix"],
 	slot[name="suffix"] {
 		padding: 0px;
+	}
+
+	.spinner-cont {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+
+		border-radius: var(--panda-button-border-radius);
+		background-color: var(--panda-primary-color);
 	}
 
 	::slotted(panda-icon) {

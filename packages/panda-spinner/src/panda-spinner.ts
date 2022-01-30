@@ -35,11 +35,11 @@ export class PandaSpinner extends LitElement {
 		switch (this.spinner) {
 			case "circle":
 				return circle;
-			case "dots":
-				return dots;
 			case "video":
-			default:
 				return video;
+			case "dots":
+			default:
+				return dots;
 		}
 	}
 }

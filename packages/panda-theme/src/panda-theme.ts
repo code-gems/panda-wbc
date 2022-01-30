@@ -3,6 +3,7 @@ export type PandaThemeItem = {
 	name: string;
 	value: string;
 	url: string;
+	theme: string;
 }
 
 // themes
@@ -19,8 +20,8 @@ export class PandaTheme extends LitElement {
 	theme!: string;
 
 	private readonly _themeList: PandaThemeItem[] = [
-		{ name: "Panda Theme Light", value: "panda-theme-light", url: "./theme/panda-theme-light.css" },
-		{ name: "Panda Theme Dark", value: "panda-theme-dark", url: "./theme/panda-theme-dark.css" }
+		{ name: "Panda Theme Light", value: "panda-theme-light", url: "./theme/panda-theme-light.css", theme: pandaThemeLight },
+		{ name: "Panda Theme Dark", value: "panda-theme-dark", url: "./theme/panda-theme-dark.css", theme: pandaThemeLight }
 	];
 
 	// ================================================================================================================
