@@ -24,6 +24,6 @@ module.exports = {
 		static: {
 			directory: path.resolve(__dirname, "demo"),
 		},
-		port: 9001,
+		port: 9000,
 	},
 };

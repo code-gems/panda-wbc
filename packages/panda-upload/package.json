@@ -1,13 +1,12 @@
 {
-	"name": "@panda-wbc/panda-icon",
+	"name": "@panda-wbc/panda-upload",
 	"version": "0.0.1",
-	"description": "Lit based web component - icons",
+	"description": "Lit based web component handeling file upload.",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-icon.js",
+	"main": "lib/panda-upload.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
-		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
 		"prepublishOnly": "npm run clean && npm run compile"
@@ -17,12 +16,17 @@
 		"lit-element",
 		"web component",
 		"ui component",
-		"icons"
+		"file",
+		"upload",
+		"drag and drop",
+		"button",
+		"list"
 	],
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.0.2"
+		"lit": "^2.0.2",
+		"@panda-wbc/panda-spinner": "^0.0.1"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
@@ -35,6 +39,8 @@
 	"files": [
 		"src/**/*",
 		"demo/**/*",
-		"lib/**/*"
-	]
+		"lib/**/*",
+		"index.d.ts"
+	],
+	"types": "index.d.ts"
 }

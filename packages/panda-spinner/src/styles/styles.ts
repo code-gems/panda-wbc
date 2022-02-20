@@ -16,4 +16,8 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 	}
+
+	svg circle { fill: var(--panda-spinner-color); }
+	svg path { fill: var(--panda-spinner-color); }
+	svg line { stroke: var(--panda-spinner-color); }
 `;

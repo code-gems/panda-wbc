@@ -1,4 +1,4 @@
-import { LitElement, html, TemplateResult, css } from "lit";
+import { LitElement, html, css } from "lit";
 import "../src/panda-icon";
 
 class DemoPage extends LitElement {
@@ -9,12 +9,9 @@ class DemoPage extends LitElement {
 
 	protected render() {
 		return html`
-			<panda-button icon="menu"></panda-button>
+			<panda-icon icon="menu"></panda-icon>
 		`;
 	}
 
-	private _onButtonClick() {
-		console.log("%c [PANDA BUTTON] CLICK", "font-size: 24px; color: green;");
-	}
 }
 window.customElements.define("demo-page", DemoPage);

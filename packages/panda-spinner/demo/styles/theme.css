@@ -2,55 +2,84 @@
 body {
 	/* ====================================================================================================== COLORS */
 
+	/* BRAND COLORS */
+
+	--panda-primary-text-color: hsl(0 0% 100%);
+	--panda-primary-color: hsl(204deg 86% 50%);
+	--panda-primary-color-0opc: hsl(204deg 86% 50% / 0%);
+	--panda-primary-color-10opc: hsl(204deg 86% 50% / 10%);
+	--panda-primary-color-20opc: hsl(204deg 86% 50% / 20%);
+	--panda-primary-color-30opc: hsl(204deg 86% 50% / 30%);
+	--panda-primary-color-40opc: hsl(204deg 86% 50% / 40%);
+	--panda-primary-color-50opc: hsl(204deg 86% 50% / 50%);
+	--panda-primary-color-60opc: hsl(204deg 86% 50% / 60%);
+	--panda-primary-color-70opc: hsl(204deg 86% 50% / 70%);
+	--panda-primary-color-80opc: hsl(204deg 86% 50% / 80%);
+	--panda-primary-color-90opc: hsl(204deg 86% 50% / 90%);
+
+	--panda-secondary-text-color: hsl(0 0% 100%);
+	--panda-secondary-color: hsl(268 90% 58%);
+	--panda-secondary-color-0opc: hsl(268 90% 58% / 0%);
+	--panda-secondary-color-10opc: hsl(268 90% 58% / 10%);
+	--panda-secondary-color-20opc: hsl(268 90% 58% / 20%);
+	--panda-secondary-color-30opc: hsl(268 90% 58% / 30%);
+	--panda-secondary-color-40opc: hsl(268 90% 58% / 40%);
+	--panda-secondary-color-50opc: hsl(268 90% 58% / 50%);
+	--panda-secondary-color-60opc: hsl(268 90% 58% / 60%);
+	--panda-secondary-color-70opc: hsl(268 90% 58% / 70%);
+	--panda-secondary-color-80opc: hsl(268 90% 58% / 80%);
+	--panda-secondary-color-90opc: hsl(268 90% 58% / 90%);
+
+
 	/* ACTION COLORS */
 
-	--panda-action-info: hls(197 100% 90%);
-	--panda-action-info-0opc: hls(197 100% 90% / 0%);
-	--panda-action-info-10opc: hls(197 100% 90% / 10%);
-	--panda-action-info-20opc: hls(197 100% 90% / 20%);
-	--panda-action-info-30opc: hls(197 100% 90% / 30%);
-	--panda-action-info-40opc: hls(197 100% 90% / 40%);
-	--panda-action-info-50opc: hls(197 100% 90% / 50%);
-	--panda-action-info-60opc: hls(197 100% 90% / 60%);
-	--panda-action-info-70opc: hls(197 100% 90% / 70%);
-	--panda-action-info-80opc: hls(197 100% 90% / 80%);
-	--panda-action-info-90opc: hls(197 100% 90% / 90%);
+	--panda-action-info: hsl(197 100% 90%);
+	--panda-action-info-0opc: hsl(197 100% 90% / 0%);
+	--panda-action-info-10opc: hsl(197 100% 90% / 10%);
+	--panda-action-info-20opc: hsl(197 100% 90% / 20%);
+	--panda-action-info-30opc: hsl(197 100% 90% / 30%);
+	--panda-action-info-40opc: hsl(197 100% 90% / 40%);
+	--panda-action-info-50opc: hsl(197 100% 90% / 50%);
+	--panda-action-info-60opc: hsl(197 100% 90% / 60%);
+	--panda-action-info-70opc: hsl(197 100% 90% / 70%);
+	--panda-action-info-80opc: hsl(197 100% 90% / 80%);
+	--panda-action-info-90opc: hsl(197 100% 90% / 90%);
 
-	--panda-action-done: hls(145 100% 90%);
-	--panda-action-done-0opc: hls(145 100% 90% / 0%);
-	--panda-action-done-10opc: hls(145 100% 90% / 10%);
-	--panda-action-done-20opc: hls(145 100% 90% / 20%);
-	--panda-action-done-30opc: hls(145 100% 90% / 30%);
-	--panda-action-done-40opc: hls(145 100% 90% / 40%);
-	--panda-action-done-50opc: hls(145 100% 90% / 50%);
-	--panda-action-done-60opc: hls(145 100% 90% / 60%);
-	--panda-action-done-70opc: hls(145 100% 90% / 70%);
-	--panda-action-done-80opc: hls(145 100% 90% / 80%);
-	--panda-action-done-90opc: hls(145 100% 90% / 90%);
+	--panda-action-done: hsl(145 100% 90%);
+	--panda-action-done-0opc: hsl(145 100% 90% / 0%);
+	--panda-action-done-10opc: hsl(145 100% 90% / 10%);
+	--panda-action-done-20opc: hsl(145 100% 90% / 20%);
+	--panda-action-done-30opc: hsl(145 100% 90% / 30%);
+	--panda-action-done-40opc: hsl(145 100% 90% / 40%);
+	--panda-action-done-50opc: hsl(145 100% 90% / 50%);
+	--panda-action-done-60opc: hsl(145 100% 90% / 60%);
+	--panda-action-done-70opc: hsl(145 100% 90% / 70%);
+	--panda-action-done-80opc: hsl(145 100% 90% / 80%);
+	--panda-action-done-90opc: hsl(145 100% 90% / 90%);
 
-	--panda-action-warn: hls(42 100% 90%);
-	--panda-action-warn-0opc: hls(42 100% 90% / 0%);
-	--panda-action-warn-10opc: hls(42 100% 90% / 10%);
-	--panda-action-warn-20opc: hls(42 100% 90% / 20%);
-	--panda-action-warn-30opc: hls(42 100% 90% / 30%);
-	--panda-action-warn-40opc: hls(42 100% 90% / 40%);
-	--panda-action-warn-50opc: hls(42 100% 90% / 50%);
-	--panda-action-warn-60opc: hls(42 100% 90% / 60%);
-	--panda-action-warn-70opc: hls(42 100% 90% / 70%);
-	--panda-action-warn-80opc: hls(42 100% 90% / 80%);
-	--panda-action-warn-90opc: hls(42 100% 90% / 90%);
+	--panda-action-warn: hsl(42 100% 90%);
+	--panda-action-warn-0opc: hsl(42 100% 90% / 0%);
+	--panda-action-warn-10opc: hsl(42 100% 90% / 10%);
+	--panda-action-warn-20opc: hsl(42 100% 90% / 20%);
+	--panda-action-warn-30opc: hsl(42 100% 90% / 30%);
+	--panda-action-warn-40opc: hsl(42 100% 90% / 40%);
+	--panda-action-warn-50opc: hsl(42 100% 90% / 50%);
+	--panda-action-warn-60opc: hsl(42 100% 90% / 60%);
+	--panda-action-warn-70opc: hsl(42 100% 90% / 70%);
+	--panda-action-warn-80opc: hsl(42 100% 90% / 80%);
+	--panda-action-warn-90opc: hsl(42 100% 90% / 90%);
 
-	--panda-action-fail: hls(350 81% 96%);
-	--panda-action-fail-0opc: hls(350 81% 96% / 0%);
-	--panda-action-fail-10opc: hls(350 81% 96% / 10%);
-	--panda-action-fail-20opc: hls(350 81% 96% / 20%);
-	--panda-action-fail-30opc: hls(350 81% 96% / 30%);
-	--panda-action-fail-40opc: hls(350 81% 96% / 40%);
-	--panda-action-fail-50opc: hls(350 81% 96% / 50%);
-	--panda-action-fail-60opc: hls(350 81% 96% / 60%);
-	--panda-action-fail-70opc: hls(350 81% 96% / 70%);
-	--panda-action-fail-80opc: hls(350 81% 96% / 80%);
-	--panda-action-fail-90opc: hls(350 81% 96% / 90%);
+	--panda-action-fail: hsl(350 81% 96%);
+	--panda-action-fail-0opc: hsl(350 81% 96% / 0%);
+	--panda-action-fail-10opc: hsl(350 81% 96% / 10%);
+	--panda-action-fail-20opc: hsl(350 81% 96% / 20%);
+	--panda-action-fail-30opc: hsl(350 81% 96% / 30%);
+	--panda-action-fail-40opc: hsl(350 81% 96% / 40%);
+	--panda-action-fail-50opc: hsl(350 81% 96% / 50%);
+	--panda-action-fail-60opc: hsl(350 81% 96% / 60%);
+	--panda-action-fail-70opc: hsl(350 81% 96% / 70%);
+	--panda-action-fail-80opc: hsl(350 81% 96% / 80%);
+	--panda-action-fail-90opc: hsl(350 81% 96% / 90%);
 
 	--panda-shadow: hsl(0 0% 0%);
 	--panda-shadow-0opc: hsl(0 0% 0% / 0%);

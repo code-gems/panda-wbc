@@ -1,5 +1,8 @@
-// style
-import { styles } from "./styles/styles";
+// types
+// ...
+
+// styles
+import { commonStyles, uploadButtonStyles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-spinner";
@@ -8,31 +11,47 @@ import "@panda-wbc/panda-spinner";
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-@customElement("panda-button")
-export class PandaButton extends LitElement {
-	// css style
+@customElement("panda-upload-button")
+export class PandaUploadButton extends LitElement {
+	// css styles
 	static get styles() {
-		return styles;
+		return [commonStyles, uploadButtonStyles];
 	}
 
-	@property({ type: Boolean, attribute: true })
-	busy!: boolean;
+	@property({ type: Array })
+	acceptedFileTypes!: string[];
+
+	@property({ type: Number })
+	maxFiles!: number;
 
 	@property({ type: Boolean, attribute: true })
 	disabled!: boolean;
 
+	@property({ type: Boolean, attribute: true })
+	busy!: boolean;
+
 	@property({ type: String, attribute: true })
 	spinner!: string;
+
+	// view props
+	private inputFileEl!: HTMLInputElement;
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
 
-	constructor() {
-		super();
-		this.busy = false;
-		this.disabled = false;
-		this.spinner = "";
+	firstUpdated() {
+		this.inputFileEl = this.shadowRoot?.getElementById("file-upload") as HTMLInputElement;
+
+		// handle multiple files upload
+		if (this.maxFiles !== 1) {
+			this.inputFileEl.setAttribute("multiple", "");
+		}
+
+		if (this.acceptedFileTypes?.length) {
+			const accept = this.acceptedFileTypes.join(" ");
+			this.inputFileEl.setAttribute("accept", accept);
+		}
 	}
 
 	// ================================================================================================================
@@ -52,15 +71,22 @@ export class PandaButton extends LitElement {
 						spinner="${this.spinner}"
 					>
 					</panda-spinner>
-				</div>
+				</div>			
 			`);
 		}
 		return html`
-			<div class="button" part="button">
+			<div class="button ${this.disabled ? "disabled" : ""}" part="button">
 				<slot name="prefix" part="prefix"></slot>
-				<div class="content" part="content">
+				<label class="content" part="content">
 					<slot></slot>
-				</div>
+					<input
+						id="file-upload"
+						part="input-file"
+						type="file"
+						name="file-upload"
+						@change="${() => this._onSelectFile()}"
+					/>
+				</label>
 				<slot name="suffix" part="suffix"></slot>
 				${spinnerHtml}
 			</div>
@@ -71,5 +97,24 @@ export class PandaButton extends LitElement {
 	// ========================================================================================================= EVENTS
 	// ================================================================================================================
 
-	// ...
+	private _onSelectFile() {
+		if (this.disabled) {
+			return;
+		}
+
+		const selectedFiles: File[] = Array.from(this.inputFileEl.files as any);
+		let files: File[] = [];
+		if (this.maxFiles !== null && !isNaN(this.maxFiles)) {
+			files = selectedFiles.slice(0, this.maxFiles);
+		} else {
+			files = selectedFiles;
+		}
+
+		const event = new CustomEvent("file-selected", {
+			detail: {
+				files
+			}
+		});
+		this.dispatchEvent(event);
+	}
 }

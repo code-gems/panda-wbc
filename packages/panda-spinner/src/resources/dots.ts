@@ -4,16 +4,10 @@ export const dots = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink"
 		x="0px"
 		y="0px"
 		viewBox="0 0 32 32"
 	>
-		<style>
-			circle {
-				fill: var(--panda-spinner-color);
-			}
-		</style>
 		<g>
 			<circle cx="5" cy="16" stroke-width="0">
 				<animate

@@ -13,6 +13,6 @@ export const styles = css`
     }
 
     svg {
-        fill: var(--panda-);
+        fill: var(--panda-fill-color);
     }
 `;

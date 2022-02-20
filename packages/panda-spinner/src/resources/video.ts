@@ -4,16 +4,10 @@ export const video = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink"
 		x="0px"
 		y="0px"
 		viewBox="0 0 64 64"
 	>
-		<style>
-			line {
-				stroke: var(--panda-spinner-color);
-			}
-		</style>
 		<g stroke-width="4" stroke-linecap="round">
 			<line
 				y1="12"

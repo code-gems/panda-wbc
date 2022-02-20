@@ -44,8 +44,4 @@ export const styles = css`
 		border-radius: var(--panda-button-border-radius);
 		background-color: var(--panda-primary-color);
 	}
-
-	::slotted(panda-icon) {
-		background: red;
-	}
 `; 
