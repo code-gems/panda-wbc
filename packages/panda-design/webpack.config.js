@@ -1,10 +1,13 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require("path");
+
 module.exports = {
+	mode: "development",
 	entry: {
-		main: "./src/index.ts",
+		main: "./src/app.ts",
 	},
 	output: {
-		filename: "index.js",
+		filename: "app.js",
 		path: path.resolve(__dirname, "./dist"),
 	},
 	devtool: "inline-source-map",
@@ -20,6 +23,9 @@ module.exports = {
 	resolve: {
 		extensions: [".tsx", ".ts", ".js"],
 	},
+	plugins: [
+		new HtmlWebpackPlugin()
+	],
 	devServer: {
 		static: {
 			directory: path.resolve(__dirname, "dist"),

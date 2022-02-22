@@ -4,7 +4,7 @@
 import { styles } from "./styles/styles";
 
 // components
-import "@panda/panda-theme";
+import "@panda-wbc/panda-theme";
 
 // pages
 import "./demo-pages/panda-button/panda-button-demo-page";

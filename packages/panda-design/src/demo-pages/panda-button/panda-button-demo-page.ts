@@ -2,9 +2,9 @@ import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 
 // components
-import "@panda/panda-button";
+import "@panda-wbc/panda-button";
 
-@customElement("panda-flag-demo-page")
+@customElement("panda-button-demo-page")
 export class PandaFlagDemoPage extends LitElement {
 
 
