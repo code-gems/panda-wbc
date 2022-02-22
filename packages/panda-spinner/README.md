@@ -17,7 +17,7 @@ or
 
 ## Spinner Types
 
-video [default]
+### video [default]
 ```html
 <panda-spinner></panda-spinner>
 ```
