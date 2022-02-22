@@ -12,6 +12,7 @@ import { customElement, property } from "lit/decorators.js";
 import { circle } from "./resources/circle";
 import { dots } from "./resources/dots";
 import { video } from "./resources/video";
+import { google } from "./resources/google";
 
 @customElement("panda-spinner")
 export class PandaSpinner extends LitElement {
@@ -35,6 +36,8 @@ export class PandaSpinner extends LitElement {
 		switch (this.spinner) {
 			case "circle":
 				return circle;
+			case "google":
+				return google;
 			case "video":
 				return video;
 			case "dots":

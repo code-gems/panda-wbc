@@ -18,7 +18,6 @@ class DemoPage extends LitElement {
 
 	protected render() {
 		return html`
-
 			<div class="spinner-cont">
 				<panda-spinner spinner="dots"></panda-spinner>
 			</div>
@@ -28,7 +27,9 @@ class DemoPage extends LitElement {
 			<div class="spinner-cont">
 				<panda-spinner spinner="video"></panda-spinner>
 			</div>
-
+			<div class="spinner-cont">
+				<panda-spinner spinner="google"></panda-spinner>
+			</div>
 		`;
 	}
 

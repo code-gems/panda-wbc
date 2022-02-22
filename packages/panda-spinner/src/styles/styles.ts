@@ -18,6 +18,7 @@ export const styles = css`
 	}
 
 	svg circle { fill: var(--panda-spinner-color); }
+	svg circle.stroke-only { fill: none; stroke: var(--panda-spinner-color); }
 	svg path { fill: var(--panda-spinner-color); }
 	svg line { stroke: var(--panda-spinner-color); }
 `;

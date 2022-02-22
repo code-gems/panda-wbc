@@ -1,6 +1,6 @@
 {
 	"name": "@panda-wbc/panda-spinner",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Lit based web component - Adding spinner animations to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-spinner.js",
