@@ -103,3 +103,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# private repo
+panda-design/
+panda-design/src

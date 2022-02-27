@@ -5,8 +5,9 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-theme";
+import { pandaLogo } from "./components/panda-logo";
 
-// pages
+// demo pages
 import "./demo-pages/panda-button/panda-button-demo-page";
 import "./demo-pages/panda-flag/panda-flag-demo-page";
 
@@ -15,7 +16,7 @@ import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
 @customElement("panda-app")
-export class PandaApp extends LitElement {
+class PandaApp extends LitElement {
 	//css styles
 	static get styles() {
 		return styles;
@@ -33,14 +34,9 @@ export class PandaApp extends LitElement {
 
 	protected render() {
 		return html`
-			PAGES
-		
-
-			<panda-button-demo-page>
-			</panda-button-demo-page>
-			<hr>
-			<panda-flag-demo-page>
-			</panda-flag-demo-page>
+			<div class="">
+				${pandaLogo}
+			</div>
 		`;
 	}
 
