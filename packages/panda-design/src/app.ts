@@ -34,6 +34,7 @@ class PandaApp extends LitElement {
 
 	protected render() {
 		return html`
+			<panda-theme></panda-theme>
 			<div class="">
 				${pandaLogo}
 			</div>
