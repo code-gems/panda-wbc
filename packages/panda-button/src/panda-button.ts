@@ -5,7 +5,7 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-spinner";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("panda-button")
@@ -32,7 +32,16 @@ export class PandaButton extends LitElement {
 		super();
 		this.busy = false;
 		this.disabled = false;
-		this.spinner = "";
+		this.spinner = "dots";
+	}
+
+	protected updated(changedProps: PropertyValues) {
+		if (changedProps.has("disabled") && this.disabled) {
+			this.setAttribute("disabled", "");
+		}
+		if (changedProps.has("busy") && this.busy) {
+			this.setAttribute("busy", "");
+		}
 	}
 
 	// ================================================================================================================
@@ -56,14 +65,14 @@ export class PandaButton extends LitElement {
 			`);
 		}
 		return html`
-			<div class="button" part="button">
+			<button class="${this.disabled ? "disabled" : ""}" part="button">
 				<slot name="prefix" part="prefix"></slot>
 				<div class="content" part="content">
 					<slot></slot>
 				</div>
 				<slot name="suffix" part="suffix"></slot>
 				${spinnerHtml}
-			</div>
+			</button>
 		`;
 	}
 
