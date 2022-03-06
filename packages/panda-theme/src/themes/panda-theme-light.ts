@@ -92,6 +92,14 @@ export const pandaThemeLight = `
 		/* ACTION COLORS */
 		
 		--panda-action-color-done: hsl(164deg 67% 45%);
+		--panda-action-color-done-txt: hsl(0deg 0% 100%);
+		
+		--panda-action-color-done-hover: hsl(164deg 69% 50%);
+		--panda-action-color-done-txt-hover: hsl(0deg 0% 100%);
+
+		--panda-action-color-done-disabled: hsl(164deg 54% 80%);
+		--panda-action-color-done-txt-disabled: hsl(0deg 0% 100%);
+
 		--panda-action-color-done-100: hsl(164deg 67% 50%);
 		--panda-action-color-done-200: hsl(164deg 67% 55%);
 		--panda-action-color-done-300: hsl(164deg 67% 60%);
@@ -109,19 +117,35 @@ export const pandaThemeLight = `
 		--panda-action-color-done-80opc: hsl(164deg 67% 45% / 80%);
 		--panda-action-color-done-90opc: hsl(164deg 67% 45% / 90%);
 
-		--panda-action-color-warn: hsl(164deg 67% 45%);
-		--panda-action-color-warn-0opc: hsl(164deg 67% 45% / 0%);
-		--panda-action-color-warn-10opc: hsl(164deg 67% 45% / 10%);
-		--panda-action-color-warn-20opc: hsl(164deg 67% 45% / 20%);
-		--panda-action-color-warn-30opc: hsl(164deg 67% 45% / 30%);
-		--panda-action-color-warn-40opc: hsl(164deg 67% 45% / 40%);
-		--panda-action-color-warn-50opc: hsl(164deg 67% 45% / 50%);
-		--panda-action-color-warn-60opc: hsl(164deg 67% 45% / 60%);
-		--panda-action-color-warn-70opc: hsl(164deg 67% 45% / 70%);
-		--panda-action-color-warn-80opc: hsl(164deg 67% 45% / 80%);
-		--panda-action-color-warn-90opc: hsl(164deg 67% 45% / 90%);
+		--panda-action-color-warn: hsl(35deg 91% 62%);
+		--panda-action-color-warn-txt: hsl(0deg 0% 100%);
+		
+		--panda-action-color-warn-hover: hsl(35deg 100% 68%);
+		--panda-action-color-warn-txt-hover: hsl(0deg 0% 100%);
+		
+		--panda-action-color-warn-disabled: hsl(36deg 90% 81%);
+		--panda-action-color-warn-txt-disabled: hsl(0deg 0% 100%);
+
+		--panda-action-color-warn-0opc: hsl(35deg 91% 62% / 0%);
+		--panda-action-color-warn-10opc: hsl(35deg 91% 62% / 10%);
+		--panda-action-color-warn-20opc: hsl(35deg 91% 62% / 20%);
+		--panda-action-color-warn-30opc: hsl(35deg 91% 62% / 30%);
+		--panda-action-color-warn-40opc: hsl(35deg 91% 62% / 40%);
+		--panda-action-color-warn-50opc: hsl(35deg 91% 62% / 50%);
+		--panda-action-color-warn-60opc: hsl(35deg 91% 62% / 60%);
+		--panda-action-color-warn-70opc: hsl(35deg 91% 62% / 70%);
+		--panda-action-color-warn-80opc: hsl(35deg 91% 62% / 80%);
+		--panda-action-color-warn-90opc: hsl(35deg 91% 62% / 90%);
 
 		--panda-action-color-fail: hsl(14deg 77% 62%);
+		--panda-action-color-fail-txt: hsl(0deg 0% 100%);
+		
+		--panda-action-color-fail-hover: hsl(14deg 100% 68%);
+		--panda-action-color-fail-txt-hover: hsl(0deg 0% 100%);
+		
+		--panda-action-color-fail-disabled: hsl(14deg 79% 83%);
+		--panda-action-color-fail-txt-disabled: hsl(0deg 0% 100%);
+
 		--panda-action-color-fail-0opc: hsl(14deg 77% 62% / 0%);
 		--panda-action-color-fail-10opc: hsl(14deg 77% 62% / 10%);
 		--panda-action-color-fail-20opc: hsl(14deg 77% 62% / 20%);
@@ -133,17 +157,25 @@ export const pandaThemeLight = `
 		--panda-action-color-fail-80opc: hsl(14deg 77% 62% / 80%);
 		--panda-action-color-fail-90opc: hsl(14deg 77% 62% / 90%);
 
-		--panda-action-color-info: hsl(164deg 67% 45%);
-		--panda-action-color-info-0opc: hsl(164deg 67% 45% / 0%);
-		--panda-action-color-info-10opc: hsl(164deg 67% 45% / 10%);
-		--panda-action-color-info-20opc: hsl(164deg 67% 45% / 20%);
-		--panda-action-color-info-30opc: hsl(164deg 67% 45% / 30%);
-		--panda-action-color-info-40opc: hsl(164deg 67% 45% / 40%);
-		--panda-action-color-info-50opc: hsl(164deg 67% 45% / 50%);
-		--panda-action-color-info-60opc: hsl(164deg 67% 45% / 60%);
-		--panda-action-color-info-70opc: hsl(164deg 67% 45% / 70%);
-		--panda-action-color-info-80opc: hsl(164deg 67% 45% / 80%);
-		--panda-action-color-info-90opc: hsl(164deg 67% 45% / 90%);
+		--panda-action-color-info: hsl(181deg 52% 53%);
+		--panda-action-color-info-txt: hsl(0deg 0% 100%);
+
+		--panda-action-color-info-hover: hsl(181deg 59% 56%);
+		--panda-action-color-info-txt-hover: hsl(0deg 0% 100%);
+
+		--panda-action-color-info-disabled: hsl(182deg 52% 76%);
+		--panda-action-color-info-txt-disabled: hsl(0deg 0% 100%);
+
+		--panda-action-color-info-0opc: hsl(181deg 52% 53% / 0%);
+		--panda-action-color-info-10opc: hsl(181deg 52% 53% / 10%);
+		--panda-action-color-info-20opc: hsl(181deg 52% 53% / 20%);
+		--panda-action-color-info-30opc: hsl(181deg 52% 53% / 30%);
+		--panda-action-color-info-40opc: hsl(181deg 52% 53% / 40%);
+		--panda-action-color-info-50opc: hsl(181deg 52% 53% / 50%);
+		--panda-action-color-info-60opc: hsl(181deg 52% 53% / 60%);
+		--panda-action-color-info-70opc: hsl(181deg 52% 53% / 70%);
+		--panda-action-color-info-80opc: hsl(181deg 52% 53% / 80%);
+		--panda-action-color-info-90opc: hsl(181deg 52% 53% / 90%);
 		
 		
 		/* BUTTONS */
