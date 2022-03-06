@@ -4,7 +4,7 @@
 import { styles } from "./styles/styles";
 
 // utils
-import { LitElement, html } from "lit";
+import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 // flags
@@ -44,14 +44,42 @@ export class PandaFlag extends LitElement {
 	@property({ type: Boolean, attribute: true })
 	square!: boolean;
 
+	private flagMapper!: { [countryCode: string]: (square: boolean) => TemplateResult; };
+
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
 
-	connectedCallback(): void {
-		super.connectedCallback();
-		console.log("%c flag", "font-size: 24px; color: green;", this.flag);
-		console.log("%c square", "font-size: 24px; color: green;", this.square);
+	constructor() {
+		super();
+		this.flag = "";
+		this.square = false;
+
+		// flag mapper
+		this.flagMapper = {
+			at: (square) => square ? flagAtSquare : flagAt,
+			cn: (square) => square ? flagCnSquare : flagCn,
+			de: (square) => square ? flagDeSquare : flagDe,
+			fr: (square) => square ? flagFrSquare : flagFr,
+			hk: (square) => square ? flagHkSquare : flagHk,
+			hu: (square) => square ? flagHuSquare : flagHu,
+			id: (square) => square ? flagIdSquare : flagId,
+			ie: (square) => square ? flagIeSquare : flagIe,
+			it: (square) => square ? flagItSquare : flagIt,
+			jp: (square) => square ? flagJpSquare : flagJp,
+			lu: (square) => square ? flagLuSquare : flagLu,
+			mo: (square) => square ? flagMoSquare : flagMo,
+			mc: (square) => square ? flagMcSquare : flagMc,
+			nl: (square) => square ? flagNlSquare : flagNl,
+			pe: (square) => square ? flagPeSquare : flagPe,
+			pl: (square) => square ? flagPlSquare : flagPl,
+			qa: (square) => square ? flagQaSquare : flagQa,
+			ru: (square) => square ? flagRuSquare : flagRu,
+			sg: (square) => square ? flagSgSquare : flagSg,
+			tw: (square) => square ? flagTwSquare : flagTw,
+			ua: (square) => square ? flagUaSquare : flagUa,
+			vn: (square) => square ? flagVnSquare : flagVn,
+		};
 	}
 
 	// ================================================================================================================
@@ -63,53 +91,10 @@ export class PandaFlag extends LitElement {
 	}
 
 	private _renderFlag() {
-		switch (this.flag?.toLocaleLowerCase()) {
-			case "at":
-				return this.square ? flagAtSquare : flagAt;
-			case "cn":
-				return this.square ? flagCnSquare : flagCn;
-			case "de":
-				return this.square ? flagDeSquare : flagDe;
-			case "fr":
-				return this.square ? flagFrSquare : flagFr;
-			case "hk":
-				return this.square ? flagHkSquare : flagHk;
-			case "hu":
-				return this.square ? flagHuSquare : flagHu;
-			case "id":
-				return this.square ? flagIdSquare : flagId;
-			case "ie":
-				return this.square ? flagIeSquare : flagIe;
-			case "it":
-				return this.square ? flagItSquare : flagIt;
-			case "jp":
-				return this.square ? flagJpSquare : flagJp;
-			case "lu":
-				return this.square ? flagLuSquare : flagLu;
-			case "mo":
-				return this.square ? flagMoSquare : flagMo;
-			case "mc":
-				return this.square ? flagMcSquare : flagMc;
-			case "nl":
-				return this.square ? flagNlSquare : flagNl;
-			case "pe":
-				return this.square ? flagPeSquare : flagPe;
-			case "pl":
-				return this.square ? flagPlSquare : flagPl;
-			case "qa":
-				return this.square ? flagQaSquare : flagQa;
-			case "ru":
-				return this.square ? flagRuSquare : flagRu;
-			case "sg":
-				return this.square ? flagSgSquare : flagSg;
-			case "tw":
-				return this.square ? flagTwSquare : flagTw;
-			case "ua":
-				return this.square ? flagUaSquare : flagUa;
-			case "vn":
-				return this.square ? flagVnSquare : flagVn;
-			default:
-				return html`???`;
+		if (this.flagMapper[this.flag?.toLocaleLowerCase()]) {
+			return this.flagMapper[this.flag?.toLocaleLowerCase()](this.square);
+		} else {
+			return html`???`;
 		}
 	}
-}
+};

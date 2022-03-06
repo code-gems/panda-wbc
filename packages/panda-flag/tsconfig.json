@@ -1,7 +1,11 @@
 {
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"outDir": "./lib"
+		"target": "es6",
+		"outDir": "./lib",
+		"useDefineForClassFields": false
 	},
-	"include": ["src/**/*"]
+	"include": [
+		"src/**/*"
+	]
 }
