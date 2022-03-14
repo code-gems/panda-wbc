@@ -46,6 +46,7 @@ class DemoPage extends LitElement {
 		{ countryName: "China", countryCode: "cn" },
 		{ countryName: "Germany", countryCode: "de" },
 		{ countryName: "France", countryCode: "fr" },
+		{ countryName: "United Kingdom", countryCode: "gb" },
 		{ countryName: "Hong Kong", countryCode: "hk" },
 		{ countryName: "Hungary", countryCode: "hu" },
 		{ countryName: "Indonesia", countryCode: "id" },

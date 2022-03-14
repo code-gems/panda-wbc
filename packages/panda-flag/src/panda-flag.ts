@@ -12,6 +12,7 @@ import { flagAt, flagAtSquare } from "./resources/at";
 import { flagCn, flagCnSquare } from "./resources/cn";
 import { flagDe, flagDeSquare } from "./resources/de";
 import { flagFr, flagFrSquare } from "./resources/fr";
+import { flagGb, flagGbSquare } from "./resources/gb";
 import { flagHk, flagHkSquare } from "./resources/hk";
 import { flagHu, flagHuSquare } from "./resources/hu";
 import { flagId, flagIdSquare } from "./resources/id";
@@ -61,6 +62,7 @@ export class PandaFlag extends LitElement {
 			cn: (square) => square ? flagCnSquare : flagCn,
 			de: (square) => square ? flagDeSquare : flagDe,
 			fr: (square) => square ? flagFrSquare : flagFr,
+			gb: (square) => square ? flagGbSquare : flagGb,
 			hk: (square) => square ? flagHkSquare : flagHk,
 			hu: (square) => square ? flagHuSquare : flagHu,
 			id: (square) => square ? flagIdSquare : flagId,
@@ -78,6 +80,7 @@ export class PandaFlag extends LitElement {
 			sg: (square) => square ? flagSgSquare : flagSg,
 			tw: (square) => square ? flagTwSquare : flagTw,
 			ua: (square) => square ? flagUaSquare : flagUa,
+			uk: (square) => square ? flagGbSquare : flagGb,
 			vn: (square) => square ? flagVnSquare : flagVn,
 		};
 	}

@@ -5,12 +5,9 @@ export const flagPe = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink"
 		x="0px"
 		y="0px"
 		viewBox="0 0 256 192"
-		style="enable-background:new 0 0 256 192;"
-		xml:space="preserve"
 	>
 		<rect fill="#f43737" width="85" height="192" />
 		<rect fill="#fafafa" width="171" height="192" x="85" />
@@ -5193,12 +5190,9 @@ export const flagPeSquare = html`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink"
 		x="0px"
 		y="0px"
 		viewBox="0 0 256 256"
-		style="enable-background:new 0 0 256 256;"
-		xml:space="preserve"
 	>
 		<style type="text/css">
 			.st0{fill:#FFFFFF;}

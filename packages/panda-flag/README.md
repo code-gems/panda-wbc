@@ -3,11 +3,11 @@ Panda Flag is a Lit based web component that adds flags to your UI. Extremely li
 Enjoy!
 
 ### Installation
-```npm install @panda/panda-flag -S```
+```npm install @panda-wbc/panda-flag -S```
 
 or 
 
-```yarm add @panda/panda-flag```
+```yarn add @panda-wbc/panda-flag```
 
 ### Usage
 
