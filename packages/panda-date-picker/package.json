@@ -1,0 +1,42 @@
+{
+	"name": "@panda-wbc/panda-date-picker",
+	"version": "1.0.0",
+	"description": "Lit based web component - date picker",
+	"main": "lib/panda-date-picker.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"date picker",
+		"date",
+		"month picker",
+		"month",
+		"calendar",
+		"time",
+		"lit",
+		"lit-element",
+		"panda-wbc",
+		"ui component",
+		"web component"
+	],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"lit": "^2.0.2",
+		"@panda-wbc/panda-spinner": "workspace:^1.0.0"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src/**/*",
+		"demo/**/*",
+		"lib/**/*",
+		"index.d.ts"
+	]
+}
