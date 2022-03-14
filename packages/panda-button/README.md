@@ -3,11 +3,11 @@ Panda Button is a Lit based web component that adds buttons to your UI. Extremel
 Enjoy!
 
 ### Installation
-```npm install @panda/panda-button -S```
+```npm install @panda-wbc/panda-button -S```
 
 or 
 
-```yarm add @panda/panda-button```
+```yarn add @panda-wbc/panda-button```
 
 ### Usage
 

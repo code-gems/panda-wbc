@@ -1,6 +1,6 @@
 {
 	"name": "@panda-wbc/panda-button",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Lit based web component - button",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-button.js",
@@ -25,7 +25,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"lit": "^2.0.2",
-		"@panda-wbc/panda-spinner": "^0.0.1"
+		"@panda-wbc/panda-spinner": "workspace:^1.0.0"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

@@ -2,10 +2,16 @@
 	"private": true,
 	"name": "panda-wbc",
 	"workspaces": [
-		"packages/*"
+		"packages/**"
 	],
+	"engines": {
+		"node": ">16.0.0",
+		"pnpm": ">=6"
+	},
+	"scripts": {
+		"setup": "pnpm install"
+	},
 	"devDependencies": {
-		"lerna": "^4.0.0",
-		"yarn": "^1.22.17"
+		"pnpm": "^6.32.3"
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"name": "@panda-wbc/panda-theme",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Themes for Panda components",
 	"main": "lib/panda-theme.js",
 	"directories": {
