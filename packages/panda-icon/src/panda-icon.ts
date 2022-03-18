@@ -10,6 +10,7 @@ import { customElement, property } from "lit/decorators.js";
 
 // icons
 import { folderIcon } from "./resources/folder";
+import { calendarIcon } from "./resources/calendar";
 
 @customElement("panda-icon")
 export class PandaIcon extends LitElement {
@@ -31,6 +32,7 @@ export class PandaIcon extends LitElement {
 	constructor() {
 		super();
 		this.iconList = {
+			calendar: calendarIcon,
 			folder: folderIcon
 		};
 	}
