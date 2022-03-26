@@ -23,7 +23,7 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 		cursor: pointer;
 
-		border-radius: var(--panda-button-border-radius, 5px);
+		border-radius: var(--panda-border-radius-m, 5px);
 		border: none;
 		background: var(--panda-primary-color, hsl(196deg 100% 47%));
 		box-shadow: 0px 2px 4px var(--panda-primary-color-50opc, hsl(0deg 0% 0% / 50%));
@@ -61,7 +61,7 @@ export const styles = css`
 		left: 0px;
 		top: 0px;
 
-		border-radius: var(--panda-button-border-radius, 5px);
+		border-radius: var(--panda-border-radius-m, 5px);
 		background: var(--panda-primary-color, hsl(196deg 100% 47%));
 	}
 

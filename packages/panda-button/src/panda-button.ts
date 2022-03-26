@@ -82,3 +82,9 @@ export class PandaButton extends LitElement {
 
 	// ...
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		"panda-button": PandaButton;
+	}
+}
