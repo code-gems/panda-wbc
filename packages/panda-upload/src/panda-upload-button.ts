@@ -118,3 +118,9 @@ export class PandaUploadButton extends LitElement {
 		this.dispatchEvent(event);
 	}
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		"panda-upload-button": PandaUploadButton;
+	}
+}
