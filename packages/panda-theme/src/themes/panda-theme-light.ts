@@ -63,6 +63,16 @@ export const pandaThemeLight = `
 		--panda-font-family-medium: "Poppins";
 		--panda-font-family-bold: "Poppins";
 
+		--panda-input-txt-color: var(--panda-txt-color);
+		--panda-input-bg-color: hsl(0deg 0% 95%);
+
+		--panda-input-txt-color-disabled: hsl(0deg 0% 70%);
+		--panda-input-bg-color-disabled: hsl(0deg 0% 90%);
+		
+		--panda-border-radius-s: 2px;
+		--panda-border-radius-m: 5px;
+		--panda-border-radius-l: 10px;
+
 		/* LIGHTS & SHADOWS */
 
 		--panda-light-color: hsl(0deg 0% 100%);
@@ -177,6 +187,15 @@ export const pandaThemeLight = `
 		--panda-action-color-info-80opc: hsl(181deg 52% 53% / 80%);
 		--panda-action-color-info-90opc: hsl(181deg 52% 53% / 90%);
 		
+		/* ICONS */
+
+		--panda-icon-size-xs: 12px;
+		--panda-icon-size-s: 18px;
+		--panda-icon-size-m: 24px;
+		--panda-icon-size-l: 32px;
+		--panda-icon-size-xl: 38px;
+
+		--panda-icon-fill-color: var(--panda-txt-color);
 		
 		/* BUTTONS */
 
@@ -186,7 +205,6 @@ export const pandaThemeLight = `
 		--panda-button-height-l: 48px;
 		--panda-button-height-xl: 56px;
 
-		
 
 		color: var(--panda-txt-color);
 		font-size: var(--panda-font-size-m);

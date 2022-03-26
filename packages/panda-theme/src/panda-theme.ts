@@ -58,3 +58,9 @@ export class PandaTheme extends LitElement {
 		document.head.appendChild(themeEl);
 	}
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		"panda-theme": PandaTheme;
+	}
+}
