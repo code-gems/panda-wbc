@@ -3,11 +3,11 @@ Panda Spinner is a Lit based web component that adds spinners, loading animation
 Enjoy!
 
 ## Installation
-```npm install @panda/panda-spinner -S```
+```npm install @panda-wbc/panda-spinner -S```
 
 or 
 
-```yarn add @panda/panda-spinner```
+```yarn add @panda-wbc/panda-spinner```
 
 ## Usage
 

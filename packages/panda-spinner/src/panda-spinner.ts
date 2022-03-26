@@ -46,3 +46,9 @@ export class PandaSpinner extends LitElement {
 		}
 	}
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		"panda-spinner": PandaSpinner;
+	}
+}
