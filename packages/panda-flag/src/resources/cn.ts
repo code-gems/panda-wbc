@@ -1,3 +1,4 @@
+// China
 import { html } from "lit";
 
 export const flagCn = html`
