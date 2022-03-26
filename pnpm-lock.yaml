@@ -50,17 +50,17 @@ importers:
 
   packages/panda-date-picker:
     specifiers:
+      '@panda-wbc/panda-icon': workspace:^1.0.0
       '@panda-wbc/panda-spinner': workspace:^1.0.0
       lit: ^2.0.2
       rimraf: ^3.0.2
-      ts-loader: ^9.2.6
       typescript: ^4.5.4
     dependencies:
+      '@panda-wbc/panda-icon': link:../panda-icon
       '@panda-wbc/panda-spinner': link:../panda-spinner
       lit: 2.2.0
     devDependencies:
       rimraf: 3.0.2
-      ts-loader: 9.2.8_typescript@4.6.2
       typescript: 4.6.2
 
   packages/panda-design:
@@ -144,6 +144,29 @@ importers:
       webpack-cli: ^4.9.1
       webpack-dev-server: ^4.7.2
     dependencies:
+      lit: 2.2.0
+    devDependencies:
+      rimraf: 3.0.2
+      ts-loader: 9.2.8_typescript@4.6.2+webpack@5.70.0
+      typescript: 4.6.2
+      webpack: 5.70.0_webpack-cli@4.9.2
+      webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
+      webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.70.0
+
+  packages/panda-text-editor:
+    specifiers:
+      '@panda-wbc/panda-icon': ^1.0.0
+      '@panda-wbc/panda-spinner': ^1.0.0
+      lit: ^2.0.2
+      rimraf: ^3.0.2
+      ts-loader: ^9.2.6
+      typescript: ^4.5.4
+      webpack: ^5.65.0
+      webpack-cli: ^4.9.1
+      webpack-dev-server: ^4.7.2
+    dependencies:
+      '@panda-wbc/panda-icon': link:../panda-icon
+      '@panda-wbc/panda-spinner': link:../panda-spinner
       lit: 2.2.0
     devDependencies:
       rimraf: 3.0.2
@@ -687,7 +710,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001315
+      caniuse-lite: 1.0.30001316
       electron-to-chromium: 1.4.82
       escalade: 3.1.1
       node-releases: 2.0.2
@@ -726,8 +749,8 @@ packages:
       tslib: 2.3.1
     dev: true
 
-  /caniuse-lite/1.0.30001315:
-    resolution: {integrity: sha512-5v7LFQU4Sb/qvkz7JcZkvtSH1Ko+1x2kgo3ocdBeMGZSOFpuE1kkm0kpTwLtWeFrw5qw08ulLxJjVIXIS8MkiQ==}
+  /caniuse-lite/1.0.30001316:
+    resolution: {integrity: sha512-JgUdNoZKxPZFzbzJwy4hDSyGuH/gXz2rN51QmoR8cBQsVo58llD3A0vlRKKRt8FGf5u69P9eQyIH8/z9vN/S0Q==}
     dev: true
 
   /chalk/4.1.2:
@@ -2519,20 +2542,6 @@ packages:
   /toidentifier/1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
-    dev: true
-
-  /ts-loader/9.2.8_typescript@4.6.2:
-    resolution: {integrity: sha512-gxSak7IHUuRtwKf3FIPSW1VpZcqF9+MBrHOvBp9cjHh+525SjtCIJKVGjRKIAfxBwDGDGCFF00rTfzB1quxdSw==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      typescript: '*'
-      webpack: ^5.0.0
-    dependencies:
-      chalk: 4.1.2
-      enhanced-resolve: 5.9.2
-      micromatch: 4.0.4
-      semver: 7.3.5
-      typescript: 4.6.2
     dev: true
 
   /ts-loader/9.2.8_typescript@4.6.2+webpack@5.70.0:
