@@ -1,0 +1,202 @@
+
+body {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 60px;
+	margin: 0px;
+
+	color: hsl(222 14% 49%);
+	font-size: var(--panda-font-size-m);
+	font-family: var(--panda-font-family);
+	background-color: #f2f3f7;
+	box-sizing: border-box;
+
+	/* ====================================================================================================== COLORS */
+
+	/* BRAND COLORS */
+
+	--panda-primary-text-color: hsl(0 0% 100%);
+	--panda-primary-color: hsl(204deg 86% 50%);
+	--panda-primary-color-0opc: hsl(204deg 86% 50% / 0%);
+	--panda-primary-color-10opc: hsl(204deg 86% 50% / 10%);
+	--panda-primary-color-20opc: hsl(204deg 86% 50% / 20%);
+	--panda-primary-color-30opc: hsl(204deg 86% 50% / 30%);
+	--panda-primary-color-40opc: hsl(204deg 86% 50% / 40%);
+	--panda-primary-color-50opc: hsl(204deg 86% 50% / 50%);
+	--panda-primary-color-60opc: hsl(204deg 86% 50% / 60%);
+	--panda-primary-color-70opc: hsl(204deg 86% 50% / 70%);
+	--panda-primary-color-80opc: hsl(204deg 86% 50% / 80%);
+	--panda-primary-color-90opc: hsl(204deg 86% 50% / 90%);
+
+	--panda-secondary-text-color: hsl(0 0% 100%);
+	--panda-secondary-color: hsl(268 90% 58%);
+	--panda-secondary-color-0opc: hsl(268 90% 58% / 0%);
+	--panda-secondary-color-10opc: hsl(268 90% 58% / 10%);
+	--panda-secondary-color-20opc: hsl(268 90% 58% / 20%);
+	--panda-secondary-color-30opc: hsl(268 90% 58% / 30%);
+	--panda-secondary-color-40opc: hsl(268 90% 58% / 40%);
+	--panda-secondary-color-50opc: hsl(268 90% 58% / 50%);
+	--panda-secondary-color-60opc: hsl(268 90% 58% / 60%);
+	--panda-secondary-color-70opc: hsl(268 90% 58% / 70%);
+	--panda-secondary-color-80opc: hsl(268 90% 58% / 80%);
+	--panda-secondary-color-90opc: hsl(268 90% 58% / 90%);
+
+
+	/* ACTION COLORS */
+
+	--panda-action-info: hsl(197 100% 90%);
+	--panda-action-info-0opc: hsl(197 100% 90% / 0%);
+	--panda-action-info-10opc: hsl(197 100% 90% / 10%);
+	--panda-action-info-20opc: hsl(197 100% 90% / 20%);
+	--panda-action-info-30opc: hsl(197 100% 90% / 30%);
+	--panda-action-info-40opc: hsl(197 100% 90% / 40%);
+	--panda-action-info-50opc: hsl(197 100% 90% / 50%);
+	--panda-action-info-60opc: hsl(197 100% 90% / 60%);
+	--panda-action-info-70opc: hsl(197 100% 90% / 70%);
+	--panda-action-info-80opc: hsl(197 100% 90% / 80%);
+	--panda-action-info-90opc: hsl(197 100% 90% / 90%);
+
+	--panda-action-done: hsl(145 100% 90%);
+	--panda-action-done-0opc: hsl(145 100% 90% / 0%);
+	--panda-action-done-10opc: hsl(145 100% 90% / 10%);
+	--panda-action-done-20opc: hsl(145 100% 90% / 20%);
+	--panda-action-done-30opc: hsl(145 100% 90% / 30%);
+	--panda-action-done-40opc: hsl(145 100% 90% / 40%);
+	--panda-action-done-50opc: hsl(145 100% 90% / 50%);
+	--panda-action-done-60opc: hsl(145 100% 90% / 60%);
+	--panda-action-done-70opc: hsl(145 100% 90% / 70%);
+	--panda-action-done-80opc: hsl(145 100% 90% / 80%);
+	--panda-action-done-90opc: hsl(145 100% 90% / 90%);
+
+	--panda-action-warn: hsl(42 100% 90%);
+	--panda-action-warn-0opc: hsl(42 100% 90% / 0%);
+	--panda-action-warn-10opc: hsl(42 100% 90% / 10%);
+	--panda-action-warn-20opc: hsl(42 100% 90% / 20%);
+	--panda-action-warn-30opc: hsl(42 100% 90% / 30%);
+	--panda-action-warn-40opc: hsl(42 100% 90% / 40%);
+	--panda-action-warn-50opc: hsl(42 100% 90% / 50%);
+	--panda-action-warn-60opc: hsl(42 100% 90% / 60%);
+	--panda-action-warn-70opc: hsl(42 100% 90% / 70%);
+	--panda-action-warn-80opc: hsl(42 100% 90% / 80%);
+	--panda-action-warn-90opc: hsl(42 100% 90% / 90%);
+
+	--panda-action-fail: hsl(350 81% 96%);
+	--panda-action-fail-0opc: hsl(350 81% 96% / 0%);
+	--panda-action-fail-10opc: hsl(350 81% 96% / 10%);
+	--panda-action-fail-20opc: hsl(350 81% 96% / 20%);
+	--panda-action-fail-30opc: hsl(350 81% 96% / 30%);
+	--panda-action-fail-40opc: hsl(350 81% 96% / 40%);
+	--panda-action-fail-50opc: hsl(350 81% 96% / 50%);
+	--panda-action-fail-60opc: hsl(350 81% 96% / 60%);
+	--panda-action-fail-70opc: hsl(350 81% 96% / 70%);
+	--panda-action-fail-80opc: hsl(350 81% 96% / 80%);
+	--panda-action-fail-90opc: hsl(350 81% 96% / 90%);
+
+	--panda-shadow: hsl(0 0% 0%);
+	--panda-shadow-0opc: hsl(0 0% 0% / 0%);
+	--panda-shadow-10opc: hsl(0 0% 0% / 10%);
+	--panda-shadow-20opc: hsl(0 0% 0% / 20%);
+	--panda-shadow-30opc: hsl(0 0% 0% / 30%);
+	--panda-shadow-40opc: hsl(0 0% 0% / 40%);
+	--panda-shadow-50opc: hsl(0 0% 0% / 50%);
+	--panda-shadow-60opc: hsl(0 0% 0% / 60%);
+	--panda-shadow-70opc: hsl(0 0% 0% / 70%);
+	--panda-shadow-80opc: hsl(0 0% 0% / 80%);
+	--panda-shadow-90opc: hsl(0 0% 0% / 90%);
+
+	--panda-table-bg-color: hsl(223 22% 91%);
+
+	--panda-border-color: hsl(222 14% 49%);
+	--panda-border-color-0opc: hsl(222 14% 49% / 0%);
+	--panda-border-color-10opc: hsl(222 14% 49% / 10%);
+	--panda-border-color-20opc: hsl(222 14% 49% / 20%);
+	--panda-border-color-30opc: hsl(222 14% 49% / 30%);
+	--panda-border-color-40opc: hsl(222 14% 49% / 40%);
+	--panda-border-color-50opc: hsl(222 14% 49% / 50%);
+	--panda-border-color-60opc: hsl(222 14% 49% / 60%);
+	--panda-border-color-70opc: hsl(222 14% 49% / 70%);
+	--panda-border-color-80opc: hsl(222 14% 49% / 80%);
+	--panda-border-color-90opc: hsl(222 14% 49% / 90%);
+
+	/* ===================================================================================================== BUTTONS */
+
+	--panda-button-height-s: 24px;
+	--panda-button-height-m: 30px;
+	--panda-button-height-l: 40px;
+	--panda-button-height-s: 48px;
+
+	/* ======================================================================================================= FONTS */
+	/* TEXT, FONTS & SIZES */
+
+	--panda-txt-color: hsl(0deg 0% 29%);
+	--panda-bg-color: hsl(0deg 0% 100%);
+
+	--panda-font-size-s: 12px;
+	--panda-font-size-m: 14px;
+	--panda-font-size-l: 16px;
+	--panda-font-size-xl: 20px;
+	--panda-font-size-hero: 36px;
+
+	--panda-input-txt-color: var(--panda-txt-color);
+	--panda-input-bg-color: hsl(0deg 0% 95%);
+
+	--panda-input-txt-color-disabled: hsl(0deg 0% 70%);
+	--panda-input-bg-color-disabled: hsl(0deg 0% 90%);
+	
+	--panda-border-radius-s: 2px;
+	--panda-border-radius-m: 5px;
+	--panda-border-radius-l: 10px;
+
+	/* LIGHTS & SHADOWS */
+
+	--panda-light-color: hsl(0deg 0% 100%);
+	--panda-light-color-0opc: hsl(0deg 0% 100% / 0%);
+	--panda-light-color-10opc: hsl(0deg 0% 100% / 10%);
+	--panda-light-color-20opc: hsl(0deg 0% 100% / 20%);
+	--panda-light-color-30opc: hsl(0deg 0% 100% / 30%);
+	--panda-light-color-40opc: hsl(0deg 0% 100% / 40%);
+	--panda-light-color-50opc: hsl(0deg 0% 100% / 50%);
+	--panda-light-color-60opc: hsl(0deg 0% 100% / 60%);
+	--panda-light-color-70opc: hsl(0deg 0% 100% / 70%);
+	--panda-light-color-80opc: hsl(0deg 0% 100% / 80%);
+	--panda-light-color-90opc: hsl(0deg 0% 100% / 90%);
+
+	--panda-shadow-color: hsl(0deg 0% 0%);
+	--panda-shadow-color-0opc: hsl(0deg 0% 0% / 0%);
+	--panda-shadow-color-10opc: hsl(0deg 0% 0% / 10%);
+	--panda-shadow-color-20opc: hsl(0deg 0% 0% / 20%);
+	--panda-shadow-color-30opc: hsl(0deg 0% 0% / 30%);
+	--panda-shadow-color-40opc: hsl(0deg 0% 0% / 40%);
+	--panda-shadow-color-50opc: hsl(0deg 0% 0% / 50%);
+	--panda-shadow-color-60opc: hsl(0deg 0% 0% / 60%);
+	--panda-shadow-color-70opc: hsl(0deg 0% 0% / 70%);
+	--panda-shadow-color-80opc: hsl(0deg 0% 0% / 80%);
+	--panda-shadow-color-90opc: hsl(0deg 0% 0% / 90%);
+
+	--panda-font-size-xs: 12px;
+	--panda-font-size-s: 14px;
+	--panda-font-size-m: 16px;
+	--panda-font-size-l: 18px;
+	--panda-font-size-xl: 22px;
+	--panda-font-size-hero: 36px;
+	
+	--panda-font-family: "OpenSans";
+	--panda-font-family-light: "OpenSans-Light";
+	--panda-font-family-bold: "OpenSans-Bold";
+}
+
+@font-face {
+	font-family: "OpenSans";
+	src: url(./OpenSans-Regular.ttf);
+}
+
+@font-face {
+	font-family: "OpenSans-Bold";
+	src: url(./OpenSans-Bold.ttf);
+}
+
+@font-face {
+	font-family: "OpenSans-Light";
+	src: url(./OpenSans-Light.ttf);
+}
