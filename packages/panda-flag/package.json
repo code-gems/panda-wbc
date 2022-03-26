@@ -1,6 +1,6 @@
 {
 	"name": "@panda-wbc/panda-flag",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Lit based web component adding flags to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-flag.js",

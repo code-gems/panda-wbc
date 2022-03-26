@@ -17,6 +17,8 @@ or
 
 ## Change Log
 
+1.0.0 - Added new flags [BE, CH, DK, FI, NO, SE]
+
 0.0.5 - fixed build script
 	  - added flags [VN]
 
