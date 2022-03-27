@@ -28,7 +28,8 @@
 	"dependencies": {
 		"lit": "^2.0.2",
 		"@panda-wbc/panda-icon": "^1.0.0",
-		"@panda-wbc/panda-spinner": "^1.0.0"
+		"@panda-wbc/panda-spinner": "^1.0.0",
+		"@panda-wbc/panda-theme": "^1.0.0"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

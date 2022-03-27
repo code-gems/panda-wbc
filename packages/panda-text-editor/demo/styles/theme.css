@@ -6,7 +6,7 @@ body {
 	padding: 60px;
 	margin: 0px;
 
-	color: hsl(222 14% 49%);
+	color: var(--panda-txt-color);
 	font-size: var(--panda-font-size-m);
 	font-family: var(--panda-font-family);
 	background-color: #f2f3f7;
@@ -124,7 +124,7 @@ body {
 	--panda-button-height-s: 24px;
 	--panda-button-height-m: 30px;
 	--panda-button-height-l: 40px;
-	--panda-button-height-s: 48px;
+	--panda-button-height-xl: 48px;
 
 	/* ======================================================================================================= FONTS */
 	/* TEXT, FONTS & SIZES */

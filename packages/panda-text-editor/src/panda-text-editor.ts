@@ -1,8 +1,14 @@
 // types
-import { PandaTextEditorOptions } from "../index";
+import { PandaTextEditorOptions, EDITOR_COMMAND } from "../index";
+
+interface TagMap {
+	[command: string]: string;
+}
 
 // styles
 import { styles } from "./styles/styles";
+// panda mixins
+import { scroll } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -16,7 +22,10 @@ import { property, customElement } from "lit/decorators.js";
 export class PandaTextEditor extends LitElement {
 	// css styles
 	static get styles() {
-		return styles;
+		return [
+			styles,
+			scroll
+		];
 	}
 
 	@property({ type: Boolean, attribute: true })
@@ -38,6 +47,12 @@ export class PandaTextEditor extends LitElement {
 	@property({ type: Object, hasChanged: () => true })
 	selection!: Selection | null;
 
+	@property({ type: Array })
+	_selectedTags!: string[];
+
+	// events
+	private _selectionChangeEventBinding!: any;
+
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
@@ -45,29 +60,40 @@ export class PandaTextEditor extends LitElement {
 	constructor() {
 		super();
 		this.content = document.createElement("div");
+		this._selectedTags = [];
 
 		// set default editor options
 		this.options = {
 			toolbarPosition: "top",
 			hideToolbar: false,
-			toolbar: {
-				// format
-				format: {
-					h1: true,
+			toolbar: [
+				// text style
+				{
+					formatBlock: {
+						h1: true,
+						h2: true,
+						pre: true,
+					}
 				},
-				bold: true,
-				italic: true,
-				underline: true,
-				strikethrough: true,
-				removeFormat: true,
-
+				// format
+				{
+					bold: true,
+					italic: true,
+					underline: true,
+					// strikethrough: true,
+				},
 				// alignment
-				alignLeft: true,
-				alignCenter: true,
-				alignRight: true,
-
-				// misc
-			}
+				{
+					alignLeft: true,
+					alignCenter: true,
+					alignRight: true,
+					// alignJustify: true,
+				},
+				// remove format
+				{
+					removeFormat: true,
+				}
+			]
 		};
 	}
 
@@ -82,13 +108,20 @@ export class PandaTextEditor extends LitElement {
 				}
 			}
 		}
+		// change editor default behavior
 		document.execCommand("defaultParagraphSeparator", false, "p");
-		document.addEventListener("selectionchange", () => {
-			this._onSelectionChanged();
-		});
-		window.addEventListener("selectionchange", () => {
-			this._onSelectionChanged();
-		});
+
+		// add event listeners
+		// this._selectionChangeEventBinding = this._onSelectionChanged.bind(this);
+		// document.addEventListener("selectionchange", this._selectionChangeEventBinding);
+		// window.addEventListener("selectionchange", this._selectionChangeEventBinding);
+	}
+
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		// remove event listeners
+		// document.removeEventListener("selectionchange", this._selectionChangeEventBinding);
+		// window.removeEventListener("selectionchange", this._selectionChangeEventBinding);
 	}
 
 	// ================================================================================================================
@@ -112,18 +145,23 @@ export class PandaTextEditor extends LitElement {
 			`);
 		}
 		return html`
-			<div class="editor-cont">
+			<div class="text-editor">
 				${this._renderToolbar()}
-				<article
-					id="editor"
-					class="editor"
-					part="editor"
-					?contenteditable="${!this.readonly}"
-					?spellcheck="${this.spellcheck}"
-					
-				>
-					${this.content}
-				</article>
+				<div class="editor-cont scroll">
+					<article
+						id="editor"
+						class="editor"
+						part="editor"
+						?contenteditable="${!this.readonly}"
+						?spellcheck="${this.spellcheck}"
+						@input="${() => this._onSelectionChanged()}"
+						@mouseup="${() => this._onSelectionChanged()}"
+						@mousedown="${() => this._onSelectionChanged()}"
+						@keypress="${() => this._onSelectionChanged()}"
+					>
+						${this.content}
+					</article>
+				</div>
 				${spinnerHtml}
 			</div>
 		`;
@@ -132,73 +170,79 @@ export class PandaTextEditor extends LitElement {
 	private _renderToolbar() {
 		const toolbarHtml: TemplateResult[] = [];
 
-		if (this.options?.toolbar?.bold) {
-			const optionsHtml: TemplateResult[] = [];
+		if (this.options?.toolbar?.length) {
+			// generate toolbar template
+			this.options.toolbar.forEach((toolbarConfig) => {
+				const toolsHtml: TemplateResult[] = [];
 
-			optionsHtml.push(html`
-				<option
-					@change="${(e: Event) => this._onFormatText((e.target as HTMLSelectElement).value)}"
-				>
-					Header 1
-				</option>
-			`);
+				// format block
 
-			toolbarHtml.push(html`
-				<select
+				// format
+				if (toolbarConfig.bold) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_BOLD, "format-bold"));
+				}
+				if (toolbarConfig.italic) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_ITALIC, "format-italic"));
+				}
+				if (toolbarConfig.underline) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_UNDERLINE, "format-underline"));
+				}
+				if (toolbarConfig.strikethrough) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_STRIKETHROUGH, "format-strikethrough"));
+				}
 
-				>
-					${optionsHtml}
-				</select>
-				<span class="separator"></span>
-			`);
-		}
+				// alignment
+				if (toolbarConfig.alignLeft) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_LEFT, "format-align-left"));
+				}
+				if (toolbarConfig.alignCenter) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_CENTER, "format-align-center"));
+				}
+				if (toolbarConfig.alignRight) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_RIGHT, "format-align-right"));
+				}
+				if (toolbarConfig.alignJustify) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_JUSTIFY, "format-align-justify"));
+				}
 
-		if (this.options?.toolbar?.bold) {
-			toolbarHtml.push(html`
-				<div
-					class="btn"
-					part="btn"
-					@click="${() => this._execCommand("bold")}"
-				>
-					<panda-icon icon="format-bold"></panda-icon>
-				</div>
-			`);
-		}
+				// indentation
+				if (toolbarConfig.indentDecrease) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.INDENT_DECREASE, "format-indent-decrease"));
+				}
+				if (toolbarConfig.indentIncrease) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.INDENT_INCREASE, "format-indent-increase"));
+				}
 
-		if (this.options?.toolbar?.italic) {
-			toolbarHtml.push(html`
-				<div
-					class="btn"
-					part="btn"
-					@click="${() => this._execCommand("italic")}"
-				>
-					<panda-icon icon="format-italic"></panda-icon>
-				</div>
-			`);
-		}
 
-		if (this.options?.toolbar?.underline) {
-			toolbarHtml.push(html`
-				<div
-					class="btn"
-					part="btn"
-					@click="${() => this._execCommand("underline")}"
-				>
-					<panda-icon icon="format-underline"></panda-icon>
-				</div>
-			`);
-		}
+				toolbarHtml.push(html`
+					<div class="btn-group" part="btn-group">
+						${toolsHtml}
+					</div>
+				`);
+			});
 
-		if (this.options?.toolbar?.strikethrough) {
-			toolbarHtml.push(html`
-				<div
-					class="btn"
-					part="btn"
-					@click="${() => this._execCommand("strikethrough")}"
-				>
-					<panda-icon icon="format-strikethrough"></panda-icon>
-				</div>
-			`);
+
+			// toolsHtml.push(html`
+			// 	<option
+			// 		@change="${(e: Event) => this._onFormatText((e.target as HTMLSelectElement).value)}"
+			// 	>
+			// 		Header 1
+			// 	</option>
+			// 	<option
+			// 		@change="${(e: Event) => this._onFormatText((e.target as HTMLSelectElement).value)}"
+			// 	>
+			// 		Header 2
+			// 	</option>
+			// `);
+
+			// toolbarHtml.push(html`
+			// 	<select
+
+			// 	>
+			// 		${toolsHtml}
+			// 	</select>
+			// 	<span class="separator"></span>
+			// `);
 		}
 
 		return html`
@@ -216,9 +260,80 @@ export class PandaTextEditor extends LitElement {
 	// ======================================================================================================== HELPERS
 	// ================================================================================================================
 
+	/**
+	 * Returns a HTML tag associated with editor command
+	 * @param {String} command - Editor command
+	 * @returns {String}
+	 */
+	private _commandToTagName(command: EDITOR_COMMAND): string {
+		const tagMap: TagMap = {
+			[EDITOR_COMMAND.FORMAT_BOLD]: "b",
+			[EDITOR_COMMAND.FORMAT_BOLD]: "strong",
+			[EDITOR_COMMAND.FORMAT_ITALIC]: "i",
+			[EDITOR_COMMAND.FORMAT_UNDERLINE]: "u",
+			[EDITOR_COMMAND.FORMAT_STRIKETHROUGH]: "s",
+		};
+		return tagMap[command] || "";
+	}
+
+	private _getToolTemplate(command: EDITOR_COMMAND, icon: string, values?: string[]): TemplateResult {
+		if (command === EDITOR_COMMAND.FORMAT_BLOCK) {
+			return html``;
+		} else {
+			// check if tool is already active
+			const active = this._selectedTags.includes(this._commandToTagName(command))
+				? "active"
+				: "";
+
+			return html`
+				<div
+					class="btn ${active}"
+					part="btn"
+					@click="${() => this._execCommand(command)}"
+				>
+					<panda-icon icon="${icon}"></panda-icon>
+				</div>
+			`;
+		}
+	}
+
 	private _execCommand(command: string, value?: string) {
 		console.log("%c _onExecCommand", "font-size: 24px; color: green;", command, value);
 		document.execCommand(command, true, value);
+	}
+
+
+	private _getSelectionTags() {
+		let tags: string[] = [];
+
+		const getNodeTag = (node: any) => {
+			const tag = node?.tagName?.toLowerCase()?.trim();
+
+			if (tag) {
+				tags.push(tag);
+			}
+		};
+
+		if (this.selection) {
+			if (this.selection.type === "Range") {
+				let parentNode = this.selection.anchorNode;
+				if (parentNode) {
+					while (parentNode !== null) {
+						getNodeTag(parentNode);
+						parentNode = parentNode?.parentNode;
+					}
+				}
+				// Remove root tag
+				tags.pop();
+			} else {
+				const content = this.selection?.toString() || "";
+				tags = (content.match(/<[^>]+>/g) || [])
+					.filter((tag) => !tag.startsWith("</"))
+					.map((tag) => tag.replace(/<|>/g, ""));
+			}
+		}
+		console.log("%c _getSelectionTags", "font-size: 24px; color: green;", tags);
+		this._selectedTags = tags;
 	}
 
 	// ================================================================================================================
@@ -234,6 +349,8 @@ export class PandaTextEditor extends LitElement {
 			: null;
 
 		this.selection = selection || document.getSelection() || window.getSelection();
+		// update active tags
+		this._getSelectionTags();
 	}
 
 	private _onFormatText(option: string) {
