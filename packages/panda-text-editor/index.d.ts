@@ -27,10 +27,18 @@ export interface PandaTextEditorToolbarConfig {
 	alignRight?: boolean;
 	alignJustify?: boolean;
 
+	numberedList?: boolean;
+	bulletedList?: boolean;
+
 	indentIncrease?: boolean;
 	indentDecrease?: boolean;
 
+	blockquote?: boolean;
+	code?: boolean;
 	removeFormat?: boolean;
+
+	undo?: boolean;
+	redo?: boolean;
 }
 
 export const enum EDITOR_COMMAND {
@@ -46,6 +54,15 @@ export const enum EDITOR_COMMAND {
 	ALIGN_RIGHT = "justifyRight",
 	ALIGN_JUSTIFY = "justifyFull",
 
+	LIST_NUMBERED = "insertOrderedList",
+	LIST_BULLETED = "insertUnorderedList",
+
 	INDENT_INCREASE = "indent",
 	INDENT_DECREASE = "outdent",
+
+	UNDO = "undo",
+	REDO = "redo",
+
+	BLOCKQUOTE = "blockquote",
+	CODE = "pre",
 }

@@ -57,8 +57,8 @@ export const styles = css`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-button-height-m, 30px);
-		height: var(--panda-button-height-m, 30px);
+		width: var(--panda-button-height-m, 40px);
+		height: var(--panda-button-height-m, 40px);
 
 		transition: all 200ms ease-in-out;
 		user-select: none;

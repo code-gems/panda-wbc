@@ -1,13 +1,10 @@
 // types
 import { PandaTextEditorOptions, EDITOR_COMMAND } from "../index";
 
-interface TagMap {
-	[command: string]: string;
-}
-
 // styles
 import { styles } from "./styles/styles";
-// panda mixins
+
+// mixins
 import { scroll } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
@@ -16,7 +13,7 @@ import "@panda-wbc/panda-spinner";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";
-import { property, customElement } from "lit/decorators.js";
+import { property, customElement, query } from "lit/decorators.js";
 
 @customElement("panda-text-editor")
 export class PandaTextEditor extends LitElement {
@@ -41,17 +38,17 @@ export class PandaTextEditor extends LitElement {
 	options!: PandaTextEditorOptions;
 
 	// view props
-	@property({ type: Object, hasChanged: () => true })
+	@query("#editor")
+	editorEl!: Element;
+
+	@property({ type: Object })
 	content!: Element;
 
-	@property({ type: Object, hasChanged: () => true })
+	@property({ type: Object })
 	selection!: Selection | null;
 
 	@property({ type: Array })
 	_selectedTags!: string[];
-
-	// events
-	private _selectionChangeEventBinding!: any;
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
@@ -110,18 +107,6 @@ export class PandaTextEditor extends LitElement {
 		}
 		// change editor default behavior
 		document.execCommand("defaultParagraphSeparator", false, "p");
-
-		// add event listeners
-		// this._selectionChangeEventBinding = this._onSelectionChanged.bind(this);
-		// document.addEventListener("selectionchange", this._selectionChangeEventBinding);
-		// window.addEventListener("selectionchange", this._selectionChangeEventBinding);
-	}
-
-	disconnectedCallback(): void {
-		super.disconnectedCallback();
-		// remove event listeners
-		// document.removeEventListener("selectionchange", this._selectionChangeEventBinding);
-		// window.removeEventListener("selectionchange", this._selectionChangeEventBinding);
 	}
 
 	// ================================================================================================================
@@ -157,7 +142,7 @@ export class PandaTextEditor extends LitElement {
 						@input="${() => this._onSelectionChanged()}"
 						@mouseup="${() => this._onSelectionChanged()}"
 						@mousedown="${() => this._onSelectionChanged()}"
-						@keypress="${() => this._onSelectionChanged()}"
+						@keydown="${() => this._onSelectionChanged()}"
 					>
 						${this.content}
 					</article>
@@ -176,41 +161,122 @@ export class PandaTextEditor extends LitElement {
 				const toolsHtml: TemplateResult[] = [];
 
 				// format block
+				if (toolbarConfig.formatBlock) {
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.FORMAT_BLOCK,
+							"",
+							false,
+							Object.keys(toolbarConfig.formatBlock)
+						)
+					);
+				}
 
 				// format
 				if (toolbarConfig.bold) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_BOLD, "format-bold"));
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.FORMAT_BOLD,
+							"format-bold",
+							this._selectedTags.includes("b") || this._selectedTags.includes("strong")
+						)
+					);
 				}
 				if (toolbarConfig.italic) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_ITALIC, "format-italic"));
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.FORMAT_ITALIC,
+							"format-italic",
+							this._selectedTags.includes("i")
+						)
+					);
 				}
 				if (toolbarConfig.underline) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_UNDERLINE, "format-underline"));
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.FORMAT_UNDERLINE,
+							"format-underline",
+							this._selectedTags.includes("u")
+						)
+					);
 				}
 				if (toolbarConfig.strikethrough) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.FORMAT_STRIKETHROUGH, "format-strikethrough"));
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.FORMAT_STRIKETHROUGH,
+							"format-strikethrough",
+							this._selectedTags.includes("strike")
+						)
+					);
+				}
+				if (toolbarConfig.blockquote) {
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.BLOCKQUOTE,
+							"format-blockquote",
+							this._selectedTags.includes("blockquote"),
+							["blockquote"]
+						)
+					);
+				}
+				if (toolbarConfig.code) {
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.CODE,
+							"code",
+							this._selectedTags.includes("pre"),
+						)
+					);
 				}
 
 				// alignment
 				if (toolbarConfig.alignLeft) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_LEFT, "format-align-left"));
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_LEFT, "format-align-left", false));
 				}
 				if (toolbarConfig.alignCenter) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_CENTER, "format-align-center"));
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_CENTER, "format-align-center", false));
 				}
 				if (toolbarConfig.alignRight) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_RIGHT, "format-align-right"));
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_RIGHT, "format-align-right", false));
 				}
 				if (toolbarConfig.alignJustify) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_JUSTIFY, "format-align-justify"));
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.ALIGN_JUSTIFY, "format-align-justify", false));
+				}
+
+				// list
+				if (toolbarConfig.indentDecrease) {
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.LIST_NUMBERED,
+							"format-list-numbered",
+							this._selectedTags.includes("ol")
+						)
+					);
+				}
+				if (toolbarConfig.indentIncrease) {
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.LIST_BULLETED,
+							"format-list-bulleted",
+							this._selectedTags.includes("ul")
+						)
+					);
 				}
 
 				// indentation
 				if (toolbarConfig.indentDecrease) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.INDENT_DECREASE, "format-indent-decrease"));
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.INDENT_DECREASE, "format-indent-decrease", false));
 				}
 				if (toolbarConfig.indentIncrease) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.INDENT_INCREASE, "format-indent-increase"));
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.INDENT_INCREASE, "format-indent-increase", false));
+				}
+
+				// history
+				if (toolbarConfig.undo) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.UNDO, "undo", false));
+				}
+				if (toolbarConfig.redo) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.REDO, "redo", false));
 				}
 
 
@@ -220,29 +286,6 @@ export class PandaTextEditor extends LitElement {
 					</div>
 				`);
 			});
-
-
-			// toolsHtml.push(html`
-			// 	<option
-			// 		@change="${(e: Event) => this._onFormatText((e.target as HTMLSelectElement).value)}"
-			// 	>
-			// 		Header 1
-			// 	</option>
-			// 	<option
-			// 		@change="${(e: Event) => this._onFormatText((e.target as HTMLSelectElement).value)}"
-			// 	>
-			// 		Header 2
-			// 	</option>
-			// `);
-
-			// toolbarHtml.push(html`
-			// 	<select
-
-			// 	>
-			// 		${toolsHtml}
-			// 	</select>
-			// 	<span class="separator"></span>
-			// `);
 		}
 
 		return html`
@@ -260,34 +303,44 @@ export class PandaTextEditor extends LitElement {
 	// ======================================================================================================== HELPERS
 	// ================================================================================================================
 
-	/**
-	 * Returns a HTML tag associated with editor command
-	 * @param {String} command - Editor command
-	 * @returns {String}
-	 */
-	private _commandToTagName(command: EDITOR_COMMAND): string {
-		const tagMap: TagMap = {
-			[EDITOR_COMMAND.FORMAT_BOLD]: "b",
-			[EDITOR_COMMAND.FORMAT_BOLD]: "strong",
-			[EDITOR_COMMAND.FORMAT_ITALIC]: "i",
-			[EDITOR_COMMAND.FORMAT_UNDERLINE]: "u",
-			[EDITOR_COMMAND.FORMAT_STRIKETHROUGH]: "s",
-		};
-		return tagMap[command] || "";
-	}
-
-	private _getToolTemplate(command: EDITOR_COMMAND, icon: string, values?: string[]): TemplateResult {
+	private _getToolTemplate(command: EDITOR_COMMAND, icon: string, active: boolean, values?: string[]): TemplateResult {
 		if (command === EDITOR_COMMAND.FORMAT_BLOCK) {
-			return html``;
-		} else {
-			// check if tool is already active
-			const active = this._selectedTags.includes(this._commandToTagName(command))
-				? "active"
-				: "";
+			const optionsHtml: TemplateResult[] = [];
+			if (values?.length) {
+
+				values.forEach((option) => {
+					optionsHtml.push(html`
+						<option value="${option}">${option}</option>
+					`);
+				});
+			}
 
 			return html`
 				<div
-					class="btn ${active}"
+					class="toolbar-dropdown"
+					part="toolbar-dropdown"
+				>
+					<select
+						@change="${(e: any) => this._onFormatBlock(e.target.value)}"
+					>
+						${optionsHtml}
+					</select>
+				</div>
+			`;
+		} else if (command === EDITOR_COMMAND.BLOCKQUOTE || command === EDITOR_COMMAND.CODE) {
+			return html`
+				<div
+					class="btn ${active ? "active" : ""}"
+					part="btn"
+					@click="${() => this._execCommand("formatBlock", command)}"
+				>
+					<panda-icon icon="${icon}"></panda-icon>
+				</div>
+			`;
+		} else {
+			return html`
+				<div
+					class="btn ${active ? "active" : ""}"
 					part="btn"
 					@click="${() => this._execCommand(command)}"
 				>
@@ -344,6 +397,7 @@ export class PandaTextEditor extends LitElement {
 	 * Update editor text selection
 	 */
 	private _onSelectionChanged() {
+		console.log("%c content", "font-size: 24px; color: green;", this.content);
 		const selection = (this.shadowRoot as any)?.getSelection
 			? (this.shadowRoot as any).getSelection()
 			: null;
@@ -353,7 +407,7 @@ export class PandaTextEditor extends LitElement {
 		this._getSelectionTags();
 	}
 
-	private _onFormatText(option: string) {
+	private _onFormatBlock(option: string) {
 
 	}
 }
