@@ -38,13 +38,17 @@ export class PandaTextEditor extends LitElement {
 	options!: PandaTextEditorOptions;
 
 	// view props
-	@query("#editor")
-	editorEl!: Element;
 
-	@property({ type: Object })
+	@property({ type: Element })
 	content!: Element;
 
-	@property({ type: Object })
+	@query("#editor")
+	private _editorEl!: HTMLInputElement;
+
+	@query("#placeholder")
+	private _placeholderEl!: Element;
+
+	@property({ type: Selection })
 	selection!: Selection | null;
 
 	@property({ type: Array })
@@ -56,7 +60,7 @@ export class PandaTextEditor extends LitElement {
 
 	constructor() {
 		super();
-		this.content = document.createElement("div");
+		this.content = document.createElement("p");
 		this._selectedTags = [];
 
 		// set default editor options
@@ -97,16 +101,30 @@ export class PandaTextEditor extends LitElement {
 	protected firstUpdated() {
 		// look for a template to preset editor content
 		if (this.children.length > 0) {
-			const template = this.children[0];
-			if (template.tagName === "TEMPLATE") {
-				const templateContent = template.innerHTML.trim();
-				if (templateContent.length > 0) {
-					this.content.innerHTML = templateContent;
+
+			console.log("%c children", "font-size: 24px; color: green;", this.children);
+
+			Array.from(this.children).forEach((child) => {
+				if (child.tagName === "TEMPLATE") {
+					console.log("%c child", "font-size: 24px; color: green;", child);
+					console.log("%c attribute", "font-size: 24px; color: green;", child.getAttribute("placeholder") !== null);
+					if (child.getAttribute("placeholder") !== null) {
+						console.log("%c placeholder", "font-size: 24px; color: green;", child);
+						this._placeholderEl.innerHTML = child.innerHTML;
+					} else {
+						console.log("%c template", "font-size: 24px; color: green;", child);
+						const templateContent = child.innerHTML.trim();
+						if (templateContent.length > 0) {
+							this.content.innerHTML = templateContent;
+						}
+					}
 				}
-			}
+			});
+
 		}
 		// change editor default behavior
 		document.execCommand("defaultParagraphSeparator", false, "p");
+		this.requestUpdate();
 	}
 
 	// ================================================================================================================
@@ -114,6 +132,11 @@ export class PandaTextEditor extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
+		// check if we need to show placeholder content
+		const showPlaceholder = !this._editorEl?.innerText?.length
+			? "show"
+			: "";
+		console.log("%c showPlaceholder", "font-size: 24px; color: green;", showPlaceholder);
 		const spinnerHtml: TemplateResult[] = [];
 		if (this.busy) {
 			spinnerHtml.push(html`
@@ -133,16 +156,17 @@ export class PandaTextEditor extends LitElement {
 			<div class="text-editor">
 				${this._renderToolbar()}
 				<div class="editor-cont scroll">
+					<div id="placeholder" class="${showPlaceholder}" part="placeholder"></div>
 					<article
 						id="editor"
 						class="editor"
 						part="editor"
 						?contenteditable="${!this.readonly}"
 						?spellcheck="${this.spellcheck}"
-						@input="${() => this._onSelectionChanged()}"
-						@mouseup="${() => this._onSelectionChanged()}"
-						@mousedown="${() => this._onSelectionChanged()}"
-						@keydown="${() => this._onSelectionChanged()}"
+						@input="${(e: any) => this._onSelectionChanged(e.target)}"
+						@mouseup="${(e: any) => this._onSelectionChanged(e.target)}"
+						@mousedown="${(e: any) => this._onSelectionChanged(e.target)}"
+						@keydown="${(e: any) => this._onSelectionChanged(e.target)}"
 					>
 						${this.content}
 					</article>
@@ -279,6 +303,13 @@ export class PandaTextEditor extends LitElement {
 					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.REDO, "redo", false));
 				}
 
+				// misc
+				if (toolbarConfig.downloadEml) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.DOWNLOAD_EML, "download-eml-file", false));
+				}
+				if (toolbarConfig.downloadHtml) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.DOWNLOAD_HTML, "download-html-file", false));
+				}
 
 				toolbarHtml.push(html`
 					<div class="btn-group" part="btn-group">
@@ -337,6 +368,28 @@ export class PandaTextEditor extends LitElement {
 					<panda-icon icon="${icon}"></panda-icon>
 				</div>
 			`;
+		} else if (command === EDITOR_COMMAND.DOWNLOAD_EML) {
+			return html`
+				<div
+					class="btn"
+					part="btn"
+					@click="${() => this.downloadAsEml()}"
+					title="Download as EML"
+				>
+					<panda-icon icon="${icon}"></panda-icon>
+				</div>
+			`;
+		} else if (command === EDITOR_COMMAND.DOWNLOAD_HTML) {
+			return html`
+				<div
+					class="btn"
+					part="btn"
+					@click="${() => this.downloadAsHtml()}"
+					title="Download as HTML"
+				>
+					<panda-icon icon="${icon}"></panda-icon>
+				</div>
+			`;
 		} else {
 			return html`
 				<div
@@ -354,7 +407,6 @@ export class PandaTextEditor extends LitElement {
 		console.log("%c _onExecCommand", "font-size: 24px; color: green;", command, value);
 		document.execCommand(command, true, value);
 	}
-
 
 	private _getSelectionTags() {
 		let tags: string[] = [];
@@ -382,11 +434,49 @@ export class PandaTextEditor extends LitElement {
 				const content = this.selection?.toString() || "";
 				tags = (content.match(/<[^>]+>/g) || [])
 					.filter((tag) => !tag.startsWith("</"))
-					.map((tag) => tag.replace(/<|>/g, ""));
+					.map((tag) => tag.replace(/[\<\>]/g, ""));
 			}
 		}
 		console.log("%c _getSelectionTags", "font-size: 24px; color: green;", tags);
 		this._selectedTags = tags;
+	}
+
+	// ================================================================================================================
+	// ============================================================================================================ API
+	// ================================================================================================================
+
+	public downloadAsEml() {
+		const emailContent: string[] = [];
+
+		emailContent.push("To: ");
+		emailContent.push("From: ");
+		emailContent.push("Subject: Panda Text Editor - Content");
+		emailContent.push("X-Unsent: 1");
+		emailContent.push("Content-Type: text/html");
+		emailContent.push("");
+		emailContent.push(this.content.innerHTML);
+
+		const url = window.URL.createObjectURL(
+			new Blob([emailContent.join("\n")], { type: "text/plain" })
+		);
+		const downloadLinkEl = document.createElement("a");
+		downloadLinkEl.href = url;
+		downloadLinkEl.download = "email-draft.eml";
+		downloadLinkEl.click();
+	}
+
+	public downloadAsHtml() {
+		const url = window.URL.createObjectURL(
+			new Blob([this.content.innerHTML], { type: "text/html" })
+		);
+		const downloadLinkEl = document.createElement("a");
+		downloadLinkEl.href = url;
+		downloadLinkEl.download = "content.html";
+		downloadLinkEl.click();
+	}
+
+	public copy() {
+
 	}
 
 	// ================================================================================================================
@@ -396,8 +486,13 @@ export class PandaTextEditor extends LitElement {
 	/**
 	 * Update editor text selection
 	 */
-	private _onSelectionChanged() {
+	private _onSelectionChanged(editorEl: HTMLInputElement) {
 		console.log("%c content", "font-size: 24px; color: green;", this.content);
+		console.log("%c innerText '", "font-size: 24px; color: green;", editorEl.innerText, "'", editorEl.innerText.length);
+		console.log("%c innerHTML '", "font-size: 24px; color: green;", editorEl.innerHTML, "'");
+		console.log("%c textContent '", "font-size: 24px; color: green;", editorEl.textContent, "'");
+
+
 		const selection = (this.shadowRoot as any)?.getSelection
 			? (this.shadowRoot as any).getSelection()
 			: null;

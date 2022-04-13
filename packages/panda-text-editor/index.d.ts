@@ -39,6 +39,9 @@ export interface PandaTextEditorToolbarConfig {
 
 	undo?: boolean;
 	redo?: boolean;
+
+	downloadEml?: boolean;
+	downloadHtml?: boolean;
 }
 
 export const enum EDITOR_COMMAND {
@@ -65,4 +68,8 @@ export const enum EDITOR_COMMAND {
 
 	BLOCKQUOTE = "blockquote",
 	CODE = "pre",
+
+	// misc
+	DOWNLOAD_EML = "DOWNLOAD_EML",
+	DOWNLOAD_HTML = "DOWNLOAD_HTML",
 }

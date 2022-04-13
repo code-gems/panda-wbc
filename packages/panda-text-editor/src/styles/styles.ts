@@ -15,18 +15,21 @@ export const styles = css`
 		height: 100%;
 		gap: 5px;
 
-		border: 1px solid #000;
-		border-color: #f1f1f1;
+		border: 1px solid #f1f1f1;
 	}
 
 	.editor-cont {
-		height: var(--panda-text-editor-height, 10em);
+		position: relative;
+		display: block;
+		min-height: 5em;
+		height: var(--panda-text-editor-height, 100%);
 		overflow: auto;
 		border-radius: var(--panda-border-radius-m, 5px);
 		background-color: var(--panda-text-editor-bg-color, #ffffff);
 	}
 
 	.editor {
+		position: relative;
 		display: block;
 		width: 100%;
 		height: 100%;
@@ -35,6 +38,7 @@ export const styles = css`
 		color: var(--panda-txt-color, hsl(0deg 0% 29%));
 		outline: none;
 		box-sizing: border-box;
+		z-index: 1;
 	}
 
 	.toolbar {
@@ -94,4 +98,21 @@ export const styles = css`
 		--panda-spinner-color: var(--panda-input-txt-color-disabled, hsl(0deg 0% 70%));
 	}
 
+	#placeholder {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+		padding: 10px;
+		top: 0;
+		left: 0;
+		visibility: hidden;
+
+		color: var(--panda-input-placeholder-color, hsl(0deg 0% 70%));
+		user-select: none;
+		box-sizing: border-box; 
+		z-index: 0;
+	}
+
+	#placeholder.show { visibility: visible; }
 `;

@@ -72,6 +72,11 @@ class DemoPage extends LitElement {
 				{
 					undo: true,
 					redo: true
+				},
+
+				{
+					downloadEml: true,
+					downloadHtml: true
 				}
 			]
 		};
@@ -82,7 +87,7 @@ class DemoPage extends LitElement {
 			<panda-theme></panda-theme>
 			<p>Panda Text Editor DemoPage</p>
 
-
+<!--
 			<panda-text-editor
 				.readonly="${false}"
 				.busy="${false}"
@@ -102,7 +107,7 @@ class DemoPage extends LitElement {
 					</p>
 				</template>
 			</panda-text-editor>
-
+-->
 			<hr />
 			
 			<panda-text-editor
@@ -110,12 +115,30 @@ class DemoPage extends LitElement {
 				.busy="${false}"
 				.options="${this._editorOptions}"
 				.spellcheck="${false}"
+				@on-input="${(e: any) => this._onInput(e.detail)}"
 			>
+				<template placeholder>
+					<b>This is just a placeholder</b>
+					<p>
+						Enter your text here...
+					</p>
+				</template>
+				<template>
+					<h2>Welcome to Panda Text Editor</h2>
+					<p>
+						The best custom <strong>element</strong> based rich text editor!
+					</p>
+				</template>
 			</panda-text-editor>
 			
 		`;
 	}
 
+
+
+	private _onInput(e: any) {
+		console.log("%c _onInput", "font-size: 24px; color: green;", e);
+	}
 
 }
 window.customElements.define("demo-page", DemoPage);
