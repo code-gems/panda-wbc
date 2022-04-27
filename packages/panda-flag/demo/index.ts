@@ -42,6 +42,7 @@ class DemoPage extends LitElement {
 	`;
 
 	private _flagList: FlagList[] = [
+		{ countryName: "Armenia", countryCode: "am" },
 		{ countryName: "Austria", countryCode: "at" },
 		{ countryName: "Belgium", countryCode: "be" },
 		{ countryName: "Switzerland", countryCode: "ch" },

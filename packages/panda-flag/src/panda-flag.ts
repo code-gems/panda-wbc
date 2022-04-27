@@ -8,6 +8,7 @@ import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 // flags
+import { flagAm, flagAmSquare } from "./resources/am"; // Armenia
 import { flagAt, flagAtSquare } from "./resources/at"; // Austria
 import { flagBe, flagBeSquare } from "./resources/be"; // Belgium
 import { flagCh, flagChSquare } from "./resources/ch"; // Switzerland
@@ -67,6 +68,7 @@ export class PandaFlag extends LitElement {
 
 		// flag mapper
 		this.flagMapper = {
+			am: (square) => square ? flagAmSquare : flagAm,
 			at: (square) => square ? flagAtSquare : flagAt,
 			be: (square) => square ? flagBeSquare : flagBe,
 			ch: (square) => square ? flagChSquare : flagCh,
@@ -129,6 +131,7 @@ export class PandaFlag extends LitElement {
 	 */
 	private _getCountryCode(key: string): string {
 		const keyMap: { [countryKey: string]: string } = {
+			armenia: "am",
 			austria: "at",
 			belgium: "be",
 			switzerland: "ch",
