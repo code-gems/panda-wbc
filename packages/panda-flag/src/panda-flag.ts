@@ -22,6 +22,7 @@ import { flagHu, flagHuSquare } from "./resources/hu"; // Hungary
 import { flagId, flagIdSquare } from "./resources/id"; // Indonesia
 import { flagIe, flagIeSquare } from "./resources/ie"; // Ireland
 import { flagIt, flagItSquare } from "./resources/it"; // Italy
+import { flagJp, flagJpSquare } from "./resources/jp"; // Japan
 import { flagLu, flagLuSquare } from "./resources/lu"; // Luxembourg
 import { flagMc, flagMcSquare } from "./resources/mc"; // Monaco
 import { flagMo, flagMoSquare } from "./resources/mo"; // Macao
@@ -29,13 +30,15 @@ import { flagNl, flagNlSquare } from "./resources/nl"; // Netherlands
 import { flagNo, flagNoSquare } from "./resources/no"; // Norway
 import { flagPe, flagPeSquare } from "./resources/pe"; // Peru
 import { flagPl, flagPlSquare } from "./resources/pl"; // Poland
+import { flagPt, flagPtSquare } from "./resources/pt"; // Portugal
 import { flagQa, flagQaSquare } from "./resources/qa"; // Qatar
 import { flagRu, flagRuSquare } from "./resources/ru"; // Russia
 import { flagSe, flagSeSquare } from "./resources/se"; // Sweden
 import { flagSg, flagSgSquare } from "./resources/sg"; // Singapore
 import { flagTw, flagTwSquare } from "./resources/tw"; // Taiwan
 import { flagUa, flagUaSquare } from "./resources/ua"; // Ukraine
-import { flagJp, flagJpSquare } from "./resources/jp"; // Japan
+import { flagUs, flagUsSquare } from "./resources/us"; // Unites States
+import { flagVe, flagVeSquare } from "./resources/ve"; // Venezuela
 import { flagVn, flagVnSquare } from "./resources/vn"; // Vietnam
 
 @customElement("panda-flag")
@@ -86,6 +89,7 @@ export class PandaFlag extends LitElement {
 			nl: (square) => square ? flagNlSquare : flagNl,
 			pe: (square) => square ? flagPeSquare : flagPe,
 			pl: (square) => square ? flagPlSquare : flagPl,
+			pt: (square) => square ? flagPtSquare : flagPt,
 			qa: (square) => square ? flagQaSquare : flagQa,
 			ru: (square) => square ? flagRuSquare : flagRu,
 			se: (square) => square ? flagSeSquare : flagSe,
@@ -93,6 +97,8 @@ export class PandaFlag extends LitElement {
 			tw: (square) => square ? flagTwSquare : flagTw,
 			ua: (square) => square ? flagUaSquare : flagUa,
 			uk: (square) => square ? flagGbSquare : flagGb,
+			us: (square) => square ? flagUsSquare : flagUs,
+			ve: (square) => square ? flagVeSquare : flagVe,
 			vn: (square) => square ? flagVnSquare : flagVn,
 		};
 	}
@@ -106,11 +112,61 @@ export class PandaFlag extends LitElement {
 	}
 
 	private _renderFlag() {
-		if (this.flagMapper[this.flag?.toLocaleLowerCase()]) {
-			return this.flagMapper[this.flag?.toLocaleLowerCase()](this.square);
+		if (this.flagMapper[this._getCountryCode(this.flag?.toLocaleLowerCase())]) {
+			return this.flagMapper[this._getCountryCode(this.flag?.toLocaleLowerCase())](this.square);
 		} else {
 			return html`???`;
 		}
+	}
+
+	// ================================================================================================================
+	// ======================================================================================================== HELPERS
+	// ================================================================================================================
+
+	/**
+	 * Convert country key to country code
+	 * @param {String} key - country key eg. POLAND -> PL
+	 */
+	private _getCountryCode(key: string): string {
+		const keyMap: { [countryKey: string]: string } = {
+			austria: "at",
+			belgium: "be",
+			switzerland: "ch",
+			china: "cn",
+			germany: "de",
+			denmark: "dk",
+			finland: "fi",
+			france: "fr",
+			["great britain"]: "gb",
+			["united kingdom"]: "gb",
+			["hong kong"]: "hk",
+			hungary: "hu",
+			indonesia: "id",
+			ireland: "ie",
+			italy: "it",
+			japan: "jp",
+			luxembourg: "lu",
+			macao: "mo",
+			macau: "mo",
+			monaco: "mc",
+			norway: "no",
+			netherlands: "nl",
+			holland: "nl",
+			peru: "pe",
+			poland: "pl",
+			portugal: "pt",
+			qatar: "qa",
+			russia: "ru",
+			sweden: "se",
+			singapore: "sg",
+			taiwan: "tw",
+			ukraine: "ua",
+			["united states"]: "us",
+			usa: "us",
+			venezuela: "ve",
+			vietnam: "vn",
+		};
+		return keyMap[key] || key;
 	}
 }
 

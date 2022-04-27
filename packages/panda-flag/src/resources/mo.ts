@@ -1,3 +1,4 @@
+// Macau
 import { html } from "lit";
 
 export const flagMo = html`

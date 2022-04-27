@@ -64,12 +64,15 @@ class DemoPage extends LitElement {
 		{ countryName: "Norway", countryCode: "no" },
 		{ countryName: "Peru", countryCode: "pe" },
 		{ countryName: "Poland", countryCode: "pl" },
+		{ countryName: "Portugal", countryCode: "pt" },
 		{ countryName: "Qatar", countryCode: "qa" },
 		{ countryName: "Russia", countryCode: "ru" },
 		{ countryName: "Sweden", countryCode: "se" },
 		{ countryName: "Singapore", countryCode: "sg" },
 		{ countryName: "Taiwan", countryCode: "tw" },
 		{ countryName: "Ukraine", countryCode: "ua" },
+		{ countryName: "United States", countryCode: "us" },
+		{ countryName: "Venezuela", countryCode: "ve" },
 		{ countryName: "Vietnam", countryCode: "vn" },
 	];
 
@@ -88,7 +91,7 @@ class DemoPage extends LitElement {
 					<div class="cell">${countryName}</div>
 					<div class="cell">${countryCode}</div>
 					<div class="cell">
-						<panda-flag flag="${countryCode}"></panda-flag>
+						<panda-flag flag="${countryName}"></panda-flag>
 					</div>
 					<div class="cell">
 						<panda-flag flag="${countryCode}" square></panda-flag>
