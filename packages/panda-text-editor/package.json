@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Lit based web component - Rich Text Editor",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "dist/panda-text-editor.js",
+	"main": "lib/panda-text-editor.js",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
@@ -43,7 +43,7 @@
 	"files": [
 		"src/**/*",
 		"demo/**/*",
-		"dist/**/*",
+		"lib/**/*",
 		"index.d.ts"
 	]
 }
