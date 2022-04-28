@@ -27,6 +27,7 @@ import { flagJp, flagJpSquare } from "./resources/jp"; // Japan
 import { flagLu, flagLuSquare } from "./resources/lu"; // Luxembourg
 import { flagMc, flagMcSquare } from "./resources/mc"; // Monaco
 import { flagMo, flagMoSquare } from "./resources/mo"; // Macao
+import { flagNg, flagNgSquare } from "./resources/ng"; // Nigeria
 import { flagNl, flagNlSquare } from "./resources/nl"; // Netherlands
 import { flagNo, flagNoSquare } from "./resources/no"; // Norway
 import { flagPe, flagPeSquare } from "./resources/pe"; // Peru
@@ -88,6 +89,7 @@ export class PandaFlag extends LitElement {
 			mo: (square) => square ? flagMoSquare : flagMo,
 			mc: (square) => square ? flagMcSquare : flagMc,
 			no: (square) => square ? flagNoSquare : flagNo,
+			ng: (square) => square ? flagNgSquare : flagNg,
 			nl: (square) => square ? flagNlSquare : flagNl,
 			pe: (square) => square ? flagPeSquare : flagPe,
 			pl: (square) => square ? flagPlSquare : flagPl,
@@ -130,31 +132,78 @@ export class PandaFlag extends LitElement {
 	 * @param {String} key - country key eg. POLAND -> PL
 	 */
 	private _getCountryCode(key: string): string {
-		const keyMap: { [countryKey: string]: string } = {
+		const keyMap: { [countryKey: string | number]: string } = {
+			// Armenia
 			armenia: "am",
+
+			// Austria
 			austria: "at",
+
+			// Belgium
 			belgium: "be",
+
+			// Switzerland
 			switzerland: "ch",
+
+			// China
 			china: "cn",
+
+			// Germany
 			germany: "de",
+
+			// Denmark
 			denmark: "dk",
+
+			// Finland
 			finland: "fi",
+
+			// France
 			france: "fr",
+
+			// Great Britain
 			["great britain"]: "gb",
 			["united kingdom"]: "gb",
+
+			// Hong Kong
 			["hong kong"]: "hk",
+
+			// Hungary
 			hungary: "hu",
+
+			// Indonesia
 			indonesia: "id",
+
+			// Ireland
 			ireland: "ie",
+
+			// Italy
 			italy: "it",
+
+			// Japan
 			japan: "jp",
+
+			// Luxembourg
 			luxembourg: "lu",
+
+			// Macau
 			macao: "mo",
 			macau: "mo",
+
+			// Monaco
 			monaco: "mc",
-			norway: "no",
+
+			// Nigeria
+			566: "ng",
+			nga: "ng",
+			nigeria: "ng",
+
+			// Netherlands 
 			netherlands: "nl",
 			holland: "nl",
+
+			// Norway
+			norway: "no",
+
 			peru: "pe",
 			poland: "pl",
 			portugal: "pt",
