@@ -19,6 +19,7 @@ import { flagFi, flagFiSquare } from "./resources/fi"; // Finland
 import { flagFr, flagFrSquare } from "./resources/fr"; // France
 import { flagGb, flagGbSquare } from "./resources/gb"; // Great Britain
 import { flagHk, flagHkSquare } from "./resources/hk"; // Hong Kong
+import { flagHn, flagHnSquare } from "./resources/hn"; // Honduras
 import { flagHu, flagHuSquare } from "./resources/hu"; // Hungary
 import { flagId, flagIdSquare } from "./resources/id"; // Indonesia
 import { flagIe, flagIeSquare } from "./resources/ie"; // Ireland
@@ -80,6 +81,7 @@ export class PandaFlag extends LitElement {
 			fr: (square) => square ? flagFrSquare : flagFr,
 			gb: (square) => square ? flagGbSquare : flagGb,
 			hk: (square) => square ? flagHkSquare : flagHk,
+			hn: (square) => square ? flagHnSquare : flagHn,
 			hu: (square) => square ? flagHuSquare : flagHu,
 			id: (square) => square ? flagIdSquare : flagId,
 			ie: (square) => square ? flagIeSquare : flagIe,
@@ -132,8 +134,10 @@ export class PandaFlag extends LitElement {
 	 * @param {String} key - country key eg. POLAND -> PL
 	 */
 	private _getCountryCode(key: string): string {
-		const keyMap: { [countryKey: string | number]: string } = {
+		const keyMap: { [countryKey: string]: string } = {
 			// Armenia
+			"051": "am",
+			arm: "am",
 			armenia: "am",
 
 			// Austria
@@ -167,6 +171,11 @@ export class PandaFlag extends LitElement {
 			// Hong Kong
 			["hong kong"]: "hk",
 
+			// Honduras
+			"340": "hn",
+			hnd: "hn",
+			honduras: "hn",
+
 			// Hungary
 			hungary: "hu",
 
@@ -193,7 +202,7 @@ export class PandaFlag extends LitElement {
 			monaco: "mc",
 
 			// Nigeria
-			566: "ng",
+			"566": "ng",
 			nga: "ng",
 			nigeria: "ng",
 
@@ -218,7 +227,7 @@ export class PandaFlag extends LitElement {
 			venezuela: "ve",
 			vietnam: "vn",
 		};
-		return keyMap[key] || key;
+		return keyMap[String(key)] || key;
 	}
 }
 
