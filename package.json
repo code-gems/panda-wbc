@@ -12,6 +12,6 @@
 		"setup": "pnpm install"
 	},
 	"devDependencies": {
-		"pnpm": "^6.32.3"
+		"pnpm": "^6.32.7"
 	}
 }

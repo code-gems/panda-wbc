@@ -4,9 +4,9 @@ importers:
 
   .:
     specifiers:
-      pnpm: ^6.32.3
+      pnpm: ^6.32.7
     devDependencies:
-      pnpm: 6.32.3
+      pnpm: 6.32.7
 
   packages/panda-button:
     specifiers:
@@ -65,14 +65,17 @@ importers:
 
   packages/panda-design:
     specifiers:
-      '@panda-wbc/panda-button': workspace:^1.0.0
-      '@panda-wbc/panda-date-picker': workspace:^1.0.0
-      '@panda-wbc/panda-flag': workspace:^1.0.0
-      '@panda-wbc/panda-spinner': workspace:^1.0.0
-      '@panda-wbc/panda-theme': workspace:^1.0.0
+      '@panda-wbc/panda-button': ^1.0.0
+      '@panda-wbc/panda-date-picker': ^1.0.0
+      '@panda-wbc/panda-flag': ^1.0.0
+      '@panda-wbc/panda-icon': ^1.0.0
+      '@panda-wbc/panda-spinner': ^1.0.0
+      '@panda-wbc/panda-text-editor': ^1.0.0
+      '@panda-wbc/panda-theme': ^1.0.0
       copy-webpack-plugin: ^10.2.4
       html-webpack-plugin: ^5.5.0
       lit: ^2.0.2
+      redux: ^4.1.2
       rimraf: ^3.0.2
       ts-loader: ^9.2.6
       typescript: ^4.5.4
@@ -83,9 +86,12 @@ importers:
       '@panda-wbc/panda-button': link:../panda-button
       '@panda-wbc/panda-date-picker': link:../panda-date-picker
       '@panda-wbc/panda-flag': link:../panda-flag
+      '@panda-wbc/panda-icon': link:../panda-icon
       '@panda-wbc/panda-spinner': link:../panda-spinner
+      '@panda-wbc/panda-text-editor': link:../panda-text-editor
       '@panda-wbc/panda-theme': link:../panda-theme
       lit: 2.2.0
+      redux: 4.1.2
     devDependencies:
       copy-webpack-plugin: 10.2.4_webpack@5.70.0
       html-webpack-plugin: 5.5.0_webpack@5.70.0
@@ -134,6 +140,31 @@ importers:
       webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
       webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.70.0
 
+  packages/panda-select:
+    specifiers:
+      '@panda-wbc/panda-icon': ^1.0.0
+      '@panda-wbc/panda-spinner': ^1.0.0
+      '@panda-wbc/panda-theme': ^1.0.0
+      lit: ^2.0.2
+      rimraf: ^3.0.2
+      ts-loader: ^9.2.6
+      typescript: ^4.5.4
+      webpack: ^5.65.0
+      webpack-cli: ^4.9.1
+      webpack-dev-server: ^4.7.2
+    dependencies:
+      '@panda-wbc/panda-icon': link:../panda-icon
+      '@panda-wbc/panda-spinner': link:../panda-spinner
+      '@panda-wbc/panda-theme': link:../panda-theme
+      lit: 2.2.0
+    devDependencies:
+      rimraf: 3.0.2
+      ts-loader: 9.2.8_typescript@4.6.2+webpack@5.70.0
+      typescript: 4.6.2
+      webpack: 5.70.0_webpack-cli@4.9.2
+      webpack-cli: 4.9.2_6d3cb84eb7e855ae6fc0a3ee585c0c26
+      webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.70.0
+
   packages/panda-spinner:
     specifiers:
       lit: ^2.0.2
@@ -157,6 +188,7 @@ importers:
     specifiers:
       '@panda-wbc/panda-icon': ^1.0.0
       '@panda-wbc/panda-spinner': ^1.0.0
+      '@panda-wbc/panda-theme': ^1.0.0
       lit: ^2.0.2
       rimraf: ^3.0.2
       ts-loader: ^9.2.6
@@ -167,6 +199,7 @@ importers:
     dependencies:
       '@panda-wbc/panda-icon': link:../panda-icon
       '@panda-wbc/panda-spinner': link:../panda-spinner
+      '@panda-wbc/panda-theme': link:../panda-theme
       lit: 2.2.0
     devDependencies:
       rimraf: 3.0.2
@@ -217,6 +250,13 @@ importers:
       webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.70.0
 
 packages:
+
+  /@babel/runtime/7.17.9:
+    resolution: {integrity: sha512-lSiBBvodq29uShpWGNbgFdKYNiFDo5/HIYsaCEY9ff4sb10x9jizo2+pRrSyF4jKZCXqgzuqBOQKbUm90gQwJg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
 
   /@discoveryjs/json-ext/0.5.7:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
@@ -2063,8 +2103,8 @@ packages:
       find-up: 4.1.0
     dev: true
 
-  /pnpm/6.32.3:
-    resolution: {integrity: sha512-lMQgROSwiUA+kt+suAPinjNwqevS1Iz0rppWNZ3jHhzeP07RFRQ+Ksai2OlAnM+YjlbHT9niQ4ICBVSqcdQ04w==}
+  /pnpm/6.32.7:
+    resolution: {integrity: sha512-2LtKMtQ7ffQEIW0lQn6z1WBnz2SPB416DDlyEf3WzOlXCO0BXjLr6kX2vDOTFzKyHWbhjcd45qw3ty3G92fb2Q==}
     engines: {node: '>=12.17'}
     hasBin: true
     dev: true
@@ -2166,6 +2206,16 @@ packages:
     dependencies:
       resolve: 1.22.0
     dev: true
+
+  /redux/4.1.2:
+    resolution: {integrity: sha512-SH8PglcebESbd/shgf6mii6EIoRM0zrQyjcuQ+ojmfxjTtE0z9Y8pa62iA/OJ58qjP6j27uyW4kUF4jl/jd6sw==}
+    dependencies:
+      '@babel/runtime': 7.17.9
+    dev: false
+
+  /regenerator-runtime/0.13.9:
+    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+    dev: false
 
   /regexp.prototype.flags/1.4.1:
     resolution: {integrity: sha512-pMR7hBVUUGI7PMA37m2ofIdQCsomVnas+Jn5UPGAHQ+/LlwKm/aTLJHdasmHRzlfeZwHiAOaRSo2rbBDm3nNUQ==}
