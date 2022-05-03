@@ -4,7 +4,7 @@
 import { styles } from "./styles/styles";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, TemplateResult, svg } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 // flags
@@ -18,6 +18,7 @@ import { flagDk, flagDkSquare } from "./resources/dk"; // Denmark
 import { flagFi, flagFiSquare } from "./resources/fi"; // Finland
 import { flagFr, flagFrSquare } from "./resources/fr"; // France
 import { flagGb, flagGbSquare } from "./resources/gb"; // Great Britain
+import { flagGr, flagGrSquare } from "./resources/gr"; // Greece
 import { flagHk, flagHkSquare } from "./resources/hk"; // Hong Kong
 import { flagHn, flagHnSquare } from "./resources/hn"; // Honduras
 import { flagHu, flagHuSquare } from "./resources/hu"; // Hungary
@@ -38,6 +39,7 @@ import { flagQa, flagQaSquare } from "./resources/qa"; // Qatar
 import { flagRu, flagRuSquare } from "./resources/ru"; // Russia
 import { flagSe, flagSeSquare } from "./resources/se"; // Sweden
 import { flagSg, flagSgSquare } from "./resources/sg"; // Singapore
+import { flagSv, flagSvSquare } from "./resources/sv"; // El Salvador
 import { flagTw, flagTwSquare } from "./resources/tw"; // Taiwan
 import { flagUa, flagUaSquare } from "./resources/ua"; // Ukraine
 import { flagUs, flagUsSquare } from "./resources/us"; // Unites States
@@ -80,6 +82,7 @@ export class PandaFlag extends LitElement {
 			fi: (square) => square ? flagFiSquare : flagFi,
 			fr: (square) => square ? flagFrSquare : flagFr,
 			gb: (square) => square ? flagGbSquare : flagGb,
+			gr: (square) => square ? flagGrSquare : flagGr,
 			hk: (square) => square ? flagHkSquare : flagHk,
 			hn: (square) => square ? flagHnSquare : flagHn,
 			hu: (square) => square ? flagHuSquare : flagHu,
@@ -100,6 +103,7 @@ export class PandaFlag extends LitElement {
 			ru: (square) => square ? flagRuSquare : flagRu,
 			se: (square) => square ? flagSeSquare : flagSe,
 			sg: (square) => square ? flagSgSquare : flagSg,
+			sv: (square) => square ? flagSvSquare : flagSv,
 			tw: (square) => square ? flagTwSquare : flagTw,
 			ua: (square) => square ? flagUaSquare : flagUa,
 			uk: (square) => square ? flagGbSquare : flagGb,
@@ -130,7 +134,7 @@ export class PandaFlag extends LitElement {
 	// ================================================================================================================
 
 	/**
-	 * Convert country key to country code
+	 * Convert country key to country code. Compliant with the ISO 3166 international standard.
 	 * @param {String} key - country key eg. POLAND -> PL
 	 */
 	private _getCountryCode(key: string): string {
@@ -141,32 +145,53 @@ export class PandaFlag extends LitElement {
 			armenia: "am",
 
 			// Austria
+			"040": "at",
+			aut: "at",
 			austria: "at",
 
 			// Belgium
+			"056": "be",
+			bel: "be",
 			belgium: "be",
 
 			// Switzerland
+			"756": "ch",
+			che: "ch",
 			switzerland: "ch",
 
 			// China
+			"156": "cn",
+			chn: "cn",
 			china: "cn",
 
 			// Germany
+			"276": "de",
+			deu: "de",
 			germany: "de",
 
 			// Denmark
+			"208": "dk",
+			dnk: "dk",
 			denmark: "dk",
 
 			// Finland
+			"246": "fi",
+			fin: "fi",
 			finland: "fi",
 
 			// France
+			"250": "fr",
+			fra: "fr",
 			france: "fr",
 
 			// Great Britain
 			["great britain"]: "gb",
 			["united kingdom"]: "gb",
+
+			// Greece
+			"300": "gr",
+			grc: "gr",
+			greece: "gr",
 
 			// Hong Kong
 			["hong kong"]: "hk",
@@ -207,24 +232,81 @@ export class PandaFlag extends LitElement {
 			nigeria: "ng",
 
 			// Netherlands 
+			"528": "nl",
+			nld: "nl",
 			netherlands: "nl",
 			holland: "nl",
 
 			// Norway
+			"578": "no",
+			nor: "no",
 			norway: "no",
 
+			// Peru
+			"604": "pe",
+			per: "pe",
 			peru: "pe",
+
+			// Poland
+			"616": "pl",
+			pol: "pl",
 			poland: "pl",
+
+			// Portugal
+			"620": "pt",
+			prt: "pt",
 			portugal: "pt",
+
+			// Qatar
+			"634": "qa",
+			qat: "qa",
 			qatar: "qa",
+
+			// Russia
+			"643": "ru",
+			rus: "ru",
 			russia: "ru",
+
+			// Sweden
+			"752": "se",
+			swe: "se",
 			sweden: "se",
+
+			// Singapore
+			"702": "sg",
+			sgp: "sg",
 			singapore: "sg",
+
+			// El Salvador
+			"222": "sv",
+			slv: "sv",
+			"el salvador": "sv",
+
+			// Taiwan
+			"158": "tw",
+			twn: "tw",
 			taiwan: "tw",
+
+			// Ukraine
+			"804": "ua",
+			ukr: "ua",
 			ukraine: "ua",
-			["united states"]: "us",
+
+			// United States
+			"840": "us",
 			usa: "us",
+			["united states"]: "us",
+			["united states of america"]: "us",
+
+			// Venezuela
+			"862": "ve",
+			ven: "ve",
 			venezuela: "ve",
+
+			// Vietnam
+			"704": "vn",
+			vnm: "vn",
+			"viet nam": "vn",
 			vietnam: "vn",
 		};
 		return keyMap[String(key)] || key;
