@@ -66,6 +66,7 @@ class DemoPage extends LitElement {
 		{ countryName: "Nigeria", countryCode: "ng" },
 		{ countryName: "Netherlands", countryCode: "nl" },
 		{ countryName: "Norway", countryCode: "no" },
+		{ countryName: "Panama", countryCode: "pa" },
 		{ countryName: "Peru", countryCode: "pe" },
 		{ countryName: "Poland", countryCode: "pl" },
 		{ countryName: "Portugal", countryCode: "pt" },

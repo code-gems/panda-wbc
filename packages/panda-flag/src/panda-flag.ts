@@ -32,6 +32,7 @@ import { flagMo, flagMoSquare } from "./resources/mo"; // Macao
 import { flagNg, flagNgSquare } from "./resources/ng"; // Nigeria
 import { flagNl, flagNlSquare } from "./resources/nl"; // Netherlands
 import { flagNo, flagNoSquare } from "./resources/no"; // Norway
+import { flagPa, flagPaSquare } from "./resources/pa"; // Panama
 import { flagPe, flagPeSquare } from "./resources/pe"; // Peru
 import { flagPl, flagPlSquare } from "./resources/pl"; // Poland
 import { flagPt, flagPtSquare } from "./resources/pt"; // Portugal
@@ -96,6 +97,7 @@ export class PandaFlag extends LitElement {
 			no: (square) => square ? flagNoSquare : flagNo,
 			ng: (square) => square ? flagNgSquare : flagNg,
 			nl: (square) => square ? flagNlSquare : flagNl,
+			pa: (square) => square ? flagPaSquare : flagPa,
 			pe: (square) => square ? flagPeSquare : flagPe,
 			pl: (square) => square ? flagPlSquare : flagPl,
 			pt: (square) => square ? flagPtSquare : flagPt,
@@ -125,7 +127,7 @@ export class PandaFlag extends LitElement {
 		if (this.flagMapper[this._getCountryCode(this.flag?.toLocaleLowerCase())]) {
 			return this.flagMapper[this._getCountryCode(this.flag?.toLocaleLowerCase())](this.square);
 		} else {
-			return html`???`;
+			return html`?`;
 		}
 	}
 
@@ -241,6 +243,11 @@ export class PandaFlag extends LitElement {
 			"578": "no",
 			nor: "no",
 			norway: "no",
+
+			// Panama
+			"591": "pa",
+			pan: "pa",
+			panama: "pa",
 
 			// Peru
 			"604": "pe",
