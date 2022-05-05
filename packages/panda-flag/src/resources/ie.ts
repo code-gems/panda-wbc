@@ -3,10 +3,7 @@ import { html } from "lit";
 
 export const flagIe = html`
 	<svg
-		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		x="0px"
-		y="0px"
 		viewBox="0 0 256 192"
 	>
 		<rect fill="#15965f" width="85" height="192" />
@@ -17,10 +14,7 @@ export const flagIe = html`
 
 export const flagIeSquare = html`
 	<svg
-		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		x="0px"
-		y="0px"
 		viewBox="0 0 256 256"
 	>
 		<rect fill="#15965f" width="85" height="256" />

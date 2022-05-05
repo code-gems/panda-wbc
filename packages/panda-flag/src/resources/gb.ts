@@ -3,10 +3,7 @@ import { html } from "lit";
 // United Kingdom / Great Britain
 export const flagGb = html`
 	<svg
-		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		x="0px"
-		y="0px"
 		viewBox="0 0 256 192"
 	>
 	<rect y="0.05" fill="#012169" width="256" height="191.9"/>
@@ -31,10 +28,7 @@ export const flagGb = html`
 
 export const flagGbSquare = html`
 	<svg
-		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		x="0px"
-		y="0px"
 		viewBox="0 0 256 256"
 	>
 		<polygon fill="#0C2E60" points="159.53,256 256,256 256,252.11 159.53,186.05 159.53,160.64 163.79,160.64 184.21,160.64 202.14,160.64 256,197.52 256,160.64 159.53,160.64"/>
