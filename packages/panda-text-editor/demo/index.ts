@@ -21,6 +21,7 @@ class DemoPage extends LitElement {
 	}
 
 	_editorOptions: PandaTextEditorOptions;
+	_customStyle: string;
 
 	constructor() {
 		super();
@@ -41,6 +42,7 @@ class DemoPage extends LitElement {
 					italic: true,
 					underline: true,
 					strikethrough: true,
+					removeFormat: true, // remove format
 				},
 				// alignment
 				{
@@ -56,30 +58,66 @@ class DemoPage extends LitElement {
 				},
 				// indentation
 				{
-					indentIncrease: true,
-					indentDecrease: true
+					indentDecrease: true,
+					indentIncrease: true
 				},
 
 				{
 					blockquote: true,
 					code: true
 				},
-				// remove format
 				{
-					removeFormat: true,
-				},
-
-				{
+					copy: true,
+					paste: true,
+					cut: true,
 					undo: true,
 					redo: true
 				},
 
 				{
-					downloadEml: true,
+					downloadEml: {
+						subject: "Love letter",
+						fileName: "draft-email"
+					},
 					downloadHtml: true
+				},
+				{
+					customTool: {
+						toolRenderer: (selection) => {
+							return html`
+								<div class="custom-tool">
+									<panda-icon icon="heart-outline"></panda-icon>
+								</div>
+							`;
+						}
+					}
 				}
 			]
 		};
+
+		this._customStyle = `
+			.custom-tool {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-width: var(--panda-button-height-m, 40px);
+				height: var(--panda-button-height-m, 40px);
+		
+				transition: all 200ms ease-in-out;
+				user-select: none;
+				cursor: pointer;
+		
+				border-radius: 5px;
+			}
+			.custom-tool:hover {
+				background-color: var(--panda-shadow-color-10opc, hsl(0deg 0% 0% / 10%));
+			}
+			.custom-tool.active {
+				--panda-icon-fill-color: var(--panda-primary-color);
+				background-color: var(--panda-shadow-color-10opc, hsl(0deg 0% 0% / 10%));
+			}
+		
+		`;
 	}
 
 	protected render() {
@@ -115,6 +153,7 @@ class DemoPage extends LitElement {
 				.busy="${false}"
 				.options="${this._editorOptions}"
 				.spellcheck="${false}"
+				.customStyle="${this._customStyle}"
 				@on-input="${(e: any) => this._onInput(e.detail)}"
 			>
 				<template placeholder>

@@ -1,5 +1,5 @@
 // types
-import { PandaTextEditorOptions, EDITOR_COMMAND } from "../index";
+import { PandaTextEditorOptions, EmlFileConfig, EDITOR_COMMAND } from "../index";
 
 // styles
 import { styles } from "./styles/styles";
@@ -12,7 +12,7 @@ import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-spinner";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, TemplateResult, PropertyValueMap } from "lit";
 import { property, customElement, query } from "lit/decorators.js";
 
 @customElement("panda-text-editor")
@@ -24,6 +24,9 @@ export class PandaTextEditor extends LitElement {
 			scroll
 		];
 	}
+
+	@property({ type: String, attribute: false })
+	content!: string;
 
 	@property({ type: Boolean, attribute: true })
 	readonly!: boolean;
@@ -37,10 +40,13 @@ export class PandaTextEditor extends LitElement {
 	@property({ type: Object })
 	options!: PandaTextEditorOptions;
 
+	@property({ type: String, attribute: false })
+	customStyle!: string;
+
 	// view props
 
 	@property({ type: Element })
-	content!: Element;
+	private _content!: Element;
 
 	@query("#editor")
 	private _editorEl!: HTMLInputElement;
@@ -60,7 +66,7 @@ export class PandaTextEditor extends LitElement {
 
 	constructor() {
 		super();
-		this.content = document.createElement("p");
+		this._content = document.createElement("p");
 		this._selectedTags = [];
 
 		// set default editor options
@@ -101,30 +107,45 @@ export class PandaTextEditor extends LitElement {
 	protected firstUpdated() {
 		// look for a template to preset editor content
 		if (this.children.length > 0) {
-
-			console.log("%c children", "font-size: 24px; color: green;", this.children);
-
 			Array.from(this.children).forEach((child) => {
 				if (child.tagName === "TEMPLATE") {
-					console.log("%c child", "font-size: 24px; color: green;", child);
-					console.log("%c attribute", "font-size: 24px; color: green;", child.getAttribute("placeholder") !== null);
 					if (child.getAttribute("placeholder") !== null) {
-						console.log("%c placeholder", "font-size: 24px; color: green;", child);
 						this._placeholderEl.innerHTML = child.innerHTML;
 					} else {
-						console.log("%c template", "font-size: 24px; color: green;", child);
 						const templateContent = child.innerHTML.trim();
 						if (templateContent.length > 0) {
-							this.content.innerHTML = templateContent;
+							this._content.innerHTML = templateContent;
 						}
 					}
 				}
 			});
-
+		}
+		// check if content is passed down to component via property
+		if (this.content) {
+			this._content.innerHTML = this.content;
 		}
 		// change editor default behavior
 		document.execCommand("defaultParagraphSeparator", false, "p");
 		this.requestUpdate();
+
+		setInterval(() => {
+			console.log("%c ->", "font-size: 16px; color: orange;", this.selection?.getRangeAt(0));
+
+			// if (this?.selection?.type === "Range") {
+			// 	let parentNode = this.selection.anchorNode;
+			// 	if (parentNode) {
+			// 		console.log("%c parentNode", "font-size: 16px; color: orange;", parentNode);
+			// 	}
+			// }
+
+		}, 1000);
+	}
+
+	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+		// check if custom style is defined
+		if (_changedProperties.has("customStyle") && this.customStyle) {
+			this._appendCustomStyle();
+		}
 	}
 
 	// ================================================================================================================
@@ -168,7 +189,7 @@ export class PandaTextEditor extends LitElement {
 						@mousedown="${(e: any) => this._onSelectionChanged(e.target)}"
 						@keydown="${(e: any) => this._onSelectionChanged(e.target)}"
 					>
-						${this.content}
+						${this._content}
 					</article>
 				</div>
 				${spinnerHtml}
@@ -252,6 +273,15 @@ export class PandaTextEditor extends LitElement {
 						)
 					);
 				}
+				if (toolbarConfig.removeFormat) {
+					toolsHtml.push(
+						this._getToolTemplate(
+							EDITOR_COMMAND.FORMAT_REMOVE,
+							"format-clear",
+							false
+						)
+					);
+				}
 
 				// alignment
 				if (toolbarConfig.alignLeft) {
@@ -268,7 +298,7 @@ export class PandaTextEditor extends LitElement {
 				}
 
 				// list
-				if (toolbarConfig.indentDecrease) {
+				if (toolbarConfig.numberedList) {
 					toolsHtml.push(
 						this._getToolTemplate(
 							EDITOR_COMMAND.LIST_NUMBERED,
@@ -277,7 +307,7 @@ export class PandaTextEditor extends LitElement {
 						)
 					);
 				}
-				if (toolbarConfig.indentIncrease) {
+				if (toolbarConfig.bulletedList) {
 					toolsHtml.push(
 						this._getToolTemplate(
 							EDITOR_COMMAND.LIST_BULLETED,
@@ -303,12 +333,33 @@ export class PandaTextEditor extends LitElement {
 					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.REDO, "redo", false));
 				}
 
+				// clipboard
+				if (toolbarConfig.copy) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.COPY, "copy", false));
+				}
+				if (toolbarConfig.paste) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.PASTE, "paste", false));
+				}
+				if (toolbarConfig.cut) {
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.CUT, "cut", false));
+				}
+
 				// misc
 				if (toolbarConfig.downloadEml) {
-					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.DOWNLOAD_EML, "download-eml-file", false));
+					// check if file config is provided
+					const emlFileConfig: EmlFileConfig = typeof toolbarConfig.downloadEml !== "boolean"
+						? toolbarConfig.downloadEml
+						: {};
+
+					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.DOWNLOAD_EML, "download-eml-file", false, emlFileConfig));
 				}
 				if (toolbarConfig.downloadHtml) {
 					toolsHtml.push(this._getToolTemplate(EDITOR_COMMAND.DOWNLOAD_HTML, "download-html-file", false));
+				}
+
+				// custom tool
+				if (toolbarConfig.customTool) {
+					toolsHtml.push(toolbarConfig.customTool?.toolRenderer(this.selection))
 				}
 
 				toolbarHtml.push(html`
@@ -334,78 +385,106 @@ export class PandaTextEditor extends LitElement {
 	// ======================================================================================================== HELPERS
 	// ================================================================================================================
 
-	private _getToolTemplate(command: EDITOR_COMMAND, icon: string, active: boolean, values?: string[]): TemplateResult {
-		if (command === EDITOR_COMMAND.FORMAT_BLOCK) {
-			const optionsHtml: TemplateResult[] = [];
-			if (values?.length) {
+	private _getToolTemplate(command: EDITOR_COMMAND, icon: string, active: boolean, options?: any | string[]): TemplateResult {
+		switch (command) {
+			case EDITOR_COMMAND.FORMAT_BLOCK:
+				const optionsHtml: TemplateResult[] = [];
+				if (options?.length) {
 
-				values.forEach((option) => {
-					optionsHtml.push(html`
-						<option value="${option}">${option}</option>
-					`);
-				});
-			}
+					options.forEach((option: string) => {
+						optionsHtml.push(html`
+							<option value="${option}">${option}</option>
+						`);
+					});
+				}
 
-			return html`
-				<div
-					class="toolbar-dropdown"
-					part="toolbar-dropdown"
-				>
-					<select
-						@change="${(e: any) => this._onFormatBlock(e.target.value)}"
+				return html`
+					<div
+						class="toolbar-dropdown"
+						part="toolbar-dropdown"
 					>
-						${optionsHtml}
-					</select>
-				</div>
-			`;
-		} else if (command === EDITOR_COMMAND.BLOCKQUOTE || command === EDITOR_COMMAND.CODE) {
-			return html`
-				<div
-					class="btn ${active ? "active" : ""}"
-					part="btn"
-					@click="${() => this._execCommand("formatBlock", command)}"
-				>
-					<panda-icon icon="${icon}"></panda-icon>
-				</div>
-			`;
-		} else if (command === EDITOR_COMMAND.DOWNLOAD_EML) {
-			return html`
-				<div
-					class="btn"
-					part="btn"
-					@click="${() => this.downloadAsEml()}"
-					title="Download as EML"
-				>
-					<panda-icon icon="${icon}"></panda-icon>
-				</div>
-			`;
-		} else if (command === EDITOR_COMMAND.DOWNLOAD_HTML) {
-			return html`
-				<div
-					class="btn"
-					part="btn"
-					@click="${() => this.downloadAsHtml()}"
-					title="Download as HTML"
-				>
-					<panda-icon icon="${icon}"></panda-icon>
-				</div>
-			`;
-		} else {
-			return html`
-				<div
-					class="btn ${active ? "active" : ""}"
-					part="btn"
-					@click="${() => this._execCommand(command)}"
-				>
-					<panda-icon icon="${icon}"></panda-icon>
-				</div>
-			`;
+						<select
+							@change="${(e: any) => this._onFormatBlock(e.target.value)}"
+						>
+							${optionsHtml}
+						</select>
+					</div>
+				`;
+			case EDITOR_COMMAND.BLOCKQUOTE:
+			case EDITOR_COMMAND.CODE:
+				return html`
+					<div
+						class="btn ${active ? "active" : ""}"
+						part="btn"
+						@click="${() => this._execCommand("formatBlock", command)}"
+					>
+						<panda-icon icon="${icon}"></panda-icon>
+					</div>
+				`;
+			case EDITOR_COMMAND.DOWNLOAD_EML:
+				return html`
+					<div
+						class="btn"
+						part="btn"
+						@click="${() => this.downloadAsEml(options)}"
+						title="Download as EML"
+					>
+						<panda-icon icon="${icon}"></panda-icon>
+					</div>
+				`;
+			case EDITOR_COMMAND.DOWNLOAD_HTML:
+				return html`
+					<div
+						class="btn"
+						part="btn"
+						@click="${() => this.downloadAsHtml()}"
+						title="Download as HTML"
+					>
+						<panda-icon icon="${icon}"></panda-icon>
+					</div>
+				`;
+			case EDITOR_COMMAND.PASTE:
+				return html`
+					<div
+						class="btn"
+						part="btn"
+						@click="${() => this._paste()}"
+					>
+						<panda-icon icon="paste"></panda-icon>
+					</div>
+				`;
+			default:
+				return html`
+					<div
+						class="btn ${active ? "active" : ""}"
+						part="btn"
+						@click="${() => this._execCommand(command)}"
+					>
+						<panda-icon icon="${icon}"></panda-icon>
+					</div>
+				`;
 		}
 	}
 
 	private _execCommand(command: string, value?: string) {
 		console.log("%c _onExecCommand", "font-size: 24px; color: green;", command, value);
 		document.execCommand(command, true, value);
+	}
+
+	private _paste() {
+		navigator.clipboard.readText()
+			.then(clipText => {
+				// const el = document.activeElement;
+				// if (el?.nodeName === 'INPUT') {
+				const newCursorPos: number = (this._editorEl.selectionStart || 0) + clipText.length;
+				this._editorEl.innerHTML = `
+						${this._editorEl.innerHTML.substring(0, this._editorEl.selectionStart || 0)}
+						${clipText}
+						${this._editorEl.innerHTML.substring(this._editorEl.selectionEnd || 0)}
+					`;
+				this._editorEl.setSelectionRange(newCursorPos, newCursorPos);
+				// }
+			});
 	}
 
 	private _getSelectionTags() {
@@ -441,33 +520,47 @@ export class PandaTextEditor extends LitElement {
 		this._selectedTags = tags;
 	}
 
+	private _appendCustomStyle() {
+		const customStyle = document.createElement("style");
+		customStyle.innerHTML = this.customStyle;
+		customStyle.setAttribute("scope", "custom-style");
+		this.shadowRoot?.appendChild(customStyle);
+	}
+
 	// ================================================================================================================
 	// ============================================================================================================ API
 	// ================================================================================================================
 
-	public downloadAsEml() {
+	public downloadAsEml(options: EmlFileConfig) {
+		const emlFileConfig: EmlFileConfig = {
+			sendFrom: "",
+			sendTo: "",
+			subject: "",
+			fileName: "email-draft",
+			...options
+		};
 		const emailContent: string[] = [];
 
-		emailContent.push("To: ");
-		emailContent.push("From: ");
-		emailContent.push("Subject: Panda Text Editor - Content");
+		emailContent.push("To: " + emlFileConfig.sendTo);
+		emailContent.push("From: " + emlFileConfig.sendFrom);
+		emailContent.push("Subject: " + emlFileConfig.subject);
 		emailContent.push("X-Unsent: 1");
 		emailContent.push("Content-Type: text/html");
 		emailContent.push("");
-		emailContent.push(this.content.innerHTML);
+		emailContent.push(this._content.innerHTML);
 
 		const url = window.URL.createObjectURL(
 			new Blob([emailContent.join("\n")], { type: "text/plain" })
 		);
 		const downloadLinkEl = document.createElement("a");
 		downloadLinkEl.href = url;
-		downloadLinkEl.download = "email-draft.eml";
+		downloadLinkEl.download = `${emlFileConfig.fileName}.eml`;
 		downloadLinkEl.click();
 	}
 
 	public downloadAsHtml() {
 		const url = window.URL.createObjectURL(
-			new Blob([this.content.innerHTML], { type: "text/html" })
+			new Blob([this._content.innerHTML], { type: "text/html" })
 		);
 		const downloadLinkEl = document.createElement("a");
 		downloadLinkEl.href = url;
@@ -476,8 +569,10 @@ export class PandaTextEditor extends LitElement {
 	}
 
 	public copy() {
-
+		this._execCommand("copy");
 	}
+
+
 
 	// ================================================================================================================
 	// ========================================================================================================= EVENTS
@@ -487,7 +582,7 @@ export class PandaTextEditor extends LitElement {
 	 * Update editor text selection
 	 */
 	private _onSelectionChanged(editorEl: HTMLInputElement) {
-		console.log("%c content", "font-size: 24px; color: green;", this.content);
+		console.log("%c content", "font-size: 24px; color: green;", this._content);
 		console.log("%c innerText '", "font-size: 24px; color: green;", editorEl.innerText, "'", editorEl.innerText.length);
 		console.log("%c innerHTML '", "font-size: 24px; color: green;", editorEl.innerHTML, "'");
 		console.log("%c textContent '", "font-size: 24px; color: green;", editorEl.textContent, "'");

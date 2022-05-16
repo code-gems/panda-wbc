@@ -51,12 +51,25 @@ export const styles = css`
 	}
 
 	.toolbar .btn-group {
+		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
 		gap: 2px;
 		flex-shrink: 0;
 	}
 	
+	.toolbar .btn-group:before {
+		position: absolute;
+		display: block;
+		height: 80%;
+		width: 1px;
+		content: " ";
+		top: 50%;
+		right: -5px;
+		transform: translateY(-50%);
+		border-right: 1px dashed var(--panda-shadow-color-10opc);
+	}
+
 	.toolbar .btn {
 		display: flex;
 		justify-content: center;

@@ -1,7 +1,16 @@
+import { TemplateResult } from "lit";
+
 export interface PandaTextEditorOptions {
 	toolbarPosition?: "top" | "bottom";
 	hideToolbar?: boolean;
 	toolbar?: PandaTextEditorToolbarConfig[];
+}
+
+export interface EmlFileConfig {
+	sendFrom?: string;
+	sendTo?: string;
+	subject?: string;
+	fileName?: string;
 }
 
 export interface PandaTextEditorToolbarConfig {
@@ -37,11 +46,18 @@ export interface PandaTextEditorToolbarConfig {
 	code?: boolean;
 	removeFormat?: boolean;
 
+	copy?: boolean;
+	paste?: boolean;
+	cut?: boolean;
 	undo?: boolean;
 	redo?: boolean;
 
-	downloadEml?: boolean;
+	downloadEml?: boolean | EmlFileConfig;
 	downloadHtml?: boolean;
+
+	customTool?: {
+		toolRenderer: (selection: Selection | null) => TemplateResult | any;
+	}
 }
 
 export const enum EDITOR_COMMAND {
@@ -51,6 +67,7 @@ export const enum EDITOR_COMMAND {
 	FORMAT_ITALIC = "italic",
 	FORMAT_UNDERLINE = "underline",
 	FORMAT_STRIKETHROUGH = "strikethrough",
+	FORMAT_REMOVE = "removeFormat",
 
 	ALIGN_LEFT = "justifyLeft",
 	ALIGN_CENTER = "justifyCenter",
@@ -63,6 +80,9 @@ export const enum EDITOR_COMMAND {
 	INDENT_INCREASE = "indent",
 	INDENT_DECREASE = "outdent",
 
+	COPY = "copy",
+	PASTE = "paste",
+	CUT = "cut",
 	UNDO = "undo",
 	REDO = "redo",
 
@@ -72,4 +92,5 @@ export const enum EDITOR_COMMAND {
 	// misc
 	DOWNLOAD_EML = "DOWNLOAD_EML",
 	DOWNLOAD_HTML = "DOWNLOAD_HTML",
+	CUSTOM_TOOL = "CUSTOM_TOOL",
 }
