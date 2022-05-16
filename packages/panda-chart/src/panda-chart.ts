@@ -18,6 +18,9 @@ export class PandaChart extends LitElement {
 	@property({ type: Array })
 	chartData!: PandaChartData;
 
+	@property({ type: Boolean })
+	verbose!: boolean;
+
 	// view props
 	private _minAxisY!: number;
 	private _maxAxisY!: number;
@@ -25,6 +28,11 @@ export class PandaChart extends LitElement {
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
+
+	constructor() {
+		super();
+		this.verbose = false;
+	}
 
 	updated(changedProps: PropertyValues) {
 		if (changedProps.has("chartData") && this.chartData) {

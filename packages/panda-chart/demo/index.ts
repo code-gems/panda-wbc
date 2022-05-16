@@ -1,12 +1,7 @@
 // types
 import { PandaChartData } from "../index";
 
-interface FlagList {
-	countryName: string;
-	countryCode: string;
-}
-
-import { LitElement, html, TemplateResult, css } from "lit";
+import { LitElement, html, css } from "lit";
 import "../src/panda-chart";
 
 class DemoPage extends LitElement {
@@ -26,7 +21,7 @@ class DemoPage extends LitElement {
 				label: "Income"
 			}
 		],
-		labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec'"]
+		labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 	}
 
 	protected render() {
