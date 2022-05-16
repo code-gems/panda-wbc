@@ -1,0 +1,42 @@
+{
+	"name": "@panda-wbc/panda-router",
+	"version": "1.0.0",
+	"description": "Lit based web component - router",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-router.js",
+	"scripts": {
+		"start": "webpack-dev-server --mode development",
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"ui component",
+		"router"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"lit": "^2.0.2"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"ts-loader": "^9.2.6",
+		"typescript": "^4.5.4",
+		"webpack": "^5.65.0",
+		"webpack-cli": "^4.9.1",
+		"webpack-dev-server": "^4.7.2"
+	},
+	"types": "index.d.ts",
+	"files": [
+		"src/**/*",
+		"demo/**/*",
+		"lib/**/*",
+		"index.d.ts"
+	]
+}
