@@ -60,14 +60,19 @@ export class PandaTextEditor extends LitElement {
 	@property({ type: Array })
 	_selectedTags!: string[];
 
+	private _typing!: boolean;
+	private _typingTimeoutHandle: any;
+
 	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
+	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	constructor() {
 		super();
-		this._content = document.createElement("p");
+		this.content = "";
+		this._content = document.createElement("div");
 		this._selectedTags = [];
+		this._typing = false;
 
 		// set default editor options
 		this.options = {
@@ -125,20 +130,20 @@ export class PandaTextEditor extends LitElement {
 			this._content.innerHTML = this.content;
 		}
 		// change editor default behavior
-		document.execCommand("defaultParagraphSeparator", false, "p");
+		document.execCommand("defaultParagraphSeparator", false, "div");
 		this.requestUpdate();
 
-		setInterval(() => {
-			console.log("%c ->", "font-size: 16px; color: orange;", this.selection?.getRangeAt(0));
+		// setInterval(() => {
+		// 	console.log("%c ->", "font-size: 16px; color: orange;", this.selection?.getRangeAt(0));
 
-			// if (this?.selection?.type === "Range") {
-			// 	let parentNode = this.selection.anchorNode;
-			// 	if (parentNode) {
-			// 		console.log("%c parentNode", "font-size: 16px; color: orange;", parentNode);
-			// 	}
-			// }
+		// 	// if (this?.selection?.type === "Range") {
+		// 	// 	let parentNode = this.selection.anchorNode;
+		// 	// 	if (parentNode) {
+		// 	// 		console.log("%c parentNode", "font-size: 16px; color: orange;", parentNode);
+		// 	// 	}
+		// 	// }
 
-		}, 1000);
+		// }, 1000);
 	}
 
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -146,10 +151,23 @@ export class PandaTextEditor extends LitElement {
 		if (_changedProperties.has("customStyle") && this.customStyle) {
 			this._appendCustomStyle();
 		}
+
+		// check if content was updated from outside
+		if (_changedProperties.has("content") && this.content !== null) {
+			// don't update content if user is actively typing to prevent loop
+			if (!this._typing) {
+				this._content.innerHTML = this.content || "";
+			}
+		}
+	}
+
+	public disconnectedCallback(): void {
+		super.disconnectedCallback();
+		clearTimeout(this._typingTimeoutHandle);
 	}
 
 	// ================================================================================================================
-	// ====================================================================================================== RENDERERS
+	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
@@ -184,10 +202,11 @@ export class PandaTextEditor extends LitElement {
 						part="editor"
 						?contenteditable="${!this.readonly}"
 						?spellcheck="${this.spellcheck}"
-						@input="${(e: any) => this._onSelectionChanged(e.target)}"
-						@mouseup="${(e: any) => this._onSelectionChanged(e.target)}"
-						@mousedown="${(e: any) => this._onSelectionChanged(e.target)}"
-						@keydown="${(e: any) => this._onSelectionChanged(e.target)}"
+						@input="${(e: InputEvent) => this._onInput(e)}"
+						@mouseup="${() => this._onSelectionChanged()}"
+						@mousemove="${() => this._onSelectionChanged()}"
+						@mousedown="${() => this._onSelectionChanged()}"
+						@keydown="${() => this._onSelectionChanged()}"
 					>
 						${this._content}
 					</article>
@@ -382,7 +401,7 @@ export class PandaTextEditor extends LitElement {
 	}
 
 	// ================================================================================================================
-	// ======================================================================================================== HELPERS
+	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
 	private _getToolTemplate(command: EDITOR_COMMAND, icon: string, active: boolean, options?: any | string[]): TemplateResult {
@@ -527,8 +546,17 @@ export class PandaTextEditor extends LitElement {
 		this.shadowRoot?.appendChild(customStyle);
 	}
 
+	private _setTypingFlag() {
+		if (!this._typing) {
+			this._typing = true;
+			this._typingTimeoutHandle = setTimeout(() => {
+				this._typing = false;
+			}, 200);
+		}
+	}
+
 	// ================================================================================================================
-	// ============================================================================================================ API
+	// API ============================================================================================================
 	// ================================================================================================================
 
 	public downloadAsEml(options: EmlFileConfig) {
@@ -572,22 +600,28 @@ export class PandaTextEditor extends LitElement {
 		this._execCommand("copy");
 	}
 
-
+	public updateContent(content: string) {
+		this._content.innerHTML = content || "";
+	}
 
 	// ================================================================================================================
-	// ========================================================================================================= EVENTS
+	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _onInput(e: InputEvent) {
+		const event = new CustomEvent("on-input", {
+			detail: (e.target as any).getInnerHtml()
+		});
+		this.dispatchEvent(event);
+		// trigger selection change
+		this._onSelectionChanged();
+		this._setTypingFlag();
+	}
 
 	/**
 	 * Update editor text selection
 	 */
-	private _onSelectionChanged(editorEl: HTMLInputElement) {
-		console.log("%c content", "font-size: 24px; color: green;", this._content);
-		console.log("%c innerText '", "font-size: 24px; color: green;", editorEl.innerText, "'", editorEl.innerText.length);
-		console.log("%c innerHTML '", "font-size: 24px; color: green;", editorEl.innerHTML, "'");
-		console.log("%c textContent '", "font-size: 24px; color: green;", editorEl.textContent, "'");
-
-
+	private _onSelectionChanged() {
 		const selection = (this.shadowRoot as any)?.getSelection
 			? (this.shadowRoot as any).getSelection()
 			: null;

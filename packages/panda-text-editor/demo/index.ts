@@ -17,6 +17,27 @@ class DemoPage extends LitElement {
 				width: 100%;
 				height: 100%;
 			}
+
+			.btn {
+				display: inline-block;
+				min-width: 50px;
+				height: 50px;
+				line-height: 50px;
+				padding: 0px 20px;
+				
+				color: black;
+				font-size: 14px;
+				font-weight: bold;
+				text-align: center;
+				cursor: pointer;
+				transition: all 400ms ease-in-out;
+
+				box-shadow: 0px 1px 2px var(--panda-shadow-color-10opc);
+			}
+
+			.btn:hover {
+				background-color: var(--panda-shadow-color-10opc);
+			}
 		`;
 	}
 
@@ -146,6 +167,13 @@ class DemoPage extends LitElement {
 				</template>
 			</panda-text-editor>
 -->
+			<div class="btn">
+				CANCEL
+			</div>
+			<div class="btn">
+				OK
+			</div>
+
 			<hr />
 			
 			<panda-text-editor
