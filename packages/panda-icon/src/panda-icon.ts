@@ -36,6 +36,7 @@ import { heartOutlineIcon } from "./resources/heart-outline";
 import { pasteIcon } from "./resources/paste";
 import { redoIcon } from "./resources/redo";
 import { undoIcon } from "./resources/undo";
+import { closeIcon } from "./resources/close";
 
 @customElement("panda-icon")
 export class PandaIcon extends LitElement {
@@ -59,6 +60,7 @@ export class PandaIcon extends LitElement {
 		this.iconList = {
 			calendar: calendarIcon,
 			folder: folderIcon,
+			close: closeIcon,
 
 			// text editor icons
 			"expand-less": expandLessIcon,
