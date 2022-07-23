@@ -15,10 +15,10 @@ export class PandaButton extends LitElement {
 		return styles;
 	}
 
-	@property({ type: Boolean, attribute: true })
+	@property({ type: Boolean, attribute: true, reflect: true })
 	busy!: boolean;
 
-	@property({ type: Boolean, attribute: true })
+	@property({ type: Boolean, attribute: true, reflect: true })
 	disabled!: boolean;
 
 	@property({ type: String, attribute: true })
@@ -33,15 +33,6 @@ export class PandaButton extends LitElement {
 		this.busy = false;
 		this.disabled = false;
 		this.spinner = "dots";
-	}
-
-	protected updated(changedProps: PropertyValues) {
-		if (changedProps.has("disabled") && this.disabled) {
-			this.setAttribute("disabled", "");
-		}
-		if (changedProps.has("busy") && this.busy) {
-			this.setAttribute("busy", "");
-		}
 	}
 
 	// ================================================================================================================
