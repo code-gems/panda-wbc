@@ -1,3 +1,7 @@
+// types
+import { RouterConfig } from "../index";
+
+// utils
 import { LitElement, html, css } from "lit";
 import "../src/panda-router";
 
@@ -7,17 +11,19 @@ class DemoPage extends LitElement {
 
 	`;
 
-	private _routerConfig!: any;
+	private _routerConfig!: RouterConfig;
 
 	constructor() {
 		super();
 		// router config
 		this._routerConfig = {
-			404: html`(CUSTOM) #404 - Page not found`,
-			"/": html`<home-page></home-page>`,
-			"/home": html`<home-page></home-page>`,
-			"/docs": html`DOCS`,
-			"/about": html`ABOUT`,
+			route: {
+				404: html`(CUSTOM) #404 - Page not found`,
+				"/": html`<home-page></home-page>`,
+				"/home": html`<home-page></home-page>`,
+				"/docs": html`DOCS`,
+				"/about": html`ABOUT`,
+			}
 		};
 	}
 

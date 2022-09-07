@@ -1,16 +1,5 @@
 // types
-
-export type SearchParam = {
-	name: string;
-	value: string;
-}
-
-export interface PandaRouterNavigateEvent {
-	pathname: string;
-	search: string;
-	searchParams: SearchParam[];
-}
-
+import { SearchParam, PandaRouterNavigateEvent, RouterConfig } from "../index";
 
 // utils
 import { LitElement, TemplateResult, html, css } from "lit";
@@ -29,7 +18,7 @@ export class PandaRouterElement extends LitElement {
 	}
 
 	@property({ type: Object })
-	routerConfig: any;
+	routerConfig: RouterConfig;
 
 	// private props
 	private _pageMap!: Map<string | number, TemplateResult | undefined>;
@@ -48,7 +37,9 @@ export class PandaRouterElement extends LitElement {
 		super();
 		this._pageMap = new Map();
 		this._pageTemplate = html``;
-		this.routerConfig = {};
+		this.routerConfig = {
+			route: {}
+		};
 	}
 
 	connectedCallback(): void {
@@ -84,13 +75,13 @@ export class PandaRouterElement extends LitElement {
 	// ================================================================================================================
 
 	private _init() {
-		if (this.routerConfig) {
-			const pages: string[] = Object.keys(this.routerConfig);
+		if (this.routerConfig?.route) {
+			const pages: string[] = Object.keys(this.routerConfig.route);
 
 			// map all pages from router config
 			pages.forEach(
 				(page) => {
-					this._pageMap.set(page, this.routerConfig[page]);
+					this._pageMap.set(page, this.routerConfig.route[page]);
 				}
 			);
 		} else {
@@ -100,9 +91,9 @@ export class PandaRouterElement extends LitElement {
 
 	private _handleLocation(): void {
 		const pathname = window.location.pathname;
-		console.log("%c _handleLocation", "font-size: 24px; color: orange;", pathname);
-		console.log("%c window.location", "font-size: 24px; color: orange;", window.location);
-		console.log("%c _pageMap", "font-size: 24px; color: orange;", this._pageMap?.has(pathname), this._pageMap);
+		console.log("%c [ROUTER] _handleLocation", "font-size: 24px; color: orange;", pathname);
+		console.log("%c [ROUTER] window.location", "font-size: 24px; color: orange;", window.location);
+		console.log("%c [ROUTER] _pageMap", "font-size: 24px; color: orange;", this._pageMap?.has(pathname), this._pageMap);
 
 		if (this._pageMap?.has(pathname)) {
 			this._pageTemplate = this._pageMap.get(pathname);
@@ -119,12 +110,25 @@ export class PandaRouterElement extends LitElement {
 		this._triggerNavigateEvent(pathname);
 	}
 
-	private _parseSearchParams(search: string) {
-		return null;
+	private _parseSearchParams(search: string): SearchParam[] {
+		let searchParams: SearchParam[] = [];
+		if (search) {
+			const searchParamsArray = search.replace("?", "").split("&");
+			searchParams = searchParamsArray.map(
+				(params) => {
+					const paramParts: string[] = params.split("=");
+					return {
+						name: paramParts[0],
+						value: paramParts[1] || null
+					};
+				}
+			);
+		}
+		return searchParams;
 	}
 
 	private _triggerNavigateEvent(pathname: string) {
-		const navigateEventDetail: any = {
+		const navigateEventDetail: PandaRouterNavigateEvent = {
 			pathname,
 			search: window.location.search,
 			searchParams: this._parseSearchParams(window.location.search)
@@ -190,8 +194,8 @@ export const routerify = () => {
 			disconnectedCallback() {
 				if (this.__navigateEventBinding) {
 					console.log("%c DISCONNECT", "font-size: 24px; color: blueviolet;");
-					document.addEventListener("panda-router-navigate", this.__navigateEventBinding);
-					window.addEventListener("popstate", this.__navigateEventBinding);
+					document.removeEventListener("panda-router-navigate", this.__navigateEventBinding);
+					window.removeEventListener("popstate", this.__navigateEventBinding);
 				}
 				this.__safeInvoke(super.disconnectedCallback);
 			}
