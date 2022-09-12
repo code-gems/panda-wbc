@@ -1,5 +1,5 @@
 // types
-import { SearchParam, PandaRouterNavigateEvent, RouterConfig } from "../index";
+import { SearchParams, PandaRouterNavigateEvent, RouterConfig } from "../index";
 
 // utils
 import { LitElement, TemplateResult, html, css } from "lit";
@@ -110,17 +110,14 @@ export class PandaRouterElement extends LitElement {
 		this._triggerNavigateEvent(pathname);
 	}
 
-	private _parseSearchParams(search: string): SearchParam[] {
-		let searchParams: SearchParam[] = [];
+	private _parseSearchParams(search: string): SearchParams {
+		let searchParams: SearchParams = {};
 		if (search) {
 			const searchParamsArray = search.replace("?", "").split("&");
-			searchParams = searchParamsArray.map(
+			searchParamsArray.forEach(
 				(params) => {
 					const paramParts: string[] = params.split("=");
-					return {
-						name: paramParts[0],
-						value: paramParts[1] || null
-					};
+					searchParams[paramParts[0]] = paramParts[1] || null;
 				}
 			);
 		}
@@ -148,10 +145,10 @@ export class PandaRouterElement extends LitElement {
 	}
 }
 
-export const navigate = (pathname: string, e: MouseEvent) => {
-	if (e) {
-		e.stopPropagation();
-		e.preventDefault();
+export const navigate = (pathname: string, event: MouseEvent | null = null) => {
+	if (event) {
+		event.stopPropagation();
+		event.preventDefault();
 	}
 	console.log("%c navigate (event)", "font-size: 24px; color: red;", pathname);
 
@@ -161,12 +158,12 @@ export const navigate = (pathname: string, e: MouseEvent) => {
 		window.location.origin + pathname
 	);
 	// notify router
-	const event = new CustomEvent("panda-router-navigate", {
+	const navigateEvent = new CustomEvent("panda-router-navigate", {
 		detail: {
 			pathname
 		}
 	});
-	document.dispatchEvent(event);
+	document.dispatchEvent(navigateEvent);
 };
 
 /**

@@ -1,14 +1,13 @@
 import { TemplateResult } from "lit";
 
-export type SearchParam = {
-	name: string;
-	value: string | null;
+export type SearchParams = {
+	[paramName: string]: any;
 }
 
 export interface PandaRouterNavigateEvent {
 	pathname: string;
 	search: string;
-	searchParams: SearchParam[];
+	searchParams: SearchParam;
 }
 
 export interface RouterConfig {
