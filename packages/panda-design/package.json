@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"name": "@panda-wbc/panda-design",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Panda Design - Panda UI components showcase.",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"scripts": {
@@ -23,11 +23,17 @@
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"@panda-wbc/panda-button": "^0.0.1",
-		"@panda-wbc/panda-flag": "^0.0.1",
-		"@panda-wbc/panda-spinner": "^0.0.1",
-		"@panda-wbc/panda-theme": "^0.0.1",
-		"lit": "^2.0.2"
+		"@panda-wbc/panda-router": "workspace:^1.0.0",
+		"@panda-wbc/panda-theme": "workspace:^1.0.0",
+		"@panda-wbc/panda-button": "workspace:^1.0.0",
+		"@panda-wbc/panda-date-picker": "workspace:^1.0.0",
+		"@panda-wbc/panda-flag": "workspace:^1.0.0",
+		"@panda-wbc/panda-icon": "workspace:^1.0.0",
+		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
+		"@panda-wbc/panda-text-editor": "workspace:^1.0.0",
+		"lit": "^2.0.2",
+		"redux": "^4.1.2",
+		"redux-thunk": "^2.4.1"
 	},
 	"devDependencies": {
 		"copy-webpack-plugin": "^10.2.4",
