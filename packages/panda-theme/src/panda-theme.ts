@@ -1,16 +1,16 @@
 // types
 export type PandaThemeItem = {
+	group: string;
 	name: string;
 	value: string;
-	url: string;
-	theme: string;
+	theme: string | CSSResult;
 }
 
 // themes
 import { pandaThemeLight } from "./themes/panda-theme-light";
 
 // utils
-import { LitElement } from "lit";
+import { CSSResult, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("panda-theme")
@@ -20,8 +20,8 @@ export class PandaTheme extends LitElement {
 	theme!: string;
 
 	private readonly _themeList: PandaThemeItem[] = [
-		{ name: "Panda Theme Light", value: "panda-theme-light", url: "./theme/panda-theme-light.css", theme: pandaThemeLight },
-		{ name: "Panda Theme Dark", value: "panda-theme-dark", url: "./theme/panda-theme-dark.css", theme: pandaThemeLight }
+		{ group: "Panda Theme", name: "Light", value: "panda-theme-light", theme: pandaThemeLight },
+		{ group: "Panda Theme", name: "Dark", value: "panda-theme-dark", theme: pandaThemeLight }
 	];
 
 	// ================================================================================================================
@@ -54,10 +54,13 @@ export class PandaTheme extends LitElement {
 	private _applyTheme() {
 		// extract theme
 		const themeEl = document.createElement("style");
-		themeEl.innerHTML = pandaThemeLight;
+		themeEl.innerHTML = pandaThemeLight.toString();
 		document.head.appendChild(themeEl);
 	}
 }
+
+// Export mixins
+export * from "./mixins";
 
 declare global {
 	interface HTMLElementTagNameMap {

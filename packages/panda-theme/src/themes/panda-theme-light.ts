@@ -1,4 +1,6 @@
-export const pandaThemeLight = `
+import { css } from "lit";
+
+export const pandaThemeLight = css`
 	body {
 		/* === BRAND COLORS === */
 
@@ -63,15 +65,34 @@ export const pandaThemeLight = `
 		--panda-font-family-medium: "Poppins";
 		--panda-font-family-bold: "Poppins";
 
+		/* FORM, INPUT ELEMENT COLORS & SIZES, BORDER & PADDING */
+
+		--panda-label-txt-color: #686a6e;
+
+		--panda-element-default-hight: 40px;
+
+		/* FORM INPUT / TEXT FIELD */
+
 		--panda-input-txt-color: var(--panda-txt-color);
 		--panda-input-bg-color: hsl(0deg 0% 95%);
 
+		--panda-input-border-color: hsl(0deg 0% 90%);
+		--panda-input-border-size: 1px;
+		--panda-input-border-style: solid;
+		
+		--panda-input-placeholder-color: hsl(0deg 0% 70%);
+
 		--panda-input-txt-color-disabled: hsl(0deg 0% 70%);
 		--panda-input-bg-color-disabled: hsl(0deg 0% 90%);
+
+
+		/* BORDER RADIUS SIZES */
 		
 		--panda-border-radius-s: 2px;
 		--panda-border-radius-m: 5px;
 		--panda-border-radius-l: 10px;
+		--panda-border-radius-xl: 20px;
+		--panda-border-radius-hero: 30px;
 
 		/* LIGHTS & SHADOWS */
 
@@ -205,6 +226,10 @@ export const pandaThemeLight = `
 		--panda-button-height-l: 48px;
 		--panda-button-height-xl: 56px;
 
+		/* SCROLLBARS */
+
+		--panda-scrollbar-width: 5px;
+		--panda-scrollbar-track-color: red;
 
 		color: var(--panda-txt-color);
 		font-size: var(--panda-font-size-m);
