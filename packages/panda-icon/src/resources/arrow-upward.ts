@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-export const expandMoreIcon = html`
+export const arrowUpwardIcon = html`
 	<svg
 		version="1.1"
 		viewBox="0 0 24 24"
@@ -8,6 +8,6 @@ export const expandMoreIcon = html`
 		x="0"
 		y="0"
 	>
-		<path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
+		<path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"></path>
 	</svg>
 `;

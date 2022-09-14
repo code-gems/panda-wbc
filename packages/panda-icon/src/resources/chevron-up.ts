@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-export const expandLessIcon = html`
+export const chevronUpIcon = html`
 	<svg
 		version="1.1"
 		viewBox="0 0 24 24"
