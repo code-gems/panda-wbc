@@ -2,19 +2,9 @@ import { css } from "lit";
 
 export const pandaThemeLight = css`
 	body {
-		/* === BRAND COLORS === */
-
 		/* PRIMARY */
-		
-		--panda-primary-color-txt: hsl(0deg 0% 100%);
-		--panda-primary-color: hsl(196deg 100% 47%);
-		
-		--panda-primary-color-txt-hover: hsl(0deg 0% 100%);
-		--panda-primary-color-hover: hsl(196deg 100% 51%);
-		
-		--panda-primary-color-txt-disabled: hsl(0deg 0% 100%);
-		--panda-primary-color-disabled: hsl(196deg 88% 73%);
 
+		--panda-primary-color: hsl(196deg 100% 47%);
 		--panda-primary-color-0opc: hsl(196deg 100% 47% / 0%);
 		--panda-primary-color-10opc: hsl(196deg 100% 47% / 10%);
 		--panda-primary-color-20opc: hsl(196deg 100% 47% / 20%);
@@ -25,6 +15,31 @@ export const pandaThemeLight = css`
 		--panda-primary-color-70opc: hsl(196deg 100% 47% / 70%);
 		--panda-primary-color-80opc: hsl(196deg 100% 47% / 80%);
 		--panda-primary-color-90opc: hsl(196deg 100% 47% / 90%);
+		
+		--panda-primary-color-light-100: hsl(196deg 100% 52%);
+		--panda-primary-color-light-200: hsl(196deg 100% 57%);
+		--panda-primary-color-light-300: hsl(196deg 100% 62%);
+		--panda-primary-color-light-400: hsl(196deg 100% 67%);
+		--panda-primary-color-light-500: hsl(196deg 100% 72%);
+		--panda-primary-color-light-600: hsl(196deg 100% 77%);
+		--panda-primary-color-light-700: hsl(196deg 100% 82%);
+		
+		--panda-primary-color-dark-100: hsl(196deg 100% 42%);
+		--panda-primary-color-dark-200: hsl(196deg 100% 37%);
+		--panda-primary-color-dark-300: hsl(196deg 100% 32%);
+		--panda-primary-color-dark-400: hsl(196deg 100% 27%);
+		--panda-primary-color-dark-500: hsl(196deg 100% 22%);
+		--panda-primary-color-dark-600: hsl(196deg 100% 17%);
+		--panda-primary-color-dark-700: hsl(196deg 100% 12%);
+				
+		--panda-primary-color-txt: hsl(0deg 0% 100%);
+		--panda-primary-color-bg: var(--panda-primary-color);
+		
+		--panda-primary-color-txt-hover: hsl(0deg 0% 100%);
+		--panda-primary-color-bg-hover: hsl(196deg 100% 51%);
+		
+		--panda-primary-color-txt-disabled: hsl(0deg 0% 100%);
+		--panda-primary-color-bg-disabled: hsl(196deg 88% 73%);
 		
 		/* SECONDARY */
 
@@ -52,7 +67,26 @@ export const pandaThemeLight = css`
 		/* TEXT, FONTS & SIZES */
 
 		--panda-txt-color: hsl(0deg 0% 29%);
+
 		--panda-bg-color: hsl(0deg 0% 100%);
+		--panda-bg-color-100: hsl(0deg 0% 95%);
+		--panda-bg-color-200: hsl(0deg 0% 90%);
+		--panda-bg-color-300: hsl(0deg 0% 85%);
+		--panda-bg-color-400: hsl(0deg 0% 80%);
+		--panda-bg-color-500: hsl(0deg 0% 75%);
+		--panda-bg-color-600: hsl(0deg 0% 70%);
+		--panda-bg-color-700: hsl(0deg 0% 65%);
+
+		--panda-bg-color-0opc: hsl(0deg 0% 100% / 0%);
+		--panda-bg-color-10opc: hsl(0deg 0% 100% / 10%);
+		--panda-bg-color-20opc: hsl(0deg 0% 100% / 20%);
+		--panda-bg-color-30opc: hsl(0deg 0% 100% / 30%);
+		--panda-bg-color-40opc: hsl(0deg 0% 100% / 40%);
+		--panda-bg-color-50opc: hsl(0deg 0% 100% / 50%);
+		--panda-bg-color-60opc: hsl(0deg 0% 100% / 60%);
+		--panda-bg-color-70opc: hsl(0deg 0% 100% / 70%);
+		--panda-bg-color-80opc: hsl(0deg 0% 100% / 80%);
+		--panda-bg-color-90opc: hsl(0deg 0% 100% / 90%);
 
 		--panda-font-size-s: 12px;
 		--panda-font-size-m: 14px;
@@ -63,11 +97,11 @@ export const pandaThemeLight = css`
 		--panda-font-family: "Poppins";
 		--panda-font-family-light: "Poppins-Light";
 		--panda-font-family-medium: "Poppins";
-		--panda-font-family-bold: "Poppins";
+		--panda-font-family-bold: "Poppins-Bold";
 
 		/* FORM, INPUT ELEMENT COLORS & SIZES, BORDER & PADDING */
 
-		--panda-label-txt-color: #686a6e;
+		--panda-label-color: #ccc;
 
 		--panda-element-default-hight: 40px;
 
@@ -220,11 +254,25 @@ export const pandaThemeLight = css`
 		
 		/* BUTTONS */
 
-		--panda-button-height-xs: 26px;
-		--panda-button-height-s: 32px;
-		--panda-button-height-m: 40px;
-		--panda-button-height-l: 48px;
-		--panda-button-height-xl: 56px;
+		--panda-button-size-xs: 26px;
+		--panda-button-size-s: 32px;
+		--panda-button-size-m: 40px;
+		--panda-button-size-l: 48px;
+		--panda-button-size-xl: 56px;
+
+		--panda-button-font-size: var(--panda-font-size-m);
+		--panda-button-font-family: var(--panda-font-family-bold);
+		--panda-button-text-shadow: 0px 1px 1px var(--panda-shadow-color);
+
+		--panda-button-border-radius: 0px;
+		--panda-button-border: 1px solid var(--panda-bg-color-100);
+
+		--panda-button-txt-color: var(--panda-txt-color);
+		--panda-button-bg-color: hsl(0deg 0% 100%);
+		--panda-button-txt-color-hover: var(--panda-txt-color);
+		--panda-button-bg-color-hover: hsl(0deg 0% 95%);
+		--panda-button-txt-color-disabled: var(--panda-txt-color);
+		--panda-button-bg-color-disabled: hsl(0deg 0% 95%);
 
 		/* SCROLLBARS */
 
