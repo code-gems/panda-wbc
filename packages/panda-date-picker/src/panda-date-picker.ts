@@ -199,7 +199,7 @@ export class PandaDatePicker extends LitElement {
 			this._overlayEl.addEventListener("close", this._hideOverlayEventBinding);
 
 			// set date picker overlay's props
-			// this._overlayEl.selectedDate = this.value;
+			this._overlayEl.selectedDate = this.value;
 
 			// set date picker overlay's position
 			this._overlayEl.parentDetails = this._getDatePickerPosition();

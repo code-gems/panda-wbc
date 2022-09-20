@@ -2,9 +2,7 @@ import { css } from "lit";
 
 export const styles = css`
 	:host {
-		display: block;
-		width: 600px;
-		height: 300px;
+		display: inline-block;
         background-color: var(--panda-date-picker-bg-color, var(--panda-bg-color, hsl(0deg 0% 100%)));
 	}
 
@@ -62,20 +60,28 @@ export const styles = css`
 		background: var(--panda-date-picker-button-bg-color-hover, var(--panda-button-bg-color-hover, hsl(0deg 0% 95%)));
 	}
 
-	.days-of-week {
+	.calendar {
 		display: grid;
 		grid-template-columns: repeat(7, var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px)));
 		gap: 10px;
 		user-select: none;
 	}
 
-	.days-of-week .cell {
+	.calendar .day {
 		display: flex;
 		width: var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px));
 		height: var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px));
 		justify-content: center;
 		align-items: center;
-
-		color: var(--panda-label-color);
 	}
+
+	.calendar .day.btn {
+		cursor: pointer;
+		transition: all 200ms ease-in-out;
+	}
+
+	.calendar .day.btn:hover {
+		background: var(--panda-date-picker-button-bg-color-hover, var(--panda-button-bg-color-hover, hsl(0deg 0% 95%)));
+	}
+
 `;

@@ -120,3 +120,7 @@ export const styles = css`
 	}
 
 `;
+
+export const modifiers = css`
+	.txt-color-label { color: var(--panda-label-color); }
+`;

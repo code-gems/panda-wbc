@@ -12,12 +12,16 @@ export type ElementDetails = {
 	right: number;
 }
 
-export interface PandaDate {
+export interface PandaMonth {
 	date: Date | null;
 	unix: number | null;
 	day: number | null;
 	month: number | null;
 	year: number | null;
+	// rendering props
+	days: any[];
+	daysCount: number | null; // number of days in the month
+	startDayIndex: number | null; // index of a weekday of the first day eg. 4 for Thu
 }
 
 // ====================================================================================================================

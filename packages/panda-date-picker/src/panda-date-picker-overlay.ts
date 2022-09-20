@@ -71,7 +71,9 @@ export class PandaDatePickerOverlay extends LitElement {
 		// expand overlay container to include scrollable area
 		this._overlayContEl.style.width = `${document.body.scrollWidth}px`;
 		this._overlayContEl.style.height = `${document.body.scrollHeight}px`;
-		this._showOverlayContent();
+		setTimeout(() => {
+			this._showOverlayContent();
+		}, 0);
 	}
 
 	public disconnectedCallback(): void {
@@ -113,6 +115,8 @@ export class PandaDatePickerOverlay extends LitElement {
 	// ================================================================================================================
 
 	public close() {
+		const overlayRect = this._overlayEl.getBoundingClientRect();
+		console.log("%c [_showOverlayContent] overlayRect", "font-size: 24px; color: green;", overlayRect);
 		console.log("%c [OVERLAY] Close", "font-size: 24px; color: green;", this.selectedDate);
 		const event = new CustomEvent("close", {});
 		this.dispatchEvent(event);
@@ -124,6 +128,7 @@ export class PandaDatePickerOverlay extends LitElement {
 
 	private _showOverlayContent() {
 		const overlayRect = this._overlayEl.getBoundingClientRect();
+		console.log("%c [_showOverlayContent] overlayRect", "font-size: 24px; color: green;", overlayRect);
 
 		let overlayTop = this.parentDetails.bottom;
 		let overlayLeft = this.parentDetails.left;
