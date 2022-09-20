@@ -1,5 +1,5 @@
 // types
-import { PandaMonth } from "../../index";
+import { PandaDate, PandaMonth } from "../../index";
 
 export const minValue = (value: number, min: number): number => value < min ? min : value;
 
@@ -62,10 +62,15 @@ export const parseDate = (date: string, format: string): Date => {
 	}
 };
 
-export const getDefaultMonth = (): PandaMonth => ({
+export const getDefaultDate = (): PandaDate => ({
 	date: null,
 	unix: null,
 	day: null,
+	month: null,
+	year: null,
+});
+
+export const getDefaultMonth = (): PandaMonth => ({
 	month: null,
 	year: null,
 	daysCount: null,

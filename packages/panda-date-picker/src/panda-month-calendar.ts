@@ -1,5 +1,5 @@
 // types
-import { PandaMonth } from "../index";
+import { PandaDate, PandaMonth } from "../index";
 
 // style
 import { styles } from "./styles/month-calendar-styles";
@@ -11,7 +11,7 @@ import "@panda-wbc/panda-icon";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { getDefaultMonth } from "./utils/utils";
+import { getDefaultMonth, getDefaultDate } from "./utils/utils";
 
 @customElement("panda-month-calendar")
 export class PandaMonthCalendar extends LitElement {
@@ -64,6 +64,7 @@ export class PandaMonthCalendar extends LitElement {
 	customDaysOfWeekList: string[] | null = null;
 
 	// private properties
+	private _selectedDate: PandaDate = getDefaultDate();
 	private _previousMonth: PandaMonth = getDefaultMonth();
 	private _currentMonth: PandaMonth = getDefaultMonth();
 	private _nextMonth: PandaMonth = getDefaultMonth();
@@ -154,7 +155,7 @@ export class PandaMonthCalendar extends LitElement {
 			daysHtml.push(html`
 				<div
 					class="day btn txt-color-label"
-
+					title="${day.date}"
 				>
 					${day.label}
 				</div>
@@ -165,7 +166,7 @@ export class PandaMonthCalendar extends LitElement {
 			daysHtml.push(html`
 				<div
 					class="day btn"
-
+					title="${day.date}"
 				>
 					${day.label}
 				</div>
@@ -176,7 +177,7 @@ export class PandaMonthCalendar extends LitElement {
 			daysHtml.push(html`
 				<div
 					class="day btn txt-color-label"
-
+					title="${day.date}"
 				>
 					${day.label}
 				</div>
@@ -223,18 +224,20 @@ export class PandaMonthCalendar extends LitElement {
 	// ================================================================================================================
 
 	private _parseSelectedDate(date: string | number): void {
-		this._currentMonth.date = new Date(date);
-
+		this._selectedDate.date = new Date(date);
 		// check if date is valid
-		if (isNaN(this._currentMonth.date.getTime())) {
+		if (isNaN(this._selectedDate.date.getTime())) {
 			// if date is invalid, fallback to Today
-			this._currentMonth.date = new Date();
+			this._selectedDate.date = new Date();
 		}
 
-		this._currentMonth.unix = this._currentMonth.date.getTime();
-		this._currentMonth.day = this._currentMonth.date.getDate();
-		this._currentMonth.month = this._currentMonth.date.getMonth();
-		this._currentMonth.year = this._currentMonth.date.getFullYear();
+		this._selectedDate.unix = this._selectedDate.date.getTime();
+		this._selectedDate.day = this._selectedDate.date.getDate();
+		this._selectedDate.month = this._selectedDate.date.getMonth();
+		this._selectedDate.year = this._selectedDate.date.getFullYear();
+
+		this._currentMonth.month = this._selectedDate.month;
+		this._currentMonth.year = this._selectedDate.year;
 		this._currentMonth.daysCount = this._getDaysInMonth(this._currentMonth.year, this._currentMonth.month + 1);
 		// calculate start day index
 		const firstDayOfMonth = new Date(this._currentMonth.year, this._currentMonth.month, 1);
@@ -246,13 +249,22 @@ export class PandaMonthCalendar extends LitElement {
 		this._nextMonth.days = [];
 
 		// generate previous month days for display
-		for (let i = 0; i < this._currentMonth.startDayIndex; i++) {
-
+		this._previousMonth.year = this._currentMonth.year;
+		this._previousMonth.month = this._currentMonth.month - 1;
+		// validate month value
+		if (this._previousMonth.month === -1) {
+			this._previousMonth.year = this._previousMonth.year - 1;
+			this._previousMonth.month = 11;
+		}
+		this._previousMonth.daysCount = this._getDaysInMonth(this._previousMonth.year, this._previousMonth.month + 1);
+		const startIndex = this._previousMonth.daysCount - this._currentMonth.startDayIndex;
+		for (let i = startIndex; i < this._previousMonth.daysCount; i++) {
 			this._previousMonth.days.push({
 				label: String(i + 1),
-				date: this._formatDate(this._currentMonth.year, this._currentMonth.month - 1, i + 1)
+				date: this._formatDate(this._previousMonth.year, this._previousMonth.month, i + 1)
 			})
 		}
+
 		// generate current month days for display
 		for (let i = 0; i < this._currentMonth.daysCount; i++) {
 			this._currentMonth.days.push({
@@ -260,22 +272,24 @@ export class PandaMonthCalendar extends LitElement {
 				date: this._formatDate(this._currentMonth.year, this._currentMonth.month, i + 1)
 			});
 		}
+
 		// generate next month days for display
+		this._nextMonth.year = this._currentMonth.year;
+		this._nextMonth.month = this._currentMonth.month + 1;
+		// validate month value
+		if (this._nextMonth.month === 12) {
+			this._nextMonth.year = this._nextMonth.year + 1;
+			this._nextMonth.month = 0;
+		}
 		const maxDays = 42 - (this._previousMonth.days.length + this._currentMonth.daysCount);
 		for (let i = 0; i < maxDays; i++) {
 			this._nextMonth.days.push({
 				label: String(i + 1),
-				date: this._formatDate(this._currentMonth.year, this._currentMonth.month + 1, i + 1)
+				date: this._formatDate(this._nextMonth.year, this._nextMonth.month, i + 1)
 			});
 		}
 
-		console.log("%c [selectedDate]", "font-size: 24px; color: red;", this._currentMonth);
-		console.log("%c [selectedDateUnix]", "font-size: 24px; color: red;", this._currentMonth.unix);
-		console.log("%c [selectedDay]", "font-size: 24px; color: red;", this._currentMonth.day);
-		console.log("%c [selectedMonth]", "font-size: 24px; color: red;", this._currentMonth);
-		console.log("%c [selectedYear]", "font-size: 24px; color: red;", this._currentMonth.year);
-		console.log("%c [selectedMonthDays]", "font-size: 24px; color: red;", this._currentMonth.daysCount);
-		console.log("%c [monthStartDay]", "font-size: 24px; color: red;", this._currentMonth.startDayIndex, this._daysOfWeek[this._currentMonth.startDayIndex]);
+		// console.log("%c [monthStartDay]", "font-size: 24px; color: red;", this._currentMonth.startDayIndex, this._daysOfWeek[this._currentMonth.startDayIndex]);
 		// trigger update due to side effect
 		this.requestUpdate();
 	}
@@ -303,17 +317,24 @@ export class PandaMonthCalendar extends LitElement {
 		}
 	}
 
+	/**
+	 * Return date string formatted against specified date format.
+	 * @param {Number} year
+	 * @param {Number} month - month value starts from 0
+	 * @param {Number} day 
+	 * @returns {String} Formatted date string
+	 */
 	private _formatDate(year: number, month: number, day: number): string {
 		let _year = String(year);
-		let _month = `0${month}`.substring(-2);
-		const _day = `0${day}`.substring(-2);
+		let _month = `0${month + 1}`.slice(-2);
+		const _day = `0${day}`.slice(-2);
 
 		// validate month
-		if (month === 13) {
+		if (month === 12) {
 			_month = "01";
 			_year = String(year + 1);
 		}
-		if (month === 0) {
+		if (month === -1) {
 			_month = "12";
 			_year = String(year - 1);
 		} 

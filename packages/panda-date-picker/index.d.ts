@@ -12,10 +12,15 @@ export type ElementDetails = {
 	right: number;
 }
 
-export interface PandaMonth {
+export interface PandaDate {
 	date: Date | null;
 	unix: number | null;
 	day: number | null;
+	month: number | null;
+	year: number | null;
+}
+
+export interface PandaMonth {
 	month: number | null;
 	year: number | null;
 	// rendering props
