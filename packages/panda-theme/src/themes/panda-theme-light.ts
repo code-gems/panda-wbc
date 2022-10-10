@@ -4,64 +4,64 @@ export const pandaThemeLight = css`
 	body {
 		/* PRIMARY */
 
-		--panda-primary-color: hsl(196deg 100% 47%);
-		--panda-primary-color-0opc: hsl(196deg 100% 47% / 0%);
-		--panda-primary-color-10opc: hsl(196deg 100% 47% / 10%);
-		--panda-primary-color-20opc: hsl(196deg 100% 47% / 20%);
-		--panda-primary-color-30opc: hsl(196deg 100% 47% / 30%);
-		--panda-primary-color-40opc: hsl(196deg 100% 47% / 40%);
-		--panda-primary-color-50opc: hsl(196deg 100% 47% / 50%);
-		--panda-primary-color-60opc: hsl(196deg 100% 47% / 60%);
-		--panda-primary-color-70opc: hsl(196deg 100% 47% / 70%);
-		--panda-primary-color-80opc: hsl(196deg 100% 47% / 80%);
-		--panda-primary-color-90opc: hsl(196deg 100% 47% / 90%);
+		--panda-primary: hsl(196deg 100% 47%);
+		--panda-primary-0opc: hsl(196deg 100% 47% / 0%);
+		--panda-primary-10opc: hsl(196deg 100% 47% / 10%);
+		--panda-primary-20opc: hsl(196deg 100% 47% / 20%);
+		--panda-primary-30opc: hsl(196deg 100% 47% / 30%);
+		--panda-primary-40opc: hsl(196deg 100% 47% / 40%);
+		--panda-primary-50opc: hsl(196deg 100% 47% / 50%);
+		--panda-primary-60opc: hsl(196deg 100% 47% / 60%);
+		--panda-primary-70opc: hsl(196deg 100% 47% / 70%);
+		--panda-primary-80opc: hsl(196deg 100% 47% / 80%);
+		--panda-primary-90opc: hsl(196deg 100% 47% / 90%);
 		
-		--panda-primary-color-light-100: hsl(196deg 100% 52%);
-		--panda-primary-color-light-200: hsl(196deg 100% 57%);
-		--panda-primary-color-light-300: hsl(196deg 100% 62%);
-		--panda-primary-color-light-400: hsl(196deg 100% 67%);
-		--panda-primary-color-light-500: hsl(196deg 100% 72%);
-		--panda-primary-color-light-600: hsl(196deg 100% 77%);
-		--panda-primary-color-light-700: hsl(196deg 100% 82%);
+		--panda-primary-light-100: hsl(196deg 100% 52%);
+		--panda-primary-light-200: hsl(196deg 100% 57%);
+		--panda-primary-light-300: hsl(196deg 100% 62%);
+		--panda-primary-light-400: hsl(196deg 100% 67%);
+		--panda-primary-light-500: hsl(196deg 100% 72%);
+		--panda-primary-light-600: hsl(196deg 100% 77%);
+		--panda-primary-light-700: hsl(196deg 100% 82%);
 		
-		--panda-primary-color-dark-100: hsl(196deg 100% 42%);
-		--panda-primary-color-dark-200: hsl(196deg 100% 37%);
-		--panda-primary-color-dark-300: hsl(196deg 100% 32%);
-		--panda-primary-color-dark-400: hsl(196deg 100% 27%);
-		--panda-primary-color-dark-500: hsl(196deg 100% 22%);
-		--panda-primary-color-dark-600: hsl(196deg 100% 17%);
-		--panda-primary-color-dark-700: hsl(196deg 100% 12%);
+		--panda-primary-dark-100: hsl(196deg 100% 42%);
+		--panda-primary-dark-200: hsl(196deg 100% 37%);
+		--panda-primary-dark-300: hsl(196deg 100% 32%);
+		--panda-primary-dark-400: hsl(196deg 100% 27%);
+		--panda-primary-dark-500: hsl(196deg 100% 22%);
+		--panda-primary-dark-600: hsl(196deg 100% 17%);
+		--panda-primary-dark-700: hsl(196deg 100% 12%);
 				
-		--panda-primary-color-txt: hsl(0deg 0% 100%);
-		--panda-primary-color-bg: var(--panda-primary-color);
+		--panda-primary-color: hsl(0deg 0% 100%);
+		--panda-primary-background: var(--panda-primary);
 		
-		--panda-primary-color-txt-hover: hsl(0deg 0% 100%);
-		--panda-primary-color-bg-hover: hsl(196deg 100% 51%);
+		--panda-primary-color-hover: hsl(0deg 0% 100%);
+		--panda-primary-background-hover: hsl(196deg 100% 51%);
 		
-		--panda-primary-color-txt-disabled: hsl(0deg 0% 100%);
-		--panda-primary-color-bg-disabled: hsl(196deg 88% 73%);
+		--panda-primary-color-disabled: hsl(0deg 0% 100%);
+		--panda-primary-background-disabled: hsl(196deg 88% 73%);
 		
 		/* SECONDARY */
 
-		--panda-secondary-color-txt: hsl(0deg 0% 29%);
-		--panda-secondary-color: hsl(196deg 30% 85%);
+		--panda-secondary-color: hsl(0deg 0% 29%);
+		--panda-secondary-background: hsl(196deg 30% 85%);
 		
-		--panda-secondary-color-txt-hover: hsl(0deg 0% 29%);
-		--panda-secondary-color-hover: hsl(196deg 30% 89%);
+		--panda-secondary-color-hover: hsl(0deg 0% 29%);
+		--panda-secondary-background-hover: hsl(196deg 30% 89%);
 		
-		--panda-secondary-color-txt-disabled: hsl(0deg 0% 64%);
-		--panda-secondary-color-disabled: hsl(196deg 28% 92%);
+		--panda-secondary-color-disabled: hsl(0deg 0% 64%);
+		--panda-secondary-background-disabled: hsl(196deg 28% 92%);
 
-		--panda-secondary-color-0opc: hsl(196deg 30% 85% / 0%);
-		--panda-secondary-color-10opc: hsl(196deg 30% 85% / 10%);
-		--panda-secondary-color-20opc: hsl(196deg 30% 85% / 20%);
-		--panda-secondary-color-30opc: hsl(196deg 30% 85% / 30%);
-		--panda-secondary-color-40opc: hsl(196deg 30% 85% / 40%);
-		--panda-secondary-color-50opc: hsl(196deg 30% 85% / 50%);
-		--panda-secondary-color-60opc: hsl(196deg 30% 85% / 60%);
-		--panda-secondary-color-70opc: hsl(196deg 30% 85% / 70%);
-		--panda-secondary-color-80opc: hsl(196deg 30% 85% / 80%);
-		--panda-secondary-color-90opc: hsl(196deg 30% 85% / 90%);
+		--panda-secondary-0opc: hsl(196deg 30% 85% / 0%);
+		--panda-secondary-10opc: hsl(196deg 30% 85% / 10%);
+		--panda-secondary-20opc: hsl(196deg 30% 85% / 20%);
+		--panda-secondary-30opc: hsl(196deg 30% 85% / 30%);
+		--panda-secondary-40opc: hsl(196deg 30% 85% / 40%);
+		--panda-secondary-50opc: hsl(196deg 30% 85% / 50%);
+		--panda-secondary-60opc: hsl(196deg 30% 85% / 60%);
+		--panda-secondary-70opc: hsl(196deg 30% 85% / 70%);
+		--panda-secondary-80opc: hsl(196deg 30% 85% / 80%);
+		--panda-secondary-90opc: hsl(196deg 30% 85% / 90%);
 		
 		
 		/* TEXT, FONTS & SIZES */
@@ -267,12 +267,14 @@ export const pandaThemeLight = css`
 		--panda-button-border-radius: 0px;
 		--panda-button-border: 1px solid var(--panda-bg-color-100);
 
-		--panda-button-txt-color: var(--panda-txt-color);
-		--panda-button-bg-color: hsl(0deg 0% 100%);
-		--panda-button-txt-color-hover: var(--panda-txt-color);
-		--panda-button-bg-color-hover: hsl(0deg 0% 95%);
-		--panda-button-txt-color-disabled: var(--panda-txt-color);
-		--panda-button-bg-color-disabled: hsl(0deg 0% 95%);
+		--panda-button-color: var(--panda-txt-color);
+		--panda-button-background: hsl(0deg 0% 100%);
+
+		--panda-button-color-hover: var(--panda-txt-color);
+		--panda-button-background-hover: hsl(0deg 0% 95%);
+
+		--panda-button-color-disabled: var(--panda-txt-color);
+		--panda-button-background-disabled: hsl(0deg 0% 95%);
 
 		/* SCROLLBARS */
 

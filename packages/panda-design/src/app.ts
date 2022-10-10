@@ -12,6 +12,7 @@ import "@panda-wbc/panda-router";
 import "./pages/home/home-page";
 import "./pages/get-started/get-started-page";
 import "./pages/docs/docs-page";
+import "./pages/core/core-page";
 
 // utils & config
 import { LitElement, html } from "lit";

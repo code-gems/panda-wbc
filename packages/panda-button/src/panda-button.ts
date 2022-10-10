@@ -5,7 +5,7 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-spinner";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValues } from "lit";
+import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("panda-button")
@@ -23,6 +23,9 @@ export class PandaButton extends LitElement {
 
 	@property({ type: String, attribute: true })
 	spinner!: string;
+
+	@property({ type: String, attribute: true })
+	theme!: string;
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE

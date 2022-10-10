@@ -20,17 +20,25 @@ module.exports = {
 				use: "ts-loader",
 				exclude: /node_modules/,
 			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				loader: 'file-loader',
+				options: {
+					name: '[name].[ext]'
+				},
+				type: 'asset/resource',
+			},
 		],
 	},
 	resolve: {
 		extensions: [".tsx", ".ts", ".js"],
 	},
 	plugins: [
-		// new CopyPlugin({
-		// 	patterns: [
-		// 		{ from: "./src/index.html", to: path.resolve(__dirname, "dist") },
-		// 	],
-		// }),
+		new CopyPlugin({
+			patterns: [
+				{ from: "./assets", to: path.resolve(__dirname, "dist") },
+			],
+		}),
 		new HtmlWebpackPlugin({
 			name: "Panda Design",
 			hash: true,

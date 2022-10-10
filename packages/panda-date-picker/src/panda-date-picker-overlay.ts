@@ -1,5 +1,5 @@
 // types
-import { ElementDetails } from "../index";
+import { ElementDetails, PandaDatePickerChangeEvent, PandaDateRange } from "../index";
 
 // style
 // import { styles } from "./styles/styles";
@@ -8,7 +8,7 @@ import { ElementDetails } from "../index";
 import "./panda-month-calendar";
 
 // utils
-import { LitElement, html, PropertyValues, css } from "lit";
+import { LitElement, html, PropertyValues, css, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("panda-date-picker-overlay")
@@ -26,22 +26,52 @@ export class PandaDatePickerOverlay extends LitElement {
 				bottom: 0px;
 				left: 0px;
 				z-index: 999999;
-				background-color: rgba(255, 0, 0, 0.1);
 			}
 
 			.overlay {
 				position: absolute;
-				display: block;
-				opacity: 0.75;
+				display: flex;
+				flex-flow: column;
+
+				border: 1px solid var(--panda-bg-color-100);
+				background-color: var(--panda-date-picker-bg-color, var(--panda-bg-color, hsl(0deg 0% 100%)));
+				box-shadow: 0px 2px 4px var(--panda-shadow-color-20opc);
+				box-sizing: border-box;
+			}
+
+			.overlay-footer {
+				display: flex;
+				flex-flow: row nowrap;
 			}
 		`;
 	}
 
 	@property({ type: String })
-	selectedDate!: string;
+	selectedDate!: string | number | null;
 
 	@property({ type: Boolean, attribute: true })
 	opened!: boolean;
+
+	@property({ type: String })
+	min!: string | null;
+
+	@property({ type: String })
+	max!: string | null;
+
+	@property({ type: Array })
+	disableDates!: string[] | null;
+
+	@property({ type: Boolean })
+	disableWeekends!: boolean;
+	
+	@property({ type: Array })
+	disableWeekDays!: string[] | null;
+	
+	@property({ type: Array })
+	disableDateRange!: PandaDateRange[] | null;
+
+	@property({ type: Boolean })
+	showToday!: boolean;
 
 	parentDetails!: ElementDetails;
 
@@ -62,6 +92,15 @@ export class PandaDatePickerOverlay extends LitElement {
 	constructor() {
 		super();
 		this.opened = false;
+		this.selectedDate = "";
+		this.min = null;
+		this.max = null;
+		this.disableDates = null;
+		this.disableWeekends = false;
+		this.disableWeekDays = null;
+		this.disableDateRange = null;
+		this.showToday = true;
+
 		// event bindings
 		this._resizeEventBinding = this.close.bind(this);
 		window.addEventListener("resize", this._resizeEventBinding);
@@ -93,19 +132,57 @@ export class PandaDatePickerOverlay extends LitElement {
 				id="overlay-cont"
 				class="overlay-cont"
 				part="overlay-cont"
-				@click="${() => this.close()}"	
+				@click="${this.close}"
 			>
 				<div
 					id="overlay"
 					class="overlay"
 					part="overlay"
-					@click="${(e: MouseEvent) => this._preventMouseEvent(e)}"	
+					@click="${this._preventMouseEvent}"	
 				>
 					<panda-month-calendar
 						.selectedDate="${this.selectedDate}"
+						.min="${this.min}"
+						.max="${this.max}"
+						.disableDates="${this.disableDates}"
+						.disableWeekends="${this.disableWeekends}"
+						.disableWeekDays="${this.disableWeekDays}"
+						.disableDateRange="${this.disableDateRange}"
+						@change="${(e: CustomEvent<PandaDatePickerChangeEvent>) => this._onSelectDate(e.detail.date)}"
 					>
 					</panda-month-calendar>
+					${this._renderFooter()}
 				</div>
+			</div>
+		`;
+	}
+
+	private _renderFooter() {
+		let todayBtnHtml: TemplateResult = html``;
+
+		if (this.showToday) {
+			todayBtnHtml = html`
+				<panda-button
+					theme="link"
+					@click="${this.close}"
+				>
+					TODAY
+				</panda-button>
+			`;
+		}
+
+		return html`
+			<div 
+				class="overlay-footer"
+				part="overlay-footer"
+			>
+				${todayBtnHtml}
+				<panda-button
+					theme="link"
+					@click="${this.close}"
+				>
+					CANCEL
+				</panda-button>
 			</div>
 		`;
 	}
@@ -152,6 +229,19 @@ export class PandaDatePickerOverlay extends LitElement {
 		// prevent click event to prevent overlay from closing
 		e.stopPropagation();
 		e.preventDefault();
+	}
+
+	private _onSelectDate(date: string) {
+		console.log("%c [DATE PICKER OVERLAY] _onSelectDate", "font-size: 24px; color: green;", date);
+
+		// trigger change event
+		const event = new CustomEvent("change", {
+			detail: {
+				date
+			}
+		});
+		this.dispatchEvent(event);
+		this.close();
 	}
 }
 

@@ -1,6 +1,3 @@
-// types
-import { PandaDate, PandaMonth } from "../../index";
-
 export const minValue = (value: number, min: number): number => value < min ? min : value;
 
 export const maxValue = (value: number, max: number): number => value > max ? max : value;
@@ -33,47 +30,10 @@ export const getParentOffsetLeft = (el: HTMLElement): number => {
 	}
 };
 
-/**
- * Parse date string and return Date object
- * @param {String} date - Date string to parse
- * @param {String} format - custom format string eg. "YYYY DD MM"
- * @returns {Date} Date object
- */
-export const parseDate = (date: string, format: string): Date => {
-	if (!date) {
-		return new Date();
-	} else {
-		// check if date format is provided
-		// if (format) {
+export const getMonths = (): string[] => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-		// }
-		const parsedDate: Date | number = new Date(date);
+export const getFullMonths = (): string[] => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-		if (Object.prototype.toString.call(parsedDate) === "[object Date]") {
-			// it is a date
-			if (isNaN(parsedDate as any)) {
-				return new Date();
-			} else {
-				return parsedDate;
-			}
-		} else {
-			return new Date();
-		}
-	}
-};
+export const getDaysOfWeek = (): string[] => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export const getDefaultDate = (): PandaDate => ({
-	date: null,
-	unix: null,
-	day: null,
-	month: null,
-	year: null,
-});
-
-export const getDefaultMonth = (): PandaMonth => ({
-	month: null,
-	year: null,
-	daysCount: null,
-	days: [],
-	startDayIndex: null,
-});
+export const getFullDaysOfWeek = (): string[] => ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

@@ -23,6 +23,7 @@
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
+		"@panda-wbc/panda-core": "workspace:^1.0.0",
 		"@panda-wbc/panda-router": "workspace:^1.0.0",
 		"@panda-wbc/panda-theme": "workspace:^1.0.0",
 		"@panda-wbc/panda-button": "workspace:^1.0.0",

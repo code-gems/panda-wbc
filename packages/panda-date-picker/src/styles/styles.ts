@@ -9,20 +9,20 @@ export const styles = css`
 	.date-picker {
 		position: relative;
 		display: grid;
-		grid-template-columns: 40px minmax(0, 1fr) auto 40px;
+		grid-template-columns: 40px minmax(0, 1fr) auto;
 		width: 100%;
 		width: fit-content;
 		height: 40px;
 
 		transition: all 200ms ease-in-out;
 		
-		border: 2px solid var(--panda-input-bg-color, hsl(0deg 0% 95%));
 		border-radius: var(--panda-border-radius-m, 5px);
 		background-color: var(--panda-input-bg-color, hsl(0deg 0% 95%));
+		box-shadow: 0px 0px 0px 2px transparent;
 		box-sizing: border-box;
 	}
 	:host([focused]) .date-picker {
-		border: 2px solid var(--panda-primary-color, hsl(196deg 100% 47%));
+		box-shadow: 0px 0px 0px 2px var(--panda-primary);
 	}
 
 	.date-input { flex-grow: 1; }
@@ -100,23 +100,23 @@ export const styles = css`
 	/* PRIMARY */
 
 	:host([theme~="primary"]) .date-picker {
-		border: 2px solid var(--panda-primary-color, hsl(196deg 100% 47%));
-		background-color: var(--panda-primary-color, hsl(196deg 100% 47%));
-		box-shadow: 0px 2px 4px var(--panda-primary-color-50opc, hsl(0deg 0% 0% / 50%));
+		border: 2px solid var(--panda-primary, hsl(196deg 100% 47%));
+		background-color: var(--panda-primary, hsl(196deg 100% 47%));
+		box-shadow: 0px 2px 4px var(--panda-primary-50opc, hsl(0deg 0% 0% / 50%));
 	}
 	
 	:host([theme~="primary"][focused]) .date-picker {
-		border: 2px solid var(--panda-primary-color-hover, hsl(196deg 100% 51%));
-		background-color: var(--panda-primary-color-hover, hsl(196deg 100% 51%));
+		border: 2px solid var(--panda-primary-hover, hsl(196deg 100% 51%));
+		background-color: var(--panda-primary-hover, hsl(196deg 100% 51%));
 	}
 
 	:host([theme~="primary"]) .input-field {
-		color: var(--panda-primary-color-txt, hsl(0deg 0% 100%));
-		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
+		color: var(--panda-primary-color, hsl(0deg 0% 100%));
+		text-shadow: 0px 1px 1px var(--panda-shadow-50opc, hsl(0deg 0% 0% / 50%));
 	}
 
 	:host([theme~="primary"]) .icon panda-icon {
-		--panda-icon-fill-color: var(--panda-primary-color-txt, hsl(0deg 0% 100%));
+		--panda-icon-fill-color: var(--panda-primary-color, hsl(0deg 0% 100%));
 	}
 
 `;

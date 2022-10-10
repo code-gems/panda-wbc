@@ -15,7 +15,7 @@ export const styles = css`
 		min-width: var(--panda-button-height-m, 40px);
 		height: var(--panda-button-height-m, 40px);
 
-		color: var(--panda-primary-txt-color, #ffffff);
+		color: var(--panda-primary-color, #ffffff);
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 		font-weight: bold;
@@ -23,10 +23,10 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 		cursor: pointer;
 
-		border-radius: var(--panda-border-radius-m, 5px);
+		border-radius: var(--panda-button-border-radius, var(--panda-border-radius-m, 5px));
 		border: none;
-		background: var(--panda-primary-color, hsl(196deg 100% 47%));
-		box-shadow: 0px 2px 4px var(--panda-primary-color-50opc, hsl(0deg 0% 0% / 50%));
+		background: var(--panda-primary-background, hsl(196deg 100% 47%));
+		box-shadow: 0px 2px 4px var(--panda-primary-50opc, hsl(0deg 0% 0% / 50%));
 	}
 
 	.content {
@@ -62,18 +62,18 @@ export const styles = css`
 		top: 0px;
 
 		border-radius: var(--panda-border-radius-m, 5px);
-		background: var(--panda-primary-color, hsl(196deg 100% 47%));
+		background: var(--panda-primary, hsl(196deg 100% 47%));
 	}
 
 	.spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-primary-color-txt, hsl(0deg 0% 100%));
+		--panda-spinner-color: var(--panda-primary-color, hsl(0deg 0% 100%));
 	}
 
 	/* HOVER STATE */
 	
 	button:hover {
-		color: var(--panda-primary-color-txt-hover, hsl(0deg 0% 100%));
-		background: var(--panda-primary-color-hover, hsl(196deg 100% 51%));
+		color: var(--panda-primary-color-hover, hsl(0deg 0% 100%));
+		background: var(--panda-primary-background-hover, hsl(196deg 100% 51%));
 	}
 	
 	/* DISABLED STATE */
@@ -81,9 +81,9 @@ export const styles = css`
 	:host([disabled]) { pointer-events: none; }
 	
 	:host([disabled]) button {
-		color: var(--panda-primary-color-txt-disabled, hsl(0deg 0% 100%));
+		color: var(--panda-primary-color-disabled, hsl(0deg 0% 100%));
 		text-shadow: none;
-		background: var(--panda-primary-color-disabled, hsl(196deg 88% 73%));
+		background: var(--panda-primary-background-disabled, hsl(196deg 88% 73%));
 		box-shadow: none;
 	}
 	
@@ -98,10 +98,10 @@ export const styles = css`
 	/* PRIMARY - OUTLINE */
 
 	:host([theme~="outline"]) button {
-		color: var(--panda-primary-color, hsl(196deg 100% 47%));
+		color: var(--panda-primary, hsl(196deg 100% 47%));
 		text-shadow: none;
-		border: 2px solid var(--panda-primary-color, hsl(196deg 100% 47%));
-		background: var(--panda-primary-color-10opc, hsl(196deg 100% 47% / 10%));
+		border: 2px solid var(--panda-primary, hsl(196deg 100% 47%));
+		background: var(--panda-primary-10opc, hsl(196deg 100% 47% / 10%));
 		box-shadow: none;
 	}
 
