@@ -88,6 +88,7 @@ export const pandaThemeLight = css`
 		--panda-bg-color-80opc: hsl(0deg 0% 100% / 80%);
 		--panda-bg-color-90opc: hsl(0deg 0% 100% / 90%);
 
+		--panda-font-size-xs: 10px;
 		--panda-font-size-s: 12px;
 		--panda-font-size-m: 14px;
 		--panda-font-size-l: 16px;
@@ -118,6 +119,13 @@ export const pandaThemeLight = css`
 
 		--panda-input-txt-color-disabled: hsl(0deg 0% 70%);
 		--panda-input-bg-color-disabled: hsl(0deg 0% 90%);
+
+		--panda-padding-xs: 2px;
+		--panda-padding-s: 5px;
+		--panda-padding-m: 10px;
+		--panda-padding-l: 15px;
+		--panda-padding-xl: 30px;
+		--panda-padding-hero: 60px;
 
 
 		/* BORDER RADIUS SIZES */
