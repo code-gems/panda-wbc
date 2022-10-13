@@ -1,5 +1,5 @@
 // types
-import { ElementDetails, PandaDatePickerChangeEvent, PandaDateRange } from "../index";
+import { ElementDetails, PandaDateHighlight, PandaDatePickerChangeEvent, PandaDateRange } from "../index";
 
 // style
 // import { styles } from "./styles/styles";
@@ -69,6 +69,9 @@ export class PandaDatePickerOverlay extends LitElement {
 	
 	@property({ type: Array })
 	disableDateRange!: PandaDateRange[] | null;
+	
+	@property({ type: Array })
+	highlightDate!: PandaDateHighlight[] | null;
 
 	@property({ type: Boolean })
 	showToday!: boolean;
@@ -148,6 +151,7 @@ export class PandaDatePickerOverlay extends LitElement {
 						.disableWeekends="${this.disableWeekends}"
 						.disableWeekDays="${this.disableWeekDays}"
 						.disableDateRange="${this.disableDateRange}"
+						.highlightDate="${this.highlightDate}"
 						@change="${(e: CustomEvent<PandaDatePickerChangeEvent>) => this._onSelectDate(e.detail.date)}"
 					>
 					</panda-month-calendar>
@@ -164,7 +168,7 @@ export class PandaDatePickerOverlay extends LitElement {
 			todayBtnHtml = html`
 				<panda-button
 					theme="link"
-					@click="${this.close}"
+					@click="${this._onSelectToday}"
 				>
 					TODAY
 				</panda-button>
@@ -221,6 +225,15 @@ export class PandaDatePickerOverlay extends LitElement {
 		this._overlayEl.style.left = `${overlayLeft}px`;
 	}
 
+	private _triggerChangeEvent(date: string) {
+		const event = new CustomEvent("change", {
+			detail: {
+				date
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
@@ -235,12 +248,19 @@ export class PandaDatePickerOverlay extends LitElement {
 		console.log("%c [DATE PICKER OVERLAY] _onSelectDate", "font-size: 24px; color: green;", date);
 
 		// trigger change event
-		const event = new CustomEvent("change", {
-			detail: {
-				date
-			}
-		});
-		this.dispatchEvent(event);
+		this._triggerChangeEvent(date);
+		this.close();
+	}
+
+	private _onSelectToday() {
+		const today = new Date();
+		const year = String(today.getFullYear());
+		const month = `0${today.getMonth() + 1}`.slice(-2);
+		const day = `0${today.getDate()}`.slice(-2);
+		const date = `${year}-${month}-${day}`;
+
+		// trigger change event
+		this._triggerChangeEvent(date);
 		this.close();
 	}
 }

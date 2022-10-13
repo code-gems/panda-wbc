@@ -1,5 +1,5 @@
 // type
-import { ElementDetails, PandaDateRange } from "../index";
+import { ElementDetails, PandaDateHighlight, PandaDateRange } from "../index";
 import { PandaDatePickerOverlay } from "./panda-date-picker-overlay";
 
 // style
@@ -37,7 +37,7 @@ export class PandaDatePicker extends LitElement {
 
 	@property({ type: String, attribute: true })
 	spinner!: string;
-
+              
 	/**
 	 * Change default calendar icon to other panda-icon.
 	 * 
@@ -135,6 +135,16 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Array })
 	disableDateRange!: PandaDateRange[] | null;
+	
+	/**
+	 * Highlight particular date(s) on the calendar. 
+	 * 
+	 * example: [{ date: "2020-01-01", label: "Birthday" }]
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: Array })
+	highlightDate!: PandaDateHighlight[] | null;
 
 	/**
 	 * Format of displayed date.
@@ -306,6 +316,7 @@ export class PandaDatePicker extends LitElement {
 			this._overlayEl.disableWeekends = this.disableWeekends;
 			this._overlayEl.disableWeekDays = this.disableWeekDays;
 			this._overlayEl.disableDateRange = this.disableDateRange;
+			this._overlayEl.highlightDate = this.highlightDate;
 			this._overlayEl.showToday = this.showToday;
 
 			// set date picker overlay's position
@@ -384,7 +395,6 @@ export class PandaDatePicker extends LitElement {
 
 	}
 
-
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
@@ -430,6 +440,9 @@ export class PandaDatePicker extends LitElement {
 	private _onChangeDate(date: string | null) {
 		console.log("%c [DATE PICKER] _onChangeDate [internal]", "font-size: 24px; color: green;", date);
 		this.value = date;
+		if (this._overlayEl) {
+			this._overlayEl.selectedDate = date;
+		}
 		this._triggerChangeEvent();
 	}
 

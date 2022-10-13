@@ -17,6 +17,10 @@ export const styles = css`
 
 	}
 
+	.calendar-body {
+		position: relative;
+	}
+
 	.calendar-cont .header-label {
 		flex-grow: 1;
 
@@ -31,7 +35,6 @@ export const styles = css`
 		text-shadow: none;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		cursor: pointer;
 		transition: all 200ms ease-in-out;
 		user-select: none;
 
@@ -40,6 +43,10 @@ export const styles = css`
 
 	.calendar-cont .header-label:hover {
 		color: var(--panda-primary);
+	}
+
+	.calendar-cont .header-label.btn {
+		cursor: pointer;
 	}
 
 	.btn-icon {
@@ -67,11 +74,14 @@ export const styles = css`
 	}
 
 	.calendar .day {
+		position: relative;
 		display: flex;
 		width: var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px));
 		height: var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px));
 		justify-content: center;
 		align-items: center;
+
+		color: var(--panda-txt-color, hsl(0deg 0% 29%));
 
 		border: 1px solid transparent;
 		box-sizing: border-box;
@@ -96,8 +106,88 @@ export const styles = css`
 		background-color: var(--panda-date-picker-date-selected-background-hover, var(--panda-primary-background-hover, hsl(196deg 100% 51%)));
 	}
 
+	.calendar .day.inactive {
+		color: var(--panda-date-picker-inactive-color, var(--panda-label-color, #ccc));
+	}
+
 	.calendar .day.today {
 		animation: 1s infinite pulse;
+	}
+
+	.calendar .day.disabled {
+		color: var(--panda-label-color);
+		cursor: not-allowed;
+		background: var(--panda-date-picker-button-background-disabled, var(--panda-button-background-disabled, hsl(0deg 0% 95%)));
+	}
+	
+	.calendar .day.disabled:hover {
+		color: var(--panda-label-color);
+		background: var(--panda-date-picker-button-background-disabled, var(--panda-button-background-disabled, hsl(0deg 0% 95%)));
+	}
+
+	.calendar .day .highlight {
+		position: absolute;
+		width: 100%;
+		padding: 1px 0px;
+		bottom: 0px;
+		line-height: 10px;
+		overflow: hidden;
+		
+		color: var(--panda-date-picker-highlight-color, var(--panda-primary-color, hsl(0deg 0% 100%)));
+		font-size: var(--panda-date-picker-highlight-font-size, var(--panda-font-size-xs, 10px));
+		font-family: var(--panda-date-picker-highlight-font-family, var(--panda-font-family-xs, "Poppins"));
+		text-align: center;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		background-color: var(--panda-date-picker-highlight-background, var(--panda-primary-background, hsl(196deg 100% 47%)));
+	}
+
+	.calendar-body .month-list {
+		position: absolute;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0px, 1fr));
+		grid-template-rows: repeat(4, minmax(0px, 1fr));
+		width: 100%;
+		height: 100%;
+		top: 0px;
+		gap: var(--panda-padding-m, 10px);
+		user-select: none;
+		
+		background-color: var(--panda-bg-color-90opc);
+	}
+
+	.calendar-body .month-list .month {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		color: var(--panda-txt-color, hsl(0deg 0% 29%));
+
+		border: 1px solid transparent;
+		box-sizing: border-box;
+	}
+
+	.calendar-body .month-list .month:hover {
+		background: var(--panda-date-picker-button-background-hover, var(--panda-button-background-hover, hsl(0deg 0% 95%)));
+	}
+
+	.calendar-body .month-list .month.btn {
+		transition: all 200ms ease-in-out;
+		cursor: pointer;
+	}
+		
+	.calendar-body .month-list .month.active {
+		animation: 1s infinite pulse;
+	}
+		
+	.calendar-body .month-list .month.inactive {
+		color: var(--panda-date-picker-inactive-color, var(--panda-label-color, #ccc));
+	}
+		
+	.calendar-body .month-list .month.disabled {
+		color: var(--panda-button-color-disabled, var(--panda-txt-color));
+		background-color: var(--panda-button-background-disabled, hsl(0deg 0% 95%));
 	}
 
 	@keyframes pulse {
