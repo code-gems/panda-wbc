@@ -459,7 +459,13 @@ export class PandaDatePicker extends LitElement {
 		console.log("%c [DATE PICKER] _onInputFieldKeyUp", "font-size: 24px; color: red;", this, e.key);
 		if (e.key === "Enter") {
 			this._hideOverlay();
-		} else if (e.key !== "Tab" && e.key !== "Shift" && !this.opened) {
+		} else if (
+			e.key !== "Tab" &&
+			e.key !== "Shift" &&
+			!this.busy &&
+			!this.disabled &&
+			!this.opened
+		) {
 			this._openDatePickerOverlay();
 		}
 	}

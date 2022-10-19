@@ -758,6 +758,7 @@ export class PandaMonthCalendar extends LitElement {
 	}
 
 	private _parseHighlights() {
+		this._highlightDate = {};
 		if (this.highlightDate?.length) {
 			this.highlightDate.forEach(({ date, label }) => {
 				const _date = new Date(date);
@@ -767,8 +768,6 @@ export class PandaMonthCalendar extends LitElement {
 				const key = `${year}${month}${day}`;
 				this._highlightDate[key] = label;
 			});
-		} else {
-			this._highlightDate = {};
 		}
 	}
 
