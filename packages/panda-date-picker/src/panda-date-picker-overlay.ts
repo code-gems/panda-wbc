@@ -32,11 +32,18 @@ export class PandaDatePickerOverlay extends LitElement {
 				position: absolute;
 				display: flex;
 				flex-flow: column;
+				opacity: 0;
+
+				transition: opacity 200ms ease-in-out;
 
 				border: 1px solid var(--panda-bg-color-100);
 				background-color: var(--panda-date-picker-bg-color, var(--panda-bg-color, hsl(0deg 0% 100%)));
 				box-shadow: 0px 2px 4px var(--panda-shadow-color-20opc);
 				box-sizing: border-box;
+			}
+
+			.overlay.show {
+				opacity: 1;
 			}
 
 			.overlay-footer {
@@ -231,6 +238,7 @@ export class PandaDatePickerOverlay extends LitElement {
 		// position overlay content
 		this._overlayEl.style.top = `${overlayTop}px`;
 		this._overlayEl.style.left = `${overlayLeft}px`;
+		this._overlayEl.classList.add("show");
 	}
 
 	private _triggerChangeEvent(date: string) {

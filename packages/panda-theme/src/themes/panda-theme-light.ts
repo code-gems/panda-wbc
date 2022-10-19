@@ -173,42 +173,42 @@ export const pandaThemeLight = css`
 		--panda-action-color-done-disabled: hsl(164deg 54% 80%);
 		--panda-action-color-done-txt-disabled: hsl(0deg 0% 100%);
 
-		--panda-action-color-done-100: hsl(164deg 67% 50%);
-		--panda-action-color-done-200: hsl(164deg 67% 55%);
-		--panda-action-color-done-300: hsl(164deg 67% 60%);
-		--panda-action-color-done-400: hsl(164deg 67% 65%);
-		--panda-action-color-done-txt: hsl(0deg 0% 100%);
+		--panda-action-done-100: hsl(164deg 67% 50%);
+		--panda-action-done-200: hsl(164deg 67% 55%);
+		--panda-action-done-300: hsl(164deg 67% 60%);
+		--panda-action-done-400: hsl(164deg 67% 65%);
+		--panda-action-done-txt: hsl(0deg 0% 100%);
 		
-		--panda-action-color-done-0opc: hsl(164deg 67% 45% / 0%);
-		--panda-action-color-done-10opc: hsl(164deg 67% 45% / 10%);
-		--panda-action-color-done-20opc: hsl(164deg 67% 45% / 20%);
-		--panda-action-color-done-30opc: hsl(164deg 67% 45% / 30%);
-		--panda-action-color-done-40opc: hsl(164deg 67% 45% / 40%);
-		--panda-action-color-done-50opc: hsl(164deg 67% 45% / 50%);
-		--panda-action-color-done-60opc: hsl(164deg 67% 45% / 60%);
-		--panda-action-color-done-70opc: hsl(164deg 67% 45% / 70%);
-		--panda-action-color-done-80opc: hsl(164deg 67% 45% / 80%);
-		--panda-action-color-done-90opc: hsl(164deg 67% 45% / 90%);
+		--panda-action-done-0opc: hsl(164deg 67% 45% / 0%);
+		--panda-action-done-10opc: hsl(164deg 67% 45% / 10%);
+		--panda-action-done-20opc: hsl(164deg 67% 45% / 20%);
+		--panda-action-done-30opc: hsl(164deg 67% 45% / 30%);
+		--panda-action-done-40opc: hsl(164deg 67% 45% / 40%);
+		--panda-action-done-50opc: hsl(164deg 67% 45% / 50%);
+		--panda-action-done-60opc: hsl(164deg 67% 45% / 60%);
+		--panda-action-done-70opc: hsl(164deg 67% 45% / 70%);
+		--panda-action-done-80opc: hsl(164deg 67% 45% / 80%);
+		--panda-action-done-90opc: hsl(164deg 67% 45% / 90%);
 
-		--panda-action-color-warn: hsl(35deg 91% 62%);
-		--panda-action-color-warn-txt: hsl(0deg 0% 100%);
+		--panda-action-warn: hsl(35deg 91% 62%);
+		--panda-action-warn-txt: hsl(0deg 0% 100%);
 		
-		--panda-action-color-warn-hover: hsl(35deg 100% 68%);
-		--panda-action-color-warn-txt-hover: hsl(0deg 0% 100%);
+		--panda-action-warn-hover: hsl(35deg 100% 68%);
+		--panda-action-warn-txt-hover: hsl(0deg 0% 100%);
 		
-		--panda-action-color-warn-disabled: hsl(36deg 90% 81%);
-		--panda-action-color-warn-txt-disabled: hsl(0deg 0% 100%);
+		--panda-action-warn-disabled: hsl(36deg 90% 81%);
+		--panda-action-warn-txt-disabled: hsl(0deg 0% 100%);
 
-		--panda-action-color-warn-0opc: hsl(35deg 91% 62% / 0%);
-		--panda-action-color-warn-10opc: hsl(35deg 91% 62% / 10%);
-		--panda-action-color-warn-20opc: hsl(35deg 91% 62% / 20%);
-		--panda-action-color-warn-30opc: hsl(35deg 91% 62% / 30%);
-		--panda-action-color-warn-40opc: hsl(35deg 91% 62% / 40%);
-		--panda-action-color-warn-50opc: hsl(35deg 91% 62% / 50%);
-		--panda-action-color-warn-60opc: hsl(35deg 91% 62% / 60%);
-		--panda-action-color-warn-70opc: hsl(35deg 91% 62% / 70%);
-		--panda-action-color-warn-80opc: hsl(35deg 91% 62% / 80%);
-		--panda-action-color-warn-90opc: hsl(35deg 91% 62% / 90%);
+		--panda-action-warn-0opc: hsl(35deg 91% 62% / 0%);
+		--panda-action-warn-10opc: hsl(35deg 91% 62% / 10%);
+		--panda-action-warn-20opc: hsl(35deg 91% 62% / 20%);
+		--panda-action-warn-30opc: hsl(35deg 91% 62% / 30%);
+		--panda-action-warn-40opc: hsl(35deg 91% 62% / 40%);
+		--panda-action-warn-50opc: hsl(35deg 91% 62% / 50%);
+		--panda-action-warn-60opc: hsl(35deg 91% 62% / 60%);
+		--panda-action-warn-70opc: hsl(35deg 91% 62% / 70%);
+		--panda-action-warn-80opc: hsl(35deg 91% 62% / 80%);
+		--panda-action-warn-90opc: hsl(35deg 91% 62% / 90%);
 
 		--panda-action-color-fail: hsl(14deg 77% 62%);
 		--panda-action-color-fail-txt: hsl(0deg 0% 100%);

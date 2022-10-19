@@ -11,7 +11,7 @@ import "@panda-wbc/panda-icon";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { getDaysOfWeek, getFullMonths, getMonths } from "./utils/utils";
+import { getDateOffset, getDaysOfWeek, getFullMonths, getMonths, isDateDisabled } from "./utils/utils";
 
 @customElement("panda-month-calendar")
 export class PandaMonthCalendar extends LitElement {
@@ -184,11 +184,11 @@ export class PandaMonthCalendar extends LitElement {
 		}
 
 		if (_changedProperties.has("min") && this.min !== null) {
-			this._minDateOffset = this._getDateOffset(this.min);
+			this._minDateOffset = getDateOffset(this.min);
 		}
 
 		if (_changedProperties.has("max") && this.max !== null) {
-			this._maxDateOffset = this._getDateOffset(this.max);
+			this._maxDateOffset = getDateOffset(this.max);
 		}
 	}
 
@@ -537,7 +537,19 @@ export class PandaMonthCalendar extends LitElement {
 					date: this._formatDate(this._currentMonth.year, this._currentMonth.month, i + 1),
 					selected: this._isSelected(this._currentMonth.year, this._currentMonth.month, i + 1),
 					isToday: this._isToday(this._currentMonth.year, this._currentMonth.month, i + 1),
-					disabled: this._isDisabled(this._currentMonth.year, this._currentMonth.month, i + 1, dayOfWeek),
+					disabled: isDateDisabled(
+						this._currentMonth.year,
+						this._currentMonth.month,
+						i + 1,
+						dayOfWeek,
+						this.min,
+						this.max,
+						this.disableDates,
+						this.disableDateRange,
+						this.disableWeekends,
+						this.disableWeekDays,
+						this._daysOfWeek
+					),
 					highlight: this._hasHighlights(this._currentMonth.year, this._currentMonth.month, i + 1),
 				});
 			}
@@ -758,19 +770,6 @@ export class PandaMonthCalendar extends LitElement {
 		} else {
 			this._highlightDate = {};
 		}
-	}
-
-	private _getDateOffset(date: string): number | null {
-		let dateOffset = null;
-
-		if (date) {
-			const year = Number(date.slice(0, 4));
-			const month = Number(date.slice(5, 7));
-			const day = Number(date.slice(8, 10));
-			dateOffset = year * 10000 + month * 100 + day;
-		}
-
-		return dateOffset;
 	}
 
 	// ================================================================================================================

@@ -100,14 +100,12 @@ export const styles = css`
 	/* PRIMARY */
 
 	:host([theme~="primary"]) .date-picker {
-		border: 2px solid var(--panda-primary, hsl(196deg 100% 47%));
 		background-color: var(--panda-primary, hsl(196deg 100% 47%));
-		box-shadow: 0px 2px 4px var(--panda-primary-50opc, hsl(0deg 0% 0% / 50%));
 	}
 	
 	:host([theme~="primary"][focused]) .date-picker {
-		border: 2px solid var(--panda-primary-hover, hsl(196deg 100% 51%));
 		background-color: var(--panda-primary-hover, hsl(196deg 100% 51%));
+		box-shadow: 0px 2px 4px var(--panda-primary-50opc, hsl(0deg 0% 0% / 50%));
 	}
 
 	:host([theme~="primary"]) .input-field {
@@ -119,6 +117,11 @@ export const styles = css`
 		--panda-icon-fill-color: var(--panda-primary-color, hsl(0deg 0% 100%));
 	}
 
+	/* ACTION THEMES */
+
+	:host([theme~="mandatory"]) .date-picker {
+		box-shadow: 0px 0px 0px 2px var(--panda-action-warn, hsl(35deg 91% 62%));
+	}
 `;
 
 export const modifiers = css`
