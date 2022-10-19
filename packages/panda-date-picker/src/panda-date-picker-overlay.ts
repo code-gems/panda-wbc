@@ -2,7 +2,7 @@
 import { ElementDetails, PandaDateHighlight, PandaDatePickerChangeEvent, PandaDateRange } from "../index";
 
 // style
-// import { styles } from "./styles/styles";
+// ...
 
 // components
 import "./panda-month-calendar";
@@ -72,6 +72,12 @@ export class PandaDatePickerOverlay extends LitElement {
 	
 	@property({ type: Array })
 	highlightDate!: PandaDateHighlight[] | null;
+
+	@property({ type: Number })
+	firstDayOfWeek: number = 0;
+
+	@property({ type: Boolean, attribute: "week-starts-on-monday" })
+	weekStartsOnMonday: boolean = false;
 
 	@property({ type: Boolean })
 	showToday!: boolean;
@@ -152,6 +158,8 @@ export class PandaDatePickerOverlay extends LitElement {
 						.disableWeekDays="${this.disableWeekDays}"
 						.disableDateRange="${this.disableDateRange}"
 						.highlightDate="${this.highlightDate}"
+						.firstDayOfWeek="${this.firstDayOfWeek}"
+						.weekStartsOnMonday="${this.weekStartsOnMonday}"
 						@change="${(e: CustomEvent<PandaDatePickerChangeEvent>) => this._onSelectDate(e.detail.date)}"
 					>
 					</panda-month-calendar>

@@ -23,7 +23,7 @@
 		"ui component",
 		"web component"
 	],
-	"author": "",
+	"author": "code-gems",
 	"license": "ISC",
 	"dependencies": {
 		"lit": "^2.0.2",
@@ -38,6 +38,7 @@
 		"src/**/*",
 		"demo/**/*",
 		"lib/**/*",
-		"index.d.ts"
+		"index.d.ts",
+		"package.json"
 	]
 }

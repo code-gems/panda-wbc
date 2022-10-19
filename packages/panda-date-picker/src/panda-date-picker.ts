@@ -10,12 +10,11 @@ import "./panda-month-calendar";
 import "./panda-date-picker-overlay";
 import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-icon";
-// import "@panda-wbc/panda-icon/lib/food-icon-pack";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { getDaysOfWeek, getFullDaysOfWeek, getFullMonths, getMonths, getParentOffsetLeft, getParentOffsetTop, minValue } from "./utils/utils";
+import { getDaysOfWeek, getFullDaysOfWeek, getFullMonths, getMonths, minValue } from "./utils/utils";
 
 @customElement("panda-date-picker")
 export class PandaDatePicker extends LitElement {
@@ -147,6 +146,22 @@ export class PandaDatePicker extends LitElement {
 	highlightDate!: PandaDateHighlight[] | null;
 
 	/**
+	 * Set custom start of the week day.
+	 * eg. set 1 to Monday.
+	 * 
+	 * [DEFAULT]: 0 (Sunday)
+	 */
+	@property({ type: Number })
+	firstDayOfWeek: number = 0;
+
+ 	/**
+	 * Set start of the week to Monday
+	 * [DEFAULT]: false
+	 */
+	@property({ type: Boolean, attribute: "week-starts-on-monday" })
+	weekStartsOnMonday: boolean = false;
+
+	/**
 	 * Format of displayed date.
 	 * 
 	 * example: "DD MMM YYYY" -> output: 14 Feb 2022
@@ -263,6 +278,7 @@ export class PandaDatePicker extends LitElement {
 						.placeholder="${this.placeholder}"
 						.disabled="${this.disabled}"
 						@mouseup="${(e: MouseEvent) => this._onInputFieldClick(e)}"
+						@keyup="${this._onInputFieldKeyUp}"
 						@input="${(e: any) => this._onChangeDate((e.target as HTMLInputElement).value)}"
 						@focus="${this._onInputFieldFocus}"
 						@blur="${this._onInputFieldBlur}"
@@ -280,10 +296,10 @@ export class PandaDatePicker extends LitElement {
 
 	private _getDatePickerPosition(): ElementDetails {
 		const rect = this.getBoundingClientRect();
-		let top = minValue(rect.top + window.scrollY + getParentOffsetTop(this), 0);
-		let left = minValue(rect.left + window.scrollX + getParentOffsetLeft(this), 0);
-		let bottom = minValue(rect.bottom + window.scrollY + getParentOffsetTop(this), 0);
-		let right = minValue(rect.right + window.scrollX + getParentOffsetLeft(this), 0);
+		let top = minValue(rect.top + window.scrollY, 0);
+		let left = minValue(rect.left + window.scrollX, 0);
+		let bottom = minValue(rect.bottom + window.scrollY, 0);
+		let right = minValue(rect.right + window.scrollX, 0);
 
 		return {
 			width: rect.width,
@@ -317,6 +333,8 @@ export class PandaDatePicker extends LitElement {
 			this._overlayEl.disableWeekDays = this.disableWeekDays;
 			this._overlayEl.disableDateRange = this.disableDateRange;
 			this._overlayEl.highlightDate = this.highlightDate;
+			this._overlayEl.firstDayOfWeek = this.firstDayOfWeek;
+			this._overlayEl.weekStartsOnMonday = this.weekStartsOnMonday;
 			this._overlayEl.showToday = this.showToday;
 
 			// set date picker overlay's position
@@ -429,6 +447,10 @@ export class PandaDatePicker extends LitElement {
 		if (this._dateInputEl) {
 			this.removeAttribute("focused");
 		}
+		// close overlay if opened
+		if (!this.opened) {
+			this._hideOverlay();
+		}
 	}
 
 	private _onInputFieldClick(e: MouseEvent) {
@@ -437,8 +459,19 @@ export class PandaDatePicker extends LitElement {
 		this._openDatePickerOverlay();
 	}
 
+	private _onInputFieldKeyUp(e: KeyboardEvent) {
+		console.log("%c [DATE PICKER] _onInputFieldKeyUp", "font-size: 24px; color: blueviolet;", e.key);
+		if (e.key === "Enter") {
+			this._hideOverlay();
+		}
+
+		if (e.key !== "Tab" && !this.opened) {
+			this._openDatePickerOverlay();
+		}
+	}
+
 	private _onChangeDate(date: string | null) {
-		console.log("%c [DATE PICKER] _onChangeDate [internal]", "font-size: 24px; color: green;", date);
+		console.log("%c [DATE PICKER] _onChangeDate [internal]", "font-size: 24px; color: blueviolet;", date);
 		this.value = date;
 		if (this._overlayEl) {
 			this._overlayEl.selectedDate = date;
@@ -450,7 +483,6 @@ export class PandaDatePicker extends LitElement {
 		console.log("%c [DATE PICKER] _onSelectedDateChange", "font-size: 24px; color: green;", e);
 		this.value = e.detail.date;
 		this._triggerChangeEvent();
-
 	}
 }
 
