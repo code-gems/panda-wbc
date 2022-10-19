@@ -36,7 +36,7 @@ export class PandaDatePicker extends LitElement {
 
 	@property({ type: String, attribute: true })
 	spinner!: string;
-              
+
 	/**
 	 * Change default calendar icon to other panda-icon.
 	 * 
@@ -46,7 +46,7 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: String, attribute: true })
 	icon!: string;
- 
+
 	/**
 	 * Show TODAY button in the footer.
 	 * 
@@ -54,7 +54,7 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Boolean, attribute: "show-today" })
 	showToday!: boolean;
- 
+
 	/**
 	 * Currently selected date.
 	 * 
@@ -92,9 +92,9 @@ export class PandaDatePicker extends LitElement {
 	 * 
 	 * [DEFAULT] null
 	 */
-	 @property({ type: String, attribute: true })
+	@property({ type: String, attribute: true })
 	max!: string | null;
-	
+
 	/**
 	 * Disable weekends from selection.
 	 * 
@@ -102,7 +102,7 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Boolean, attribute: "disable-weekends" })
 	disableWeekends!: boolean;
-	
+
 	/**
 	 * Disable individual dates from selection.
 	 * Supports wildcard notation "**" see example below
@@ -113,7 +113,7 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Array })
 	disableDates!: string[] | null;
-	
+
 	/**
 	 * Disable day(s) of the week from selection.
 	 * 
@@ -123,7 +123,7 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Array })
 	disableWeekDays!: string[] | null;
-	
+
 	/**
 	 * Disable date range from selection. 
 	 * It is possible to define list of date ranges.
@@ -134,7 +134,7 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Array })
 	disableDateRange!: PandaDateRange[] | null;
-	
+
 	/**
 	 * Highlight particular date(s) on the calendar. 
 	 * 
@@ -154,10 +154,10 @@ export class PandaDatePicker extends LitElement {
 	@property({ type: Number })
 	firstDayOfWeek: number = 0;
 
- 	/**
-	 * Set start of the week to Monday
-	 * [DEFAULT]: false
-	 */
+	/**
+   * Set start of the week to Monday
+   * [DEFAULT]: false
+   */
 	@property({ type: Boolean, attribute: "week-starts-on-monday" })
 	weekStartsOnMonday: boolean = false;
 
@@ -370,40 +370,34 @@ export class PandaDatePicker extends LitElement {
 
 	private _formatDate(date: string | number | null): string {
 		console.log("%c [DATE PICKER] _formatDate", "font-size: 24px; color: orange;", date);
-		
+
 		// check if date is provided
 		if (date !== null && this.format !== null) {
 			let _formattedDate: string = "";
 			let _date: Date = new Date(date);
-			
+
 			// validate date string
 			if (isNaN(_date.getTime())) {
 				return "";
 			} else {
 				// extract available data format
-				const DDDD = this._fullDaysOfWeek[_date.getDay()]; 		// eg. Monday, Tuesday, Wednesday ... Sunday
-				const DDD = this._daysOfWeek[_date.getDay()]; 			// eg. Mon, Tue, Wed ... Sun
-				const DD = `0${_date.getDate()}`.slice(-2); 			// eg. 01, 02, 03 ... 30 - day of the month prefixed with zero
-				const D = _date.getDate() + ""; 						// eg. 1, 2, 3 ... 30 day of the month
-				const MMMM = this._fullMonthList[_date.getMonth()]; 	// eg. January, February, March ... December
-				const MMM = this._monthList[_date.getMonth()]; 			// eg. Jan, Feb, Mar ... Dec
-				const MM = `0${_date.getMonth() + 1}`.slice(-2); 		// eg. 01, 02, 03 ... 12 - month prefixed with zero
-				const M = `${_date.getMonth() + 1}`; 					// eg. 1, 2, 3 ... 12 - month 
-				const YYYY = _date.getFullYear() + ""; 					// eg. 1998, 1999, 2000 ... 2022
-				const YY = `${_date.getFullYear()}`.slice(-2);	 		// eg. 98, 99, 00 ... 22 - last two digits of the year
+				const replaceMap: { [pattern: string]: string } = {
+					DDDD: this._fullDaysOfWeek[_date.getDay()], 	// eg. Monday, Tuesday, Wednesday ... Sunday
+					DDD: this._daysOfWeek[_date.getDay()], 			// eg. Mon, Tue, Wed ... Sun
+					DD: `0${_date.getDate()}`.slice(-2), 			// eg. 01, 02, 03 ... 30 - day of the month prefixed with zero
+					D: _date.getDate() + "", 						// eg. 1, 2, 3 ... 30 day of the month
+					MMMM: this._fullMonthList[_date.getMonth()], 	// eg. January, February, March ... December
+					MMM: this._monthList[_date.getMonth()], 		// eg. Jan, Feb, Mar ... Dec
+					MM: `0${_date.getMonth() + 1}`.slice(-2), 		// eg. 01, 02, 03 ... 12 - month prefixed with zero
+					M: `${_date.getMonth() + 1}`, 					// eg. 1, 2, 3 ... 12 - month 
+					YYYY: _date.getFullYear() + "", 				// eg. 1998, 1999, 2000 ... 2022
+					YY: `${_date.getFullYear()}`.slice(-2),	 		// eg. 98, 99, 00 ... 22 - last two digits of the year
+				};
 
+				const replacer = (match: string): string => replaceMap[match];
+				
 				_formattedDate = _formattedDate = this.format;
-				_formattedDate = _formattedDate.replace(/YYYY/g, YYYY);
-				_formattedDate = _formattedDate.replace(/YY/g, YY);
-				_formattedDate = _formattedDate.replace(/MMMM/g, MMMM);
-				_formattedDate = _formattedDate.replace(/MMM/g, MMM);
-				_formattedDate = _formattedDate.replace(/MM/g, MM);
-				_formattedDate = _formattedDate.replace(/M/g, M);
-				_formattedDate = _formattedDate.replace(/DDDD/g, DDDD);
-				_formattedDate = _formattedDate.replace(/DDD/g, DDD);
-				_formattedDate = _formattedDate.replace(/DD/g, DD);
-				_formattedDate = _formattedDate.replace(/D/g, D);
-				return _formattedDate;
+				return _formattedDate.replace(/YYYY|YY|MMMM|MMM|MM|M|DDDD|DDD|DD|D/g, replacer);
 			}
 		} else if (date !== null && this.format === null) {
 			return date as string;
