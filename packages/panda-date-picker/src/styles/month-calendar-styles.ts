@@ -7,21 +7,23 @@ export const styles = css`
 	}
 
 	.calendar-cont {
+		display: flex;
+		flex-flow: row nowrap;
 		padding: 10px;
+		gap: 10px;
 	}
 
-	.calendar-cont .header {
+	.calendar .header {
 		display: flex;
 		flex-flow: row nowrap;
 		height: var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px));
-
 	}
 
 	.calendar-body {
 		position: relative;
 	}
 
-	.calendar-cont .header-label {
+	.calendar .header-label {
 		flex-grow: 1;
 
 		display: block;
@@ -39,13 +41,14 @@ export const styles = css`
 		user-select: none;
 
 		border-bottom: 1px solid var(--panda-bg-color-100);
+		box-sizing: border-box;
 	}
 
-	.calendar-cont .header-label:hover {
+	.calendar .header-label:hover {
 		color: var(--panda-primary);
 	}
 
-	.calendar-cont .header-label.btn {
+	.calendar .header-label.btn {
 		cursor: pointer;
 	}
 
@@ -66,14 +69,14 @@ export const styles = css`
 		background: var(--panda-date-picker-button-background-hover, var(--panda-button-background-hover, hsl(0deg 0% 95%)));
 	}
 
-	.calendar {
+	.calendar-row {
 		display: grid;
 		grid-template-columns: repeat(7, var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px)));
 		gap: 10px;
 		user-select: none;
 	}
 
-	.calendar .day {
+	.calendar-row .day {
 		position: relative;
 		display: flex;
 		width: var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px));
@@ -87,45 +90,45 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	.calendar .day.btn {
+	.calendar-row .day.btn {
 		cursor: pointer;
 		transition: all 200ms ease-in-out;
 	}
 
-	.calendar .day.btn:hover {
+	.calendar-row .day.btn:hover {
 		background: var(--panda-date-picker-button-background-hover, var(--panda-button-background-hover, hsl(0deg 0% 95%)));
 	}
 
-	.calendar .day.selected {
+	.calendar-row .day.selected {
 		color: var(--panda-date-picker-date-selected-color, var(--panda-primary-color, hsl(0deg 0% 100%)));
 		background-color: var(--panda-date-picker-date-selected-background, var(--panda-primary-background, hsl(196deg 100% 47%)));
 	}
 
-	.calendar .day.selected:hover {
+	.calendar-row .day.selected:hover {
 		color: var(--panda-date-picker-date-selected-color-hover, var(--panda-primary-color-hover, hsl(0deg 0% 100%)));
 		background-color: var(--panda-date-picker-date-selected-background-hover, var(--panda-primary-background-hover, hsl(196deg 100% 51%)));
 	}
 
-	.calendar .day.inactive {
+	.calendar-row .day.inactive {
 		color: var(--panda-date-picker-inactive-color, var(--panda-label-color, #ccc));
 	}
 
-	.calendar .day.today {
+	.calendar-row .day.today {
 		animation: 1s infinite pulse;
 	}
 
-	.calendar .day.disabled {
+	.calendar-row .day.disabled {
 		color: var(--panda-label-color);
 		cursor: not-allowed;
 		background: var(--panda-date-picker-button-background-disabled, var(--panda-button-background-disabled, hsl(0deg 0% 95%)));
 	}
 	
-	.calendar .day.disabled:hover {
+	.calendar-row .day.disabled:hover {
 		color: var(--panda-label-color);
 		background: var(--panda-date-picker-button-background-disabled, var(--panda-button-background-disabled, hsl(0deg 0% 95%)));
 	}
 
-	.calendar .day .highlight {
+	.calendar-row .day .highlight {
 		position: absolute;
 		width: 100%;
 		padding: 1px 0px;
@@ -188,6 +191,52 @@ export const styles = css`
 	.calendar-body .month-list .month.disabled {
 		color: var(--panda-button-color-disabled, var(--panda-txt-color));
 		background-color: var(--panda-button-background-disabled, hsl(0deg 0% 95%));
+	}
+
+	.date-list-cont {
+		display: flex;
+		flex-flow: column;
+		min-width: 120px;
+		max-width: 200px;
+	}
+
+	.date-list-cont .date-list-header,
+	.date-list-cont .date-list-item {
+		display: block;
+		padding: 0px 10px;
+		height: var(--panda-button-size-m, 40px);
+		line-height: var(--panda-button-size-m, 40px);
+		overflow: hidden;
+
+		color: var(--panda-txt-color, hsl(0deg 0% 29%));
+		font-size: var(--panda-font-size-m, 14px);
+		font-family: var(--panda-font-family, "Poppins");
+		text-overflow: ellipsis;
+		text-shadow: none;
+		user-select: none;
+		white-space: nowrap;
+
+		flex-shrink: 0;
+	}
+
+	.date-list-cont .date-list-header {
+		font-size: var(--panda-font-size-l, 16px);
+		text-align: center;
+		border-bottom: 1px solid var(--panda-bg-color-100);
+	}
+
+	.date-list-cont .date-list {
+		display: flex;
+		flex-flow: column;
+		max-height: calc(var(--panda-button-size, 40px) * 7 + 50px);
+		overflow: auto;
+	}
+
+	.date-list-cont .date-list-item:hover {
+		color: var(--panda-button-color-hover, var(--panda-txt-color));
+		cursor: pointer;
+
+		background-color: var(--panda-button-background-hover, hsl(0deg 0% 95%));
 	}
 
 	@keyframes pulse {

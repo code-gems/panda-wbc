@@ -1,5 +1,5 @@
 // types
-import { PandaDate, PandaMonth, PandaDateRange, PandaDateHighlight } from "../index";
+import { PandaDate, PandaMonth, PandaDateRange, PandaDatePreset } from "../index";
 
 // style
 import { styles } from "./styles/month-calendar-styles";
@@ -141,8 +141,26 @@ export class PandaMonthCalendar extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	highlightDate: PandaDateHighlight[] | null = null;
+	highlightDate: PandaDatePreset[] | null = null;
+ 
+	/**
+	 * Define custom date list.
+	 * 
+	 * example: [{ label: "Christmas", date: "2022-12-25" }]
+	 */
+	@property({ type: Array })
+	presetDates: PandaDatePreset[] | null = null;
 
+	/**
+	 * Custom date list header label.
+	 * 
+	 * example: "Coming Events"
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: String })
+	presetDatesHeader: string | null = null;
+ 
 	private _highlightDate: { [key: string]: string; } = {}
 	private _minDateOffset: number | null = null;
 	private _maxDateOffset: number | null = null;
@@ -194,18 +212,8 @@ export class PandaMonthCalendar extends LitElement {
 
 	protected firstUpdated(_changedProperties: PropertyValues): void {
 		console.log("%c [firstUpdated] Panda Month Calendar", "font-size: 24px; color: green;");
-
-		console.log("%c selectedDate", "font-size: 24px; color: green;", this.selectedDate);
-		console.log("%c min", "font-size: 24px; color: green;", this.min);
-		console.log("%c max", "font-size: 24px; color: green;", this.max);
-		console.log("%c disableWeekends", "font-size: 24px; color: green;", this.disableWeekends);
-		console.log("%c disableDates", "font-size: 24px; color: green;", this.disableDates);
-		console.log("%c disableWeekDays", "font-size: 24px; color: green;", this.disableWeekDays);
-		console.log("%c disableDateRange", "font-size: 24px; color: green;", this.disableDateRange);
-		console.log("%c weekStartsOnMonday", "font-size: 24px; color: green;", this.weekStartsOnMonday);
-		console.log("%c firstDayOfWeek", "font-size: 24px; color: green;", this.firstDayOfWeek);
-		console.log("%c customMonthList", "font-size: 24px; color: green;", this.customMonthList);
-		console.log("%c customDaysOfWeekList", "font-size: 24px; color: green;", this.customDaysOfWeekList);
+		console.log("%c presetDates", "font-size: 24px; color: green;", this.presetDates);
+		console.log("%c presetDatesHeader", "font-size: 24px; color: green;", this.presetDatesHeader);
 	}
 
 	// ================================================================================================================
@@ -214,15 +222,15 @@ export class PandaMonthCalendar extends LitElement {
 
 	protected render() {
 		return html`
-			<div class="calendar-cont">
-				${this._renderHeader()}
-				<div
-					class="calendar-body"
-					part="calendar-body"
-				>
-					${this._renderDaysOfWeek()}
-					${this._renderCalendar()}
-					${this._renderMonthSelection()}
+			<div class="calendar-cont" part="calendar-cont">
+				${this._renderPresetDates()}
+				<div class="calendar" part="calendar">
+					${this._renderHeader()}
+					<div class="calendar-body" part="calendar-body">
+						${this._renderDaysOfWeek()}
+						${this._renderCalendar()}
+						${this._renderMonthSelection()}
+					</div>
 				</div>
 			</div>
 		`;
@@ -358,7 +366,7 @@ export class PandaMonthCalendar extends LitElement {
 			});
 
 			return html`
-				<div class="calendar">
+				<div class="calendar-row">
 					${daysHtml}
 				</div>
 			`;
@@ -381,7 +389,7 @@ export class PandaMonthCalendar extends LitElement {
 
 		return html`
 			<div
-				class="calendar"
+				class="calendar-row"
 				part="days-of-week"
 			>
 				${headerHtml}
@@ -444,6 +452,44 @@ export class PandaMonthCalendar extends LitElement {
 			return html`
 				<div class="highlight">
 					${String(highlight)}
+				</div>
+			`;
+		}
+	}
+
+	private _renderPresetDates(): TemplateResult | void {
+		if (this.presetDates?.length) {
+			const listHtml: TemplateResult[] = [];
+			let headerHtml: TemplateResult = html``;
+
+			if (this.presetDatesHeader !== null) {
+				headerHtml = html`
+					<div class="date-list-header" part="date-list-header">
+						${this.presetDatesHeader}
+					</div>
+				`;
+			}
+
+			this.presetDates.forEach(({ label, date = "" }) => {
+				listHtml.push(html`
+					<div
+						class="date-list-item"
+						part="date-list-item"
+						@click="${() => this._onSelectDate(date, false)}"
+					>
+						${label}
+					</div>
+				`);
+			});
+
+			return html`
+				<div class="date-list-cont" part="date-list-cont">
+					<div class="date-list-header" part="date-list-header">
+						${this.presetDatesHeader || "Presets"}
+					</div>
+					<div class="date-list scroll" part="date-list">
+						${listHtml}
+					</div>
 				</div>
 			`;
 		}
@@ -761,12 +807,14 @@ export class PandaMonthCalendar extends LitElement {
 		this._highlightDate = {};
 		if (this.highlightDate?.length) {
 			this.highlightDate.forEach(({ date, label }) => {
-				const _date = new Date(date);
-				const year = String(_date.getFullYear());
-				const month = `0${_date.getMonth() + 1}`.slice(-2);
-				const day = `0${_date.getDate()}`.slice(-2);
-				const key = `${year}${month}${day}`;
-				this._highlightDate[key] = label;
+				if (date) {
+					const _date = new Date(date);
+					const year = String(_date.getFullYear());
+					const month = `0${_date.getMonth() + 1}`.slice(-2);
+					const day = `0${_date.getDate()}`.slice(-2);
+					const key = `${year}${month}${day}`;
+					this._highlightDate[key] = label || "?";
+				}
 			});
 		}
 	}

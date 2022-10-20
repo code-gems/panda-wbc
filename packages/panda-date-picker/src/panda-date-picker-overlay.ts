@@ -1,5 +1,5 @@
 // types
-import { ElementDetails, PandaDateHighlight, PandaDatePickerChangeEvent, PandaDateRange } from "../index";
+import { ElementDetails, PandaDateRange, PandaDatePickerChangeEvent, PandaDatePreset } from "../index";
 
 // style
 // ...
@@ -78,13 +78,19 @@ export class PandaDatePickerOverlay extends LitElement {
 	disableDateRange!: PandaDateRange[] | null;
 	
 	@property({ type: Array })
-	highlightDate!: PandaDateHighlight[] | null;
+	highlightDate!: PandaDatePreset[] | null;
 
 	@property({ type: Number })
-	firstDayOfWeek: number = 0;
+	firstDayOfWeek!: number;
 
 	@property({ type: Boolean, attribute: "week-starts-on-monday" })
-	weekStartsOnMonday: boolean = false;
+	weekStartsOnMonday!: boolean;
+
+	@property({ type: Array })
+	presetDates!: PandaDatePreset[] | null;
+
+	@property({ type: String })
+	presetDatesHeader!: string | null;
 
 	@property({ type: Boolean })
 	showToday!: boolean;
@@ -115,6 +121,10 @@ export class PandaDatePickerOverlay extends LitElement {
 		this.disableWeekends = false;
 		this.disableWeekDays = null;
 		this.disableDateRange = null;
+		this.presetDates = null;
+		this.presetDatesHeader = null;
+		this.weekStartsOnMonday = false;
+		this.firstDayOfWeek = 0;
 		this.showToday = true;
 
 		// event bindings
@@ -165,6 +175,8 @@ export class PandaDatePickerOverlay extends LitElement {
 						.disableWeekDays="${this.disableWeekDays}"
 						.disableDateRange="${this.disableDateRange}"
 						.highlightDate="${this.highlightDate}"
+						.presetDates="${this.presetDates}"
+						.presetDatesHeader="${this.presetDatesHeader}"
 						.firstDayOfWeek="${this.firstDayOfWeek}"
 						.weekStartsOnMonday="${this.weekStartsOnMonday}"
 						@change="${(e: CustomEvent<PandaDatePickerChangeEvent>) => this._onSelectDate(e.detail.date)}"

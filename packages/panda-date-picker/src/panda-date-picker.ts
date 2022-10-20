@@ -1,9 +1,9 @@
 // type
-import { ElementDetails, PandaDateHighlight, PandaDateRange } from "../index";
+import { ElementDetails, PandaDatePreset, PandaDateRange } from "../index";
 import { PandaDatePickerOverlay } from "./panda-date-picker-overlay";
 
 // style
-import { styles } from "./styles/styles";
+import { styles, modifiers } from "./styles/styles";
 
 // components
 import "./panda-month-calendar";
@@ -20,7 +20,7 @@ import { getDaysOfWeek, getFullDaysOfWeek, getFullMonths, getMonths, isDateValid
 export class PandaDatePicker extends LitElement {
 	// css style
 	static get styles() {
-		return styles;
+		return [styles, modifiers];
 	}
 
 	static state: any;
@@ -143,7 +143,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	highlightDate!: PandaDateHighlight[] | null;
+	highlightDate!: PandaDatePreset[] | null;
 
 	/**
 	 * Set custom start of the week day.
@@ -170,6 +170,26 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: String, attribute: true })
 	format!: string | null;
+
+	/**
+	 * Define custom date list for quick selection.
+	 * 
+	 * example: [{ label: "Christmas", date: "2022-12-25" }]
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: Array })
+	presetDates!: PandaDatePreset[] | null;
+
+	/**
+	 * Custom date list header label.
+	 * 
+	 * example: "Coming Events"
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: String })
+	presetDatesHeader!: string | null;
 
 	// private props
 	private _fullMonthList: string[] = getFullMonths();
@@ -208,6 +228,9 @@ export class PandaDatePicker extends LitElement {
 		this.disableWeekends = false;
 		this.disableWeekDays = [];
 		this.disableDateRange = [];
+		this.highlightDate = [];
+		this.presetDates = [];
+		this.presetDatesHeader = null;
 
 		// event bindings
 		this._selectDateEventBinding = this._onSelectedDateChange.bind(this);
@@ -247,7 +270,7 @@ export class PandaDatePicker extends LitElement {
 		if (this.value) {
 			clearIconHtml = html`
 				<div
-					class="icon"
+					class="icon ${this.disabled ? "hidden" : ""}"
 					part="icon"
 					@click="${() => this._onChangeDate(null)}"
 				>
@@ -334,6 +357,8 @@ export class PandaDatePicker extends LitElement {
 			this._overlayEl.disableWeekDays = this.disableWeekDays;
 			this._overlayEl.disableDateRange = this.disableDateRange;
 			this._overlayEl.highlightDate = this.highlightDate;
+			this._overlayEl.presetDates = this.presetDates;
+			this._overlayEl.presetDatesHeader = this.presetDatesHeader;
 			this._overlayEl.firstDayOfWeek = this.firstDayOfWeek;
 			this._overlayEl.weekStartsOnMonday = this.weekStartsOnMonday;
 			this._overlayEl.showToday = this.showToday;
@@ -443,10 +468,6 @@ export class PandaDatePicker extends LitElement {
 		if (this._dateInputEl) {
 			this.removeAttribute("focused");
 		}
-		// close overlay if opened
-		// if (!this.opened) {
-		// 	this._hideOverlay();
-		// }
 	}
 
 	private _onInputFieldClick(e: MouseEvent) {
@@ -484,7 +505,10 @@ export class PandaDatePicker extends LitElement {
 		const _unformattedDate = unformatInputDate(date, this.format);
 		console.log("%c 1.1 _onChangeDate", "font-size: 24px; color: blueviolet;", date, this.format, "->", _unformattedDate);
 
-		if (isDateValid(_unformattedDate)) {
+		if (
+			!this.disabled && isDateValid(_unformattedDate) ||
+			!this.disabled && date === null
+		) {
 			console.log("%c 2. _onChangeDate VALID", "font-size: 24px; color: blueviolet;", date, _unformattedDate);
 			this.value = date;
 			if (this._overlayEl) {

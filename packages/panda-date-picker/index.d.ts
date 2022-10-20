@@ -34,9 +34,11 @@ export type PandaDateRange = {
 	to: string;
 }
 
-export type PandaDateHighlight = {
+export type PandaDatePreset = {
 	label: string;
-	date: string;
+	date?: string;
+	dateFrom?: string;
+	dateTo?: string;
 }
 
 // ====================================================================================================================
