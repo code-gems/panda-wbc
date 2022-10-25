@@ -145,3 +145,21 @@ export const isDateDisabled = (
 
 	return disabled;
 }
+
+/**
+ * Convert date string to formatted date string eg. [YYYY-MM-DD]
+ * @param {String} date - valid date to parse
+ * @returns {String} formatted date output format: [YYYY-MM-DD]
+ */
+export const parseDate = (date: string | null): string | null => {
+	if (date !== null && isDateValid(date)) {
+		const _date = new Date(date);
+		const yyyy = _date.getFullYear();
+		const mm = `0${_date.getMonth() + 1}`.slice(-2);
+		const dd = `0${_date.getDate()}`.slice(-2);
+		
+		return `${yyyy}-${mm}-${dd}`;
+	} else {
+		return null;
+	}	
+}

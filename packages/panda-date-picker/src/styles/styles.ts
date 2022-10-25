@@ -21,9 +21,6 @@ export const styles = css`
 		box-shadow: 0px 0px 0px 2px transparent;
 		box-sizing: border-box;
 	}
-	:host([focused]) .date-picker {
-		box-shadow: 0px 0px 0px 2px var(--panda-primary);
-	}
 
 	.date-input { flex-grow: 1; }
 
@@ -122,6 +119,15 @@ export const styles = css`
 	:host([theme~="mandatory"]) .date-picker {
 		box-shadow: 0px 0px 0px 2px var(--panda-action-warn, hsl(35deg 91% 62%));
 	}
+
+	:host([invalid]) .date-picker {
+		box-shadow: 0px 0px 0px 2px var(--panda-action-fail, hsl(14deg 77% 62%));
+	}
+
+	:host([focused]) .date-picker {
+		box-shadow: 0px 0px 0px 2px var(--panda-primary, hsl(196deg 100% 47%));
+	}
+
 `;
 
 export const modifiers = css`

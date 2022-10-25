@@ -460,15 +460,6 @@ export class PandaMonthCalendar extends LitElement {
 	private _renderPresetDates(): TemplateResult | void {
 		if (this.presetDates?.length) {
 			const listHtml: TemplateResult[] = [];
-			let headerHtml: TemplateResult = html``;
-
-			if (this.presetDatesHeader !== null) {
-				headerHtml = html`
-					<div class="date-list-header" part="date-list-header">
-						${this.presetDatesHeader}
-					</div>
-				`;
-			}
 
 			this.presetDates.forEach(({ label, date = "" }) => {
 				listHtml.push(html`

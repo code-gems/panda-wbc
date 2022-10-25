@@ -12,9 +12,9 @@ import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-icon";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValues } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { getDaysOfWeek, getFullDaysOfWeek, getFullMonths, getMonths, isDateValid, minValue, unformatInputDate } from "./utils/utils";
+import { getDaysOfWeek, getFullDaysOfWeek, getFullMonths, getMonths, isDateValid, minValue, parseDate, unformatInputDate } from "./utils/utils";
 
 @customElement("panda-date-picker")
 export class PandaDatePicker extends LitElement {
@@ -192,10 +192,11 @@ export class PandaDatePicker extends LitElement {
 	presetDatesHeader!: string | null;
 
 	// private props
-	private _fullMonthList: string[] = getFullMonths();
-	private _monthList: string[] = getMonths();
-	private _fullDaysOfWeek: string[] = getFullDaysOfWeek();
-	private _daysOfWeek: string[] = getDaysOfWeek();
+	private _displayValue!: string;
+	private _fullMonthList!: string[];
+	private _monthList!: string[];
+	private _fullDaysOfWeek!: string[];
+	private _daysOfWeek!: string[];
 
 	// DOM elements
 	@query("#input-field")
@@ -232,16 +233,37 @@ export class PandaDatePicker extends LitElement {
 		this.presetDates = [];
 		this.presetDatesHeader = null;
 
+		this._displayValue = "";
+		this._fullMonthList = getFullMonths();
+		this._monthList = getMonths();
+		this._fullDaysOfWeek = getFullDaysOfWeek();
+		this._daysOfWeek = getDaysOfWeek();
+
 		// event bindings
 		this._selectDateEventBinding = this._onSelectedDateChange.bind(this);
 		this._hideOverlayEventBinding = this._hideOverlay.bind(this);
 	}
 
 	protected updated(changedProps: PropertyValues) {
+		console.log("%c [DATE PICKER] [UPDATED] value", "font-size: 16px; color: red;", changedProps, changedProps.get("value"));
+
 		if (changedProps.has("opened") && this.opened) {
-			console.log("%c [DATE PICKER] opened", "font-size: 24px; color: red;", this.opened);
+			console.log("%c [DATE PICKER] opened", "font-size: 16px; color: red;", this.opened);
 			this._openDatePickerOverlay();
 		}
+
+		if (changedProps.has("value") && changedProps.get("value") !== undefined) {
+			this._displayValue = this._formatDate(this.value);
+			this.requestUpdate();
+			console.log("%c [DATE PICKER] [UPDATED] value / _displayValue", "font-size: 16px; color: blue;", this.value, this._displayValue);
+			this._triggerChangeEvent();
+		}
+	}
+
+	protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+		console.log("%c [DATE PICKER] [FIRST UPDATED] value", "font-size: 16px; color: green;", this.value);
+		this._displayValue = this._formatDate(this.value);
+		this.requestUpdate();
 	}
 
 	// ================================================================================================================
@@ -272,7 +294,7 @@ export class PandaDatePicker extends LitElement {
 				<div
 					class="icon ${this.disabled ? "hidden" : ""}"
 					part="icon"
-					@click="${() => this._onChangeDate(null)}"
+					@click="${() => this._onClearDate()}"
 				>
 					<panda-icon icon="close"></panda-icon>
 				</div>
@@ -297,10 +319,10 @@ export class PandaDatePicker extends LitElement {
 						class="input-field"
 						part="input-field"
 						type="text"
-						.value="${this._formatDate(this.value)}"
+						.value="${this._displayValue}"
 						.placeholder="${this.placeholder}"
 						.disabled="${this.disabled}"
-						@mouseup="${(e: MouseEvent) => this._onInputFieldClick(e)}"
+						@mouseup="${this._onInputFieldClick}"
 						@keyup="${this._onInputFieldKeyUp}"
 						@keydown="${this._onInputFieldKeyDown}"
 						@input="${(e: any) => this._onChangeDate((e.target as HTMLInputElement).value)}"
@@ -387,6 +409,7 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _triggerChangeEvent() {
+		console.log("%c [DATE PICKER] CHANGE DATE EVENT", "font-size: 16px; color: green;", this.value);
 		const event = new CustomEvent("change", {
 			detail: {
 				date: this.value
@@ -396,7 +419,7 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _formatDate(date: string | number | null): string {
-		console.log("%c [DATE PICKER] _formatDate", "font-size: 24px; color: orange;", date);
+		console.log("%c [DATE PICKER] _formatDate", "font-size: 16px; color: orange;", date);
 
 		// check if date is provided
 		if (date !== null && this.format !== null) {
@@ -431,7 +454,32 @@ export class PandaDatePicker extends LitElement {
 		} else {
 			return "";
 		}
+	}
 
+	/**
+	 * Check if date entered by user is valid.
+	 */
+	private _evaluateDate(): void {
+		if (this._displayValue.trim() !== "") {
+			console.log("%c [DATE PICKER] _evaluateDate", "font-size: 16px; color: green;", this.value, this._displayValue);
+
+			if (isDateValid(this._displayValue.trim())) {
+				// convert user date input to acceptable format
+				this.value = parseDate(this._displayValue);
+				this._displayValue = this._formatDate(this.value);
+				console.log("%c [DATE PICKER] _evaluateDate", "font-size: 16px; color: green;", this.value);
+				this.removeAttribute("invalid");
+			} else {
+				this._displayValue = "Invalid date";
+				this.value = null;
+				this.setAttribute("invalid", "");
+	
+				// update month calendar if shown
+				if (this._overlayEl) {
+					this._overlayEl.selectedDate = null;
+				}
+			}
+		}
 	}
 
 	// ================================================================================================================
@@ -468,6 +516,10 @@ export class PandaDatePicker extends LitElement {
 		if (this._dateInputEl) {
 			this.removeAttribute("focused");
 		}
+		this._evaluateDate();
+		// get rid of extra spaces
+		this._displayValue = this._displayValue.trim();
+		this.requestUpdate();
 	}
 
 	private _onInputFieldClick(e: MouseEvent) {
@@ -477,8 +529,9 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _onInputFieldKeyUp(e: KeyboardEvent) {
-		console.log("%c [DATE PICKER] _onInputFieldKeyUp", "font-size: 24px; color: red;", this, e.key);
+		console.log("%c [DATE PICKER] _onInputFieldKeyUp", "font-size: 16px; color: red;", e.key);
 		if (e.key === "Enter") {
+			this._evaluateDate();
 			this._hideOverlay();
 		} else if (
 			e.key !== "Tab" &&
@@ -492,37 +545,45 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _onInputFieldKeyDown(e: KeyboardEvent) {
-		console.log("%c [DATE PICKER] _onInputFieldKeyDown", "font-size: 24px; color: red;", this, e.key, this.opened);
+		console.log("%c [DATE PICKER] _onInputFieldKeyDown", "font-size: 16px; color: red;", e.key, this.opened);
 		if (e.key === "Tab" && this.opened) {
+			this._evaluateDate();
 			this._hideOverlay();
 		}
 	}
 
-	private _onChangeDate(date: string | null) {
-		console.log("%c 1. _onChangeDate", "font-size: 24px; color: blueviolet;", date);
+	private _onChangeDate(date: string) {
+		console.log("%c [DATE PICKER] [ON INPUT] _onChangeDate", "font-size: 16px; color: blue;", date);
 		// validate input
 
-		const _unformattedDate = unformatInputDate(date, this.format);
-		console.log("%c 1.1 _onChangeDate", "font-size: 24px; color: blueviolet;", date, this.format, "->", _unformattedDate);
+		// const _unformattedDate = unformatInputDate(date, this.format);
+		this._displayValue = date || "";
+		this.removeAttribute("invalid");
 
 		if (
-			!this.disabled && isDateValid(_unformattedDate) ||
+			!this.disabled && isDateValid(date) ||
 			!this.disabled && date === null
 		) {
-			console.log("%c 2. _onChangeDate VALID", "font-size: 24px; color: blueviolet;", date, _unformattedDate);
-			this.value = date;
 			if (this._overlayEl) {
-				console.log("%c 3. _onChangeDate SET TO OVERLAY", "font-size: 24px; color: blueviolet;", date, _unformattedDate);
 				this._overlayEl.selectedDate = date;
 			}
-			this._triggerChangeEvent();
+		}
+	}
+
+	private _onClearDate() {
+		console.log("%c [DATE PICKER] _onClearDate", "font-size: 16px; color: green;");
+		this._displayValue = "";
+		this.value = null;
+		this.removeAttribute("invalid");
+		if (this._overlayEl) {
+			this._overlayEl.selectedDate = null;
 		}
 	}
 
 	private _onSelectedDateChange(e: any) {
-		console.log("%c [DATE PICKER] _onSelectedDateChange", "font-size: 24px; color: green;", e);
+		console.log("%c [DATE PICKER] _onSelectedDateChange", "font-size: 16px; color: green;", e);
 		this.value = e.detail.date;
-		this._triggerChangeEvent();
+		this.removeAttribute("invalid");
 	}
 }
 
