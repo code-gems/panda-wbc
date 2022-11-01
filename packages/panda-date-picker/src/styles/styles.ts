@@ -139,3 +139,36 @@ export const modifiers = css`
 	.scroll::-webkit-scrollbar-thumb { background-color: var(--panda-bg-color-100, hsl(0deg 0% 95%)); }
 	.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-bg-color-200, hsl(0deg 0% 90%)); }
 `;
+
+export const callout = css`
+	.callout-cont {
+		display: block;
+		padding: var(--panda-padding-s);
+	}
+
+	.callout {
+		display: flex;
+		flex-flow: row nowrap;
+		padding: var(--panda-padding-s);
+
+		border-radius: none;
+		background-color: var(--panda-action-color-info, hsl(181deg 52% 53%));
+	}
+
+	.callout .icon {
+		display: flex;
+		width: var(--panda-button-size-m, 40px);
+		height: var(--panda-button-size-m, 40px);
+		justify-content: center;
+		align-items: center;
+	}
+
+	.callout .message {
+		color: var(--panda-action-info-color, hsl(0deg 0% 100%));
+		font-size: var(--panda-font-size-m, 14px);
+		font-family: var(--panda-font-family, "Poppins");
+		text-overflow: ellipsis;
+		text-shadow: none;
+		user-select: none;
+	}
+`;

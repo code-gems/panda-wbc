@@ -1,5 +1,5 @@
 // type
-import { ElementDetails, PandaDatePreset, PandaDateRange } from "../index";
+import { ElementDetails, PandaDatePreset, PandaDateRange, PandaEvent } from "../index";
 import { PandaDatePickerOverlay } from "./panda-date-picker-overlay";
 
 // style
@@ -144,6 +144,16 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: Array })
 	highlightDate!: PandaDatePreset[] | null;
+  
+	/**
+	 * Define event list for particular dates.
+	 * 
+	 * example: [{ date: "2022-09-01", label: "My Birthday", description: "Happy birthday ME!!!", wholeDay: true }]
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: Array })
+	events!: PandaEvent[] | null;
 
 	/**
 	 * Set custom start of the week day.
@@ -230,6 +240,7 @@ export class PandaDatePicker extends LitElement {
 		this.disableWeekDays = [];
 		this.disableDateRange = [];
 		this.highlightDate = [];
+		this.events = [];
 		this.presetDates = [];
 		this.presetDatesHeader = null;
 
@@ -379,6 +390,7 @@ export class PandaDatePicker extends LitElement {
 			this._overlayEl.disableWeekDays = this.disableWeekDays;
 			this._overlayEl.disableDateRange = this.disableDateRange;
 			this._overlayEl.highlightDate = this.highlightDate;
+			this._overlayEl.events = this.events;
 			this._overlayEl.presetDates = this.presetDates;
 			this._overlayEl.presetDatesHeader = this.presetDatesHeader;
 			this._overlayEl.firstDayOfWeek = this.firstDayOfWeek;

@@ -40,5 +40,6 @@
 		"lib/**/*",
 		"index.d.ts",
 		"package.json"
-	]
+	],
+	"types": "index.d.ts"
 }

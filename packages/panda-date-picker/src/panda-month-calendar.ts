@@ -1,9 +1,9 @@
 // types
-import { PandaDate, PandaMonth, PandaDateRange, PandaDatePreset } from "../index";
+import { PandaDate, PandaMonth, PandaDateRange, PandaDatePreset, PandaEvent } from "../index";
 
 // style
 import { styles } from "./styles/month-calendar-styles";
-import { modifiers } from "./styles/styles";
+import { modifiers, callout } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -11,13 +11,13 @@ import "@panda-wbc/panda-icon";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { getDateOffset, getDaysOfWeek, getFullMonths, getMonths, isDateDisabled } from "./utils/utils";
+import { getDaysOfWeek, getFullMonths, getMonths, isDateDisabled } from "./utils/utils";
 
 @customElement("panda-month-calendar")
 export class PandaMonthCalendar extends LitElement {
 	// css style
 	static get styles() {
-		return [styles, modifiers];
+		return [styles, callout, modifiers];
 	}
 
 	@property({ type: String })
@@ -142,7 +142,17 @@ export class PandaMonthCalendar extends LitElement {
 	 */
 	@property({ type: Array })
 	highlightDate: PandaDatePreset[] | null = null;
- 
+
+	/**
+	 * Define event list for particular dates.
+	 * 
+	 * example: [{ date: "2022-09-01", label: "My Birthday", description: "Happy birthday ME!!!", wholeDay: true }]
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: Array })
+	events: PandaEvent[] | null = null;
+
 	/**
 	 * Define custom date list.
 	 * 
@@ -160,10 +170,12 @@ export class PandaMonthCalendar extends LitElement {
 	 */
 	@property({ type: String })
 	presetDatesHeader: string | null = null;
- 
-	private _highlightDate: { [key: string]: string; } = {}
-	private _minDateOffset: number | null = null;
-	private _maxDateOffset: number | null = null;
+
+	private _dateHighlights: { [key: string]: string; } = {};
+	/** key: yyyymmdd */
+	private _allEvents: { [key: string]: PandaEvent[]; } = {};
+	/** key: yyyymm */
+	private _currentMonthEvents: { [key: string]: PandaEvent[]; } = {};
 
 	// private properties
 	private _selectedDate: PandaDate | null = null;
@@ -191,6 +203,7 @@ export class PandaMonthCalendar extends LitElement {
 		console.log("%c [updated] Panda Month Calendar", "font-size: 24px; color: red;", _changedProperties, this.selectedDate);
 		if (_changedProperties.has("selectedDate") && this.selectedDate !== undefined) {
 			this._parseSelectedDate(this.selectedDate);
+			this._parseEvents();
 		}
 
 		if (_changedProperties.has("weekStartsOnMonday") && this.weekStartsOnMonday) {
@@ -201,12 +214,8 @@ export class PandaMonthCalendar extends LitElement {
 			this._parseHighlights();
 		}
 
-		if (_changedProperties.has("min") && this.min !== null) {
-			this._minDateOffset = getDateOffset(this.min);
-		}
-
-		if (_changedProperties.has("max") && this.max !== null) {
-			this._maxDateOffset = getDateOffset(this.max);
+		if (_changedProperties.has("events") && this.events) {
+			this._parseEvents();
 		}
 	}
 
@@ -214,6 +223,8 @@ export class PandaMonthCalendar extends LitElement {
 		console.log("%c [firstUpdated] Panda Month Calendar", "font-size: 24px; color: green;");
 		console.log("%c presetDates", "font-size: 24px; color: green;", this.presetDates);
 		console.log("%c presetDatesHeader", "font-size: 24px; color: green;", this.presetDatesHeader);
+
+		console.log("%c events", "font-size: 24px; color: green;", this.events);
 	}
 
 	// ================================================================================================================
@@ -230,8 +241,10 @@ export class PandaMonthCalendar extends LitElement {
 						${this._renderDaysOfWeek()}
 						${this._renderCalendar()}
 						${this._renderMonthSelection()}
+						${this._renderYearSelection()}
 					</div>
 				</div>
+				${this._renderEvents()}
 			</div>
 		`;
 	}
@@ -264,7 +277,36 @@ export class PandaMonthCalendar extends LitElement {
 							<panda-icon icon="chevron-right"></panda-icon>
 						</div>
 					</div>
-				`;			
+				`;
+			} else if (this._showYearSelection) {
+				const decadeStart = Math.floor(this._currentMonth!.year / 10) * 10;
+				const decadeEnd = String(decadeStart + 9).slice(-2);
+
+				return html`
+					<div class="header" part="header">
+						<div
+							class="btn-icon"
+							part="btn-icon"
+							@click="${this._onDecadeChangeBackward}"
+						>
+							<panda-icon icon="chevron-left"></panda-icon>
+						</div>
+						<div
+							class="header-label"
+							part="header-label"
+							@click="${this._onShowMonthSelection}"
+						>
+							${decadeStart}-${decadeEnd}
+						</div>
+						<div
+							class="btn-icon"
+							part="btn-icon"
+							@click="${this._onDecadeChangeForward}"
+						>
+							<panda-icon icon="chevron-right"></panda-icon>
+						</div>
+					</div>
+				`;
 			} else {
 				const monthName = this._fullMonthList[this._currentMonth.month];
 
@@ -304,12 +346,13 @@ export class PandaMonthCalendar extends LitElement {
 
 			this._generateCalendar();
 
-			this._previousMonth.days.forEach(({ date, label, selected, disabled, isToday }) => {
+			this._previousMonth.days.forEach(({ date, label, selected, disabled, isToday, highlight, eventCount }) => {
 				const cssClassList: string[] = [];
 				// add calendar day classes				
 				if (disabled) cssClassList.push("disabled");
 				if (selected) cssClassList.push("selected");
 				if (isToday) cssClassList.push("today");
+				if (eventCount) cssClassList.push("event");
 
 				daysHtml.push(html`
 					<div
@@ -320,16 +363,18 @@ export class PandaMonthCalendar extends LitElement {
 						@click="${() => this._onSelectDate(date, disabled)}"
 					>
 						${label}
+						${this._renderHighlight(highlight)}
 					</div>
 				`);
 			});
 
-			this._currentMonth.days.forEach(({ date, label, selected, disabled, isToday, highlight }) => {
+			this._currentMonth.days.forEach(({ date, label, selected, disabled, isToday, highlight, eventCount }) => {
 				const cssClassList: string[] = [];
 				// add calendar day classes				
 				if (disabled) cssClassList.push("disabled");
 				if (selected) cssClassList.push("selected");
 				if (isToday) cssClassList.push("today");
+				if (eventCount) cssClassList.push("event");
 
 				daysHtml.push(html`
 					<div
@@ -345,12 +390,13 @@ export class PandaMonthCalendar extends LitElement {
 				`);
 			});
 
-			this._nextMonth.days.forEach(({ date, label, selected, disabled, isToday }) => {
+			this._nextMonth.days.forEach(({ date, label, selected, disabled, isToday, highlight, eventCount }) => {
 				const cssClassList: string[] = [];
 				// add calendar day classes				
 				if (disabled) cssClassList.push("disabled");
 				if (selected) cssClassList.push("selected");
 				if (isToday) cssClassList.push("today");
+				if (eventCount) cssClassList.push("event");
 
 				daysHtml.push(html`
 					<div
@@ -361,6 +407,7 @@ export class PandaMonthCalendar extends LitElement {
 						@click="${() => this._onSelectDate(date, disabled)}"
 					>
 						${label}
+						${this._renderHighlight(highlight)}
 					</div>
 				`);
 			});
@@ -389,7 +436,7 @@ export class PandaMonthCalendar extends LitElement {
 
 		return html`
 			<div
-				class="calendar-row"
+				class="calendar-row days-of-week"
 				part="days-of-week"
 			>
 				${headerHtml}
@@ -411,7 +458,7 @@ export class PandaMonthCalendar extends LitElement {
 
 				monthsHtml.push(html`
 					<div
-						class="month btn ${selected}"
+						class="tile btn ${selected}"
 						part="month"
 						@click="${() => this._onChangeMonth(i, this._currentMonth!.year)}"
 					>
@@ -421,13 +468,13 @@ export class PandaMonthCalendar extends LitElement {
 			}
 
 			for (let i = 0; i < 4; i++) {
-				const selected = currentMonth === i && this._nextMonth?.year === currentYear
+				const active = currentMonth === i && this._nextMonth?.year === currentYear
 					? "active"
 					: "";
 
 				monthsHtml.push(html`
 					<div
-						class="month btn inactive ${selected}"
+						class="tile btn inactive ${active}"
 						part="month"
 						@click="${() => this._onChangeMonth(i, this._currentMonth!.year + 1)}"
 					>
@@ -438,10 +485,76 @@ export class PandaMonthCalendar extends LitElement {
 
 			return html`
 				<div
-					class="month-list"
+					class="tile-cont"
 					part="month-list"				
 				>
 					${monthsHtml}
+				</div>
+			`;
+		}
+	}
+
+	private _renderYearSelection() {
+		if (this._showYearSelection) {
+			const yearsHtml: TemplateResult[] = [];
+			const today = new Date();
+			const currentYear = today.getFullYear();
+			const decadeStart = Math.floor(this._currentMonth!.year / 10) * 10;
+
+			for (let year = decadeStart - 2; year < decadeStart; year++) {
+				const active = currentYear === year
+					? "active"
+					: "";
+
+				yearsHtml.push(html`
+					<div
+						class="tile btn inactive ${active}"
+						part="year"
+						@click="${() => this._onChangeYear(year)}"
+					>
+						${year}
+					</div>
+				`);
+			}
+
+			for (let year = decadeStart; year < decadeStart + 10; year++) {
+				const active = currentYear === year
+					? "active"
+					: "";
+
+				yearsHtml.push(html`
+					<div
+						class="tile btn ${active}"
+						part="year"
+						@click="${() => this._onChangeYear(year)}"
+					>
+						${year}
+					</div>
+				`);
+			}
+
+			for (let year = decadeStart + 10; year < decadeStart + 14; year++) {
+				const active = currentYear === year
+					? "active"
+					: "";
+
+				yearsHtml.push(html`
+					<div
+						class="tile btn inactive ${active}"
+						part="year"
+						@click="${() => this._onChangeYear(year)}"
+					>
+						${year}
+					</div>
+				`);
+			}
+
+			return html`
+				<div
+					class="tile-cont"
+					part="year-list"				
+				>
+					${yearsHtml}
 				</div>
 			`;
 		}
@@ -486,6 +599,112 @@ export class PandaMonthCalendar extends LitElement {
 		}
 	}
 
+	private _renderEvents(): TemplateResult | void {
+		let eventsHeader: string = "";
+		console.log("%c _renderEvents", "font-size: 16px; color: red;", this._currentMonth, this._selectedDate);
+		if (this.events?.length) {
+			const listHtml: TemplateResult[] = [];
+
+			if (this._selectedDate) {
+				// generate event key for selected day
+				const { year, month, day } = this._selectedDate;
+				const _year = String(year);
+				const _month = `0${month + 1}`.slice(-2);
+				const _day = `0${day}`.slice(-2);
+				const key = `${_year}${_month}${_day}`; // output: yyyymmdd
+
+				if (this._allEvents[key]) {
+					// extract events for selected date
+					const eventList: PandaEvent[] = this._allEvents[key] ?? [];
+
+					eventList.forEach(({ date, label, description, time, wholeDay }) => {
+
+						listHtml.push(html`
+							<div
+								class="event"
+								part="event"
+							>
+								<div class="event-body" part="event-body">
+									<div class="name" part="event-name">
+										${label}
+									</div>
+									<div class="description" part="event-description">
+										${description}
+									</div>
+								</div>
+							</div>
+						`);
+					});
+
+					// set event list header
+					eventsHeader = "Today";
+
+				} else {
+					// generate event key for selected day
+					console.log("%c _currentMonth", "font-size: 16px; color: red;", this._currentMonth, this._currentMonthEvents);
+					if (this._currentMonth) {
+						const { year, month } = this._currentMonth;
+						const _year = String(year);
+						const _month = `0${month + 1}`.slice(-2);
+						const key = `${_year}${_month}`; // output: yyyymm
+						const eventList: PandaEvent[] = this._currentMonthEvents[key] ?? [];
+
+						// check if there are any events for this month
+						if (eventList.length) {
+							eventList.forEach(({ date, label, selectable = true }) => {
+								listHtml.push(html`
+									<div
+										class="event"
+										part="event"
+										@click="${() => this._onSelectEvent(date, selectable)}"
+									>
+										<div class="event-body" part="event-body">
+											<div class="name" part="event-name">
+												${label}
+											</div>
+											<div class="date" part="event-date">
+												${date}
+											</div>
+										</div>
+									</div>
+								`);
+							});
+
+							// set event list header
+							eventsHeader = "Upcoming";
+						} else {
+							listHtml.push(html`
+								<div class="callout-cont" part="callout-cont">
+									<div class="callout" part="callout">
+										<div class="icon" part="callout-icon">
+											<panda-icon icon="info"></panda-icon>
+										</div>
+										<div class="message" part="callout-message">
+											No upcoming events for this month...
+										</div>
+									</div>
+								</div>
+							`);
+							// set event list header
+							eventsHeader = "Events";
+						}
+					}
+				}
+			}
+
+			return html`
+				<div class="events-cont" part="events-cont">
+					<div class="events-header" part="events-header">
+						${eventsHeader}
+					</div>
+					<div class="events scroll" part="events">
+						${listHtml}
+					</div>
+				</div>
+			`;
+		}
+	}
+
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
@@ -499,15 +718,13 @@ export class PandaMonthCalendar extends LitElement {
 			selectedDate = new Date();
 		}
 		// update selected date object
-		if (selectedDate) {
-			this._selectedDate = {
-				date: selectedDate,
-				unix: selectedDate.getTime(),
-				day: selectedDate.getDate(),
-				month: selectedDate.getMonth(),
-				year: selectedDate.getFullYear(),
-			};
-		}
+		this._selectedDate = {
+			date: selectedDate,
+			unix: selectedDate.getTime(),
+			day: selectedDate.getDate(),
+			month: selectedDate.getMonth(),
+			year: selectedDate.getFullYear(),
+		};
 		this._currentMonth = {
 			year: selectedDate.getFullYear(),
 			month: selectedDate.getMonth(),
@@ -531,6 +748,9 @@ export class PandaMonthCalendar extends LitElement {
 		};
 		// trigger update due to side effect
 		this.requestUpdate();
+
+		console.log("%c _parseSelectedDate _currentMonth", "font-size: 24px; color: red;", this._currentMonth);
+
 	}
 
 	private _generateCalendar() {
@@ -561,8 +781,21 @@ export class PandaMonthCalendar extends LitElement {
 					date: this._formatDate(this._previousMonth.year, this._previousMonth.month, i + 1),
 					selected: this._isSelected(this._previousMonth.year, this._previousMonth.month, i + 1),
 					isToday: this._isToday(this._previousMonth.year, this._previousMonth.month, i + 1),
-					disabled: this._isDisabled(this._previousMonth.year, this._previousMonth.month, i + 1, dayOfWeek),
-					highlight: this._hasHighlights(this._currentMonth.year, this._currentMonth.month, i + 1),
+					disabled: isDateDisabled(
+						this._previousMonth.year,
+						this._previousMonth.month,
+						i + 1,
+						dayOfWeek,
+						this.min,
+						this.max,
+						this.disableDates,
+						this.disableDateRange,
+						this.disableWeekends,
+						this.disableWeekDays,
+						this._daysOfWeek
+					),
+					highlight: this._hasHighlights(this._previousMonth.year, this._previousMonth.month, i + 1),
+					eventCount: this._checkEvents(this._previousMonth.year, this._previousMonth.month, i + 1)
 				});
 			}
 
@@ -588,6 +821,7 @@ export class PandaMonthCalendar extends LitElement {
 						this._daysOfWeek
 					),
 					highlight: this._hasHighlights(this._currentMonth.year, this._currentMonth.month, i + 1),
+					eventCount: this._checkEvents(this._currentMonth.year, this._currentMonth.month, i + 1)
 				});
 			}
 
@@ -605,8 +839,21 @@ export class PandaMonthCalendar extends LitElement {
 					date: this._formatDate(this._nextMonth.year, this._nextMonth.month, i + 1),
 					selected: this._isSelected(this._nextMonth.year, this._nextMonth.month, i + 1),
 					isToday: this._isToday(this._nextMonth.year, this._nextMonth.month, i + 1),
-					disabled: this._isDisabled(this._nextMonth.year, this._nextMonth.month, i + 1, dayOfWeek),
-					highlight: this._hasHighlights(this._currentMonth.year, this._currentMonth.month, i + 1),
+					disabled: isDateDisabled(
+						this._nextMonth.year,
+						this._nextMonth.month,
+						i + 1,
+						dayOfWeek,
+						this.min,
+						this.max,
+						this.disableDates,
+						this.disableDateRange,
+						this.disableWeekends,
+						this.disableWeekDays,
+						this._daysOfWeek
+					),
+					highlight: this._hasHighlights(this._nextMonth.year, this._nextMonth.month, i + 1),
+					eventCount: this._checkEvents(this._nextMonth.year, this._nextMonth.month, i + 1)
 				});
 			}
 		}
@@ -675,89 +922,6 @@ export class PandaMonthCalendar extends LitElement {
 			: false;
 	}
 
-	private _isDisabled(year: number, month: number, day: number, dayOfWeek: number): boolean {
-		const dateOffset = year * 10000 + (month + 1) * 100 + day;
-		const _year = String(year);
-		const _month = `0${month + 1}`.slice(-2);
-		const _day = `0${day}`.slice(-2);
-		let disabled: boolean = false;
-
-		// min date
-		if (this._minDateOffset && this._minDateOffset >= dateOffset) {
-			disabled = true;
-		}
-
-		// max date
-		if (this._maxDateOffset && this._maxDateOffset <= dateOffset) {
-			disabled = true;
-		}
-
-		// disabled dates
-		if (this.disableDates?.length) {
-			this.disableDates.forEach((date) => {
-				const yyyy = date.slice(0, 4);
-				const mm = date.slice(5, 7);
-				const dd = date.slice(8, 10);
-
-				if (
-					(yyyy === _year || yyyy === "****") &&
-					(mm === _month || mm === "**") &&
-					(dd === _day || dd === "**")
-				) {
-					console.log("%c [PANDA MONTH CALENDAR] disableDates:", "font-size: 24px; color: red;", year, month + 1, day);
-					disabled = true;
-				}
-			});
-		}
-
-		// disable weekends
-		if (
-			this.disableWeekends && dayOfWeek === 0 ||
-			this.disableWeekends && dayOfWeek === 6
-		) {
-			console.log("%c [PANDA MONTH CALENDAR] disableWeekends:", "font-size: 24px; color: red;", year, month + 1, day);
-			disabled = true;
-		}
-
-		// disable date ranges
-		if (this.disableDateRange?.length) {
-			this.disableDateRange.forEach((dateRange) => {
-				const dateFrom = String(dateRange.from) ?? null;
-				const dateTo = String(dateRange.to) ?? null;
-
-				if (dateFrom && dateTo) {
-					const fromYear = Number(dateFrom.slice(0, 4));
-					const fromMonth = Number(dateFrom.slice(5, 7));
-					const fromDay = Number(dateFrom.slice(8, 10));
-					const toYear = Number(dateTo.slice(0, 4));
-					const toMonth = Number(dateTo.slice(5, 7));
-					const toDay = Number(dateTo.slice(8, 10));
-					// calculate date offsets for comparison
-					const fromDateOffset = fromYear * 10000 + fromMonth * 100 + fromDay;
-					const toDateOffset = toYear * 10000 + toMonth * 100 + toDay;
-
-					if (dateOffset >= fromDateOffset && dateOffset <= toDateOffset) {
-						console.log("%c [PANDA MONTH CALENDAR] disableDateRange:", "font-size: 24px; color: red;", year, month + 1, day);
-						disabled = true;
-					}
-				}
-
-			});
-		}
-
-		// disable days of week
-		if (this.disableWeekDays?.length) {
-			this.disableWeekDays.forEach((disableDayOfWeek) => {
-				if (disableDayOfWeek.toLocaleLowerCase() === this._daysOfWeek[dayOfWeek].toLocaleLowerCase()) {
-					console.log("%c [PANDA MONTH CALENDAR] disableDayOfWeek:", "font-size: 24px; color: red;", disableDayOfWeek, dayOfWeek);
-					disabled = true;
-				}
-			});
-		}
-
-		return disabled;
-	}
-
 	private _isToday(year: number, month: number, day: number): boolean {
 		const today = new Date();
 		const todayYear = today.getFullYear();
@@ -791,11 +955,11 @@ export class PandaMonthCalendar extends LitElement {
 		const _day = `0${day}`.slice(-2);
 		const key = `${_year}${_month}${_day}`;
 
-		return this._highlightDate[key] ?? null;
+		return this._dateHighlights[key] ?? null;
 	}
 
 	private _parseHighlights() {
-		this._highlightDate = {};
+		this._dateHighlights = {};
 		if (this.highlightDate?.length) {
 			this.highlightDate.forEach(({ date, label }) => {
 				if (date) {
@@ -804,7 +968,46 @@ export class PandaMonthCalendar extends LitElement {
 					const month = `0${_date.getMonth() + 1}`.slice(-2);
 					const day = `0${_date.getDate()}`.slice(-2);
 					const key = `${year}${month}${day}`;
-					this._highlightDate[key] = label || "?";
+					this._dateHighlights[key] = label || "?";
+				}
+			});
+		}
+	}
+
+	private _checkEvents(year: number, month: number, day: number): number {
+		const _year = String(year);
+		const _month = `0${month + 1}`.slice(-2);
+		const _day = `0${day}`.slice(-2);
+		const key = `${_year}${_month}${_day}`;
+
+		return this._allEvents[key]?.length ?? 0;
+	}
+
+	private _parseEvents() {
+		this._allEvents = {};
+		this._currentMonthEvents = {};
+
+		if (this.events?.length) {
+			this.events.forEach((event) => {
+				const { date } = event;
+
+				if (date) {
+					const _date = new Date(date);
+					const _year = String(_date.getFullYear());
+					const _month = `0${_date.getMonth() + 1}`.slice(-2);
+					const _day = `0${_date.getDate()}`.slice(-2);
+					const _key1 = `${_year}${_month}${_day}`;
+					const _key2 = `${_year}${_month}`;
+
+					if (!this._allEvents[_key1]) {
+						this._allEvents[_key1] = [];
+					}
+					this._allEvents[_key1].push(event);
+
+					if (!this._currentMonthEvents[_key2]) {
+						this._currentMonthEvents[_key2] = [];
+					}
+					this._currentMonthEvents[_key2].push(event);
 				}
 			});
 		}
@@ -839,12 +1042,17 @@ export class PandaMonthCalendar extends LitElement {
 
 	private _onShowMonthSelection() {
 		this._showMonthSelection = true;
+		this._showYearSelection = false;
 	}
 
 	private _onChangeMonth(month: number, year: number) {
 		this._showMonthSelection = false;
-
 		this._currentMonth!.month = month;
+		this._currentMonth!.year = year;
+	}
+
+	private _onChangeYear(year: number) {
+		this._showYearSelection = false;
 		this._currentMonth!.year = year;
 	}
 
@@ -878,13 +1086,24 @@ export class PandaMonthCalendar extends LitElement {
 		this._currentMonth!.year -= 1;
 		this.requestUpdate();
 	}
-	
+
 	private _onShowYearSelection() {
 		this._showYearSelection = true;
+		this._showMonthSelection = false;
 	}
-	
+
 	private _onYearChangeForward() {
 		this._currentMonth!.year += 1;
+		this.requestUpdate();
+	}
+
+	private _onDecadeChangeBackward() {
+		this._currentMonth!.year -= 10;
+		this.requestUpdate();
+	}
+
+	private _onDecadeChangeForward() {
+		this._currentMonth!.year += 10;
 		this.requestUpdate();
 	}
 
@@ -901,6 +1120,12 @@ export class PandaMonthCalendar extends LitElement {
 				}
 			});
 			this.dispatchEvent(event);
+		}
+	}
+
+	private _onSelectEvent(date: string, selectable: boolean) {
+		if (selectable) {
+			this._onSelectDate(date, false);
 		}
 	}
 }

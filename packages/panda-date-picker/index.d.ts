@@ -34,6 +34,20 @@ export type PandaDateRange = {
 	to: string;
 }
 
+export type PandaDateHighlight = {
+	label: string;
+	date: string;
+}
+
+export type PandaEvent = {
+	date: string; // YYYY-MM-DD
+	label: string;
+	description?: string;
+	time?: string; // HH:MM
+	wholeDay?: boolean;
+	selectable?: boolean;
+}
+
 export type PandaDatePreset = {
 	label: string;
 	date?: string;

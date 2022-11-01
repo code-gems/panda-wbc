@@ -66,7 +66,7 @@ export const isDateDisabled = (
 	if (min) {
 		const _minDateOffset = getDateOffset(min);
 		
-		if (_minDateOffset && _minDateOffset >= dateOffset) {
+		if (_minDateOffset && _minDateOffset > dateOffset) {
 			disabled = true;
 		}
 	}
@@ -75,7 +75,7 @@ export const isDateDisabled = (
 	if (max) {
 		const _maxDateOffset = getDateOffset(max);
 		
-		if (_maxDateOffset && _maxDateOffset <= dateOffset) {
+		if (_maxDateOffset && _maxDateOffset < dateOffset) {
 			disabled = true;
 		}
 	}
