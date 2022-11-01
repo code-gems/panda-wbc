@@ -21,3 +21,7 @@ export const scroll = css`
 		background-color: darkgrey;
 	}
 `;
+
+export const callout = css`
+	
+`;

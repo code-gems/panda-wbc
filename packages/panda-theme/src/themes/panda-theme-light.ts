@@ -249,6 +249,19 @@ export const pandaThemeLight = css`
 		--panda-action-color-info-70opc: hsl(181deg 52% 53% / 70%);
 		--panda-action-color-info-80opc: hsl(181deg 52% 53% / 80%);
 		--panda-action-color-info-90opc: hsl(181deg 52% 53% / 90%);
+
+		/* NOTIFICATION COLORS */
+
+		--panda-notification-color: #fff;
+		--panda-notification-background: hsl(340deg 82% 59%);
+
+		--panda-notification-color-hover: #fff;
+		--panda-notification-background-hover: #000;
+
+		--panda-notification-color-disabled: #fff;
+		--panda-notification-background-disabled: #000;
+
+		--panda-notification-0opc: #000;
 		
 		/* ICONS */
 

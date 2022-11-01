@@ -1,5 +1,6 @@
 // types
 import { PageCategory } from "panda-design-typings";
+import { PandaEvent } from "@panda-wbc/panda-date-picker";
 
 // components
 import "@panda-wbc/panda-date-picker";
@@ -51,7 +52,14 @@ export class PandaIconDemoPage extends LitElement {
 		{ label: "Christmas", date: "2022-12-25" },
 		{ label: "Christmas", date: "2022-12-25" },
 		{ label: "Christmas", date: "2022-12-25" },
-	]
+	];
+
+	@property({ type: Array })
+	private _events: PandaEvent[] = [
+		{ date: "2022-11-02", label: "My Birthday", description: "Happy Birthday ME!!!", wholeDay: true, time: "12:00" },
+		{ date: "2022-11-25", label: "Interview", description: "Wish me luck ;)", time: "14:30" },
+		{ date: "2022-11-25", label: "Dinner with friends", description: "John's Pizza, Orchard St. #01-21 B1", time: "19:00" }
+	];
 
 	@query("#date-picker")
 	private _datePickerEl!: any;
@@ -74,20 +82,31 @@ export class PandaIconDemoPage extends LitElement {
 					id="date-picker"
 					style="width: 200px;"
 					placeholder="Select..."
+					.events="${this._events}"
 					.value="${"2022-05-23"}"
-					.disableDates="${["2022-10-23", "2022-10-25"]}"
 					.format="${"DD MMM YYYY"}"
-					@change="${(e: any) => this._onDateChange(e)}"
+					.presetDates="${this._presetDates}"
+					@change="${this._onDateChange}"
 				>
 				</panda-date-picker>
 
 				<br />
 				<button
-					@click="${this._onDatePickerValueChange}"
+					@click="${() => this._onDatePickerValueChange("2022-01-01")}"
 				>
 					CHANGE DATE [2022-01-01]
 				</button>
 
+				<panda-month-calendar
+					.events="${this._events}"
+					.presetDates="${this._presetDates}"
+					.highlightDate="${[{ date: "2022-11-01", label: "Adrian's Birthday" }]}"
+					@change="${(e: any) => this._onMonthCalendarDateChange(e.target.selectedDate)}"
+				>
+				</panda-month-calendar>
+
+			</div>
+			<!--
 				<panda-date-picker
 					theme="mandatory"
 					.value="${"2022-10-20"}"
@@ -102,8 +121,6 @@ export class PandaIconDemoPage extends LitElement {
 					@change="${(e: any) => this._onDateChange(e)}"
 				>
 				</panda-date-picker>
-			</div>
-<!--
 				<panda-date-picker
 					theme="primary"
 					.value="${"2022-02-14"}"
@@ -206,7 +223,7 @@ export class PandaIconDemoPage extends LitElement {
 		console.log("%c [PANDA DESIGN] _onMonthCalendarDateChange", "font-size: 24px; color: orange;", e);
 	}
 
-	_onDatePickerValueChange() {
-		this._datePickerEl.value = "2022-01-01"
+	_onDatePickerValueChange(date: string) {
+		this._datePickerEl.value = date;
 	}
 }
