@@ -1,7 +1,5 @@
-export type PandaIconTemplate = {
-	name: string;
-	template: string;
-}
+// types
+import { PandaIconTemplate } from "../index";
 
 export class PandaIconLibrary {
 	static instance: any;

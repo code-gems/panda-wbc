@@ -35,6 +35,8 @@
 	"files": [
 		"src/**/*",
 		"demo/**/*",
-		"lib/**/*"
-	]
+		"lib/**/*",
+		"index.d.ts"
+	],
+	"types": "index.d.ts"
 }

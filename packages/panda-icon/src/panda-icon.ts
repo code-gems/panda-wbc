@@ -12,6 +12,7 @@ import { PandaIconLibrary } from "./panda-icon-library";
 // icons
 import { defaultIcons } from "./resources/default-icons";
 
+// register default icon pack
 const pandaIconLibrary = new PandaIconLibrary();
 pandaIconLibrary.registerIcons(defaultIcons);
 
@@ -29,7 +30,7 @@ export class PandaIcon extends LitElement {
 	private _svgEl!: any;
 
 	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
+	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	protected updated(): void {
