@@ -3,6 +3,13 @@ import { IconDetails } from "panda-icon-typings";
 
 export const getIconList = (): IconDetails[] => {
 	return [
+		// System =============================================
+		{ name: "info", 					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "info-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "error",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "error-outline",			iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "warning",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
 
