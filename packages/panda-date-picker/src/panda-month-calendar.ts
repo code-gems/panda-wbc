@@ -200,7 +200,6 @@ export class PandaMonthCalendar extends LitElement {
 	// ================================================================================================================
 
 	protected updated(_changedProperties: PropertyValues): void {
-		console.log("%c [updated] Panda Month Calendar", "font-size: 24px; color: red;", _changedProperties, this.selectedDate);
 		if (_changedProperties.has("selectedDate") && this.selectedDate !== undefined) {
 			this._parseSelectedDate(this.selectedDate);
 			this._parseEvents();
@@ -217,14 +216,6 @@ export class PandaMonthCalendar extends LitElement {
 		if (_changedProperties.has("events") && this.events) {
 			this._parseEvents();
 		}
-	}
-
-	protected firstUpdated(_changedProperties: PropertyValues): void {
-		console.log("%c [firstUpdated] Panda Month Calendar", "font-size: 24px; color: green;");
-		console.log("%c presetDates", "font-size: 24px; color: green;", this.presetDates);
-		console.log("%c presetDatesHeader", "font-size: 24px; color: green;", this.presetDatesHeader);
-
-		console.log("%c events", "font-size: 24px; color: green;", this.events);
 	}
 
 	// ================================================================================================================
@@ -601,7 +592,7 @@ export class PandaMonthCalendar extends LitElement {
 
 	private _renderEvents(): TemplateResult | void {
 		let eventsHeader: string = "";
-		console.log("%c _renderEvents", "font-size: 16px; color: red;", this._currentMonth, this._selectedDate);
+		// check if there are any events to render
 		if (this.events?.length) {
 			const listHtml: TemplateResult[] = [];
 
@@ -638,10 +629,8 @@ export class PandaMonthCalendar extends LitElement {
 
 					// set event list header
 					eventsHeader = "Today";
-
 				} else {
 					// generate event key for selected day
-					console.log("%c _currentMonth", "font-size: 16px; color: red;", this._currentMonth, this._currentMonthEvents);
 					if (this._currentMonth) {
 						const { year, month } = this._currentMonth;
 						const _year = String(year);
@@ -748,9 +737,6 @@ export class PandaMonthCalendar extends LitElement {
 		};
 		// trigger update due to side effect
 		this.requestUpdate();
-
-		console.log("%c _parseSelectedDate _currentMonth", "font-size: 24px; color: red;", this._currentMonth);
-
 	}
 
 	private _generateCalendar() {
@@ -1021,7 +1007,7 @@ export class PandaMonthCalendar extends LitElement {
 		const newDate = new Date(selectedDate);
 		// check if date is valid
 		if (isNaN(newDate.getTime())) {
-			console.warn("%c [PANDA DATE PICKER] selectDate - Invalid date format.", "font-size: 16px;");
+			console.warn("%c 📅 [PANDA DATE PICKER] selectDate - Invalid date format.", "font-size: 16px;");
 		} else {
 			this.selectedDate = selectedDate;
 		}
@@ -1029,7 +1015,7 @@ export class PandaMonthCalendar extends LitElement {
 
 	public setFirstDayOfWeek(firstDayOfWeek: number): void {
 		if (isNaN(firstDayOfWeek)) {
-			console.warn("%c [PANDA DATE PICKER] setFirstDayOfWeek - Wrong type of argument. Provided value is not a number.", "font-size: 16px;");
+			console.warn("%c 📅 [PANDA DATE PICKER] setFirstDayOfWeek - Wrong type of argument. Provided value is not a number.", "font-size: 16px;");
 		} else {
 			// set value from 0 to 7
 			this.firstDayOfWeek = firstDayOfWeek % 7;
@@ -1109,17 +1095,22 @@ export class PandaMonthCalendar extends LitElement {
 
 	private _onSelectDate(date: string, disabled: boolean) {
 		if (!disabled) {
-			console.log("%c [MONTH CALENDAR] _onSelectDate", "font-size: 24px; color: green;", date);
-			this.selectedDate = date;
-			this._parseSelectedDate(date);
+			// trigger change event if date actually changed
+			if (this.selectedDate !== date) {
+				console.log("%c 📅 [MONTH CALENDAR] _onSelectDate", "font-size: 24px; color: green;", date);
+				this.selectedDate = date;
+				this._parseSelectedDate(date);
 
-			// trigger change event
-			const event = new CustomEvent("change", {
-				detail: {
-					date: this.selectedDate
-				}
-			});
-			this.dispatchEvent(event);
+				const event = new CustomEvent("change", {
+					detail: {
+						date: this.selectedDate
+					}
+				});
+				this.dispatchEvent(event);
+			} else {
+				console.log("%c 📅 [MONTH CALENDAR] _onSelectDate -> CLOSE WITH NO CHANGE", "font-size: 24px; color: green;");
+				this.dispatchEvent(new CustomEvent("close", {}));
+			}
 		}
 	}
 

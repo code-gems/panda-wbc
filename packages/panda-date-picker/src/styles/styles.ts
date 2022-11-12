@@ -161,6 +161,9 @@ export const callout = css`
 		height: var(--panda-button-size-m, 40px);
 		justify-content: center;
 		align-items: center;
+		--panda-icon-width: var(--panda-icon-size-s, 18px);
+		--panda-icon-height: var(--panda-icon-size-s, 18px);
+		--panda-icon-color: var(--panda-action-info-color, hsl(0deg 0% 100%));
 	}
 
 	.callout .message {

@@ -256,23 +256,17 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	protected updated(changedProps: PropertyValues) {
-		console.log("%c [DATE PICKER] [UPDATED] value", "font-size: 16px; color: red;", changedProps, changedProps.get("value"));
-
 		if (changedProps.has("opened") && this.opened) {
-			console.log("%c [DATE PICKER] opened", "font-size: 16px; color: red;", this.opened);
 			this._openDatePickerOverlay();
 		}
 
 		if (changedProps.has("value") && changedProps.get("value") !== undefined) {
 			this._displayValue = this._formatDate(this.value);
 			this.requestUpdate();
-			console.log("%c [DATE PICKER] [UPDATED] value / _displayValue", "font-size: 16px; color: blue;", this.value, this._displayValue);
-			this._triggerChangeEvent();
 		}
 	}
 
 	protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-		console.log("%c [DATE PICKER] [FIRST UPDATED] value", "font-size: 16px; color: green;", this.value);
 		this._displayValue = this._formatDate(this.value);
 		this.requestUpdate();
 	}
@@ -473,13 +467,13 @@ export class PandaDatePicker extends LitElement {
 	 */
 	private _evaluateDate(): void {
 		if (this._displayValue.trim() !== "") {
-			console.log("%c [DATE PICKER] _evaluateDate", "font-size: 16px; color: green;", this.value, this._displayValue);
+			console.log("%c 🔣 [DATE PICKER] _evaluateDate", "font-size: 16px; color: green;", this.value, this._displayValue);
 
 			if (isDateValid(this._displayValue.trim())) {
 				// convert user date input to acceptable format
 				this.value = parseDate(this._displayValue);
 				this._displayValue = this._formatDate(this.value);
-				console.log("%c [DATE PICKER] _evaluateDate", "font-size: 16px; color: green;", this.value);
+				console.log("%c 🔣 [DATE PICKER] _evaluateDate [valid date]", "font-size: 16px; color: green;", this.value);
 				this.removeAttribute("invalid");
 			} else {
 				this._displayValue = "Invalid date";
@@ -491,6 +485,8 @@ export class PandaDatePicker extends LitElement {
 					this._overlayEl.selectedDate = null;
 				}
 			}
+			// notify date change
+			this._triggerChangeEvent();
 		}
 	}
 
@@ -541,7 +537,7 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _onInputFieldKeyUp(e: KeyboardEvent) {
-		console.log("%c [DATE PICKER] _onInputFieldKeyUp", "font-size: 16px; color: red;", e.key);
+		console.log("%c 🔣 [DATE PICKER] _onInputFieldKeyUp", "font-size: 16px; color: red;", e.key);
 		if (e.key === "Enter") {
 			this._evaluateDate();
 			this._hideOverlay();
@@ -557,7 +553,7 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _onInputFieldKeyDown(e: KeyboardEvent) {
-		console.log("%c [DATE PICKER] _onInputFieldKeyDown", "font-size: 16px; color: red;", e.key, this.opened);
+		console.log("%c 🔣 [DATE PICKER] _onInputFieldKeyDown", "font-size: 16px; color: red;", e.key, this.opened);
 		if (e.key === "Tab" && this.opened) {
 			this._evaluateDate();
 			this._hideOverlay();
@@ -565,10 +561,8 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _onChangeDate(date: string) {
-		console.log("%c [DATE PICKER] [ON INPUT] _onChangeDate", "font-size: 16px; color: blue;", date);
+		console.log("%c 🔣 [DATE PICKER] [ON INPUT] _onChangeDate", "font-size: 16px; color: blue;", date);
 		// validate input
-
-		// const _unformattedDate = unformatInputDate(date, this.format);
 		this._displayValue = date || "";
 		this.removeAttribute("invalid");
 
@@ -576,6 +570,7 @@ export class PandaDatePicker extends LitElement {
 			!this.disabled && isDateValid(date) ||
 			!this.disabled && date === null
 		) {
+			// update month calendar if opened
 			if (this._overlayEl) {
 				this._overlayEl.selectedDate = date;
 			}
@@ -583,19 +578,24 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	private _onClearDate() {
-		console.log("%c [DATE PICKER] _onClearDate", "font-size: 16px; color: green;");
+		console.log("%c 🔣 [DATE PICKER] _onClearDate", "font-size: 16px; color: green;");
 		this._displayValue = "";
 		this.value = null;
 		this.removeAttribute("invalid");
+		// update month calendar if opened
 		if (this._overlayEl) {
 			this._overlayEl.selectedDate = null;
 		}
+		// notify date change
+		this._triggerChangeEvent();
 	}
 
 	private _onSelectedDateChange(e: any) {
-		console.log("%c [DATE PICKER] _onSelectedDateChange", "font-size: 16px; color: green;", e);
+		console.log("%c 🔣 [DATE PICKER] _onSelectedDateChange", "font-size: 16px; color: green;", e);
 		this.value = e.detail.date;
 		this.removeAttribute("invalid");
+		// notify date change
+		this._triggerChangeEvent();
 	}
 }
 

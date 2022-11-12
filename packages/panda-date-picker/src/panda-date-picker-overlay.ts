@@ -186,6 +186,7 @@ export class PandaDatePickerOverlay extends LitElement {
 						.firstDayOfWeek="${this.firstDayOfWeek}"
 						.weekStartsOnMonday="${this.weekStartsOnMonday}"
 						@change="${(e: CustomEvent<PandaDatePickerChangeEvent>) => this._onSelectDate(e.detail.date)}"
+						@close="${this.close}"
 					>
 					</panda-month-calendar>
 					${this._renderFooter()}
@@ -229,11 +230,7 @@ export class PandaDatePickerOverlay extends LitElement {
 	// ================================================================================================================
 
 	public close() {
-		const overlayRect = this._overlayEl.getBoundingClientRect();
-		console.log("%c [_showOverlayContent] overlayRect", "font-size: 24px; color: green;", overlayRect);
-		console.log("%c [OVERLAY] Close", "font-size: 24px; color: green;", this.selectedDate);
-		const event = new CustomEvent("close", {});
-		this.dispatchEvent(event);
+		this.dispatchEvent(new CustomEvent("close", {}));
 	}
 
 	// ================================================================================================================
@@ -242,8 +239,6 @@ export class PandaDatePickerOverlay extends LitElement {
 
 	private _showOverlayContent() {
 		const overlayRect = this._overlayEl.getBoundingClientRect();
-		console.log("%c [_showOverlayContent] overlayRect", "font-size: 24px; color: green;", overlayRect);
-
 		let overlayTop = this.parentDetails.bottom;
 		let overlayLeft = this.parentDetails.left;
 
