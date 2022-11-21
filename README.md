@@ -16,3 +16,8 @@ If you want to develop more than 1 component at a time and see reflected depende
 
 ## adding new component
 To add new component, run ```pnpm install``` to add your component to workspace dependencies
+
+## Component list
+
+| Component | version |
+| panda-date-picker | 1.0.0 |

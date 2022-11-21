@@ -82,10 +82,12 @@ export class PandaIconDemoPage extends LitElement {
 					id="date-picker"
 					style="width: 200px;"
 					placeholder="Select..."
+					theme="valid"
 					.events="${this._events}"
 					.value="${"2022-05-23"}"
 					.format="${"DD MMM YYYY"}"
 					.presetDates="${this._presetDates}"
+					.disabled="${true}"
 					@change="${this._onDateChange}"
 				>
 				</panda-date-picker>

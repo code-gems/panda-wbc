@@ -116,12 +116,18 @@ export const styles = css`
 
 	/* ACTION THEMES */
 
-	:host([theme~="mandatory"]) .date-picker {
+	:host([theme~="mandatory"]:not([disabled])) .date-picker {
 		box-shadow: 0px 0px 0px 2px var(--panda-action-warn, hsl(35deg 91% 62%));
 	}
 
-	:host([invalid]) .date-picker {
+	:host([theme~="invalid"]:not([disabled])) .date-picker,
+	:host([invalid]:not([disabled])) .date-picker {
 		box-shadow: 0px 0px 0px 2px var(--panda-action-fail, hsl(14deg 77% 62%));
+	}
+
+	:host([theme~="valid"]:not([disabled])) .date-picker,
+	:host([valid]:not([disabled])) .date-picker {
+		box-shadow: 0px 0px 0px 2px var(--panda-action-done, hsl(164deg 67% 45%));
 	}
 
 	:host([focused]) .date-picker {

@@ -14,7 +14,17 @@ import "@panda-wbc/panda-icon";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { getDaysOfWeek, getFullDaysOfWeek, getFullMonths, getMonths, isDateValid, minValue, parseDate, unformatInputDate } from "./utils/utils";
+import {
+	getDaysOfWeek,
+	getFullDaysOfWeek,
+	getFullMonths,
+	getMonths,
+	isDateValid,
+	minValue,
+	parseDate,
+	isDateDisabled
+} from "./utils/utils";
+import { debounce } from "@panda-wbc/panda-core";
 
 @customElement("panda-date-picker")
 export class PandaDatePicker extends LitElement {
@@ -22,8 +32,6 @@ export class PandaDatePicker extends LitElement {
 	static get styles() {
 		return [styles, modifiers];
 	}
-
-	static state: any;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
 	busy!: boolean;
@@ -218,6 +226,9 @@ export class PandaDatePicker extends LitElement {
 	private _selectDateEventBinding: any;
 	private _hideOverlayEventBinding: any;
 
+	// debouncers
+	private _evaluateDateDebouncer: any;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -253,6 +264,9 @@ export class PandaDatePicker extends LitElement {
 		// event bindings
 		this._selectDateEventBinding = this._onSelectedDateChange.bind(this);
 		this._hideOverlayEventBinding = this._hideOverlay.bind(this);
+
+		// debouncers
+		this._evaluateDateDebouncer = debounce(this._evaluateDate, 50);
 	}
 
 	protected updated(changedProps: PropertyValues) {
@@ -466,28 +480,74 @@ export class PandaDatePicker extends LitElement {
 	 * Check if date entered by user is valid.
 	 */
 	private _evaluateDate(): void {
-		if (this._displayValue.trim() !== "") {
-			console.log("%c 🔣 [DATE PICKER] _evaluateDate", "font-size: 16px; color: green;", this.value, this._displayValue);
+		this._displayValue = this._displayValue.trim();
 
-			if (isDateValid(this._displayValue.trim())) {
+		// check if date value has been cleared by user
+		if (this._displayValue !== "") {
+			if (isDateValid(this._displayValue)) {
 				// convert user date input to acceptable format
+				const newDate = parseDate(this._displayValue);
+
+				// check if value changed
+				if (newDate !== this.value) {
+					// check if date is disabled
+					if (this._isDateDisabled(newDate as string)) {
+						this.value = null;
+						this._displayValue = "Invalid date";
+						this.setAttribute("invalid", "");
+					} else {
+						this.value = newDate;
+						this._displayValue = this._formatDate(this.value);
+						this.removeAttribute("invalid");
+					}
+					// notify date change
+					this._triggerChangeEvent();
+				}
+
 				this.value = parseDate(this._displayValue);
 				this._displayValue = this._formatDate(this.value);
-				console.log("%c 🔣 [DATE PICKER] _evaluateDate [valid date]", "font-size: 16px; color: green;", this.value);
 				this.removeAttribute("invalid");
-			} else {
-				this._displayValue = "Invalid date";
+
+			} else if (this.value !== null) {
 				this.value = null;
-				this.setAttribute("invalid", "");
+				this.removeAttribute("invalid");
 	
 				// update month calendar if shown
 				if (this._overlayEl) {
 					this._overlayEl.selectedDate = null;
 				}
+				// notify date change
+				this._triggerChangeEvent();
 			}
-			// notify date change
-			this._triggerChangeEvent();
 		}
+	}
+
+	/**
+	 * Validate date against all user provided rules
+	 * @param date - date to validate [expected format: YYYY-MM-DD]
+	 * @returns {Boolean}
+	 */
+	private _isDateDisabled(date: string): boolean {
+		const _date = new Date(date);
+		const year = _date.getFullYear();
+		const month = _date.getMonth() + 1;
+		const day = _date.getDate();
+		const dayOfWeek = _date.getDay();
+		const daysOfWeek = getDaysOfWeek();
+
+		return isDateDisabled(
+			year,
+			month,
+			day,
+			dayOfWeek,
+			this.min,
+			this.max,
+			this.disableDates,
+			this.disableDateRange,
+			this.disableWeekends,
+			this.disableWeekDays,
+			daysOfWeek
+		);
 	}
 
 	// ================================================================================================================
@@ -524,7 +584,7 @@ export class PandaDatePicker extends LitElement {
 		if (this._dateInputEl) {
 			this.removeAttribute("focused");
 		}
-		this._evaluateDate();
+		this._evaluateDateDebouncer();
 		// get rid of extra spaces
 		this._displayValue = this._displayValue.trim();
 		this.requestUpdate();
@@ -539,7 +599,7 @@ export class PandaDatePicker extends LitElement {
 	private _onInputFieldKeyUp(e: KeyboardEvent) {
 		console.log("%c 🔣 [DATE PICKER] _onInputFieldKeyUp", "font-size: 16px; color: red;", e.key);
 		if (e.key === "Enter") {
-			this._evaluateDate();
+			this._evaluateDateDebouncer();
 			this._hideOverlay();
 		} else if (
 			e.key !== "Tab" &&
@@ -555,7 +615,7 @@ export class PandaDatePicker extends LitElement {
 	private _onInputFieldKeyDown(e: KeyboardEvent) {
 		console.log("%c 🔣 [DATE PICKER] _onInputFieldKeyDown", "font-size: 16px; color: red;", e.key, this.opened);
 		if (e.key === "Tab" && this.opened) {
-			this._evaluateDate();
+			this._evaluateDateDebouncer();
 			this._hideOverlay();
 		}
 	}

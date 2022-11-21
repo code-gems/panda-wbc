@@ -1,16 +1,16 @@
 // types
 import { Debouncer } from "../index";
 
-export const debouncer = (callback: any, wait: number, maxWait: number = 0): () => void | null | Debouncer => {
+export const debounce = (callback: any, wait: number, maxWait: number = 0): () => void | null | Debouncer => {
 	let timeout: any = null;
 	let maxWaitInterval: any = null;
 	let context = this;
 
 	if (typeof wait !== "number") {
-		console.warn("%c [DEBOUNCER] 'wait' param is not a valid number", "font-size: 24px; color: green;", wait);
+		console.warn("%c [DEBOUNCE] 'wait' param is not a valid number", "font-size: 24px; color: green;", wait);
 		return () => null;
 	}
-	console.log("%c [DEBOUNCER] wait, maxDelay", "font-size: 24px; color: green;", wait, maxWait);
+	console.log("%c [DEBOUNCE] wait, maxDelay", "font-size: 24px; color: green;", wait, maxWait);
 
 	/** Greatest common divisor */
 	function gcd(x: number, y: number): number {
@@ -29,15 +29,15 @@ export const debouncer = (callback: any, wait: number, maxWait: number = 0): () 
 	}
 
 	let interval = !!maxWait ? gcd(wait, maxWait) : wait;
-	console.log("%c [DEBOUNCER] interval", "font-size: 24px; color: green;", interval);
+	console.log("%c [DEBOUNCE] interval", "font-size: 24px; color: green;", interval);
 
 	function cancel(): void {
-		console.log("%c [DEBOUNCER] CANCEL", "font-size: 24px; color: orange;");
+		console.log("%c [DEBOUNCE] CANCEL", "font-size: 24px; color: orange;");
 		clearTimeout(timeout);
 		clearTimeout(maxWaitInterval);
 		timeout = null;
 		maxWaitInterval = null;
-}
+	}
 
 	function isRunning(): boolean {
 		return timeout !== null;
@@ -48,25 +48,25 @@ export const debouncer = (callback: any, wait: number, maxWait: number = 0): () 
 		let intervalStep = interval;
 
 		const timeoutFn = function () {
-			console.log("%c [DEBOUNCER] INVOKE CALLBACK", "font-size: 24px; color: orange;");
+			console.log("%c [DEBOUNCE] INVOKE CALLBACK", "font-size: 24px; color: orange;");
 			callback.apply(context, args);
 			cancel();
 		}
 
 		const watcherFn = function () {
 			if (maxWait === intervalStep) {
-				console.log("%c [DEBOUNCER] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;");
+				console.log("%c [DEBOUNCE] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;");
 				callback.apply(context, args);
 				cancel();
 			} else {
-				console.log("%c [DEBOUNCER] TICK", "font-size: 24px; color: orange;");
+				console.log("%c [DEBOUNCE] TICK", "font-size: 24px; color: orange;");
 				intervalStep += interval;
 			}
 		}
 
 		clearTimeout(timeout);
 		timeout = setTimeout(timeoutFn, interval);
-		console.log("%c [DEBOUNCER] START DEBOUNCER", "font-size: 24px; color: green;", wait, maxWait);
+		console.log("%c [DEBOUNCE] START DEBOUNCE", "font-size: 24px; color: green;", wait, maxWait);
 		if (!!maxWait && !maxWaitInterval) {
 			maxWaitInterval = setInterval(watcherFn, interval);
 		}

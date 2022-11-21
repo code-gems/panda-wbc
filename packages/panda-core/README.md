@@ -11,7 +11,7 @@ or
 ### Usage
 
 ```html
-import { debouncer } from "@panda-wbc/panda-core";
+import { debounce } from "@panda-wbc/panda-core";
 ```
 
 ## Change Log

@@ -12,7 +12,7 @@ import { html, LitElement, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import PageLibrary, { page } from "../../common/page-library";
 import { reduxify } from "../../redux/store";
-import { debouncer } from "@panda-wbc/panda-core";
+import { debounce } from "@panda-wbc/panda-core";
 
 
 @customElement("core-page")
@@ -22,7 +22,7 @@ import { debouncer } from "@panda-wbc/panda-core";
 	pageUri: "/core",
 	parent: true,
 	category: PageCategory.CORE,
-	keywords: ["utility", "debouncer", "helper", "library"],
+	keywords: ["utility", "debounce", "helper", "library"],
 	description: ["Core utility library description"],
 	contextMenu: [],
 	template: html`<core-page></core-page>`
@@ -38,7 +38,7 @@ class CorePage extends LitElement {
 
 	private _pageLibrary!: PageLibrary;
 
-	private _debouncer: any;
+	private _debounce: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -48,7 +48,7 @@ class CorePage extends LitElement {
 		super();
 		// init page library 
 		this._pageLibrary = new PageLibrary();
-		this._debouncer = debouncer(this._debouncerCallback, 2000, 4000);
+		this._debounce = debounce(this._debounceCallback, 2000, 4000);
 	}
 
 	stateChanged(state: AppState) {
@@ -84,8 +84,8 @@ class CorePage extends LitElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	_debouncerCallback() {
-		console.log("%c [CORE PAGE] _debouncerCallback", "font-size: 24px; color: orange;");
+	private _debounceCallback() {
+		console.log("%c [CORE PAGE] _debounceCallback", "font-size: 24px; color: orange;");
 
 	}
 
@@ -94,7 +94,7 @@ class CorePage extends LitElement {
 	// ================================================================================================================
 
 	private _onTriggerDebouncer() {
-		console.log("%c [CORE PAGE] _onTriggerDebouncer", "font-size: 24px; color: green;");
-		this._debouncer();
+		console.log("%c [CORE PAGE] _onTriggerDebounce", "font-size: 24px; color: green;");
+		this._debounce();
 	}
 }
