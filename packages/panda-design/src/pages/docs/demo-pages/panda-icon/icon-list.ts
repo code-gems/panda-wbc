@@ -5,10 +5,14 @@ export const getIconList = (): IconDetails[] => {
 	return [
 		// System =============================================
 		{ name: "info", 					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
-		{ name: "info-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "info-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "error",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
-		{ name: "error-outline",			iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "error-outline",			iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "warning",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "help",						iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "help-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
+		{ name: "settings",					iconPack: "default", group: ["System"], keywords: ["interface", "gear"] },
+		{ name: "more",						iconPack: "default", group: ["System"], keywords: ["interface", "dots", "options", "menu"] },
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
@@ -25,6 +29,10 @@ export const getIconList = (): IconDetails[] => {
 		{ name: "chevron-right", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron"] },
 		{ name: "chevron-up", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand less"] },
 		{ name: "chevron-down", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand more"] },
+		{ name: "expand-up", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand up", "double arrow"] },
+		{ name: "expand-down", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand down", "double arrow"] },
+		{ name: "expand-left", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand left", "double arrow"] },
+		{ name: "expand-right", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand right", "double arrow"] },
 
 		// text editor icons ==================================
 		{ name: "code", 					iconPack: "default", group: ["Editor"], keywords: ["source", "text"] },
@@ -50,10 +58,14 @@ export const getIconList = (): IconDetails[] => {
 		{ name: "undo", 					iconPack: "default", group: ["Editor"], keywords: ["editor", "text", "history"] },
 		
 		// Social ===============================================
+		{ name: "profile", 					iconPack: "default", group: ["Social"], keywords: ["social", "account", "avatar"] },
+		{ name: "user", 					iconPack: "default", group: ["Social"], keywords: ["social", "account", "client"] },
+		{ name: "user-outline",				iconPack: "default", group: ["Social"], keywords: ["social", "account", "client", "outline"] },
 		{ name: "heart", 					iconPack: "default", group: ["Social"], keywords: ["social", "favorite", "love"] },
 		{ name: "heart-outline", 			iconPack: "default", group: ["Social"], keywords: ["social", "favorite", "love", "outline"] },
 		{ name: "notification-active",		iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell"] },
 		{ name: "notification", 			iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell"] },
+		{ name: "notification-outline", 	iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell", "outline"] },
 		
 		// E-commerce ===========================================
 		{ name: "credit-card", 				iconPack: "default", group: ["E-commerce"], keywords: ["payment", "money", "shop"] },
