@@ -208,6 +208,9 @@ export class PandaDatePicker extends LitElement {
 	 */
 	@property({ type: String })
 	presetDatesHeader!: string | null;
+	
+	@property({ type: Boolean, attribute: "hide-close-button" })
+	hideCloseButton!: boolean
 
 	// private props
 	private _displayValue!: string;
@@ -308,7 +311,7 @@ export class PandaDatePicker extends LitElement {
 			`;
 		}
 
-		if (this.value) {
+		if (this.value && !this.hideCloseButton) {
 			clearIconHtml = html`
 				<div
 					class="icon ${this.disabled ? "hidden" : ""}"
