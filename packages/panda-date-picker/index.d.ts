@@ -48,6 +48,12 @@ export type PandaEvent = {
 	selectable?: boolean;
 }
 
+export interface PandaParsedEvent extends PandaEvent {
+	dayKey: string; // YYYYMMDD
+	monthKey: string; // YYYYMM
+	timestamp: number; // unix timestamp from provided event date
+}
+
 export type PandaDatePreset = {
 	label: string;
 	date?: string;

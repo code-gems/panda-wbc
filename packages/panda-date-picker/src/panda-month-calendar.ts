@@ -1,5 +1,5 @@
 // types
-import { PandaDate, PandaMonth, PandaDateRange, PandaDatePreset, PandaEvent } from "../index";
+import { PandaDate, PandaMonth, PandaDateRange, PandaDatePreset, PandaEvent, PandaParsedEvent } from "../index";
 
 // style
 import { styles } from "./styles/month-calendar-styles";
@@ -182,6 +182,7 @@ export class PandaMonthCalendar extends LitElement {
 	private _previousMonth: PandaMonth | null = null;
 	private _currentMonth: PandaMonth | null = null;
 	private _nextMonth: PandaMonth | null = null;
+	private _sortedEvents: PandaParsedEvent[] = []; // sorted events [asc]
 
 	@property({ type: Boolean })
 	private _showMonthSelection: boolean = false;
@@ -974,7 +975,27 @@ export class PandaMonthCalendar extends LitElement {
 		this._currentMonthEvents = {};
 
 		if (this.events?.length) {
-			this.events.forEach((event) => {
+			// parse events
+			this._sortedEvents = this.events.map((event) => {
+				const { date } = event;
+				const _date = new Date(date);
+				const _year = String(_date.getFullYear());
+				const _month = `0${_date.getMonth() + 1}`.slice(-2);
+				const _day = `0${_date.getDate()}`.slice(-2);
+				const dayKey = `${_year}${_month}${_day}`;
+				const monthKey = `${_year}${_month}`;
+				
+				return {
+					...event,
+					timestamp:	_date.getTime(),
+					monthKey,
+					dayKey,
+				};
+			});
+			// sort events [asc] by timestamp
+			this._sortedEvents.sort((a, b) => a.timestamp - b.timestamp);
+			
+			this._sortedEvents.forEach((event) => {
 				const { date } = event;
 
 				if (date) {

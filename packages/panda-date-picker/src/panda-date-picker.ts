@@ -311,7 +311,7 @@ export class PandaDatePicker extends LitElement {
 			`;
 		}
 
-		if (this.value && !this.hideCloseButton) {
+		if (this.value && !this.hideCloseButton && !this.disabled) {
 			clearIconHtml = html`
 				<div
 					class="icon ${this.disabled ? "hidden" : ""}"
