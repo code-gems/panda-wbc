@@ -24,9 +24,22 @@ export interface PandaMonth {
 	month: number;
 	year: number;
 	// rendering props
-	days: any[];
+	days: PandaDay[];
 	daysCount: number; // number of days in the month
 	startDayIndex: number; // index of a weekday of the first day eg. 4 for Thu
+}
+
+export interface PandaDay {
+	label: string; // value shown on calendar eg.: 1, 2, 3.. etc
+	date: string; // date string formatted against specified date format eg.: 2022-12-28
+	dayKey: string;
+	// status props
+	selected: boolean;
+	disabled: boolean;
+	isToday: boolean;
+	// feature props
+	highlightString: string | null; // highlight string eg.: "BIRTHDAY"
+	eventCount: number; // number of events associated with this day
 }
 
 export type PandaDateRange = {

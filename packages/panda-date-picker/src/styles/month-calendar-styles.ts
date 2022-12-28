@@ -72,7 +72,7 @@ export const styles = css`
 	.calendar-row {
 		display: grid;
 		grid-template-columns: repeat(7, var(--panda-date-picker-button-size, var(--panda-button-size-m, 40px)));
-		gap: 10px;
+		gap: var(--panda-month-calendar-row-gap , 10px);
 		user-select: none;
 	}
 
@@ -124,6 +124,10 @@ export const styles = css`
 
 	.calendar-row .day.today {
 		animation: 1s infinite pulse;
+	}
+
+	.calendar-row .day.animate {
+		animation: 1s infinite pulse-background;
 	}
 
 	.calendar-row .day.disabled {
@@ -369,5 +373,20 @@ export const styles = css`
 		0%   { border-color: var(--panda-date-picker-date-today-background, var(--panda-primary-background, hsl(196deg 100% 47%))); }
 		50%  { border-color: var(--panda-date-picker-date-today-color, var(--panda-primary-color, hsl(0deg 0% 100%))); }
 		100% { border-color: var(--panda-date-picker-date-today-background, var(--panda-primary-background, hsl(196deg 100% 47%))); }
+	}
+
+	@keyframes pulse-background {
+		0%   {
+			color: var(--panda-bg-color, hsl(0deg 0% 100%));
+			background-color: var(--panda-date-picker-date-today-background, var(--panda-primary-background, hsl(196deg 100% 47%)));
+		}
+		50%  {
+			color: var(--panda-txt-color, hsl(0deg 0% 29%));
+			background-color: var(--panda-date-picker-date-today-color, var(--panda-primary-color, hsl(0deg 0% 100%)));
+		}
+		100% {
+			color: var(--panda-bg-color, hsl(0deg 0% 100%));
+			background-color: var(--panda-date-picker-date-today-background, var(--panda-primary-background, hsl(196deg 100% 47%)));
+		}
 	}
 `;
