@@ -812,7 +812,7 @@ export class PandaMonthCalendar extends LitElement {
 						this._daysOfWeek
 					),
 					// feature props
-					highlightString: this._getHighlightString(this._previousMonth.year, this._previousMonth.month, i + 1),
+					highlightString: this._getHighlightString(dayKey),
 					eventCount: this._checkEvents(dayKey),
 				});
 			}
@@ -845,7 +845,7 @@ export class PandaMonthCalendar extends LitElement {
 						this._daysOfWeek
 					),
 					// feature props
-					highlightString: this._getHighlightString(this._currentMonth.year, this._currentMonth.month, i + 1),
+					highlightString: this._getHighlightString(dayKey),
 					eventCount: this._checkEvents(dayKey),
 				});
 			}
@@ -884,7 +884,7 @@ export class PandaMonthCalendar extends LitElement {
 						this._daysOfWeek
 					),
 					// feature props
-					highlightString: this._getHighlightString(this._nextMonth.year, this._nextMonth.month, i + 1),
+					highlightString: this._getHighlightString(dayKey),
 					eventCount: this._checkEvents(dayKey),
 				});
 			}
@@ -988,13 +988,8 @@ export class PandaMonthCalendar extends LitElement {
 	 * @param {Number} day 
 	 * @returns {String} highlight string
 	 */
-	private _getHighlightString(year: number, month: number, day: number): string | null {
-		const _year = String(year);
-		const _month = `0${month + 1}`.slice(-2);
-		const _day = `0${day}`.slice(-2);
-		const key = `${_year}${_month}${_day}`;
-
-		return this._dateHighlights[key] ?? null;
+	private _getHighlightString(dayKey: string): string | null {
+		return this._dateHighlights[dayKey] ?? null;
 	}
 
 	private _parseHighlights() {
@@ -1184,14 +1179,12 @@ export class PandaMonthCalendar extends LitElement {
 		e.stopPropagation();
 		e.preventDefault();
 		this._hoveredEventKey = dayKey;
-		console.log("%c _onEventMouseOver", "font-size: 24px; color: green;", this._hoveredEventKey);
 	}
 
 	private _onClearHoverEvent(e: MouseEvent) {
 		e.stopPropagation();
 		e.preventDefault();
 		this._hoveredEventKey = null;
-		console.log("%c _onClearHoverEvent", "font-size: 24px; color: green;", this._hoveredEventKey);
 	}
 }
 
