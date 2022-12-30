@@ -56,9 +56,10 @@ export class PandaIconDemoPage extends LitElement {
 
 	@property({ type: Array })
 	private _events: PandaEvent[] = [
-		{ date: "2022-11-02", label: "My Birthday", description: "Happy Birthday ME!!!", wholeDay: true, time: "12:00" },
-		{ date: "2022-11-25", label: "Interview", description: "Wish me luck ;)", time: "14:30" },
-		{ date: "2022-11-25", label: "Dinner with friends", description: "John's Pizza, Orchard St. #01-21 B1", time: "19:00" }
+		{ date: "2022-12-25", label: "Interview", description: "Wish me luck ;)", time: "14:30" },
+		{ date: "2022-12-28", label: "Dinner with friends", description: "John's Pizza, Orchard St. #01-21 B1", time: "19:00" },
+		{ date: "2022-12-02", label: "My Birthday", description: "Happy Birthday ME!!!", wholeDay: true, time: "12:00" },
+		{ date: "2022-11-29", label: "Some event", description: "Some event description", wholeDay: true, time: "12:00" },
 	];
 
 	@query("#date-picker")
@@ -87,7 +88,7 @@ export class PandaIconDemoPage extends LitElement {
 					.value="${"2022-05-23"}"
 					.format="${"DD MMM YYYY"}"
 					.presetDates="${this._presetDates}"
-					.disabled="${true}"
+					.disabled="${false}"
 					@change="${this._onDateChange}"
 				>
 				</panda-date-picker>
