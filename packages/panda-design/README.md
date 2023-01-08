@@ -1,6 +1,6 @@
 # Welcome to Panda Design
 
-## Docs
+## 📜 Docs
 
 ### Adding new demo page
 
@@ -29,7 +29,7 @@ To create new component demo page:
 	// ...
 
 	// components
-	import "@panda-wbc/my-component";
+	import "@panda-wbc/my-component"; // don't forget to import your awesome component
 
 	// utils
 	import { html, LitElement } from "lit";
