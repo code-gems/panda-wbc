@@ -11,6 +11,7 @@ To create new component demo page:
 	- `page-config.ts`
 1. Define all page attributes in `page-config.ts`:
 ```javascript
+	// page-config.ts file:
 	export const pageId = "my-component"; // unique ID for this demo page
 	export const pageName = "My Component"; // this name will appear on the side menu
 	export const pageUri = "/docs?demo=my-component"; // url assigned to panda-router
@@ -41,7 +42,7 @@ To create new component demo page:
 		pageId,
 		pageName,
 		pageUri,
-		category: PageCategory.DOCS,
+		category: PageCategory.DOCS, // category of page
 		keywords,
 		description,
 		contextMenu,
@@ -50,7 +51,7 @@ To create new component demo page:
 	export class MyComponentDemoPage extends LitElement {
 		protected render() {
 			return html`
-				...
+				... your demo page template here ...
 			`;
 		}
 	}
