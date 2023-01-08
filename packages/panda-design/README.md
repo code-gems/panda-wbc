@@ -11,12 +11,12 @@ To create new component demo page:
 	- `page-config.ts`
 1. Define all page attributes in `page-config.ts`:
 ```javascript
-	export const pageId = "panda-button";
-	export const pageName = "Button";
-	export const pageUri = "/docs?demo=panda-button";
-	export const keywords = ["button"];
-	export const description = ["Text Editor description"];
-	export const contextMenu = [];
+	export const pageId = "panda-button"; // unique ID for this demo page
+	export const pageName = "Button"; // this name will appear on the side menu
+	export const pageUri = "/docs?demo=panda-button"; // url assigned to panda-router
+	export const keywords = ["button", "form"]; // define some keywords to help find your page in global search
+	export const description = ["Showcase of a panda-button element."]; // write some description of your demo page to help users understand what is this page about
+	export const contextMenu = []; // context menu content that will appear on the right side
 ```
 
 
