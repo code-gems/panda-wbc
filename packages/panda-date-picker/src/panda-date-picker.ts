@@ -284,7 +284,7 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-		this._displayValue = this._formatDate(this.value);
+		this._displayValue = this._formatDate(this.value || null);
 		this.requestUpdate();
 	}
 
@@ -393,9 +393,9 @@ export class PandaDatePicker extends LitElement {
 			this._overlayEl.addEventListener("close", this._hideOverlayEventBinding);
 
 			// set date picker overlay's props
-			this._overlayEl.selectedDate = this.value;
-			this._overlayEl.min = this.min;
-			this._overlayEl.max = this.max;
+			this._overlayEl.selectedDate = this.value || null;
+			this._overlayEl.min = this.min || null;
+			this._overlayEl.max = this.max || null;
 			this._overlayEl.disableDates = this.disableDates;
 			this._overlayEl.disableWeekends = this.disableWeekends;
 			this._overlayEl.disableWeekDays = this.disableWeekDays;
