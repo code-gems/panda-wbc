@@ -18,8 +18,9 @@ To create new component demo page:
 	export const description = ["Showcase of an awesome component."]; // write some description of your demo page to help users understand what is this page about
 	export const contextMenu = []; // context menu content that will appear on the right side
 ```
-1. Create your demo page:
+1. Create your demo page `demo-page.ts`:
 ```javascript
+	// demo-page.ts file:
 	// types
 	import { PageCategory } from "panda-design-typings";
 
