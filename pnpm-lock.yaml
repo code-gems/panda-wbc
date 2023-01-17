@@ -88,6 +88,7 @@ importers:
       '@panda-wbc/panda-date-picker': workspace:^1.0.0
       '@panda-wbc/panda-flag': workspace:^1.0.0
       '@panda-wbc/panda-icon': workspace:^1.0.0
+      '@panda-wbc/panda-multi-input': workspace:^1.0.0
       '@panda-wbc/panda-router': workspace:^1.0.0
       '@panda-wbc/panda-spinner': workspace:^1.0.0
       '@panda-wbc/panda-text-editor': workspace:^1.0.0
@@ -109,6 +110,7 @@ importers:
       '@panda-wbc/panda-date-picker': link:../panda-date-picker
       '@panda-wbc/panda-flag': link:../panda-flag
       '@panda-wbc/panda-icon': link:../panda-icon
+      '@panda-wbc/panda-multi-input': link:../panda-multi-input
       '@panda-wbc/panda-router': link:../panda-router
       '@panda-wbc/panda-spinner': link:../panda-spinner
       '@panda-wbc/panda-text-editor': link:../panda-text-editor

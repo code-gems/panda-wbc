@@ -8,11 +8,8 @@ import { uiComponents } from "../../styles/ui-components";
 // web parts
 import "../../common/web-parts/main-nav/main-nav";
 
-// demo pages
-import "./demo-pages/panda-button/demo-page";
-import "./demo-pages/panda-date-picker/demo-page";
-import "./demo-pages/panda-flag/demo-page";
-import "./demo-pages/panda-icon/demo-page";
+// load demo pages
+import "./loader";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";

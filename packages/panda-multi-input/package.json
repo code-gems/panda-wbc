@@ -7,6 +7,7 @@
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
+		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
 		"prepublishOnly": "npm run clean && npm run compile"
@@ -37,8 +38,7 @@
 		"webpack-dev-server": "^4.7.2"
 	},
 	"files": [
-		"src/**/*",
-		"demo/**/*",
-		"lib/**/*"
+		"src",
+		"lib"
 	]
 }
