@@ -28,7 +28,7 @@ import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 	keywords: ["components", "custom", "elements", "documentation", "code", "snippets"],
 	description: ["Docs description"],
 	contextMenu: [],
-	template: html`<docs-page></docs-page>`
+	template: html`<docs-page></docs-page>`,
 })
 @reduxify()
 class DocsPage extends LitElement {

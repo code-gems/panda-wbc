@@ -12,6 +12,8 @@ export interface Page {
 	description?: string[];
 	contextMenu?: any[];
 	order?:number;
+
+	subpageList?: Page[];
 }
 
 export class PageLibrary {

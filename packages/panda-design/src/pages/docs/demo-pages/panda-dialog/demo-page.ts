@@ -4,15 +4,15 @@ import { PageCategory } from "panda-design-typings";
 // styles
 
 // components
-import "@panda-wbc/panda-multi-input";
+import "@panda-wbc/panda-dialog";
 
 // utils
 import { html, LitElement } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { page } from "../../../../common/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
-@customElement("panda-multi-input-demo-page")
+@customElement("panda-dialog-demo-page")
 @page({
 	pageId,
 	pageName,
@@ -21,29 +21,13 @@ import { pageId, pageName, pageUri, keywords, description, contextMenu } from ".
 	keywords,
 	description,
 	contextMenu,
-	template: html`<panda-multi-input-demo-page></panda-multi-input-demo-page>`,
-
-	
-	subpageList: [
-		{
-			pageId,
-			pageName,
-			pageUri,
-			category: PageCategory.DOCS,
-			keywords,
-			description,
-			contextMenu,
-			template: html`<panda-multi-input-demo-page></panda-multi-input-demo-page>`
-		
-		}
-	]
-
+	template: html`<panda-dialog-demo-page></panda-dialog-demo-page>`,
 })
 export class PandaMultiInputDemoPage extends LitElement {
 
-	private _list1 = [
-		{ label: "", value: "" }
-	];
+	@property({ type: Boolean })
+	private _showDialog: boolean = false;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -58,14 +42,22 @@ export class PandaMultiInputDemoPage extends LitElement {
 		return html`
 			PANDA BUTTON DEMO PAGE
 
-			<panda-multi-input
-				.items=""
-				.value=""
-				@on-change=""
-				@on-input=""
-			>
-			</panda-multi-input>
+			
 		`;
+	}
+
+	private _renderDialog() {
+		if (this._showDialog) {
+			return html`
+				<panda-dialog
+					opened
+				>
+					<template>
+						<my-dialog-content id="${1234}"></my-dialog-content>
+					</template>
+				</panda-dialog>
+			`;
+		}
 	}
 
 	// ================================================================================================================

@@ -33,6 +33,7 @@
 		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
 		"@panda-wbc/panda-text-editor": "workspace:^1.0.0",
 		"@panda-wbc/panda-multi-input": "workspace:^1.0.0",
+		"@panda-wbc/panda-dialog": "workspace:^1.0.0",
 		"lit": "^2.0.2",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"

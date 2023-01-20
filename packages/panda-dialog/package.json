@@ -1,0 +1,37 @@
+{
+	"name": "@panda-wbc/panda-dialog",
+	"version": "1.0.0",
+	"description": "Lit based web component. Allows you to create popup dialogs with custom content.",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-dialog.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"ui component",
+		"popup",
+		"dialog"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"lit": "^2.0.2"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index"
+	],
+	"types": "index.d.ts"
+}
