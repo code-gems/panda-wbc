@@ -5,6 +5,7 @@ import { PageCategory } from "panda-design-typings";
 
 // components
 import "@panda-wbc/panda-dialog";
+import "@panda-wbc/panda-date-picker";
 
 // utils
 import { html, LitElement } from "lit";
@@ -33,16 +34,23 @@ export class PandaMultiInputDemoPage extends LitElement {
 	// ================================================================================================================
 
 
-
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
 		return html`
-			PANDA BUTTON DEMO PAGE
+			<div style="height: 200vh;">
+				PANDA DIALOG
 
-			
+				<button
+					@click="${this._onToggleDialog}"
+				>
+					SHOW DIALOG
+				</button>
+
+				${this._renderDialog()}
+			</div>
 		`;
 	}
 
@@ -52,9 +60,13 @@ export class PandaMultiInputDemoPage extends LitElement {
 				<panda-dialog
 					opened
 				>
-					<template>
-						<my-dialog-content id="${1234}"></my-dialog-content>
-					</template>
+					<div template>
+						DEMO PAGE DIALOG BODY
+						<panda-date-picker
+							
+						>
+						</panda-date-picker>
+					</div>
 				</panda-dialog>
 			`;
 		}
@@ -63,4 +75,8 @@ export class PandaMultiInputDemoPage extends LitElement {
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _onToggleDialog() {
+		this._showDialog = !this._showDialog;
+	}
 }

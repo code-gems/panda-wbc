@@ -24,7 +24,7 @@ import {
 	parseDate,
 	isDateDisabled
 } from "./utils/utils";
-import { debounce } from "@panda-wbc/panda-core";
+import { debounce, Debouncer } from "@panda-wbc/panda-core";
 
 @customElement("panda-date-picker")
 export class PandaDatePicker extends LitElement {
@@ -34,16 +34,23 @@ export class PandaDatePicker extends LitElement {
 	}
 
 	@property({ type: Boolean, attribute: true, reflect: true })
-	busy!: boolean;
+	busy: boolean = false;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
-	disabled!: boolean;
+	disabled: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
-	opened!: boolean;
+	opened: boolean = false;
 
+	/**
+	 * Change default spinner animation to other panda-spinner.
+	 * 
+	 * example: "video"
+	 * 
+	 * [DEFAULT] "dots"
+	 */
 	@property({ type: String, attribute: true })
-	spinner!: string;
+	spinner: string = "dots";
 
 	/**
 	 * Change default calendar icon to other panda-icon.
@@ -53,7 +60,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] "calendar"
 	 */
 	@property({ type: String, attribute: true })
-	icon!: string;
+	icon: string = "calendar";
 
 	/**
 	 * Show TODAY button in the footer.
@@ -61,7 +68,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT]: true
 	 */
 	@property({ type: Boolean, attribute: "show-today" })
-	showToday!: boolean;
+	showToday: boolean = true;
 
 	/**
 	 * Currently selected date.
@@ -81,7 +88,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] ""
 	 */
 	@property({ type: String, attribute: true })
-	placeholder!: string;
+	placeholder: string = "";
 
 	/**
 	 * Set bottom limit for date selection.
@@ -91,7 +98,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: String, attribute: true })
-	min!: string | null;
+	min: string | null = null;
 
 	/**
 	 * Set upper limit for date selection.
@@ -101,7 +108,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: String, attribute: true })
-	max!: string | null;
+	max: string | null = null;
 
 	/**
 	 * Disable weekends from selection.
@@ -109,7 +116,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] false
 	 */
 	@property({ type: Boolean, attribute: "disable-weekends" })
-	disableWeekends!: boolean;
+	disableWeekends: boolean = false;
 
 	/**
 	 * Disable individual dates from selection.
@@ -120,7 +127,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	disableDates!: string[] | null;
+	disableDates: string[] | null = [];
 
 	/**
 	 * Disable day(s) of the week from selection.
@@ -130,7 +137,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	disableWeekDays!: string[] | null;
+	disableWeekDays: string[] | null = [];
 
 	/**
 	 * Disable date range from selection. 
@@ -141,7 +148,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	disableDateRange!: PandaDateRange[] | null;
+	disableDateRange: PandaDateRange[] | null = [];
 
 	/**
 	 * Highlight particular date(s) on the calendar. 
@@ -151,7 +158,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	highlightDate!: PandaDatePreset[] | null;
+	highlightDate: PandaDatePreset[] | null = [];
   
 	/**
 	 * Define event list for particular dates.
@@ -161,7 +168,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	events!: PandaEvent[] | null;
+	events: PandaEvent[] | null = [];
 
 	/**
 	 * Set custom start of the week day.
@@ -187,7 +194,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] "YYYY-MM-DD"
 	 */
 	@property({ type: String, attribute: true })
-	format!: string | null;
+	format: string | null = null;
 
 	/**
 	 * Define custom date list for quick selection.
@@ -197,7 +204,7 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: Array })
-	presetDates!: PandaDatePreset[] | null;
+	presetDates: PandaDatePreset[] | null = [];
 
 	/**
 	 * Custom date list header label.
@@ -207,70 +214,39 @@ export class PandaDatePicker extends LitElement {
 	 * [DEFAULT] null
 	 */
 	@property({ type: String })
-	presetDatesHeader!: string | null;
+	presetDatesHeader: string | null = null;
 	
-	@property({ type: Boolean, attribute: "hide-close-button" })
-	hideCloseButton!: boolean
+	/**
+	 * Show/hide clear button on date input field
+	 * 
+	 * [DEFAULT] false
+	 */
+	@property({ type: Boolean, attribute: "hide-clear-button" })
+	hideClearButton: boolean = false;
 
 	// private props
-	private _displayValue!: string;
-	private _fullMonthList!: string[];
-	private _monthList!: string[];
-	private _fullDaysOfWeek!: string[];
-	private _daysOfWeek!: string[];
+	@property({ type: String })
+	private _displayValue: string = "";
+	private _fullMonthList: string[] = getFullMonths();
+	private _monthList: string[] = getMonths();
+	private _fullDaysOfWeek: string[] = getFullDaysOfWeek();
+	private _daysOfWeek: string[] = getDaysOfWeek();
 
 	// DOM elements
 	@query("#input-field")
 	private _dateInputEl!: HTMLInputElement;
-
 	private _overlayEl!: PandaDatePickerOverlay | null;
 
 	// event bindings
-	private _selectDateEventBinding: any;
-	private _hideOverlayEventBinding: any;
+	private _selectDateEventBinding: (e: any) => void = this._onSelectedDateChange.bind(this);
+	private _hideOverlayEventBinding: (e: any) => void = this._hideOverlay.bind(this);
 
 	// debouncers
-	private _evaluateDateDebouncer: any;
+	private _evaluateDateDebouncer: () => void | Debouncer | null = debounce(this._evaluateDate, 50);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-
-	constructor() {
-		super();
-		this.busy = false;
-		this.opened = false;
-		this.disabled = false;
-		this.spinner = "dots";
-		this.format = null;
-		this.placeholder = "";
-		this.icon = "calendar";
-		this.showToday = true;
-
-		this.min = null;
-		this.max = null;
-		this.disableDates = [];
-		this.disableWeekends = false;
-		this.disableWeekDays = [];
-		this.disableDateRange = [];
-		this.highlightDate = [];
-		this.events = [];
-		this.presetDates = [];
-		this.presetDatesHeader = null;
-
-		this._displayValue = "";
-		this._fullMonthList = getFullMonths();
-		this._monthList = getMonths();
-		this._fullDaysOfWeek = getFullDaysOfWeek();
-		this._daysOfWeek = getDaysOfWeek();
-
-		// event bindings
-		this._selectDateEventBinding = this._onSelectedDateChange.bind(this);
-		this._hideOverlayEventBinding = this._hideOverlay.bind(this);
-
-		// debouncers
-		this._evaluateDateDebouncer = debounce(this._evaluateDate, 50);
-	}
 
 	protected updated(changedProps: PropertyValues) {
 		if (changedProps.has("opened") && this.opened) {
@@ -278,14 +254,12 @@ export class PandaDatePicker extends LitElement {
 		}
 
 		if (changedProps.has("value") && changedProps.get("value") !== undefined) {
-			this._displayValue = this._formatDate(this.value);
-			this.requestUpdate();
+			this._displayValue = this._formatDate(this.value || null);
 		}
 	}
 
 	protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
 		this._displayValue = this._formatDate(this.value || null);
-		this.requestUpdate();
 	}
 
 	// ================================================================================================================
@@ -311,7 +285,7 @@ export class PandaDatePicker extends LitElement {
 			`;
 		}
 
-		if (this.value && !this.hideCloseButton && !this.disabled) {
+		if (this.value && !this.hideClearButton && !this.disabled) {
 			clearIconHtml = html`
 				<div
 					class="icon ${this.disabled ? "hidden" : ""}"
@@ -423,6 +397,7 @@ export class PandaDatePicker extends LitElement {
 	private _hideOverlay() {
 		if (this._overlayEl) {
 			// remove event listeners
+			this._overlayEl.removeEventListener("change", this._selectDateEventBinding);
 			this._overlayEl.removeEventListener("close", this._hideOverlayEventBinding);
 			// clean up
 			document.body.removeChild(this._overlayEl);
