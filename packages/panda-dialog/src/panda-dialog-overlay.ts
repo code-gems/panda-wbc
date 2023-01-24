@@ -56,7 +56,6 @@ export class PandaDialogOverlay extends LitElement {
 					part="content"
 					@click="${this._onPreventDefault}"
 				>
-					CONTENT
 				</div>
 			</div>
 		`;
