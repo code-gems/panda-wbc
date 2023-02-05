@@ -483,7 +483,7 @@ export class PandaMonthCalendar extends LitElement {
 			}
 
 			for (let i = 0; i < 4; i++) {
-				const active = currentMonth === i && this._nextMonth?.year === currentYear
+				const active = currentMonth === i && this._currentMonth!.year + 1 === currentYear
 					? "active"
 					: "";
 
@@ -964,6 +964,12 @@ export class PandaMonthCalendar extends LitElement {
 			todayDay === day;
 	}
 
+	/**
+	 * Change month by particular offset and recalculate year if needed.
+	 * @param {PandaMonth} pandaMonth Month to be changed
+	 * @param {Number} offset how many months to change
+	 * @returns {PandaMonth} Month with recalculated properties
+	 */
 	private _changeMonth(pandaMonth: PandaMonth, offset: number): PandaMonth {
 		const _pandaMonth = JSON.parse(JSON.stringify(pandaMonth));
 

@@ -33,12 +33,31 @@ export class PandaDatePicker extends LitElement {
 		return [styles, modifiers];
 	}
 
+	/**
+	 * Status property, helps indicate loading/work in progress status of the component.
+	 * Busy component will change its appearance and display spinner. 
+	 * To change type of the spinner animation use "spinner" property.
+	 * For available spinner types refer to spinner page demo.
+	 * 
+	 * [DEFAULT] false
+	 */
 	@property({ type: Boolean, attribute: true, reflect: true })
 	busy: boolean = false;
 
+	/**
+	 * Status property, indicate inactive/read-only state. Disable component will change its appearance
+	 * and will not allow any user interaction.
+	 * 
+	 * [DEFAULT] false
+	 */
 	@property({ type: Boolean, attribute: true, reflect: true })
 	disabled: boolean = false;
 
+	/**
+	 * Status property, indicating if month calendar overlay is shown.
+	 * 
+	 * [DEFAULT] false
+	 */
 	@property({ type: Boolean, reflect: true })
 	opened: boolean = false;
 
