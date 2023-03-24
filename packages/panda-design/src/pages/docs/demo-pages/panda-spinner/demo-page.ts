@@ -5,7 +5,7 @@ import { PageCategory } from "panda-design-typings";
 import "@panda-wbc/panda-spinner";
 
 // utils & config
-import { html, LitElement } from "lit";
+import { html, LitElement, css } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../common/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
@@ -22,7 +22,12 @@ import { pageId, pageName, pageUri, keywords, description, contextMenu } from ".
 	template: html`<panda-spinner-demo-page></panda-spinner-demo-page>`
 })
 export class PandaSpinnerDemoPage extends LitElement {
+	// css styles
+	static get styles() {
+		return css`
 
+		`;
+	}
 
 
 

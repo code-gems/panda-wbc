@@ -5,7 +5,7 @@
 	"description": "Panda Design - Panda UI components showcase.",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"scripts": {
-		"start": "webpack-dev-server --mode development",
+		"design": "webpack-dev-server --mode development",
 		"compile": "tsc",
 		"build": "webpack",
 		"clean": "rimraf lib",

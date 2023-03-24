@@ -28,6 +28,10 @@ export class PageLibrary {
 		return PageLibrary.instance;
 	}
 
+	/**
+	 * Register new page object.
+	 * @param {Page} page Page objet to register.
+	 */
 	public register(page: Page) {
 		this._demoPages.push(page);
 		console.log("%c register::page", "font-size: 24px; color: red;", page, this._demoPages);
@@ -39,12 +43,16 @@ export class PageLibrary {
 
 	/**
 	 * Get all parent pages from pool of registered pages.
-	 * @returns {Array} list of parent pages
+	 * @returns {Array} List of parent pages
 	 */
 	public getParentPages(): Page[] {
 		return this._demoPages.filter((page) => page.parent);
 	}
 
+	/**
+	 * Get all unique page categories.
+	 * @returns {Array} Category list
+	 */
 	public getAllCategories(): string[] {
 		const allCategories: Set<string> = new Set();
 		this._demoPages.forEach((page) => {
@@ -57,7 +65,7 @@ export class PageLibrary {
 
 	/**
 	 * Extract all pages for particular category. Category string is case sensitive!
-	 * @param {String} category - category of pages to extract.
+	 * @param {String} category - Category of pages to extract.
 	 */
 	public getPages(category: string, childrenOnly: boolean = false): Page[] {
 		const pages: Page[] = [];
@@ -71,6 +79,11 @@ export class PageLibrary {
 		return pages;
 	}
 
+	/**
+	 * Get page object by id.
+	 * @param pageId - ID of a page to extract
+	 * @returns {Page} Page object
+	 */
 	public getPageById(pageId: string): Page | null {
 		return this._demoPages.find((page) => page.pageId === pageId) || null;
 	}
@@ -78,7 +91,7 @@ export class PageLibrary {
 
 /**
  * Decorator for registration of pages
- * @param {Page} page - page details
+ * @param {Page} page - Page details
  */
 export const page = (page: Page) => {
 	return (target: any) => {

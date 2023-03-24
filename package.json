@@ -9,9 +9,17 @@
 		"pnpm": ">=6"
 	},
 	"scripts": {
-		"setup": "pnpm install"
+		"setup": "pnpm install",
+		"version": "pnpm version",
+		"demo": "demo-cli skog"
 	},
 	"devDependencies": {
-		"pnpm": "^7.13.0"
+		"pnpm": "^7.13.0",
+		"commander": "^10.0.0",
+		"chalk": "^5.2.0",
+		"inquirer": "^8.0.0"
+	},
+	"bin": {
+		"demo-cli": "bin/demo-cli.js"
 	}
 }

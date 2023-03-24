@@ -1,10 +1,11 @@
 // types
+// ...
 
 // styles
 import { styles } from "./styles/overlay-styles";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValueMap } from "lit";
+import { LitElement, html, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("panda-dialog-overlay")
@@ -24,17 +25,8 @@ export class PandaDialogOverlay extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-
-	connectedCallback(): void {
-		super.connectedCallback();
-		
-		console.log("%c [OVERLAY] TEMPLATE", "font-size: 24px; color: green;", this.template);
-
-	}
-
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
 		if (_changedProperties.has("template") && this.template) {
-			console.log("%c [OVERLAY] updated -> template", "font-size: 24px; color: green;", this.template.innerHTML);
 			this.applyContent();
 		}
 	}
@@ -76,15 +68,13 @@ export class PandaDialogOverlay extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onPreventDefault(e: MouseEvent) {
-		console.log("%c [OVERLAY] _onPreventDefault", "font-size: 24px; color: green;");
+	private _onPreventDefault(e: MouseEvent): void {
 		e.stopPropagation();
 		e.preventDefault();
 		return;
 	}
 
 	private _onCloseOverlay() {
-		console.log("%c [OVERLAY] _onCloseOverlay", "font-size: 24px; color: green;");
 		const event = new CustomEvent("close", {});
 		this.dispatchEvent(event);
 	}
