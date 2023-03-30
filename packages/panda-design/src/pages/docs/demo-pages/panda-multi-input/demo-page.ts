@@ -9,7 +9,7 @@ import "@panda-wbc/panda-multi-input";
 // utils
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
-import { page } from "../../../../common/page-library";
+import { page } from "../../../../utils/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
 @customElement("panda-multi-input-demo-page")

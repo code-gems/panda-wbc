@@ -6,3 +6,4 @@ import "./demo-pages/panda-flag/demo-page";
 import "./demo-pages/panda-icon/demo-page";
 import "./demo-pages/panda-multi-input/demo-page";
 import "./demo-pages/panda-spinner/demo-page";
+import "./demo-pages/panda-text-editor/demo-page";

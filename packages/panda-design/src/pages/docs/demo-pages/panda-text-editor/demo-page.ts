@@ -7,7 +7,7 @@ import "@panda-wbc/panda-text-editor";
 // utils & config
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
-import { page } from "../../../../common/page-library";
+import { page } from "../../../../utils/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
 @customElement("panda-text-editor-demo-page")
@@ -26,6 +26,76 @@ export class PandaTextEditorDemoPage extends LitElement {
 	// static get styles() {
 	// 	return styles;
 	// }
+
+	private _editorOptions = {
+		toolbarPosition: "top",
+		toolbar: [
+			// text style
+			{
+				formatBlock: {
+					h1: true,
+					h2: true,
+					pre: true,
+				}
+			},
+			// format
+			{
+				bold: true,
+				italic: true,
+				underline: true,
+				strikethrough: true,
+				removeFormat: true, // remove format
+			},
+			// alignment
+			{
+				alignLeft: true,
+				alignCenter: true,
+				alignRight: true,
+				// alignJustify: true,
+			},
+			// list
+			{
+				numberedList: true,
+				bulletedList: true,
+			},
+			// indentation
+			{
+				indentDecrease: true,
+				indentIncrease: true
+			},
+
+			{
+				blockquote: true,
+				code: true
+			},
+			{
+				copy: true,
+				paste: true,
+				cut: true,
+				undo: true,
+				redo: true
+			},
+
+			{
+				downloadEml: {
+					subject: "Love letter",
+					fileName: "draft-email"
+				},
+				downloadHtml: true
+			},
+			{
+				customTool: {
+					toolRenderer: (selection) => {
+						return html`
+							<div class="custom-tool">
+								<panda-icon icon="heart-outline"></panda-icon>
+							</div>
+						`;
+					}
+				}
+			}
+		]
+	};
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE

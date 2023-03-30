@@ -59,7 +59,7 @@ To create new component demo page:
 1. Import your new demo page in demo page loader file `src/pages/docs/loader.ts`
 ```javascript
 	// loader.ts file:
-	import "./demo-pages/my-component/my-component"; // import your demo page file (.ts)
+	import "./demo-pages/my-component/demo-page"; // import your demo page file (.ts)
 ```
 ## Change Log
 

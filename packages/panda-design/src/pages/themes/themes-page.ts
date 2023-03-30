@@ -7,7 +7,7 @@ import { PageCategory } from "panda-design-typings";
 // utils & config
 import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { page } from "../../common/page-library";
+import { page } from "../../utils/page-library";
 
 @customElement("themes-page")
 @page({

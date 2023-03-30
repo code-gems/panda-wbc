@@ -1,3 +1,4 @@
+/** */
 // types
 import { PandaRouterNavigateEvent, RouterConfig } from "@panda-wbc/panda-router";
 

@@ -5,12 +5,12 @@ import { AppState, PageCategory } from "panda-design-typings";
 // import { styles } from "./styles/styles";
 
 // web parts
-import "../../common/web-parts/main-nav/main-nav";
+import "../../web-parts/main-nav/main-nav";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import PageLibrary, { page } from "../../common/page-library";
+import PageLibrary, { page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { debounce } from "@panda-wbc/panda-core";
 

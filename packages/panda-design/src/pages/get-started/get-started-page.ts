@@ -5,12 +5,12 @@ import { AppState } from "panda-design-typings";
 import { styles } from "./styles/styles";
 
 // web parts
-import "../../common/web-parts/main-nav/main-nav";
+import "../../web-parts/main-nav/main-nav";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import PageLibrary from "../../common/page-library";
+import PageLibrary from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 
 declare var navigate: (pathName: string, e: MouseEvent) => void;

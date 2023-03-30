@@ -10,7 +10,7 @@ import "@panda-wbc/panda-date-picker";
 // utils
 import { html, LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { page } from "../../../../common/page-library";
+import { page } from "../../../../utils/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
 @customElement("panda-dialog-demo-page")

@@ -1,6 +1,6 @@
 // types
 import { AppState } from "panda-design-typings";
-import { Page } from "../../page-library";
+import { Page } from "../../utils/page-library";
 
 // styles & mixins
 import { styles } from "./styles/styles";
@@ -11,8 +11,8 @@ import { styles } from "./styles/styles";
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import PageLibrary from "../../page-library";
-import { reduxify } from "../../../redux/store";
+import PageLibrary from "../../utils/page-library";
+import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
 @customElement("main-nav")

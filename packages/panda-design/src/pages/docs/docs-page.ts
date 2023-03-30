@@ -6,7 +6,7 @@ import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/ui-components";
 
 // web parts
-import "../../common/web-parts/main-nav/main-nav";
+import "../../web-parts/main-nav/main-nav";
 
 // load demo pages
 import "./loader";
@@ -14,7 +14,7 @@ import "./loader";
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import PageLibrary, { page } from "../../common/page-library";
+import PageLibrary, { page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 

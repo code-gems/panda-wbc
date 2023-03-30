@@ -10,7 +10,7 @@ import "@panda-wbc/panda-icon/lib/food-icon-pack";
 // utils & config
 import { html, LitElement } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { page } from "../../../../common/page-library";
+import { page } from "../../../../utils/page-library";
 // import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
 export const pageId = "panda-date-picker";

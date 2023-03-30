@@ -26,28 +26,55 @@ export class PandaTextEditor extends LitElement {
 	}
 
 	@property({ type: String, attribute: false })
-	content!: string;
+	content: string = "";
 
 	@property({ type: Boolean, attribute: true })
-	readonly!: boolean;
+	readonly: boolean = false;
 
 	@property({ type: Boolean, attribute: true })
-	busy!: boolean;
+	busy: boolean = false;
 
 	@property({ type: String, attribute: true })
-	spinner!: string;
+	spinner: string = "";
 
 	@property({ type: Object })
-	options!: PandaTextEditorOptions;
+	options: PandaTextEditorOptions = {
+		toolbarPosition: "top",
+		hideToolbar: false,
+		toolbar: [
+			// text style
+			{
+				formatBlock: {
+					h1: true,
+					h2: true,
+					pre: true,
+				}
+			},
+			// format
+			{
+				bold: true,
+				italic: true,
+				underline: true,
+				// strikethrough: true,
+			},
+			// alignment
+			{
+				alignLeft: true,
+				alignCenter: true,
+				alignRight: true,
+				// alignJustify: true,
+			},
+			// remove format
+			{
+				removeFormat: true,
+			}
+		]
+	};
 
 	@property({ type: String, attribute: false })
 	customStyle!: string;
 
 	// view props
-
-	@property({ type: Element })
-	private _content!: Element;
-
 	@query("#editor")
 	private _editorEl!: HTMLInputElement;
 
@@ -58,10 +85,9 @@ export class PandaTextEditor extends LitElement {
 	selection!: Selection | null;
 
 	@property({ type: Array })
-	_selectedTags!: string[];
+	_selectedTags: string[] = [];
 
-	private _typing!: boolean;
-	private _typingTimeoutHandle: any;
+	private _focused: boolean = false;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -70,43 +96,8 @@ export class PandaTextEditor extends LitElement {
 	constructor() {
 		super();
 		this.content = "";
-		this._content = document.createElement("div");
-		this._selectedTags = [];
-		this._typing = false;
-
-		// set default editor options
-		this.options = {
-			toolbarPosition: "top",
-			hideToolbar: false,
-			toolbar: [
-				// text style
-				{
-					formatBlock: {
-						h1: true,
-						h2: true,
-						pre: true,
-					}
-				},
-				// format
-				{
-					bold: true,
-					italic: true,
-					underline: true,
-					// strikethrough: true,
-				},
-				// alignment
-				{
-					alignLeft: true,
-					alignCenter: true,
-					alignRight: true,
-					// alignJustify: true,
-				},
-				// remove format
-				{
-					removeFormat: true,
-				}
-			]
-		};
+	// set default editor options
+		this.options
 	}
 
 	protected firstUpdated() {
@@ -119,7 +110,7 @@ export class PandaTextEditor extends LitElement {
 					} else {
 						const templateContent = child.innerHTML.trim();
 						if (templateContent.length > 0) {
-							this._content.innerHTML = templateContent;
+							this._editorEl.innerHTML = templateContent;
 						}
 					}
 				}
@@ -127,7 +118,7 @@ export class PandaTextEditor extends LitElement {
 		}
 		// check if content is passed down to component via property
 		if (this.content) {
-			this._content.innerHTML = this.content;
+			this._editorEl.innerHTML = this.content;
 		}
 		// change editor default behavior
 		document.execCommand("defaultParagraphSeparator", false, "div");
@@ -155,15 +146,10 @@ export class PandaTextEditor extends LitElement {
 		// check if content was updated from outside
 		if (_changedProperties.has("content") && this.content !== null) {
 			// don't update content if user is actively typing to prevent loop
-			if (!this._typing) {
-				this._content.innerHTML = this.content || "";
+			if (!this._focused) {
+				this._editorEl.innerHTML = this.content || "";
 			}
 		}
-	}
-
-	public disconnectedCallback(): void {
-		super.disconnectedCallback();
-		clearTimeout(this._typingTimeoutHandle);
 	}
 
 	// ================================================================================================================
@@ -203,12 +189,13 @@ export class PandaTextEditor extends LitElement {
 						?contenteditable="${!this.readonly}"
 						?spellcheck="${this.spellcheck}"
 						@input="${(e: InputEvent) => this._onInput(e)}"
-						@mouseup="${() => this._onSelectionChanged()}"
-						@mousemove="${() => this._onSelectionChanged()}"
-						@mousedown="${() => this._onSelectionChanged()}"
-						@keydown="${() => this._onSelectionChanged()}"
+						@mouseup="${this._onSelectionChanged}"
+						@mousemove="${this._onSelectionChanged}"
+						@mousedown="${this._onSelectionChanged}"
+						@keydown="${this._onSelectionChanged}"
+						@focus="${this._onEditorFocus}"
+						@blur="${this._onEditorBlur}"
 					>
-						${this._content}
 					</article>
 				</div>
 				${spinnerHtml}
@@ -546,15 +533,6 @@ export class PandaTextEditor extends LitElement {
 		this.shadowRoot?.appendChild(customStyle);
 	}
 
-	private _setTypingFlag() {
-		if (!this._typing) {
-			this._typing = true;
-			this._typingTimeoutHandle = setTimeout(() => {
-				this._typing = false;
-			}, 200);
-		}
-	}
-
 	// ================================================================================================================
 	// API ============================================================================================================
 	// ================================================================================================================
@@ -575,7 +553,7 @@ export class PandaTextEditor extends LitElement {
 		emailContent.push("X-Unsent: 1");
 		emailContent.push("Content-Type: text/html");
 		emailContent.push("");
-		emailContent.push(this._content.innerHTML);
+		emailContent.push(this._editorEl.innerHTML);
 
 		const url = window.URL.createObjectURL(
 			new Blob([emailContent.join("\n")], { type: "text/plain" })
@@ -588,7 +566,7 @@ export class PandaTextEditor extends LitElement {
 
 	public downloadAsHtml() {
 		const url = window.URL.createObjectURL(
-			new Blob([this._content.innerHTML], { type: "text/html" })
+			new Blob([this._editorEl.innerHTML], { type: "text/html" })
 		);
 		const downloadLinkEl = document.createElement("a");
 		downloadLinkEl.href = url;
@@ -601,12 +579,20 @@ export class PandaTextEditor extends LitElement {
 	}
 
 	public updateContent(content: string) {
-		this._content.innerHTML = content || "";
+		this._editorEl.innerHTML = content || "";
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _onEditorFocus() {
+		this._focused = true;
+	}
+	
+	private _onEditorBlur() {
+		this._focused = false;
+	}
 
 	private _onInput(e: InputEvent) {
 		const event = new CustomEvent("on-input", {
@@ -615,7 +601,6 @@ export class PandaTextEditor extends LitElement {
 		this.dispatchEvent(event);
 		// trigger selection change
 		this._onSelectionChanged();
-		this._setTypingFlag();
 	}
 
 	/**
