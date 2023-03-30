@@ -85,7 +85,7 @@ export class PandaTextEditorDemoPage extends LitElement {
 			},
 			{
 				customTool: {
-					toolRenderer: (selection) => {
+					toolRenderer: (selection: any) => {
 						return html`
 							<div class="custom-tool">
 								<panda-icon icon="heart-outline"></panda-icon>
