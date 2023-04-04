@@ -30,3 +30,5 @@ export class PandaIconLibrary {
 		return this._icons.map(({ name }) => name);
 	}
 };
+
+export default new PandaIconLibrary();

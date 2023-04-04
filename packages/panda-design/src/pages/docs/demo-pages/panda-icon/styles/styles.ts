@@ -7,20 +7,31 @@ export const styles = css`
 	}
 
 	.icon-list {
-		display: grid;
-		grid-auto-columns: minmax(0, 1fr);
-		grid-template-areas: "a a a a a a";
+		display: flex;
+		flex-flow: row wrap;
 		gap: 10px;
 		box-sizing: border-box;
 	}
 
+	.icon-list .list-header {
+		display: block;
+		flex-basis: 100%;
+
+
+		font-size: var(--panda-font-size-l);
+		font-family: var(--panda-font-family-bold);
+	}
+
 	.icon-list .list-item {
 		display: flex;
+		width: 90px;
 		flex-flow: column;
 		align-items: center;
 		padding: 10px;
 		border: 1px solid #e9e9e9;
 		flex-shrink: 0;
+
+		background-image: url(transparent.png);
 	}
 
 	.icon-list .list-item .icon {

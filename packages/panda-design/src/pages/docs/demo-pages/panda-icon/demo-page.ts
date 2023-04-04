@@ -8,14 +8,17 @@ import { uiComponents } from "../../../../styles/ui-components";
 
 // components
 import "@panda-wbc/panda-icon";
-import "@panda-wbc/panda-icon/lib/food-icon-pack";
+// import "@panda-wbc/panda-icon/lib/food-icon-pack";
+// import "@panda-wbc/panda-icon/lib/av-icon-pack";
+import "@panda-wbc/panda-icon/lib/map-icon-pack";
+import pandaIconLibrary from "@panda-wbc/panda-icon/lib/panda-icon-library";
 
 // utils & config
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
-import { getIconList } from "./icon-list";
+import { getIconListDetails } from "./icon-list";
 
 @customElement("panda-icon-demo-page")
 @page({
@@ -38,18 +41,40 @@ export class PandaIconDemoPage extends LitElement {
 	}
 
 	@property({ type: String, attribute: false })
-	private _searchText!: string; 
+	private _searchText: string = ""; 
 
-	private _iconList!: IconDetails[];
+	private _iconList: IconDetails[] = getIconListDetails();
+
+	@property({ type: Map })
+	private _iconPackMap: Map<string, IconDetails[]> = new Map();
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	constructor() {
-		super();
-		this._searchText = "";
-		this._iconList = getIconList();
+	connectedCallback(): void {
+
+		pandaIconLibrary.getIconList().forEach((iconName) => {
+			this._iconList.push({
+				name: iconName,
+				group: ["temp"],
+				keywords: [],
+				iconPack: "iron-icon"
+			});
+		});
+
+		super.connectedCallback();
+		// generate icon pack map
+		this._iconList.forEach((iconDetails) => {
+			const { iconPack } = iconDetails;
+
+			if (this._iconPackMap.has(iconPack)) {
+				const icons = this._iconPackMap.get(iconDetails.iconPack) ?? [];
+				icons.push(iconDetails);
+			} else {
+				this._iconPackMap.set(iconPack, [iconDetails]);
+			}
+		});
 	}
 
 	// ================================================================================================================
@@ -60,7 +85,7 @@ export class PandaIconDemoPage extends LitElement {
 		return html`
 			<div class="row">
 				<div class="col-full">
-					<h1>Icons</h1><panda-icon-pro></panda-icon-pro>
+					<h1>Icons</h1>
 				</div>
 			</div>
 			<div class="row">
@@ -83,22 +108,31 @@ export class PandaIconDemoPage extends LitElement {
 
 	private _renderIconList() {
 		const iconListHtml: TemplateResult[] = [];
-		
-		this._iconList.forEach((iconDetails) => {
-			const { name } = iconDetails;
 
-			if (this._searchText === "" || this._iconMatch(iconDetails)) {
-				iconListHtml.push(html`
-					<div class="list-item">
-						<div class="icon">
-							<panda-icon icon="${name}"></panda-icon>
+		this._iconPackMap.forEach((iconDetails, iconPack) => {
+			// add section header
+			iconListHtml.push(html`
+				<div class="list-header">
+					${iconPack}
+				</div>
+			`);
+
+			iconDetails.forEach((iconDetail) => {
+				const { name } = iconDetail;
+
+				if (this._searchText === "" || this._iconMatch(iconDetail)) {
+					iconListHtml.push(html`
+						<div class="list-item">
+							<div class="icon">
+								<panda-icon icon="${name}"></panda-icon>
+							</div>
+							<div class="name">${name}</div>
 						</div>
-						<div class="name">${name}</div>
-					</div>
-				`);
-			}
+					`);
+				}
+			});
 		});
-
+		
 		return html`
 			<div class="icon-list">
 				${iconListHtml}
@@ -118,6 +152,12 @@ export class PandaIconDemoPage extends LitElement {
 			found = true;
 		} else {
 			const { name, keywords, group } = iconDetails;
+			// check if search text matches the icon group
+			group.forEach((groupName) => {
+				if (groupName.match(this._searchText.toLowerCase())) {
+					found = true;
+				}
+			});
 			// check if search text matches the icon name
 			if (name.match(this._searchText.toLowerCase())) {
 				found = true;

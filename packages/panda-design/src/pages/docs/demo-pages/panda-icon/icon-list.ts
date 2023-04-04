@@ -1,14 +1,16 @@
 // types
 import { IconDetails } from "panda-icon-typings";
 
-export const getIconList = (): IconDetails[] => {
+export const getIconListDetails = (): IconDetails[] => {
 	return [
 		// System =============================================
+		{ name: "apps", 					iconPack: "default", group: ["System"], keywords: ["applications", "menu"] },
 		{ name: "info", 					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "info-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "error",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "error-outline",			iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "warning",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "warning-box",				iconPack: "default", group: ["System"], keywords: ["interface", "message, box"] },
 		{ name: "help",						iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "help-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "settings",					iconPack: "default", group: ["System"], keywords: ["interface", "gear"] },
@@ -29,6 +31,7 @@ export const getIconList = (): IconDetails[] => {
 		{ name: "chevron-right", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron"] },
 		{ name: "chevron-up", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand less"] },
 		{ name: "chevron-down", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand more"] },
+		{ name: "expand", 					iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "full screen"] },
 		{ name: "expand-up", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand up", "double arrow"] },
 		{ name: "expand-down", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand down", "double arrow"] },
 		{ name: "expand-left", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand left", "double arrow"] },
@@ -66,6 +69,7 @@ export const getIconList = (): IconDetails[] => {
 		{ name: "notification-active",		iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell"] },
 		{ name: "notification", 			iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell"] },
 		{ name: "notification-outline", 	iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell", "outline"] },
+		{ name: "notification-add", 		iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell", "outline", "new"] },
 		
 		// E-commerce ===========================================
 		{ name: "credit-card", 				iconPack: "default", group: ["E-commerce"], keywords: ["payment", "money", "shop"] },
@@ -74,15 +78,35 @@ export const getIconList = (): IconDetails[] => {
 		{ name: "cloud", 					iconPack: "default", group: ["Cloud"], keywords: ["cloud"] },
 		{ name: "cloud-outline",			iconPack: "default", group: ["Cloud"], keywords: ["cloud", "outline"] },
 
-		// Food =================================================
-		
-		{ name: "cake", 					iconPack: "food", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },
-
 		// Misc =================================================
-		{ name: "add", 						iconPack: "default", group: [], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
-		{ name: "check", 					iconPack: "default", group: [], keywords: ["checkbox"] },
-		{ name: "close", 					iconPack: "default", group: [], keywords: ["delete", "remove"] },
-		{ name: "menu",						iconPack: "default", group: [], keywords: ["hamburger", "options"] },
-		// ...
+		{ name: "add", 						iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
+		{ name: "add-box", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
+		{ name: "add-circle", 				iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
+		{ name: "add-circle-outline", 		iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
+		{ name: "check", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["checkbox"] },
+		{ name: "close", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["delete", "remove"] },
+		{ name: "menu",						iconPack: "default", group: ["Miscellaneous"], keywords: ["hamburger", "options"] },
+
+		{ name: "exclamation",				iconPack: "default", group: ["Miscellaneous"], keywords: ["important", "priority"] },
+		{ name: "unlink",					iconPack: "default", group: ["Miscellaneous"], keywords: ["link", "anchor"] },
+		{ name: "pin",						iconPack: "default", group: ["Miscellaneous"], keywords: ["push-pin", "on top"] },
+		{ name: "pin-outline",				iconPack: "default", group: ["Miscellaneous"], keywords: ["push-pin", "on top"] },
+		{ name: "flag",						iconPack: "default", group: ["Miscellaneous"], keywords: ["important", "priority", "country", "map"] },
+		{ name: "flash",					iconPack: "default", group: ["Miscellaneous"], keywords: ["fast", "bolt", "thunder"] },
+		{ name: "school",					iconPack: "default", group: ["Miscellaneous"], keywords: ["learn", "study", "tutorial", "education"] },
+		{ name: "wrench",					iconPack: "default", group: ["Miscellaneous"], keywords: ["build", "fix", "repair", "tool"] },
+		{ name: "sync",						iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange"] },
+		{ name: "sync-error",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "problem", "warning"] },
+		{ name: "sync-disabled",			iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "off"] },
+
+		// Food Icon Pack =======================================
+		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },
+		
+		// AV Icon Pack =========================================
+		{ name: "full-screen", 				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["expand"] },
+
+		// Map Icon Pack ========================================
+
+		// Mobile Icon Pack =====================================
 	];
 }
