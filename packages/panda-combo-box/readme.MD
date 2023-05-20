@@ -25,7 +25,7 @@ yarn add @panda-wbc/panda-combo-box
 </panda-combo-box>
 ```
 
-[<img alt="Mozilla Add-on badge" src="https://img.shields.io/badge/version-v1.0.0-orange">](./package.json)
+[<img alt="Mozilla Add-on badge" src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./package.json)
 
 ## Change Log
 
