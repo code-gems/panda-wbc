@@ -24,7 +24,7 @@ import { pageId, pageName, pageUri, keywords, description, contextMenu } from ".
 	contextMenu,
 	template: html`<panda-dialog-demo-page></panda-dialog-demo-page>`,
 })
-export class PandaMultiInputDemoPage extends LitElement {
+export class PandaDialogDemoPage extends LitElement {
 	static get styles() {
 		return css`
 			.button {

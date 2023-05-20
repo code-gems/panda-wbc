@@ -22,7 +22,7 @@
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.0.2"
+		"lit": "^2.7.4"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

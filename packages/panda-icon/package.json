@@ -5,7 +5,6 @@
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-icon.js",
 	"scripts": {
-		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
@@ -22,20 +21,15 @@
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.0.2"
+		"lit": "^2.7.4"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
-		"ts-loader": "^9.2.6",
-		"typescript": "^4.5.4",
-		"webpack": "^5.65.0",
-		"webpack-cli": "^4.9.1",
-		"webpack-dev-server": "^4.7.2"
+		"typescript": "^4.5.4"
 	},
 	"files": [
-		"src/**/*",
-		"demo/**/*",
-		"lib/**/*",
+		"src",
+		"lib",
 		"index.d.ts"
 	],
 	"types": "index.d.ts"

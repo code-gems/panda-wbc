@@ -3,6 +3,7 @@
 	"name": "@panda-wbc/panda-design",
 	"version": "1.0.0",
 	"description": "Panda Design - Panda UI components showcase.",
+	"main": "./dist/app.js",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
@@ -27,6 +28,7 @@
 		"@panda-wbc/panda-core": "workspace:*",
 		"@panda-wbc/panda-checkbox": "workspace:*",
 		"@panda-wbc/panda-date-picker": "workspace:*",
+		"@panda-wbc/panda-combo-box": "workspace:*",
 		"@panda-wbc/panda-dialog": "workspace:*",
 		"@panda-wbc/panda-flag": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
@@ -37,7 +39,7 @@
 		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-text-editor": "workspace:*",
 		"@panda-wbc/panda-theme": "workspace:*",
-		"lit": "^2.0.2",
+		"lit": "^2.7.4",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"
 	},
@@ -52,8 +54,7 @@
 		"webpack-dev-server": "^4.7.2"
 	},
 	"files": [
-		"src/**/*",
-		"demo/**/*",
-		"lib/**/*"
+		"src",
+		"dist"
 	]
 }

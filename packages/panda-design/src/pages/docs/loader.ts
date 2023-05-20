@@ -1,5 +1,6 @@
 // demo pages
 import "./demo-pages/panda-button/demo-page";
+import "./demo-pages/panda-combo-box/demo-page";
 import "./demo-pages/panda-checkbox/demo-page";
 import "./demo-pages/panda-date-picker/demo-page";
 import "./demo-pages/panda-dialog/demo-page";

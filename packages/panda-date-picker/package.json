@@ -26,7 +26,7 @@
 	"author": "code-gems",
 	"license": "ISC",
 	"dependencies": {
-		"lit": "^2.0.2",
+		"lit": "^2.7.4",
 		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
 		"@panda-wbc/panda-icon": "workspace:^1.0.0",
 		"@panda-wbc/panda-core": "workspace:^1.0.0"
@@ -36,9 +36,8 @@
 		"typescript": "^4.5.4"
 	},
 	"files": [
-		"src/**/*",
-		"demo/**/*",
-		"lib/**/*",
+		"src",
+		"lib",
 		"index.d.ts",
 		"package.json"
 	],

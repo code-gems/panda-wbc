@@ -2,11 +2,15 @@
 Panda Theme is a Lit based web component that introduces few themes for panda web components.
 
 ### Installation
-```npm install @panda/panda-theme -S```
+```bash
+npm install @panda/panda-theme -S
+```
 
 or 
 
-```yarm add @panda/panda-theme```
+```bash
+yarm add @panda/panda-theme
+```
 
 ### Usage
 
