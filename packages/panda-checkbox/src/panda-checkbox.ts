@@ -1,79 +1,55 @@
-// style
+// types
+// ...
+
+// styles
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-spinner";
+import "@panda-wbc/panda-icon";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { LitElement, html } from "lit";
+import { customElement, property, query } from "lit/decorators.js";
 
-@customElement("panda-button")
-export class PandaButton extends LitElement {
-	// css style
+@customElement("panda-checkbox")
+export class PandaCheckbox extends LitElement {
+	// css styles
 	static get styles() {
 		return styles;
 	}
 
 	@property({ type: Boolean, attribute: true, reflect: true })
-	busy: boolean = false;
-
-	@property({ type: Boolean, attribute: true, reflect: true })
-	disabled: boolean = false;
-
-	@property({ type: String, attribute: true })
-	spinner: string = "dots";
-
-	@property({ type: String, attribute: true })
-	theme!: string;
+	checked!: boolean;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	// ...
+
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
-		const spinnerHtml: TemplateResult[] = [];
-		if (this.busy) {
-			spinnerHtml.push(html`
-				<div
-					class="spinner-cont"
-					part="spinner-cont"
-				>
-					<panda-spinner
-						part="spinner"
-						spinner="${this.spinner}"
-					>
-					</panda-spinner>
-				</div>
-			`);
-		}
 		return html`
-			<button class="${this.disabled ? "disabled" : ""}" part="button">
-				<slot name="prefix" part="prefix"></slot>
-				<div class="content" part="content">
-					<slot></slot>
-				</div>
-				<slot name="suffix" part="suffix"></slot>
-				${spinnerHtml}
-			</button>
+			<div class="icon" part="icon">
+				checkbox		
+			</div>
 		`;
 	}
-
+	
 	// ================================================================================================================
-	// EVENTS =========================================================================================================
+	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _updateIconTemplate() {
+		
+	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-button": PandaButton;
+		"panda-checkbox": PandaCheckbox;
 	}
 }

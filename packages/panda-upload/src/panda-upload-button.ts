@@ -15,47 +15,50 @@ import { customElement, property } from "lit/decorators.js";
 export class PandaUploadButton extends LitElement {
 	// css styles
 	static get styles() {
-		return [commonStyles, uploadButtonStyles];
+		return [
+			commonStyles,
+			uploadButtonStyles
+		];
 	}
 
 	@property({ type: Array })
-	acceptedFileTypes!: string[];
+	acceptedFileTypes: string[] = [];
 
 	@property({ type: Number })
-	maxFiles!: number;
+	maxFiles: number = 1;
 
 	@property({ type: Boolean, attribute: true })
-	disabled!: boolean;
+	disabled: boolean = false;
 
 	@property({ type: Boolean, attribute: true })
-	busy!: boolean;
+	busy: boolean = false;
 
 	@property({ type: String, attribute: true })
-	spinner!: string;
+	spinner: string = "dots";
 
 	// view props
-	private inputFileEl!: HTMLInputElement;
+	private _inputFileEl!: HTMLInputElement;
 
 	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
+	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	firstUpdated() {
-		this.inputFileEl = this.shadowRoot?.getElementById("file-upload") as HTMLInputElement;
+		this._inputFileEl = this.shadowRoot?.getElementById("file-upload") as HTMLInputElement;
 
 		// handle multiple files upload
 		if (this.maxFiles !== 1) {
-			this.inputFileEl.setAttribute("multiple", "");
+			this._inputFileEl.setAttribute("multiple", "");
 		}
 
 		if (this.acceptedFileTypes?.length) {
 			const accept = this.acceptedFileTypes.join(" ");
-			this.inputFileEl.setAttribute("accept", accept);
+			this._inputFileEl.setAttribute("accept", accept);
 		}
 	}
 
 	// ================================================================================================================
-	// ====================================================================================================== RENDERERS
+	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
@@ -94,7 +97,7 @@ export class PandaUploadButton extends LitElement {
 	}
 
 	// ================================================================================================================
-	// ========================================================================================================= EVENTS
+	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
 	private _onSelectFile() {
@@ -102,7 +105,7 @@ export class PandaUploadButton extends LitElement {
 			return;
 		}
 
-		const selectedFiles: File[] = Array.from(this.inputFileEl.files as any);
+		const selectedFiles: File[] = Array.from(this._inputFileEl.files as any);
 		let files: File[] = [];
 		if (this.maxFiles !== null && !isNaN(this.maxFiles)) {
 			files = selectedFiles.slice(0, this.maxFiles);

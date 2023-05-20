@@ -19,9 +19,10 @@ export const styles = css`
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: #ccc;
-		transition: .4s;
-		border-radius: 34px;
+
+		transition: all 400ms ease-in-out;
+		border-radius: var(--panda-border-radius-m, 5px);
+		background-color: var(--panda-bg-color-500);
 	}
 
 	.slider:before {
@@ -31,9 +32,10 @@ export const styles = css`
 		width: 26px;
 		left: 4px;
 		bottom: 4px;
-		background-color: white;
-		transition: .4s;
-		border-radius: 50%;
+		transition: all 400ms ease-in-out;
+
+		border-radius: var(--panda-border-radius-m, 5px);
+		background-color: var(--panda-bg-color);
 	}
 
 	input:checked + .slider {
@@ -57,4 +59,23 @@ export const styles = css`
 		cursor: default;
 		background-color: #999999;
 	}
+
+	.spinner-cont {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		left: 0px;
+		top: 0px;
+
+		border-radius: var(--panda-border-radius-m, 5px);
+		background: var(--panda-primary, hsl(196deg 100% 47%));
+	}
+
+	.spinner-cont panda-spinner {
+		--panda-spinner-color: var(--panda-primary-color, hsl(0deg 0% 100%));
+	}
+
 `; 

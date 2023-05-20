@@ -1,9 +1,8 @@
 {
-	"name": "@panda-wbc/panda-toggle",
+	"name": "@panda-wbc/panda-combo-box",
 	"version": "1.0.0",
-	"description": "Lit based web component - toggle",
-	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-toggle.js",
+	"description": "Lit based web component - combo-box",
+	"main": "lib/panda-combo-box.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,20 +11,22 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
+		"dropdown",
+		"combo-box",
 		"lit",
 		"lit-element",
-		"web component",
 		"panda-wbc",
 		"ui component",
-		"panda-toggle",
-		"toggle",
-		"switch"
+		"web component",
+		"combo box"
 	],
 	"author": "code-gems",
-	"license": "MIT",
+	"license": "ISC",
 	"dependencies": {
 		"lit": "^2.0.2",
-		"@panda-wbc/panda-spinner": "^1.0.0"
+		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
+		"@panda-wbc/panda-icon": "workspace:^1.0.0",
+		"@panda-wbc/panda-core": "workspace:^1.0.0"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
@@ -33,11 +34,9 @@
 	},
 	"files": [
 		"src/**/*",
+		"demo/**/*",
 		"lib/**/*",
 		"index.d.ts"
 	],
-	"publishConfig": {
-		"access": "public"
-	},
 	"types": "index.d.ts"
 }

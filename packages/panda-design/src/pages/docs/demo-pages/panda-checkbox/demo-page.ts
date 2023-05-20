@@ -1,67 +1,55 @@
-// style
-import { styles } from "./styles/styles";
+// types
+import { PandaCheckboxChangeEvent } from "@panda-wbc/panda-checkbox";
+import { PageCategory } from "panda-design-typings";
+
+// styles
 
 // components
-import "@panda-wbc/panda-spinner";
+import "@panda-wbc/panda-checkbox";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { html, LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { page } from "../../../../utils/page-library";
+import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
-@customElement("panda-button")
-export class PandaButton extends LitElement {
-	// css style
+@customElement("panda-checkbox-demo-page")
+@page({
+	pageId,
+	pageName,
+	pageUri,
+	category: PageCategory.DOCS,
+	keywords,
+	description,
+	contextMenu,
+	template: html`<panda-checkbox-demo-page></panda-checkbox-demo-page>`,
+})
+export class PandaCheckboxDemoPage extends LitElement {
 	static get styles() {
-		return styles;
+		return css`
+			
+		`;
 	}
 
-	@property({ type: Boolean, attribute: true, reflect: true })
-	busy: boolean = false;
-
-	@property({ type: Boolean, attribute: true, reflect: true })
-	disabled: boolean = false;
-
-	@property({ type: String, attribute: true })
-	spinner: string = "dots";
-
-	@property({ type: String, attribute: true })
-	theme!: string;
+	@property({ type: Boolean })
+	checked: boolean = false;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	// ...
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
-		const spinnerHtml: TemplateResult[] = [];
-		if (this.busy) {
-			spinnerHtml.push(html`
-				<div
-					class="spinner-cont"
-					part="spinner-cont"
-				>
-					<panda-spinner
-						part="spinner"
-						spinner="${this.spinner}"
-					>
-					</panda-spinner>
-				</div>
-			`);
-		}
 		return html`
-			<button class="${this.disabled ? "disabled" : ""}" part="button">
-				<slot name="prefix" part="prefix"></slot>
-				<div class="content" part="content">
-					<slot></slot>
-				</div>
-				<slot name="suffix" part="suffix"></slot>
-				${spinnerHtml}
-			</button>
+			<panda-checkbox
+				.checked="${this.checked}"
+				@change="${(e: PandaCheckboxChangeEvent) => this._onCheckboxChange(e.detail.checked)}"
+			>
+			<panda-checkbox>
 		`;
 	}
 
@@ -69,11 +57,7 @@ export class PandaButton extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
-}
-
-declare global {
-	interface HTMLElementTagNameMap {
-		"panda-button": PandaButton;
+	private _onCheckboxChange(checked: boolean) {
+		this.checked = checked;
 	}
 }

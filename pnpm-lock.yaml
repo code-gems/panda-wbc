@@ -16,24 +16,16 @@ importers:
 
   packages/panda-button:
     specifiers:
-      '@panda-wbc/panda-spinner': workspace:^1.0.0
+      '@panda-wbc/panda-spinner': ^1.0.0
       lit: ^2.0.2
       rimraf: ^3.0.2
-      ts-loader: ^9.2.6
       typescript: ^4.5.4
-      webpack: ^5.65.0
-      webpack-cli: ^4.9.1
-      webpack-dev-server: ^4.7.2
     dependencies:
       '@panda-wbc/panda-spinner': link:../panda-spinner
       lit: 2.2.0
     devDependencies:
       rimraf: 3.0.2
-      ts-loader: 9.2.8_dowam63vmehxjyamkjde33fuby
       typescript: 4.6.2
-      webpack: 5.70.0_webpack-cli@4.9.2
-      webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
-      webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
 
   packages/panda-chart:
     specifiers:
@@ -54,10 +46,48 @@ importers:
       webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
       webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
 
+  packages/panda-checkbox:
+    specifiers:
+      '@panda-wbc/panda-icon': workspace:1.0.0
+      lit: ^2.0.2
+      rimraf: ^3.0.2
+      ts-loader: ^9.2.6
+      typescript: ^4.5.4
+      webpack: ^5.65.0
+      webpack-cli: ^4.9.1
+      webpack-dev-server: ^4.7.2
+    dependencies:
+      '@panda-wbc/panda-icon': link:../panda-icon
+      lit: 2.2.0
+    devDependencies:
+      rimraf: 3.0.2
+      ts-loader: 9.2.8_dowam63vmehxjyamkjde33fuby
+      typescript: 4.6.2
+      webpack: 5.70.0_webpack-cli@4.9.2
+      webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
+      webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
+
   packages/panda-color-picker:
     specifiers:
       rimraf: ^3.0.2
       typescript: ^4.5.4
+    devDependencies:
+      rimraf: 3.0.2
+      typescript: 4.6.2
+
+  packages/panda-combo-box:
+    specifiers:
+      '@panda-wbc/panda-core': workspace:^1.0.0
+      '@panda-wbc/panda-icon': workspace:^1.0.0
+      '@panda-wbc/panda-spinner': workspace:^1.0.0
+      lit: ^2.0.2
+      rimraf: ^3.0.2
+      typescript: ^4.5.4
+    dependencies:
+      '@panda-wbc/panda-core': link:../panda-core
+      '@panda-wbc/panda-icon': link:../panda-icon
+      '@panda-wbc/panda-spinner': link:../panda-spinner
+      lit: 2.2.0
     devDependencies:
       rimraf: 3.0.2
       typescript: 4.6.2
@@ -89,17 +119,20 @@ importers:
 
   packages/panda-design:
     specifiers:
-      '@panda-wbc/panda-button': workspace:^1.0.0
-      '@panda-wbc/panda-core': workspace:^1.0.0
-      '@panda-wbc/panda-date-picker': workspace:^1.0.0
-      '@panda-wbc/panda-dialog': workspace:^1.0.0
-      '@panda-wbc/panda-flag': workspace:^1.0.0
-      '@panda-wbc/panda-icon': workspace:^1.0.0
-      '@panda-wbc/panda-multi-input': workspace:^1.0.0
-      '@panda-wbc/panda-router': workspace:^1.0.0
-      '@panda-wbc/panda-spinner': workspace:^1.0.0
-      '@panda-wbc/panda-text-editor': workspace:^1.0.0
-      '@panda-wbc/panda-theme': workspace:^1.0.0
+      '@panda-wbc/panda-button': workspace:*
+      '@panda-wbc/panda-checkbox': workspace:*
+      '@panda-wbc/panda-core': workspace:*
+      '@panda-wbc/panda-date-picker': workspace:*
+      '@panda-wbc/panda-dialog': workspace:*
+      '@panda-wbc/panda-flag': workspace:*
+      '@panda-wbc/panda-icon': workspace:*
+      '@panda-wbc/panda-multi-input': workspace:*
+      '@panda-wbc/panda-router': workspace:*
+      '@panda-wbc/panda-spinner': workspace:*
+      '@panda-wbc/panda-text-editor': workspace:*
+      '@panda-wbc/panda-theme': workspace:*
+      '@panda-wbc/panda-toggle': workspace:*
+      '@panda-wbc/panda-upload': workspace:*
       copy-webpack-plugin: ^10.2.4
       html-webpack-plugin: ^5.5.0
       lit: ^2.0.2
@@ -113,6 +146,7 @@ importers:
       webpack-dev-server: ^4.7.2
     dependencies:
       '@panda-wbc/panda-button': link:../panda-button
+      '@panda-wbc/panda-checkbox': link:../panda-checkbox
       '@panda-wbc/panda-core': link:../panda-core
       '@panda-wbc/panda-date-picker': link:../panda-date-picker
       '@panda-wbc/panda-dialog': link:../panda-dialog
@@ -123,6 +157,8 @@ importers:
       '@panda-wbc/panda-spinner': link:../panda-spinner
       '@panda-wbc/panda-text-editor': link:../panda-text-editor
       '@panda-wbc/panda-theme': link:../panda-theme
+      '@panda-wbc/panda-toggle': link:../panda-toggle
+      '@panda-wbc/panda-upload': link:../panda-upload
       lit: 2.2.0
       redux: 4.1.2
       redux-thunk: 2.4.1_redux@4.1.2
@@ -279,20 +315,12 @@ importers:
     specifiers:
       lit: ^2.0.2
       rimraf: ^3.0.2
-      ts-loader: ^9.2.6
       typescript: ^4.5.4
-      webpack: ^5.65.0
-      webpack-cli: ^4.9.1
-      webpack-dev-server: ^4.7.2
     dependencies:
       lit: 2.2.0
     devDependencies:
       rimraf: 3.0.2
-      ts-loader: 9.2.8_dowam63vmehxjyamkjde33fuby
       typescript: 4.6.2
-      webpack: 5.70.0_webpack-cli@4.9.2
-      webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
-      webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
 
   packages/panda-text-editor:
     specifiers:
@@ -337,6 +365,19 @@ importers:
       webpack: 5.70.0_webpack-cli@4.9.2
       webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
       webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
+
+  packages/panda-toggle:
+    specifiers:
+      '@panda-wbc/panda-spinner': ^1.0.0
+      lit: ^2.0.2
+      rimraf: ^3.0.2
+      typescript: ^4.5.4
+    dependencies:
+      '@panda-wbc/panda-spinner': link:../panda-spinner
+      lit: 2.2.0
+    devDependencies:
+      rimraf: 3.0.2
+      typescript: 4.6.2
 
   packages/panda-upload:
     specifiers:
@@ -2158,7 +2199,7 @@ packages:
     dev: true
 
   /ms/2.0.0:
-    resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
+    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
     dev: true
 
   /ms/2.1.2:
@@ -2981,7 +3022,7 @@ packages:
     dev: true
 
   /unpipe/1.0.0:
-    resolution: {integrity: sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=}
+    resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
     dev: true
 

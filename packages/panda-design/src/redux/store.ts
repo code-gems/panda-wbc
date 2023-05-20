@@ -55,7 +55,7 @@ export const reduxify = () => {
 					this.__safeInvoke(super.stateChanged, state);
 				}
 				// subscribe to app store
-				console.log("%c SUBSCRIBE", "font-size: 24px; color: blue;");
+				console.log("%c SUBSCRIBE", "font-size: 24px; color: blue;", target);
 				this.__storeUnsubscribe = appStore.subscribe(onStateChange);
 				onStateChange();
 			}
