@@ -83,7 +83,7 @@ class HomePage extends LitElement {
 			listTemplate.push(html`
 				<div
 					class="nav-item"
-					@click="${(e: MouseEvent) => this._onNavigate(e, page.pageName)}"
+					@click="${(e: MouseEvent) => this._onNavigate(e, page.pageUri)}"
 				>
 					${page.pageName}
 				</div>
