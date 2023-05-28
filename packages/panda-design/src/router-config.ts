@@ -13,7 +13,7 @@ export const getRouterConfig = (): RouterConfig => ({
 		"/": html`<home-page></home-page>`,
 		"/home": html`<home-page></home-page>`,
 		"/get-started": html`<get-started-page></get-started-page>`,
-		"/docs": html`<docs-page></docs-page>`,
+		"/develop": html`<develop-page></develop-page>`,
 		"/themes": html`<themes-page></themes-page>`,
 		"/core": html`<core-page></core-page>`,
 		"/about": html`ABOUT`,

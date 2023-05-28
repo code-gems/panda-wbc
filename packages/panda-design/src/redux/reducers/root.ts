@@ -6,15 +6,17 @@ import { Action } from "redux";
 import { ACTION_TYPE } from "../actions/common";
 
 // reducers
-import { gotoPage } from "./common";
+import {
+	gotoPage,
+	changeTheme,
+} from "./common";
 
 const reducerList: ReducerList = {
 	[ACTION_TYPE.GOTO_PAGE]: gotoPage,
+	[ACTION_TYPE.CHANGE_THEME]: changeTheme,
 };
 
 const reducers = (state: AppState, action: Action<string>): AppState => {
-	console.log("%c ROOT", "font-size: 24px; color: green;", action);
-
 	// check if reducer exists on the list
 	if (reducerList[action.type]) {
 		// apply reducer

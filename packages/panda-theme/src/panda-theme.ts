@@ -8,6 +8,7 @@ export type PandaThemeItem = {
 
 // themes
 import { pandaThemeLight } from "./themes/panda-theme-light";
+import { pandaThemeDark } from "./themes/panda-theme-dark";
 
 // utils
 import { CSSResult, LitElement } from "lit";
@@ -21,7 +22,7 @@ export class PandaTheme extends LitElement {
 
 	private readonly _themeList: PandaThemeItem[] = [
 		{ group: "Panda Theme", name: "Light", value: "panda-theme-light", theme: pandaThemeLight },
-		{ group: "Panda Theme", name: "Dark", value: "panda-theme-dark", theme: pandaThemeLight }
+		{ group: "Panda Theme", name: "Dark", value: "panda-theme-dark", theme: pandaThemeDark }
 	];
 
 	// ================================================================================================================

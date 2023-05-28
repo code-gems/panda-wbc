@@ -1,13 +1,33 @@
 declare module "panda-design-typings" {
+	import { TemplateResult } from "lit";
 	import { Action } from "redux";
 	import { SearchParams } from "@panda-wbc/panda-router";
 
 	export const enum PageCategory {
 		HOME = "HOME",
-		DOCS = "DOCS",
+		DEVELOP = "DEVELOP",
 		THEMES = "THEMES",
 		CORE = "CORE",
 		ABOUT = "ABOUT",
+	}
+
+	export interface ContextMenuItem {
+
+	}
+
+	export interface Page {
+		pageId: string;
+		pageName: string;
+		pageUri: string;
+		parent?: boolean;
+		category: string;
+		template: TemplateResult;
+		keywords?: string[];
+		description?: string[];
+		contextMenu?: ContextMenuItem[];
+		order?:number;
+
+		subpageList?: Page[];
 	}
 
 	export interface Store {
@@ -36,6 +56,7 @@ declare module "panda-design-typings" {
 	}
 
 	export interface AppState {
+		selectedTheme: string | null;
 		currentPageDetails: {
 			pathname: string;
 			search: string;
@@ -51,5 +72,9 @@ declare module "panda-design-typings" {
 		pathname: string;
 		search: string;
 		searchParams: SearchParams;	
+	}
+
+	export interface ChangeThemeAction extends Action {
+		themeName: string;
 	}
 }

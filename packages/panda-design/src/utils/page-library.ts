@@ -1,30 +1,15 @@
 // types
-import { TemplateResult } from "lit";
-
-export interface Page {
-	pageId: string;
-	pageName: string;
-	pageUri: string;
-	parent?: boolean;
-	category: string;
-	template: TemplateResult;
-	keywords?: string[];
-	description?: string[];
-	contextMenu?: any[];
-	order?:number;
-
-	subpageList?: Page[];
-}
+import { Page } from "panda-design-typings";
 
 export class PageLibrary {
 	static instance: PageLibrary;
-	private _demoPages: Page[];
+	private _pageIds: Page[];
 
 	constructor() {
 		if (!PageLibrary.instance) {
 			PageLibrary.instance = this;
 		}
-		this._demoPages = [];
+		this._pageIds = [];
 		return PageLibrary.instance;
 	}
 
@@ -33,12 +18,12 @@ export class PageLibrary {
 	 * @param {Page} page Page objet to register.
 	 */
 	public register(page: Page) {
-		this._demoPages.push(page);
-		console.log("%c register::page", "font-size: 24px; color: red;", page, this._demoPages);
+		this._pageIds.push(page);
+		console.log("%c register::page", "font-size: 24px; color: red;", page, this._pageIds);
 	}
 
 	public getAllPages(): Page[] {
-		return this._demoPages;
+		return this._pageIds;
 	}
 
 	/**
@@ -46,7 +31,7 @@ export class PageLibrary {
 	 * @returns {Array} List of parent pages
 	 */
 	public getParentPages(): Page[] {
-		return this._demoPages.filter((page) => page.parent);
+		return this._pageIds.filter((page) => page.parent);
 	}
 
 	/**
@@ -55,7 +40,7 @@ export class PageLibrary {
 	 */
 	public getAllCategories(): string[] {
 		const allCategories: Set<string> = new Set();
-		this._demoPages.forEach((page) => {
+		this._pageIds.forEach((page) => {
 			if (page.category) {
 				allCategories.add(page.category);
 			}
@@ -69,7 +54,7 @@ export class PageLibrary {
 	 */
 	public getPages(category: string, childrenOnly: boolean = false): Page[] {
 		const pages: Page[] = [];
-		this._demoPages.forEach((page) => {
+		this._pageIds.forEach((page) => {
 			if (page.category === category) {
 				if (childrenOnly && !page.parent || !childrenOnly && page.parent) {
 					pages.push({ ...page });
@@ -85,7 +70,7 @@ export class PageLibrary {
 	 * @returns {Page} Page object
 	 */
 	public getPageById(pageId: string): Page | null {
-		return this._demoPages.find((page) => page.pageId === pageId) || null;
+		return this._pageIds.find((page) => page.pageId === pageId) || null;
 	}
 }
 

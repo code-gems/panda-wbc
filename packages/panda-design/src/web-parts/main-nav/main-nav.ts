@@ -1,6 +1,5 @@
 // types
-import { AppState } from "panda-design-typings";
-import { Page } from "../../utils/page-library";
+import { AppState, Page } from "panda-design-typings";
 
 // styles & mixins
 import { styles } from "./styles/styles";

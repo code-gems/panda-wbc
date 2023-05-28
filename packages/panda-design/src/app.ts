@@ -12,7 +12,7 @@ import "@panda-wbc/panda-router";
 // pages
 import "./pages/home/home-page";
 import "./pages/get-started/get-started-page";
-import "./pages/docs/docs-page";
+import "./pages/develop/develop-page";
 import "./pages/themes/themes-page";
 import "./pages/core/core-page";
 
