@@ -29,8 +29,8 @@ import "../../web-parts/main-nav/main-nav";
 // components
 
 // utils & config
-import { html, LitElement, PropertyValueMap } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { html, LitElement } from "lit";
+import { customElement } from "lit/decorators.js";
 import { page } from "../../utils/page-library";
 
 @customElement("themes-page")
@@ -38,6 +38,7 @@ import { page } from "../../utils/page-library";
 	pageId: "themes",
 	pageName: "Themes",
 	pageUri: "/themes",
+	icon: "theme",
 	parent: true,
 	category: PageCategory.THEMES,
 	keywords: ["theme", "color", "colors", "css", "variables", "theming", "ux", "ui"],

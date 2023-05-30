@@ -1,17 +1,12 @@
 // types
-export type PandaThemeItem = {
-	group: string;
-	name: string;
-	value: string;
-	theme: string | CSSResult;
-}
+import { PandaThemeGroup } from "../index";
 
 // themes
 import { pandaThemeLight } from "./themes/panda-theme-light";
 import { pandaThemeDark } from "./themes/panda-theme-dark";
 
 // utils
-import { CSSResult, LitElement } from "lit";
+import { LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("panda-theme")
@@ -20,13 +15,29 @@ export class PandaTheme extends LitElement {
 	@property({ type: String, attribute: true })
 	theme!: string;
 
-	private readonly _themeList: PandaThemeItem[] = [
-		{ group: "Panda Theme", name: "Light", value: "panda-theme-light", theme: pandaThemeLight },
-		{ group: "Panda Theme", name: "Dark", value: "panda-theme-dark", theme: pandaThemeDark }
+	// theme element
+	private _themeEl!: HTMLStyleElement;
+
+	private readonly _themeList: PandaThemeGroup[] = [
+		{
+			groupName: "Panda Theme",
+			options: [
+				{
+					id: "panda-theme-light",
+					name: "Light",
+					theme: pandaThemeLight
+				},
+				{
+					id: "panda-theme-dark",
+					name: "Dark",
+					theme: pandaThemeDark
+				},
+			]
+		}
 	];
 
 	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
+	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	protected firstUpdated(_changedProperties: Map<string, any>) {
@@ -41,22 +52,42 @@ export class PandaTheme extends LitElement {
 	}
 
 	// ================================================================================================================
-	// ============================================================================================================ API
+	// API ============================================================================================================
 	// ================================================================================================================
 
-	public getThemeList(): PandaThemeItem[] {
+	public getThemeList(): PandaThemeGroup[] {
 		return this._themeList;
 	}
 
 	// ================================================================================================================
-	// ======================================================================================================== HELPERS
+	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
+	private _getThemeString(themeOptionId: string): string {
+		let themeString: string = "";
+
+		if (themeOptionId) {
+			this._themeList.forEach((themeGroup) => {
+				themeGroup.options.forEach((themeOption) => {
+					if (themeOption.id === themeOptionId) {
+						themeString = themeOption.theme.toString();
+					}
+				});
+			});
+		}
+		return themeString;
+	}
+
 	private _applyTheme() {
-		// extract theme
-		const themeEl = document.createElement("style");
-		themeEl.innerHTML = pandaThemeLight.toString();
-		document.head.appendChild(themeEl);
+		// check if theme element exists
+		if (this._themeEl) {
+			this._themeEl.innerHTML = this._getThemeString(this.theme);
+		} else {
+			this._themeEl = document.createElement("style");
+			this._themeEl.setAttribute("panda-theme", "");
+			this._themeEl.innerHTML = this._getThemeString(this.theme);
+			document.head.appendChild(this._themeEl);
+		}
 	}
 }
 

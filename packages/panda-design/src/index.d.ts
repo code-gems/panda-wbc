@@ -12,12 +12,14 @@ declare module "panda-design-typings" {
 	}
 
 	export interface ContextMenuItem {
-
+		name: string;
+		contextId: string;
 	}
 
 	export interface Page {
 		pageId: string;
 		pageName: string;
+		icon?: string;
 		pageUri: string;
 		parent?: boolean;
 		category: string;

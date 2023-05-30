@@ -3,7 +3,8 @@ import { css } from "lit"
 export const styles = css`
 	:host {
 		display: block;
-		padding: 40px;
+		width: 100%;
+		height: 100%;
 	}
 
 	.icon-list {

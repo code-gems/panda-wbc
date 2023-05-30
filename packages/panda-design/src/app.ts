@@ -1,5 +1,5 @@
-/** */
 // types
+import { AppState } from "panda-design-typings";
 import { PandaRouterNavigateEvent, RouterConfig } from "@panda-wbc/panda-router";
 
 // styles
@@ -18,30 +18,35 @@ import "./pages/core/core-page";
 
 // utils & config
 import { LitElement, html } from "lit";
-import { customElement } from "lit/decorators.js";
-import appStore from "./redux/store";
+import { customElement, property } from "lit/decorators.js";
+import { appStore, reduxify } from "./redux/store";
 import { getRouterConfig } from "./router-config";
 
 // actions
 import { gotoPage } from "./redux/actions/common";
 
 @customElement("panda-design-app")
+@reduxify()
 class PandaApp extends LitElement {
 	//css styles
 	static get styles() {
 		return styles;
 	}
 
-	private _routerConfig!: RouterConfig;
+	@property({ type: String })
+	selectedTheme: string | null = null;
+
+	private _routerConfig: RouterConfig = getRouterConfig();
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
 
-	constructor() {
-		super();
-		// router config
-		this._routerConfig = getRouterConfig();
+	stateChanged(state: AppState) {
+		const {
+			selectedTheme
+		} = state;
+		this.selectedTheme = selectedTheme;
 	}
 
 	// ================================================================================================================
@@ -50,7 +55,7 @@ class PandaApp extends LitElement {
 
 	protected render() {
 		return html`
-			<panda-theme></panda-theme>
+			<panda-theme theme="${this.selectedTheme}"></panda-theme>
 			<panda-router
 				.routerConfig="${this._routerConfig}"
 				@on-navigate="${(e: CustomEvent) => this._onNavigate(e.detail)}"
@@ -69,7 +74,7 @@ class PandaApp extends LitElement {
 			search,
 			searchParams
 		} = navigateEvent;
-		
+
 		appStore.dispatch(
 			gotoPage({
 				pathname,

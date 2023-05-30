@@ -1,5 +1,5 @@
 // types
-import { PageCategory } from "panda-design-typings";
+import { ContextMenuItem, PageCategory } from "panda-design-typings";
 import { IconDetails } from "panda-icon-typings";
 
 // styles
@@ -8,17 +8,17 @@ import { uiComponents } from "../../../../styles/styles";
 
 // components
 import "@panda-wbc/panda-icon";
-// import "@panda-wbc/panda-icon/lib/food-icon-pack";
-// import "@panda-wbc/panda-icon/lib/av-icon-pack";
+import "@panda-wbc/panda-icon/lib/food-icon-pack";
+import "@panda-wbc/panda-icon/lib/av-icon-pack";
 import "@panda-wbc/panda-icon/lib/map-icon-pack";
-import pandaIconLibrary from "@panda-wbc/panda-icon/lib/panda-icon-library";
 
 // utils & config
 import { html, LitElement, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { page } from "../../../../utils/page-library";
+import { customElement, property, query, queryAll } from "lit/decorators.js";
+import { PageLibrary, page } from "../../../../utils/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 import { getIconListDetails } from "./icon-list";
+import { ContentPage } from "../../../content-page";
 
 @customElement("panda-icon-content-page")
 @page({
@@ -31,14 +31,21 @@ import { getIconListDetails } from "./icon-list";
 	contextMenu,
 	template: html`<panda-icon-content-page></panda-icon-content-page>`
 })
-export class PandaIconContentPage extends LitElement {
+export class PandaIconContentPage extends ContentPage {
 	// css styles
 	static get styles() {
 		return [
 			styles,
-			uiComponents.columnSystem
+			uiComponents.banner,
+			uiComponents.appLayout,
+			uiComponents.columnSystem,
+			uiComponents.modifiers,
 		];
 	}
+
+	// page details
+	pageId: string = pageId;
+	contextMenu: ContextMenuItem[] = contextMenu;
 
 	@property({ type: String, attribute: false })
 	private _searchText: string = ""; 
@@ -53,16 +60,6 @@ export class PandaIconContentPage extends LitElement {
 	// ================================================================================================================
 
 	connectedCallback(): void {
-
-		pandaIconLibrary.getIconList().forEach((iconName) => {
-			this._iconList.push({
-				name: iconName,
-				group: ["temp"],
-				keywords: [],
-				iconPack: "iron-icon"
-			});
-		});
-
 		super.connectedCallback();
 		// generate icon pack map
 		this._iconList.forEach((iconDetails) => {
@@ -81,28 +78,63 @@ export class PandaIconContentPage extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	_renderBanner(): TemplateResult {
 		return html`
-			<div class="row">
-				<div class="col-full">
-					<h1>Icons</h1>
-				</div>
+			<div class="banner small">
+				<h1>ICONS</h1>
+				<p>
+
+
+				</p>
 			</div>
-			<div class="row">
-				<div class="col-full">
-					<input
-						type="text"
-						placeholder="Find..."
-						@input="${(e: any) => this._onIconSearch(e.target.value)}"
-					/>
+		`;
+	}
+
+	_renderPageContent(): TemplateResult {
+		return html`
+			<!-- OVERVIEW -->
+			<div class="content-section" data-content-section-name="overview">
+				<div class="section">
+					<h2></h2>
+					<p>
+
+					</p>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-full">
-					${this._renderIconList()}
+			</div> <!-- END OF CONTENT SECTION -->
+
+			<!-- OVERVIEW -->
+			<div class="content-section" data-content-section-name="implementation">
+				<div class="section">
+					<h2>Implementation</h2>
+					<p>
+
+					</p>
 				</div>
-			</div>
-			
+			</div> <!-- END OF CONTENT SECTION -->
+
+			<!-- ICON LIST -->
+			<div class="content-section" data-content-section-name="icon-list">
+				<div class="section">
+					<h2>Icon List</h2>
+					<p>
+
+					</p>
+					<div class="row">
+						<div class="col-full">
+							<input
+								type="text"
+								placeholder="Find..."
+								@input="${(e: any) => this._onIconSearch(e.target.value)}"
+							/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-full">
+							${this._renderIconList()}
+						</div>
+					</div>
+				</div>
+			</div> <!-- END OF CONTENT SECTION -->
 		`;
 	}
 

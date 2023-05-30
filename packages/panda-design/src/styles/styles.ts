@@ -52,6 +52,11 @@ export const uiComponents = {
 			overflow: auto;
 		}
 
+		.content-page-wrap {
+			height: 100%;
+			overflow: auto;
+		}
+
 		.content-page {
 			display: flex;
 			flex-flow: row nowrap;
@@ -147,7 +152,7 @@ export const uiComponents = {
 			padding: 40px;
 
 			color: var(--panda-text-color);
-			font-size: var(--panda-font-size-s);
+			font-size: var(--panda-font-size-m);
 			font-family: var(--panda-font-family);
 			box-sizing: border-box;
 		}
@@ -195,7 +200,7 @@ export const uiComponents = {
 			flex-grow: 1;
 
 			color: var(--panda-text-color);
-			font-size: var(--panda-font-size-s);
+			font-size: var(--panda-font-size-m);
 			font-family: var(--panda-font-family);
 			user-select: none;
 			cursor: pointer;		

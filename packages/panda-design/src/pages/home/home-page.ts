@@ -3,23 +3,24 @@ import { AppState, PageCategory } from "panda-design-typings";
 
 // styles & mixins
 import { styles } from "./styles/styles";
+import { uiComponents } from "../../styles/styles";
 
 // web parts
 import "../../web-parts/main-nav/main-nav";
 import { pandaLogo } from "../../web-parts/panda-logo";
 
 // utils
-import { html, LitElement, TemplateResult } from "lit";
-import { customElement } from "lit/decorators.js";
-import PageLibrary, { page } from "../../utils/page-library";
+import { html, LitElement } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { PageLibrary, page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
-import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
 @customElement("home-page")
 @page({
 	pageId: "home",
 	pageName: "Home",
 	pageUri: "/home",
+	icon: "home",
 	parent: true,
 	category: PageCategory.HOME,
 	keywords: [],
@@ -32,21 +33,19 @@ class HomePage extends LitElement {
 	// css styles
 	static get styles() {
 		return [
-			styles
+			styles,
+			uiComponents.banner,
+			uiComponents.appLayout,
+			uiComponents.modifiers,
 		];
 	}
 
-	private _pageLibrary!: PageLibrary;
+	@property({ type: String })
+	private _pageId!: string;
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
-
-	constructor() {
-		super();
-		// init page library 
-		this._pageLibrary = new PageLibrary();
-	}
 
 	stateChanged(state: AppState) {
 		console.log("%c [HOME PAGE] stateChanged", "font-size: 24px; color: green;", state);
@@ -58,50 +57,38 @@ class HomePage extends LitElement {
 
 	protected render() {
 		return html`
-			<main-nav></main-nav>
-			<div class="banner">
-				${pandaLogo}
+			<div class="app">
+				<div class="side-bar">
+					<side-menu-bar></side-menu-bar>
+				</div>
+				<div class="body">
+					${this._renderPageTemplate()}
+				</div>
 			</div>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</p>
-
-			<hr />
-			${this._renderPageList()}
 		`;
 	}
 
-	private _renderPageList() {
-		const listTemplate: TemplateResult[] = [];
-
-		const allPages = this._pageLibrary.getAllPages();
-
-		allPages.forEach((page) => {
-			listTemplate.push(html`
-				<div
-					class="nav-item"
-					@click="${(e: MouseEvent) => this._onNavigate(e, page.pageUri)}"
-				>
-					${page.pageName}
-				</div>
-			`);
-		});
-
+	private _renderMainPage() {
 		return html`
-			<div class="nav">
-				${listTemplate}
+			<div class="body-wrap scroll">
+				some text here
+				${pandaLogo}
 			</div>
 		`;
+	}
+
+	private _renderPageTemplate() {
+		if (this._pageId) {
+			const selectedPage = new PageLibrary().getPageById(this._pageId);
+			return selectedPage?.template;
+		} else {
+			return this._renderMainPage();
+		}
 	}
 
 	// ================================================================================================================
 	// ========================================================================================================= EVENTS
 	// ================================================================================================================
 
-	private _onNavigate(e: MouseEvent, pathName: string) {
-		navigate(pathName, e);
-	}
+	// ...
 }
