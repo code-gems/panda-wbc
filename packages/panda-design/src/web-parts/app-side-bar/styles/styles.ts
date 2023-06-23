@@ -14,6 +14,7 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 		gap: 10px;
+		overflow: hidden;
 
 		background-color: var(--panda-background-color-900);
 	}
@@ -28,6 +29,7 @@ export const styles = css`
 		flex-grow: 1;
 		padding: 10px;
 		gap: 10px;
+		overflow: overlay;
 	}
 
 	.side-bar .footer {

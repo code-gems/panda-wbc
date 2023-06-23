@@ -366,12 +366,12 @@ export const pandaThemeLight = css`
 		/* WARN COLOR */
 		--panda-action-warn: hsl(35deg 91% 62%);
 		
-		--panda-action-warn-50: hsl(35deg 91% 85%);
-		--panda-action-warn-100: hsl(35deg 91% 72%);
-		--panda-action-warn-300: hsl(35deg 91% 67%);
-		--panda-action-warn-500: hsl(35deg 91% 62%);
-		--panda-action-warn-700: hsl(35deg 91% 57%);
-		--panda-action-warn-900: hsl(35deg 91% 52%);
+		--panda-action-color-warn-50: hsl(35deg 91% 85%);
+		--panda-action-color-warn-100: hsl(35deg 91% 72%);
+		--panda-action-color-warn-300: hsl(35deg 91% 67%);
+		--panda-action-color-warn-500: hsl(35deg 91% 62%);
+		--panda-action-color-warn-700: hsl(35deg 91% 57%);
+		--panda-action-color-warn-900: hsl(35deg 91% 52%);
 
 		--panda-action-color-warn-0opc: hsl(35deg 91% 62% / 0%);
 		--panda-action-color-warn-10opc: hsl(35deg 91% 62% / 10%);
@@ -431,6 +431,47 @@ export const pandaThemeLight = css`
 		/* ========================================================================================================= */
 
 		/* ========================================================================================================= */
+		/* FORMS & COMPONENTS ====================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-form-border-color: hsl(0deg 0% 66%);
+
+		/* FORM VALIDATION */
+		--panda-form-validation-mandatory: var(--panda-action-color-warn);
+		--panda-form-validation-valid: var(--panda-action-color-done);
+		--panda-form-validation-invalid: var(--panda-action-color-alert);
+
+		/* LABEL */
+		--panda-form-label-color: hsl(0deg 0% 50%);
+		--panda-form-label-text-shadow: none;
+		--panda-form-label-font-size: var(--panda-font-size-s);
+		--panda-form-label-font-family: var(--panda-font-family);
+		
+		/* INPUT */
+		--panda-form-input-height: 40px;
+		--panda-form-input-padding: 0px 10px;
+		--panda-form-input-outline-color: hsl(216deg 88% 60%);
+		--panda-form-input-text-color: var(--panda-text-color);
+		--panda-form-input-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-form-input-background-color: hsl(0deg 0% 100%);
+		--panda-form-input-background-color-disabled: hsl(0deg 0% 92%);
+		--panda-form-input-font-size: var(--panda-font-size-m);
+		--panda-form-input-font-family: var(--panda-font-family);
+
+		--panda-form-input-border-color: hsl(0deg 0% 80%);
+		--panda-form-input-border-color-disabled: hsl(0deg 0% 80%);
+		--panda-form-input-border-color-hover: hsl(0deg 0% 65%);
+		--panda-form-input-border-radius: 5px;
+		--panda-form-input-icon-color: var(--panda-icon-color);
+		--panda-form-input-icon-background-color: hsl(0deg 0% 92%);
+		
+		--panda-form-input-placeholder-color: hsl(0deg 0% 80%);
+
+		/* BUTTON */
+		
+		/* DROP DOWN */
+
+		/* ========================================================================================================= */
 		/* FRAMEWORK COLORS ======================================================================================== */
 		/* ========================================================================================================= */
 
@@ -462,22 +503,27 @@ export const pandaThemeLight = css`
 		/* TYPOGRAPHY ============================================================================================== */
 		/* ========================================================================================================= */
 
-		/* FONT */		
+		--panda-text-color: hsl(0deg 0% 10%);
+		--panda-text-color-disabled: hsl(0deg 0% 68%);
+		--panda-text-shadow: 0px 1px 1px var(--panda-black-color);
+
+		/* FONT SIZE & FAMILY */		
 		--panda-font-size-xs: 10px;
 		--panda-font-size-s: 12px;
 		--panda-font-size-m: 14px;
 		--panda-font-size-l: 16px;
-		--panda-font-size-xl: 20px;
-		--panda-font-size-hero: 36px;
+		--panda-font-size-xl: 18px;
+		--panda-font-size-hero: 24px;
 
 		--panda-font-family: "Poppins";
 		--panda-font-family-light: "Poppins-Light";
 		--panda-font-family-bold: "Poppins-Bold";
 
-		/* TEXT COLOR */
-		--panda-text-color: hsl(0deg 0% 10%);
-		--panda-text-shadow: 0px 1px 1px var(--panda-black-color);
-
+		/* LINK COLOR */
+		--panda-link-color: hsl(216deg 86% 51%);
+		--panda-link-color-hover: hsl(216deg 86% 56%);
+		--panda-link-color-visited: hsl(271deg 100% 50%);
+		--panda-link-color-active: hsl(271deg 100% 60%);
 	}
 
 	body {

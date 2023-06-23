@@ -18,7 +18,7 @@ import { customElement, property, query, queryAll } from "lit/decorators.js";
 import { PageLibrary, page } from "../../../../utils/page-library";
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 import { getIconListDetails } from "./icon-list";
-import { ContentPage } from "../../../content-page";
+import { ContentPageTemplate } from "../../../content-page-template";
 
 @customElement("panda-icon-content-page")
 @page({
@@ -31,7 +31,7 @@ import { ContentPage } from "../../../content-page";
 	contextMenu,
 	template: html`<panda-icon-content-page></panda-icon-content-page>`
 })
-export class PandaIconContentPage extends ContentPage {
+export class PandaIconContentPage extends ContentPageTemplate {
 	// css styles
 	static get styles() {
 		return [
@@ -45,7 +45,7 @@ export class PandaIconContentPage extends ContentPage {
 
 	// page details
 	pageId: string = pageId;
-	contextMenu: ContextMenuItem[] = contextMenu;
+	// contextMenu: ContextMenuItem[] = contextMenu;
 
 	@property({ type: String, attribute: false })
 	private _searchText: string = ""; 
@@ -78,13 +78,13 @@ export class PandaIconContentPage extends ContentPage {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderBanner(): TemplateResult {
+	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
 				<h1>ICONS</h1>
 				<p>
-
-
+					Panda icon pack is a collections of pre-designed, scalable icons that are used in web applications to enhance visual communication, 
+					improve user experience, and provide intuitive visual cues.
 				</p>
 			</div>
 		`;
@@ -95,9 +95,23 @@ export class PandaIconContentPage extends ContentPage {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview">
 				<div class="section">
-					<h2></h2>
+					<h2>Enhancing Visual Communication</h2>
 					<p>
+						Icon packs are an essential component of web design as they help convey meaning and information quickly and effectively. 
+						These collections include a wide range of icons representing various objects, actions, concepts, and categories. 
+						By incorporating icons from packs, web applications can enhance visual communication, 
+						making it easier for users to understand and navigate through different sections, features, and functionalities.
+					</p>
+				</div>
 
+				<div class="section">
+					<h2>Improving User Experience</h2>
+					<p>
+						Icons play a crucial role in improving the user experience of web applications. 
+						They provide a visual representation of actions, features, or content, 
+						reducing the reliance on text and enabling users to quickly grasp the intended meaning. 
+						Icons help streamline the user interface by presenting information in a compact and visually appealing manner, 
+						making the application more intuitive and user-friendly.
 					</p>
 				</div>
 			</div> <!-- END OF CONTENT SECTION -->

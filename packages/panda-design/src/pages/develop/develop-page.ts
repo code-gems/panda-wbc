@@ -6,17 +6,17 @@ import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/styles";
 
 // web parts
-import "../../web-parts/side-menu-bar/side-menu-bar";
+import "../../web-parts/app-side-bar/app-side-bar";
+import "../../web-parts/app-submenu/app-submenu";
 
 // load demo pages
 import "./loader";
 
 // utils
-import { html, LitElement, TemplateResult } from "lit";
+import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import PageLibrary, { page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
-import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
 @customElement("develop-page")
 @page({
@@ -39,7 +39,6 @@ class DevelopPage extends LitElement {
 			styles,
 			uiComponents.banner,
 			uiComponents.appLayout,
-			uiComponents.menuList,
 			uiComponents.modifiers,
 		];
 	}
@@ -71,19 +70,10 @@ class DevelopPage extends LitElement {
 		return html`
 			<div class="app">
 				<div class="side-bar">
-					<side-menu-bar></side-menu-bar>
+					<app-side-bar></app-side-bar>
 				</div>
 				<div class="submenu">
-					<div class="header">
-						<panda-search
-							placeholder="Find..."
-							.on-input=""
-						>
-						</panda-search>
-					</div>
-					<div class="body scroll">
-						${this._renderPageList()}
-					</div>
+					<app-submenu .pageCategory="${PageCategory.DEVELOP}"></app-submenu>
 				</div>
 				<div class="body">
 					${this._renderPageTemplate()}
@@ -129,31 +119,6 @@ class DevelopPage extends LitElement {
 						This flexibility ensures that the library can adapt to evolving design requirements and accommodate future enhancements.
 					</p>
 				</div>
-			</div>
-		`;
-	}
-
-	private _renderPageList() {
-		const menuHtml: TemplateResult[] = [];
-		const demoPages = new PageLibrary().getPages(PageCategory.DEVELOP, true);
-
-		demoPages.forEach((page) => {
-			menuHtml.push(html`
-				<div
-					class="list-item"
-					@click="${(e: MouseEvent) => navigate(page.pageUri, e)}"
-				>
-					<label>${page.pageName}</label>
-					<div class="icon">
-						<panda-icon icon="chevron-right"></panda-icon>
-					</div>
-				</div>
-			`);
-		});
-
-		return html`
-			<div class="menu-list">
-				${menuHtml}
 			</div>
 		`;
 	}

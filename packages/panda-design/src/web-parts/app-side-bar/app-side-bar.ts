@@ -1,11 +1,9 @@
 // types
-import { AppState, Page } from "panda-design-typings";
+import { AppState } from "panda-design-typings";
 
-// styles & mixins
+// styles
 import { styles } from "./styles/styles";
-
-// web parts
-// ... eg. global search component
+import { uiComponents } from "../../styles/styles";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";
@@ -17,13 +15,14 @@ import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 // actions
 import { changeTheme } from "../../redux/actions/common";
 
-@customElement("side-menu-bar")
+@customElement("app-side-bar")
 @reduxify()
-class SideMenuBar extends LitElement {
+class AppSideBar extends LitElement {
 	// css styles
 	static get styles() {
 		return [
-			styles
+			styles,
+			uiComponents.modifiers,
 		];
 	}
 

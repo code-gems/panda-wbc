@@ -23,22 +23,8 @@ export const uiComponents = {
 		}
 
 		.app > .submenu {
-			display: flex;
-			flex-flow: column;
 			flex-shrink: 0;
 			width: 280px;
-			height: 100%;
-			overflow: hidden;
-
-			background-color: var(--panda-background-color-700);
-		}
-
-		.app > .submenu > .header {
-
-		}
-
-		.app > .submenu > .body {
-			overflow: overlay;
 		}
 
 		.app > .body {
@@ -68,6 +54,7 @@ export const uiComponents = {
 		}
 
 		.content-page .context-menu {
+			position: relative;
 			display: block;
 			width: 15vw;
 			padding: 40px;
@@ -94,8 +81,8 @@ export const uiComponents = {
 		}
 
 		.content-list .header {
-			padding: 0px 20px;
-			line-height: 40px;
+			padding: 5px 10px;
+			line-height: 1.5em;
 
 			font-size: var(--panda-font-size-s);
 			font-family: var(--panda-font-family);
@@ -124,21 +111,24 @@ export const uiComponents = {
 			justify-content: center;
 			align-items: center;
 			flex-shrink: 0;
-			width: 30px;
-			height: 50px;
+			width: 40px;
+			height: 40px;
 
-			--panda-icon-width: var(--panda-icon-size-xs);
-			--panda-icon-height: var(--panda-icon-size-xs);
+			--panda-icon-width: var(--panda-icon-size-s);
+			--panda-icon-height: var(--panda-icon-size-s);
 		}
 
 		.content-list .list .list-item label {
-			line-height: 50px;
-			padding: 0px 10px 0px 5px;
+
+			line-height: 1.5em;
+			padding: 11px 4px;
 			flex-grow: 1;
+			overflow: hidden;
 
 			color: var(--panda-text-color);
-			font-size: var(--panda-font-size-s);
+			font-size: var(--panda-font-size-m);
 			font-family: var(--panda-font-family);
+			text-overflow: ellipsis;
 			user-select: none;
 			cursor: pointer;
 		}
@@ -148,62 +138,29 @@ export const uiComponents = {
 			box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
 		}
 
+		.btn-scroll-top {
+			position: absolute;
+			bottom: 0%;
+			left: 50%;
+
+			transition: all 400ms ease-in-out;
+			background-color: var(--panda-background-color-300);
+			box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
+		}
+
+		.btn-scroll-top:hover {
+			background-color: var(--panda-background-color-100);
+		}
+
 		.section {
 			padding: 40px;
 
 			color: var(--panda-text-color);
 			font-size: var(--panda-font-size-m);
 			font-family: var(--panda-font-family);
+			text-align: justify;
+			
 			box-sizing: border-box;
-		}
-	`,
-
-	menuList: css`
-		.menu-list {
-			display: flex;
-			flex-flow: column;
-			padding: 10px;
-			gap: 10px;
-
-			box-sizing: border-box;
-		}
-		
-		.menu-list .list-item {
-			display: flex;
-			flex-flow: row nowrap;
-			min-height: 50px;
-			cursor: pointer;
-			transition: all 400ms ease-in-out;
-
-			border-radius: 10px;
-			background-color: var(--panda-background-color-500);
-			box-shadow: 0px 1px 2px var(--dragon-black-color-10opc);
-		}
-
-		.menu-list .list-item:hover {
-			background-color: var(--panda-background-color-300);
-			box-shadow: 0px 1px 2px var(--dragon-black-color-20opc);
-		}
-
-		.menu-list .list-item .icon {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-shrink: 0;
-			width: 50px;
-			height: 50px;
-		}
-
-		.menu-list .list-item label {
-			line-height: 50px;
-			padding: 0px 20px;
-			flex-grow: 1;
-
-			color: var(--panda-text-color);
-			font-size: var(--panda-font-size-m);
-			font-family: var(--panda-font-family);
-			user-select: none;
-			cursor: pointer;		
 		}
 	`,
 
@@ -224,6 +181,85 @@ export const uiComponents = {
 			color: var(--panda-text-color);
 			font-size: var(--panda-font-size-l);
 			font-family: var(--panda-font-family);
+		}
+	`,
+
+	form: css`
+		.form {
+			display: flex;
+			flex-flow: column;
+			width: 20vw;
+			max-width: 400px;
+
+			border-radius: 5px;
+			border: 1px solid var(--panda-form-border-color);
+			background-color: var(--panda-background-color-500);
+			box-shadow: 0px 2px 4px var(--panda-black-color-20px);
+		}
+	
+		.form .form-section {
+			width: 100%;
+			padding: 20px;
+
+			box-sizing: border-box;
+		}
+
+		.form .form-section.bg-700 {
+			border-bottom: 1px solid var(--panda-form-border-color);
+			background-color: var(--panda-background-color-700);
+		}
+
+		.form .footer {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: center;
+			padding: 10px 20px;
+
+			border-top: 1px solid var(--panda-form-border-color);
+			background-color: var(--panda-background-color-900);
+		}
+
+		.form label {
+			color: var(--panda-form-label-color);
+			font-size: var(--panda-form-label-font-size);
+			font-family: var(--panda-form-label-font-family);
+			text-shadow: var(--panda-form-label-text-shadow);
+			user-select: none;
+		}
+
+		.form .row {
+			margin-bottom: 8px;
+		}
+
+		.form p,
+		.form h2 {
+			user-select: none;
+		}
+	`,
+
+	sample: css`
+		.sample-cont {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 40px;
+		}
+
+		.sample-cont .sample {
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			width: 100%;
+			padding: 40px;
+
+			border-radius: 10px;
+			border: 1px solid var(--panda-background-color-900);
+			background: radial-gradient(
+				circle at 1px 1px,
+				var(--panda-form-border-color) 0px,
+				#0000 1px
+			)
+			0 0 / 16px 16px;
 		}
 	`,
 
@@ -314,31 +350,11 @@ export const uiComponents = {
 		.col-full { grid-column: span 12 / auto; }
 	`,
 	
-	// menuList: css`
-	// 	.menu-list {
-	// 		display: flex;
-	// 		flex-flow: column;
-	// 	}
-
-	// 	.menu-list .menu-list-item {
-	// 		padding: 0px 15px;
-	// 		line-height: 48px;
-
-	// 		cursor: pointer;
-			
-	// 		border-bottom: 1px dashed rgb(229, 229, 229);
-	// 		box-sizing: border-box;
-	// 	}
-
-	// 	.menu-list .menu-list-item:hover {
-
-	// 	}
-	// `,
-
 	modifiers: css`
-		.scroll::-webkit-scrollbar { width: 5px; }
-		.scroll::-webkit-scrollbar-track { background-color: var(--panda-bg-color, hsl(0deg 0% 100%)); }
-		.scroll::-webkit-scrollbar-thumb { background-color: var(--panda-bg-color-100, hsl(0deg 0% 95%)); }
-		.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-bg-color-200, hsl(0deg 0% 90%)); }
+		.scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+		.scroll::-webkit-scrollbar-track { border-radius: 3px; background-color: var(--panda-background-color-900); }
+		.scroll::-webkit-scrollbar-thumb { border-radius: 3px; background-color: var(--panda-background-color-100); }
+		.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-background-color-50); }
+		.scroll::-webkit-scrollbar-corner { background-color: transparent; }
 	`,
 }
