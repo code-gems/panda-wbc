@@ -7,7 +7,7 @@ export const styles = css`
 
 	.label {
 		display: block;
-		line-height: 1.5em;
+		line-height: 1.6em;
 
 		color: var(--panda-form-label-color, hsl(0deg 0% 50%));
 		font-size: var(--panda-form-label-font-size, 12px);

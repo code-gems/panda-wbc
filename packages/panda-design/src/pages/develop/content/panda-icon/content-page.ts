@@ -1,5 +1,5 @@
 // types
-import { ContextMenuItem, PageCategory } from "panda-design-typings";
+import { PageCategory } from "panda-design-typings";
 import { IconDetails } from "panda-icon-typings";
 
 // styles
@@ -13,12 +13,15 @@ import "@panda-wbc/panda-icon/lib/av-icon-pack";
 import "@panda-wbc/panda-icon/lib/map-icon-pack";
 
 // utils & config
-import { html, LitElement, TemplateResult } from "lit";
-import { customElement, property, query, queryAll } from "lit/decorators.js";
-import { PageLibrary, page } from "../../../../utils/page-library";
-import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
+import { html, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { page } from "../../../../utils/page-library";
 import { getIconListDetails } from "./icon-list";
 import { ContentPageTemplate } from "../../../content-page-template";
+
+// page details
+import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
+import { reduxify } from "../../../../redux/store";
 
 @customElement("panda-icon-content-page")
 @page({
@@ -31,6 +34,7 @@ import { ContentPageTemplate } from "../../../content-page-template";
 	contextMenu,
 	template: html`<panda-icon-content-page></panda-icon-content-page>`
 })
+@reduxify()
 export class PandaIconContentPage extends ContentPageTemplate {
 	// css styles
 	static get styles() {
@@ -44,8 +48,7 @@ export class PandaIconContentPage extends ContentPageTemplate {
 	}
 
 	// page details
-	pageId: string = pageId;
-	// contextMenu: ContextMenuItem[] = contextMenu;
+	public pageId = pageId;
 
 	@property({ type: String, attribute: false })
 	private _searchText: string = ""; 

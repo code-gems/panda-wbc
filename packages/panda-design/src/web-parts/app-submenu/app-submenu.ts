@@ -63,7 +63,7 @@ class AppSubmenu extends LitElement {
 		return html`
 			<div class="submenu">
 				<div class="header">
-					SEARCH
+					pageCategory: ${this.pageCategory}
 				</div>
 				<div class="body scroll">
 					${this._renderPageList()}
@@ -78,7 +78,7 @@ class AppSubmenu extends LitElement {
 	private _renderPageList() {
 		const menuHtml: TemplateResult[] = [];
 		const demoPages = new PageLibrary().getPages(this.pageCategory, true);
-
+		console.log("%c demoPages", "font-size: 24px; color: green;", demoPages);
 		demoPages.forEach((page) => {
 			menuHtml.push(html`
 				<div

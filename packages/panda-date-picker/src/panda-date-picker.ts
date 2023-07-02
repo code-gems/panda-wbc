@@ -251,14 +251,14 @@ export class PandaDatePicker extends LitElement {
 	private _fullDaysOfWeek: string[] = getFullDaysOfWeek();
 	private _daysOfWeek: string[] = getDaysOfWeek();
 
-	// DOM elements
+	// elements
 	@query("#input-field")
 	private _dateInputEl!: HTMLInputElement;
 	private _overlayEl!: PandaDatePickerOverlay | null;
 
 	// event bindings
 	private _selectDateEventBinding: (e: any) => void = this._onSelectedDateChange.bind(this);
-	private _hideOverlayEventBinding: (e: any) => void = this._hideOverlay.bind(this);
+	private _hideOverlayEventBinding: (e: any) => void = this._closeOverlay.bind(this);
 
 	// debouncers
 	private _evaluateDateDebouncer: () => void | Debouncer | null = debounce(this._evaluateDate, 50);
@@ -357,10 +357,10 @@ export class PandaDatePicker extends LitElement {
 
 	private _getDatePickerPosition(): ElementDetails {
 		const rect = this.getBoundingClientRect();
-		let top = minValue(rect.top + window.scrollY, 0);
-		let left = minValue(rect.left + window.scrollX, 0);
-		let bottom = minValue(rect.bottom + window.scrollY, 0);
-		let right = minValue(rect.right + window.scrollX, 0);
+		const top = minValue(rect.top + window.scrollY, 0);
+		const left = minValue(rect.left + window.scrollX, 0);
+		const bottom = minValue(rect.bottom + window.scrollY, 0);
+		const right = minValue(rect.right + window.scrollX, 0);
 
 		return {
 			width: rect.width,
@@ -413,7 +413,8 @@ export class PandaDatePicker extends LitElement {
 	/**
 	 * Removes date picker overlay element from DOM if present
 	 */
-	private _hideOverlay() {
+	private _closeOverlay() {
+		console.log("%c [_closeOverlay] _overlayEl", "font-size: 24px; color: orange;", this._overlayEl);
 		if (this._overlayEl) {
 			// remove event listeners
 			this._overlayEl.removeEventListener("change", this._selectDateEventBinding);
@@ -562,7 +563,7 @@ export class PandaDatePicker extends LitElement {
 				this._dateInputEl.focus();
 				this._openDatePickerOverlay();
 			} else {
-				this._hideOverlay();
+				this._closeOverlay();
 			}
 		}
 	}
@@ -597,7 +598,7 @@ export class PandaDatePicker extends LitElement {
 		console.log("%c 🔣 [DATE PICKER] _onInputFieldKeyUp", "font-size: 16px; color: red;", e.key);
 		if (e.key === "Enter") {
 			this._evaluateDateDebouncer();
-			this._hideOverlay();
+			this._closeOverlay();
 		} else if (
 			e.key !== "Tab" &&
 			e.key !== "Shift" &&
@@ -613,7 +614,7 @@ export class PandaDatePicker extends LitElement {
 		console.log("%c 🔣 [DATE PICKER] _onInputFieldKeyDown", "font-size: 16px; color: red;", e.key, this.opened);
 		if (e.key === "Tab" && this.opened) {
 			this._evaluateDateDebouncer();
-			this._hideOverlay();
+			this._closeOverlay();
 		}
 	}
 

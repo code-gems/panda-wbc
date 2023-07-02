@@ -21,6 +21,9 @@ import {
 	installationSnippet, usageSnippet,
 } from "./snippets/snippets";
 
+// static demo data
+import { getCountryList } from "../../static-data";
+
 // page config
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
 
@@ -54,17 +57,29 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	// view props
 	@property({ type: String })
-	private _value: string | null = "value 1";
+	private _value: string | null = "value 4";
 
 	@property({ type: Array })
 	private _items: any[] = [
-		{ name: "Item #1", value: "value 1" },
-		{ name: "Item #2", value: "value 2" },
-		{ name: "Item #3", value: "value 3" },
-		{ name: "Item #4", value: "value 4" },
-		{ name: "Item #5", value: "value 5" },
-		{ name: "Item #6", value: "value 6" },
+		{ label: "Item #1", value: "value 1" },
+		{ label: "Item #2", value: "value 2" },
+		{ label: "Item #3", value: "value 3" },
+		{ label: "Item #4", value: "value 4" },
+		{ label: "Item #5", value: "value 5" },
+		{ label: "Item #6", value: "value 6" },
 	];
+
+	@property({ type: Array })
+	private _codes: any[] = [
+		{ name: "Code #1", code: "code 01" },
+		{ name: "Code #2", code: "code 02" },
+		{ name: "Code #3", code: "code 03" },
+		{ name: "Code #4", code: "code 04" },
+		{ name: "Code #5", code: "code 05" },
+		{ name: "Code #6", code: "code 06" },
+	];
+
+	private _countryList = getCountryList();
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -122,12 +137,40 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 							<div class="form-section">
 								<div class="row">
 									<div class="col-full">
+										
 										<panda-combo-box
 											.label="${"Select Destination:"}"
 											.value="${this._value}"
 											.items="${this._items}"
 											@change="${this._onChange}"
 											mandatory
+										>
+										</panda-combo-box>
+										<panda-combo-box
+											.label="${"Select Destination:"}"
+											.value="${2}"
+											.items="${[1,2,3]}"
+											@change="${this._onChange}"
+										>
+										</panda-combo-box>
+										
+										<panda-combo-box
+											.label="${"Select Code:"}"
+											.value="${"code 03"}"
+											.items="${this._codes}"
+											@change="${this._onChange}"
+											item-label-path="name"
+											item-value-path="code"
+										>
+										</panda-combo-box>
+										<panda-combo-box
+											.label="${"Select Country:"}"
+											.value="${"PL"}"
+											.items="${this._countryList}"
+											@change="${this._onChange}"
+											item-label-path="name"
+											item-value-path="code"
+											autoselect
 										>
 										</panda-combo-box>
 									</div>
@@ -182,6 +225,6 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onChange(e: any) {
-		console.log("%c _onChange", "font-size: 24px; color: green;", e);
+		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", e.detail.value);
 	}
 }

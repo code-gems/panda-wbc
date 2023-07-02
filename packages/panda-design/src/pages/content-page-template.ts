@@ -1,14 +1,29 @@
 // types
 import { ContextMenuItem } from "panda-design-typings";
 
+// styles
+import { uiComponents } from "../styles/styles";
+
 // utils
-import { LitElement, TemplateResult, html } from "lit";
+import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";
 import { query, queryAll, property } from "lit/decorators.js";
 import PageLibrary from "../utils/page-library";
 
 export abstract class ContentPageTemplate extends LitElement {
+	// css styles
+	static get styles() {
+		return [
+			uiComponents.banner,
+			uiComponents.form,
+			uiComponents.sample,
+			uiComponents.appLayout,
+			uiComponents.modifiers,
+		];
+	}
+
 	// page details
 	abstract pageId: string;
+	public customStyles!: CSSResultGroup;
 
 	@property({ type: Array })
 	private _contextMenu!: ContextMenuItem[];
@@ -70,6 +85,9 @@ export abstract class ContentPageTemplate extends LitElement {
 
 	protected render() {
 		return html`
+			<style>
+				${this.customStyles || ""}
+			</style>
 			<div id="content-page-wrap" class="content-page-wrap scroll">
 				${this._renderPageBanner()}
 				

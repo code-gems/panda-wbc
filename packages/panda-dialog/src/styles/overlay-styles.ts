@@ -17,7 +17,7 @@ export const styles = css`
 		left: 0;
 		pointer-events: auto;
 
-		background-color: rgb(0 0 0 / 50%);
+		background-color: var(--panda-background-color-50opc, hsl(0deg 0% 94% / 50%));
 		z-index: 100;
 	}
 

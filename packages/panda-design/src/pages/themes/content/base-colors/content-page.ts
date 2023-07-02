@@ -1,0 +1,68 @@
+// types
+import { PageCategory } from "panda-design-typings";
+
+// styles
+import { styles } from "./styles/styles";
+
+// components & web parts
+
+// utils
+import { html, TemplateResult} from "lit";
+import { customElement } from "lit/decorators.js";
+import { ContentPageTemplate } from "../../../content-page-template";
+import { page } from "../../../../utils/page-library";
+
+// page config
+import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
+
+@customElement("base-colors-content-page")
+@page({
+	pageId,
+	pageName,
+	pageUri,
+	category: PageCategory.THEMES,
+	keywords,
+	description,
+	contextMenu,
+	template: html`<base-colors-content-page></base-colors-content-page>`
+})
+class BaseColorsContentPage extends ContentPageTemplate {
+	// page details
+	public pageId = pageId;
+	public customStyles = styles;
+
+	// ================================================================================================================
+	// RENDERERS ======================================================================================================
+	// ================================================================================================================
+
+	_renderPageBanner(): TemplateResult {
+		return html`
+			<div class="banner small">
+				<h1>BASE COLORS</h1>
+				<p>
+					...
+				</p>
+			</div>
+		`;
+	}
+
+	_renderPageContent(): TemplateResult {
+		return html`
+			${this._renderOverviewSection()}
+		`;
+	}
+
+	private _renderOverviewSection(): TemplateResult {
+		return html`
+			<!-- OVERVIEW -->
+			<div class="content-section" data-content-section-name="overview">
+				<div class="section">
+					<h2>Overview</h2>
+					<p>
+						...
+					</p>
+				</div>
+			</div>
+		`;
+	}
+}

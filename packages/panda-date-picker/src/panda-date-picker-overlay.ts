@@ -65,15 +65,15 @@ export class PandaDatePickerOverlay extends LitElement {
 
 	parentDetails!: ElementDetails;
 
-	// DOM elements
+	// elements
 	@query("#overlay")
 	private _overlayEl!: HTMLDivElement;
 
 	@query("#overlay-cont")
 	private _overlayContEl!: HTMLDivElement;
 
-	// event bindings
-	private _resizeEventBinding: any;
+	// events
+	private _windowResizeEvent: any;
 	
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -97,9 +97,9 @@ export class PandaDatePickerOverlay extends LitElement {
 		this.firstDayOfWeek = 0;
 		this.showToday = true;
 
-		// event bindings
-		this._resizeEventBinding = this.close.bind(this);
-		window.addEventListener("resize", this._resizeEventBinding);
+		// add events
+		this._windowResizeEvent = this.close.bind(this); // close overlay when window resizes
+		window.addEventListener("resize", this._windowResizeEvent);
 	}
 
 	protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -113,8 +113,9 @@ export class PandaDatePickerOverlay extends LitElement {
 
 	public disconnectedCallback(): void {
 		super.disconnectedCallback();
-		if (this._resizeEventBinding) {
-			window.removeEventListener("resize", this._resizeEventBinding);
+		// remove events
+		if (this._windowResizeEvent) {
+			window.removeEventListener("resize", this._windowResizeEvent);
 		}
 	}
 
@@ -195,6 +196,7 @@ export class PandaDatePickerOverlay extends LitElement {
 	// ================================================================================================================
 
 	public close() {
+		console.log("%c [OVERLAY] close event", "font-size: 24px; color: green;", this._overlayEl);
 		this.dispatchEvent(new CustomEvent("close", {}));
 	}
 
