@@ -5,6 +5,9 @@ import { AppState } from "panda-design-typings";
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/styles";
 
+// web parts
+import "../dragon-logo/dragon-logo";
+
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
@@ -29,14 +32,22 @@ class AppSideBar extends LitElement {
 	@property({ type: String })
 	selectedTheme: string | null = null;
 
+	@property({ type: String })
+	pathname!: string;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	stateChanged(state: AppState) {
+		console.log("%c state", "font-size: 24px; color: green;", state);
 		const {
-			selectedTheme
+			selectedTheme,
+			currentPageDetails: {
+				pathname
+			}
 		} = state;
+		this.pathname = pathname;
 		this.selectedTheme = selectedTheme;
 	}
 
@@ -49,7 +60,8 @@ class AppSideBar extends LitElement {
 			<div class="side-bar">
 				<div class="header">
 					<div class="logo">
-						LOGO
+						<dragon-logo>
+						</dragon-logo>
 					</div>
 				</div>
 				<div class="body scroll">
@@ -67,9 +79,14 @@ class AppSideBar extends LitElement {
 		const allPages = new PageLibrary().getParentPages();
 
 		allPages.forEach((page) => {
+			console.log("%c page", "font-size: 24px; color: green;", page);
+			const active = page.pageUri === this.pathname
+				? "active"
+				: "";
+
 			btnHtml.push(html`
 				<div
-					class="btn"
+					class="btn ${active}"
 					@click="${(e: MouseEvent) => navigate(page.pageUri, e)}"
 				>
 					<div class="icon">

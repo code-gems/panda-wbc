@@ -3,427 +3,138 @@ import { css } from "lit";
 export const styles = css`
 	:host {
 		display: inline-block;
-		height: var(--panda-button-height-m, 40px);
-	}
-
-	button {
-		position: relative;
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
 		width: 100%;
-		min-width: var(--panda-button-height-m, 40px);
-		height: var(--panda-button-height-m, 40px);
-
-		color: var(--panda-primary-color, #ffffff);
-		font-size: var(--panda-font-size-m, 14px);
-		font-family: var(--panda-font-family, "Poppins");
-		font-weight: bold;
-		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		transition: all 200ms ease-in-out;
-		cursor: pointer;
-
-		border-radius: var(--panda-button-border-radius, var(--panda-border-radius-m, 5px));
-		border: none;
-		background: var(--panda-primary-background, hsl(196deg 100% 47%));
-		box-shadow: 0px 2px 4px var(--panda-primary-50opc, hsl(0deg 0% 0% / 50%));
 	}
 
-	.content {
-		padding: 0px 15px;
-		overflow: hidden;
-		
-		line-height: var(--panda-button-height-m, 40px);
-		text-overflow: ellipsis;
-		text-align: center;
-		user-select: none;
-		white-space: nowrap;
-		flex-grow: 1;
-	}
-
-	::slotted([slot="prefix"]),
-	::slotted([slot="suffix"]) {
-		display: flex;
-		height: var(--panda-button-height-m, 40px);
-		padding: 0px 5px;
-		justify-content: center;
-		align-items: center;
+	.label {
+		display: block;
+		line-height: 1.6em;
+		color: var(--panda-form-label-color, hsl(0deg 0% 50%));
+		font-size: var(--panda-font-size-s, 12px);
+		font-family: var(--panda-form-label-font-family, "Poppins");
+		text-shadow: var(--panda-form-label-text-shadow, none);
 		user-select: none;
 	}
 
 	.spinner-cont {
 		position: absolute;
 		display: flex;
-		justify-content: center;
-		align-items: center;
 		width: 100%;
 		height: 100%;
-		left: 0px;
 		top: 0px;
+		left: 0px;
+		justify-content: center;
+		align-items: center;
 
-		border-radius: var(--panda-border-radius-m, 5px);
-		background: var(--panda-primary, hsl(196deg 100% 47%));
+		border-radius: var(--panda-form-input-border-radius, 4px);
+		background-color: var(--panda-form-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
-	.spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-primary-color, hsl(0deg 0% 100%));
+	.text-field {
+		position: relative;
+		display: flex;
+		flex-flow: row nowrap;
+
+		height: var(--panda-form-input-height, 30px);
+
+		transition: all 200ms ease-in-out;
+
+		border: 1px solid var(--panda-form-input-border-color, hsl(0deg 0% 80%));
+		border-radius: var(--panda-form-input-border-radius, 4px);
+		background-color: var(--panda-form-input-background-color, hsl(0deg 0% 100%));
+		box-sizing: border-box;
 	}
 
-	/* HOVER STATE */
-	
-	button:hover {
-		color: var(--panda-primary-color-hover, hsl(0deg 0% 100%));
-		background: var(--panda-primary-background-hover, hsl(196deg 100% 51%));
-	}
-	
-	/* DISABLED STATE */
+	.input {
+		width: 100%;
+		height: 100%;
+		padding: var(--panda-form-input-padding, 0px 10px);
 
-	:host([disabled]) { pointer-events: none; }
-	
-	:host([disabled]) button {
-		color: var(--panda-primary-color-disabled, hsl(0deg 0% 100%));
-		text-shadow: none;
-		background: var(--panda-primary-background-disabled, hsl(196deg 88% 73%));
-		box-shadow: none;
-	}
-	
-	/* BUSY STATE */
+		color: var(--panda-form-input-text-color, hsl(0deg 0% 15%));
+		font-size: var(--panda-font-size-s, 12px);
+		font-family: var(--panda-form-label-font-family, "Poppins");
+		outline: none;
 
-	:host([busy]) { pointer-events: none; }
-	:host([busy]) .content,
-	:host([busy]) slot { visibility: hidden; }
+		transition: all 200ms ease-in-out;
 
-	/* === THEMES === */
-	
-	/* PRIMARY - OUTLINE */
-
-	:host([theme~="outline"]) button {
-		color: var(--panda-primary, hsl(196deg 100% 47%));
-		text-shadow: none;
-		border: 2px solid var(--panda-primary, hsl(196deg 100% 47%));
-		background: var(--panda-primary-10opc, hsl(196deg 100% 47% / 10%));
-		box-shadow: none;
+		border: none;
+		border-radius: var(--panda-form-input-border-radius, 4px);
+		background-color: transparent;
 	}
 
-	:host([theme~="outline"]) button:hover {
-		border: 2px solid var(--panda-primary-color-hover, hsl(196deg 100% 51%));
-		background: var(--panda-primary-color-20opc, hsl(196deg 100% 47% / 20%));
+	.input::placeholder {
+		color: var(--panda-form-input-placeholder-color, hsl(0deg 0% 80%));
 	}
 
-	:host([theme~="outline"][disabled]) button {
-		color: var(--panda-primary-color-disabled, hsl(164deg 54% 72%));
-		text-shadow: none;
-		border: 2px solid var(--panda-primary-color-disabled, hsl(196deg 28% 92%));
-		background: var(--panda-primary-color-10opc, hsl(196deg 30% 85% / 10%));
-		box-shadow: none;
+	.text-field:not([disabled]):hover {
+		border: 1px solid var(--panda-form-input-border-color-hover, hsl(0deg 0% 65%));
 	}
 
-	:host([theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-secondary-color-10opc, hsl(196deg 30% 85% / 10%));
+	/* COMPONENT STATES */
+
+	:host([disabled]) .text-field {
+		border: 1px solid var(--panda-form-input-border-color-disabled, hsl(0deg 0% 80%));
+		background-color: var(--panda-form-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
-	:host([theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-primary-color, hsl(0deg 0% 29%));
+	:host([disabled]) .text-field .input {
+		color: var(--panda-form-input-text-color-disabled, hsl(0deg 0% 68%));
 	}
 
-	/* SECONDARY */
-
-	:host([theme~="secondary"]) button {
-		color: var(--panda-secondary-txt-color, hsl(0deg 0% 29%));
-		text-shadow: 0px 1px 1px var(--panda-light-color, hsl(0deg 0% 100%));
-		background: var(--panda-secondary-color, hsl(196deg 30% 85%));
-		box-shadow: 0px 1px 2px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
+	.text-field.mandatory,
+	.text-field.mandatory:hover {
+		border: 1px solid var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
+		box-shadow: 0px 0px 1px 1px var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
 	}
 
-	:host([theme~="secondary"]) button:hover {
-		color: var(--panda-secondary-color-txt-hover, hsl(0deg 0% 29%));
-		background: var(--panda-secondary-color-hover, hsl(196deg 30% 90%));
+	/* VALIDATION */
+
+	.text-field[theme="valid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-valid, hsl(151deg 74% 43%));
+		box-shadow: 0px 0px 1px 1px var(--panda-form-validation-valid, hsl(151deg 74% 43%));
 	}
 
-	:host([theme~="secondary"][disabled]) button {
-		color: var(--panda-secondary-color-txt-disabled, hsl(0deg 0% 64%));
-		text-shadow: none;
-		background: var(--panda-secondary-color-disabled, hsl(196deg 28% 92%));
-		box-shadow: none;
+	.text-field[theme="invalid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-invalid, hsl(352deg 70% 45%));
+		box-shadow: 0px 0px 1px 1px var(--panda-form-validation-invalid, hsl(352deg 70% 45%));
 	}
 
-	:host([theme~="secondary"][busy]) .spinner-cont {
-		background: var(--panda-secondary-color, hsl(196deg 30% 85%));
+	/* FOCUSED STATE */
+	:host([focused]) .text-field {
+		border: 1px solid var(--panda-form-input-outline-color, hsl(216deg 88% 60%));
+		box-shadow: 0px 0px 1px 1px var(--panda-form-input-outline-color, hsl(216deg 88% 60%));
 	}
 
-	:host([theme~="secondary"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-secondary-color-txt, hsl(0deg 0% 29%));
+	/* PREFIX / SUFFIX ICONS */
+
+	::slotted([name="prefix"])
+	::slotted([name="suffix"]) {
+		background-color: var(--panda-form-input-background-color, hsl(0deg 0% 92%));
 	}
 
-	/* SECONDARY - OUTLINE */
+	::slotted(.prefix),
+	::slotted(.suffix) {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		padding: var(--panda-form-input-padding, 0px 10px);
 
-	:host([theme~="secondary"][theme~="outline"]) button {
-		color: var(--panda-secondary-color-txt, hsl(0deg 0% 29%));
-		text-shadow: none;
-		border: 2px solid var(--panda-secondary-color, hsl(164deg 67% 45%));
-		background: var(--panda-secondary-color-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
+		color: var(--panda-form-label-color, hsl(0deg 0% 50%));
+		font-size: var(--panda-font-size-s, 12px);
+		font-family: var(--panda-form-label-font-family, "Poppins");
+		text-shadow: var(--panda-form-label-text-shadow, none);
+		user-select: none;
+
+		background-color: var(--panda-background-color-700);
+		box-sizing: border-box;
 	}
 
-	:host([theme~="secondary"][theme~="outline"]) button:hover {
-		border: 2px solid var(--panda-secondary-color-hover, hsl(164deg 69% 50%));
-		background: var(--panda-secondary-color-20opc, hsl(164deg 67% 45% / 20%));
+	::slotted(.prefix) {
+		border-radius: 0px 4px 4px 0px;
+		border-left: 1px solid var(--panda-form-input-border-color);
 	}
 
-	:host([theme~="secondary"][theme~="outline"][disabled]) button {
-		color: var(--panda-secondary-color-disabled, hsl(164deg 54% 72%));
-		text-shadow: none;
-		border: 2px solid var(--panda-secondary-color-disabled, hsl(196deg 28% 92%));
-		background: var(--panda-secondary-color-10opc, hsl(196deg 30% 85% / 10%));
-		box-shadow: none;
+	::slotted(.suffix) {
+
 	}
-
-	:host([theme~="secondary"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-secondary-color-10opc, hsl(196deg 30% 85% / 10%));
-	}
-
-	:host([theme~="secondary"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-secondary-color-txt, hsl(0deg 0% 29%));
-	}
-
-	/* DONE */
-
-	:host([theme~="done"]) button {
-		color: var(--panda-action-color-done-txt, hsl(0deg 0% 100%));
-		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-done, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-done-50opc, hsl(164deg 67% 45% / 50%));
-	}
-
-	:host([theme~="done"]) button:hover {
-		color: var(--panda-action-color-done-txt-hover, hsl(0deg 0% 100%));
-		background: var(--panda-action-color-done-hover, hsl(164deg 69% 50%));
-	}
-
-	:host([theme~="done"][disabled]) button {
-		color: var(--panda-action-color-done-txt-disabled, hsl(0deg 0% 100%));
-		text-shadow: none;
-		background: var(--panda-action-color-done-disabled, hsl(164deg 54% 72%));
-		box-shadow: none;
-	}
-
-	:host([theme~="done"][busy]) .spinner-cont {
-		background: var(--panda-action-color-done, hsl(164deg 67% 45%));
-	}
-
-	:host([theme~="done"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-done-txt, hsl(0deg 0% 100%));
-	}
-
-	/* DONE - OUTLINE */
-
-	:host([theme~="done"][theme~="outline"]) button {
-		color: var(--panda-action-color-done, hsl(164deg 67% 45%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-done, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="done"][theme~="outline"]) button:hover {
-		border: 2px solid var(--panda-action-color-done-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-done-20opc, hsl(164deg 67% 45% / 20%));
-	}
-
-	:host([theme~="done"][theme~="outline"][disabled]) button {
-		color: var(--panda-action-color-done-disabled, hsl(164deg 54% 72%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-done-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="done"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
-	}
-
-	:host([theme~="done"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
-	}
-
-	/* WARN */
-	
-	:host([theme~="warn"]) button {
-		color: var(--panda-action-color-warn-txt, hsl(0deg 0% 100%));
-		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-warn, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-warn-50opc, hsl(164deg 67% 45% / 50%));
-	}
-
-	:host([theme~="warn"]) button:hover {
-		color: var(--panda-action-color-warn-txt-hover, hsl(0deg 0% 100%));
-		background: var(--panda-action-color-warn-hover, hsl(164deg 69% 50%));
-	}
-
-	:host([theme~="warn"][disabled]) button {
-		color: var(--panda-action-color-warn-txt-disabled, hsl(0deg 0% 100%));
-		text-shadow: none;
-		background: var(--panda-action-color-warn-disabled, hsl(164deg 54% 72%));
-		box-shadow: none;
-	}
-
-	:host([theme~="warn"][busy]) .spinner-cont {
-		background: var(--panda-action-color-warn, hsl(164deg 67% 45%));
-	}
-
-	:host([theme~="warn"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-warn-txt, hsl(0deg 0% 100%));
-	}
-
-	/* WARN - OUTLINE */
-
-	:host([theme~="warn"][theme~="outline"]) button {
-		color: var(--panda-action-color-warn, hsl(164deg 67% 45%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-warn, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-warn-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="warn"][theme~="outline"]) button:hover {
-		border: 2px solid var(--panda-action-color-warn-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-warn-20opc, hsl(164deg 67% 45% / 20%));
-	}
-
-	:host([theme~="warn"][theme~="outline"][disabled]) button {
-		color: var(--panda-action-color-warn-disabled, hsl(164deg 54% 72%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-warn-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-warn-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="warn"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-warn-10opc, hsl(164deg 67% 45% / 10%));
-	}
-
-	:host([theme~="warn"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-warn, hsl(164deg 67% 45%));
-	}
-	
-	/* FAIL */
-	
-	:host([theme~="fail"]) button {
-		color: var(--panda-action-color-fail-txt, hsl(0deg 0% 100%));
-		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-fail, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-fail-50opc, hsl(164deg 67% 45% / 50%));
-	}
-
-	:host([theme~="fail"]) button:hover {
-		color: var(--panda-action-color-fail-txt-hover, hsl(0deg 0% 100%));
-		background: var(--panda-action-color-fail-hover, hsl(14deg 100% 68%));
-	}
-
-	:host([theme~="fail"][disabled]) button {
-		color: var(--panda-action-color-fail-txt-disabled, hsl(0deg 0% 100%));
-		text-shadow: none;
-		background: var(--panda-action-color-fail-disabled, hsl(14deg 79% 83%));
-		box-shadow: none;
-	}
-
-	:host([theme~="fail"][busy]) .spinner-cont {
-		background: var(--panda-action-color-fail, hsl(14deg 77% 62%));
-	}
-
-	:host([theme~="fail"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-fail-txt, hsl(0deg 0% 100%));
-	}
-
-	/* FAIL - OUTLINE */
-
-	:host([theme~="fail"][theme~="outline"]) button {
-		color: var(--panda-action-color-fail, hsl(164deg 67% 45%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-fail, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-fail-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="fail"][theme~="outline"]) button:hover {
-		border: 2px solid var(--panda-action-color-fail-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-fail-20opc, hsl(164deg 67% 45% / 20%));
-	}
-
-	:host([theme~="fail"][theme~="outline"][disabled]) button {
-		color: var(--panda-action-color-fail-disabled, hsl(164deg 54% 72%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-fail-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-fail-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="fail"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-fail-10opc, hsl(164deg 67% 45% / 10%));
-	}
-
-	:host([theme~="fail"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-fail, hsl(164deg 67% 45%));
-	}
-
-	/* INFO */
-
-	:host([theme~="info"]) button {
-		color: var(--panda-action-color-info-txt, hsl(0deg 0% 100%));
-		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-info, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-info-50opc, hsl(164deg 67% 45% / 50%));
-	}
-
-	:host([theme~="info"]) button:hover {
-		color: var(--panda-action-color-info-txt-hover, hsl(0deg 0% 100%));
-		background: var(--panda-action-color-info-hover, hsl(14deg 100% 68%));
-	}
-
-	:host([theme~="info"][disabled]) button {
-		color: var(--panda-action-color-info-txt-disabled, hsl(0deg 0% 100%));
-		text-shadow: none;
-		background: var(--panda-action-color-info-disabled, hsl(14deg 79% 83%));
-		box-shadow: none;
-	}
-
-	:host([theme~="info"][busy]) .spinner-cont {
-		background: var(--panda-action-color-info, hsl(14deg 77% 62%));
-	}
-
-	:host([theme~="info"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-info-txt, hsl(0deg 0% 100%));
-	}
-
-	/* INFO - OUTLINE */
-
-	:host([theme~="info"][theme~="outline"]) button {
-		color: var(--panda-action-color-info, hsl(164deg 67% 45%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-info, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-info-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="info"][theme~="outline"]) button:hover {
-		border: 2px solid var(--panda-action-color-info-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-info-20opc, hsl(164deg 67% 45% / 20%));
-	}
-
-	:host([theme~="info"][theme~="outline"][disabled]) button {
-		color: var(--panda-action-color-info-disabled, hsl(164deg 54% 72%));
-		text-shadow: none;
-		border: 2px solid var(--panda-action-color-info-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-info-10opc, hsl(164deg 67% 45% / 10%));
-		box-shadow: none;
-	}
-
-	:host([theme~="info"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-info-10opc, hsl(164deg 67% 45% / 10%));
-	}
-
-	:host([theme~="info"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-info, hsl(164deg 67% 45%));
-	}
-
 `; 

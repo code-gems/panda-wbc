@@ -17,7 +17,10 @@ class CodeSample extends LitElement {
 	}
 
 	@property({ type: String })
-	header!: string ;
+	header!: string;
+
+	@property({ type: Boolean, attribute: true, reflect: true })
+	expanded: boolean = false;
 
 	// elements
 	@query("#code")
@@ -34,15 +37,23 @@ class CodeSample extends LitElement {
 	// ================================================================================================================
 
 	protected render(): TemplateResult {
+		const expanded = this.expanded ? "expanded" : "";
+
 		return html`
 			<div class="code-sample">
 				<div class="header">
 					${this._renderHeader()}
 				</div>
-				<div class="body">
+				<div class="body ${expanded}">
 					<pre>
 						<slot id="code"></slot>
 					</pre>
+					<div
+						class="btn"
+						@click="${this._onToggleExpand}"
+					>
+						Expand
+					</div>
 				</div>
 			</div>
 		`;
@@ -77,5 +88,9 @@ class CodeSample extends LitElement {
 		const snippet = textContentList.join("");
 		// copy snippet to clipboard
 		navigator.clipboard.writeText(snippet);
+	}
+
+	private _onToggleExpand() {
+		this.expanded = !this.expanded;
 	}
 }

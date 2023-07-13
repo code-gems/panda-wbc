@@ -3,8 +3,8 @@ import { css } from "lit";
 export const styles = css`
 	:host {
 		display: inline-block;
-		width: var(--panda-icon-width, var(--panda-icon-size-m, 24px));
-		height: var(--panda-icon-height, var(--panda-icon-size-m, 24px));
+		width: var(--panda-icon-width, 24px);
+		height: var(--panda-icon-height, 24px);
 	}
 
 	.icon {
@@ -14,6 +14,6 @@ export const styles = css`
 	}
 
 	svg {
-		fill: var(--panda-icon-color, var(--panda-icon-fill-color, hsl(0deg 0% 29%)));
+		fill: var(--panda-icon-color, hsl(0deg 0% 29%));
 	}
 `;

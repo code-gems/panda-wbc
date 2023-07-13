@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-button",
+	"name": "@panda-wbc/panda-text-field",
 	"version": "1.0.0",
-	"description": "Lit based web component - button",
+	"description": "Lit based web component - text field",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-button.js",
+	"main": "lib/panda-text-field.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -17,8 +17,8 @@
 		"web component",
 		"panda-wbc",
 		"ui component",
-		"panda-button",
-		"button"
+		"text",
+		"input"
 	],
 	"author": "code-gems",
 	"license": "MIT",

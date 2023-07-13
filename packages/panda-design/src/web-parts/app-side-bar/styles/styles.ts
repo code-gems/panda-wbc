@@ -4,7 +4,7 @@ export const styles = css`
 	:host {
 		position: relative;
 		display: block;
-		width: 100px;
+		width: 120px;
 		height: 100%;
 	}
 
@@ -33,6 +33,9 @@ export const styles = css`
 	}
 
 	.side-bar .footer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		flex-shrink: 0;
 	}
 
@@ -40,7 +43,7 @@ export const styles = css`
 		display: flex;
 		flex-flow: column;
 		width: 100%;
-		height: 100px;
+		height: 80px;
 
 		transition: all 400ms ease-in-out;
 		cursor: pointer;
@@ -74,11 +77,27 @@ export const styles = css`
 		flex-shrink: 0;
 
 		color: var(--panda-text-color);
-		font-size: var(--panda-font-size-m);
-		font-family: var(--panda-font-family);
+		font-size: var(--panda-font-size-s);
+		font-family: var(--panda-font-family-bold);
 		text-transform: uppercase;
 		text-align: center;
 		cursor: pointer;
+	}
+
+	.side-bar .btn.active {
+		background-color: var(--panda-primary-color-500);
+	}
+
+	.side-bar .btn.active .icon {
+		==panda-icon-color: var(--panda-primary-text-color);
+	}
+
+	.side-bar .btn.active label {
+		color: var(--panda-primary-text-color);
+	}
+
+	.side-bar .btn.active:hover {
+		background-color: var(--panda-primary-color-300);
 	}
 
 	.theme-switcher {

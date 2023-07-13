@@ -37,6 +37,7 @@
 		"@panda-wbc/panda-toggle": "workspace:*",
 		"@panda-wbc/panda-upload": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
+		"@panda-wbc/panda-text-field": "workspace:*",
 		"@panda-wbc/panda-text-editor": "workspace:*",
 		"@panda-wbc/panda-theme": "workspace:*",
 		"lit": "^2.7.4",

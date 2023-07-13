@@ -1,4 +1,4 @@
-export type DragonComboBoxChange = {
+export type PandaComboBoxChange = {
 	value: string | number | any;
 }
 
@@ -23,6 +23,6 @@ export interface PandaComboBoxItem {
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export interface DragonComboBoxChangeEvent {
-	detail: DragonComboBoxChange;
+export interface PandaComboBoxChangeEvent {
+	detail: PandaComboBoxChange;
 }

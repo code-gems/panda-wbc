@@ -9,10 +9,10 @@
 		"pnpm": ">=6"
 	},
 	"scripts": {
-		"setup": "pnpm install",
+		"setup": "pnpm install && npm run compile",
 		"version": "pnpm version",
 		"demo": "demo-cli skog",
-		"postinstall": "pnpm recursive run compile"
+		"compile": "pnpm recursive run compile"
 	},
 	"devDependencies": {
 		"pnpm": "^8.5.1",

@@ -62,6 +62,55 @@ export const styles = css`
 		border-bottom: 1px dashed var(--panda-background-color-500);
 	}
 	
+	.code-sample .body {
+		position: relative;
+		display: block;
+		height: 5rem;
+		overflow: hidden;
+	}
+
+	.code-sample .body.expanded {
+		height: auto;
+	}
+
+	.code-sample .body::after {
+		position: absolute;
+		display: block;
+		content: " ";
+		width: 100%;
+		height: 5rem;
+		bottom: 0%;
+		left: 0%;
+
+		background-color: var(--panda-background-color-100);
+		background: linear-gradient(
+			0deg,
+			var(--panda-background-color-100) 0%,
+			var(--panda-background-color-0opc) 100%
+		);
+	}
+	
+	.code-sample .body .btn {
+		position: absolute;
+		display: block;
+		padding: 5px 15px;
+		left: 50%;
+		bottom: 3px;
+		transform: translateX(-50%);
+
+		color: var(--panda-text-color);
+		font-size: var(--panda-font-size-s);
+		font-family: var(--panda-font-family-bold);
+
+		background-color: var(--panda-background-color-500);
+		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
+		z-index: 1;
+	}
+
+	.code-sample .body .btn:hover {
+		background-color: var(--panda-background-color-700);
+	}
+
 	.code-sample .body pre {
 		display: flex;
 		flex-flow: row;

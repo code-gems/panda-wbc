@@ -1,9 +1,9 @@
 // type
-import { DragonComboBoxChange, DragonComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
+import { PandaComboBoxChange, PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
 import { PandaComboBoxOverlay } from "./panda-combo-box-overlay";
 
 // style
-import { styles, modifiers } from "./styles/styles";
+import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-spinner";
@@ -20,8 +20,7 @@ export class PandaComboBox extends LitElement {
 	// css style
 	static get styles() {
 		return [
-			styles,
-			modifiers
+			styles
 		];
 	}
 
@@ -132,7 +131,7 @@ export class PandaComboBox extends LitElement {
 				<div
 					class="icon"
 					part="icon"
-					@click="${this._openOverlay}"
+					@click="${this._onToggleDropdown}"
 				>
 					<panda-icon icon="chevron-down"></panda-icon>
 				</div>
@@ -232,7 +231,7 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _triggerChangeEvent() {
-		const event: CustomEvent<DragonComboBoxChange> = new CustomEvent("change", {
+		const event: CustomEvent<PandaComboBoxChange> = new CustomEvent("change", {
 			detail: {
 				value: this.value
 			}
@@ -297,7 +296,7 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
-	private _onSelect(e: DragonComboBoxChangeEvent) {
+	private _onSelect(e: PandaComboBoxChangeEvent) {
 		console.log("%c [combo box] _onSelect", "font-size: 24px; color: orange;", e.detail.value);
 		// update value
 		this.value = e.detail.value;
@@ -311,7 +310,7 @@ export class PandaComboBox extends LitElement {
 		this._triggerChangeEvent();
 	}
 
-	private _onChange(e: DragonComboBoxChangeEvent) {
+	private _onChange(e: PandaComboBoxChangeEvent) {
 		console.log("%c [combo box] _onChange", "font-size: 24px; color: orange;", e.detail.value);
 		// update value
 		this.value = e.detail.value;
@@ -325,6 +324,11 @@ export class PandaComboBox extends LitElement {
 		this._closeOverlay();
 		// trigger change event
 		this._triggerChangeEvent();
+	}
+
+	private _onToggleDropdown() {
+		this._inputFieldEl.focus();
+		this._openOverlay();
 	}
 }
 

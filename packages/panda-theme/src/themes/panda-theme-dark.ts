@@ -2,7 +2,7 @@ import { css } from "lit";
 
 export const pandaThemeDark = css`
 	:root {
-
+		/* DARK THEME */
 		/* ========================================================================================================= */
 		/* BASE COLORS ============================================================================================= */
 		/* ========================================================================================================= */
@@ -41,6 +41,7 @@ export const pandaThemeDark = css`
 		
 		/* DONE COLOR */
 		--panda-action-color-done: hsl(164deg 67% 45%);
+		--panda-action-text-color-done: hsl(0deg 0% 100%);
 
 		--panda-action-color-done-50: hsl(164deg 67% 75%);
 		--panda-action-color-done-100: hsl(164deg 67% 55%);
@@ -62,13 +63,14 @@ export const pandaThemeDark = css`
 
 		/* WARN COLOR */
 		--panda-action-warn: hsl(35deg 91% 62%);
-		
-		--panda-action-warn-50: hsl(35deg 91% 85%);
-		--panda-action-warn-100: hsl(35deg 91% 72%);
-		--panda-action-warn-300: hsl(35deg 91% 67%);
-		--panda-action-warn-500: hsl(35deg 91% 62%);
-		--panda-action-warn-700: hsl(35deg 91% 57%);
-		--panda-action-warn-900: hsl(35deg 91% 52%);
+		--panda-action-text-color-warn: hsl(0deg 0% 100%);
+
+		--panda-action-color-warn-50: hsl(35deg 91% 85%);
+		--panda-action-color-warn-100: hsl(35deg 91% 72%);
+		--panda-action-color-warn-300: hsl(35deg 91% 67%);
+		--panda-action-color-warn-500: hsl(35deg 91% 62%);
+		--panda-action-color-warn-700: hsl(35deg 91% 57%);
+		--panda-action-color-warn-900: hsl(35deg 91% 52%);
 
 		--panda-action-color-warn-0opc: hsl(35deg 91% 62% / 0%);
 		--panda-action-color-warn-10opc: hsl(35deg 91% 62% / 10%);
@@ -83,6 +85,7 @@ export const pandaThemeDark = css`
 
 		/* ALERT COLOR */
 		--panda-action-color-alert: hsl(14deg 77% 62%);
+		--panda-action-text-color-alert: hsl(0deg 0% 100%);
 
 		--panda-action-color-alert-50: hsl(14deg 77% 86%);
 		--panda-action-color-alert-100: hsl(14deg 77% 72%);
@@ -104,6 +107,7 @@ export const pandaThemeDark = css`
 
 		/* INFO COLOR */
 		--panda-action-color-info: hsl(181deg 52% 53%);
+		--panda-action-text-color-info: hsl(0deg 0% 100%);
 
 		--panda-action-color-info-50: hsl(181deg 52% 75%);
 		--panda-action-color-info-100: hsl(181deg 52% 63%);
@@ -149,7 +153,7 @@ export const pandaThemeDark = css`
 		--panda-background-color-90opc: hsl(218deg 26% 19% / 90%);
 
 		/* PANDA ICON */
-		--panda-icon-fill-color: var(--panda-text-color);
+		--panda-icon-color: var(--panda-text-color);
 
 		/* ========================================================================================================= */
 		/* TYPOGRAPHY ============================================================================================== */
@@ -168,9 +172,14 @@ export const pandaThemeDark = css`
 		--panda-font-family-bold: "Poppins-Bold";
 
 		/* TEXT COLOR */
-		--panda-text-color: hsl(0deg 0% 90%);
+		--panda-text-color: hsl(0deg 0% 80%);
 		--panda-text-shadow: none;
 
+
+		/* DRAGON LOGO */
+		--dragon-logo-color-100: hsl(359deg 72% 50%);
+		--dragon-logo-color-500: hsl(358deg 75% 45%);
+		--dragon-logo-color-900: hsl(358deg 70% 32%);
 	}
 
 	body {

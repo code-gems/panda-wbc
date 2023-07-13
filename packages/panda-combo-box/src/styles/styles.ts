@@ -40,7 +40,7 @@ export const styles = css`
 		outline: none;
 		flex-grow: 1;
 		
-		color: var(--panda-txt-color, hsl(0deg 0% 29%));
+		color: var(--panda-text-color, hsl(0deg 0% 29%));
 		font-family: var(--panda-font-family, "Poppins");
 		font-size: var(--panda-font-size-m, 14px);
 		font-weight: bold;
@@ -73,14 +73,4 @@ export const styles = css`
 	:host([mandatory]) .combo-box  {
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(35deg 91% 62%));
 	}
-`;
-
-export const modifiers = css`
-	.txt-color-label { color: var(--panda-label-color); }
-	.hidden { visibility: hidden; }
-
-	.scroll::-webkit-scrollbar { width: 5px; }
-	.scroll::-webkit-scrollbar-track { background-color: var(--panda-bg-color, hsl(0deg 0% 100%)); }
-	.scroll::-webkit-scrollbar-thumb { background-color: var(--panda-bg-color-100, hsl(0deg 0% 95%)); }
-	.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-bg-color-200, hsl(0deg 0% 90%)); }
 `;
