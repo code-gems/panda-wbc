@@ -15,6 +15,9 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "help-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "settings",					iconPack: "default", group: ["System"], keywords: ["interface", "gear"] },
 		{ name: "more",						iconPack: "default", group: ["System"], keywords: ["interface", "dots", "options", "menu"] },
+		{ name: "check", 					iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
+		{ name: "check-circle", 			iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
+		{ name: "check-circle-outline",		iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
@@ -83,7 +86,6 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "add-box", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
 		{ name: "add-circle", 				iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
 		{ name: "add-circle-outline", 		iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
-		{ name: "check", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["checkbox"] },
 		{ name: "close", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["delete", "remove"] },
 		{ name: "menu",						iconPack: "default", group: ["Miscellaneous"], keywords: ["hamburger", "options"] },
 
