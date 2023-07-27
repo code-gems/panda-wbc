@@ -21,6 +21,7 @@ export const getIconListDetails = (): IconDetails[] => {
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
+		{ name: "upload-file", 				iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o", "upload", "export"] },
 
 		// date & time ========================================
 		{ name: "calendar", 				iconPack: "default", group: ["Date & Time"], keywords: ["date", "time", "month", "day"] },
@@ -30,6 +31,10 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "arrow-forward", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate", "right"] },
 		{ name: "arrow-upward", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate"] },
 		{ name: "arrow-downward", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate"] },
+		{ name: "arrow-drop-up", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate", "collapse"] },
+		{ name: "arrow-drop-down", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate", "expand"] },
+		{ name: "arrow-drop-left", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate"] },
+		{ name: "arrow-drop-right", 		iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate"] },
 		{ name: "chevron-left", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron"] },
 		{ name: "chevron-right", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron"] },
 		{ name: "chevron-up", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand less"] },
@@ -88,7 +93,7 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "add-circle-outline", 		iconPack: "default", group: ["Miscellaneous"], keywords: ["plus", "new", "increase", "calculate", "sum", "math"] },
 		{ name: "close", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["delete", "remove"] },
 		{ name: "menu",						iconPack: "default", group: ["Miscellaneous"], keywords: ["hamburger", "options"] },
-
+		{ name: "menu-add",					iconPack: "default", group: ["Miscellaneous"], keywords: ["hamburger", "options", "playlist", "add", "menu"] },
 		{ name: "exclamation",				iconPack: "default", group: ["Miscellaneous"], keywords: ["important", "priority"] },
 		{ name: "unlink",					iconPack: "default", group: ["Miscellaneous"], keywords: ["link", "anchor"] },
 		{ name: "pin",						iconPack: "default", group: ["Miscellaneous"], keywords: ["push-pin", "on top"] },
@@ -100,6 +105,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "sync",						iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange"] },
 		{ name: "sync-error",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "problem", "warning"] },
 		{ name: "sync-disabled",			iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "off"] },
+		{ name: "trend-up",					iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
+		{ name: "trend-down",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
 
 		// Food Icon Pack =======================================
 		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },
