@@ -8,6 +8,7 @@ import { uiComponents } from "../../styles/styles";
 // web parts
 import "../../web-parts/app-side-bar/app-side-bar";
 import "../../web-parts/main-nav/main-nav";
+import "../../web-parts/particle-banner/particle-banner";
 import { pandaLogo } from "../../web-parts/panda-logo";
 
 // utils
@@ -72,8 +73,12 @@ class HomePage extends LitElement {
 	private _renderMainPage() {
 		return html`
 			<div class="body-wrap scroll">
-				some text here
-				${pandaLogo}
+				<particle-banner>
+					${pandaLogo}
+					some text here
+
+				
+				</particle-banner>
 			</div>
 		`;
 	}

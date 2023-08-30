@@ -40,6 +40,7 @@
 		"@panda-wbc/panda-text-field": "workspace:*",
 		"@panda-wbc/panda-text-editor": "workspace:*",
 		"@panda-wbc/panda-theme": "workspace:*",
+		"@panda-wbc/panda-tooltip": "workspace:*",
 		"lit": "^2.7.4",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"

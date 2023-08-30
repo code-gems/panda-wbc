@@ -116,6 +116,6 @@ export const styles = css`
 		flex-flow: row;
 		margin: 0px;
 		padding: 20px;
-		color: blueviolet;
+		color: var(--panda-code-text-color);
 	}
 `;

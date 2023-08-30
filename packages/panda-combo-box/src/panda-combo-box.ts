@@ -42,12 +42,30 @@ export class PandaComboBox extends LitElement {
 	@property({ type: Boolean, attribute: "allow-custom-value" })
 	allowCustomValue: boolean = false;
 
+	@property({ type: Boolean, attribute: "prevent-invalid-input" })
+	preventInvalidInput: boolean = false;
+
+	@property({ type: Boolean, attribute: "disable-auto-open" })
+	disableAutoOpen: boolean = false;
+
 	@property({ type: Boolean, attribute: true, reflect: true })
 	autoselect: boolean = false;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
 	focused: boolean = false;
 
+	@property({ type: Boolean, attribute: true, reflect: true })
+	disabled: boolean = false;
+
+	@property({ type: Boolean, attribute: true, reflect: true })
+	working: boolean = false;
+
+	@property({ type: String, attribute: true })
+	placeholder: string | null = null;
+
+	@property({ type: String, attribute: "spinner-type" })
+	spinnerType: string = "dots";
+	
 	/**
 	 * Status property, indicating if the overlay is shown.
 	 * 
@@ -56,11 +74,25 @@ export class PandaComboBox extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	opened: boolean = false;
 
+	/**
+	 * A regular expression that the value is checked against.
+	 * The pattern must match the entire value.
+	 * If value entered by user do not match the pattern
+	 * component will be marked as invalid
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: String, attribute: true })
+	pattern: string | null = null;
+
 	// view props
 	@property({ type: String })
 	private _value: string = "";
 
 	private _searchText: string | null = null;
+
+	@property({ type: Boolean })
+	private _invalid: boolean = false;
 
 	// elements
 	@query("#combo-box")
@@ -104,16 +136,26 @@ export class PandaComboBox extends LitElement {
 
 	protected render() {
 		let labelHtml: TemplateResult = html``;
+		let spinnerHtml: TemplateResult = html``;
 
 		if (this.label) {
 			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
+		}
+
+		// check if component is in working state
+		if (this.working) {
+			spinnerHtml = html`
+				<div class="spinner-cont" part="spinner-cont">
+					<dragon-spinner spinner="${this.spinnerType}"></dragon-spinner>
+				</div>
+			`;
 		}
 
 		return html`
 			${labelHtml}
 			<div
 				id="combo-box"
-				class="combo-box"
+				class="combo-box ${this.disabled ? "disabled" : ""} ${this._invalid ? "invalid" : ""}"
 				part="combo-box"
 			>
 				<input
@@ -122,19 +164,22 @@ export class PandaComboBox extends LitElement {
 					part="input-field"
 					type="text"
 					.value="${this._value}"
+					.disabled="${this.disabled}"
 					@keydown="${this._onKeyDown}"
+					@keypress="${this._onKeyPress}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
 					@input="${(e: InputEvent) => this._onInput((e.target as HTMLInputElement).value)}"
 					@click="${this._onClick}"
 				/>
 				<div
-					class="icon"
+					class="icon ${this.opened ? "rotate" : ""}"
 					part="icon"
 					@click="${this._onToggleDropdown}"
 				>
 					<panda-icon icon="chevron-down"></panda-icon>
 				</div>
+				${spinnerHtml}
 			</div>
 		`;
 	}
@@ -244,16 +289,16 @@ export class PandaComboBox extends LitElement {
 	// ================================================================================================================
 
 	private _onClick() {
-		console.log("%c [combo box] _onClick", "font-size: 24px; color: red;");
-		// open overlay
-		this._openOverlay();
-		if (this.autoselect) {
-			this._inputFieldEl.select();
+		if (!this.disableAutoOpen) {
+			// open overlay
+			this._openOverlay();
+			if (this.autoselect) {
+				this._inputFieldEl.select();
+			}
 		}
 	}
 
 	private _onFocus() {
-		console.log("%c [combo box] _onFocus", "font-size: 24px; color: red;");
 		this.focused = true;
 		// check for autoselect flag
 		if (this.autoselect) {
@@ -262,13 +307,11 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onBlur() {
-		console.log("%c [combo box] _onBlur", "font-size: 24px; color: red;", this._overlayEl);
 		this.focused = false;
 		this._validateInput();
 	}
 
 	private _onInput(value: string) {
-		console.log("%c [combo box] _onInput", "font-size: 24px; color: red;", value, this._overlayEl);
 		// update search text for overlay
 		if (this._overlayEl) {
 			// this._openOverlay();
@@ -276,13 +319,21 @@ export class PandaComboBox extends LitElement {
 		}
 
 		if (!this._overlayEl) {
-			console.log("%c [combo box] _openOverlay", "font-size: 24px; color: green;");
 			this._openOverlay();
+		}
+		// check if pattern is defined
+		if (this.pattern && value) {
+			const regExp = new RegExp(this.pattern);
+			// validate user input
+			if (regExp.test(value)) {
+				this._invalid = true;
+			} else {
+				this._invalid = false;
+			}
 		}
 	}
 
 	private _onKeyDown(e: KeyboardEvent) {
-		console.log("%c [combo box] _onKeyDown", "font-size: 24px; color: orange;", e);
 		switch (e.key) {
 			case "Enter":
 			case "Tab":
@@ -296,8 +347,19 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
+	private _onKeyPress(e: KeyboardEvent) {
+		// check if pattern and prevent invalid input flag is set
+		if (this.pattern && this.preventInvalidInput) {
+			const regExp = new RegExp(this.pattern);
+			// stop input if key does not match the pattern
+			if (!regExp.test(e.key)) {
+				e.preventDefault();
+				return false;
+			}
+		}
+	}
+
 	private _onSelect(e: PandaComboBoxChangeEvent) {
-		console.log("%c [combo box] _onSelect", "font-size: 24px; color: orange;", e.detail.value);
 		// update value
 		this.value = e.detail.value;
 		this._inputFieldEl.value = getItemLabel(
@@ -311,7 +373,6 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onChange(e: PandaComboBoxChangeEvent) {
-		console.log("%c [combo box] _onChange", "font-size: 24px; color: orange;", e.detail.value);
 		// update value
 		this.value = e.detail.value;
 		this._inputFieldEl.value = getItemLabel(
@@ -327,8 +388,10 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onToggleDropdown() {
-		this._inputFieldEl.focus();
-		this._openOverlay();
+		if (!this.disabled) {
+			this._inputFieldEl.focus();
+			this._openOverlay();
+		}
 	}
 }
 

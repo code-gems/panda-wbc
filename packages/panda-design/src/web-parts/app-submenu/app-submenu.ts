@@ -5,6 +5,7 @@ import { SearchParams } from "@panda-wbc/panda-router";
 // styles
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -23,6 +24,7 @@ class AppSubmenu extends LitElement {
 	static get styles() {
 		return [
 			styles,
+			scrollbar,
 			uiComponents.modifiers,
 		];
 	}

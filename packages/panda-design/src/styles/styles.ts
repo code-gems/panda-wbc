@@ -220,10 +220,10 @@ export const uiComponents = {
 		}
 
 		.form label {
-			color: var(--panda-form-label-color);
-			font-size: var(--panda-form-label-font-size);
-			font-family: var(--panda-form-label-font-family);
-			text-shadow: var(--panda-form-label-text-shadow);
+			color: var(--panda-label-color);
+			font-size: var(--panda-label-font-size);
+			font-family: var(--panda-label-font-family);
+			text-shadow: var(--panda-label-text-shadow);
 			user-select: none;
 		}
 

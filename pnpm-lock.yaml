@@ -179,6 +179,9 @@ importers:
       '@panda-wbc/panda-toggle':
         specifier: workspace:*
         version: link:../panda-toggle
+      '@panda-wbc/panda-tooltip':
+        specifier: workspace:*
+        version: link:../panda-tooltip
       '@panda-wbc/panda-upload':
         specifier: workspace:*
         version: link:../panda-upload
@@ -232,6 +235,22 @@ importers:
 
   packages/panda-flag:
     dependencies:
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-grid-layout:
+    dependencies:
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
       lit:
         specifier: ^2.7.4
         version: 2.7.4
@@ -398,6 +417,19 @@ importers:
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-tooltip:
+    dependencies:
       lit:
         specifier: ^2.7.4
         version: 2.7.4

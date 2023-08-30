@@ -1,0 +1,40 @@
+{
+	"name": "@panda-wbc/panda-grid-layout",
+	"version": "1.0.0",
+	"description": "Lit based web component - grid layout",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-grid-layout.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"panda-wbc",
+		"ui component",
+		"panda-grid-layout",
+		"layout"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"lit": "^2.7.4",
+		"@panda-wbc/panda-theme": "workspace:*"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib"
+	],
+	"publishConfig": {
+		"access": "public"
+	}
+}

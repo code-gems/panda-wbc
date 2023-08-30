@@ -9,10 +9,10 @@ export const styles = css`
 	.label {
 		display: block;
 		line-height: 1.6em;
-		color: var(--panda-form-label-color, hsl(0deg 0% 50%));
+		color: var(--panda-label-color, hsl(0deg 0% 50%));
 		font-size: var(--panda-font-size-s, 12px);
-		font-family: var(--panda-form-label-font-family, "Poppins");
-		text-shadow: var(--panda-form-label-text-shadow, none);
+		font-family: var(--panda-label-font-family, "Poppins");
+		text-shadow: var(--panda-label-text-shadow, none);
 		user-select: none;
 	}
 
@@ -26,8 +26,8 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: var(--panda-form-input-border-radius, 4px);
-		background-color: var(--panda-form-input-background-color-disabled, hsl(0deg 0% 92%));
+		border-radius: var(--panda-input-border-radius, 4px);
+		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
 	.text-field {
@@ -35,50 +35,50 @@ export const styles = css`
 		display: flex;
 		flex-flow: row nowrap;
 
-		height: var(--panda-form-input-height, 30px);
+		height: var(--panda-input-height, 30px);
 
 		transition: all 200ms ease-in-out;
 
-		border: 1px solid var(--panda-form-input-border-color, hsl(0deg 0% 80%));
-		border-radius: var(--panda-form-input-border-radius, 4px);
-		background-color: var(--panda-form-input-background-color, hsl(0deg 0% 100%));
+		border: 1px solid var(--panda-input-border-color, hsl(0deg 0% 80%));
+		border-radius: var(--panda-input-border-radius, 4px);
+		background-color: var(--panda-input-background-color, hsl(0deg 0% 100%));
 		box-sizing: border-box;
 	}
 
 	.input {
 		width: 100%;
 		height: 100%;
-		padding: var(--panda-form-input-padding, 0px 10px);
+		padding: var(--panda-input-padding, 0px 10px);
 
-		color: var(--panda-form-input-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-input-text-color, hsl(0deg 0% 15%));
 		font-size: var(--panda-font-size-s, 12px);
-		font-family: var(--panda-form-label-font-family, "Poppins");
+		font-family: var(--panda-label-font-family, "Poppins");
 		outline: none;
 
 		transition: all 200ms ease-in-out;
 
 		border: none;
-		border-radius: var(--panda-form-input-border-radius, 4px);
+		border-radius: var(--panda-input-border-radius, 4px);
 		background-color: transparent;
 	}
 
 	.input::placeholder {
-		color: var(--panda-form-input-placeholder-color, hsl(0deg 0% 80%));
+		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
 	}
 
 	.text-field:not([disabled]):hover {
-		border: 1px solid var(--panda-form-input-border-color-hover, hsl(0deg 0% 65%));
+		border: 1px solid var(--panda-input-border-color-hover, hsl(0deg 0% 65%));
 	}
 
 	/* COMPONENT STATES */
 
 	:host([disabled]) .text-field {
-		border: 1px solid var(--panda-form-input-border-color-disabled, hsl(0deg 0% 80%));
-		background-color: var(--panda-form-input-background-color-disabled, hsl(0deg 0% 92%));
+		border: 1px solid var(--panda-input-border-color-disabled, hsl(0deg 0% 80%));
+		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
 	:host([disabled]) .text-field .input {
-		color: var(--panda-form-input-text-color-disabled, hsl(0deg 0% 68%));
+		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 68%));
 	}
 
 	.text-field.mandatory,
@@ -101,15 +101,15 @@ export const styles = css`
 
 	/* FOCUSED STATE */
 	:host([focused]) .text-field {
-		border: 1px solid var(--panda-form-input-outline-color, hsl(216deg 88% 60%));
-		box-shadow: 0px 0px 1px 1px var(--panda-form-input-outline-color, hsl(216deg 88% 60%));
+		border: 1px solid var(--panda-input-outline-color, hsl(216deg 88% 60%));
+		box-shadow: 0px 0px 1px 1px var(--panda-input-outline-color, hsl(216deg 88% 60%));
 	}
 
 	/* PREFIX / SUFFIX ICONS */
 
 	::slotted([name="prefix"])
 	::slotted([name="suffix"]) {
-		background-color: var(--panda-form-input-background-color, hsl(0deg 0% 92%));
+		background-color: var(--panda-input-background-color, hsl(0deg 0% 92%));
 	}
 
 	::slotted(.prefix),
@@ -117,12 +117,12 @@ export const styles = css`
 		display: flex;
 		align-items: center;
 		height: 100%;
-		padding: var(--panda-form-input-padding, 0px 10px);
+		padding: var(--panda-input-padding, 0px 10px);
 
-		color: var(--panda-form-label-color, hsl(0deg 0% 50%));
+		color: var(--panda-label-color, hsl(0deg 0% 50%));
 		font-size: var(--panda-font-size-s, 12px);
-		font-family: var(--panda-form-label-font-family, "Poppins");
-		text-shadow: var(--panda-form-label-text-shadow, none);
+		font-family: var(--panda-label-font-family, "Poppins");
+		text-shadow: var(--panda-label-text-shadow, none);
 		user-select: none;
 
 		background-color: var(--panda-background-color-700);
@@ -131,7 +131,7 @@ export const styles = css`
 
 	::slotted(.prefix) {
 		border-radius: 0px 4px 4px 0px;
-		border-left: 1px solid var(--panda-form-input-border-color);
+		border-left: 1px solid var(--panda-input-border-color);
 	}
 
 	::slotted(.suffix) {

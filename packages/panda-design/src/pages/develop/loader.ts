@@ -11,4 +11,5 @@ import "./content/panda-spinner/content-page";
 import "./content/panda-text-editor/content-page";
 import "./content/panda-text-field/content-page";
 import "./content/panda-toggle/content-page";
+import "./content/panda-tooltip/content-page";
 import "./content/panda-upload/content-page";

@@ -9,11 +9,24 @@ export const styles = css`
 		display: block;
 		line-height: 1.6em;
 
-		color: var(--panda-form-label-color, hsl(0deg 0% 50%));
-		font-size: var(--panda-form-label-font-size, 12px);
-		font-family: var(--panda-form-label-font-family, "Poppins");
-		text-shadow: var(--panda-form-label-text-shadow, none);
+		color: var(--panda-label-color, hsl(0deg 0% 50%));
+		font-size: var(--panda-label-font-size, 12px);
+		font-family: var(--panda-label-font-family, "Poppins");
+		text-shadow: var(--panda-label-text-shadow, none);
 		user-select: none;
+	}
+
+	.spinner-cont {
+		position: absolute;
+		display: flex;
+		width: 100%;
+		height: 100%;
+		inset: 0;
+		justify-content: center;
+		align-items: center;
+
+		border-radius: var(--panda-input-border-radius, 5px);
+		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
 	.combo-box {
@@ -22,13 +35,13 @@ export const styles = css`
 		flex-flow: row nowrap;
 		width: 100%;
 		width: fit-content;
-		height: var(--panda-form-input-height, 40px);
+		height: var(--panda-input-height, 40px);
 
 		transition: all 200ms ease-in-out;
 
-		border: 1px solid var(--panda-form-input-border-color, hsl(0deg 0% 80%));
+		border: 1px solid var(--panda-input-border-color, hsl(0deg 0% 80%));
 		border-radius: var(--panda-border-radius-m, 5px);
-		background-color: var(--panda-form-input-background-color, hsl(0deg 0% 100%));
+		background-color: var(--panda-input-background-color, hsl(0deg 0% 100%));
 		box-shadow: 0px 0px 0px 1px transparent;
 		box-sizing: border-box;
 	}
@@ -36,7 +49,7 @@ export const styles = css`
 	.combo-box .input-field {
 		width: 100%;
 		height: 100%;
-		padding: var(--panda-form-input-padding, 0px 10px);
+		padding: var(--panda-input-padding, 0px 10px);
 		outline: none;
 		flex-grow: 1;
 		
@@ -67,7 +80,7 @@ export const styles = css`
 	/* COMPONENT STATES */
 
 	:host([focused]) .combo-box  {
-		box-shadow: 0px 0px 0px 2px var(--panda-form-input-outline-color, hsl(216deg 88% 60%));
+		box-shadow: 0px 0px 0px 2px var(--panda-input-outline-color, hsl(216deg 88% 60%));
 	}
 
 	:host([mandatory]) .combo-box  {

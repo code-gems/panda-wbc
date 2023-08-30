@@ -180,6 +180,9 @@ export const pandaThemeDark = css`
 		--dragon-logo-color-100: hsl(359deg 72% 50%);
 		--dragon-logo-color-500: hsl(358deg 75% 45%);
 		--dragon-logo-color-900: hsl(358deg 70% 32%);
+		
+		/* CODE */
+		--panda-code-text-color: hsl(271deg 95% 73%);
 	}
 
 	body {
