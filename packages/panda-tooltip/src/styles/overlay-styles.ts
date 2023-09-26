@@ -2,31 +2,107 @@ import { css } from "lit";
 
 export const styles = css`
 	:host {
-		display: block;
+		position: absolute;
+		pointer-events: auto;
+		width: 1px;
+		height: 1px;
+		top: 0px;
+		left: 0px;
+		z-index: 9999;
 	}
 
-	.tooltip-overlay {
+	.tooltip {
 		position: fixed;
 		display: flex;
 		flex-flow: column;
-		justify-content: center;
-		align-items: center;
-		width: 100vw;
-		height: 100vh;
-		top: 0;
-		left: 0;
-		pointer-events: auto;
+		opacity: 0;
+		padding: var(--panda-tooltip-padding, 10px);
 
-		background-color: var(--panda-background-color-50opc, hsl(0deg 0% 94% / 50%));
-		z-index: 100;
+		color: var(--panda-tooltip-text-color, #fff);
+		transition: all 400ms ease-in-out;
+
+		border-radius: var(--panda-tooltip-border-radius, 10px);
+		background-color: var(--panda-tooltip-background-color, #000);
+		box-shadow: var(--panda-tooltip-box-shadow, 0px 5px 10px hsl(0deg 0% 0% / 20%));
 	}
 
-	.content {
+	.tooltip:before {
+		position: absolute;
 		display: block;
-		width: 60vw;
-		height: 60vh;
+		width: 0;
+		height: 0;
+		content: " ";
+		bottom: -8px;
+		left: 50%;
+		transform: translateX(-50%);
+		pointer-events: none;
 
-		color: var(--panda-txt-color, hsl(0deg 0% 29%););
-		background-color: var(--panda-bg-color, hsl(0deg 0% 100%));
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-top: 8px solid var(--panda-tooltip-background-color, #000);
 	}
+
+	.tooltip.show {
+		opacity: 1;
+		transform: translate(0px, 0px) !important;
+	}
+
+	/* ========================================================================= */
+	/* POSITION ================================================================ */
+	/* ========================================================================= */
+
+	/* TOP */
+	/* TOP-LEFT */
+	/* TOP-RIGHT */
+	.tooltip.top-left:before {
+		left: calc(var(--panda-tooltip-border-radius, 10px) + var(--panda-tooltip-padding, 10px));
+	}
+
+	.tooltip.top-right:before {
+		left: calc(100% - var(--panda-tooltip-border-radius, 10px) - var(--panda-tooltip-padding, 10px));
+	}
+
+	/* BOTTOM */
+	/* BOTTOM-LEFT */
+	/* BOTTOM-RIGHT */
+	.tooltip.bottom:before,
+	.tooltip.bottom-left:before,
+	.tooltip.bottom-right:before {
+		top: -8px;
+		border-top: none;
+		border-bottom: 8px solid var(--panda-tooltip-background-color, #000);
+	}
+
+	.tooltip.bottom-left:before {
+		left: calc(var(--panda-tooltip-border-radius, 10px) + var(--panda-tooltip-padding, 10px));
+	}
+
+	.tooltip.bottom-right:before {
+		left: calc(100% - var(--panda-tooltip-border-radius, 10px) - var(--panda-tooltip-padding, 10px));
+	}
+
+	/* LEFT */
+	.tooltip.left:before {
+		top: 50%;
+		left: 100%;
+		transform: translateY(-50%);
+
+		border-top: 8px solid transparent;
+		border-bottom: 8px solid transparent;
+		border-left: 8px solid var(--panda-tooltip-background-color, #000);
+		border-right: none;
+	}
+
+	/* RIGHT */
+	.tooltip.right:before {
+		top: 50%;
+		left: -8px;
+		transform: translate(0%, -50%);
+
+		border-top: 8px solid transparent;
+		border-bottom: 8px solid transparent;
+		border-right:8px solid var(--panda-tooltip-background-color, #000);
+		border-left: none;
+	}
+
 `;

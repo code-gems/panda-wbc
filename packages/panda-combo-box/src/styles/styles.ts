@@ -3,6 +3,7 @@ import { css } from "lit";
 export const styles = css`
 	:host {
 		display: inline-block;
+		height: fit-content;
 	}
 
 	.label {
@@ -75,6 +76,11 @@ export const styles = css`
 
 		cursor: pointer;
 		transition: all 200ms ease-in-out;
+	}
+
+	/* TOOLTIP SLOT */
+	slot[name="tooltip"] {
+		display: none;
 	}
 
 	/* COMPONENT STATES */

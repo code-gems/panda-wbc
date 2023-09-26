@@ -181,6 +181,7 @@ export class PandaComboBox extends LitElement {
 				</div>
 				${spinnerHtml}
 			</div>
+			<slot name="tooltip"></slot>
 		`;
 	}
 

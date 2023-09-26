@@ -7,6 +7,7 @@ import { uiComponents } from "../../../../styles/styles";
 
 // components
 import "@panda-wbc/panda-tooltip";
+import "@panda-wbc/panda-combo-box";
 
 // utils
 import { html, TemplateResult } from "lit";
@@ -75,7 +76,7 @@ export class PandaTooltipContentPage extends ContentPageTemplate {
 	private _renderOverviewSection(): TemplateResult {
 		return html`
 			<!-- OVERVIEW -->
-			<div class="content-section" data-content-section-name="overview">
+			<div class="content-section" data-content-section-name="overview" style="height: 1000px;">
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
@@ -88,12 +89,52 @@ export class PandaTooltipContentPage extends ContentPageTemplate {
 						<h2 id="my-header">
 							MY HEADER WITH TOOLTIP
 						</h2>
-						<panda-tooltip for="my-header">
+						<panda-tooltip for="my-header" position="left" .delay="${0}">
 							<template>
-								<dragon-icon icon="info"></dragon-icon>
-								Some<br />
-								text<br />
-								here
+								<style>
+									.tooltip-content {
+										display: flex;
+										flex-flow: row nowrap;
+										min-width: 750px;
+										min-height: 400px;
+										padding: 10px;
+									}
+									.tooltip-content .icon {
+										display: flex;
+										justify-content: center;
+										align-items: center;
+										width: 40px;
+										height: 100%;
+										--panda-icon-color: #fff;
+									}
+									.tooltip-content .message {
+										padding: 5px 0px;
+									}
+								</style>
+								<div class="tooltip-content">
+									<div class="icon">
+										<panda-icon icon="info"></panda-icon>
+									</div>
+									<div class="message">
+										Some<br />
+										text<br />
+										here
+									</div>
+								</div>
+							</template>
+						</panda-tooltip>
+
+						<panda-combo-box
+							id="ccy"
+							.items="${["USD", "SGD"]}"
+							.value="${"SGD"}"
+						>
+						</panda-combo-box>
+						<br />
+						<br />
+						<panda-tooltip for="ccy" position="right" .delay="${0}">
+							<template>
+								Thank you!
 							</template>
 						</panda-tooltip>
 					</div>
