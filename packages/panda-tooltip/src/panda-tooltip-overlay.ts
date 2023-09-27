@@ -81,10 +81,6 @@ export class PandaTooltipOverlay extends LitElement {
 				// get overlay size details
 				const overlayRect = this._contentEl.getBoundingClientRect();
 
-				// set default position to top
-				let overlayTop = this.contextElementDetails.top - overlayRect.height;
-				let overlayLeft = this.contextElementDetails.left + (this.contextElementDetails.width / 2) - (overlayRect.width / 2);
-
 				// check if we have enough space to display tooltip content and do the position correction
 				let noSpaceBottom = false;
 				let noSpaceTop = false;
@@ -92,7 +88,7 @@ export class PandaTooltipOverlay extends LitElement {
 				let noSpaceRight = false;
 				
 				// 1. check if we have enough space at the top
-				if (overlayTop - window.scrollY - overlayRect.height < 0) {
+				if (this.contextElementDetails.top - window.scrollY - overlayRect.height < 0) {
 					noSpaceTop = true;
 				}
 
@@ -149,9 +145,16 @@ export class PandaTooltipOverlay extends LitElement {
 					? this._correctedPosition
 					: this.position;
 
+				// set default position to top
+				let overlayTop = this.contextElementDetails.top - overlayRect.height;
+				let overlayLeft = this.contextElementDetails.left + (this.contextElementDetails.width / 2) - (overlayRect.width / 2);
+
 				switch (position) {
-					case (TooltipPosition.BOTTOM):
-						overlayTop = this.contextElementDetails.bottom;
+					case (TooltipPosition.TOP_LEFT):
+						overlayLeft = this.contextElementDetails.left;
+						break;
+					case (TooltipPosition.TOP_RIGHT):
+						overlayLeft = this.contextElementDetails.right - overlayRect.width;
 						break;
 					case (TooltipPosition.LEFT):
 						overlayTop = this.contextElementDetails.top + (this.contextElementDetails.height / 2) - (overlayRect.height / 2);
@@ -160,6 +163,9 @@ export class PandaTooltipOverlay extends LitElement {
 					case (TooltipPosition.RIGHT):
 						overlayTop = this.contextElementDetails.top + (this.contextElementDetails.height / 2) - (overlayRect.height / 2);
 						overlayLeft = this.contextElementDetails.right;
+						break;
+					case (TooltipPosition.BOTTOM):
+						overlayTop = this.contextElementDetails.bottom;
 						break;
 					case (TooltipPosition.BOTTOM_LEFT):
 						overlayTop = this.contextElementDetails.bottom;
