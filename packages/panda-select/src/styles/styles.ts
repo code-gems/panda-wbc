@@ -28,6 +28,9 @@ export const styles = css`
 
 		border-radius: var(--panda-input-border-radius, 5px);
 		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
+
+		--panda-spinner-width: var(--panda-icon-size-m, 24px);
+		--panda-spinner-height: var(--panda-icon-size-m, 24px);
 	}
 
 	.select {
@@ -79,6 +82,9 @@ export const styles = css`
 		height: var(--panda-input-height, 40px);
 
 		transition: all 200ms ease-in-out;
+
+		--panda-icon-width: var(--panda-icon-size-m, 24px);
+		--panda-icon-height: var(--panda-icon-size-m, 24px);
 	}
 
 	.select:not(.disabled) .icon { cursor: pointer; }
@@ -89,17 +95,17 @@ export const styles = css`
 
 	/* COMPONENT STATES =========================================== */
 	/* DISABLED */
-	:hover([disabled]) .select {
-		border: 1px solid var(--dragon-input-border-color-disabled, hsl(0deg 0% 44%));
-		background-color: var(--dragon-input-background-color-disabled, hsl(0deg 0% 92%));
+	:host([disabled]) .select {
+		border: 1px solid var(--panda-input-border-color-disabled, hsl(0deg 0% 44%));
+		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 	
-	:hover([disabled]) .select .input-field {
-		color: var(--dragon-input-text-color-disabled, hsl(0deg 0% 44%));
+	:host([disabled]) .select .input-field {
+		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 44%));
 	}
 
-	:hover([disabled]) .select .icon {
-		--dragon-icon-color: var(--dragon-icon-color-disabled, hsl(205deg 8% 64%));
+	:host([disabled]) .select .icon {
+		--panda-icon-color: var(--panda-icon-color-disabled, hsl(205deg 8% 64%));
 	}
 
 	/* FOCUSED */

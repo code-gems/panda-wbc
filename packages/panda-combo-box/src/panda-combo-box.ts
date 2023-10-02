@@ -210,7 +210,7 @@ export class PandaComboBox extends LitElement {
 	 * Open overlay and attach it to document body.
 	 */
 	private _openOverlay() {
-		if (!this._overlayEl) {
+		if (!this._overlayEl && !this.disabled) {
 			// create overlay element
 			this._overlayEl = document.createElement("panda-combo-box-overlay");
 			// add event listeners

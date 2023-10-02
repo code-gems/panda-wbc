@@ -6,8 +6,8 @@ import { PandaSelectOverlay } from "./panda-select-overlay";
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-icon";
+import "@panda-wbc/panda-spinner";
 import "./panda-select-overlay";
 
 // utils
@@ -46,7 +46,7 @@ export class PandaSelect extends LitElement {
 	focused: boolean = false;
 
 	@property({ type: Boolean, attribute: true })
-	disabled!: boolean;
+	disabled: boolean = false;
 
 	@property({ type: Boolean, attribute: true })
 	working: boolean = false;
@@ -129,7 +129,7 @@ export class PandaSelect extends LitElement {
 		if (this.working) {
 			spinnerHtml = html`
 				<div class="spinner-cont" part="spinner-cont">
-					<dragon-spinner spinner="${this.spinnerType}"></dragon-spinner>
+					<panda-spinner spinner="${this.spinnerType}"></panda-spinner>
 				</div>
 			`;
 		}
@@ -172,6 +172,7 @@ export class PandaSelect extends LitElement {
 					type="text"
 					.value="${this._label}"
 					.placeholder="${this.placeholder ?? ""}"
+					.disabled="${this.disabled}"
 					@keydown="${this._onKeyDown}"
 					@keypress="${this._onKeyPress}"
 					@focus="${this._onFocus}"

@@ -279,7 +279,9 @@ export const pandaThemeLight = css`
 		--panda-input-icon-background-color: hsl(0deg 0% 92%);
 		
 		--panda-input-placeholder-color: hsl(0deg 0% 80%);
-
+		--panda-input-placeholder-font-size: var(--panda-font-size-m);
+		--panda-input-placeholder-font-family: var(--panda-font-family);
+		
 		/* BUTTON */
 		
 		/* DROPDOWN */
