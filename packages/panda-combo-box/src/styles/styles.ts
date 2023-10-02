@@ -92,7 +92,6 @@ export const styles = css`
 	}
 
 	/* COMPONENT STATES =========================================== */
-
 	/* DISABLED */
 	:hover([disabled]) .combo-box {
 		border: 1px solid var(--dragon-input-border-color-disabled, hsl(0deg 0% 44%));
@@ -118,7 +117,6 @@ export const styles = css`
 	}
 
 	/* THEMES ===================================================== */
-
 	/* VALID */
 	.combo-box[theme~="valid"]:not([disabled]) {
 		border: 1px solid var(--panda-form-validation-valid, hsl(164deg 67% 45%));

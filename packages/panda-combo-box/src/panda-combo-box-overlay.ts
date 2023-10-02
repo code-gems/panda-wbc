@@ -24,7 +24,9 @@ import {
 export class PandaComboBoxOverlay extends LitElement {
 	// css style
 	static get styles() {
-		return styles;
+		return [
+			styles,
+		];
 	}
 
 	@property({ type: String })
@@ -216,6 +218,7 @@ export class PandaComboBoxOverlay extends LitElement {
 			this._overlayEl.style.top = `${overlayTop}px`;
 			this._overlayEl.style.left = `${overlayLeft}px`;
 			this._overlayEl.classList.add("show");
+			this._initialized = true;
 
 			// scroll active item into view
 			this._showActiveElement(_scrollIntoViewBlock);

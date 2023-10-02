@@ -1,4 +1,4 @@
-export type PandaSelectChange = {
+export type PandaSelectChangeEventDetail = {
 	value: string | number | any;
 }
 
@@ -24,5 +24,5 @@ export interface PandaSelectItem {
 // ====================================================================================================================
 
 export interface PandaSelectChangeEvent {
-	detail: PandaSelectChange;
+	detail: PandaSelectChangeEventDetail;
 }

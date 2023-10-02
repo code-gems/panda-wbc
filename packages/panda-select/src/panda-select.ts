@@ -1,5 +1,5 @@
 // types
-import { ElementDetails, PandaSelectChange, PandaSelectChangeEvent, PandaSelectItem } from "../index";
+import { ElementDetails, PandaSelectChangeEventDetail, PandaSelectChangeEvent, PandaSelectItem } from "../index";
 import { PandaSelectOverlay } from "./panda-select-overlay";
 
 // styles
@@ -64,7 +64,15 @@ export class PandaSelect extends LitElement {
 	 */
 	@property({ type: Boolean, reflect: true })
 	opened: boolean = false;
-	
+		
+	/**
+	 * Show/hide clear button on date input field
+	 * 
+	 * [DEFAULT] false
+	 */
+	@property({ type: Boolean, attribute: "hide-clear-button" })
+	hideClearButton: boolean = false;
+
 	// view props
 	@property({ type: String })
 	private _label: string = "";
@@ -73,10 +81,14 @@ export class PandaSelect extends LitElement {
 	@query("#select")
 	private _selectEl!: HTMLDivElement;
 
+	@query("#input-field")
+	private _inputFieldEl!: HTMLInputElement;
+
 	private _overlayEl!: PandaSelectOverlay | null;
 
 	// overlay events
 	private _selectEvent: (e: any) => void = this._onSelect.bind(this);
+	private _changeEvent: (e: any) => void = this._onChange.bind(this);
 	private _closeOverlayEvent: (e: any) => void = this._closeOverlay.bind(this);
 
 	// ================================================================================================================
@@ -107,6 +119,7 @@ export class PandaSelect extends LitElement {
 	protected render() {
 		let labelHtml: TemplateResult = html``;
 		let spinnerHtml: TemplateResult = html``;
+		let suffixIconHtml: TemplateResult = html``;
 
 		if (this.label) {
 			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
@@ -121,6 +134,30 @@ export class PandaSelect extends LitElement {
 			`;
 		}
 
+		if (this.value && !this.hideClearButton && !this.disabled) {
+			suffixIconHtml = html`
+				<div
+					class="icon"
+					part="icon"
+					@click="${this.clear}"
+				>
+					<panda-icon icon="close"></panda-icon>
+				</div>
+			`;
+		}
+
+		if (!this.value || this.value && this.hideClearButton) {
+			suffixIconHtml = html`
+				<div
+					class="icon"
+					part="icon"
+					@click="${this._onToggleDropdown}"
+				>
+					<panda-icon icon="chevron-down"></panda-icon>
+				</div>
+			`;
+		}
+
 		return html`
 			${labelHtml}
 			<div
@@ -128,19 +165,21 @@ export class PandaSelect extends LitElement {
 				class="select"
 				part="select"
 			>
-				<div
-					class="select-value"
-					part="select-value"
-				>
-					${this._label}
-				</div>
-				<div
-					class="icon ${this.opened ? "rotate" : ""}"
-					part="icon"
-					@click="${this._onToggleDropdown}"
-				>
-					<panda-icon icon="chevron-down"></panda-icon>
-				</div>
+				<input
+					id="input-field"
+					class="input-field ${this.disabled ? "disabled" : ""}"
+					part="input-field"
+					type="text"
+					.value="${this._label}"
+					.placeholder="${this.placeholder ?? ""}"
+					@keydown="${this._onKeyDown}"
+					@keypress="${this._onKeyPress}"
+					@focus="${this._onFocus}"
+					@blur="${this._onBlur}"
+					@click="${this._onClick}"
+					readonly
+				/>
+				${suffixIconHtml}
 				${spinnerHtml}
 			</div>
 		`;
@@ -176,6 +215,7 @@ export class PandaSelect extends LitElement {
 			this._overlayEl = document.createElement("panda-select-overlay");
 			// add event listeners
 			this._overlayEl.addEventListener("select", this._selectEvent);
+			this._overlayEl.addEventListener("change", this._changeEvent);
 			this._overlayEl.addEventListener("close", this._closeOverlayEvent);
 			// overlay props
 			this._overlayEl.items = this.items;
@@ -193,6 +233,7 @@ export class PandaSelect extends LitElement {
 		if (this._overlayEl) {
 			// remove event listeners
 			this._overlayEl.removeEventListener("select", this._selectEvent);
+			this._overlayEl.removeEventListener("change", this._changeEvent);
 			this._overlayEl.removeEventListener("close", this._closeOverlayEvent);
 			// clean up
 			document.body.removeChild(this._overlayEl);
@@ -202,7 +243,7 @@ export class PandaSelect extends LitElement {
 	}
 
 	private _triggerChangeEvent() {
-		const event: CustomEvent<PandaSelectChange> = new CustomEvent("change", {
+		const event: CustomEvent<PandaSelectChangeEventDetail> = new CustomEvent("change", {
 			detail: {
 				value: this.value
 			}
@@ -211,8 +252,33 @@ export class PandaSelect extends LitElement {
 	}
 
 	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	public clear() {
+		this.value = null;
+		this._inputFieldEl.value = "";
+		this._triggerChangeEvent();
+	}
+
+	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+	
+	private _onClick() {
+		if (!this.disableAutoOpen) {
+			// open overlay
+			this._openOverlay();
+		}
+	}
+
+	private _onFocus() {
+		this.focused = true;
+	}
+
+	private _onBlur() {
+		this.focused = false;
+	}
 
 	private _onSelect(e: PandaSelectChangeEvent) {
 		// update value
@@ -226,6 +292,21 @@ export class PandaSelect extends LitElement {
 		// trigger change event
 		this._triggerChangeEvent();
 	}
+
+	private _onChange(e: PandaSelectChangeEvent) {
+		// update value
+		this.value = e.detail.value;
+		this._label = getItemLabel(
+			this.items,
+			this.value,
+			this.itemValuePath,
+			this.itemLabelPath
+		);
+		// close overlay
+		this._closeOverlay();
+		// trigger change event
+		this._triggerChangeEvent();
+	}
 	
 	private _onKeyDown(e: KeyboardEvent) {
 		switch (e.key) {
@@ -235,13 +316,21 @@ export class PandaSelect extends LitElement {
 				break;
 			case "ArrowUp":
 			case "ArrowDown":
+			default:
 				this._openOverlay();
-				break;
+				e.preventDefault();
+				return false;
 		}
+	}
+
+	private _onKeyPress(e: KeyboardEvent) {
+		e.preventDefault();
+		return false;
 	}
 
 	private _onToggleDropdown() {
 		if (!this.disabled) {
+			this._inputFieldEl.focus();
 			this._openOverlay();
 		}
 	}

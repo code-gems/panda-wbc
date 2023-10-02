@@ -163,7 +163,7 @@ export class PandaComboBox extends LitElement {
 					class="input-field"
 					part="input-field"
 					type="text"
-					.placeholder="${this.placeholder || ""}"
+					.placeholder="${this.placeholder ?? ""}"
 					.value="${this._value}"
 					.disabled="${this.disabled}"
 					@keydown="${this._onKeyDown}"

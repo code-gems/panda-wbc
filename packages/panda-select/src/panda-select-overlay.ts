@@ -1,5 +1,5 @@
 // style
-import { ElementDetails, PandaSelectItem } from "../index";
+import { ElementDetails, PandaSelectChangeEventDetail, PandaSelectChangeEvent, PandaSelectItem } from "../index";
 
 interface ParsedSelectItem {
 	index: number;
@@ -214,6 +214,7 @@ export class PandaSelectOverlay extends LitElement {
 			this._overlayEl.style.top = `${overlayTop}px`;
 			this._overlayEl.style.left = `${overlayLeft}px`;
 			this._overlayEl.classList.add("show");
+			this._initialized = true;
 
 			// scroll active item into view
 			this._showActiveElement(_scrollIntoViewBlock);
@@ -327,7 +328,7 @@ export class PandaSelectOverlay extends LitElement {
 		this.value = selectedItem?.value;
 		this._updateActiveItem();
 		console.log("%c [overlay] _selectItemByIndex", "font-size: 24px; color: red;", selectedItem?.value);
-		const event = new CustomEvent("select", {
+		const event = new CustomEvent<PandaSelectChangeEventDetail>("select", {
 			detail: {
 				value: selectedItem?.value
 			}
@@ -347,7 +348,7 @@ export class PandaSelectOverlay extends LitElement {
 
 	private _onChange(value: any): void {
 		console.log("%c [overlay] _onChange", "font-size: 24px; color: red;", value);
-		const event = new CustomEvent("change", {
+		const event = new CustomEvent<PandaSelectChangeEventDetail>("change", {
 			detail: {
 				value
 			}

@@ -47,7 +47,7 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	.select .select-value {
+	.select .input-field {
 		width: 100%;
 		height: 100%;
 		padding: var(--panda-input-padding, 0px 10px);
@@ -64,6 +64,10 @@ export const styles = css`
 		border: none;
 		background-color: transparent;
 		box-sizing: border-box;
+	}
+
+	.select .input-field::placeholder {
+		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
 	}
 
 	.select .icon {
@@ -83,4 +87,41 @@ export const styles = css`
 		transform: rotate(180deg);
 	}
 
+	/* COMPONENT STATES =========================================== */
+	/* DISABLED */
+	:hover([disabled]) .select {
+		border: 1px solid var(--dragon-input-border-color-disabled, hsl(0deg 0% 44%));
+		background-color: var(--dragon-input-background-color-disabled, hsl(0deg 0% 92%));
+	}
+	
+	:hover([disabled]) .select .input-field {
+		color: var(--dragon-input-text-color-disabled, hsl(0deg 0% 44%));
+	}
+
+	:hover([disabled]) .select .icon {
+		--dragon-icon-color: var(--dragon-icon-color-disabled, hsl(205deg 8% 64%));
+	}
+
+	/* FOCUSED */
+	:host([focused]) .select {
+		box-shadow: 0px 0px 0px 2px var(--panda-input-outline-color, hsl(216deg 88% 60%));
+	}
+
+	/* MANDATORY */
+	:host([mandatory]) .select {
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(35deg 91% 62%));
+	}
+
+	/* THEMES ===================================================== */
+	/* VALID */
+	.select[theme~="valid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-valid, hsl(164deg 67% 45%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(164deg 67% 45%));
+	}
+
+	/* INVALID */
+	.select[theme~="invalid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
+	}
 `;

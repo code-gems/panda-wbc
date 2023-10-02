@@ -101,6 +101,14 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 							.items="${this._items}"
 						>
 						</panda-select>
+						<br />
+						<br />
+						<panda-select
+							.label="${`Option:`}"
+							.placeholder="${`Select option...`}"
+							.items="${this._items}"
+						>
+						</panda-select>
 					</div>
 				</div>
 			</div>

@@ -309,7 +309,7 @@ export class PandaDatePicker extends LitElement {
 				<div
 					class="icon ${this.disabled ? "hidden" : ""}"
 					part="icon"
-					@click="${() => this._onClearDate()}"
+					@click="${this._onClearDate}"
 				>
 					<panda-icon icon="close"></panda-icon>
 				</div>
