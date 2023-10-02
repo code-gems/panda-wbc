@@ -1,183 +1,250 @@
 // types
-import { PandaSelectItem } from "../index";
+import { ElementDetails, PandaSelectChange, PandaSelectChangeEvent, PandaSelectItem } from "../index";
 import { PandaSelectOverlay } from "./panda-select-overlay";
-
-type OverlayPosition = {
-	x: number;
-	y: number;
-}
 
 // styles
 import { styles } from "./styles/styles";
 
-// mixins
-import { scroll } from "@panda-wbc/panda-theme/lib/mixins";
-
 // components
+import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-icon";
 import "./panda-select-overlay";
 
 // utils
-import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { minValue, getParentOffsetTop, getParentOffsetLeft } from "./utils/utils";
+import { LitElement, PropertyValues, TemplateResult, html } from "lit";
+import { customElement, property, query } from "lit/decorators.js";
+import { minValue, getItemLabel } from "./utils/utils";
 
 @customElement("panda-select")
 export class PandaSelect extends LitElement {
 	// css styles
 	static get styles() {
-		return [styles, scroll];
+		return [
+			styles
+		];
 	}
 
-	@property({ type: Object })
-	items!: PandaSelectItem[];
+	@property({ type: String })
+	label!: string;
+
+	@property({ type: String })
+	value: string | number | null = null;
 
 	@property({ type: Object })
-	value!: PandaSelectItem | null;
+	items: PandaSelectItem[] | any[] | null | undefined = [];
+
+	@property({ type: String, attribute: "item-label-path" })
+	itemLabelPath: string | null = null;
+
+	@property({ type: String, attribute: "item-value-path" })
+	itemValuePath: string | null = null;
+
+	@property({ type: Boolean, attribute: "disable-auto-open" })
+	disableAutoOpen: boolean = false;
+
+	@property({ type: Boolean, attribute: true, reflect: true })
+	focused: boolean = false;
 
 	@property({ type: Boolean, attribute: true })
 	disabled!: boolean;
 
 	@property({ type: Boolean, attribute: true })
-	busy!: boolean;
+	working: boolean = false;
 
 	@property({ type: String, attribute: true })
-	spinner!: string;
+	placeholder: string | null = null;
 
+	@property({ type: String, attribute: "spinner-type" })
+	spinnerType: string = "dots";
+
+	/**
+	 * Status property, indicating if the overlay is shown.
+	 * 
+	 * [DEFAULT] false
+	 */
+	@property({ type: Boolean, reflect: true })
+	opened: boolean = false;
+	
 	// view props
-	@property({ type: Boolean })
-	private _showDropdown!: boolean;
+	@property({ type: String })
+	private _label: string = "";
 
 	// elements
-	private _overlayEl!: PandaSelectOverlay;
+	@query("#select")
+	private _selectEl!: HTMLDivElement;
 
-	// event bindings
-	private _selectItemEventBinding: any;
-	private _hideOverlayEventBinding: any;
+	private _overlayEl!: PandaSelectOverlay | null;
+
+	// overlay events
+	private _selectEvent: (e: any) => void = this._onSelect.bind(this);
+	private _closeOverlayEvent: (e: any) => void = this._closeOverlay.bind(this);
 
 	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
+	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	constructor() {
-		super();
-		this._showDropdown = false;
-		this.value = null;
-		this.items = [];
-
-		// bind events
-		this._selectItemEventBinding = this._onItemSelect.bind(this);
-		this._hideOverlayEventBinding = this._hideOverlay.bind(this);
-		// document.addEventListener("click", this._hideOverlayEventBinding);
+	protected updated(changedProps: PropertyValues): void {
+		if (changedProps.has("value") && this.value !== undefined) {
+			this._label = getItemLabel(
+				this.items,
+				this.value,
+				this.itemValuePath,
+				this.itemLabelPath
+			);
+		}
 	}
 
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
-
-		// remove event listeners
-		document.removeEventListener("click", this._hideOverlayEventBinding);
+		// close overlay and remove all events
+		this._closeOverlay();
 	}
 
 	// ================================================================================================================
-	// ====================================================================================================== RENDERERS
+	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
+		let labelHtml: TemplateResult = html``;
+		let spinnerHtml: TemplateResult = html``;
+
+		if (this.label) {
+			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
+		}
+
+		// check if component is in working state
+		if (this.working) {
+			spinnerHtml = html`
+				<div class="spinner-cont" part="spinner-cont">
+					<dragon-spinner spinner="${this.spinnerType}"></dragon-spinner>
+				</div>
+			`;
+		}
+
 		return html`
+			${labelHtml}
 			<div
-				class="panda-select"
-				part="panda-select"
-				@click="${(e: MouseEvent) => this._onShowDropdown(e)}"
+				id="select"
+				class="select"
+				part="select"
 			>
-				<div class="value-cont" part="value-cont">
-					<div class="value" part="value">
-						${this.value || ""}
-					</div>
+				<div
+					class="select-value"
+					part="select-value"
+				>
+					${this._label}
 				</div>
-				<div class="toggle-btn" part="toggle-btn">
-					<panda-icon icon="expand-more"></panda-icon>
+				<div
+					class="icon ${this.opened ? "rotate" : ""}"
+					part="icon"
+					@click="${this._onToggleDropdown}"
+				>
+					<panda-icon icon="chevron-down"></panda-icon>
 				</div>
+				${spinnerHtml}
 			</div>
 		`;
 	}
 
 	// ================================================================================================================
-	// ========================================================================================================= EVENTS
+	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _getDatePickerPosition(): OverlayPosition {
-		const rect = this.getBoundingClientRect();
-		let x = minValue(rect.left + window.scrollX + getParentOffsetTop(this), 0);
-		let y = minValue(rect.bottom + window.scrollY + getParentOffsetLeft(this), 0);
-
-		console.log("%c DOMRect x/y", "font-size: 24px; color: green;", rect, x, y);
-		console.log("%c Window", "font-size: 24px; color: green;", window.innerWidth, window.innerHeight);
-		console.log("%c rect.top", "font-size: 24px; color: green;", rect.top);
-		console.log("%c Window scroll y", "font-size: 24px; color: green;", window.scrollY);
-		console.log("%c el offset", "font-size: 24px; color: green;", getParentOffsetTop(this));
-
-		console.log("%c innerHeight / Y", "font-size: 24px; color: green;", window.innerHeight, y);
-
-
-		if (window.innerHeight - y < 300) {
-			y = y - 300 - rect.height;
-		}
-		if (window.innerWidth - x < 300) {
-			x = x - 300 + rect.width;
-		}
+	private _getElementDetails(): ElementDetails {
+		const rect = this._selectEl.getBoundingClientRect();
+		const top = minValue(rect.top + window.scrollY, 0);
+		const left = minValue(rect.left + window.scrollX, 0);
+		const bottom = minValue(rect.bottom + window.scrollY, 0);
+		const right = minValue(rect.right + window.scrollX, 0);
 
 		return {
-			x,
-			y
+			width: rect.width,
+			height: rect.height,
+			top,
+			left,
+			bottom,
+			right,
 		};
 	}
 
-	private _showSelectDropdown() {
-
-		this._overlayEl = document.createElement("panda-select-overlay");
-
-		// add event listeners
-		this._overlayEl.addEventListener("select-item", this._selectItemEventBinding);
-		this._overlayEl.addEventListener("close", this._hideOverlayEventBinding);
-
-		// set date picker overlay's props
-		this._overlayEl.items = this.items;
-		this._overlayEl.value = this.value;
-
-		// set overlay's position
-		const position = this._getDatePickerPosition();
-		this._overlayEl.style.position = `absolute`;
-		this._overlayEl.style.top = `${position.y}px`;
-		this._overlayEl.style.left = `${position.x}px`;
-
-		// append element to document body
-		document.body.appendChild(this._overlayEl);
-	}
-
-	// ================================================================================================================
-	// ========================================================================================================= EVENTS
-	// ================================================================================================================
-
-	private _onShowDropdown(e: MouseEvent) {
-		console.log("%c _onInputFieldClick", "font-size: 24px; color: green;");
-		e.stopPropagation();
-		e.preventDefault();
-		this._showSelectDropdown();
-	}
-
 	/**
-	 * Removes date picker overlay element from DOM if present
+	 * Open overlay and attach it to document body.
 	 */
-	private _hideOverlay() {
-		if (this._overlayEl) {
-			document.body.removeChild(this._overlayEl);
+	private _openOverlay() {
+		if (!this._overlayEl) {
+			// create overlay element
+			this._overlayEl = document.createElement("panda-select-overlay");
+			// add event listeners
+			this._overlayEl.addEventListener("select", this._selectEvent);
+			this._overlayEl.addEventListener("close", this._closeOverlayEvent);
+			// overlay props
+			this._overlayEl.items = this.items;
+			this._overlayEl.value = this.value;
+			this._overlayEl.itemLabelPath = this.itemLabelPath;
+			this._overlayEl.itemValuePath = this.itemValuePath;
+			this._overlayEl.parentDetails = this._getElementDetails();
+			// append element to document body
+			document.body.appendChild(this._overlayEl);
+			this.opened = true;
 		}
 	}
 
-	private _onItemSelect() {
-
+	private _closeOverlay() {
+		if (this._overlayEl) {
+			// remove event listeners
+			this._overlayEl.removeEventListener("select", this._selectEvent);
+			this._overlayEl.removeEventListener("close", this._closeOverlayEvent);
+			// clean up
+			document.body.removeChild(this._overlayEl);
+			this._overlayEl = null;
+			this.opened = false;
+		}
 	}
 
+	private _triggerChangeEvent() {
+		const event: CustomEvent<PandaSelectChange> = new CustomEvent("change", {
+			detail: {
+				value: this.value
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
+	// ================================================================================================================
+	// EVENTS =========================================================================================================
+	// ================================================================================================================
+
+	private _onSelect(e: PandaSelectChangeEvent) {
+		// update value
+		this.value = e.detail.value;
+		this._label = getItemLabel(
+			this.items,
+			this.value,
+			this.itemValuePath,
+			this.itemLabelPath
+		);
+		// trigger change event
+		this._triggerChangeEvent();
+	}
+	
+	private _onKeyDown(e: KeyboardEvent) {
+		switch (e.key) {
+			case "Enter":
+			case "Tab":
+				this._closeOverlay();
+				break;
+			case "ArrowUp":
+			case "ArrowDown":
+				this._openOverlay();
+				break;
+		}
+	}
+
+	private _onToggleDropdown() {
+		if (!this.disabled) {
+			this._openOverlay();
+		}
+	}
 }
 
 declare global {

@@ -20,45 +20,36 @@ export class PandaPagination extends LitElement {
 	}
 
 	@property({ type: Array })
-	pageSizeList!: PageSizeListItem[];
+	pageSizeList: PageSizeListItem[] = [
+		{ label: "50", value: 50 },
+		{ label: "100", value: 100 },
+		{ label: "200", value: 200 },
+		{ label: "300", value: 300 },
+	];
 
 	@property({ type: Number })
-	pageSize!: number | null;
+	pageSize: number | null = null;
 
 	@property({ type: Number })
-	pageNumber!: number | null;
+	pageNumber: number | null = null;
 
 	@property({ type: Number })
-	totalElements!: number | null;
+	totalElements: number | null = null;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
-	busy!: boolean;
+	busy: boolean = false;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
-	disabled!: boolean;
+	disabled: boolean = false;
 
 	@property({ type: String, attribute: true })
-	spinner!: string;
+	spinnerType: string = "dots";
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	constructor() {
-		super();
-		this.busy = false;
-		this.disabled = false;
-		this.spinner = "dots";
-		this.pageSizeList = [
-			{ label: "50", value: 50 },
-			{ label: "100", value: 100 },
-			{ label: "200", value: 200 },
-			{ label: "300", value: 300 },
-		];
-		this.pageSize = null;
-		this.pageNumber = null;
-		this.totalElements = null;
-	}
+	// ...
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -110,7 +101,7 @@ export class PandaPagination extends LitElement {
 			if (this.busy && active) {
 				buttonHtml.push(html`
 					<div class="btn ${active}">
-						<panda-spinner spinner="${this.spinner}"></panda-spinner>
+						<panda-spinner spinner="${this.spinnerType}"></panda-spinner>
 					</div>
 				`);
 			} else {

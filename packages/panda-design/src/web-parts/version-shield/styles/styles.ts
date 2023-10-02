@@ -2,7 +2,10 @@ import { css } from "lit";
 
 export const styles = css`
 	:host {
-		display: inline-block;
+		position: absolute;
+		display: inline;
+		bottom: 40px;
+		left: 40px;
 	}
 
 	.shield {

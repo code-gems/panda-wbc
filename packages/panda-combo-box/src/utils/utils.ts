@@ -31,7 +31,8 @@ export const getItemLabel = (
 	items: PandaComboBoxItem[] | any[] | null | undefined,
 	value: string | number | null,
 	itemValuePath: string | null,
-	itemLabelPath: string | null
+	itemLabelPath: string | null,
+	allowCustomValue: boolean = false
 ): string =>  {
 	if (items && value !== null) {
 		const _selectedItem = items.find((item) => {
@@ -40,7 +41,7 @@ export const getItemLabel = (
 				let _value: any;
 				// check if item value patch is defined
 				if (itemValuePath) {
-					_value = item[itemValuePath as string];
+					_value = item[itemValuePath];
 				} else {
 					_value = item.value;
 				}
@@ -52,13 +53,17 @@ export const getItemLabel = (
 
 		// check if selected label is an object or primitive
 		if (_selectedItem === undefined) {
-			console.warn("[dragon-combo-box] No item match found for value:", value);				
-			return "";
+			if (allowCustomValue) {
+				return String(value);
+			} else {
+				console.warn("[dragon-combo-box] No item match found for value:", value);				
+				return "";
+			}
 		} else if (typeof _selectedItem === "object") {
 			// check if item label patch are defined
 			let _label: any;
 			if (itemLabelPath) {
-				_label = _selectedItem[itemLabelPath as string];
+				_label = _selectedItem[itemLabelPath];
 			} else {
 				_label = _selectedItem?.label;
 			}
@@ -82,7 +87,7 @@ export const findItemByLabel = (
 	if (typeof item === "object") {
 		// check if item label path is defined
 		if (itemLabelPath) {
-			_label = item[itemLabelPath as string] ?? "";
+			_label = item[itemLabelPath] ?? "";
 		} else {
 			_label = item.label ?? "";
 		}

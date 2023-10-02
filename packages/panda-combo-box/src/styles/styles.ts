@@ -47,6 +47,10 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
+	.combo-box:not([disabled]):hover {
+		border: 1px solid var(--panda-input-border-color-hover, hsl(0deg 0% 65%));
+	}
+
 	.combo-box .input-field {
 		width: 100%;
 		height: 100%;
@@ -66,30 +70,69 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
+	.combo-box .input-field::placeholder {
+		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
+	}
+
 	.combo-box .icon {
 		display: flex;
 		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
-		width: 40px;
-		height: 40px;
-
-		cursor: pointer;
+		width: var(--panda-input-height, 40px);
+		height: var(--panda-input-height, 40px);
+		
 		transition: all 200ms ease-in-out;
 	}
 
-	/* TOOLTIP SLOT */
-	slot[name="tooltip"] {
-		display: none;
+	.combo-box:not(.disabled) .icon { cursor: pointer; }
+
+	.rotate {
+		transform: rotate(180deg);
 	}
 
-	/* COMPONENT STATES */
+	/* COMPONENT STATES =========================================== */
 
+	/* DISABLED */
+	:hover([disabled]) .combo-box {
+		border: 1px solid var(--dragon-input-border-color-disabled, hsl(0deg 0% 44%));
+		background-color: var(--dragon-input-background-color-disabled, hsl(0deg 0% 92%));
+	}
+	
+	:hover([disabled]) .combo-box .input-field {
+		color: var(--dragon-input-text-color-disabled, hsl(0deg 0% 44%));
+	}
+
+	:hover([disabled]) .combo-box .icon {
+		--dragon-icon-color: var(--dragon-icon-color-disabled, hsl(205deg 8% 64%));
+	}
+
+	/* FOCUSED */
 	:host([focused]) .combo-box  {
 		box-shadow: 0px 0px 0px 2px var(--panda-input-outline-color, hsl(216deg 88% 60%));
 	}
 
+	/* MANDATORY */
 	:host([mandatory]) .combo-box  {
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(35deg 91% 62%));
+	}
+
+	/* THEMES ===================================================== */
+
+	/* VALID */
+	.combo-box[theme~="valid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-valid, hsl(164deg 67% 45%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(164deg 67% 45%));
+	}
+
+	/* INVALID */
+	.combo-box[theme~="invalid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
+	}
+
+	.combo-box.invalid:not(.disabled) {
+		border: 1px solid var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 	}
 `;

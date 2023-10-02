@@ -4,6 +4,7 @@ import { PageCategory } from "panda-design-typings";
 // styles
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../../../styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme";
 
 // components
 import "@panda-wbc/panda-tooltip";
@@ -39,6 +40,7 @@ export class PandaTooltipContentPage extends ContentPageTemplate {
 	static get styles() {
 		return [
 			styles,
+			scrollbar,
 			uiComponents.banner,
 			uiComponents.sample,
 			uiComponents.form,
@@ -59,9 +61,7 @@ export class PandaTooltipContentPage extends ContentPageTemplate {
 		return html`
 			<div class="banner small">
 				<h1>TOOLTIP</h1>
-				<p>
-					TBD
-				</p>
+
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -80,23 +80,28 @@ export class PandaTooltipContentPage extends ContentPageTemplate {
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
-						TBD
+						Tooltips are essential user interface components in web applications that provide additional information and context to users when they interact with elements on a webpage. 
+						They serve as a valuable UX enhancement tool by offering concise explanations, hints, or descriptions of elements such as buttons, icons, links, or form fields.
 					</p>
 				</div>
 
 				<div class="sample-cont">
 					<div class="sample">
 						<h2 id="my-header">
-							MY HEADER WITH TOOLTIP
+							HOVER HERE
 						</h2>
-						<panda-tooltip for="my-header" position="left" .delay="${0}">
+						<panda-tooltip
+							for="my-header"
+							position="top-right"
+							.delay="${0}"
+						>
 							<template>
 								<style>
 									.tooltip-content {
 										display: flex;
 										flex-flow: row nowrap;
-										min-width: 750px;
-										min-height: 400px;
+										min-width: 150px;
+										min-height: 100px;
 										padding: 10px;
 									}
 									.tooltip-content .icon {

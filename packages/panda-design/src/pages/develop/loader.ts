@@ -7,6 +7,8 @@ import "./content/panda-dialog/content-page";
 import "./content/panda-flag/content-page";
 import "./content/panda-icon/content-page";
 import "./content/panda-multi-input/content-page";
+import "./content/panda-pagination/content-page";
+import "./content/panda-select/content-page";
 import "./content/panda-spinner/content-page";
 import "./content/panda-text-editor/content-page";
 import "./content/panda-text-field/content-page";

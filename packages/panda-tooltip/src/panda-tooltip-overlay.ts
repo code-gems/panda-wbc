@@ -18,7 +18,7 @@ export class PandaTooltipOverlay extends LitElement {
 	}
 
 	@property({ type: Object })
-	contextElementDetails!: ElementDetails;
+	contextElementDetails!: ElementDetails | null;
 
 	@property({ type: Element })
 	template!: Element | null;
@@ -45,6 +45,8 @@ export class PandaTooltipOverlay extends LitElement {
 		if (this._positionObserver !== null) {
 			this._positionObserver.cancel();
 		}
+		// clean up
+		this.contextElementDetails = null;
 	}
 
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -75,7 +77,7 @@ export class PandaTooltipOverlay extends LitElement {
 	/** Apply template content to overlay */
 	private _applyContent() {
 		setTimeout(() => {
-			if (this.template !== null) {
+			if (this.template !== null && this.contextElementDetails) {
 				this._contentEl.innerHTML = this.template.innerHTML;
 
 				// get overlay size details

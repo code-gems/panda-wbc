@@ -161,9 +161,15 @@ importers:
       '@panda-wbc/panda-multi-input':
         specifier: workspace:*
         version: link:../panda-multi-input
+      '@panda-wbc/panda-pagination':
+        specifier: workspace:*
+        version: link:../panda-pagination
       '@panda-wbc/panda-router':
         specifier: workspace:*
         version: link:../panda-router
+      '@panda-wbc/panda-select':
+        specifier: workspace:*
+        version: link:../panda-select
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner

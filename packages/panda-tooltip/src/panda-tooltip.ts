@@ -27,7 +27,7 @@ export class PandaTooltip extends LitElement {
 	position: TooltipPosition = TooltipPosition.TOP;
 
 	@property({ type: Boolean, attribute: true })
-	opened: boolean = false;
+	disabled: boolean = false;
 
 	@property({ type: String, attribute: true })
 	delay: number = 500;
@@ -66,11 +66,8 @@ export class PandaTooltip extends LitElement {
 	}
 
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-		if (_changedProperties.has("opened") && this.opened) {
-			this._getContextElement();
-			setTimeout(() => {
-				this._showTooltip();
-			}, 0);
+		if (_changedProperties.has("disabled") && this.disabled) {
+			this._hideTooltip();
 		}
 	}
 
@@ -78,12 +75,14 @@ export class PandaTooltip extends LitElement {
 		super.disconnectedCallback();
 		// clear timers
 		clearTimeout(this._showTimer);
-		clearTimeout(this._showTimer);
+		clearTimeout(this._hideTimer);
 		// clean up
-		if (this._overlayEl !== null) {
+		if (this._contextEl !== null) {
 			// remove context events
 			this._contextEl.removeEventListener("mouseover", this._showTooltipEvent);
 			this._contextEl.removeEventListener("mouseout", this._hideTooltipEvent);
+		}
+		if (this._overlayEl !== null) {
 			// remove tooltip overlay events
 			this._overlayEl.removeEventListener("mouseover", this._showTooltipEvent);
 			this._overlayEl.removeEventListener("mouseout", this._hideTooltipEvent);
@@ -120,7 +119,7 @@ export class PandaTooltip extends LitElement {
 
 	private _showTooltip(): void {
 		// check if tooltip already exists
-		if (this._overlayEl === null) {
+		if (this._overlayEl === null && !this.disabled) {
 			this._overlayEl = document.createElement("panda-tooltip-overlay");
 			// set overlay props
 			this._overlayEl.template = this._templateEl;

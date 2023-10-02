@@ -118,9 +118,9 @@ export class PandaComboBox extends LitElement {
 				this.items,
 				this.value,
 				this.itemValuePath,
-				this.itemLabelPath
+				this.itemLabelPath,
+				this.allowCustomValue
 			);
-			console.log("%c updated value label", "font-size: 24px; color: green;", this._value);
 		}
 	}
 
@@ -163,6 +163,7 @@ export class PandaComboBox extends LitElement {
 					class="input-field"
 					part="input-field"
 					type="text"
+					.placeholder="${this.placeholder || ""}"
 					.value="${this._value}"
 					.disabled="${this.disabled}"
 					@keydown="${this._onKeyDown}"
@@ -181,7 +182,6 @@ export class PandaComboBox extends LitElement {
 				</div>
 				${spinnerHtml}
 			</div>
-			<slot name="tooltip"></slot>
 		`;
 	}
 
@@ -210,7 +210,6 @@ export class PandaComboBox extends LitElement {
 	 * Open overlay and attach it to document body.
 	 */
 	private _openOverlay() {
-		console.log("%c [combo box] _openOverlay", "font-size: 24px; color: red;", this._overlayEl);
 		if (!this._overlayEl) {
 			// create overlay element
 			this._overlayEl = document.createElement("panda-combo-box-overlay");
@@ -242,7 +241,6 @@ export class PandaComboBox extends LitElement {
 			document.body.removeChild(this._overlayEl);
 			this._overlayEl = null;
 			this.opened = false;
-			// this._inputFieldEl.focus();
 		}
 	}
 
@@ -286,6 +284,16 @@ export class PandaComboBox extends LitElement {
 	}
 
 	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	public clear() {
+		this.value = null;
+		this._inputFieldEl.value = "";
+		this._triggerChangeEvent();
+	}
+
+	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
@@ -315,10 +323,9 @@ export class PandaComboBox extends LitElement {
 	private _onInput(value: string) {
 		// update search text for overlay
 		if (this._overlayEl) {
-			// this._openOverlay();
 			this._overlayEl.searchText = value;
 		}
-
+		// open dropdown if closed
 		if (!this._overlayEl) {
 			this._openOverlay();
 		}

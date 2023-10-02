@@ -5,7 +5,7 @@ import { PandaTextEditorOptions, EmlFileConfig, EDITOR_COMMAND } from "../index"
 import { styles } from "./styles/styles";
 
 // mixins
-import { scroll } from "@panda-wbc/panda-theme/lib/mixins";
+import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -21,7 +21,7 @@ export class PandaTextEditor extends LitElement {
 	static get styles() {
 		return [
 			styles,
-			scroll
+			scrollbar
 		];
 	}
 
