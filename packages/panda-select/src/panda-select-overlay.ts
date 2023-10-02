@@ -216,6 +216,12 @@ export class PandaSelectOverlay extends LitElement {
 			this._overlayEl.classList.add("show");
 
 			// scroll active item into view
+			this._showActiveElement(_scrollIntoViewBlock);
+		}, 0);
+	}
+
+	private _showActiveElement(_scrollIntoViewBlock: ScrollLogicalPosition = "center") {
+		setTimeout(() => {
 			const activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".active");
 			if (activeEl) {
 				activeEl.scrollIntoView({ block: _scrollIntoViewBlock });
