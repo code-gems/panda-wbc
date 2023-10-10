@@ -269,20 +269,15 @@ export const uiComponents = {
 			overflow: hidden;
 		}
 
-		.table .thead,
-		.table .tbody,
-		.table .tr {
-			display: grid;
-			grid-template-columns: repeat(4, 1fr);
-			grid-auto-rows: minmax(50px, 1fr);
-		}
-
 		.table .thead {
 			font-family: var(--panda-font-family-bold);
 			background-color: var(--panda-background-color-900);
 		}
 
 		.table .tr {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			grid-auto-rows: minmax(50px, 1fr);
 			transition: all 400ms ease-in-out;
 			border-bottom: 1px dashed var(--panda-background-color-900);
 		}
@@ -317,6 +312,16 @@ export const uiComponents = {
 			width: 100%;
 			height: 100%;
 		}
+
+		/* MODS */
+		.table.table-properties .tr {
+			grid-template-columns: 200px 170px 90px 160px auto !important;
+		}
+
+		.table.table-events {
+
+		}
+
 	`,
 	
 	/** 12 column system */
@@ -352,10 +357,51 @@ export const uiComponents = {
 	`,
 	
 	modifiers: css`
-		.scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-		.scroll::-webkit-scrollbar-track { border-radius: 3px; background-color: var(--panda-background-color-900); }
-		.scroll::-webkit-scrollbar-thumb { border-radius: 3px; background-color: var(--panda-background-color-100); }
-		.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-background-color-50); }
-		.scroll::-webkit-scrollbar-corner { background-color: transparent; }
+		.align-right { align-items: flex-end; }
+		.align-center { align-items: center; }
+		.txt-align-center { text-align: center; }
+		.txt-color { color: var(--panda-primary-color); }
+
+		code {
+			padding: 0px var(--panda-padding-s);
+			line-height: 1.6em;
+
+			border: 1px solid var(--panda-background-color-900);
+			border-radius: var(--panda-border-radius-m);
+			background-color: var(--panda-background-color-700);
+		}
+		
+		.code {
+			padding: 0px var(--panda-padding-m);
+			line-height: 1.6em;
+
+			color: var(--panda-action-color-info);
+			font-style: italic;
+
+			border-radius: var(--panda-border-radius-m);
+			background-color: var(--panda-action-color-info-10opc);
+		}
+
+		.variable-type {
+			padding: 0px var(--panda-padding-m);
+			line-height: 1.6em;
+
+			color: var(--panda-primary-color);
+			font-style: italic;
+
+			border-radius: var(--panda-border-radius-m);
+			background-color: var(--panda-primary-color-10opc);
+		}
+
+		.property {
+			padding: 0px var(--panda-padding-m);
+			line-height: 1.6em;
+
+			color: var(--panda-action-color-success);
+			font-style: italic;
+
+			border-radius: var(--panda-border-radius-m);
+			background-color: var(--panda-action-color-success-10opc);
+		}
 	`,
 }

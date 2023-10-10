@@ -1,5 +1,5 @@
 // types
-import { ContextMenuItem } from "panda-design-typings";
+import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails } from "panda-design-typings";
 
 // styles
 import { uiComponents } from "../styles/styles";
@@ -144,6 +144,82 @@ export abstract class ContentPageTemplate extends LitElement {
 		return html`
 			<div id="btn-scroll-top" class="btn-scroll-top">
 				<panda-icon icon="chevron-up"></panda-icon>
+			</div>
+		`;
+	}
+
+	public _renderComponentPropertyTable(componentPropertyList: ComponentPropertyDetails[] = []): TemplateResult {
+		const tableBodyHtml: TemplateResult[] = [];
+
+		componentPropertyList.forEach((propertyDetails) => {
+			const {
+				name,
+				type,
+				defaultValue,
+				options = [],
+				description,
+			} = propertyDetails;
+
+			tableBodyHtml.push(html`
+				<div class="tr">
+					<div class="td"><i class="code">${name}</i></div>
+					<div class="td"><span class="variable-type">${type}</span></div>
+					<div class="td">${defaultValue}</div>
+					<div class="td">${options.join(" | ")}</div>
+					<div class="td">${description}</div>
+				</div>
+			`);
+		});
+
+		return html`
+			<div class="table table-properties">
+				<div class="thead">
+					<div class="tr">
+						<div class="td">PROPERTY NAME</div>
+						<div class="td">TYPE</div>
+						<div class="td">DEFAULT VALUE</div>
+						<div class="td">OPTIONS</div>
+						<div class="td">DESCRIPTION</div>
+					</div>
+				</div>
+				<div class="tbody">
+					${tableBodyHtml}
+				</div>
+			</div>
+		`;
+	}
+
+	public _renderComponentEventsTable(componentPropertyList: ComponentEventDetails[] = []): TemplateResult {
+		const tableBodyHtml: TemplateResult[] = [];
+
+		componentPropertyList.forEach((propertyDetails) => {
+			const {
+				name,
+				returnType,
+				description,
+			} = propertyDetails;
+
+			tableBodyHtml.push(html`
+				<div class="tr">
+					<div class="td"><i class="code">${name}</i></div>
+					<div class="td"><span class="variable-type">${returnType}</span></div>
+					<div class="td">${description}</div>
+				</div>
+			`);
+		});
+
+		return html`
+			<div class="table table-events">
+				<div class="thead">
+					<div class="tr">
+						<div class="td">EVENT</div>
+						<div class="td">RETURN TYPE</div>
+						<div class="td">DESCRIPTION</div>
+					</div>
+				</div>
+				<div class="tbody">
+					${tableBodyHtml}
+				</div>
 			</div>
 		`;
 	}

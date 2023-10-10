@@ -66,6 +66,29 @@ declare module "panda-design-typings" {
 		};
 	}
 
+	export interface ComponentPropertyDetails {
+		name: string;
+		defaultValue: string;
+		type: string;
+		description: string;
+		options?: string[];
+		attribute?: string;
+	}
+
+	export interface ComponentEventDetails {
+		name: string;
+		returnType: string;
+		description: string;
+	}
+
+	export interface ComponentCssVariableDetails {
+		cssClass: string;
+		cssVariable: string;
+		description: string;
+		addText?: boolean;
+		sampleText?: string;
+	}
+
 	// ================================================================================================================
 	// ACTIONS ========================================================================================================
 	// ================================================================================================================

@@ -1,4 +1,4 @@
-export const installationSnippet = `npm install @panda-wbc/panda-button -S`;
+export const installationSnippet = `npm install @panda-wbc/panda-select -S`;
 
 export const implementationSnippet = `
 import "@panda-wbc/panda-button";
