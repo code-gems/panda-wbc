@@ -231,7 +231,6 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _closeOverlay() {
-		console.log("%c [combo box] _closeOverlay", "font-size: 24px; color: red;", this._overlayEl);
 		if (this._overlayEl) {
 			// remove event listeners
 			this._overlayEl.removeEventListener("select", this._selectEvent);
@@ -244,34 +243,36 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
-	private _validateInput() {
+	private _validateInput(): void {
 		const _inputValue = this._inputFieldEl.value;
 		let _match: PandaComboBoxItem | null = null;
-
 		// check if value has changed
 		if (_inputValue === this._value) {
 			return;
 		}
-		console.log("%c [combo box] _validateInput::_inputValue", "font-size: 24px; color: green;", _inputValue, this._value);
-		
 		// check if input value is empty
 		if (_inputValue === "") {
 			this.value = null;
 			this._inputFieldEl.value = "";
-		} else {
-			if (this.items) {
-				// search for entered value among all items
-				_match = this.items.find((item) => findItemByLabel(item, this.itemLabelPath, _inputValue));
-				console.log("%c [combo box] _validateInput::match", "font-size: 24px; color: orange;", _match);
-				if (_match) {
-					this.value = getItemValue(_match, this.itemValuePath);
-					this._triggerChangeEvent();
-				} else {
-					this.value = null;
-					this._inputFieldEl.value = "";
-				}
+		} else if (this.items) {
+			// search for entered value among all items
+			_match = this.items.find((item) => findItemByLabel(item, this.itemLabelPath, _inputValue));
+			// check if there is a match
+			if (_match) {
+				this.value = getItemValue(_match, this.itemValuePath);
+				this._inputFieldEl.value = getItemLabel(
+					this.items,
+					this.value,
+					this.itemValuePath,
+					this.itemLabelPath,
+					this.allowCustomValue	
+				);
+				this._triggerChangeEvent();
+			} else {
+				this.value = null;
+				this._inputFieldEl.value = "";
 			}
-		}		
+		}
 	}
 
 	private _triggerChangeEvent() {
