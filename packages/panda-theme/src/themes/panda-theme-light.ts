@@ -7,6 +7,27 @@ export const pandaThemeLight = css`
 		/* BASE COLORS ============================================================================================= */
 		/* ========================================================================================================= */
 
+		/* BACKGROUND COLOR */
+		--panda-background-color: hsl(0deg 0% 92%);
+
+		--panda-background-color-50: hsl(0deg 0% 100%);
+		--panda-background-color-100: hsl(0deg 0% 97%);
+		--panda-background-color-300: hsl(0deg 0% 95%);
+		--panda-background-color-500: hsl(0deg 0% 92%);
+		--panda-background-color-700: hsl(0deg 0% 89%);
+		--panda-background-color-900: hsl(0deg 0% 86%);
+
+		--panda-background-color-0opc: hsl(0deg 0% 94% / 0%);
+		--panda-background-color-10opc: hsl(0deg 0% 94% / 10%);
+		--panda-background-color-20opc: hsl(0deg 0% 94% / 20%);
+		--panda-background-color-30opc: hsl(0deg 0% 94% / 30%);
+		--panda-background-color-40opc: hsl(0deg 0% 94% / 40%);
+		--panda-background-color-50opc: hsl(0deg 0% 94% / 50%);
+		--panda-background-color-60opc: hsl(0deg 0% 94% / 60%);
+		--panda-background-color-70opc: hsl(0deg 0% 94% / 70%);
+		--panda-background-color-80opc: hsl(0deg 0% 94% / 80%);
+		--panda-background-color-90opc: hsl(0deg 0% 94% / 90%);
+
 		/* BLACK COLOR */
 		--panda-black-color: hsl(0deg 0% 0%);
 
@@ -340,27 +361,6 @@ export const pandaThemeLight = css`
 		/* ========================================================================================================= */
 		/* FRAMEWORK COLORS ======================================================================================== */
 		/* ========================================================================================================= */
-
-		/* BACKGROUND COLOR */
-		--panda-background-color: hsl(0deg 0% 92%);
-
-		--panda-background-color-50: hsl(0deg 0% 100%);
-		--panda-background-color-100: hsl(0deg 0% 97%);
-		--panda-background-color-300: hsl(0deg 0% 95%);
-		--panda-background-color-500: hsl(0deg 0% 92%);
-		--panda-background-color-700: hsl(0deg 0% 89%);
-		--panda-background-color-900: hsl(0deg 0% 86%);
-
-		--panda-background-color-0opc: hsl(0deg 0% 94% / 0%);
-		--panda-background-color-10opc: hsl(0deg 0% 94% / 10%);
-		--panda-background-color-20opc: hsl(0deg 0% 94% / 20%);
-		--panda-background-color-30opc: hsl(0deg 0% 94% / 30%);
-		--panda-background-color-40opc: hsl(0deg 0% 94% / 40%);
-		--panda-background-color-50opc: hsl(0deg 0% 94% / 50%);
-		--panda-background-color-60opc: hsl(0deg 0% 94% / 60%);
-		--panda-background-color-70opc: hsl(0deg 0% 94% / 70%);
-		--panda-background-color-80opc: hsl(0deg 0% 94% / 80%);
-		--panda-background-color-90opc: hsl(0deg 0% 94% / 90%);
 
 		/* DRAGON LOGO */
 		--dragon-logo-color-100: #268ac8;
