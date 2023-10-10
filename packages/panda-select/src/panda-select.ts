@@ -11,7 +11,7 @@ import "@panda-wbc/panda-spinner";
 import "./panda-select-overlay";
 
 // utils
-import { LitElement, PropertyValues, TemplateResult, html } from "lit";
+import { LitElement, PropertyValueMap, PropertyValues, TemplateResult, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { minValue, getItemLabel } from "./utils/utils";
 
@@ -66,14 +66,28 @@ export class PandaSelect extends LitElement {
 	opened: boolean = false;
 		
 	/**
-	 * Show/hide clear button on date input field
+	 * Show/hide clear button from component interface
 	 * 
 	 * [DEFAULT] false
 	 */
 	@property({ type: Boolean, attribute: "hide-clear-button" })
 	hideClearButton: boolean = false;
+		
+	/**
+	 * Show/hide dropdown button from component interface
+	 * 
+	 * [DEFAULT] false
+	 */
+	@property({ type: Boolean, attribute: "hide-dropdown-button" })
+	hideDropdownButton: boolean = false;
+
+	@property({ type: Boolean, attribute: true, reflect: true })
+	mandatory: boolean = false;
 
 	// view props
+	@property({ type: Boolean })
+	_mandatory: boolean = false;
+
 	@property({ type: String })
 	private _label: string = "";
 
@@ -95,6 +109,11 @@ export class PandaSelect extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
+	protected firstUpdated(): void {
+		// update mandatory flag
+		this._evaluateMandatoryFlag();
+	}
+
 	protected updated(changedProps: PropertyValues): void {
 		if (changedProps.has("value") && this.value !== undefined) {
 			this._label = getItemLabel(
@@ -103,6 +122,8 @@ export class PandaSelect extends LitElement {
 				this.itemValuePath,
 				this.itemLabelPath
 			);
+			// evaluate mandatory flag
+			this._evaluateMandatoryFlag();
 		}
 	}
 
@@ -165,6 +186,7 @@ export class PandaSelect extends LitElement {
 				class="select"
 				part="select"
 			>
+				<slot name="prefix"></slot>
 				<input
 					id="input-field"
 					class="input-field ${this.disabled ? "disabled" : ""}"
@@ -181,6 +203,7 @@ export class PandaSelect extends LitElement {
 					readonly
 				/>
 				${suffixIconHtml}
+				<slot name="suffix"></slot>
 				${spinnerHtml}
 			</div>
 		`;
@@ -240,6 +263,20 @@ export class PandaSelect extends LitElement {
 			document.body.removeChild(this._overlayEl);
 			this._overlayEl = null;
 			this.opened = false;
+		}
+	}
+
+	private _evaluateMandatoryFlag() {
+		if (this.mandatory) {
+			if (
+				this.value !== "" &&
+				this.value !== null &&
+				this.value === undefined
+			) {
+				this._mandatory = false;
+			} else {
+				this._mandatory = true;
+			}
 		}
 	}
 
