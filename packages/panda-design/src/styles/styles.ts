@@ -176,7 +176,10 @@ export const uiComponents = {
 			box-sizing: border-box;
 		}
 
-		.banner.small { min-height: 200px; }
+		.banner.small {
+			height: 200px;
+			padding: 0px;
+		}
 
 		.banner .p {
 			color: var(--panda-text-color);

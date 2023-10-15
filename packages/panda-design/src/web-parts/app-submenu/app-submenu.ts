@@ -67,7 +67,7 @@ class AppSubmenu extends LitElement {
 				<div class="header">
 					pageCategory: ${this.pageCategory}
 				</div>
-				<div class="body scroll">
+				<div class="body scrollbar">
 					${this._renderPageList()}
 				</div>
 				<div class="footer">

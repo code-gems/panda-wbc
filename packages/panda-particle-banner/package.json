@@ -1,8 +1,9 @@
 {
-	"name": "@panda-wbc/panda-date-picker",
+	"name": "@panda-wbc/panda-particle-banner",
 	"version": "1.0.0",
-	"description": "Lit based web component - date picker",
-	"main": "lib/panda-date-picker.js",
+	"description": "Lit based web component - particle banner",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-particle-banner.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -11,25 +12,19 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"date picker",
-		"date",
-		"month picker",
-		"month",
-		"calendar",
-		"time",
 		"lit",
 		"lit-element",
+		"web component",
 		"panda-wbc",
 		"ui component",
-		"web component"
+		"particle",
+		"banner",
+		"effect"
 	],
 	"author": "code-gems",
-	"license": "ISC",
+	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.7.4",
-		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
-		"@panda-wbc/panda-icon": "workspace:^1.0.0",
-		"@panda-wbc/panda-core": "workspace:^1.0.0"
+		"lit": "^2.7.4"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

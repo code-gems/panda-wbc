@@ -3,6 +3,7 @@ import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails } from
 
 // styles
 import { uiComponents } from "../styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme";
 
 // utils
 import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";
@@ -13,6 +14,7 @@ export abstract class ContentPageTemplate extends LitElement {
 	// css styles
 	static get styles() {
 		return [
+			scrollbar,
 			uiComponents.banner,
 			uiComponents.form,
 			uiComponents.sample,
@@ -88,7 +90,7 @@ export abstract class ContentPageTemplate extends LitElement {
 			<style>
 				${this.customStyles || ""}
 			</style>
-			<div id="content-page-wrap" class="content-page-wrap scroll">
+			<div id="content-page-wrap" class="content-page-wrap scrollbar">
 				${this._renderPageBanner()}
 				
 				<div class="content-page">

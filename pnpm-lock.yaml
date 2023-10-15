@@ -164,6 +164,9 @@ importers:
       '@panda-wbc/panda-pagination':
         specifier: workspace:*
         version: link:../panda-pagination
+      '@panda-wbc/panda-particle-banner':
+        specifier: workspace:*
+        version: link:../panda-particle-banner
       '@panda-wbc/panda-router':
         specifier: workspace:*
         version: link:../panda-router
@@ -305,9 +308,25 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-select':
+        specifier: workspace:*
+        version: link:../panda-select
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-particle-banner:
+    dependencies:
       lit:
         specifier: ^2.7.4
         version: 2.7.4

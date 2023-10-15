@@ -32,8 +32,10 @@
 	},
 	"files": [
 		"src",
-		"lib"
+		"lib",
+		"index.d.ts"
 	],
+	"types": "index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	}

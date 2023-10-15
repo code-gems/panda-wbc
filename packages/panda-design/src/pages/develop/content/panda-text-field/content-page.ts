@@ -7,6 +7,7 @@ import { uiComponents } from "../../../../styles/styles";
 
 // components
 import "@panda-wbc/panda-text-field";
+import "@panda-wbc/panda-particle-banner";
 
 // utils
 import { html, TemplateResult } from "lit";
@@ -55,13 +56,21 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
+		// const bannerConfig = 
 		return html`
 			<div class="banner small">
-				<h1>TEXT FIELD</h1>
-				<p>
-					Buttons play a vital role in web applications, providing users with interactive elements to perform various actions and trigger specific functionalities.
-				</p>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
+				<panda-particle-banner
+					.config="${300}"
+					
+				>
+					<div>
+						<h1>TEXT FIELD</h1>
+						<p>
+							Buttons play a vital role in web applications, providing users with interactive elements to perform various actions and trigger specific functionalities.
+						</p>
+						<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
+					</div>
+				</panda-particle-banner>
 			</div>
 		`;
 	}
