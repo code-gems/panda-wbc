@@ -78,6 +78,7 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 			blurMax: 10,
 		};
 
+		return html`banner`;
 		return html`
 			<div class="banner small">
 				<panda-particle-banner
@@ -102,31 +103,32 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 
 	private _renderOverviewSection(): TemplateResult {
 		const bannerConfig: PandaParticleBannerConfig = {
-			particleCount: 2,
+			particleCount: 100,
 			// walls: true,
 			// connect: true,
 			// connectionDistance: 50,
-			mouseOffset: true,
-			mouseOffsetXSensitivity: 10,
+			// mouseOffset: true,
+			// mouseOffsetXSensitivity: 10,
 
 			sizeMin: 10,
-			sizeMax: 10,
+			sizeMax: 100,
 
-			speedXMin: -2,
-			speedXMax: 2,
-			speedYMin: -2,
-			speedYMax: 2,
+			speedXMin: -1,
+			speedXMax: 1,
+			speedYMin: -1,
+			speedYMax: 1,
 
 			blur: true,
 			blurMax: 10,
-			getBlur: (particle, index) => {
-				particle.blur += 0.1;
-				if (particle.blur > 10) {
-					particle.blur
-				}
-				return 0; //particle.blur;
+			getBlur: (particle, index, metadata) => {
+				const clientX = metadata.mouse.clientX ?? 0;
+				const clientY = metadata.mouse.clientY ?? 0;
+				const bannerWidth = metadata.bannerRect?.width ?? 0;
+				const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
+				const blur = (dist * 15) / bannerWidth;
+				return blur;
 			},
-		} ;
+		};
 
 		return html`
 			<!-- OVERVIEW -->
@@ -141,11 +143,12 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 				<!-- OVERVIEW -->
 				<div class="sample-cont">
 					<div class="sample">
-						<panda-particle-banner
-							.config="${bannerConfig}"
-							verbose
-						>
-						</panda-particle-banner>
+							<panda-particle-banner
+								.config="${bannerConfig}"
+								verbose
+							>
+							</panda-particle-banner>
+						</div>
 					</div>
 				</div>
 			</div>

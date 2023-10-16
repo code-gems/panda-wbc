@@ -24,7 +24,8 @@
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^2.7.4"
+		"lit": "^2.7.4",
+		"@panda-wbc/panda-core": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

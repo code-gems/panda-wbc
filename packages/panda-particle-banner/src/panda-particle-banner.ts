@@ -1,5 +1,5 @@
 // types
-import { PandaParticle, PandaParticleBannerConfig } from "../index";
+import { MousePosition, PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata } from "../index";
 
 // styles
 import { styles } from "./styles/styles";
@@ -7,7 +7,8 @@ import { styles } from "./styles/styles";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { getDefaultBannerConfig, getRandomInt } from "./utils/utils";
+import { getDefaultBannerConfig, getRandomInt, minMax } from "./utils/utils";
+import { debounce } from "@panda-wbc/panda-core";
 
 @customElement("panda-particle-banner")
 class PandaParticleBanner extends LitElement {
@@ -37,14 +38,27 @@ class PandaParticleBanner extends LitElement {
 
 	private _offsetY: number = 0;
 
+	private _metadata: PandaParticleBannerMetadata = {
+		mouse: {
+			clientX: null,
+			clientY: null,
+		},
+		particles: [],
+		bannerRect: null,
+	};
+
 	// events
 	private _documentMouseMoveEvent = this._onMouseMove.bind(this);
+	// debouncers
+	private _resizeBannerDebouncer = debounce(this._resizeBanner.bind(this), 500);
+	// resize observer
+	private _resizeObserver!: ResizeObserver;
 
 	// elements
 	@query("#canvas")
 	private _canvasEl!: HTMLCanvasElement;
-
-	private _canvasRect!: DOMRect;
+	
+	private _bannerRect!: DOMRect;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -57,6 +71,13 @@ class PandaParticleBanner extends LitElement {
 	}
 
 	protected firstUpdated(): void {
+		// add resize observer
+		this._resizeObserver = new ResizeObserver(() => {
+			// delay resize
+			this._resizeBannerDebouncer();	
+		});
+		this._resizeObserver.observe(this, { box: "content-box" });
+		
 		// validate banner config
 		this._validateConfig();
 		// get canvas context
@@ -75,6 +96,8 @@ class PandaParticleBanner extends LitElement {
 		clearInterval(this._animationTimer);
 		// remove events
 		document.removeEventListener("mousemove", this._documentMouseMoveEvent);
+		// remove observers
+		this._resizeObserver.unobserve(this);
 	}
 
 	// ================================================================================================================
@@ -97,67 +120,74 @@ class PandaParticleBanner extends LitElement {
 	// ================================================================================================================
 
 	private _initBanner(): void {
-		const {
-			particleCount,
-
-			sizeMin = 3,
-			sizeMax = 10,
-
-			speedXMin = -3,
-			speedXMax = 3,
-			speedYMin = -3,
-			speedYMax = 3,
-
-			blurMin = 0,
-			blurMax = 5,
-		} = this._config;
-
-		for (let i = 0; i < particleCount; i++) {
-			// particle style ==================================
-			// generate size
-			const size = getRandomInt(sizeMax, sizeMin);
-			// generate color
-			const color = `hsl(${Math.random() * 40 + 190}deg 70% 80% / 70%)`;
-			// generate blur
-			let blur = 0;
-			if (this._config.blur) {
-				blur = getRandomInt(blurMax, blurMin);
+		setTimeout(() => {
+			const {
+				particleCount,
+	
+				sizeMin = 3,
+				sizeMax = 10,
+	
+				speedXMin = -3,
+				speedXMax = 3,
+				speedYMin = -3,
+				speedYMax = 3,
+	
+				blurMin = 0,
+				blurMax = 5,
+			} = this._config;
+	
+			for (let i = 0; i < particleCount; i++) {
+				// particle style ==================================
+				// generate size
+				const size = getRandomInt(sizeMax, sizeMin);
+				// generate color
+				const color = `hsl(${Math.random() * 40 + 190}deg 70% 80% / 70%)`;
+				// generate blur
+				let blur = 0;
+				if (this._config.blur) {
+					blur = getRandomInt(blurMax, blurMin);
+				}
+	
+				// particle behavior ===============================
+				// generate speed values
+				let speedX = getRandomInt(speedXMax, speedXMin);
+				let speedY = getRandomInt(speedYMax, speedYMin);
+	
+				// check if there are "dead" particles
+				if (speedX === 0 && speedY === 0) {
+					speedX = speedXMax;
+					speedY = speedYMax;
+				}
+	
+				// generate position
+				// const x = this._canvasEl.width / 2; // getRandomInt(this._canvasEl.width);
+				const x = getRandomInt(this._canvasEl.width);
+				// const y = this._canvasEl.height / 2; // getRandomInt(this._canvasEl.height);
+				const y = getRandomInt(this._canvasEl.height);
+	
+				// add particle
+				this._particles.push({
+					x,
+					y,
+					size,
+					speedX,
+					speedY,
+					color,
+					blur,
+				});
 			}
-
-			// particle behavior ===============================
-			// generate speed values
-			let speedX = getRandomInt(speedXMax, speedXMin);
-			let speedY = getRandomInt(speedYMax, speedYMin);
-
-			// check if there are "dead" particles
-			if (speedX === 0 && speedY === 0) {
-				speedX = speedXMax;
-				speedY = speedYMax;
-			}
-
-			// generate position
-			// const x = this._canvasEl.width / 2; // getRandomInt(this._canvasEl.width);
-			const x = getRandomInt(this._canvasEl.width);
-			// const y = this._canvasEl.height / 2; // getRandomInt(this._canvasEl.height);
-			const y = getRandomInt(this._canvasEl.height);
-
-			// add particle
-			this._particles.push({
-				x,
-				y,
-				size,
-				speedX,
-				speedY,
-				color,
-				blur,
-			});
-		}
+			this._metadata.particles = this._particles;
+		}, 0);
 	}
 
 	private _resizeBanner(): void {
-		this._canvasRect = this.getBoundingClientRect();
-		this._canvasEl.width = this._canvasRect.width;
-		this._canvasEl.height = this._canvasRect.height;
+		setTimeout(() => {
+			this._bannerRect = this.getBoundingClientRect();
+			this._canvasEl.width = this._bannerRect.width;
+			this._canvasEl.height = this._bannerRect.height;
+			// update banner metadata
+			this._metadata.bannerRect = this._bannerRect;
+		}, 0);
 	}
 
 	private _draw() {
@@ -258,7 +288,7 @@ class PandaParticleBanner extends LitElement {
 
 			if (this._config.blur) {
 				if (this._config.getBlur !== undefined && typeof this._config.getBlur === "function") {
-					blur = this._config.getBlur(particle, index);
+					blur = this._config.getBlur(particle, index, this._metadata);
 				}
 				this._ctx.filter = `blur(${blur}px)`;
 			}
@@ -346,12 +376,18 @@ class PandaParticleBanner extends LitElement {
 	// ================================================================================================================
 
 	private _onMouseMove(e: MouseEvent) {
+		const bannerTop: number = this._metadata.bannerRect?.top ?? 0;
+		const bannerLeft: number = this._metadata.bannerRect?.left ?? 0;
+		const bannerRight: number = this._metadata.bannerRect?.right ?? 0;
+		const bannerBottom: number = this._metadata.bannerRect?.bottom ?? 0;
+		this._metadata.mouse.clientY = minMax(e.clientY - bannerTop, 0, bannerBottom);
+		this._metadata.mouse.clientX = minMax(e.clientX - bannerLeft, 0, bannerRight);
+
 		if (this.config.mouseOffset && !this.config.walls) {
 			const sensitivityX: number = Number(this.config.mouseOffsetXSensitivity) || 100;
 			const sensitivityY: number = Number(this.config.mouseOffsetYSensitivity) || 100;
-
-			this._offsetX = Math.round(((e.clientX - this._canvasRect.left) * sensitivityX) / (this._canvasEl.width)) - (sensitivityX / 2);
-			this._offsetY = Math.round(((e.clientY - this._canvasRect.top) * sensitivityY) / this._canvasEl.height) - (sensitivityY / 2);
+			this._offsetX = Math.round(((e.clientX - this._bannerRect.left) * sensitivityX) / (this._canvasEl.width)) - (sensitivityX / 2);
+			this._offsetY = Math.round(((e.clientY - this._bannerRect.top) * sensitivityY) / this._canvasEl.height) - (sensitivityY / 2);
 		}
 	}
 }

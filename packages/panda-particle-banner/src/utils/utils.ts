@@ -44,10 +44,27 @@ export const getDefaultBannerConfig = (): PandaParticleBannerConfig => {
 
 /**
  * Get random number between min and max value. Min value is set to 0 by default.
- * @param max - upper number limit
- * @param min - lower number limit, 0 by default
+ * @param {Number} max - upper number limit
+ * @param {Number} min - lower number limit, 0 by default
  * @returns Random integer between lower and upper number limit
  */
 export const getRandomInt = (max: number, min: number = 0): number => {
 	return min + Math.floor(Math.random() * (max + 1 - min));
+};
+
+/**
+ * Validate provided value against min and max limits.
+ * @param {Number} value - value to validate
+ * @param {Number} min - min value
+ * @param {Number} max - max value
+ * @returns value between min and max. 
+ */
+export const minMax = (value: number, min: number, max: number): number => {
+	if (value < min) {
+		return min;
+	} else if (value > max) {
+		return max;
+	} else {
+		return value;
+	}
 };

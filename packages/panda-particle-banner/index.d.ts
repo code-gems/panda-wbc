@@ -1,3 +1,14 @@
+export interface PandaParticleBannerMetadata {
+	mouse: MousePosition;
+	bannerRect: DOMRect | null;
+	particles: PandaParticle[];
+}
+
+export type MousePosition = {
+	clientX: number | null;
+	clientY: number | null;
+}	
+
 export type PandaParticle = {
 	x: number;
 	y: number;
@@ -41,7 +52,7 @@ export interface PandaParticleBannerConfig {
 	blur?: boolean; // default false
 	blurMin?: number; // default to 0
 	blurMax?: number; // default to 5
-	getBlur?: (particle: PandaParticle, index: number) => number; // get dynamic blur value
+	getBlur?: (particle: PandaParticle, index: number, metadata: PandaParticleBannerMetadata) => number; // get dynamic blur value
 	
 	// color
 	color?: string; // eg.: red, rgb(255, 0, 0), hsl(180deg 0% 0%)

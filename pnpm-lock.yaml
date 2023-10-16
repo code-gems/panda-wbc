@@ -327,6 +327,9 @@ importers:
 
   packages/panda-particle-banner:
     dependencies:
+      '@panda-wbc/panda-core':
+        specifier: workspace:*
+        version: link:../panda-core
       lit:
         specifier: ^2.7.4
         version: 2.7.4
