@@ -1,7 +1,7 @@
 export interface PandaParticleBannerMetadata {
 	mouse: MousePosition;
 	bannerRect: DOMRect | null;
-	particles: PandaParticle[];
+	particleGroups: PandaParticle[][];
 }
 
 export type MousePosition = {
@@ -14,7 +14,9 @@ export type PandaParticle = {
 	y: number;
 	size: number;
 	speedX: number;
+	speedDeltaX: number;
 	speedY: number;
+	speedDeltaY: number;
 	color: string; // color value eg.: red, rgb(255, 0, 0), hsl(180deg 0% 0%)
 	blur: number;
 }
@@ -27,7 +29,7 @@ export interface PandaParticleBannerConfig {
 	collisions?: boolean; // default to false
 
 	// mouse offset
-	mouseOffset?: boolean; // default to false [incompatible with walls]
+	interactive?: boolean; // default to false [incompatible with walls]
 	mouseOffsetXSensitivity?: number; // default to 100
 	mouseOffsetYSensitivity?: number; // default to 100
 
@@ -37,10 +39,12 @@ export interface PandaParticleBannerConfig {
 	connectionLineColor?: string; // default to #c1c1c1
 
 	// speed
-	speedXMin?: number; // default to -3
-	speedXMax?: number; // default to 3
-	speedYMin?: number; // default to -3
-	speedYMax?: number; // default to 3
+	minSpeedX?: number; // default to -3
+	maxSpeedX?: number; // default to 3
+	speedDeltaX?: number; // default to 0
+	minSpeedY?: number; // default to -3
+	maxSpeedY?: number; // default to 3
+	speedDeltaY?: number; // default to 0
 	
 	// particle style ==========================================
 
@@ -52,14 +56,13 @@ export interface PandaParticleBannerConfig {
 	blur?: boolean; // default false
 	blurMin?: number; // default to 0
 	blurMax?: number; // default to 5
-	getBlur?: (particle: PandaParticle, index: number, metadata: PandaParticleBannerMetadata) => number; // get dynamic blur value
+	getBlur?: (particle: PandaParticle, metadata: PandaParticleBannerMetadata, index: number) => number; // get dynamic blur value
 	
 	// color
-	color?: string; // eg.: red, rgb(255, 0, 0), hsl(180deg 0% 0%)
-	colorList?: string[];
-	colorOpacity?: number; // value between 0 and 100 default to 0;
+	colors?: string[];
+	colorOpacity?: number; // value between 0 and 100 default to 100;
 	colorVariation?: number; // value between 0 and 360 default to 0 (exact color)
 	colorSaturationVariation?: number; // value between 0 and 100 default to 50;
 	colorBrightnessVariation?: number; // value between 0 and 100 default to 50;
-	colorOpacityVariation?: number; // value between 0 and 100 default to 100;
+	colorOpacityVariation?: number; // value between 0 and 100 default to 0;
 }

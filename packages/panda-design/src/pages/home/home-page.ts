@@ -102,14 +102,14 @@ class HomePage extends LitElement {
 			sizeMin: 10,
 			sizeMax: 10,
 
-			speedXMin: 0,
-			speedXMax: 0,
-			speedYMin: 0,
-			speedYMax: 0,
+			minSpeedX: 0,
+			maxSpeedX: 0,
+			minSpeedY: 0,
+			maxSpeedY: 0,
 
 			blur: true,
 			blurMax: 10,
-			getBlur: (particle, index, metadata) => {
+			getBlur: (particle, metadata, index) => {
 				let blur = particle.blur;
 				const clientX = metadata.mouse.clientX ?? 0;
 				const clientY = metadata.mouse.clientY ?? 0;

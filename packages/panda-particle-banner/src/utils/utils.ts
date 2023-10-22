@@ -10,7 +10,7 @@ export const getDefaultBannerConfig = (): PandaParticleBannerConfig => {
 		collisions: false,
 
 		// mouse offset
-		mouseOffset: false,
+		interactive: false,
 		mouseOffsetXSensitivity: 100,
 		mouseOffsetYSensitivity: 100,
 
@@ -20,10 +20,10 @@ export const getDefaultBannerConfig = (): PandaParticleBannerConfig => {
 		connectionLineColor: "#c1c1c1",
 		
 		// speed
-		speedXMin: -3,
-		speedXMax: 3,
-		speedYMin: -3,
-		speedYMax: 3,
+		minSpeedX: -3,
+		maxSpeedX: 3,
+		minSpeedY: -3,
+		maxSpeedY: 3,
 
 		// particle style ======================================
 		// blur
@@ -32,13 +32,12 @@ export const getDefaultBannerConfig = (): PandaParticleBannerConfig => {
 		blurMax: 5,
 
 		// color
-		color: "hsl(190deg 50% 50% / 70%)",
-		colorList: [],
+		colors: ["hsl(190deg 50% 50% / 70%)"],
 		colorOpacity: 100,
 		colorVariation: 0,
 		colorSaturationVariation: 50,
 		colorBrightnessVariation: 50,
-		colorOpacityVariation: 100,
+		colorOpacityVariation: 0,
 	};
 };
 
@@ -48,8 +47,14 @@ export const getDefaultBannerConfig = (): PandaParticleBannerConfig => {
  * @param {Number} min - lower number limit, 0 by default
  * @returns Random integer between lower and upper number limit
  */
-export const getRandomInt = (max: number, min: number = 0): number => {
-	return min + Math.floor(Math.random() * (max + 1 - min));
+export const getRandomInt = (max: number, min: number = 0, decimalPlaces: number = 2): number => {
+	const round = (num: number) => {
+		const p = Math.pow(10, decimalPlaces);
+		return Math.round(num * p) / p;
+	}
+	
+	const randomInt = min + (Math.random() * (max - min));
+	return round(randomInt);
 };
 
 /**

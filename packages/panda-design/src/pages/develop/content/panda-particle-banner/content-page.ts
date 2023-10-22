@@ -61,14 +61,14 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleCount: 80,
-			mouseOffset: true,
+			interactive: true,
 			mouseOffsetXSensitivity: 10,
 			mouseOffsetYSensitivity: 10,
 
-			speedXMin: -0.1,
-			speedXMax: 0.1,
-			speedYMin: -0.1,
-			speedYMax: 0.1,
+			minSpeedX: -0.1,
+			maxSpeedX: 0.1,
+			minSpeedY: -0.1,
+			maxSpeedY: 0.1,
 
 			sizeMin: 5,
 			sizeMax: 100,
@@ -102,34 +102,51 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 
 
 	private _renderOverviewSection(): TemplateResult {
-		const bannerConfig: PandaParticleBannerConfig = {
-			particleCount: 100,
-			// walls: true,
-			// connect: true,
-			// connectionDistance: 50,
-			// mouseOffset: true,
-			// mouseOffsetXSensitivity: 10,
-
-			sizeMin: 10,
-			sizeMax: 100,
-
-			speedXMin: -1,
-			speedXMax: 1,
-			speedYMin: -1,
-			speedYMax: 1,
-
-			blur: true,
-			blurMax: 10,
-			getBlur: (particle, index, metadata) => {
-				const clientX = metadata.mouse.clientX ?? 0;
-				const clientY = metadata.mouse.clientY ?? 0;
-				const bannerWidth = metadata.bannerRect?.width ?? 0;
-				const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
-				const blur = (dist * 15) / bannerWidth;
-				return blur;
+		const bannerConfig: PandaParticleBannerConfig[] = [
+			{
+				particleCount: 50,
+				// walls: true,
+				// connect: true,
+				// connectionDistance: 50,
+				// interactive: true,
+				// mouseOffsetXSensitivity: 10,
+				
+				sizeMin: 10,
+				sizeMax: 3,
+				
+				minSpeedX: -2,
+				maxSpeedX: 2,
+				minSpeedY: -2,
+				maxSpeedY: 2,
+				
+				blur: true,
+				blurMin: 1,
+				blurMax: 2,
+				// getBlur: (particle, metadata, index) => {
+				// 	const clientX = metadata.mouse.clientX ?? 0;
+				// 	const clientY = metadata.mouse.clientY ?? 0;
+				// 	const bannerWidth = metadata.bannerRect?.width ?? 0;
+				// 	const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
+				// 	const blur = (dist * 15) / bannerWidth;
+				// 	return blur;
+				// },
 			},
-		};
+			{
+				particleCount: 30,
+				sizeMin: 100,
+				sizeMax: 50,
 
+				minSpeedX: -0.5,
+				maxSpeedX: 0.5,
+				minSpeedY: -0.5,
+				maxSpeedY: 0.5,
+
+				blur: true,
+				blurMin: 5,
+				blurMax: 10,
+			}
+		];
+			
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview">
