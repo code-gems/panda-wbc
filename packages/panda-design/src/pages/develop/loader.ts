@@ -9,6 +9,7 @@ import "./content/panda-icon/content-page";
 import "./content/panda-multi-input/content-page";
 import "./content/panda-pagination/content-page";
 import "./content/panda-particle-banner/content-page";
+import "./content/panda-search/content-page";
 import "./content/panda-select/content-page";
 import "./content/panda-spinner/content-page";
 import "./content/panda-text-editor/content-page";

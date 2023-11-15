@@ -36,6 +36,7 @@
 		"@panda-wbc/panda-pagination": "workspace:*",
 		"@panda-wbc/panda-particle-banner": "workspace:*",
 		"@panda-wbc/panda-router": "workspace:*",
+		"@panda-wbc/panda-search": "workspace:*",
 		"@panda-wbc/panda-select": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-text-editor": "workspace:*",

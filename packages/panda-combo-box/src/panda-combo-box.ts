@@ -11,7 +11,7 @@ import "@panda-wbc/panda-icon";
 import "./panda-combo-box-overlay";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValues } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { findItemByLabel, getItemLabel, getItemValue, minValue } from "./utils/utils";
 
@@ -85,7 +85,23 @@ export class PandaComboBox extends LitElement {
 	@property({ type: String, attribute: true })
 	pattern: string | null = null;
 
+	/**
+	 * A regular expression that the key strokes are checked against.
+	 * If the key pressed by user do not match the pattern
+	 * combo box input will not be updated
+	 * 
+	 * [DEFAULT] null
+	 */
+	@property({ type: String, attribute: "allowed-char-pattern" })
+	allowedCharPattern: string | null = null;
+
+	@property({ type: Boolean, attribute: true })
+	mandatory: boolean = false;
+
 	// view props
+	@property({ type: Boolean })
+	private _mandatory: boolean = false;
+
 	@property({ type: String })
 	private _value: string = "";
 
@@ -112,6 +128,11 @@ export class PandaComboBox extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
+	protected firstUpdated(): void {
+		// update mandatory flag
+		this._evaluateMandatoryFlag();
+	}
+
 	protected updated(changedProps: PropertyValues): void {
 		if (changedProps.has("value") && this.value !== undefined) {
 			this._value = getItemLabel(
@@ -121,6 +142,8 @@ export class PandaComboBox extends LitElement {
 				this.itemLabelPath,
 				this.allowCustomValue
 			);
+			// update mandatory flag
+			this._evaluateMandatoryFlag();
 		}
 	}
 
@@ -151,13 +174,26 @@ export class PandaComboBox extends LitElement {
 			`;
 		}
 
+		// modifier class aggregation
+		const modCss: string[] = [];
+		if (this._invalid) {
+			modCss.push("invalid");
+		}
+		if (this._mandatory) {
+			modCss.push("mandatory");
+		}
+		if (this.disabled) {
+			modCss.push("disabled");
+		}
+
 		return html`
 			${labelHtml}
 			<div
 				id="combo-box"
-				class="combo-box ${this.disabled ? "disabled" : ""} ${this._invalid ? "invalid" : ""}"
+				class="combo-box ${modCss.join(" ")}"
 				part="combo-box"
 			>
+				<slot name="prefix"></slot>
 				<input
 					id="input-field"
 					class="input-field"
@@ -284,6 +320,17 @@ export class PandaComboBox extends LitElement {
 		this.dispatchEvent(event);
 	}
 
+	private _evaluateMandatoryFlag() {
+		// update mandatory flag
+		if (this.mandatory) {
+			if (this.value !== "" && this.value !== null && this.value !== undefined) {
+				this._mandatory = false;
+			} else {
+				this._mandatory = true;
+			}
+		}
+	}
+
 	// ================================================================================================================
 	// API ============================================================================================================
 	// ================================================================================================================
@@ -357,9 +404,9 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onKeyPress(e: KeyboardEvent) {
-		// check if pattern and prevent invalid input flag is set
-		if (this.pattern && this.preventInvalidInput) {
-			const regExp = new RegExp(this.pattern);
+		// check if allowed characters pattern is defined
+		if (this.allowedCharPattern) {
+			const regExp = new RegExp(this.allowedCharPattern);
 			// stop input if key does not match the pattern
 			if (!regExp.test(e.key)) {
 				e.preventDefault();
