@@ -14,7 +14,7 @@ export const getItemValue = (
 	if (typeof item === "object") {
 		// check if item value patch are defined
 		if (itemValuePath) {
-			return item[itemValuePath as string];
+			return item[itemValuePath];
 		} else {
 			return item.value;
 		}
@@ -28,6 +28,26 @@ export const getItemValue = (
  * @returns {String} label associated with selected value
  */
 export const getItemLabel = (
+	item: PandaComboBoxItem,
+	itemLabelPath: string | null
+): string => {
+	if (typeof item === "object") {
+		// check if item value patch are defined
+		if (itemLabelPath) {
+			return item[itemLabelPath];
+		} else {
+			return item.label as string;
+		}
+	} else {
+		return item;
+	}
+}
+
+/**
+ * Get label of selected item
+ * @returns {String} label associated with selected value
+ */
+export const getLabelFromItems = (
 	items: PandaComboBoxItem[] | any[] | null | undefined,
 	value: string | number | null,
 	itemValuePath: string | null,

@@ -11,9 +11,9 @@ import "@panda-wbc/panda-icon";
 import "./panda-combo-box-overlay";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValues, PropertyValueMap } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { findItemByLabel, getItemLabel, getItemValue, minValue } from "./utils/utils";
+import { findItemByLabel, getLabelFromItems, getItemValue, minValue } from "./utils/utils";
 
 @customElement("panda-combo-box")
 export class PandaComboBox extends LitElement {
@@ -42,9 +42,6 @@ export class PandaComboBox extends LitElement {
 	@property({ type: Boolean, attribute: "allow-custom-value" })
 	allowCustomValue: boolean = false;
 
-	@property({ type: Boolean, attribute: "prevent-invalid-input" })
-	preventInvalidInput: boolean = false;
-
 	@property({ type: Boolean, attribute: "disable-auto-open" })
 	disableAutoOpen: boolean = false;
 
@@ -65,6 +62,14 @@ export class PandaComboBox extends LitElement {
 
 	@property({ type: String, attribute: "spinner-type" })
 	spinnerType: string = "dots";
+
+	/**
+	 * Custom filtering method. When provided, drop down items will be filtered against
+	 * using user provided search text
+	 * 
+	 * [DEFAULT] default filter will list all items that include search text in the item label
+	 */
+	filter!: (searchText: string | number, items: PandaComboBoxItem[] | any[]) => PandaComboBoxItem[] | any[];
 	
 	/**
 	 * Status property, indicating if the overlay is shown.
@@ -135,7 +140,7 @@ export class PandaComboBox extends LitElement {
 
 	protected updated(changedProps: PropertyValues): void {
 		if (changedProps.has("value") && this.value !== undefined) {
-			this._value = getItemLabel(
+			this._value = getLabelFromItems(
 				this.items,
 				this.value,
 				this.itemValuePath,
@@ -260,6 +265,7 @@ export class PandaComboBox extends LitElement {
 			this._overlayEl.itemLabelPath = this.itemLabelPath;
 			this._overlayEl.itemValuePath = this.itemValuePath;
 			this._overlayEl.parentDetails = this._getElementDetails();
+			this._overlayEl.filter = this.filter;
 			// append element to document body
 			document.body.appendChild(this._overlayEl);
 			this.opened = true;
@@ -296,7 +302,7 @@ export class PandaComboBox extends LitElement {
 			// check if there is a match
 			if (_match) {
 				this.value = getItemValue(_match, this.itemValuePath);
-				this._inputFieldEl.value = getItemLabel(
+				this._inputFieldEl.value = getLabelFromItems(
 					this.items,
 					this.value,
 					this.itemValuePath,
@@ -418,7 +424,7 @@ export class PandaComboBox extends LitElement {
 	private _onSelect(e: PandaComboBoxChangeEvent) {
 		// update value
 		this.value = e.detail.value;
-		this._inputFieldEl.value = getItemLabel(
+		this._inputFieldEl.value = getLabelFromItems(
 			this.items,
 			this.value,
 			this.itemValuePath,
@@ -431,7 +437,7 @@ export class PandaComboBox extends LitElement {
 	private _onChange(e: PandaComboBoxChangeEvent) {
 		// update value
 		this.value = e.detail.value;
-		this._inputFieldEl.value = getItemLabel(
+		this._inputFieldEl.value = getLabelFromItems(
 			this.items,
 			this.value,
 			this.itemValuePath,

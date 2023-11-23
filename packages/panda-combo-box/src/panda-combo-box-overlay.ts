@@ -15,9 +15,9 @@ import { styles } from "./styles/overlay-styles";
 import { LitElement, html, PropertyValues, TemplateResult, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import {
-	getItemLabel,
 	getItemValue,
-	minValue
+	minValue,
+	getItemLabel,
 } from "./utils/utils";
 
 @customElement("panda-combo-box-overlay")
@@ -31,7 +31,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	@property({ type: String })
 	value: string | number | null = null;
-	
+
 	@property({ type: Array })
 	items: PandaComboBoxItem[] | null | undefined = [];
 
@@ -46,12 +46,14 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	parentDetails!: ElementDetails;
 
+	filter!: (searchText: string | number, items: PandaComboBoxItem[] | any[]) => PandaComboBoxItem[] | any[];
+
 	// view props
 	private _initialized: boolean = false;
 
 	@property({ type: Array })
 	private _parsedItems: ParsedComboBoxItem[] = [];
-	
+
 	@property({ type: Number })
 	private _selectedItemIndex!: number | null;
 
@@ -72,7 +74,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-	
+
 	protected firstUpdated(_changedProperties: PropertyValues): void {
 		// expand overlay container to include scrollable area
 		this._overlayContEl.style.width = `${document.body.scrollWidth}px`;
@@ -113,7 +115,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render(): TemplateResult  {
+	protected render(): TemplateResult {
 		return html`
 			<div
 				id="overlay-cont"
@@ -140,8 +142,8 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	private _renderDropdown(): TemplateResult {
 		const itemsHtml: TemplateResult[] = [];
-			
-		this._parsedItems.forEach(({ label, value, active}) => {
+
+		this._parsedItems.forEach(({ label, value, active }) => {
 			itemsHtml.push(html`
 				<div
 					class="item ${active ? "active" : ""}"
@@ -192,7 +194,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 			// set default scroll to view behavior
 			let _scrollIntoViewBlock: ScrollLogicalPosition = "start";
-	
+
 			// check if we have enough space at the bottom of the combo-box to display dropdown
 			if (overlayTop - window.scrollY + overlayRect.height > window.innerHeight) {
 				// correct dropdown height if it protrude out the visible space
@@ -238,35 +240,57 @@ export class PandaComboBoxOverlay extends LitElement {
 	private _getSelectedItemIndex(): void {
 		this._selectedItemIndex = this._parsedItems.find((item) => item.value === this.value)?.index ?? null;
 	}
-	
+
+	/** Filter items against search string using includes condition */	
+	private _filterItemsWithIncludes(searchText: string, items: PandaComboBoxItem[] | any[]): PandaComboBoxItem[] | any[] {
+		const filteredItems: PandaComboBoxItem[] | any[] = [];
+
+		items.forEach((item) => {
+			const _label = getItemLabel(item, this.itemLabelPath);
+			// filter items
+			if (_label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
+				filteredItems.push({ ...item });
+			}
+		});
+
+		return filteredItems;
+	}
+
 	/**
 	 * Parse provided items for further processing.
 	 * Filter items if user entered searching text.
 	*/
 	private _parseComboBoxItems(): void {
 		this._parsedItems = [];
-		let index = 0; 
+		let _items = [];
+		let index = 0;
 
-		if (this.items) {
-			this.items.forEach((item) => {
-				const _value = getItemValue(item, this.itemValuePath);
-				const _label = getItemLabel(
-					this.items,
-					_value,
-					this.itemValuePath,
-					this.itemLabelPath
-				);
-
-				// check if user is searching and if we have matches
-				if (!this.searchText || _label.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())) {
-					this._parsedItems.push({
-						index,
-						active: this.value === _value,
-						value: _value,
-						label: _label,
-					});
-					index++;
+		// check if we have items to filter and parse
+		if (this.items?.length) {
+			// check if user is searching for items
+			if (this.searchText) {
+				// check if custom filter is provided and it's a function
+				if (this.filter && typeof this.filter === "function") {
+					_items = this.filter(this.searchText, this.items);
+				} else {
+					_items = this._filterItemsWithIncludes(this.searchText, this.items);
 				}
+			} else {
+				_items = this.items;
+			}
+
+			// parse items
+			_items.forEach((item) => {
+				const _value = getItemValue(item, this.itemValuePath);
+				const _label = getItemLabel(item, this.itemLabelPath);
+				// check if user is searching and if we have matches
+				this._parsedItems.push({
+					index,
+					active: this.value === _value,
+					value: _value,
+					label: _label,
+				});
+				index++;
 			});
 		}
 	}
@@ -285,12 +309,6 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _selectPreviousItem(): void {
-		console.log("%c _selectPreviousItem", "font-size: 24px; color: green;");
-		console.log("%c _initialized", "font-size: 24px; color: green;", this._initialized);
-		console.log("%c items", "font-size: 24px; color: green;", this.items);
-		console.log("%c value", "font-size: 24px; color: green;", this.value);
-		console.log("%c selectedItemIndex", "font-size: 24px; color: green;", this._selectedItemIndex);
-
 		if (!this._initialized) {
 			this._initialized = true;
 			return;
@@ -308,12 +326,6 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _selectNextItem(): void {
-		console.log("%c _selectNextItem", "font-size: 24px; color: green;");
-		console.log("%c _initialized", "font-size: 24px; color: green;", this._initialized);
-		console.log("%c items", "font-size: 24px; color: green;", this.items);
-		console.log("%c value", "font-size: 24px; color: green;", this.value);
-		console.log("%c selectedItemIndex", "font-size: 24px; color: green;", this._selectedItemIndex);
-
 		if (!this._initialized) {
 			this._initialized = true;
 			return;
@@ -334,7 +346,7 @@ export class PandaComboBoxOverlay extends LitElement {
 		const selectedItem = this._parsedItems.find((item) => item.index === index);
 		this.value = selectedItem?.value;
 		this._updateActiveItem();
-		console.log("%c [overlay] _selectItemByIndex", "font-size: 24px; color: red;", selectedItem?.value);
+
 		const event = new CustomEvent("select", {
 			detail: {
 				value: selectedItem?.value
@@ -345,7 +357,7 @@ export class PandaComboBoxOverlay extends LitElement {
 		// show active element after change
 		this._showActiveElement();
 	}
-	
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
@@ -384,4 +396,3 @@ declare global {
 		"panda-combo-box-overlay": PandaComboBoxOverlay;
 	}
 }
-	

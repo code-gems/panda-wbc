@@ -1,5 +1,5 @@
 // types
-import { PageCategory } from "panda-design-typings";
+import { ComponentEventDetails, ComponentPropertyDetails, PageCategory } from "panda-design-typings";
 
 // styles
 import { styles } from "./styles/styles";
@@ -44,6 +44,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		return [
 			styles,
 			uiComponents.banner,
+			uiComponents.table,
 			uiComponents.sample,
 			uiComponents.form,
 			uiComponents.appLayout,
@@ -54,6 +55,31 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	// page details
 	pageId: string = pageId;
+
+	private _componentProperties: ComponentPropertyDetails[] = [
+		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
+		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
+		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
+		{ name: "placeholder", type: "string", defaultValue: "-", description: "Text to show in case no value is selected" },
+		{ name: "theme", type: "string", defaultValue: "-", description: "Color theme for a component" },
+		{ name: "spinnerType", type: "string", defaultValue: "dots", description: "Spinner animation type for working state" },
+		{ name: "itemLabelPath", type: "string", defaultValue: "label", description: "Property path to the item's label" },
+		{ name: "itemValuePath", type: "string", defaultValue: "value", description: "Property path to the item's value" },
+		{ name: "disableAutoOpen", type: "boolean", defaultValue: "false", description: "Determines weather component options will be shown only upon clicking dropdown button. Incompatible with hideDropdownButton!" },
+		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
+		{ name: "working", type: "boolean", defaultValue: "false", description: "Sets working status for the component" },
+		{ name: "mandatory", type: "boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
+		
+		{ name: "autoselect", type: "boolean", defaultValue: "false", description: "" },
+		{ name: "allowCustomValue", type: "boolean", defaultValue: "false", description: "" },
+		{ name: "pattern", type: "string", defaultValue: "-", description: "" },
+		{ name: "allowedCharPattern", type: "string", defaultValue: "false", description: "" },
+		{ name: "filter", type: "function", defaultValue: "[filters items that contain searched text]", description: "Custom filter logic to be used to filter dropdown items" },
+	];
+
+	private _componentEvents: ComponentEventDetails[] = [
+		{ name: "change", returnType: "PandaComboBoxChangeEvent", description: "" }
+	];
 
 	// view props
 	@property({ type: String })
@@ -113,6 +139,17 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
+
+		const customFilter = (searchText: string, items: any[] = []): any[] => {
+			const filteredItems: any[] = [];
+			items.forEach((item) => {
+				if ((item.name as string).toLocaleLowerCase().startsWith(searchText.toLocaleLowerCase())) {
+					filteredItems.push(item);
+				}
+			});
+			return filteredItems;
+		}
+
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview">
@@ -170,6 +207,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 											@change="${this._onChange}"
 											item-label-path="name"
 											item-value-path="code"
+											.filter="${customFilter}"
 											autoselect
 										>
 										</panda-combo-box>
@@ -216,10 +254,50 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 						${usageSnippet}
 					</code-sample>
 				</div>
+
+				${this._renderComponentPropertiesSection()}
+				${this._renderComponentEventsSection()}
 			</div>
 		`;
 	}
 		
+	private _renderComponentPropertiesSection(): TemplateResult {
+		return html`
+			<!-- COMPONENT PROPERTIES -->
+			<div class="section">
+				<h3>Properties</h3>
+				<p>
+					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
+					and they are frequently employed for data binding purposes. 
+				</p>
+				<p>
+					Here is a compilation of the supported properties/attributes for this particular component:
+				</p>
+				
+				${this._renderComponentPropertyTable(this._componentProperties)}
+			</div>
+		`;
+	}
+
+	private _renderComponentEventsSection(): TemplateResult {
+		return html`
+			<!-- COMPONENT PROPERTIES -->
+			<div class="section">
+				<h3>Events</h3>
+				<p>
+					Component events are instrumental in elevating the interactivity and adaptability of software applications. 
+					These events serve as carefully designed triggers that facilitate communication between the component and the application, 
+					frequently enabling the exchange of data and actions across diverse user interface elements.
+				</p>
+				<p>
+					See list of events provided below:
+				</p>
+				
+				${this._renderComponentEventsTable(this._componentEvents)}
+			</div>
+		`;
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================

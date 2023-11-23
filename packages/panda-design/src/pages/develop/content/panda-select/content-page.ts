@@ -62,9 +62,9 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
 		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
-		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above" },
+		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
 		{ name: "placeholder", type: "string", defaultValue: "-", description: "Text to show in case no value is selected" },
-		{ name: "theme", type: "string", defaultValue: "-", description: "Theme to be applied to a component" },
+		{ name: "theme", type: "string", defaultValue: "-", description: "Color theme for a component" },
 		{ name: "spinnerType", type: "string", defaultValue: "dots", description: "Spinner animation type for working state" },
 		{ name: "itemLabelPath", type: "string", defaultValue: "label", description: "Property path to the item's label" },
 		{ name: "itemValuePath", type: "string", defaultValue: "value", description: "Property path to the item's value" },
