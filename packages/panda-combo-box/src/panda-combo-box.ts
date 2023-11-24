@@ -297,13 +297,25 @@ export class PandaComboBox extends LitElement {
 			this.value = null;
 			this._inputFieldEl.value = "";
 		} else if (this.items) {
+			let _items: PandaComboBoxItem[] | any[] = [];
+			// check if custom filter is defined
+			if (
+				this._searchText !== null &&
+				this._searchText !== undefined &&
+				this.filter &&
+				typeof this.filter === "function"
+			) {
+				_items = this.filter(this._searchText, this.items)
+			} else {
+				_items = this.items;
+			}
 			// search for entered value among all items
-			_match = this.items.find((item) => findItemByLabel(item, this.itemLabelPath, _inputValue));
+			_match = _items.find((item) => findItemByLabel(item, this.itemLabelPath, _inputValue));
 			// check if there is a match
 			if (_match) {
 				this.value = getItemValue(_match, this.itemValuePath);
 				this._inputFieldEl.value = getLabelFromItems(
-					this.items,
+					_items,
 					this.value,
 					this.itemValuePath,
 					this.itemLabelPath,
@@ -324,6 +336,8 @@ export class PandaComboBox extends LitElement {
 			}
 		});
 		this.dispatchEvent(event);
+		// clear search text
+		this._searchText = null;
 	}
 
 	private _evaluateMandatoryFlag() {
@@ -377,6 +391,7 @@ export class PandaComboBox extends LitElement {
 	private _onInput(value: string) {
 		// update search text for overlay
 		if (this._overlayEl) {
+			this._searchText = value;
 			this._overlayEl.searchText = value;
 		}
 		// open dropdown if closed

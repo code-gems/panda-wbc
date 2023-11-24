@@ -97,10 +97,10 @@ export const getLabelFromItems = (
 }
 
 export const findItemByLabel = (
-	item: PandaComboBoxItem,
+	item: PandaComboBoxItem | string | number,
 	itemLabelPath: string | null,
 	searchText: string
-): PandaComboBoxItem | null=> {
+): PandaComboBoxItem | string | number | null=> {
 	let _label: string;
 
 	// check if item is not a primitive

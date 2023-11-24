@@ -249,7 +249,7 @@ export class PandaComboBoxOverlay extends LitElement {
 			const _label = getItemLabel(item, this.itemLabelPath);
 			// filter items
 			if (_label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
-				filteredItems.push({ ...item });
+				filteredItems.push(item);
 			}
 		});
 
