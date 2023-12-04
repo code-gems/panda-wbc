@@ -1,11 +1,11 @@
 // types
-import { MousePosition, PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata } from "../index";
+import { MousePosition, PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata, PandaParticleColor } from "../index";
 
 // styles
 import { styles } from "./styles/styles";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValues } from "lit";
+import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { getDefaultBannerConfig, getRandomInt, minMax } from "./utils/utils";
 import { debounce } from "@panda-wbc/panda-core";
@@ -24,7 +24,9 @@ class PandaParticleBanner extends LitElement {
 	verbose: boolean = false;
 
 	// private props
-	private _config: PandaParticleBannerConfig[] = [];
+	private _config: PandaParticleBannerConfig = {
+		particleGroup: [],
+	};
 
 	private _ctx!: CanvasRenderingContext2D;
 
@@ -122,7 +124,7 @@ class PandaParticleBanner extends LitElement {
 	private _initBanner(): void {
 		setTimeout(() => {
 			// parse all banner configs and generate particle groups
-			this._config.forEach((config) => {
+			this._config.particleGroup.forEach((config) => {
 				const {
 					particleCount,
 
@@ -146,7 +148,7 @@ class PandaParticleBanner extends LitElement {
 					// generate size
 					const size = getRandomInt(sizeMax, sizeMin, 0);
 					// generate color
-					const color = `hsl(${Math.random() * 40 + 190}deg 70% 80% / 70%)`;
+					const color = `hsl(${Math.random() * 40 + 10}deg 70% 80% / 70%)`;
 					// generate blur
 					let blur = 0;
 					if (config.blur) {
@@ -206,24 +208,49 @@ class PandaParticleBanner extends LitElement {
 	private _draw() {
 		// clean up canvas
 		this._ctx.clearRect(0, 0, this._canvasEl.width, this._canvasEl.height);
+		
 		// fill up background color
-		this._ctx.fillStyle = "white";
-		this._ctx.fillRect(0, 0, this._canvasEl.width, this._canvasEl.height);
+		if (this._config.background?.color) {
+			this._ctx.fillStyle = this._config.background.color;
+			this._ctx.fillRect(0, 0, this._canvasEl.width, this._canvasEl.height);
+		}
 
 		// draw all particle groups
-		this._particleGroups.forEach((particleGroup, groupIndex) => {
+		this._particleGroups.forEach((particleList, particleIndex) => {
 			// find config related to particle group
-			const bannerConfig = this._config[groupIndex];
+			const groupConfig = this._config.particleGroup[particleIndex];
 			// get group behavior props from config
 			const {
 				walls = false,
 				collisions = false,
+				// connection
 				connect = false,
 				connectionDistance = 100,
-				interactive = false,
-			} = bannerConfig;
+				connectionLineColor = "#000",
+				connectionLineDash,
+				getConnectionLineBlur,
+				getConnectionLineOpacity,
+				getConnectionLineColor,
+				getConnectionLineDashOffset,
 
-			particleGroup.forEach((particle, index) => {
+				// blur
+				getBlur,
+				
+				interactive = false,
+
+			} = groupConfig;
+
+			// init mouse offset
+			let _offsetX = 0;
+			let _offsetY = 0;
+			// assign mouse offset if interactive
+			if (!walls && interactive) {
+				_offsetX = this._offsetX;
+				_offsetY = this._offsetY;
+			}
+
+			// render particles
+			particleList.forEach((particle, index) => {
 				let {
 					x,
 					y,
@@ -245,70 +272,97 @@ class PandaParticleBanner extends LitElement {
 						x + size >= this._canvasEl.width && speedX > 0 ||
 						x - size <= 0 && speedX < 0
 					) {
-						particle.speedX = particle.speedX * -1; // flip the speed value
+						particle.speedX = particle.speedX * -1; // bounce of the wall, flip the speed value
 					}
 
 				} else {
 					// check if particle moved out of the view
-					if (x - size > this._canvasEl.width + this._offsetX && speedX > 0) {
-						x = -size + this._offsetX;
+					if (x - size > this._canvasEl.width + _offsetX && speedX > 0) {
+						x = -size + _offsetX;
 					}
-					if (x + size < 0 + this._offsetX && speedX < 0) {
-						x = this._canvasEl.width + size + this._offsetX;
+					if (x + size < 0 + _offsetX && speedX < 0) {
+						x = this._canvasEl.width + size + _offsetX;
 					}
 				}
 
 				// update position Y
-				y = y + speedY;
+				y += speedY;
 				if (walls) {
 					if (
 						y + size >= this._canvasEl.height && speedY > 0 ||
 						y - size <= 0 && speedY < 0
 					) {
-						particle.speedY = particle.speedY * -1; // flip the speed value
+						particle.speedY = particle.speedY * -1; // bounce of the wall, flip the speed value
 					}
 				} else {
 					// check if particle moved out of the view
-					if (y - size > this._canvasEl.height + this._offsetY && speedY > 0) {
-						y = -size + this._offsetY;
+					if (y - size > this._canvasEl.height + _offsetY && speedY > 0) {
+						y = -size + _offsetY;
 					}
-					if (y + size < 0 + this._offsetY && speedY < 0) {
-						y = this._canvasEl.height + size + this._offsetY;
+					if (y + size < 0 + _offsetY && speedY < 0) {
+						y = this._canvasEl.height + size + _offsetY;
 					}
 				}
 
-				for (let i = index + 1; i < particleGroup.length; i++) {
-					const particleA = particle;
-					const particleB = particleGroup[i];
+				for (let i = index + 1; i < particleList.length; i++) {
+					const particleB = particleList[i];
 
 					// calculate a distance to other particles
-					const dist = Math.floor(Math.sqrt(Math.pow((particleB.x - particleA.x), 2) + Math.pow((particleB.y - particleA.y), 2)));
+					const dist = Math.floor(Math.sqrt(Math.pow((particleB.x - x), 2) + Math.pow((particleB.y - y), 2)));
 
+					// render connection line
 					if (connect && dist <= connectionDistance) {
+						let _connectionLineColor = connectionLineColor;
+						let _connectionLineBlur = 0;
+						let _connectionLineOpacity = 100;
+
 						this._ctx.beginPath();
-						this._ctx.moveTo(x, y);
-						this._ctx.lineTo(particleB.x, particleB.y);
+						// reset blur
 						this._ctx.filter = `blur(0px)`;
-						this._ctx.strokeStyle = "#c1c1c1";
+
+						// check if blur function is declared
+						if (getConnectionLineBlur !== undefined && typeof getConnectionLineBlur === "function") {
+							_connectionLineBlur = Number(getConnectionLineBlur(dist));
+							// set connection line blur
+							this._ctx.filter = `blur(${_connectionLineBlur}px)`;
+						}
+						
+						// check if opacity/alpha function is declared
+						if (getConnectionLineOpacity !== undefined && typeof getConnectionLineOpacity === "function") {
+							_connectionLineOpacity = Number(getConnectionLineOpacity(dist));
+							// set opacity
+							// TBD
+						}
+						
+						// check if color function is declared
+						if (getConnectionLineColor !== undefined && typeof getConnectionLineColor === "function") {
+							_connectionLineColor = getConnectionLineColor(dist);
+						}
+
+						// check if line dash offset function is declared
+						if (getConnectionLineDashOffset !== undefined && typeof getConnectionLineDashOffset === "function") {
+							const lineDashOffset = getConnectionLineDashOffset(dist);
+							this._ctx.lineDashOffset = lineDashOffset;
+						}
+						
+						// set connection line dash style
+						if (connectionLineDash) {
+							this._ctx.setLineDash(connectionLineDash);
+						}
+
+						this._ctx.moveTo(x - _offsetX, y - _offsetY);
+						this._ctx.lineTo(particleB.x - _offsetX, particleB.y - _offsetY);
+						this._ctx.strokeStyle = _connectionLineColor;
 						this._ctx.stroke();
 						this._ctx.closePath();
 					}
 				}
 
-				// update new position
-				particle.x = x;
-				particle.y = y;
-
-				// apply position offset
-				if (interactive) {
-					x = x - this._offsetX;
-					y = y - this._offsetY;
-				}
-
+				// draw particle
 				this._ctx.beginPath();
 				this._ctx.arc(
-					x,
-					y,
+					x - _offsetX,
+					y - _offsetY,
 					size,
 					0,
 					Math.PI * 2,
@@ -317,9 +371,9 @@ class PandaParticleBanner extends LitElement {
 				
 				// reset previous blur
 				this._ctx.filter = `blur(0px)`;
-				if (bannerConfig.blur) {
-					if (bannerConfig.getBlur !== undefined && typeof bannerConfig.getBlur === "function") {
-						blur = bannerConfig.getBlur(particle, this._metadata, index);
+				if (groupConfig.blur) {
+					if (getBlur !== undefined && typeof getBlur === "function") {
+						blur = getBlur(particle, this._metadata, index);
 					}
 					this._ctx.filter = `blur(${blur}px)`;
 				}
@@ -327,16 +381,21 @@ class PandaParticleBanner extends LitElement {
 				this._ctx.fillStyle = color;
 				this._ctx.fill();
 				this._ctx.closePath();
+
+				// update new position
+				particle.x = x;
+				particle.y = y;
 			});
 		});
+
+		// draw another frame
+		if (!this._stopAnimation) {
+			window.requestAnimationFrame(this._draw.bind(this));
+		}
 	}
 
 	private _animate(): void {
-		this._animationTimer = setInterval(() => {
-			if (!this._stopAnimation) {
-				this._draw();
-			}
-		}, 26);
+		window.requestAnimationFrame(this._draw.bind(this));
 	}
 
 	/**
@@ -344,23 +403,17 @@ class PandaParticleBanner extends LitElement {
 	 */
 	private _validateConfig() {
 		// parse banner config
-		if (Array.isArray(this.config)) {
-			this.config.forEach((config) => {
-				this._config.push({
-					...getDefaultBannerConfig(),
-					...config,
-				});
-			});
-		} else {
-			this._config.push({
+		this._config = {
+			particleGroup: {
 				...getDefaultBannerConfig(),
-				...this.config,
-			});
-		}
+			},
+			...this.config,
+		};
+
 		console.warn("%c ✨ [PANDA PARTICLE BANNER]", "font-size: 16px;", this._config);
 
 		// validate all config groups
-		this._config.forEach((config) => {
+		this._config.particleGroup.forEach((config) => {
 			// deconstruct banner config
 			const {
 				particleCount,
@@ -372,6 +425,14 @@ class PandaParticleBanner extends LitElement {
 				blurMin,
 				blurMax,
 				getBlur,
+
+				// connection lines
+				connectionLineDash,
+				connectionLineColor,
+				getConnectionLineBlur,
+				getConnectionLineColor,
+				getConnectionLineOpacity,
+				getConnectionLineDashOffset,
 			} = config;
 
 			const warn = (message: string): void => {
@@ -381,7 +442,7 @@ class PandaParticleBanner extends LitElement {
 			}
 
 			if (walls && interactive) {
-				warn("'walls' and 'interactive' are incompatible. 'interactive' behavior will be disabled.");
+				warn("'walls' and 'interactive' are features incompatible. 'interactive' behavior will be disabled.");
 			}
 
 			if (isNaN(mouseOffsetXSensitivity as number)) {
@@ -415,7 +476,50 @@ class PandaParticleBanner extends LitElement {
 			if (getBlur !== undefined && !blur) {
 				warn("'getBlur' callback is present but 'blur' feature is disabled. Add 'blur: true' to your banner config.");
 			}
+
+			if (getConnectionLineBlur !== undefined && typeof getConnectionLineBlur !== "function") {
+				warn("'getConnectionLineBlur' callback has to be a function that returns a number.");
+			}
+
+			if (getConnectionLineColor !== undefined && typeof getConnectionLineColor !== "function") {
+				warn("'getConnectionLineColor' callback has to be a function that returns a color string.");
+			}
+
+			if (connectionLineColor !== null && getConnectionLineColor !== undefined) {
+				warn("'getConnectionLineColor' callback is present, 'connectionLineColor' string will be overridden by callback value.");
+			}
+
+			if (getConnectionLineDashOffset !== undefined && typeof getConnectionLineDashOffset !== "function") {
+				warn("'getConnectionLineDashOffset' callback has to be a function that returns a number.");
+			}
+
+			if (connectionLineDash === undefined && getConnectionLineDashOffset !== undefined) {
+				warn("'getConnectionLineDashOffset' callback is present but 'connectionLineDash' not is declared. 'getConnectionLineDashOffset' will not take effect. Add 'connectionLineDash: [5, 5]' to banner config.")
+			}
 		});
+	}
+
+	private _parseColor(color: string): PandaParticleColor {
+		// validate color
+		if (color !== null && color !== undefined && typeof color === "string") {
+			if (color.includes("hls")) {
+
+			}
+
+			return {
+				hue: 360,
+				saturation: 100,
+				light: 100,
+				opacity: 100,
+			};
+		}
+
+		return {
+			hue: 360,
+			saturation: 100,
+			light: 100,
+			opacity: 100,
+		};
 	}
 
 	// ================================================================================================================
@@ -423,14 +527,14 @@ class PandaParticleBanner extends LitElement {
 	// ================================================================================================================
 
 	private _onMouseMove(e: MouseEvent) {
-		const bannerTop: number = this._metadata.bannerRect?.top ?? 0;
-		const bannerLeft: number = this._metadata.bannerRect?.left ?? 0;
-		const bannerRight: number = this._metadata.bannerRect?.right ?? 0;
-		const bannerBottom: number = this._metadata.bannerRect?.bottom ?? 0;
-		this._metadata.mouse.clientY = minMax(e.clientY - bannerTop, 0, bannerBottom);
-		this._metadata.mouse.clientX = minMax(e.clientX - bannerLeft, 0, bannerRight);
-
-		if (this.config.mouseOffset && !this.config.walls) {
+		if (this._bannerRect) {
+			const bannerTop: number = this._metadata.bannerRect?.top ?? 0;
+			const bannerLeft: number = this._metadata.bannerRect?.left ?? 0;
+			const bannerRight: number = this._metadata.bannerRect?.right ?? 0;
+			const bannerBottom: number = this._metadata.bannerRect?.bottom ?? 0;
+			this._metadata.mouse.clientY = minMax(e.clientY - bannerTop, 0, bannerBottom);
+			this._metadata.mouse.clientX = minMax(e.clientX - bannerLeft, 0, bannerRight);
+	
 			const sensitivityX: number = Number(this.config.mouseOffsetXSensitivity) || 100;
 			const sensitivityY: number = Number(this.config.mouseOffsetYSensitivity) || 100;
 			this._offsetX = Math.round(((e.clientX - this._bannerRect.left) * sensitivityX) / (this._canvasEl.width)) - (sensitivityX / 2);

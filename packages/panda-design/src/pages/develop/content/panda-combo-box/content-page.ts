@@ -59,26 +59,26 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
 		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
-		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
-		{ name: "placeholder", type: "string", defaultValue: "-", description: "Text to show in case no value is selected" },
-		{ name: "theme", type: "string", defaultValue: "-", description: "Color theme for a component" },
-		{ name: "spinnerType", type: "string", defaultValue: "dots", description: "Spinner animation type for working state" },
-		{ name: "itemLabelPath", type: "string", defaultValue: "label", description: "Property path to the item's label" },
-		{ name: "itemValuePath", type: "string", defaultValue: "value", description: "Property path to the item's value" },
-		{ name: "disableAutoOpen", type: "boolean", defaultValue: "false", description: "Determines weather component options will be shown only upon clicking dropdown button. Incompatible with hideDropdownButton!" },
-		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
-		{ name: "working", type: "boolean", defaultValue: "false", description: "Sets working status for the component" },
-		{ name: "mandatory", type: "boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
+		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component" },
+		{ name: "placeholder", type: "String", defaultValue: "-", description: "Text to show in case no value is selected" },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Color theme for a component" },
+		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for working state" },
+		{ name: "itemLabelPath", type: "String", defaultValue: "label", description: "Property path to the item's label" },
+		{ name: "itemValuePath", type: "String", defaultValue: "value", description: "Property path to the item's value" },
+		{ name: "disableAutoOpen", type: "Boolean", defaultValue: "false", description: "Determines weather component options will be shown only upon clicking dropdown button. Incompatible with hideDropdownButton!" },
+		{ name: "disabled", type: "Boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
+		{ name: "working", type: "Boolean", defaultValue: "false", description: "Sets working status for the component" },
+		{ name: "mandatory", type: "Boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
 		
-		{ name: "autoselect", type: "boolean", defaultValue: "false", description: "" },
-		{ name: "allowCustomValue", type: "boolean", defaultValue: "false", description: "" },
-		{ name: "pattern", type: "string", defaultValue: "-", description: "" },
-		{ name: "allowedCharPattern", type: "string", defaultValue: "false", description: "" },
-		{ name: "filter", type: "function", defaultValue: "[filters items that contain searched text]", description: "Custom filter logic to be used to filter dropdown items" },
+		{ name: "autoselect", type: "Boolean", defaultValue: "false", description: "Select component value when given focus." },
+		{ name: "allowCustomValue", type: "Boolean", defaultValue: "false", description: "Allow entering values which are not specified on within the preset." },
+		{ name: "pattern", type: "String", defaultValue: "-", description: "A regular expression that the value is checked against. The pattern must match the entire value. If value entered by user do not match the pattern component will be marked as invalid." },
+		{ name: "allowedCharPattern", type: "String", defaultValue: "-", description: "Regular expression that the key strokes are checked against. If the key pressed by user do not match the pattern combo box input will not be updated." },
+		{ name: "filter", type: "Function", defaultValue: "[filters items that contain searched text]", description: "Custom filter logic to be used to filter dropdown items" },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
-		{ name: "change", returnType: "PandaComboBoxChangeEvent", description: "" }
+		{ name: "@change", returnType: "PandaComboBoxChangeEvent", description: "Triggered when user changes component selected value." }
 	];
 
 	// view props

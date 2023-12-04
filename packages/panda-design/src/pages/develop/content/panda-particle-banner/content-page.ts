@@ -59,39 +59,39 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
-		const bannerConfig: PandaParticleBannerConfig = {
-			particleCount: 80,
-			interactive: true,
-			mouseOffsetXSensitivity: 10,
-			mouseOffsetYSensitivity: 10,
+		// const bannerConfig: PandaParticleBannerConfig = {
+		// 	particleCount: 80,
+		// 	interactive: true,
+		// 	mouseOffsetXSensitivity: 10,
+		// 	mouseOffsetYSensitivity: 10,
 
-			minSpeedX: -0.1,
-			maxSpeedX: 0.1,
-			minSpeedY: -0.1,
-			maxSpeedY: 0.1,
+		// 	minSpeedX: -0.1,
+		// 	maxSpeedX: 0.1,
+		// 	minSpeedY: -0.1,
+		// 	maxSpeedY: 0.1,
 
-			sizeMin: 5,
-			sizeMax: 100,
+		// 	sizeMin: 5,
+		// 	sizeMax: 100,
 
-			blur: true,
-			blurMin: 5,
-			blurMax: 10,
-		};
+		// 	blur: true,
+		// 	blurMin: 5,
+		// 	blurMax: 10,
+		// };
 
 		return html`banner`;
-		return html`
-			<div class="banner small">
-				<panda-particle-banner
-					.config="${bannerConfig}"
+		// return html`
+		// 	<div class="banner small">
+		// 		<panda-particle-banner
+		// 			.config="${bannerConfig}"
 					
-				>
-					<div>
-						<h1>PARTICLE BANNER</h1>
-						<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-					</div>
-				</panda-particle-banner>
-			</div>
-		`;
+		// 		>
+		// 			<div>
+		// 				<h1>PARTICLE BANNER</h1>
+		// 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
+		// 			</div>
+		// 		</panda-particle-banner>
+		// 	</div>
+		// `;
 	}
 
 	_renderPageContent(): TemplateResult {
@@ -102,50 +102,77 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 
 
 	private _renderOverviewSection(): TemplateResult {
-		const bannerConfig: PandaParticleBannerConfig[] = [
-			{
-				particleCount: 50,
-				// walls: true,
-				// connect: true,
-				// connectionDistance: 50,
-				// interactive: true,
-				// mouseOffsetXSensitivity: 10,
-				
-				sizeMin: 10,
-				sizeMax: 3,
-				
-				minSpeedX: -2,
-				maxSpeedX: 2,
-				minSpeedY: -2,
-				maxSpeedY: 2,
-				
-				blur: true,
-				blurMin: 1,
-				blurMax: 2,
-				// getBlur: (particle, metadata, index) => {
-				// 	const clientX = metadata.mouse.clientX ?? 0;
-				// 	const clientY = metadata.mouse.clientY ?? 0;
-				// 	const bannerWidth = metadata.bannerRect?.width ?? 0;
-				// 	const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
-				// 	const blur = (dist * 15) / bannerWidth;
-				// 	return blur;
-				// },
-			},
-			{
-				particleCount: 30,
-				sizeMin: 100,
-				sizeMax: 50,
+		const bannerConfig: PandaParticleBannerConfig = {
+			particleGroup: [
+				{
+					particleCount: 30,
+					sizeMin: 100,
+					sizeMax: 50,
 
-				minSpeedX: -0.5,
-				maxSpeedX: 0.5,
-				minSpeedY: -0.5,
-				maxSpeedY: 0.5,
+					minSpeedX: -0.5,
+					maxSpeedX: 0.5,
+					minSpeedY: -0.5,
+					maxSpeedY: 0.5,
 
-				blur: true,
-				blurMin: 5,
-				blurMax: 10,
+					blur: true,
+					blurMin: 5,
+					blurMax: 10,
+				},
+				{
+					particleCount: 100,
+					walls: true,
+					// connect: true,
+					connectionDistance: 70,
+					// connectionLineColor: "#ccc",
+					// connectionLineDash: [5, 5],
+					getConnectionLineBlur: (distance) => {
+						// console.log("%c getConnectionLineBlur", "font-size: 24px; color: green;", distance);
+						// return 0;
+						return distance / 50;
+					},
+					// getConnectionLineOpacity: (distance) => {
+					// 	// console.log("%c getConnectionLineBlur", "font-size: 24px; color: green;", distance);
+					// 	return distance;
+					// },
+					getConnectionLineColor: (distance) => {
+						const alpha = 255 - Math.round((distance * 255) / 70);
+						const hexColor = `#000000${alpha.toString(16).padStart(2, '0')}`;
+						return hexColor.toUpperCase(); // Convert to uppercase for consistency
+					},
+
+					getConnectionLineDashOffset: (distance) => {
+						return distance / 10;
+					},
+
+					// interactive: true,
+					// mouseOffsetXSensitivity: 100,
+					// mouseOffsetYSensitivity: 100,
+					
+					sizeMin: 5,
+					sizeMax: 8,
+					
+					minSpeedX: -1,
+					maxSpeedX: 1,
+					minSpeedY: -1,
+					maxSpeedY: 1,
+					
+					blur: true,
+					blurMin: 0,
+					blurMax: 0,
+					getBlur: (particle, metadata, index) => {
+						const clientX = metadata.mouse.clientX ?? 0;
+						const clientY = metadata.mouse.clientY ?? 0;
+						const bannerWidth = metadata.bannerRect?.width ?? 0;
+						const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
+						const blur = (dist * 15) / bannerWidth;
+						return blur;
+					},
+				},
+			],
+			background: {
+				color: "white"
 			}
-		];
+		};
 			
 		return html`
 			<!-- OVERVIEW -->
@@ -153,7 +180,7 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
-						...
+						...TBD
 					</p>
 				</div>
 

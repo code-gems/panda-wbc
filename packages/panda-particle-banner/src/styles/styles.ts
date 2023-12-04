@@ -5,7 +5,6 @@ export const styles = css`
 		display: block;
 		width: 100%;
 		height: 100%;
-		background-color: white;
 	}
 
 	canvas {
@@ -20,8 +19,6 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
-
-		background-color: var(--panda-particle-banner-background-color, transparent);
 	}
 
 	.content {

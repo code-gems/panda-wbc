@@ -92,35 +92,39 @@ class HomePage extends LitElement {
 		// };
 
 		const bannerConfig: PandaParticleBannerConfig = {
-			particleCount: 1,
-			// walls: true,
-			// connect: true,
-			// connectionDistance: 50,
-			// mouseOffset: true,
-			// mouseOffsetXSensitivity: 10,
+			particleGroup: [
+				{
+					particleCount: 1,
+					// walls: true,
+					// connect: true,
+					// connectionDistance: 50,
+					// mouseOffset: true,
+					// mouseOffsetXSensitivity: 10,
 
-			sizeMin: 10,
-			sizeMax: 10,
+					sizeMin: 10,
+					sizeMax: 10,
 
-			minSpeedX: 0,
-			maxSpeedX: 0,
-			minSpeedY: 0,
-			maxSpeedY: 0,
+					minSpeedX: 0,
+					maxSpeedX: 0,
+					minSpeedY: 0,
+					maxSpeedY: 0,
 
-			blur: true,
-			blurMax: 10,
-			getBlur: (particle, metadata, index) => {
-				let blur = particle.blur;
-				const clientX = metadata.mouse.clientX ?? 0;
-				const clientY = metadata.mouse.clientY ?? 0;
-				// const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
-				const distX = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2)));
-				const distY = Math.floor(Math.sqrt(Math.pow((particle.y - clientY), 2)));
+					blur: true,
+					blurMax: 10,
+					getBlur: (particle, metadata, index) => {
+						let blur = particle.blur;
+						const clientX = metadata.mouse.clientX ?? 0;
+						const clientY = metadata.mouse.clientY ?? 0;
+						// const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
+						const distX = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2)));
+						const distY = Math.floor(Math.sqrt(Math.pow((particle.y - clientY), 2)));
 
-				// console.log("%c getBlur -> clientX", "font-size: 24px; color: green;", metadata.mouse.clientX);
-				console.log("%c getBlur -> dist X/Y", "font-size: 24px; color: green;", distX, distY);
-				return 0; //particle.blur;
-			},
+						// console.log("%c getBlur -> clientX", "font-size: 24px; color: green;", metadata.mouse.clientX);
+						console.log("%c getBlur -> dist X/Y", "font-size: 24px; color: green;", distX, distY);
+						return 0; //particle.blur;
+					},		
+				}
+			],	
 		}
 
 		return html`

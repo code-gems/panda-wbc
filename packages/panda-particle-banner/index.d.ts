@@ -7,7 +7,14 @@ export interface PandaParticleBannerMetadata {
 export type MousePosition = {
 	clientX: number | null;
 	clientY: number | null;
-}	
+}
+
+export type PandaParticleColor = {
+	hue: number;
+	saturation: number;
+	light: number;
+	opacity: number;
+}
 
 export type PandaParticle = {
 	x: number;
@@ -21,8 +28,9 @@ export type PandaParticle = {
 	blur: number;
 }
 
-export interface PandaParticleBannerConfig {
+export interface ParticleGroup {
 	particleCount: number;
+	particleList?: PandaParticle[];
 	
 	// particle behavior =======================================
 	walls?: boolean; // default to false
@@ -37,6 +45,11 @@ export interface PandaParticleBannerConfig {
 	connect?: boolean; // default to false
 	connectionDistance?: number; // default to 100
 	connectionLineColor?: string; // default to #c1c1c1
+	connectionLineDash?: number[];
+	getConnectionLineBlur?: (distance: number) => number;
+	getConnectionLineColor?: (distance: number) => string;
+	getConnectionLineOpacity?: (distance: number) => number;
+	getConnectionLineDashOffset?: (distance: number) => number;
 
 	// speed
 	minSpeedX?: number; // default to -3
@@ -65,4 +78,13 @@ export interface PandaParticleBannerConfig {
 	colorSaturationVariation?: number; // value between 0 and 100 default to 50;
 	colorBrightnessVariation?: number; // value between 0 and 100 default to 50;
 	colorOpacityVariation?: number; // value between 0 and 100 default to 0;
+}
+
+export interface PandaParticleBannerConfig {
+	// particle group list
+	particleGroup: ParticleGroup[]; 
+	// background options
+	background?: {
+		color: string;
+	}
 }
