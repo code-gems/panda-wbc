@@ -12,8 +12,8 @@ export type MousePosition = {
 export type PandaParticleColor = {
 	hue: number;
 	saturation: number;
-	light: number;
-	opacity: number;
+	lightness: number;
+	alpha: number;
 }
 
 export type PandaParticle = {
@@ -74,7 +74,7 @@ export interface ParticleGroup {
 	// color
 	colors?: string[];
 	colorOpacity?: number; // value between 0 and 100 default to 100;
-	colorVariation?: number; // value between 0 and 360 default to 0 (exact color)
+	colorHueVariation?: number; // value between 0 and 360 default to 0 (exact color)
 	colorSaturationVariation?: number; // value between 0 and 100 default to 50;
 	colorBrightnessVariation?: number; // value between 0 and 100 default to 50;
 	colorOpacityVariation?: number; // value between 0 and 100 default to 0;

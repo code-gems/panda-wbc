@@ -1,5 +1,5 @@
 // types
-import { ParticleGroup } from "../../index";
+import { ParticleGroup, PandaParticleColor } from "../../index";
 
 export const getDefaultBannerConfig = (): ParticleGroup => {
 	return {
@@ -292,7 +292,7 @@ const rgbToHsl = (red: number, green: number, blue: number) => {
  * @param {String} color - color string or color name
  * @returns color values in HSL format
  */
-export const parseColor = (color: string) => {
+export const parseColor = (color: string): PandaParticleColor => {
 	let hlsFormat = false;
 	let red = 0;
 	let green = 0;
@@ -360,7 +360,7 @@ export const parseColor = (color: string) => {
 			} else {
 				console.warn("%c ✨ [PANDA PARTICLE BANNER] invalid color value!", "font-size: 16px;", color);
 			}
-			
+
 		} else if (color.match(/^[a-zA-Z]{3,}$/)) {
 			({ red, green, blue } = colorNameToRgb(color));
 		}
@@ -383,4 +383,19 @@ export const parseColor = (color: string) => {
 			alpha: 100,
 		};
 	}
+};
+
+/**
+ * Get HSL color string from Panda Particle color object
+ * @param {PandaParticleColor} color - panda particle color object
+ * @returns {String} color string in hls format
+ */
+export const getHslColorString = (color: PandaParticleColor): string => {
+	const {
+		hue = 0,
+		saturation = 0,
+		lightness = 0,
+		alpha = 100
+	} = color;
+	return `hsl(${hue}deg ${saturation}% ${lightness}% / ${alpha}%)`;
 };
