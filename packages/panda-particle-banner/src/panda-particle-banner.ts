@@ -499,29 +499,6 @@ class PandaParticleBanner extends LitElement {
 		});
 	}
 
-	private _parseColor(color: string): PandaParticleColor {
-		// validate color
-		if (color !== null && color !== undefined && typeof color === "string") {
-			if (color.includes("hls")) {
-
-			}
-
-			return {
-				hue: 360,
-				saturation: 100,
-				light: 100,
-				opacity: 100,
-			};
-		}
-
-		return {
-			hue: 360,
-			saturation: 100,
-			light: 100,
-			opacity: 100,
-		};
-	}
-
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================

@@ -34,7 +34,7 @@ export const getDefaultBannerConfig = (): ParticleGroup => {
 		// color
 		colors: ["hsl(190deg 50% 50% / 70%)"],
 		colorOpacity: 100,
-		colorVariation: 0,
+		colorHueVariation: 0,
 		colorSaturationVariation: 50,
 		colorBrightnessVariation: 50,
 		colorOpacityVariation: 0,

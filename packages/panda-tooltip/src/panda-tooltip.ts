@@ -136,10 +136,10 @@ export class PandaTooltip extends LitElement {
 
 	private _getElementDetails(): ElementDetails {
 		const rect = this._contextEl.getBoundingClientRect();
-		const top = minValue(rect.top + window.scrollY, 0);
-		const left = minValue(rect.left + window.scrollX, 0);
-		const bottom = minValue(rect.bottom + window.scrollY, 0);
-		const right = minValue(rect.right + window.scrollX, 0);
+		const top = minValue(rect.top, 0);
+		const left = minValue(rect.left, 0);
+		const bottom = minValue(rect.bottom, 0);
+		const right = minValue(rect.right, 0);
 
 		return {
 			width: rect.width,

@@ -29,6 +29,9 @@ import {
 } from "./page-config";
 import { installationSnippet } from "./snippets/snippets";
 
+// static data
+import { getCountryList } from "../../static-data";
+
 @customElement("panda-select-content-page")
 @page({
 	pageId,
@@ -88,6 +91,8 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		{ label: "Item # 4", value: 4 },
 	];
 
+	private _countryList = getCountryList();
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -137,7 +142,9 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 						<panda-select
 							.label="${`Option:`}"
 							.placeholder="${`Select option...`}"
-							.items="${this._items}"
+							.items="${this._countryList}"
+							item-label-path="name"
+							item-value-path="code"
 						>
 							<div class="prefix" slot="prefix">AUS</div>
 						</panda-select>

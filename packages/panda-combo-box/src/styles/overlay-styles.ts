@@ -6,15 +6,14 @@ export const styles = css`
 	}
 
 	.overlay-cont {
-		position: absolute;
+		position: fixed;
 		display: block;
 		width: 100%;
 		height: 100%;
-		top: 0px;
-		right: 0px;
-		bottom: 0px;
-		left: 0px;
-		z-index: 9999;
+		inset: 0px;
+		z-index: 9998;
+
+		background-color: rgba(255,0,0, 10%);
 	}
 
 	.overlay {
@@ -22,6 +21,7 @@ export const styles = css`
 		display: flex;
 		flex-flow: column;
 		opacity: 0;
+		z-index: 9999;
 	}
 
 	.overlay.show {

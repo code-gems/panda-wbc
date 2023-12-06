@@ -61,32 +61,28 @@ export class PandaComboBoxOverlay extends LitElement {
 	@query("#overlay")
 	private _overlayEl!: HTMLDivElement;
 
-	@query("#overlay-cont")
-	private _overlayContEl!: HTMLDivElement;
-
 	@query("#dropdown-cont")
 	private _dropdownContEl!: HTMLDivElement;
 
 	// events
 	private _windowResizeEvent: any = this.close.bind(this); // close overlay when window resizes;
 	private _keyDownEvent: any = this._onKeyDown.bind(this);
+	private _scrollEvent: any = this._onOverlayScroll.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	protected firstUpdated(_changedProperties: PropertyValues): void {
-		// expand overlay container to include scrollable area
-		this._overlayContEl.style.width = `${document.body.scrollWidth}px`;
-		this._overlayContEl.style.height = `${document.body.scrollHeight}px`;
 		this._showOverlayContent();
 	}
-
+	
 	public connectedCallback(): void {
 		super.connectedCallback();
 		// add events
 		window.addEventListener("resize", this._windowResizeEvent);
 		window.addEventListener("keydown", this._keyDownEvent);
+		window.addEventListener("scroll", this._scrollEvent);
 	}
 
 	public disconnectedCallback(): void {
@@ -97,6 +93,9 @@ export class PandaComboBoxOverlay extends LitElement {
 		}
 		if (this._keyDownEvent) {
 			window.removeEventListener("keydown", this._keyDownEvent);
+		}
+		if (this._scrollEvent) {
+			window.removeEventListener("scroll", this._scrollEvent);
 		}
 	}
 
@@ -118,7 +117,6 @@ export class PandaComboBoxOverlay extends LitElement {
 	protected render(): TemplateResult {
 		return html`
 			<div
-				id="overlay-cont"
 				class="overlay-cont"
 				part="overlay-cont"
 				@click="${this.close}"
@@ -188,18 +186,18 @@ export class PandaComboBoxOverlay extends LitElement {
 
 			// get overlay size details
 			const overlayRect = this._overlayEl.getBoundingClientRect();
-			let overlayTop = this.parentDetails.bottom;
-			let overlayLeft = this.parentDetails.left;
+			let overlayTop = this.parentDetails.bottom - document.documentElement.scrollTop;
+			let overlayLeft = this.parentDetails.left - document.documentElement.scrollLeft;
 			let dropdownHight = overlayRect.height;
-
+			
 			// set default scroll to view behavior
 			let _scrollIntoViewBlock: ScrollLogicalPosition = "start";
 
 			// check if we have enough space at the bottom of the combo-box to display dropdown
 			if (overlayTop - window.scrollY + overlayRect.height > window.innerHeight) {
 				// correct dropdown height if it protrude out the visible space
-				const _hightOffset = this.parentDetails.top - overlayRect.height;
-				overlayTop = minValue(this.parentDetails.top - overlayRect.height, 10);
+				const _hightOffset = this.parentDetails.top - overlayRect.height - document.documentElement.scrollTop;
+				overlayTop = minValue(_hightOffset, 10);
 				if (_hightOffset < 0) {
 					dropdownHight = dropdownHight - 10 + _hightOffset;
 				}
@@ -209,7 +207,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 			// check if we have enough space on the right side of the combo-box to display dropdown 
 			if (overlayLeft - window.scrollX + overlayRect.width > window.innerWidth) {
-				overlayLeft = this.parentDetails.right - overlayRect.width;
+				overlayLeft = this.parentDetails.right - overlayRect.width - document.documentElement.scrollLeft;
 			}
 
 			// set drop down container's width
@@ -248,7 +246,7 @@ export class PandaComboBoxOverlay extends LitElement {
 		items.forEach((item) => {
 			const _label = getItemLabel(item, this.itemLabelPath);
 			// filter items
-			if (_label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
+			if (_label && _label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
 				filteredItems.push(item);
 			}
 		});
@@ -362,14 +360,13 @@ export class PandaComboBoxOverlay extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _preventMouseEvent(e: MouseEvent) {
+	private _preventMouseEvent(event: MouseEvent) {
 		// prevent click event to prevent overlay from closing
-		e.stopPropagation();
-		e.preventDefault();
+		event.stopPropagation();
+		event.preventDefault();
 	}
 
 	private _onChange(value: any): void {
-		console.log("%c [overlay] _onChange", "font-size: 24px; color: red;", value);
 		const event = new CustomEvent("change", {
 			detail: {
 				value
@@ -378,9 +375,8 @@ export class PandaComboBoxOverlay extends LitElement {
 		this.dispatchEvent(event);
 	}
 
-	private _onKeyDown(e: KeyboardEvent) {
-		console.log("%c [overlay] _onKeyDown", "font-size: 24px; color: blue;", e);
-		switch (e.key) {
+	private _onKeyDown(event: KeyboardEvent) {
+		switch (event.key) {
 			case "ArrowUp":
 				this._selectPreviousItem();
 				break;
@@ -388,6 +384,11 @@ export class PandaComboBoxOverlay extends LitElement {
 				this._selectNextItem();
 				break;
 		}
+	}
+
+	private _onOverlayScroll() {
+		// update overlay position
+		this._showOverlayContent();
 	}
 }
 

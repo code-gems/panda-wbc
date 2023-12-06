@@ -287,7 +287,6 @@ export class PandaComboBox extends LitElement {
 
 	private _validateInput(): void {
 		const _inputValue = this._inputFieldEl.value;
-		let _match: PandaComboBoxItem | null = null;
 		// check if value has changed
 		if (_inputValue === this._value) {
 			return;
@@ -310,7 +309,7 @@ export class PandaComboBox extends LitElement {
 				_items = this.items;
 			}
 			// search for entered value among all items
-			_match = _items.find((item) => findItemByLabel(item, this.itemLabelPath, _inputValue));
+			const _match: PandaComboBoxItem | null = _items.find((item) => findItemByLabel(item, this.itemLabelPath, _inputValue));
 			// check if there is a match
 			if (_match) {
 				this.value = getItemValue(_match, this.itemValuePath);

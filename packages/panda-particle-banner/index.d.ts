@@ -67,6 +67,7 @@ export interface ParticleGroup {
 
 	// blur
 	blur?: boolean; // default false
+	
 	blurMin?: number; // default to 0
 	blurMax?: number; // default to 5
 	getBlur?: (particle: PandaParticle, metadata: PandaParticleBannerMetadata, index: number) => number; // get dynamic blur value
