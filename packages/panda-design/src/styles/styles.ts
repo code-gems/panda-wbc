@@ -191,6 +191,20 @@ export const uiComponents = {
 			font-size: var(--panda-font-size-l);
 			font-family: var(--panda-font-family);
 		}
+
+		.banner .content {
+			padding: 10px 20px;
+
+			border-radius: 10px;
+			border: 1px solid var(--panda-background-color-500);
+			backdrop-filter: blur(3px);
+			background-color: var(--panda-background-color-50opc);
+			box-shadow: 0px 5px 10px var(--panda-black-color-10opc);
+		}
+
+		.banner .content h1 {
+			margin: 0px;
+		}
 	`,
 
 	form: css`

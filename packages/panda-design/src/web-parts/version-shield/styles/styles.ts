@@ -4,8 +4,8 @@ export const styles = css`
 	:host {
 		position: absolute;
 		display: inline;
-		bottom: 40px;
-		left: 40px;
+		bottom: 20px;
+		left: 20px;
 	}
 
 	.shield {

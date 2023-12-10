@@ -22,7 +22,7 @@ import {
 	description,
 	contextMenu
 } from "./page-config";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
+import { PandaParticleBannerConfig, ParticleShape } from "@panda-wbc/panda-particle-banner";
 
 @customElement("panda-particle-banner-content-page")
 @page({
@@ -104,39 +104,44 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 	private _renderOverviewSection(): TemplateResult {
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [
-				{
-					particleCount: 30,
-					sizeMin: 100,
-					sizeMax: 50,
+				// {
+				// 	particleCount: 30,
+				// 	sizeMin: 100,
+				// 	sizeMax: 50,
 
-					minSpeedX: -0.5,
-					maxSpeedX: 0.5,
-					minSpeedY: -0.5,
-					maxSpeedY: 0.5,
+				// 	minSpeedX: -0.5,
+				// 	maxSpeedX: 0.5,
+				// 	minSpeedY: -0.5,
+				// 	maxSpeedY: 0.5,
 
-					blur: true,
-					blurMin: 5,
-					blurMax: 10,
-				},
+				// 	blur: true,
+				// 	blurMin: 5,
+				// 	blurMax: 10,
+				// },
 				{
-					particleCount: 100,
-					walls: true,
+					particleCount: 10,
+					particleShape: ParticleShape.CIRCLE,
+					// particleLineDash: [1, 1],
+					particleLineWidth: 15,
+					// walls: true,
 					// connect: true,
-					connectionDistance: 70,
-					// connectionLineColor: "#ccc",
-					// connectionLineDash: [5, 5],
-					getConnectionLineBlur: (distance) => {
-						// console.log("%c getConnectionLineBlur", "font-size: 24px; color: green;", distance);
-						// return 0;
-						return distance / 50;
-					},
+					// connectionDistance: 100,
+					// connectionLineColor: "#36174D",
+					// connectionLineDash: [2, 2],
+					// connectionLineWidth: 3,
+					// getConnectionLineBlur: (distance) => {
+					// 	// console.log("%c getConnectionLineBlur", "font-size: 24px; color: green;", distance);
+					// 	// return 0;
+					// 	return distance / 50;
+					// },
 					// getConnectionLineOpacity: (distance) => {
 					// 	// console.log("%c getConnectionLineBlur", "font-size: 24px; color: green;", distance);
 					// 	return distance;
 					// },
 					getConnectionLineColor: (distance) => {
-						const alpha = 255 - Math.round((distance * 255) / 70);
-						const hexColor = `#000000${alpha.toString(16).padStart(2, '0')}`;
+						const alphaMax = 128;
+						const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
+						const hexColor = `#36174D${alpha.toString(16).padStart(2, '0')}`;
 						return hexColor.toUpperCase(); // Convert to uppercase for consistency
 					},
 
@@ -144,34 +149,43 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 						return distance / 10;
 					},
 
+					// color
+					colors: ["#ff4778" , "#6f36bc", "#36174D"],
+					// colors: ["rgba(255, 0, 0, 50%)"],
+					// colors: ["hsl(0deg 0% 50%)"],
+					colorHueVariation: 10,
+					// colorOpacityVariation: 20,
+					// colorLightnessVariation: 100,
+					// colorSaturationVariation: 50,
+
 					// interactive: true,
-					// mouseOffsetXSensitivity: 100,
-					// mouseOffsetYSensitivity: 100,
+					// sensitivityX: 0.1,
+					// sensitivityY: 0.1,
 					
-					sizeMin: 5,
-					sizeMax: 8,
+					sizeMin: 100,
+					sizeMax: 200,
 					
-					minSpeedX: -1,
-					maxSpeedX: 1,
-					minSpeedY: -1,
-					maxSpeedY: 1,
+					minSpeedX: -0.1,
+					maxSpeedX: 0.1,
+					minSpeedY: -0.1,
+					maxSpeedY: 0.1,
 					
-					blur: true,
-					blurMin: 0,
-					blurMax: 0,
-					getBlur: (particle, metadata, index) => {
-						const clientX = metadata.mouse.clientX ?? 0;
-						const clientY = metadata.mouse.clientY ?? 0;
-						const bannerWidth = metadata.bannerRect?.width ?? 0;
-						const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
-						const blur = (dist * 15) / bannerWidth;
-						return blur;
-					},
+					// blur: true,
+					blurMin: 3,
+					blurMax: 5,
+					// getBlur: (particle, metadata, index) => {
+					// 	const clientX = metadata.mouse.clientX ?? 0;
+					// 	const clientY = metadata.mouse.clientY ?? 0;
+					// 	const bannerWidth = metadata.bannerRect?.width ?? 0;
+					// 	const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
+					// 	const blur = (dist * 15) / bannerWidth;
+					// 	return blur;
+					// },
 				},
 			],
-			background: {
-				color: "white"
-			}
+			// background: {
+			// 	color: "white"
+			// }
 		};
 			
 		return html`

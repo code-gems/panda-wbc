@@ -1,5 +1,6 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName, PageCategory } from "panda-design-typings";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
@@ -121,13 +122,52 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
+		const bannerConfig: PandaParticleBannerConfig = {
+			particleGroup: [
+				{
+					particleCount: 10,
+					sizeMin: 200,
+					sizeMax: 100,
+					
+					colors: ["#ff4778" , "#6f36bc", "#36174D"],
+					colorOpacityVariation: 70,
+					colorHueVariation: 20,
+
+					minSpeedX: -0.2,
+					maxSpeedX: 0.2,
+					minSpeedY: -0.2,
+					maxSpeedY: 0.2,
+
+					blur: true,
+					blurMin: 5,
+					blurMax: 15,
+				},
+				{
+					particleCount: 50,
+					sizeMin: 3,
+					sizeMax: 5,
+
+					colors: ["#ff4778" , "#6f36bc", "#36174D"],
+					colorOpacityVariation: 70,
+
+					minSpeedX: -0.3,
+					maxSpeedX: 0.3,
+					minSpeedY: -0.3,
+					maxSpeedY: 0.3,
+
+					blur: true,
+				}
+			]
+		};
 		return html`
-			<div class="banner small">
-				<h1>COMBO BOX</h1>
-				<p>
-					A combo box component, also known as a dropdown, is a user interface element commonly used in software applications and web forms. 
-					It combines the functionality of a text input field with a list of predefined options, allowing users to select a value from the provided choices or enter their own value.
-				</p>
+			<div class="banner small particle-banner">
+				<panda-particle-banner
+					.config="${bannerConfig}"					
+				>
+					<div class="content">
+						<h1>COMBO BOX</h1>
+					</div>
+				</panda-particle-banner>
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;

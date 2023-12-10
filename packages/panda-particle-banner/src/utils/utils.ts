@@ -1,50 +1,11 @@
 // types
-import { ParticleGroup, PandaParticleColor } from "../../index";
-
-export const getDefaultBannerConfig = (): ParticleGroup => {
-	return {
-		particleCount: 100,
-	
-		// particle behavior ===================================
-		walls: false,
-		collisions: false,
-
-		// mouse offset
-		interactive: false,
-		sensitivityX: 1,
-		sensitivityY: 1,
-
-		// connect
-		connect: false,
-		connectionDistance: 100,
-		connectionLineColor: "#c1c1c1",
-		
-		// speed
-		minSpeedX: -3,
-		maxSpeedX: 3,
-		minSpeedY: -3,
-		maxSpeedY: 3,
-
-		// particle style ======================================
-		// blur
-		blur: false,
-		blurMin: 0,
-		blurMax: 5,
-
-		// color
-		colors: ["hsl(190deg 50% 50% / 70%)"],
-		colorOpacity: 100,
-		colorHueVariation: 0,
-		colorSaturationVariation: 50,
-		colorBrightnessVariation: 50,
-		colorOpacityVariation: 0,
-	};
-};
+import { PandaParticleColor } from "../../index";
 
 /**
  * Get random number between min and max value. Min value is set to 0 by default.
  * @param {Number} max - upper number limit
  * @param {Number} min - lower number limit, 0 by default
+ * @param {Number} decimalPlaces - number precision [default: 2]
  * @returns Random integer between lower and upper number limit
  */
 export const getRandomInt = (max: number, min: number = 0, decimalPlaces: number = 2): number => {
@@ -72,6 +33,17 @@ export const minMax = (value: number, min: number, max: number): number => {
 	} else {
 		return value;
 	}
+};
+
+export const validateColorHue = (hue: number): number => {
+	// validate hue value
+	if (hue < 0) {
+		hue = 360 - hue;
+	}
+	if (hue > 360) {
+		hue = hue - 360;
+	}
+	return hue;
 };
 
 /**
@@ -229,7 +201,7 @@ const colorNameToRgb = (colorName: string): { red: number, green: number, blue: 
 /**
  * Convert percentage or decimal value of alpha to number
  * @param {String} alpha - alpha value
- * @returns {Number} numeric value of alpha [0-100]
+ * @returns {Number} numeric value of alpha [0-100] [default: 100]
  */
 const parseAlphaValue = (alpha: string | null | undefined): number => {
 	if (alpha === null || alpha === undefined) {
@@ -246,7 +218,7 @@ const parseAlphaValue = (alpha: string | null | undefined): number => {
 	}
 }
 
-const rgbToHsl = (red: number, green: number, blue: number) => {
+const rgbToHsl = (red: number, green: number, blue: number): PandaParticleColor => {
 	// Normalize RGB values to the range [0, 1]
 	const normalizedR = red / 255;
 	const normalizedG = green / 255;
@@ -284,15 +256,16 @@ const rgbToHsl = (red: number, green: number, blue: number) => {
 		hue,
 		saturation: Math.round(saturation * 100),
 		lightness: Math.round(lightness * 100),
+		alpha: 100,
 	};
 };
 
 /**
- * Converts any color string or color name to HSL color values 
+ * Converts any color string or color name to HSLA color values 
  * @param {String} color - color string or color name
  * @returns color values in HSL format
  */
-export const parseColor = (color: string): PandaParticleColor => {
+export const parseColorString = (color: string): PandaParticleColor => {
 	let hlsFormat = false;
 	let red = 0;
 	let green = 0;

@@ -106,11 +106,13 @@ export const styles = css`
 
 	/* FOCUSED */
 	:host([focused]) .combo-box  {
+		border: 1px solid var(--panda-input-outline-color, hsl(216deg 88% 60%));
 		box-shadow: 0px 0px 0px 2px var(--panda-input-outline-color, hsl(216deg 88% 60%));
 	}
 
 	/* MANDATORY */
-	:host([mandatory]) .combo-box  {
+	.combo-box.mandatory {
+		border: 1px solid var(--panda-form-validation-mandatory, hsl(35deg 91% 62%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(35deg 91% 62%));
 	}
 

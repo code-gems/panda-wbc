@@ -16,7 +16,7 @@ import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { PageLibrary, page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
+import { PandaParticleBannerConfig, ParticleShape } from "@panda-wbc/panda-particle-banner";
 
 @customElement("home-page")
 @page({
@@ -94,35 +94,40 @@ class HomePage extends LitElement {
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [
 				{
-					particleCount: 1,
+					particleCount: 50,
+					particleShape: ParticleShape.TRIANGLE_FILLED,
+					particleLineWidth: 10,
+					colors: ["#ff4778" , "#6f36bc", "#36174D"],
+					colorHueVariation: 10,
+					colorOpacityVariation: 30,
 					// walls: true,
 					// connect: true,
 					// connectionDistance: 50,
-					// mouseOffset: true,
-					// mouseOffsetXSensitivity: 10,
 
-					sizeMin: 10,
-					sizeMax: 10,
+					sizeMin: 50,
+					sizeMax: 100,
 
-					minSpeedX: 0,
-					maxSpeedX: 0,
-					minSpeedY: 0,
-					maxSpeedY: 0,
+					minSpeedX: -0.2,
+					maxSpeedX: 0.2,
+					minSpeedY: -0.2,
+					maxSpeedY: 0.2,
 
 					blur: true,
-					blurMax: 10,
-					getBlur: (particle, metadata, index) => {
-						let blur = particle.blur;
-						const clientX = metadata.mouse.clientX ?? 0;
-						const clientY = metadata.mouse.clientY ?? 0;
-						// const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
-						const distX = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2)));
-						const distY = Math.floor(Math.sqrt(Math.pow((particle.y - clientY), 2)));
+					blurMin: 3,
+					blurMax: 5,
 
-						// console.log("%c getBlur -> clientX", "font-size: 24px; color: green;", metadata.mouse.clientX);
-						console.log("%c getBlur -> dist X/Y", "font-size: 24px; color: green;", distX, distY);
-						return 0; //particle.blur;
-					},		
+					// getBlur: (particle, metadata, index) => {
+					// 	let blur = particle.blur;
+					// 	const clientX = metadata.mouse.clientX ?? 0;
+					// 	const clientY = metadata.mouse.clientY ?? 0;
+					// 	// const dist = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2) + Math.pow((particle.y - clientY), 2)));
+					// 	const distX = Math.floor(Math.sqrt(Math.pow((particle.x - clientX), 2)));
+					// 	const distY = Math.floor(Math.sqrt(Math.pow((particle.y - clientY), 2)));
+
+					// 	// console.log("%c getBlur -> clientX", "font-size: 24px; color: green;", metadata.mouse.clientX);
+					// 	console.log("%c getBlur -> dist X/Y", "font-size: 24px; color: green;", distX, distY);
+					// 	return 0; //particle.blur;
+					// },		
 				}
 			],	
 		}

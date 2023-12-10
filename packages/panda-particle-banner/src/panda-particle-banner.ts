@@ -1,5 +1,5 @@
 // types
-import { MousePosition, PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata, PandaParticleColor } from "../index";
+import { PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata, PandaParticleColor, ParticleShape } from "../index";
 
 // styles
 import { styles } from "./styles/styles";
@@ -7,7 +7,7 @@ import { styles } from "./styles/styles";
 // utils
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { getDefaultBannerConfig, getRandomInt, minMax } from "./utils/utils";
+import { getHslColorString, getRandomInt, minMax, validateColorHue, parseColorString } from "./utils/utils";
 import { debounce } from "@panda-wbc/panda-core";
 
 @customElement("panda-particle-banner")
@@ -49,10 +49,16 @@ class PandaParticleBanner extends LitElement {
 		bannerRect: null,
 	};
 
+	private _sensitivityX: number = 100; // default mouse distance sensitivity [px]
+
+	private _sensitivityY: number = 100; // default mouse distance sensitivity [px]
+
 	// events
 	private _documentMouseMoveEvent = this._onMouseMove.bind(this);
+
 	// debouncers
 	private _resizeBannerDebouncer = debounce(this._resizeBanner.bind(this), 500);
+
 	// resize observer
 	private _resizeObserver!: ResizeObserver;
 
@@ -127,6 +133,12 @@ class PandaParticleBanner extends LitElement {
 			this._config.particleGroup.forEach((config) => {
 				const {
 					particleCount,
+					// color options
+					colors = [],
+					colorHueVariation = 0,
+					colorSaturationVariation = 0,
+					colorLightnessVariation = 0,
+					colorOpacityVariation = 0,
 
 					sizeMin = 3,
 					sizeMax = 5,
@@ -138,17 +150,65 @@ class PandaParticleBanner extends LitElement {
 					maxSpeedY = 1,
 					speedDeltaY = 0,
 
-					blurMin = 0,
-					blurMax = 5,
+					blurMin = 1,
+					blurMax = 3,
 				} = config;
 
 				const particles: PandaParticle[] = [];
+				const colorCount: number = colors.length || 1;
+				let colorIndex: number = 0;
+
 				for (let i = 0; i < particleCount; i++) {
 					// particle style ==================================
 					// generate size
 					const size = getRandomInt(sizeMax, sizeMin, 0);
 					// generate color
-					const color = `hsl(${Math.random() * 40 + 10}deg 70% 80% / 70%)`;
+					// const color = `hsl(${Math.random() * 40 + 10}deg 70% 80% / 70%)`;
+
+					let _color: PandaParticleColor = parseColorString(colors[colorIndex]);
+
+					// randomize color hue
+					if (colorHueVariation) {
+						// randomize color hue
+						// let hue = 
+						const hueMin = _color.hue - colorHueVariation;
+						const hueMax = _color.hue + colorHueVariation;
+						const variation = getRandomInt(hueMax, hueMin, 0);
+						console.log("%c hue variation", "font-size: 24px; color: green;", variation);
+						_color = { ..._color, hue: validateColorHue(variation) };
+					}
+
+					// randomize saturation
+					if (colorSaturationVariation) {
+						const saturationMin = minMax(_color.saturation - colorSaturationVariation, 0, 100);
+						const saturationMax = minMax(_color.saturation + colorSaturationVariation, saturationMin, 100);
+						const variation = getRandomInt(saturationMax, saturationMin, 0);
+						console.log("%c saturation variation", "font-size: 24px; color: green;", variation);
+						_color = { ..._color, saturation: variation };
+					}
+
+					// randomize lightness
+					if (colorLightnessVariation) {
+						const lightnessMin = minMax(_color.lightness - colorLightnessVariation, 0, 100);
+						const lightnessMax = minMax(_color.lightness + colorLightnessVariation, lightnessMin, 100);
+						const variation = getRandomInt(lightnessMax, lightnessMin, 0);
+						console.log("%c lightness variation", "font-size: 24px; color: green;", variation);
+						_color = { ..._color, lightness: variation };
+					}
+
+					// randomize alpha channel
+					if (colorOpacityVariation) {
+						const alphaMin = minMax(_color.alpha - colorOpacityVariation, 0, 100);
+						const alphaMax = minMax(_color.alpha + colorOpacityVariation, alphaMin, 100);
+						const variation = getRandomInt(alphaMax, alphaMin, 0);
+						console.log("%c alpha variation", "font-size: 24px; color: green;", variation);
+						_color = { ..._color, alpha: variation };
+					}
+					// convert color data to string
+					const color: string = getHslColorString(_color);
+					// change color index
+					colorIndex = (colorIndex + 1) % colorCount;
+
 					// generate blur
 					let blur = 0;
 					if (config.blur) {
@@ -160,7 +220,7 @@ class PandaParticleBanner extends LitElement {
 					let speedX = getRandomInt(maxSpeedX, minSpeedX);
 					let speedY = getRandomInt(maxSpeedY, minSpeedY);
 
-					console.log("%c speed X/Y", "font-size: 24px; color: green;", speedX, speedY);
+					// console.log("%c speed X/Y", "font-size: 24px; color: green;", speedX, speedY);
 
 					// check if there are "dead" particles
 					if (speedX === 0 && speedY === 0) {
@@ -223,10 +283,15 @@ class PandaParticleBanner extends LitElement {
 			const {
 				walls = false,
 				collisions = false,
+				// particle
+				particleShape = ParticleShape.CIRCLE_FILLED,
+				particleLineDash,
+				particleLineWidth,
 				// connection
 				connect = false,
 				connectionDistance = 100,
 				connectionLineColor = "#000",
+				connectionLineWidth,
 				connectionLineDash,
 				getConnectionLineBlur,
 				getConnectionLineOpacity,
@@ -352,6 +417,12 @@ class PandaParticleBanner extends LitElement {
 							this._ctx.setLineDash(connectionLineDash);
 						}
 
+						if (connectionLineWidth) {
+							this._ctx.lineWidth = connectionLineWidth;
+						} else {
+							this._ctx.lineWidth = 1;
+						}
+
 						this._ctx.moveTo(x - _offsetX, y - _offsetY);
 						this._ctx.lineTo(particleB.x - _offsetX, particleB.y - _offsetY);
 						this._ctx.strokeStyle = _connectionLineColor;
@@ -362,15 +433,6 @@ class PandaParticleBanner extends LitElement {
 
 				// draw particle
 				this._ctx.beginPath();
-				this._ctx.arc(
-					x - _offsetX,
-					y - _offsetY,
-					size,
-					0,
-					Math.PI * 2,
-					false
-				);
-				
 				// reset previous blur
 				this._ctx.filter = `blur(0px)`;
 				if (groupConfig.blur) {
@@ -380,8 +442,114 @@ class PandaParticleBanner extends LitElement {
 					this._ctx.filter = `blur(${blur}px)`;
 				}
 
-				this._ctx.fillStyle = color;
-				this._ctx.fill();
+				if (particleShape === ParticleShape.CIRCLE) {
+					// check if particle line dash is declared
+					if (particleLineDash) {
+						this._ctx.setLineDash(particleLineDash);
+					} else {
+						// reset line dash
+						this._ctx.setLineDash([]);
+					}
+					// check if particle line width is declared
+					if (particleLineWidth) {
+						this._ctx.lineWidth = particleLineWidth;
+					} else {
+						this._ctx.lineWidth = 1;
+					}
+					// draw circle
+					this._ctx.arc(
+						x - _offsetX,
+						y - _offsetY,
+						size,
+						0,
+						Math.PI * 2,
+						false
+					);
+					this._ctx.strokeStyle = color;
+					this._ctx.stroke();
+
+				} else if (particleShape === ParticleShape.CIRCLE_FILLED) {
+					// draw circle
+					this._ctx.arc(
+						x - _offsetX,
+						y - _offsetY,
+						size,
+						0,
+						Math.PI * 2,
+						false
+					);
+					this._ctx.fillStyle = color;
+					this._ctx.fill();
+
+				} else if (particleShape === ParticleShape.RECT) {
+					// check if particle line dash is declared
+					if (particleLineDash) {
+						this._ctx.setLineDash(particleLineDash);
+					} else {
+						// reset line dash
+						this._ctx.setLineDash([]);
+					}
+					// check if particle line width is declared
+					if (particleLineWidth) {
+						this._ctx.lineWidth = particleLineWidth;
+					} else {
+						this._ctx.lineWidth = 1;
+					}
+					// draw rect
+					this._ctx.rect(
+						x - _offsetX - (size / 2),
+						y - _offsetY - (size / 2),
+						size,
+						size
+					);
+					this._ctx.strokeStyle = color;
+					this._ctx.stroke();
+
+				} else if (particleShape === ParticleShape.RECT_FILLED) {
+					// draw rect
+					this._ctx.rect(
+						x - _offsetX - (size / 2),
+						y - _offsetY - (size / 2),
+						size,
+						size
+					);
+					this._ctx.fillStyle = color;
+					this._ctx.fill();
+
+				} else if (particleShape === ParticleShape.TRIANGLE) {
+					// check if particle line dash is declared
+					if (particleLineDash) {
+						this._ctx.setLineDash(particleLineDash);
+					} else {
+						// reset line dash
+						this._ctx.setLineDash([]);
+					}
+					// check if particle line width is declared
+					if (particleLineWidth) {
+						this._ctx.lineWidth = particleLineWidth;
+					} else {
+						this._ctx.lineWidth = 1;
+					}
+					// draw triangle
+					this._ctx.moveTo(x - _offsetX, y - _offsetY + (size / 2));
+					this._ctx.lineTo(x - _offsetX + (size / 2), y - _offsetY - (size / 2));
+					this._ctx.lineTo(x - _offsetX - (size / 2), y - _offsetY - (size / 2));
+					this._ctx.lineTo(x - _offsetX, y - _offsetY + (size / 2));
+					this._ctx.lineTo(x - _offsetX + (size / 2), y - _offsetY - (size / 2));
+					this._ctx.lineJoin = "round";
+					this._ctx.lineCap = "round";
+					this._ctx.strokeStyle = color;
+					this._ctx.stroke();
+
+				} else if (particleShape === ParticleShape.TRIANGLE_FILLED) {
+					// draw triangle
+					this._ctx.moveTo(x - _offsetX, y - _offsetY + (size / 2));
+					this._ctx.lineTo(x - _offsetX + (size / 2), y - _offsetY - (size / 2));
+					this._ctx.lineTo(x - _offsetX - (size / 2), y - _offsetY - (size / 2));
+					this._ctx.fillStyle = color;
+					this._ctx.fill();
+				}
+
 				this._ctx.closePath();
 
 				// update new position
@@ -416,19 +584,26 @@ class PandaParticleBanner extends LitElement {
 		this._config.particleGroup.forEach((config) => {
 			// deconstruct banner config
 			const {
+				// particle
 				particleCount,
+				particleShape = ParticleShape.CIRCLE_FILLED,
+				particleLineDash,
+
+				// behavior
 				walls,
 				interactive,
-				sensitivityX,
-				sensitivityY,
+				sensitivityX = 1,
+				sensitivityY = 1,
+
+				// blur
 				blur,
-				blurMin,
-				blurMax,
+				blurMin = 0,
+				blurMax = 5,
 				getBlur,
 
 				// connection lines
 				connectionLineDash,
-				connectionLineColor,
+				connectionLineColor = null,
 				getConnectionLineBlur,
 				getConnectionLineColor,
 				getConnectionLineOpacity,
@@ -441,16 +616,30 @@ class PandaParticleBanner extends LitElement {
 				}
 			}
 
+			if (particleLineDash !== undefined && particleLineDash !== null && !Array.isArray(particleLineDash)) {
+				warn("Property 'particleLineDash' has to be an array eg. 'particleLineDash: [5, 5]'");
+			}
+
+			if (particleLineDash !== undefined && particleLineDash !== null) {
+				if (
+					particleShape === ParticleShape.CIRCLE_FILLED ||
+					particleShape === ParticleShape.RECT_FILLED ||
+					particleShape === ParticleShape.TRIANGLE_FILLED
+				) {
+					warn("Property 'particleLineDash' only works with 'particleShape' like: 'circle', 'rect', 'triangle'");
+				}
+			}
+
 			if (walls && interactive) {
 				warn("'walls' and 'interactive' are features incompatible. 'interactive' behavior will be disabled.");
 			}
 
 			if (isNaN(sensitivityX as number)) {
-				warn("'mouseOffsetXSensitivity' has to be a number! Fallback to default value (100).");
+				warn("'sensitivityX' has to be a number! Fallback to default value (1).");
 			}
 
 			if (isNaN(sensitivityY as number)) {
-				warn("'mouseOffsetYSensitivity' has to be a number! Fallback to default value (100).");
+				warn("'sensitivityY' has to be a number! Fallback to default value (1).");
 			}
 
 			if (particleCount > 500) {
@@ -494,7 +683,7 @@ class PandaParticleBanner extends LitElement {
 			}
 
 			if (connectionLineDash === undefined && getConnectionLineDashOffset !== undefined) {
-				warn("'getConnectionLineDashOffset' callback is present but 'connectionLineDash' not is declared. 'getConnectionLineDashOffset' will not take effect. Add 'connectionLineDash: [5, 5]' to banner config.")
+				warn("'getConnectionLineDashOffset' callback is present but 'connectionLineDash' is not declared. 'getConnectionLineDashOffset' will not take effect. Add 'connectionLineDash: [5, 5]' to banner config.")
 			}
 		});
 	}
@@ -511,11 +700,8 @@ class PandaParticleBanner extends LitElement {
 			const bannerBottom: number = this._metadata.bannerRect?.bottom ?? 0;
 			this._metadata.mouse.clientY = minMax(e.clientY - bannerTop, 0, bannerBottom);
 			this._metadata.mouse.clientX = minMax(e.clientX - bannerLeft, 0, bannerRight);
-	
-			const sensitivityX: number = 100;
-			const sensitivityY: number = 100;
-			this._offsetX = Math.round(((e.clientX - this._bannerRect.left) * sensitivityX) / (this._canvasEl.width)) - (sensitivityX / 2);
-			this._offsetY = Math.round(((e.clientY - this._bannerRect.top) * sensitivityY) / this._canvasEl.height) - (sensitivityY / 2);
+			this._offsetX = Math.round(((e.clientX - this._bannerRect.left) * this._sensitivityX) / (this._canvasEl.width)) - (this._sensitivityX / 2);
+			this._offsetY = Math.round(((e.clientY - this._bannerRect.top) * this._sensitivityY) / this._canvasEl.height) - (this._sensitivityY / 2);
 		}
 	}
 }

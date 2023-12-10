@@ -16,6 +16,15 @@ export type PandaParticleColor = {
 	alpha: number;
 }
 
+export const enum ParticleShape {
+	CIRCLE = "circle",
+	CIRCLE_FILLED = "circle-filled",
+	RECT = "rect",
+	RECT_FILLED = "rect-filled",
+	TRIANGLE = "triangle",
+	TRIANGLE_FILLED = "triangle-filled",
+}
+
 export type PandaParticle = {
 	x: number;
 	y: number;
@@ -30,6 +39,9 @@ export type PandaParticle = {
 
 export interface ParticleGroup {
 	particleCount: number;
+	particleShape?: ParticleShape;
+	particleLineDash?: number[];
+	particleLineWidth?: number;
 	particleList?: PandaParticle[];
 	
 	// particle behavior =======================================
@@ -46,6 +58,7 @@ export interface ParticleGroup {
 	connectionDistance?: number; // default to 100
 	connectionLineColor?: string; // default to #c1c1c1
 	connectionLineDash?: number[];
+	connectionLineWidth?: number; // default to 1
 	getConnectionLineBlur?: (distance: number) => number;
 	getConnectionLineColor?: (distance: number) => string;
 	getConnectionLineOpacity?: (distance: number) => number;
@@ -74,10 +87,9 @@ export interface ParticleGroup {
 	
 	// color
 	colors?: string[];
-	colorOpacity?: number; // value between 0 and 100 default to 100;
 	colorHueVariation?: number; // value between 0 and 360 default to 0 (exact color)
-	colorSaturationVariation?: number; // value between 0 and 100 default to 50;
-	colorBrightnessVariation?: number; // value between 0 and 100 default to 50;
+	colorSaturationVariation?: number; // value between 0 and 100 default to 0;
+	colorLightnessVariation?: number; // value between 0 and 100 default to 0;
 	colorOpacityVariation?: number; // value between 0 and 100 default to 0;
 }
 

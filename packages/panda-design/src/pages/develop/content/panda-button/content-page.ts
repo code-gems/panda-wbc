@@ -55,8 +55,23 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [{
-				particleCount: 100,
+				particleCount: 70,
+				colors: ["#ff4778" , "#6f36bc", "#36174D"],
+				minSpeedX: -0.2,
+				maxSpeedX: 0.2,
+				minSpeedY: -0.2,
+				maxSpeedY: 0.2,
+
 				blur: true,
+				blurMax: 1,
+				connect: true,
+				connectionLineDash: [3, 3],
+				getConnectionLineColor: (distance) => {
+					const alphaMax = 128;
+					const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
+					const hexColor = `#36174D${alpha.toString(16).padStart(2, '0')}`;
+					return hexColor.toUpperCase(); // Convert to uppercase for consistency
+				},
 			}]
 		};
 		return html`
@@ -64,11 +79,11 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 				<panda-particle-banner
 					.config="${bannerConfig}"					
 				>
-					<div>
+					<div class="content">
 						<h1>BUTTON</h1>
-						<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 					</div>
 				</panda-particle-banner>
+				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
 	}
