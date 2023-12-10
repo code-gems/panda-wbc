@@ -331,9 +331,9 @@ export const pandaThemeLight = css`
 
 		--panda-icon-size-xs: 16px;
 		--panda-icon-size-s: 18px;
-		--panda-icon-size-m: 24px;
-		--panda-icon-size-l: 28px;
-		--panda-icon-size-xl: 32px;
+		--panda-icon-size-m: 20px;
+		--panda-icon-size-l: 24px;
+		--panda-icon-size-xl: 30px;
 		--panda-icon-size-hero: 46px;
 
 		/* ========================================================================================================= */

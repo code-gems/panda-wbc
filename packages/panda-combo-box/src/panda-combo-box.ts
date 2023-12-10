@@ -150,6 +150,13 @@ export class PandaComboBox extends LitElement {
 			// update mandatory flag
 			this._evaluateMandatoryFlag();
 		}
+		// close overlay on disabled/working
+		if (
+			changedProps.has("disabled") && this.disabled ||
+			changedProps.has("working") && this.working
+		) {
+			this._closeOverlay();
+		}
 	}
 
 	disconnectedCallback(): void {

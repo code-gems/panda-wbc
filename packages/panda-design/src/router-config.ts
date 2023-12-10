@@ -16,6 +16,6 @@ export const getRouterConfig = (): RouterConfig => ({
 		"/develop": html`<develop-page></develop-page>`,
 		"/themes": html`<themes-page></themes-page>`,
 		"/core": html`<core-page></core-page>`,
-		"/about": html`ABOUT`,
+		"/tutorials": html`<tutorials-page></tutorials-page>`,
 	}
 });

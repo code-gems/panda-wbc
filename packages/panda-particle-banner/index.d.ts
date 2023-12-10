@@ -38,8 +38,8 @@ export interface ParticleGroup {
 
 	// mouse offset
 	interactive?: boolean; // default to false [incompatible with walls]
-	mouseOffsetXSensitivity?: number; // default to 100
-	mouseOffsetYSensitivity?: number; // default to 100
+	sensitivityX?: number; // default to 1
+	sensitivityY?: number; // default to 1
 
 	// connect
 	connect?: boolean; // default to false

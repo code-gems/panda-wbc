@@ -15,6 +15,7 @@ export abstract class ContentPageTemplate extends LitElement {
 	static get styles() {
 		return [
 			scrollbar,
+			uiComponents.table,
 			uiComponents.banner,
 			uiComponents.form,
 			uiComponents.sample,
@@ -116,7 +117,7 @@ export abstract class ContentPageTemplate extends LitElement {
 		const contextMenuHtml: TemplateResult[] = [];
 		// extract context menu object
 		const selectedPage = new PageLibrary().getPageById(this.pageId);
-		this._contextMenu = selectedPage?.contextMenu || [];
+		this._contextMenu = selectedPage?.contextMenu ?? [];
 		// generate context menu items
 		this._contextMenu.forEach(({ name, contextId }) => {
 			contextMenuHtml.push(html`
@@ -152,7 +153,9 @@ export abstract class ContentPageTemplate extends LitElement {
 
 	public _renderComponentPropertyTable(componentPropertyList: ComponentPropertyDetails[] = []): TemplateResult {
 		const tableBodyHtml: TemplateResult[] = [];
-
+		// check if properties have option column included
+		const hasOptions = componentPropertyList.find((propertyDetails) => propertyDetails.options !== undefined);
+		// parse component properties
 		componentPropertyList.forEach((propertyDetails) => {
 			const {
 				name,
@@ -167,7 +170,7 @@ export abstract class ContentPageTemplate extends LitElement {
 					<div class="td"><i class="code">${name}</i></div>
 					<div class="td"><span class="variable-type">${type}</span></div>
 					<div class="td">${defaultValue}</div>
-					<div class="td">${options.join(" | ")}</div>
+					${hasOptions ? html`<div class="td">${options.join(" | ")}</div>` : html``}
 					<div class="td">${description}</div>
 				</div>
 			`);
@@ -180,7 +183,7 @@ export abstract class ContentPageTemplate extends LitElement {
 						<div class="td">PROPERTY NAME</div>
 						<div class="td">TYPE</div>
 						<div class="td">DEFAULT VALUE</div>
-						<div class="td">OPTIONS</div>
+						${hasOptions ? html`<div class="td">OPTIONS</div>` : html``}
 						<div class="td">DESCRIPTION</div>
 					</div>
 				</div>

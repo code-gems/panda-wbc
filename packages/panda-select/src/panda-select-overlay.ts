@@ -346,9 +346,11 @@ export class PandaSelectOverlay extends LitElement {
 	private _onKeyDown(event: KeyboardEvent) {
 		switch (event.key) {
 			case "ArrowUp":
+				event.stopPropagation();
 				this._selectPreviousItem();
 				break;
 			case "ArrowDown":
+				event.stopPropagation();
 				this._selectNextItem();
 				break;
 		}

@@ -3,7 +3,6 @@ import { css } from "lit";
 export const styles = css`
 	:host {
 		display: inline-block;
-		height: fit-content;
 	}
 
 	.label {
@@ -29,8 +28,8 @@ export const styles = css`
 		border-radius: var(--panda-input-border-radius, 5px);
 		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 
-		--panda-spinner-width: var(--panda-icon-size-m, 24px);
-		--panda-spinner-height: var(--panda-icon-size-m, 24px);
+		--panda-spinner-width: var(--panda-icon-size-m, 20px);
+		--panda-spinner-height: var(--panda-icon-size-m, 20px);
 	}
 
 	.select {
@@ -38,7 +37,6 @@ export const styles = css`
 		display: flex;
 		flex-flow: row nowrap;
 		width: 100%;
-		width: fit-content;
 		height: var(--panda-input-height, 40px);
 
 		transition: all 200ms ease-in-out;
@@ -82,8 +80,8 @@ export const styles = css`
 
 		transition: all 200ms ease-in-out;
 
-		--panda-icon-width: var(--panda-icon-size-m, 24px);
-		--panda-icon-height: var(--panda-icon-size-m, 24px);
+		--panda-icon-width: var(--panda-icon-size-m, 20px);
+		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
 
 	.select:not(.disabled) .icon { cursor: pointer; }
@@ -174,8 +172,8 @@ export const styles = css`
 		flex-shrink: 0;
 
 		--panda-icon-color: var(--panda-input-text-color, hsl(0deg 0% 15%));
-		--panda-icon--width: var(--panda-icon-size-s, 20px);
-		--panda-icon--height: var(--panda-icon-size-s, 20px);
+		--panda-icon--width: var(--panda-icon-size-s, 18px);
+		--panda-icon--height: var(--panda-icon-size-s, 18px);
 	}
 
 	::slotted(.prefix-icon) {

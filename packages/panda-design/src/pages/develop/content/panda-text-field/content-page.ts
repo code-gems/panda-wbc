@@ -1,5 +1,5 @@
 // types
-import { PageCategory } from "panda-design-typings";
+import { ContentSectionName, PageCategory } from "panda-design-typings";
 
 // styles
 import { styles } from "./styles/styles";
@@ -22,6 +22,12 @@ import {
 	description,
 	contextMenu
 } from "./page-config";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
+
+// code snippets
+import {
+	installationSnippet,
+} from "./snippets/snippets";
 
 @customElement("panda-text-field-content-page")
 @page({
@@ -56,18 +62,19 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
-		// const bannerConfig = 
+		const bannerConfig: PandaParticleBannerConfig = {
+			particleGroup: [{
+				particleCount: 50,
+				blur: true,
+			}]
+		};
 		return html`
-			<div class="banner small">
+			<div class="banner small particle-banner">
 				<panda-particle-banner
-					.config="${300}"
-					
+					.config="${bannerConfig}"					
 				>
 					<div>
 						<h1>TEXT FIELD</h1>
-						<p>
-							Buttons play a vital role in web applications, providing users with interactive elements to perform various actions and trigger specific functionalities.
-						</p>
 						<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 					</div>
 				</panda-particle-banner>
@@ -78,14 +85,14 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
+			${this._renderInstallationSection()}
 		`;
 	}
-
 
 	private _renderOverviewSection(): TemplateResult {
 		return html`
 			<!-- OVERVIEW -->
-			<div class="content-section" data-content-section-name="overview">
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
@@ -98,78 +105,27 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 						while still allowing them the flexibility to enter custom values when necessary.
 					</p>
 				</div>
+			</div>
+		`;
+	}
 
-				<!-- OVERVIEW -->
-				<div class="sample-cont">
-					<div class="sample">
-						<div class="form">
-							<div class="form-section">
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											.label="${`First name:`}"
-											.placeholder="${`Enter your name`}"
-										>
-											<div class="prefix" slot="prefix">http://</div>
-											<div class="suffix" slot="suffix">.com</div>
-										</panda-text-field>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											.label="${`Disabled`}"
-											.placeholder="${`Enter your name`}"
-											disabled
-										>
-										</panda-text-field>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											.label="${`Busy`}"
-											.placeholder="${`Enter your name`}"
-											busy
-										>
-										</panda-text-field>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											.label="${`Mandatory`}"
-											.placeholder="${`Enter your name`}"
-											mandatory
-										>
-										</panda-text-field>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											.label="${`Valid`}"
-											.placeholder="${`Enter your name`}"
-											theme="valid"
-										>
-										</panda-text-field>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											.label="${`Invalid`}"
-											.placeholder="${`Enter your name`}"
-											theme="invalid"
-										>
-										</panda-text-field>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+	private _renderInstallationSection(): TemplateResult {
+		return html`
+			<!-- INSTALLATION -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.INSTALLATION}">
+				<div class="section">
+					<h2>Installation</h2>
+					<p>
+						Start by initiating the installation of the npm library through a command executed in either the terminal or command prompt.
+						Utilize the package manager, indicating both the library name and its version for installation.
+					</p>
+	
+					<code-sample header="Installation">
+						${installationSnippet}
+					</code-sample>
 				</div>
 			</div>
 		`;
 	}
+	
 }

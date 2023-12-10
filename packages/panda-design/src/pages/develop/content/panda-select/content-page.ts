@@ -80,7 +80,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
-		{ name: "change", returnType: "PandaSelectChangeEvent", description: "" }
+		{ name: "change", returnType: "PandaButtonChangeEvent", description: "" }
 	];
 
 	// static data

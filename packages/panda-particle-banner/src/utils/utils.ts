@@ -11,8 +11,8 @@ export const getDefaultBannerConfig = (): ParticleGroup => {
 
 		// mouse offset
 		interactive: false,
-		mouseOffsetXSensitivity: 100,
-		mouseOffsetYSensitivity: 100,
+		sensitivityX: 1,
+		sensitivityY: 1,
 
 		// connect
 		connect: false,

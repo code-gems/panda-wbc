@@ -59,7 +59,7 @@ export class PandaSearchContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		// const bannerConfig = 
 		return html`
-			<div class="banner small">
+			<div class="banner small particle-banner">
 				<panda-particle-banner>
 					<div>
 						<h1>SEARCH</h1>

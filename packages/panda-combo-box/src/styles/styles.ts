@@ -3,7 +3,6 @@ import { css } from "lit";
 export const styles = css`
 	:host {
 		display: inline-block;
-		height: fit-content;
 	}
 
 	.label {
@@ -35,7 +34,6 @@ export const styles = css`
 		display: flex;
 		flex-flow: row nowrap;
 		width: 100%;
-		width: fit-content;
 		height: var(--panda-input-height, 40px);
 
 		transition: all 200ms ease-in-out;

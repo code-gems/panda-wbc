@@ -1,6 +1,6 @@
 // type
 import { PandaComboBoxChange, PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
-import { PandaComboBoxOverlay } from "./panda-search-overlay";
+import { PandaSearchOverlay } from "./panda-search-overlay";
 
 // style
 import { styles } from "./styles/styles";

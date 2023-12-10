@@ -169,8 +169,9 @@ export const uiComponents = {
 			position: relative;
 			display: block;
 			width: 100%;
+			height: 400px;
 			min-height: 400px;
-			padding: 40px;
+			padding: var(--panda-padding-xl);
 
 			background-color: var(--panda-background-color-300);
 			box-sizing: border-box;
@@ -178,6 +179,10 @@ export const uiComponents = {
 
 		.banner.small {
 			height: 200px;
+			min-height: 200px;
+		}
+
+		.banner.particle-banner {
 			padding: 0px;
 		}
 
@@ -318,7 +323,7 @@ export const uiComponents = {
 
 		/* MODS */
 		.table.table-properties .tr {
-			grid-template-columns: 200px 170px 90px 160px auto !important;
+			grid-template-columns: 200px 170px 90px auto auto !important;
 		}
 
 		.table.table-events {

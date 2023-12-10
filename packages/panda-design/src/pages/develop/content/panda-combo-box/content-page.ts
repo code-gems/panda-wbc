@@ -1,5 +1,5 @@
 // types
-import { ComponentEventDetails, ComponentPropertyDetails, PageCategory } from "panda-design-typings";
+import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName, PageCategory } from "panda-design-typings";
 
 // styles
 import { styles } from "./styles/styles";
@@ -107,6 +107,9 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	private _countryList = getCountryList();
 
+	@property({ type: Boolean })
+	private _disabled: boolean = false;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -152,7 +155,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 		return html`
 			<!-- OVERVIEW -->
-			<div class="content-section" data-content-section-name="overview">
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
@@ -204,10 +207,11 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 											.label="${"Select Country:"}"
 											.value="${"PL"}"
 											.items="${this._countryList}"
-											@change="${this._onChange}"
+											.filter="${customFilter}"
+											.disabled="${this._disabled}"
+											@change="${this._onChangeAndDisable}"
 											item-label-path="name"
 											item-value-path="code"
-											.filter="${customFilter}"
 											autoselect
 										>
 										</panda-combo-box>
@@ -304,5 +308,14 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	private _onChange(e: any) {
 		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", e.detail.value);
+	}
+
+	private _onChangeAndDisable(e: any) {
+		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", e.detail.value);
+
+		this._disabled = true;
+		setTimeout(() => {
+			this._disabled = false;
+		}, 2000);
 	}
 }

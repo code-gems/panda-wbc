@@ -10,6 +10,19 @@ declare module "panda-design-typings" {
 		CORE = "CORE",
 		ABOUT = "ABOUT",
 	}
+	
+	export const enum ContentSectionName {
+		OVERVIEW = "overview",
+		INSTALLATION = "installation",
+		USAGE = "usage",
+		COMPONENT_STATES = "component-states",
+		FEATURES = "features",
+		VALIDATION = "validation",
+		THEMING = "theming",
+		CUSTOMIZATION = "customization",
+		// miscellaneous 
+		LIST = "list",
+	}
 
 	export interface ContextMenuItem {
 		name: string;

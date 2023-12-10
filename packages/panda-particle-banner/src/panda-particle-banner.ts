@@ -129,13 +129,13 @@ class PandaParticleBanner extends LitElement {
 					particleCount,
 
 					sizeMin = 3,
-					sizeMax = 10,
+					sizeMax = 5,
 
-					minSpeedX = -3,
-					maxSpeedX = 3,
+					minSpeedX = -1,
+					maxSpeedX = 1,
 					speedDeltaX = 0,
-					minSpeedY = -3,
-					maxSpeedY = 3,
+					minSpeedY = -1,
+					maxSpeedY = 1,
 					speedDeltaY = 0,
 
 					blurMin = 0,
@@ -237,6 +237,8 @@ class PandaParticleBanner extends LitElement {
 				getBlur,
 				
 				interactive = false,
+				sensitivityX = 1,
+				sensitivityY = 1,
 
 			} = groupConfig;
 
@@ -245,8 +247,8 @@ class PandaParticleBanner extends LitElement {
 			let _offsetY = 0;
 			// assign mouse offset if interactive
 			if (!walls && interactive) {
-				_offsetX = this._offsetX;
-				_offsetY = this._offsetY;
+				_offsetX = this._offsetX * sensitivityX;
+				_offsetY = this._offsetY * sensitivityY;
 			}
 
 			// render particles
@@ -404,9 +406,7 @@ class PandaParticleBanner extends LitElement {
 	private _validateConfig() {
 		// parse banner config
 		this._config = {
-			particleGroup: {
-				...getDefaultBannerConfig(),
-			},
+			particleGroup: [],
 			...this.config,
 		};
 
@@ -419,8 +419,8 @@ class PandaParticleBanner extends LitElement {
 				particleCount,
 				walls,
 				interactive,
-				mouseOffsetXSensitivity,
-				mouseOffsetYSensitivity,
+				sensitivityX,
+				sensitivityY,
 				blur,
 				blurMin,
 				blurMax,
@@ -445,11 +445,11 @@ class PandaParticleBanner extends LitElement {
 				warn("'walls' and 'interactive' are features incompatible. 'interactive' behavior will be disabled.");
 			}
 
-			if (isNaN(mouseOffsetXSensitivity as number)) {
+			if (isNaN(sensitivityX as number)) {
 				warn("'mouseOffsetXSensitivity' has to be a number! Fallback to default value (100).");
 			}
 
-			if (isNaN(mouseOffsetYSensitivity as number)) {
+			if (isNaN(sensitivityY as number)) {
 				warn("'mouseOffsetYSensitivity' has to be a number! Fallback to default value (100).");
 			}
 
@@ -512,8 +512,8 @@ class PandaParticleBanner extends LitElement {
 			this._metadata.mouse.clientY = minMax(e.clientY - bannerTop, 0, bannerBottom);
 			this._metadata.mouse.clientX = minMax(e.clientX - bannerLeft, 0, bannerRight);
 	
-			const sensitivityX: number = Number(this.config.mouseOffsetXSensitivity) || 100;
-			const sensitivityY: number = Number(this.config.mouseOffsetYSensitivity) || 100;
+			const sensitivityX: number = 100;
+			const sensitivityY: number = 100;
 			this._offsetX = Math.round(((e.clientX - this._bannerRect.left) * sensitivityX) / (this._canvasEl.width)) - (sensitivityX / 2);
 			this._offsetY = Math.round(((e.clientY - this._bannerRect.top) * sensitivityY) / this._canvasEl.height) - (sensitivityY / 2);
 		}
