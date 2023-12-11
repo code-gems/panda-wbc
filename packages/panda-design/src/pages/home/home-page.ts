@@ -95,8 +95,23 @@ class HomePage extends LitElement {
 			particleGroup: [
 				{
 					particleCount: 50,
-					particleShape: ParticleShape.TRIANGLE_FILLED,
+					particleShape: ParticleShape.RECT,
 					particleLineWidth: 10,
+					drawParticle: (ctx, particle) => {
+						const { x, y, color, size } = particle;
+
+						// ctx.beginPath();
+						ctx.moveTo(x, y);
+						ctx.lineTo(x + (size / 2), y - (size / 2));
+
+						ctx.lineJoin = "round";
+						ctx.lineCap = "round";
+
+						ctx.strokeStyle = color;
+						ctx.stroke();
+						// ctx.closePath();
+					},
+
 					colors: ["#ff4778" , "#6f36bc", "#36174D"],
 					colorHueVariation: 10,
 					colorOpacityVariation: 30,

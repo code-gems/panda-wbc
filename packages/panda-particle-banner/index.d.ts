@@ -43,6 +43,7 @@ export interface ParticleGroup {
 	particleLineDash?: number[];
 	particleLineWidth?: number;
 	particleList?: PandaParticle[];
+	drawParticle?: (ctx: CanvasRenderingContext2D, particle: PandaParticle) => void;
 	
 	// particle behavior =======================================
 	walls?: boolean; // default to false

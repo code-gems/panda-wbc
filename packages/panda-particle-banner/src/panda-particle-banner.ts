@@ -287,6 +287,7 @@ class PandaParticleBanner extends LitElement {
 				particleShape = ParticleShape.CIRCLE_FILLED,
 				particleLineDash,
 				particleLineWidth,
+				drawParticle,
 				// connection
 				connect = false,
 				connectionDistance = 100,
@@ -442,7 +443,8 @@ class PandaParticleBanner extends LitElement {
 					this._ctx.filter = `blur(${blur}px)`;
 				}
 
-				if (particleShape === ParticleShape.CIRCLE) {
+				// reset line dash and line width before drawing particle
+				const resetLine = () => {
 					// check if particle line dash is declared
 					if (particleLineDash) {
 						this._ctx.setLineDash(particleLineDash);
@@ -456,6 +458,14 @@ class PandaParticleBanner extends LitElement {
 					} else {
 						this._ctx.lineWidth = 1;
 					}
+				}
+
+				if (drawParticle && typeof drawParticle === "function") {
+					resetLine();
+					// draw particle
+					drawParticle(this._ctx, particle);
+				} else if (particleShape === ParticleShape.CIRCLE) {
+					resetLine();
 					// draw circle
 					this._ctx.arc(
 						x - _offsetX,
@@ -482,19 +492,7 @@ class PandaParticleBanner extends LitElement {
 					this._ctx.fill();
 
 				} else if (particleShape === ParticleShape.RECT) {
-					// check if particle line dash is declared
-					if (particleLineDash) {
-						this._ctx.setLineDash(particleLineDash);
-					} else {
-						// reset line dash
-						this._ctx.setLineDash([]);
-					}
-					// check if particle line width is declared
-					if (particleLineWidth) {
-						this._ctx.lineWidth = particleLineWidth;
-					} else {
-						this._ctx.lineWidth = 1;
-					}
+					resetLine();
 					// draw rect
 					this._ctx.rect(
 						x - _offsetX - (size / 2),
@@ -517,19 +515,7 @@ class PandaParticleBanner extends LitElement {
 					this._ctx.fill();
 
 				} else if (particleShape === ParticleShape.TRIANGLE) {
-					// check if particle line dash is declared
-					if (particleLineDash) {
-						this._ctx.setLineDash(particleLineDash);
-					} else {
-						// reset line dash
-						this._ctx.setLineDash([]);
-					}
-					// check if particle line width is declared
-					if (particleLineWidth) {
-						this._ctx.lineWidth = particleLineWidth;
-					} else {
-						this._ctx.lineWidth = 1;
-					}
+					resetLine();
 					// draw triangle
 					this._ctx.moveTo(x - _offsetX, y - _offsetY + (size / 2));
 					this._ctx.lineTo(x - _offsetX + (size / 2), y - _offsetY - (size / 2));
@@ -588,6 +574,7 @@ class PandaParticleBanner extends LitElement {
 				particleCount,
 				particleShape = ParticleShape.CIRCLE_FILLED,
 				particleLineDash,
+				drawParticle,
 
 				// behavior
 				walls,
@@ -660,6 +647,10 @@ class PandaParticleBanner extends LitElement {
 
 			if (getBlur !== undefined && typeof getBlur !== "function") {
 				warn("'getBlur' callback has to be a function that returns a number.");
+			}
+
+			if (drawParticle !== undefined && typeof drawParticle !== "function") {
+				warn("'drawParticle' callback has to be a function.");
 			}
 
 			if (getBlur !== undefined && !blur) {
