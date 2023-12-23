@@ -88,7 +88,7 @@ export class PandaTextField extends LitElement {
 
 	protected render() {
 		let labelHtml: TemplateResult = html``;
-		const spinnerHtml: TemplateResult[] = [];
+		let spinnerHtml: TemplateResult = html``;
 
 		// generate label if defined
 		if (this.label) {
@@ -104,7 +104,7 @@ export class PandaTextField extends LitElement {
 
 		// check if component is in busy state
 		if (this.busy) {
-			spinnerHtml.push(html`
+			spinnerHtml = html`
 				<div
 					class="spinner-cont"
 					part="spinner-cont"
@@ -115,8 +115,9 @@ export class PandaTextField extends LitElement {
 					>
 					</panda-spinner>
 				</div>
-			`);
+			`;
 		}
+		
 		return html`
 			${labelHtml}
 			<div

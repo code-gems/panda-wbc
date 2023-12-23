@@ -1,4 +1,4 @@
-export const getCountryList = () => {
+export const getCountryList = (): Array<{ name: string; code: string; }> => {
 	return [
 		{ name: "Afghanistan", code: "AF" },
 		{ name: "Aland Islands", code: "AX" },
@@ -244,4 +244,68 @@ export const getCountryList = () => {
 		{ name: "Zambia", code: "ZM" },
 		{ name: "Zimbabwe", code: "ZW" }
 	];
-}
+};
+
+export const getCcyPairs = (): Array<{ label: string; value: string; }> => {
+	return [
+		{ label: "USDAUD", value: "USDAUD" },
+		{ label: "USDCAD", value: "USDCAD" },
+		{ label: "USDCHF", value: "USDCHF" },
+		{ label: "USDEUR", value: "USDEUR" },
+		{ label: "USDGBP", value: "USDGBP" },
+		{ label: "USDJPY", value: "USDJPY" },
+		{ label: "USDNOK", value: "USDNOK" },
+		{ label: "USDNZD", value: "USDNZD" },
+		{ label: "USDSEK", value: "USDSEK" },
+
+		{ label: "EURAUD", value: "EURAUD" },
+		{ label: "EURCAD", value: "EURCAD" },
+		{ label: "EURCHF", value: "EURCHF" },
+		{ label: "EURGBP", value: "EURGBP" },
+		{ label: "EURJPY", value: "EURJPY" },
+		{ label: "EURNOK", value: "EURNOK" },
+		{ label: "EURNZD", value: "EURNZD" },
+		{ label: "EURSEK", value: "EURSEK" },
+		{ label: "EURUSD", value: "EURUSD" },
+
+		{ label: "GBPAUD", value: "GBPAUD" },
+		{ label: "GBPCAD", value: "GBPCAD" },
+		{ label: "GBPCHF", value: "GBPCHF" },
+		{ label: "GBPEUR", value: "GBPEUR" },
+		{ label: "GBPJPY", value: "GBPJPY" },
+		{ label: "GBPNOK", value: "GBPNOK" },
+		{ label: "GBPNZD", value: "GBPNZD" },
+		{ label: "GBPSEK", value: "GBPSEK" },
+		{ label: "GBPUSD", value: "GBPUSD" },
+
+		{ label: "JPYAUD", value: "JPYAUD" },
+		{ label: "JPYCAD", value: "JPYCAD" },
+		{ label: "JPYCHF", value: "JPYCHF" },
+		{ label: "JPYEUR", value: "JPYEUR" },
+		{ label: "JPYGBP", value: "JPYGBP" },
+		{ label: "JPYNOK", value: "JPYNOK" },
+		{ label: "JPYNZD", value: "JPYNZD" },
+		{ label: "JPYSEK", value: "JPYSEK" },
+		{ label: "JPYUSD", value: "JPYUSD" },
+
+		{ label: "AUDCAD", value: "AUDCAD" },
+		{ label: "AUDCHF", value: "AUDCHF" },
+		{ label: "AUDEUR", value: "AUDEUR" },
+		{ label: "AUDGBP", value: "AUDGBP" },
+		{ label: "AUDJPY", value: "AUDJPY" },
+		{ label: "AUDNOK", value: "AUDNOK" },
+		{ label: "AUDNZD", value: "AUDNZD" },
+		{ label: "AUDSEK", value: "AUDSEK" },
+		{ label: "AUDUSD", value: "AUDUSD" },
+
+		{ label: "NZDAUD", value: "NZDAUD" },
+		{ label: "NZDCAD", value: "NZDCAD" },
+		{ label: "NZDCHF", value: "NZDCHF" },
+		{ label: "NZDEUR", value: "NZDEUR" },
+		{ label: "NZDGBP", value: "NZDGBP" },
+		{ label: "NZDJPY", value: "NZDJPY" },
+		{ label: "NZDNOK", value: "NZDNOK" },
+		{ label: "NZDSEK", value: "NZDSEK" },
+		{ label: "NZDUSD", value: "NZDUSD" },
+	];
+};

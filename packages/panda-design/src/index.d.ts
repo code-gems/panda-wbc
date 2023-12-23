@@ -62,7 +62,7 @@ declare module "panda-design-typings" {
 
 	export type ActionCreator<P, A extends Action> = (param: P) => A;
 
-	export type AsyncActionCreator<P, A extends Action> = (param?: P) => ThunkAction<Promise<void> | void, Store, void, A>;
+	export type AsyncActionCreator<P, A extends Action> = (param: P) => ThunkAction<Promise<void> | void, Store, void, A>;
 
 	export type Reducer<S, A extends Action> = (state: S, action: A) => S;
 
@@ -71,6 +71,7 @@ declare module "panda-design-typings" {
 	}
 
 	export interface AppState {
+		devMode: boolean;
 		selectedTheme: string | null;
 		currentPageDetails: {
 			pathname: string;
@@ -114,5 +115,9 @@ declare module "panda-design-typings" {
 
 	export interface ChangeThemeAction extends Action {
 		themeName: string;
+	}
+
+	export interface ToggleDevModeAction extends Action {
+		devMode: boolean;
 	}
 }

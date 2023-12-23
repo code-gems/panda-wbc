@@ -1,5 +1,5 @@
 // type
-import { PandaComboBoxChange, PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
+import { PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
 import { PandaComboBoxOverlay } from "./panda-combo-box-overlay";
 
 // style
@@ -219,6 +219,7 @@ export class PandaComboBox extends LitElement {
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
 					@input="${(e: InputEvent) => this._onInput((e.target as HTMLInputElement).value)}"
+					@change="${this._onChangeEvent}"
 					@click="${this._onClick}"
 				/>
 				<div
@@ -311,7 +312,7 @@ export class PandaComboBox extends LitElement {
 				this.filter &&
 				typeof this.filter === "function"
 			) {
-				_items = this.filter(this._searchText, this.items)
+				_items = this.filter(this._searchText, this.items);
 			} else {
 				_items = this.items;
 			}
@@ -336,7 +337,8 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _triggerChangeEvent() {
-		const event: CustomEvent<PandaComboBoxChange> = new CustomEvent("change", {
+		console.log("%c ⚡ [COMBO-BOX] _triggerChangeEvent", "font-size: 24px; color: orange;", this.value);
+		const event: PandaComboBoxChangeEvent = new CustomEvent("change", {
 			detail: {
 				value: this.value
 			}
@@ -390,8 +392,9 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onBlur() {
+		console.log("%c ⚡ [COMBO-BOX] _onBlur", "font-size: 24px; color: orange;");
 		this.focused = false;
-		this._validateInput();
+		// this._validateInput();
 	}
 
 	private _onInput(value: string) {
@@ -443,6 +446,7 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onSelect(e: PandaComboBoxChangeEvent) {
+		console.log("%c ⚡ [COMBO-BOX] _onSelect", "font-size: 24px; color: orange;", e.detail.value);
 		// update value
 		this.value = e.detail.value;
 		this._inputFieldEl.value = getLabelFromItems(
@@ -456,6 +460,7 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onChange(e: PandaComboBoxChangeEvent) {
+		console.log("%c ⚡ [COMBO-BOX] _onChange", "font-size: 24px; color: orange;", e.detail.value);
 		// update value
 		this.value = e.detail.value;
 		this._inputFieldEl.value = getLabelFromItems(
@@ -468,6 +473,10 @@ export class PandaComboBox extends LitElement {
 		this._closeOverlay();
 		// trigger change event
 		this._triggerChangeEvent();
+	}
+
+	private _onChangeEvent(e: any) {
+		console.log("%c ⚡ [COMBO-BOX] _onChangeEvent", "font-size: 24px; color: orange;", e);
 	}
 
 	private _onToggleDropdown() {

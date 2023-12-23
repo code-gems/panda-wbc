@@ -2,7 +2,8 @@
 import { AppState } from "panda-design-typings";
 
 export const DEFAULT_STORE: AppState = {
-	selectedTheme: "panda-theme-light",
+	devMode: false,
+	selectedTheme: "panda-theme-dark",
 	currentPageDetails: {
         pathname: "/",
         search: "",

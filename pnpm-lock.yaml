@@ -179,6 +179,9 @@ importers:
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      '@panda-wbc/panda-switch':
+        specifier: workspace:*
+        version: link:../panda-switch
       '@panda-wbc/panda-text-editor':
         specifier: workspace:*
         version: link:../panda-text-editor
@@ -188,6 +191,9 @@ importers:
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
+      '@panda-wbc/panda-theme-switcher':
+        specifier: workspace:*
+        version: link:../panda-theme-switcher
       '@panda-wbc/panda-toggle':
         specifier: workspace:*
         version: link:../panda-toggle
@@ -414,6 +420,25 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-switch:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      '@panda-wbc/panda-spinner':
+        specifier: workspace:*
+        version: link:../panda-spinner
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-text-editor:
     dependencies:
       '@panda-wbc/panda-icon':
@@ -454,6 +479,22 @@ importers:
 
   packages/panda-theme:
     dependencies:
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-theme-switcher:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
       lit:
         specifier: ^2.7.4
         version: 2.7.4

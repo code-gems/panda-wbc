@@ -11,7 +11,7 @@ import "@panda-wbc/panda-spinner";
 import "./panda-select-overlay";
 
 // utils
-import { LitElement, PropertyValueMap, PropertyValues, TemplateResult, html } from "lit";
+import { LitElement, PropertyValues, TemplateResult, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { minValue, getItemLabel } from "./utils/utils";
 

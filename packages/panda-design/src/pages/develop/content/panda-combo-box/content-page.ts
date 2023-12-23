@@ -23,7 +23,7 @@ import {
 } from "./snippets/snippets";
 
 // static demo data
-import { getCountryList } from "../../static-data";
+import { getCcyPairs, getCountryList } from "../../static-data";
 
 // page config
 import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
@@ -105,6 +105,8 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "Code #5", code: "code 05" },
 		{ name: "Code #6", code: "code 06" },
 	];
+
+	private _ccyPairList = getCcyPairs();
 
 	private _countryList = getCountryList();
 
@@ -252,6 +254,15 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 											@change="${this._onChangeAndDisable}"
 											item-label-path="name"
 											item-value-path="code"
+											autoselect
+										>
+										</panda-combo-box>
+
+										<panda-combo-box
+											.label="${"Ccy Pair:"}"
+											.value="${null}"
+											.items="${this._ccyPairList}"
+											@change="${this._onChange}"
 											autoselect
 										>
 										</panda-combo-box>

@@ -12,6 +12,7 @@ import "./content/panda-particle-banner/content-page";
 import "./content/panda-search/content-page";
 import "./content/panda-select/content-page";
 import "./content/panda-spinner/content-page";
+import "./content/panda-switch/content-page";
 import "./content/panda-text-editor/content-page";
 import "./content/panda-text-field/content-page";
 import "./content/panda-toggle/content-page";

@@ -43,6 +43,17 @@ export default appStore;
 
 /**
  * Decorator that helps you to subscribe to a app store. Adds [stateChanged] method to your class
+ * 
+ * #### USAGE
+ * ```ts
+ * reduxify() // put (at) in front
+ * class MyClass {
+ *		// ...
+ * 	stateChanged(store: Store) {
+ * 		// ...
+ * 	}
+ * }
+ * ```
  */
 export const reduxify = () => {
 	return (target: any): typeof target => {

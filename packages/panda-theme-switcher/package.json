@@ -1,0 +1,44 @@
+{
+	"name": "@panda-wbc/panda-theme-switcher",
+	"version": "1.0.0",
+	"description": "Lit based web component - theme switcher",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-theme-switcher.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"panda-wbc",
+		"ui component",
+		"panda-theme-switcher",
+		"toggle",
+		"switch",
+		"themes"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"lit": "^2.7.4",
+		"@panda-wbc/panda-icon": "workspace:*"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"types": "index.d.ts"
+}

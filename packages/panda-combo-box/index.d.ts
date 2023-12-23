@@ -1,6 +1,3 @@
-export type PandaComboBoxChange = {
-	value: string | number | any;
-}
 
 export type ElementDetails = {
 	width: number;
@@ -23,6 +20,8 @@ export interface PandaComboBoxItem {
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export interface PandaComboBoxChangeEvent {
-	detail: PandaComboBoxChange;
+export type PandaComboBoxChangeEventDetails = {
+	value: string | number | any;
 }
+
+export interface PandaComboBoxChangeEvent extends CustomEvent<PandaComboBoxChange> {}

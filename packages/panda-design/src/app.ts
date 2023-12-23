@@ -23,7 +23,7 @@ import { appStore, reduxify } from "./redux/store";
 import { getRouterConfig } from "./router-config";
 
 // actions
-import { gotoPage } from "./redux/actions/common";
+import { gotoPage, changeTheme } from "./redux/actions/common";
 
 @customElement("panda-design-app")
 @reduxify()
@@ -39,8 +39,18 @@ class PandaApp extends LitElement {
 	private _routerConfig: RouterConfig = getRouterConfig();
 
 	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
+	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
+
+	protected firstUpdated(): void {
+		// get selected theme or select default one
+		const selectedTheme = localStorage.getItem("theme") ?? "panda-theme-light";
+		appStore.dispatch(
+			changeTheme({
+				themeName: selectedTheme
+			})
+		);
+	}
 
 	stateChanged(state: AppState) {
 		const {
@@ -50,7 +60,7 @@ class PandaApp extends LitElement {
 	}
 
 	// ================================================================================================================
-	// ====================================================================================================== RENDERERS
+	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
@@ -64,7 +74,7 @@ class PandaApp extends LitElement {
 	}
 
 	// ================================================================================================================
-	// ========================================================================================================= EVENTS
+	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
 	private _onNavigate(navigateEvent: PandaRouterNavigateEvent): void {

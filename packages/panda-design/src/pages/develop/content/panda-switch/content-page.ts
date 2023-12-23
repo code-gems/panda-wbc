@@ -1,10 +1,11 @@
 // types
 import {
-	ComponentCssVariableDetails,
 	ComponentPropertyDetails,
 	ComponentEventDetails,
 	PageCategory,
+	ContentSectionName,
 } from "panda-design-typings";
+import { PandaSwitchChangeEvent } from "@panda-wbc/panda-switch";
 
 // styles
 import { styles } from "./styles/styles";
@@ -12,7 +13,7 @@ import { uiComponents } from "../../../../styles/styles";
 import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
-import "@panda-wbc/panda-select";
+import "@panda-wbc/panda-switch";
 
 // utils
 import { html, TemplateResult } from "lit";
@@ -32,7 +33,7 @@ import { installationSnippet } from "./snippets/snippets";
 // static data
 import { getCountryList } from "../../static-data";
 
-@customElement("panda-select-content-page")
+@customElement("panda-switch-content-page")
 @page({
 	pageId,
 	pageName,
@@ -41,9 +42,9 @@ import { getCountryList } from "../../static-data";
 	keywords,
 	description,
 	contextMenu,
-	template: html`<panda-select-content-page></panda-select-content-page>`
+	template: html`<panda-switch-content-page></panda-switch-content-page>`
 })
-export class PandaSelectContentPage extends ContentPageTemplate {
+export class PandaSwitchContentPage extends ContentPageTemplate {
 	// css styles
 	static get styles() {
 		return [
@@ -118,7 +119,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	private _renderOverviewSection(): TemplateResult {
 		return html`
 			<!-- OVERVIEW -->
-			<div class="content-section" data-content-section-name="overview">
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
@@ -131,22 +132,10 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 				<!-- OVERVIEW -->
 				<div class="sample-cont">
 					<div class="sample">
-						<panda-select
-							.label="${`Option:`}"
-							.placeholder="${`Select option...`}"
-							.items="${this._items}"
+						<panda-switch
+							label="User Active"
+							@change="${this._onChange}"
 						>
-						</panda-select>
-						<br />
-						<br />
-						<panda-select
-							.label="${`Option:`}"
-							.placeholder="${`Select option...`}"
-							.items="${this._countryList}"
-							item-label-path="name"
-							item-value-path="code"
-						>
-							<div class="prefix" slot="prefix">AUS</div>
 						</panda-select>
 					</div>
 				</div>
@@ -157,7 +146,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	private _renderInstallationSection(): TemplateResult {
 		return html`
 			<!-- INSTALLATION -->
-			<div class="content-section" data-content-section-name="installation">
+			<div class="content-section" data-content-section-name="${ContentSectionName.INSTALLATION}">
 				<div class="section">
 					<h2>Installation</h2>
 					<p>
@@ -176,7 +165,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	private _renderUsageSection(): TemplateResult {
 		return html`
 			<!-- USAGE -->
-			<div class="content-section" data-content-section-name="usage">
+			<div class="content-section" data-content-section-name="${ContentSectionName.USAGE}">
 				<div class="section">
 					<h2>Usage</h2>
 					<p>
@@ -234,7 +223,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	private _renderComponentStatesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT STATES -->
-			<div class="content-section" data-content-section-name="component-states">
+			<div class="content-section" data-content-section-name="${ContentSectionName.COMPONENT_STATES}">
 				<div class="section">
 					<h2>Component States</h2>
 					<p>
@@ -251,4 +240,11 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 		`;
 	}
 
+	// ================================================================================================================
+	// EVENTS =========================================================================================================
+	// ================================================================================================================
+
+	private _onChange(event: PandaSwitchChangeEvent) {
+		console.log("%c _onChange", "font-size: 24px; color: green;", event.detail);
+	}
 }

@@ -1,11 +1,13 @@
 // types
 import { AppState } from "panda-design-typings";
+import { PandaThemeSwitcherToggleEvent, PandaThemeSwitcherTheme } from "@panda-wbc/panda-theme-switcher";
 
 // styles
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/styles";
 
-// web parts
+// components & web parts
+import "@panda-wbc/panda-theme-switcher";
 import "../dragon-logo/dragon-logo";
 
 // utils
@@ -40,7 +42,6 @@ class AppSideBar extends LitElement {
 	// ================================================================================================================
 
 	stateChanged(state: AppState) {
-		console.log("%c state", "font-size: 24px; color: green;", state);
 		const {
 			selectedTheme,
 			currentPageDetails: {
@@ -56,6 +57,10 @@ class AppSideBar extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
+		const selectedTheme = this.selectedTheme === "panda-theme-light"
+			? PandaThemeSwitcherTheme.LIGHT
+			: PandaThemeSwitcherTheme.DARK;
+
 		return html`
 			<div class="side-bar">
 				<div class="header">
@@ -68,7 +73,11 @@ class AppSideBar extends LitElement {
 					${this._renderSideMenu()}
 				</div>
 				<div class="footer">
-					${this._renderThemeSwitcher()}
+					<panda-theme-switcher
+						.selectedTheme="${selectedTheme}"
+						@change="${this._onChangeTheme}"
+					>
+					<panda-theme-switcher>
 				</div>
 			</div>
 		`;
@@ -100,40 +109,19 @@ class AppSideBar extends LitElement {
 		return btnHtml;
 	}
 
-	private _renderThemeSwitcher() {
-		const flip = this.selectedTheme === "panda-theme-light"
-			? "flip"
-			: "";
-
-		return html`
-			<div class="theme-switcher">
-				<div class="switcher-cont ${flip}">
-					<div class="switcher">
-						<div
-							class="btn-icon"
-							@click="${() => this._onChangeTheme("panda-theme-light")}"
-							title="Switch to light theme"
-						>
-							<panda-icon icon="sun"></panda-icon>
-						</div>
-						<div
-							class="btn-icon"
-							@click="${() => this._onChangeTheme("panda-theme-dark")}"
-							title="Switch to dark theme"
-						>
-							<panda-icon icon="moon"></panda-icon>
-						</div>
-					</div>
-				</div>
-			</div>
-		`;
-	}
-
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onChangeTheme(themeName: string) {
+	private _onChangeTheme(event: PandaThemeSwitcherToggleEvent) {
+		const selectedTheme = event.detail.value;
+		let themeName = "panda-theme-light";
+		if (selectedTheme === PandaThemeSwitcherTheme.LIGHT) {
+			themeName = "panda-theme-light";
+		} else {
+			themeName = "panda-theme-dark";
+		}
+
 		appStore.dispatch(
 			changeTheme({
 				themeName
