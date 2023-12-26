@@ -23,6 +23,8 @@ export const styles = css`
 		flex-shrink: 0;
 	}
 
+	.submenu 
+
 	.submenu .body {
 		flex-grow: 1;
 		overflow: overlay;
@@ -77,5 +79,17 @@ export const styles = css`
 		font-family: var(--panda-font-family);
 		user-select: none;
 		cursor: pointer;		
+	}
+
+	/* ACTIVE STATE */
+
+	.menu-list .list-item.active {
+		background-color: var(--panda-primary-color);
+		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc);
+		--panda-icon-color: var(--panda-primary-text-color);
+	}
+
+	.menu-list .list-item.active label {
+		color: var(--panda-primary-text-color);
 	}
 `;

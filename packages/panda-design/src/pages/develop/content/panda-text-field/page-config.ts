@@ -3,7 +3,7 @@ import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
 
 export const pageId = "panda-text-field";
 export const pageName = "Text Field";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["text", "text box", "text field", "input"];
 export const description = ["Showcase of a panda-text-field element."];
 

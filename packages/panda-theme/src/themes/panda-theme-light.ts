@@ -61,26 +61,26 @@ export const pandaThemeLight = css`
 		/* ========================================================================================================= */
 
 		/* PRIMARY COLOR */
-		--panda-primary-color: hsl(164deg 67% 45%);
+		--panda-primary-color: hsl(209deg 78% 46%);
 		--panda-primary-text-color: hsl(0deg 0% 100%);
 
-		--panda-primary-color-50: hsl(164deg 67% 75%);
-		--panda-primary-color-100: hsl(164deg 67% 55%);
-		--panda-primary-color-300: hsl(164deg 67% 50%);
-		--panda-primary-color-500: hsl(164deg 67% 45%);
-		--panda-primary-color-700: hsl(164deg 67% 40%);
-		--panda-primary-color-900: hsl(164deg 67% 35%);
+		--panda-primary-color-50: hsl(209deg 78% 76%);
+		--panda-primary-color-100: hsl(209deg 78% 56%);
+		--panda-primary-color-300: hsl(209deg 78% 51%);
+		--panda-primary-color-500: hsl(209deg 78% 46%);
+		--panda-primary-color-700: hsl(209deg 78% 41%);
+		--panda-primary-color-900: hsl(209deg 78% 36%);
 
-		--panda-primary-color-0opc: hsl(164deg 67% 45% / 0%);
-		--panda-primary-color-10opc: hsl(164deg 67% 45% / 10%);
-		--panda-primary-color-20opc: hsl(164deg 67% 45% / 20%);
-		--panda-primary-color-30opc: hsl(164deg 67% 45% / 30%);
-		--panda-primary-color-40opc: hsl(164deg 67% 45% / 40%);
-		--panda-primary-color-50opc: hsl(164deg 67% 45% / 50%);
-		--panda-primary-color-60opc: hsl(164deg 67% 45% / 60%);
-		--panda-primary-color-70opc: hsl(164deg 67% 45% / 70%);
-		--panda-primary-color-80opc: hsl(164deg 67% 45% / 80%);
-		--panda-primary-color-90opc: hsl(164deg 67% 45% / 90%);
+		--panda-primary-color-0opc: hsl(209deg 78% 46% / 0%);
+		--panda-primary-color-10opc: hsl(209deg 78% 46% / 10%);
+		--panda-primary-color-20opc: hsl(209deg 78% 46% / 20%);
+		--panda-primary-color-30opc: hsl(209deg 78% 46% / 30%);
+		--panda-primary-color-40opc: hsl(209deg 78% 46% / 40%);
+		--panda-primary-color-50opc: hsl(209deg 78% 46% / 50%);
+		--panda-primary-color-60opc: hsl(209deg 78% 46% / 60%);
+		--panda-primary-color-70opc: hsl(209deg 78% 46% / 70%);
+		--panda-primary-color-80opc: hsl(209deg 78% 46% / 80%);
+		--panda-primary-color-90opc: hsl(209deg 78% 46% / 90%);
 
 		/* SECONDARY */
 		--panda-secondary-color: hsl(164deg 67% 45%);

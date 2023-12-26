@@ -20,6 +20,7 @@ export abstract class ContentPageTemplate extends LitElement {
 			uiComponents.form,
 			uiComponents.sample,
 			uiComponents.appLayout,
+			uiComponents.columnSystem,
 			uiComponents.modifiers,
 		];
 	}

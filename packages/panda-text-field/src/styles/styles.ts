@@ -26,7 +26,7 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: var(--panda-input-border-radius, 4px);
+		border-radius: var(--panda-input-border-radius, 5px);
 		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
@@ -34,7 +34,6 @@ export const styles = css`
 		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
-
 		height: var(--panda-input-height, 30px);
 
 		transition: all 200ms ease-in-out;
@@ -58,7 +57,7 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 
 		border: none;
-		border-radius: var(--panda-input-border-radius, 4px);
+		border-radius: var(--panda-input-border-radius, 5px);
 		background-color: transparent;
 	}
 
@@ -66,7 +65,7 @@ export const styles = css`
 		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
 	}
 
-	.text-field:not([disabled]):hover {
+	.text-field:not(.disabled):hover {
 		border: 1px solid var(--panda-input-border-color-hover, hsl(0deg 0% 65%));
 	}
 
@@ -125,16 +124,39 @@ export const styles = css`
 		text-shadow: var(--panda-label-text-shadow, none);
 		user-select: none;
 
-		background-color: var(--panda-background-color-700);
+		background-color: var(--panda-background-color-700, hsl(0deg 0% 94% / 70%));
 		box-sizing: border-box;
 	}
 
 	::slotted(.prefix) {
-		border-radius: 0px 4px 4px 0px;
-		border-left: 1px solid var(--panda-input-border-color);
+		border-radius: var(--panda-input-border-radius, 5px) 0px 0px var(--panda-input-border-radius, 5px);
+		border-right: 1px solid var(--panda-input-border-color, hsl(0deg 0% 80%));
+	}
+	
+	::slotted(.suffix) {
+		border-left: 1px solid var(--panda-input-border-color, hsl(0deg 0% 80%));
+		border-radius: 0px var(--panda-input-border-radius, 5px) var(--panda-input-border-radius, 5px) 0px;
 	}
 
-	::slotted(.suffix) {
+	::slotted(.prefix-icon),
+	::slotted(.suffix-icon) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: var(--panda-input-height, 40px);
+		height: 100%;
+		flex-shrink: 0;
 
+		--panda-icon-color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		--panda-icon-width: var(--panda-icon-size-s, 18px);
+		--panda-icon-height: var(--panda-icon-size-s, 18px);
+	}
+
+	::slotted(.prefix-icon) {
+		margin-right: calc(var(--panda-padding-m, 10px) * -1);
+	}
+
+	::slotted(.suffix-icon) {
+		margin-left: calc(var(--panda-padding-m, 10px) * -1);
 	}
 `; 

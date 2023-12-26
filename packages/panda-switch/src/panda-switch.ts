@@ -95,27 +95,39 @@ export class PandaSwitch extends LitElement {
 			this.iconOff !== null &&
 			this.iconOff !== undefined
 		) {
-			const icon = this.checked
+			const icon = this.checked 
 				? this.iconOn
 				: this.iconOff;
 
 			iconHtml = html`<panda-icon icon="${icon}"></panda-icon>`;
 		}
 
+		const cssMods: string[] = [];
+
+		if (this.checked) {
+			cssMods.push("checked");
+		}
+
+		if (this.disabled) {
+			cssMods.push("disabled");
+		}
+
 		return html`
 			${labelHtml}
 			<div class="switch-cont" part="switch-cont">
 				<label
-					class="switch"
+					class="switch ${cssMods.join(" ")}"
 					@change="${this._onToggle}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
+					@keypress="${this._onKeyPress}"
+					tabindex="0"
 				>
 					<input
 						type="checkbox"
 						?checked="${this.checked}"
 					>
-					<span class="slider round">
+					<span class="slider">
 						${iconHtml}
 					</span>
 				</label>
@@ -123,17 +135,25 @@ export class PandaSwitch extends LitElement {
 			</div>
 		`;
 	}
-
 	
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+	
 	private _onFocus() {
 		this.focused = true;
 	}
 	
 	private _onBlur() {
 		this.focused = false;
+	}
+	
+	private _onKeyPress(event: KeyboardEvent) {
+		console.log("%c _onKeyPress", "font-size: 24px; color: green;", event);
+		if (event.code === "Space" || event.code === "Enter") {
+			this._onToggle();
+			event.preventDefault();
+		}
 	}
 
 	private _onToggle() {

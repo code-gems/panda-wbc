@@ -3,7 +3,7 @@ import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
 
 export const pageId = "panda-button";
 export const pageName = "Button";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["button", "cta", "action", "interface", "form"];
 export const description = ["Showcase of a panda-button element."];
 

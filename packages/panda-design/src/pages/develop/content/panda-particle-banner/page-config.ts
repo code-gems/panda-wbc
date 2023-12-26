@@ -3,7 +3,7 @@ import { ContextMenuItem } from "panda-design-typings";
 
 export const pageId = "panda-particle-banner";
 export const pageName = "Particle Banner";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["banner", "particles", "effect"];
 export const description = ["Showcase of a panda-particle-banner element."];
 export const contextMenu: ContextMenuItem[] = [

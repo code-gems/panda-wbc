@@ -58,7 +58,7 @@ class DevelopPage extends LitElement {
 				}
 			} = state;
 
-			this._pageId = searchParams?.content || null;
+			this._pageId = searchParams?.page || null;
 		}
 	}
 

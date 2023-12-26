@@ -263,6 +263,7 @@ export const uiComponents = {
 	sample: css`
 		.sample-cont {
 			display: flex;
+			flex-flow: row;
 			justify-content: center;
 			align-items: center;
 			padding: 40px;
@@ -270,7 +271,6 @@ export const uiComponents = {
 
 		.sample-cont .sample {
 			display: flex;
-			flex-flow: row;
 			justify-content: center;
 			width: 100%;
 			padding: 40px;
@@ -348,6 +348,12 @@ export const uiComponents = {
 	
 	/** 12 column system */
 	columnSystem: css`
+		.rows {
+			display: flex;
+			flex-flow: column;
+			gap: var(--panda-padding-m);	
+		}
+
 		.row {
 			display: grid;
 			grid-template-columns: repeat(12, minmax(0, 1fr));

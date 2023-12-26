@@ -42,14 +42,17 @@ export class PandaSearch extends LitElement {
 
 	@property({ type: Boolean, attribute: true, reflect: true })
 	working: boolean = false;
-
+	
 	@property({ type: String, attribute: true })
 	icon: string = "find";
+
+	@property({ type: Boolean, attribute: "hide-icon", reflect: true })
+	hideIcon: boolean = false;
 
 	@property({ type: String, attribute: "spinner-type" })
 	spinnerType: string = "dots";
 
-	@property({ type: Number })
+	@property({ type: Number, attribute: "delay-interval" })
 	delayInterval: number = 1000;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
@@ -105,16 +108,18 @@ export class PandaSearch extends LitElement {
 		if (this.working) {
 			spinnerHtml = html`
 				<div class="spinner-cont" part="spinner-cont">
-					<dragon-spinner spinner="${this.spinnerType}"></dragon-spinner>
+					<dragon-spinner .spinner="${this.spinnerType}"></dragon-spinner>
 				</div>
 			`;
 		}
 
-		iconHtml = html`
-			<div class="icon" part="icon">
-				<dragon-icon icon="${this.icon}"></dragon-icon>
-			</div>
-		`;
+		if (this.hideIcon) {
+			iconHtml = html`
+				<div class="icon" part="icon">
+					<dragon-icon .icon="${this.icon}"></dragon-icon>
+				</div>
+			`;
+		}
 
 		return html`
 			${labelHtml}

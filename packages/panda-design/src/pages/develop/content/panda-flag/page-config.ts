@@ -3,7 +3,7 @@ import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
 
 export const pageId = "panda-flag";
 export const pageName = "Flag";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["flags", "country"];
 export const description = ["Flag description"];
 

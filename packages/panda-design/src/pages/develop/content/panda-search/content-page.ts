@@ -1,5 +1,6 @@
 // types
 import { PageCategory } from "panda-design-typings";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
@@ -57,16 +58,33 @@ export class PandaSearchContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
-		// const bannerConfig = 
+		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const bannerConfig: PandaParticleBannerConfig = {
+			particleGroup: [{
+				particleCount: 50,
+				blur: true,
+				blurMax: 5,
+				blurMin: 2,
+				colors: [primaryColor],
+				colorOpacityVariation: 50,
+				colorSaturationVariation: 10,
+				maxSpeedX: 0.1,
+				minSpeedX: -0.1,
+				maxSpeedY: -0.5,
+				minSpeedY: -0.1,
+				sizeMax: 80,
+				sizeMin: 40
+			}]
+		};
 		return html`
 			<div class="banner small particle-banner">
-				<panda-particle-banner>
-					<div>
+				<panda-particle-banner
+					.config="${bannerConfig}"
+				>
+					<div class="content">
 						<h1>SEARCH</h1>
-						<p>
-						</p>
-						<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 					</div>
+					<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 				</panda-particle-banner>
 			</div>
 		`;

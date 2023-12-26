@@ -1,5 +1,5 @@
 // types
-import { PandaTextFieldOnInputDetail } from "../index";
+import { PandaTextFieldOnInputEvent } from "../index";
 
 // style
 import { styles } from "./styles/styles";
@@ -131,8 +131,8 @@ export class PandaTextField extends LitElement {
 					id="input"
 					class="input"
 					part="input"
-					.placeholder="${this.placeholder || ""}"
-					.value="${this.value || ""}"
+					.placeholder="${this.placeholder ?? ""}"
+					.value="${this.value ?? ""}"
 					.disabled="${this.disabled}"
 					?autofocus="${this.autofocus}"
 					.spellcheck="${this.spellcheck}"
@@ -151,7 +151,7 @@ export class PandaTextField extends LitElement {
 	// ================================================================================================================
 
 	private _triggerInputEvent() {
-		const event: CustomEvent<PandaTextFieldOnInputDetail> = new CustomEvent("on-input", {
+		const event: PandaTextFieldOnInputEvent = new CustomEvent("on-input", {
 			detail: {
 				value: this.value as string
 			}
@@ -173,6 +173,20 @@ export class PandaTextField extends LitElement {
 				this._mandatory = true;
 			}
 		}
+	}
+
+	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	public focus(): void {
+		this._onFocus();
+		this._inputEl.focus();
+	}
+
+	public clear(): void {
+		this.value = "";
+		this._triggerInputEvent();
 	}
 
 	// ================================================================================================================

@@ -9,14 +9,12 @@ import { PandaSwitchChangeEvent } from "@panda-wbc/panda-switch";
 
 // styles
 import { styles } from "./styles/styles";
-import { uiComponents } from "../../../../styles/styles";
-import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "@panda-wbc/panda-switch";
 
 // utils
-import { html, TemplateResult } from "lit";
+import { CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
@@ -28,10 +26,11 @@ import {
 	description,
 	contextMenu
 } from "./page-config";
-import { installationSnippet } from "./snippets/snippets";
+import { implementationSnippet, installationSnippet } from "./snippets/snippets";
 
 // static data
 import { getCountryList } from "../../static-data";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 @customElement("panda-switch-content-page")
 @page({
@@ -45,64 +44,51 @@ import { getCountryList } from "../../static-data";
 	template: html`<panda-switch-content-page></panda-switch-content-page>`
 })
 export class PandaSwitchContentPage extends ContentPageTemplate {
-	// css styles
-	static get styles() {
-		return [
-			styles,
-			scrollbar,
-			uiComponents.banner,
-			uiComponents.table,
-			uiComponents.sample,
-			uiComponents.form,
-			uiComponents.appLayout,
-			uiComponents.columnSystem,
-			uiComponents.modifiers,
-		];
-	}
-
 	// page details
-	pageId: string = pageId;
+	public customStyles: CSSResultGroup = styles;
+	public pageId: string = pageId;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
-		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
-		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
-		{ name: "placeholder", type: "string", defaultValue: "-", description: "Text to show in case no value is selected" },
-		{ name: "theme", type: "string", defaultValue: "-", description: "Color theme for a component" },
-		{ name: "spinnerType", type: "string", defaultValue: "dots", description: "Spinner animation type for working state" },
-		{ name: "itemLabelPath", type: "string", defaultValue: "label", description: "Property path to the item's label" },
-		{ name: "itemValuePath", type: "string", defaultValue: "value", description: "Property path to the item's value" },
-		{ name: "disableAutoOpen", type: "boolean", defaultValue: "false", description: "Determines weather component options will be shown only upon clicking dropdown button. Incompatible with hideDropdownButton!" },
-		{ name: "hideClearButton", type: "boolean", defaultValue: "false", description: "Hide clear value button from component's interface" },
-		{ name: "hideDropdownButton", type: "boolean", defaultValue: "false", description: "Hide dropdown button from component's interface" },
-		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
-		{ name: "working", type: "boolean", defaultValue: "false", description: "Sets working status for the component" },
-		{ name: "mandatory", type: "boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
+		{ name: "checked", type: "Boolean", defaultValue: "-", description: "Initial component value." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
-		{ name: "change", returnType: "PandaButtonChangeEvent", description: "" }
+		{ name: "@change", returnType: "PandaSwitchChangeEvent", description: "Triggered every time component checked value is changed." }
 	];
-
-	// static data
-	private _items = [
-		{ label: "Item # 1", value: 1 },
-		{ label: "Item # 2", value: 2 },
-		{ label: "Item # 3", value: 3 },
-		{ label: "Item # 4", value: 4 },
-	];
-
-	private _countryList = getCountryList();
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
+		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const bannerConfig: PandaParticleBannerConfig = {
+			particleGroup: [{
+				particleCount: 50,
+				blur: true,
+				blurMax: 5,
+				blurMin: 2,
+				colors: [primaryColor],
+				colorOpacityVariation: 50,
+				colorSaturationVariation: 10,
+				maxSpeedX: 0.1,
+				minSpeedX: -0.1,
+				maxSpeedY: -0.5,
+				minSpeedY: -0.1,
+				sizeMax: 80,
+				sizeMin: 40
+			}]
+		};
 		return html`
-			<div class="banner small">
-				<h1>SELECT</h1>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
+			<div class="banner small particle-banner">
+				<panda-particle-banner
+					.config="${bannerConfig}"
+				>
+					<div class="content">
+						<h1>SWITCH</h1>
+					</div>
+					<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
+				</panda-particle-banner>
 			</div>
 		`;
 	}
@@ -132,11 +118,23 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 				<!-- OVERVIEW -->
 				<div class="sample-cont">
 					<div class="sample">
-						<panda-switch
-							label="User Active"
-							@change="${this._onChange}"
-						>
-						</panda-select>
+						<div class="rows">
+							<div class="col-full">
+								<panda-text-field></panda-text-field>
+							</div>
+
+							<div class="col-full">
+								<panda-switch
+									label="User Active"
+									@change="${this._onChange}"
+								>
+								</panda-select>
+							</div>
+							
+							<div class="col-full">
+								<panda-text-field></panda-text-field>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -172,8 +170,8 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
 					</p>
 	
-					<code-sample header="Installation">
-						${installationSnippet}
+					<code-sample header="Implementation">
+						${implementationSnippet}
 					</code-sample>
 
 				</div>

@@ -4,7 +4,7 @@ import { ContextMenuItem } from "panda-design-typings";
 
 export const pageId = "panda-search";
 export const pageName = "Search";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const pageTemplate = html`<${pageId}-content-page></${pageId}-content-page>`;
 export const keywords = ["search", "box", "find", "input", "text", "field"];
 export const description = ["Showcase of a panda-search element."];

@@ -63,12 +63,12 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component" },
 		{ name: "placeholder", type: "String", defaultValue: "-", description: "Text to show in case no value is selected" },
 		{ name: "theme", type: "String", defaultValue: "-", description: "Color theme for a component" },
-		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for working state" },
+		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state" },
 		{ name: "itemLabelPath", type: "String", defaultValue: "label", description: "Property path to the item's label" },
 		{ name: "itemValuePath", type: "String", defaultValue: "value", description: "Property path to the item's value" },
 		{ name: "disableAutoOpen", type: "Boolean", defaultValue: "false", description: "Determines weather component options will be shown only upon clicking dropdown button. Incompatible with hideDropdownButton!" },
 		{ name: "disabled", type: "Boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
-		{ name: "working", type: "Boolean", defaultValue: "false", description: "Sets working status for the component" },
+		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Sets busy state for the component" },
 		{ name: "mandatory", type: "Boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
 		
 		{ name: "autoselect", type: "Boolean", defaultValue: "false", description: "Select component value when given focus." },
@@ -357,12 +357,12 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onChange(e: any) {
-		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", e.detail.value);
+	private _onChange(event: any) {
+		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", event.detail.value);
 	}
 
-	private _onChangeAndDisable(e: any) {
-		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", e.detail.value);
+	private _onChangeAndDisable(event: any) {
+		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", event.detail.value);
 
 		this._disabled = true;
 		setTimeout(() => {

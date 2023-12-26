@@ -3,7 +3,7 @@ import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
 
 export const pageId = "panda-combo-box";
 export const pageName = "Combo-box";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["combo-box"];
 export const description = ["Showcase of a panda-combo-box component."];
 

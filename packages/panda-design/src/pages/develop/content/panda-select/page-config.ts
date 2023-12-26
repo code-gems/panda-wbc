@@ -3,7 +3,7 @@ import { ContextMenuItem } from "panda-design-typings";
 
 export const pageId = "panda-select";
 export const pageName = "Select";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["select", "drop-down", "dropdown", "options"];
 export const description = ["Showcase of a panda-select element."];
 export const contextMenu: ContextMenuItem[] = [

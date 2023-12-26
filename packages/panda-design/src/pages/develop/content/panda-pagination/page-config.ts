@@ -3,7 +3,7 @@ import { ContextMenuItem } from "panda-design-typings";
 
 export const pageId = "panda-pagination";
 export const pageName = "Pagination";
-export const pageUri = `/develop?content=${pageId}`;
+export const pageUri = `/develop?page=${pageId}`;
 export const keywords = ["pagination"];
 export const description = ["Showcase of a panda-pagination element."];
 export const contextMenu: ContextMenuItem[] = [

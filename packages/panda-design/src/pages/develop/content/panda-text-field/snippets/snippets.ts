@@ -1,44 +1,40 @@
 export const installationSnippet = `npm install @panda-wbc/panda-text-field -S`;
 
 export const implementationSnippet = `
-import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-text-field";
 
-<panda-button
-  theme="primary"
-  @click="\${this._onClick}"
-  .disabled="\${true}"
-  .working="\${true}"
+<panda-text-field
+  .value="\${'Hello World!'}"
+  @on-input="\${this._onInput}"
+  .disabled="\${false}"
+  .working="\${false}"
 >
-  MY BUTTON
-</panda-button>
+</panda-text-field>
 `;
 
 export const defaultStateSnippet = `
-import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-text-field";
 
-<panda-button
+<panda-text-field
   @click="\${this._onClick}"
 >
-  MY BUTTON
-</panda-button>
+</panda-text-field>
 `;
 
 export const disabledStateSnippet = `
-import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-text-field";
 
-<panda-button
+<panda-text-field
   .disabled="\${true}"
 >
-  MY BUTTON
-</panda-button>
+</panda-text-field>
 `;
 
 export const workingStateSnippet = `
-import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-text-field";
 
-<panda-button
+<panda-text-field
   .working="\${true}"
 >
-  MY BUTTON
-</panda-button>
+</panda-text-field>
 `;

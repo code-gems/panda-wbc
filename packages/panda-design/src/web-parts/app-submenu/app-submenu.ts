@@ -9,6 +9,7 @@ import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "@panda-wbc/panda-icon";
+import "@panda-wbc/panda-text-field";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";
@@ -16,6 +17,7 @@ import { customElement, property } from "lit/decorators.js";
 import PageLibrary from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
+import { PandaTextFieldOnInputEvent } from "@panda-wbc/panda-text-field";
 
 @customElement("app-submenu")
 @reduxify()
@@ -65,7 +67,15 @@ class AppSubmenu extends LitElement {
 		return html`
 			<div class="submenu">
 				<div class="header">
-					pageCategory: ${this.pageCategory}
+					<div class="search">
+						<panda-text-field
+							@on-input="${(event: PandaTextFieldOnInputEvent) => this._onContentSearch(event.detail.value)}"
+						>
+							<div class="suffix-icon" slot="suffix">
+								<panda-icon icon="search"></panda-icon>
+							</div>
+						</panda-text-field>
+					</div>
 				</div>
 				<div class="body scrollbar">
 					${this._renderPageList()}
@@ -78,26 +88,58 @@ class AppSubmenu extends LitElement {
 	}
 
 	private _renderPageList() {
-		const menuHtml: TemplateResult[] = [];
-		const demoPages = new PageLibrary().getPages(this.pageCategory, true);
-		console.log("%c demoPages", "font-size: 24px; color: green;", demoPages);
-		demoPages.forEach((page) => {
-			menuHtml.push(html`
-				<div
-					class="list-item"
-					@click="${(e: MouseEvent) => navigate(page.pageUri, e)}"
-				>
-					<label>${page.pageName}</label>
-					<div class="icon">
-						<panda-icon icon="chevron-right"></panda-icon>
+		const listHtml: TemplateResult[] = [];
+		const allPages = new PageLibrary().getPages(this.pageCategory, true);
+
+		allPages.forEach((page) => {
+			const active = page.pageId === this.searchParams.page
+				? "active"
+				: "";
+			
+			// filer menu against search text
+			if (this._searchText) {
+				// check page keywords
+				let _foundKeywordMatch = false;
+				if (page.keywords) {
+					page.keywords.forEach((keyword) => {
+						if (keyword.toLocaleLowerCase().includes(this._searchText.toLocaleLowerCase())) {
+							_foundKeywordMatch = true;
+						}
+					});
+				}
+
+				// check page name
+				if (page.pageName.toLocaleLowerCase().includes(this._searchText.toLocaleLowerCase()) || _foundKeywordMatch) {
+					listHtml.push(html`
+						<div
+							class="list-item ${active}"
+							@click="${(e: MouseEvent) => navigate(page.pageUri, e)}"
+						>
+							<label>${page.pageName}</label>
+							<div class="icon">
+								<panda-icon icon="chevron-right"></panda-icon>
+							</div>
+						</div>
+					`);
+				}
+			} else {
+				listHtml.push(html`
+					<div
+						class="list-item ${active}"
+						@click="${(e: MouseEvent) => navigate(page.pageUri, e)}"
+					>
+						<label>${page.pageName}</label>
+						<div class="icon">
+							<panda-icon icon="chevron-right"></panda-icon>
+						</div>
 					</div>
-				</div>
-			`);
+				`);
+			}
 		});
 
 		return html`
 			<div class="menu-list">
-				${menuHtml}
+				${listHtml}
 			</div>
 		`;
 	}
@@ -106,5 +148,7 @@ class AppSubmenu extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _onContentSearch(searchText: string): void {
+		this._searchText = searchText;
+	}
 }

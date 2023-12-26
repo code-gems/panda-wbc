@@ -18,6 +18,13 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "check", 					iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
 		{ name: "check-circle", 			iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
 		{ name: "check-circle-outline",		iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
+		{ name: "lock", 					iconPack: "default", group: ["System"], keywords: ["interface", "access", "block"] },
+		{ name: "lock-open-outline", 		iconPack: "default", group: ["System"], keywords: ["interface", "access", "block", "outline"] },
+		{ name: "lock-outline", 			iconPack: "default", group: ["System"], keywords: ["interface", "access", "block", "outline"] },
+		{ name: "lock-open", 				iconPack: "default", group: ["System"], keywords: ["interface", "access", "block"] },
+		{ name: "search", 					iconPack: "default", group: ["System"], keywords: ["interface", "find", "lupe"] },
+		{ name: "check-box", 				iconPack: "default", group: ["System"], keywords: ["interface", "tick"] },
+		{ name: "check-box-outline-blank", 	iconPack: "default", group: ["System"], keywords: ["interface", "square"] },
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
