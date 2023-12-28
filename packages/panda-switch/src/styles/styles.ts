@@ -38,7 +38,7 @@ export const styles = css`
 		position: relative;
 		display: block;
 		width: 80px;
-		height: var(--panda-input-height, 40px);
+		height: var(--panda-input-height, 30px);
 	}
 
 	.switch {
@@ -64,8 +64,8 @@ export const styles = css`
 
 	.slider {
 		position: absolute;
-		width: calc(var(--panda-input-height, 40px) - (2 * var(--panda-padding-s, 5px)));
-		height: calc(var(--panda-input-height, 40px) - (2 * var(--panda-padding-s, 5px)));
+		width: calc(var(--panda-input-height, 30px) - (2 * var(--panda-padding-s, 5px)));
+		height: calc(var(--panda-input-height, 30px) - (2 * var(--panda-padding-s, 5px)));
 		left: var(--panda-padding-s, 5px);
 		top: var(--panda-padding-s, 5px);
 
@@ -78,7 +78,7 @@ export const styles = css`
 	}
 
 	input:checked + .slider {
-		transform: translateX(var(--panda-input-height, 40px));
+		transform: translateX(var(--panda-input-height, 30px));
 	}
 
 	/* COMPONENT STATES */

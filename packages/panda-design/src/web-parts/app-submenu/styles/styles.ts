@@ -12,7 +12,7 @@ export const styles = css`
 		display: flex;
 		flex-flow: column;
 		flex-shrink: 0;
-		width: 280px;
+		width: 100%;
 		height: 100%;
 		overflow: hidden;
 
@@ -22,8 +22,6 @@ export const styles = css`
 	.submenu .header {
 		flex-shrink: 0;
 	}
-
-	.submenu 
 
 	.submenu .body {
 		flex-grow: 1;

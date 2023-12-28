@@ -35,8 +35,8 @@ export const styles = css`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-input-height, 40px);
-		height: var(--panda-input-height, 40px);
+		width: var(--panda-input-height, 30px);
+		height: var(--panda-input-height, 30px);
 
 		--panda-icon-color: var(--panda-text-color, hsl(0deg 0% 15%));
 		--panda-icon-width: var(--panda-icon-size-m, 20px);

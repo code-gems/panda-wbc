@@ -18,20 +18,23 @@ export class PandaCheckbox extends LitElement {
 		return styles;
 	}
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	checked: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	strikethrough: boolean = false;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	// ...
+	updated(changedProps: any) {
+		console.log("%c [UPDATED]", "font-size: 24px; color: red;", changedProps);
+
+	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -42,6 +45,8 @@ export class PandaCheckbox extends LitElement {
 		let icon: string = this.checked
 			? "check-box"
 			: "check-box-outline-blank";
+
+		console.log("%c checked, icon", "font-size: 24px; color: green;", this.checked, icon);
 
 		if (this.checked) {
 			cssMods.push("checked");
@@ -85,17 +90,19 @@ export class PandaCheckbox extends LitElement {
 	// ================================================================================================================
 
 	private _onToggleCheckbox(event: Event) {
+		console.log("%c _onToggleCheckbox", "font-size: 24px; color: green;", event);
 		event.stopPropagation();
 		event.preventDefault();
 
 		// don't do anything if disabled
-		if (this.disabled) {
+		if (!this.disabled) {
 			this.checked = !this.checked;
 			const changeEvent: PandaCheckboxChangeEvent = new CustomEvent("change", {
 				detail: {
 					checked: this.checked
 				}
 			});
+			console.log("%c dispatchEvent(changeEvent)", "font-size: 24px; color: green;", changeEvent);
 			this.dispatchEvent(changeEvent);
 		}
 	}

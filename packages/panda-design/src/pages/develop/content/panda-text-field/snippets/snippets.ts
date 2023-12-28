@@ -12,15 +12,6 @@ import "@panda-wbc/panda-text-field";
 </panda-text-field>
 `;
 
-export const defaultStateSnippet = `
-import "@panda-wbc/panda-text-field";
-
-<panda-text-field
-  @click="\${this._onClick}"
->
-</panda-text-field>
-`;
-
 export const disabledStateSnippet = `
 import "@panda-wbc/panda-text-field";
 
@@ -30,11 +21,11 @@ import "@panda-wbc/panda-text-field";
 </panda-text-field>
 `;
 
-export const workingStateSnippet = `
+export const busyStateSnippet = `
 import "@panda-wbc/panda-text-field";
 
 <panda-text-field
-  .working="\${true}"
+  .busy="\${true}"
 >
 </panda-text-field>
 `;

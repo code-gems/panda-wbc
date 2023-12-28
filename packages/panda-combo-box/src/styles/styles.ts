@@ -35,7 +35,7 @@ export const styles = css`
 		display: flex;
 		flex-flow: row nowrap;
 		width: 100%;
-		height: var(--panda-input-height, 40px);
+		height: var(--panda-input-height, 30px);
 
 		transition: all 200ms ease-in-out;
 
@@ -78,8 +78,8 @@ export const styles = css`
 		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-input-height, 40px);
-		height: var(--panda-input-height, 40px);
+		width: var(--panda-input-height, 30px);
+		height: var(--panda-input-height, 30px);
 		
 		transition: all 200ms ease-in-out;
 	}

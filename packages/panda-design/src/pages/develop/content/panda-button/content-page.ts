@@ -40,8 +40,8 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	pageId: string = pageId;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
-		{ name: "working", type: "boolean", defaultValue: "false", description: "Sets working status for the component" },
+		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled state for the component." },
+		{ name: "busy", type: "boolean", defaultValue: "false", description: "Sets busy state for the component." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [

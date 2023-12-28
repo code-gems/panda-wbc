@@ -4,6 +4,7 @@ export const styles = css`
 	:host {
 		display: inline-block;
 		width: 100%;
+		user-select: none;
 	}
 
 	.label {
@@ -50,7 +51,7 @@ export const styles = css`
 		padding: var(--panda-input-padding, 0px 10px);
 
 		color: var(--panda-input-text-color, hsl(0deg 0% 15%));
-		font-size: var(--panda-font-size-s, 12px);
+		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-label-font-family, "Poppins");
 		outline: none;
 
@@ -143,7 +144,7 @@ export const styles = css`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-input-height, 40px);
+		width: var(--panda-input-height, 30px);
 		height: 100%;
 		flex-shrink: 0;
 

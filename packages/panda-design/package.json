@@ -25,6 +25,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@panda-wbc/panda-button": "workspace:*",
+		"@panda-wbc/panda-callout": "workspace:*",
 		"@panda-wbc/panda-checkbox": "workspace:*",
 		"@panda-wbc/panda-combo-box": "workspace:*",
 		"@panda-wbc/panda-core": "workspace:*",

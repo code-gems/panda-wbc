@@ -15,16 +15,16 @@ export class PandaButton extends LitElement {
 		return styles;
 	}
 
-	@property({ type: Boolean, attribute: true, reflect: true })
-	busy: boolean = false;
-
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: String, attribute: true })
-	spinner: string = "dots";
+	@property({ type: Boolean, reflect: true })
+	busy: boolean = false;
 
-	@property({ type: String, attribute: true })
+	@property({ type: String, attribute: "spinner-type" })
+	spinnerType: string = "dots";
+
+	@property({ type: String })
 	theme!: string;
 
 	// ================================================================================================================
@@ -39,6 +39,7 @@ export class PandaButton extends LitElement {
 
 	protected render() {
 		const spinnerHtml: TemplateResult[] = [];
+
 		if (this.busy) {
 			spinnerHtml.push(html`
 				<div
@@ -47,12 +48,13 @@ export class PandaButton extends LitElement {
 				>
 					<panda-spinner
 						part="spinner"
-						spinner="${this.spinner}"
+						spinner="${this.spinnerType}"
 					>
 					</panda-spinner>
 				</div>
 			`);
 		}
+		
 		return html`
 			<button class="${this.disabled ? "disabled" : ""}" part="button">
 				<slot name="prefix" part="prefix"></slot>

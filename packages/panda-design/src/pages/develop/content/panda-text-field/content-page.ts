@@ -25,6 +25,8 @@ import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // code snippets
 import {
+	busyStateSnippet,
+	disabledStateSnippet,
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
@@ -243,6 +245,8 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 				</div>
 
 				${this._renderDefaultComponentStateSection()}
+				${this._renderDisabledComponentStatesSection()}
+				${this._renderBusyComponentStatesSection()}
 			</div> <!-- END OF CONTENT SECTION -->
 		`;
 	}
@@ -278,6 +282,84 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 			</div>
 		`;
 	}
+
+	private _renderDisabledComponentStatesSection() {
+		return html`
+			<div class="section">
+				<h3>Disabled</h3>
+				<p>
+					Components can enter a disabled state when they are not editable or interactable.
+					Component is then visually presented as disabled, providing clarity to user that they cannot be modified.
+				</p>
+
+				<!-- SAMPLE -->
+				<div class="sample-cont">
+					<div class="sample">
+						<div class="form">
+							<div class="form-section">
+								<div class="row">
+									<div class="col-full">
+										<panda-text-field
+											.label="${"First Name:"}"
+											.placeholder="${"Enter..."}"
+											.value="${"James"}"
+											@on-input="${this._onInput}"
+											disabled
+										>
+										</panda-text-field>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<code-sample header="Disabled State Example">
+					${disabledStateSnippet}
+				</code-sample>
+			</div>
+		`;
+	}
+
+	private _renderBusyComponentStatesSection() {
+		return html`
+			<div class="section">
+				<h3>Busy</h3>
+				<p>
+					Components can enter a disabled state when they are not editable or interactable.
+					Component is then visually presented as disabled, providing clarity to user that they cannot be modified.
+				</p>
+
+				<!-- SAMPLE -->
+				<div class="sample-cont">
+					<div class="sample">
+						<div class="form">
+							<div class="form-section">
+								<div class="row">
+									<div class="col-full">
+										<panda-text-field
+											.label="${"First Name:"}"
+											.placeholder="${"Enter.."}"
+											.value="${"James"}"
+											@on-input="${this._onInput}"
+											busy
+										>
+										</panda-text-field>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<code-sample header="Busy State Example">
+					${busyStateSnippet}
+				</code-sample>
+			</div>
+		`;
+	}
+
+
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================

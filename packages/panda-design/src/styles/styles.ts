@@ -24,7 +24,7 @@ export const uiComponents = {
 
 		.app > .submenu {
 			flex-shrink: 0;
-			width: 280px;
+			width: 300px;
 		}
 
 		.app > .body {

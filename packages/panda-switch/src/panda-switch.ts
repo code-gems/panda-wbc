@@ -152,6 +152,7 @@ export class PandaSwitch extends LitElement {
 		console.log("%c _onKeyPress", "font-size: 24px; color: green;", event);
 		if (event.code === "Space" || event.code === "Enter") {
 			this._onToggle();
+			event.stopPropagation();
 			event.preventDefault();
 		}
 	}

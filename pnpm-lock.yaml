@@ -37,6 +37,25 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-callout:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      '@panda-wbc/panda-spinner':
+        specifier: workspace:*
+        version: link:../panda-spinner
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-chart:
     dependencies:
       lit:
@@ -137,6 +156,9 @@ importers:
       '@panda-wbc/panda-button':
         specifier: workspace:*
         version: link:../panda-button
+      '@panda-wbc/panda-callout':
+        specifier: workspace:*
+        version: link:../panda-callout
       '@panda-wbc/panda-checkbox':
         specifier: workspace:*
         version: link:../panda-checkbox

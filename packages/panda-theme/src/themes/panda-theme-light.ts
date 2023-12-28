@@ -131,26 +131,26 @@ export const pandaThemeLight = css`
 		/* ========================================================================================================= */
 		
 		/* INFO COLOR */
-		--panda-action-color-info: hsl(181deg 52% 53%);
+		--panda-action-color-info: hsl(261deg 66% 58%);
 		--panda-action-text-color-info: hsl(0deg 0% 100%);
 
-		--panda-action-color-info-50: hsl(181deg 52% 75%);
-		--panda-action-color-info-100: hsl(181deg 52% 63%);
-		--panda-action-color-info-300: hsl(181deg 52% 58%);
-		--panda-action-color-info-500: hsl(181deg 52% 53%);
-		--panda-action-color-info-700: hsl(181deg 52% 48%);
-		--panda-action-color-info-900: hsl(181deg 52% 43%);
+		--panda-action-color-info-50: hsl(261deg 66% 78%);
+		--panda-action-color-info-100: hsl(261deg 66% 68%);
+		--panda-action-color-info-300: hsl(261deg 66% 63%);
+		--panda-action-color-info-500: hsl(261deg 66% 58%);
+		--panda-action-color-info-700: hsl(261deg 66% 43%);
+		--panda-action-color-info-900: hsl(261deg 66% 38%);
 
-		--panda-action-color-info-0opc: hsl(181deg 52% 53% / 0%);
-		--panda-action-color-info-10opc: hsl(181deg 52% 53% / 10%);
-		--panda-action-color-info-20opc: hsl(181deg 52% 53% / 20%);
-		--panda-action-color-info-30opc: hsl(181deg 52% 53% / 30%);
-		--panda-action-color-info-40opc: hsl(181deg 52% 53% / 40%);
-		--panda-action-color-info-50opc: hsl(181deg 52% 53% / 50%);
-		--panda-action-color-info-60opc: hsl(181deg 52% 53% / 60%);
-		--panda-action-color-info-70opc: hsl(181deg 52% 53% / 70%);
-		--panda-action-color-info-80opc: hsl(181deg 52% 53% / 80%);
-		--panda-action-color-info-90opc: hsl(181deg 52% 53% / 90%);
+		--panda-action-color-info-0opc: hsl(261deg 66% 58% / 0%);
+		--panda-action-color-info-10opc: hsl(261deg 66% 58% / 10%);
+		--panda-action-color-info-20opc: hsl(261deg 66% 58% / 20%);
+		--panda-action-color-info-30opc: hsl(261deg 66% 58% / 30%);
+		--panda-action-color-info-40opc: hsl(261deg 66% 58% / 40%);
+		--panda-action-color-info-50opc: hsl(261deg 66% 58% / 50%);
+		--panda-action-color-info-60opc: hsl(261deg 66% 58% / 60%);
+		--panda-action-color-info-70opc: hsl(261deg 66% 58% / 70%);
+		--panda-action-color-info-80opc: hsl(261deg 66% 58% / 80%);
+		--panda-action-color-info-90opc: hsl(261deg 66% 58% / 90%);
 
 		/* DONE COLOR */
 		--panda-action-color-done: hsl(164deg 67% 45%);
@@ -223,6 +223,7 @@ export const pandaThemeLight = css`
 		/* ========================================================================================================= */
 
 		--panda-text-color: hsl(0deg 0% 15%);
+		--panda-text-color-hover: hsl(0deg 0% 20%);
 		--panda-text-color-disabled: hsl(0deg 0% 44%);
 		--panda-text-shadow: none;
 		--panda-text-line-height: 1.6em;
@@ -267,6 +268,11 @@ export const pandaThemeLight = css`
 		/* FORMS & COMPONENTS ====================================================================================== */
 		/* ========================================================================================================= */
 
+		--panda-component-size-s: 24px;
+		--panda-component-size-m: 30px;
+		--panda-component-size-l: 36px;
+		--panda-component-size-xl: 42px;
+
 		--panda-outline-color: var(--panda-primary-color);
 		--panda-form-border-color: hsl(0deg 0% 66%);
 
@@ -282,7 +288,7 @@ export const pandaThemeLight = css`
 		--panda-label-font-family: var(--panda-font-family);
 		
 		/* INPUT */
-		--panda-input-height: 40px;
+		--panda-input-height: var(--panda-component-size-m);
 		--panda-input-padding: 0px 10px;
 		--panda-input-outline-color: var(--panda-outline-color);
 		--panda-input-text-color: var(--panda-text-color);
@@ -304,6 +310,19 @@ export const pandaThemeLight = css`
 		--panda-input-placeholder-font-family: var(--panda-font-family);
 		
 		/* BUTTON */
+		--panda-button-text-shadow: none;
+
+		--panda-button-text-color: var(--panda-text-color);
+		--panda-button-border-color: #fff;
+		--panda-button-background-color: #fff;
+		
+		--panda-button-text-color-hover: var(--panda-text-color-hover);
+		--panda-button-border-color-hover: #fff;
+		--panda-button-background-color-hover: #fff;
+
+		--panda-button-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-button-border-color-disabled: #fff;
+		--panda-button-background-color-disabled: #fff;
 		
 		/* DROPDOWN */
 		--panda-dropdown-border-radius: 5px;

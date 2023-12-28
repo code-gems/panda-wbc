@@ -25,6 +25,7 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "search", 					iconPack: "default", group: ["System"], keywords: ["interface", "find", "lupe"] },
 		{ name: "check-box", 				iconPack: "default", group: ["System"], keywords: ["interface", "tick"] },
 		{ name: "check-box-outline-blank", 	iconPack: "default", group: ["System"], keywords: ["interface", "square"] },
+		{ name: "check-box-indeterminate", 	iconPack: "default", group: ["System"], keywords: ["interface", "square"] },
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
@@ -117,6 +118,8 @@ export const getIconListDetails = (): IconDetails[] => {
 
 		// Food Icon Pack =======================================
 		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },
+		{ name: "cookie", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "cookies"] },
+		{ name: "cookie-outline", 			iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "cookies"] },
 		
 		// AV Icon Pack =========================================
 		{ name: "full-screen", 				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["expand"] },

@@ -141,7 +141,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 								<panda-checkbox
 									@change="${this._onChange}"
 								>
-									Feed the cat
+									Feed my cat
 								</panda-checkbox>
 							</div>
 							
@@ -149,7 +149,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 								<panda-checkbox
 									@change="${this._onChange}"
 								>
-									Go to work
+									Play with my pet
 								</panda-checkbox>
 							</div>
 						</div>
@@ -305,6 +305,8 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onChange(checked: boolean): void {
+	private _onChange(event: PandaCheckboxChangeEvent): void {
+		console.log("%c ⚡ [CHECKBOX DEMO PAGE] checked", "font-size: 24px; color: orange;", event.detail.checked);
+
 	}
 }

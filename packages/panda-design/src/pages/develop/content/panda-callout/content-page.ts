@@ -5,13 +5,14 @@ import {
 	PageCategory,
 	ContentSectionName,
 } from "panda-design-typings";
-import { PandaSwitchChangeEvent } from "@panda-wbc/panda-switch";
 
 // styles
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-switch";
+import "@panda-wbc/panda-callout";
+import "@panda-wbc/panda-icon";
+import "@panda-wbc/panda-icon/lib/food-icon-pack";
 
 // utils
 import { CSSResultGroup, html, TemplateResult } from "lit";
@@ -29,10 +30,9 @@ import {
 import { implementationSnippet, installationSnippet } from "./snippets/snippets";
 
 // static data
-import { getCountryList } from "../../static-data";
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
-@customElement("panda-switch-content-page")
+@customElement("panda-callout-content-page")
 @page({
 	pageId,
 	pageName,
@@ -41,19 +41,23 @@ import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 	keywords,
 	description,
 	contextMenu,
-	template: html`<panda-switch-content-page></panda-switch-content-page>`
+	template: html`<panda-callout-content-page></panda-callout-content-page>`
 })
-export class PandaSwitchContentPage extends ContentPageTemplate {
+export class PandaCalloutContentPage extends ContentPageTemplate {
 	// page details
 	public customStyles: CSSResultGroup = styles;
 	public pageId: string = pageId;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "checked", type: "Boolean", defaultValue: "-", description: "Initial component value." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Component color theme." },
+		{ name: "icon", type: "String", defaultValue: "-", description: "Custom icon to be shown on the component." },
+		{ name: "hideIcon", type: "Boolean", defaultValue: "false", description: "Hide callout icon." },
+		{ name: "closable", type: "Boolean", defaultValue: "false", description: "Adds close button to the callout's header and makes it closable." },
+		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
-		{ name: "@change", returnType: "PandaSwitchChangeEvent", description: "Triggered every time component checked value is changed." }
+		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 
 	// ================================================================================================================
@@ -62,13 +66,14 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 
 	_renderPageBanner(): TemplateResult {
 		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [{
 				particleCount: 50,
 				blur: true,
 				blurMax: 5,
 				blurMin: 2,
-				colors: [primaryColor],
+				colors: [primaryColor, secondaryColor],
 				colorOpacityVariation: 50,
 				colorSaturationVariation: 10,
 				maxSpeedX: 0.1,
@@ -85,7 +90,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 					.config="${bannerConfig}"
 				>
 					<div class="content">
-						<h1>SWITCH</h1>
+						<h1>CALLOUT</h1>
 					</div>
 					<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 				</panda-particle-banner>
@@ -109,9 +114,8 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 				<div class="section">
 					<h2>Overview</h2>
 					<p>
-						Select component in web applications offers a flexible and versatile way to create dropdown menus that align with the application's design and functionality requirements. 
-						Its ability to enhance styling, provide customization options, improve accessibility, and support various user interactions makes it a valuable component 
-						for creating a more user-centric and engaging web experience.
+						Callout component is valuable element in web applications designed to draw attention to specific information or actions. 
+						These components often feature visually distinct styles, such as borders, background colors, or icons, making them stand out within a user interface.
 					</p>
 				</div>
 
@@ -120,19 +124,57 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="col-full">
-								<panda-text-field></panda-text-field>
-							</div>
-
-							<div class="col-full">
-								<panda-switch
-									label="User Active"
-									@change="${this._onChange}"
+								<panda-callout
+									theme="info"
+									icon="cookie"
+									@on-close="${this._onCloseCallout}"
+									closable
 								>
-								</panda-select>
+									<div slot="header">Cookies Usage</div>
+
+									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
+									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
+									
+									<div slot="footer">
+										<panda-button>
+											Exit
+										</panda-button>
+										<panda-button theme="warn">
+											Accept
+										</panda-button>
+									</div>
+								</panda-callout>
 							</div>
 							
 							<div class="col-full">
-								<panda-text-field></panda-text-field>
+								<panda-callout
+									theme="warn"
+									@on-close="${this._onCloseCallout}"
+									closable
+								>
+									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
+									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
+								</panda-callout>
+							</div>
+							
+							<div class="col-full">
+								<panda-callout
+									theme="done center-icons"
+									@on-close="${this._onCloseCallout}"
+									closable
+								>
+									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
+									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
+								</panda-callout>
+							</div>
+
+							<div class="col-full">
+								<panda-callout
+									theme="alert"
+								>
+									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
+									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
+								</panda-callout>
 							</div>
 						</div>
 					</div>
@@ -252,10 +294,9 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 				<!-- SAMPLE -->
 				<div class="sample-cont">
 					<div class="sample">
-						<panda-switch
-							@change="${this._onChange}"
-						>
-						</panda-switch>
+						<panda-callout>
+							This information is very important.
+						</panda-callout>
 					</div>
 				</div>
 			</div>
@@ -267,7 +308,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onChange(event: PandaSwitchChangeEvent) {
-		console.log("%c _onChange", "font-size: 24px; color: green;", event.detail);
+	private _onCloseCallout() {
+		console.log("%c _onCloseCallout", "font-size: 24px; color: green;");
 	}
 }
