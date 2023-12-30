@@ -8,6 +8,7 @@ import "./content/panda-dialog/content-page";
 import "./content/panda-flag/content-page";
 import "./content/panda-icon/content-page";
 import "./content/panda-multi-input/content-page";
+import "./content/panda-notification/content-page";
 import "./content/panda-pagination/content-page";
 import "./content/panda-particle-banner/content-page";
 import "./content/panda-search/content-page";

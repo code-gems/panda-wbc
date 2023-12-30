@@ -12,8 +12,8 @@ import "@panda-wbc/panda-spinner";
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, queryAssignedElements, state } from "lit/decorators.js";
 
-@customElement("panda-callout")
-export class PandaCallout extends LitElement {
+@customElement("panda-notifications")
+export class PandaNotification extends LitElement {
 	// css styles
 	static get styles() {
 		return styles;
@@ -201,6 +201,6 @@ export class PandaCallout extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-callout": PandaCallout;
+		"panda-notification": PandaNotification;
 	}
 }

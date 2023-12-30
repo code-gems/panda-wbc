@@ -1,5 +1,5 @@
 // types
-// ...
+import { ElementDetails, TooltipPosition } from "../index";
 
 // styles
 import { styles } from "./styles/overlay-styles";
@@ -7,8 +7,7 @@ import { styles } from "./styles/overlay-styles";
 // utils
 import { LitElement, html, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { ElementDetails, TooltipPosition } from "..";
-import { minValue, positionObserver } from "./utils/utils";
+import { positionObserver } from "./utils/utils";
 
 @customElement("panda-tooltip-overlay")
 export class PandaTooltipOverlay extends LitElement {

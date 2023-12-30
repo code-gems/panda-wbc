@@ -1,6 +1,15 @@
 // types
 import { Debouncer } from "../index";
 
+/**
+ * Debouncer is a programming tool commonly used in front-end development to control the frequency of execution of a particular function, 
+ * especially in scenarios where a function might be called too frequently, such as in response to user input events like keyPresses' or window resizing. 
+ * The debouncer ensures that the function is not invoked until a certain period of time has passed since the last invocation.
+ * @param callback - callback method to be invoked after certain period of time.
+ * @param wait - time to wait before callback invocation.
+ * @param maxWait - maximal time to wait before executing a callback method.
+ * @returns {Debouncer}
+ */
 export const debounce = (callback: any, wait: number, maxWait: number = 0): () => void | null | Debouncer => {
 	let timeout: any = null;
 	let maxWaitInterval: any = null;
@@ -75,4 +84,19 @@ export const debounce = (callback: any, wait: number, maxWait: number = 0): () =
 	debounced.cancel = cancel;
 	debounced.isRunning = isRunning;
 	return debounced;
+};
+
+
+/**
+ * This function creates a random UUID by replacing certain characters in a predefined pattern.
+ * The x characters are replaced with random hexadecimal digits, 
+ * and the y character is replaced with a randomly chosen hexadecimal digit from the set [8, 9, A, or B] to conform to the UUID standard.
+ * @returns [Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx]
+ */
+export const generateUuid = (): string => {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (char) => {
+		const randomInt = Math.random() * 16 | 0;
+		const value = char === 'x' ? randomInt : (randomInt & 0x3 | 0x8);
+		return value.toString(16);
+	});
 };

@@ -4,6 +4,7 @@ export const styles = css`
 	:host {
 		display: inline-block;
 		height: fit-content;
+		user-select: none;
 	}
 
 	.label {

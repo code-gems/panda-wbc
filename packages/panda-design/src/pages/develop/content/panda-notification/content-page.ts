@@ -10,9 +10,8 @@ import {
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-callout";
-import "@panda-wbc/panda-icon";
-import "@panda-wbc/panda-icon/lib/food-icon-pack";
+import "@panda-wbc/panda-notification";
+import { pandaNotificationCenter } from "@panda-wbc/panda-notification/lib/panda-notification-center";
 
 // utils
 import { CSSResultGroup, html, TemplateResult } from "lit";
@@ -32,7 +31,7 @@ import { implementationSnippet, installationSnippet } from "./snippets/snippets"
 // static data
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
-@customElement("panda-callout-content-page")
+@customElement("panda-notification-content-page")
 @page({
 	pageId,
 	pageName,
@@ -41,9 +40,9 @@ import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 	keywords,
 	description,
 	contextMenu,
-	template: html`<panda-callout-content-page></panda-callout-content-page>`
+	template: html`<panda-notification-content-page></panda-notification-content-page>`
 })
-export class PandaCalloutContentPage extends ContentPageTemplate {
+export class PandaNotificationContentPage extends ContentPageTemplate {
 	// page details
 	public customStyles: CSSResultGroup = styles;
 	public pageId: string = pageId;
@@ -119,108 +118,17 @@ export class PandaCalloutContentPage extends ContentPageTemplate {
 					</p>
 				</div>
 
-				<!-- OVERVIEW -->
+				<!-- SAMPLE -->
 				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
 							<div class="col-full">
-								<panda-callout
-									theme="info"
-									icon="cookie"
-									@on-close="${this._onCloseCallout}"
-									closable
-								>
-									<div slot="header-prefix">prefix</div>
-									<div slot="header">Cookies Usage</div>
-
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-									
-									<div slot="footer">
-										<panda-button>
-											Exit
-										</panda-button>
-										<panda-button theme="warn">
-											Accept
-										</panda-button>
-									</div>
-								</panda-callout>
-							</div>
-							
-							<div class="col-full">
-								<panda-callout
-									theme="warn"
-									@on-close="${this._onCloseCallout}"
-									closable
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-							
-							<div class="col-full">
-								<panda-callout
-									theme="done center-icons"
-									@on-close="${this._onCloseCallout}"
-									closable
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-
-							<div class="col-full">
-								<panda-callout
-									theme="alert"
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-
-							<div class="col-full">
-								<panda-callout
-									theme="info spinner center-icons"
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-
-							<div class="col-full">
-								<panda-callout
-									theme="spinner center-icons"
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-
-							<div class="col-full">
-								<panda-callout
+								<panda-button
 									theme="primary"
+									@click="${this._onAddNotification}"
 								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-
-							<div class="col-full">
-								<panda-callout
-									theme="secondary"
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
-							</div>
-
-							<div class="col-full">
-								<panda-callout
-									theme="tertiary"
-								>
-									This website uses cookies to enhance your browsing experience. By continuing to use this site, you agree to the use of cookies. 
-									Cookies are small text files stored on your device that help us analyze website traffic, personalize content, and provide targeted advertisements.
-								</panda-callout>
+									Create Notification
+								</panda-button>
 							</div>
 						</div>
 					</div>
@@ -354,7 +262,13 @@ export class PandaCalloutContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onCloseCallout() {
+	private _onAddNotification() {
 		console.log("%c _onCloseCallout", "font-size: 24px; color: green;");
+		pandaNotificationCenter.addNotification({
+			body: html`New Notification ${new Date().getTime()}`
+		});
+
+		console.log("%c notificationList", "font-size: 24px; color: green;", pandaNotificationCenter.getNotificationList());
+
 	}
 }
