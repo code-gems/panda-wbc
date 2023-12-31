@@ -34,7 +34,7 @@
 		"@panda-wbc/panda-flag": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-multi-input": "workspace:*",
-		"@panda-wbc/panda-notification": "workspace:*",
+		"@panda-wbc/panda-notifications": "workspace:*",
 		"@panda-wbc/panda-pagination": "workspace:*",
 		"@panda-wbc/panda-particle-banner": "workspace:*",
 		"@panda-wbc/panda-router": "workspace:*",

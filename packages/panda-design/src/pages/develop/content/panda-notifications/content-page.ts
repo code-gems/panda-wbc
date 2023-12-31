@@ -5,13 +5,14 @@ import {
 	PageCategory,
 	ContentSectionName,
 } from "panda-design-typings";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-notification";
-import { pandaNotificationCenter } from "@panda-wbc/panda-notification/lib/panda-notification-center";
+import "@panda-wbc/panda-notifications";
+import { pandaNotificationCenter } from "@panda-wbc/panda-notifications/lib/panda-notification-center";
 
 // utils
 import { CSSResultGroup, html, TemplateResult } from "lit";
@@ -26,12 +27,14 @@ import {
 	description,
 	contextMenu
 } from "./page-config";
+
+// code snippets
 import { implementationSnippet, installationSnippet } from "./snippets/snippets";
 
 // static data
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
+// ...
 
-@customElement("panda-notification-content-page")
+@customElement("panda-notifications-content-page")
 @page({
 	pageId,
 	pageName,
@@ -40,9 +43,9 @@ import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 	keywords,
 	description,
 	contextMenu,
-	template: html`<panda-notification-content-page></panda-notification-content-page>`
+	template: html`<panda-notifications-content-page></panda-notifications-content-page>`
 })
-export class PandaNotificationContentPage extends ContentPageTemplate {
+export class PandaNotificationsContentPage extends ContentPageTemplate {
 	// page details
 	public customStyles: CSSResultGroup = styles;
 	public pageId: string = pageId;
@@ -64,6 +67,7 @@ export class PandaNotificationContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
+		return html``;
 		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
 		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
 		const bannerConfig: PandaParticleBannerConfig = {
@@ -122,13 +126,29 @@ export class PandaNotificationContentPage extends ContentPageTemplate {
 				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
-							<div class="col-full">
-								<panda-button
-									theme="primary"
-									@click="${this._onAddNotification}"
-								>
-									Create Notification
-								</panda-button>
+							<div class="row">
+								<div class="col-half">
+									<panda-button
+										theme="primary"
+										@click="${this._onAddNotification}"
+									>
+										Create Notification
+									</panda-button>
+								</div>
+								<div class="col-half">
+									<panda-button
+										theme="secondary"
+										@click="${this._onAddNotification}"
+									>
+										Remove Notification
+									</panda-button>
+								</div>
+								<div class="col-full">
+									<panda-notifications
+
+									>
+									</panda-notifications>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -263,12 +283,34 @@ export class PandaNotificationContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddNotification() {
-		console.log("%c _onCloseCallout", "font-size: 24px; color: green;");
 		pandaNotificationCenter.addNotification({
-			body: html`New Notification ${new Date().getTime()}`
+			id: "1234",
+			theme: "info",
+			body: html`Notification #1`,
+			footer: html`
+				<panda-button>
+					Exit
+				</panda-button>
+				<panda-button>
+					Accept
+				</panda-button>
+			`,
 		});
 
-		console.log("%c notificationList", "font-size: 24px; color: green;", pandaNotificationCenter.getNotificationList());
+		pandaNotificationCenter.addNotification({
+			theme: "alert",
+			body: html`Notification #2`
+		});
+
+		pandaNotificationCenter.addNotification({
+			theme: "warn",
+			body: html`Notification #3`
+		});
+
+		pandaNotificationCenter.addNotification({
+			theme: "primary",
+			body: html`Notification #4`
+		});
 
 	}
 }

@@ -8,6 +8,7 @@ import { styles } from "./styles/styles";
 // components
 import "@panda-wbc/panda-theme";
 import "@panda-wbc/panda-router";
+import "@panda-wbc/panda-notifications";
 
 // pages
 import "./pages/home/home-page";
@@ -66,10 +67,12 @@ class PandaApp extends LitElement {
 	protected render() {
 		return html`
 			<panda-theme theme="${this.selectedTheme}"></panda-theme>
-			<panda-router
-				.routerConfig="${this._routerConfig}"
-				@on-navigate="${(e: CustomEvent) => this._onNavigate(e.detail)}"
-			></panda-router>
+			<panda-notifications>
+				<panda-router
+					.routerConfig="${this._routerConfig}"
+					@on-navigate="${(e: CustomEvent) => this._onNavigate(e.detail)}"
+				></panda-router>
+			</panda-notifications>
 		`;
 	}
 

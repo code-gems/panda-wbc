@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-notification",
+	"name": "@panda-wbc/panda-notifications",
 	"version": "1.0.0",
-	"description": "Lit based web component - notification",
+	"description": "Lit based web component - notifications",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-notification.js",
+	"main": "lib/panda-notifications.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -16,7 +16,7 @@
 		"lit-element",
 		"web component",
 		"ui component",
-		"notification",
+		"notifications",
 		"toast",
 		"message"
 	],
@@ -25,6 +25,7 @@
 	"dependencies": {
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
+		"@panda-wbc/panda-core": "workspace:*",
 		"lit": "^2.7.4"
 	},
 	"devDependencies": {

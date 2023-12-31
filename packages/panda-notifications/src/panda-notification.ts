@@ -2,7 +2,7 @@
 // ...
 
 // styles
-import { styles } from "./styles/styles";
+import { notificationStyles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -12,14 +12,14 @@ import "@panda-wbc/panda-spinner";
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, queryAssignedElements, state } from "lit/decorators.js";
 
-@customElement("panda-notifications")
+@customElement("panda-notification")
 export class PandaNotification extends LitElement {
 	// css styles
 	static get styles() {
-		return styles;
+		return notificationStyles;
 	}
 
-	@property({ type: String })
+	@property({ type: String, attribute: true, reflect: true })
 	theme: string = "";
 
 	@property({ type: String })
@@ -68,12 +68,12 @@ export class PandaNotification extends LitElement {
 
 		return html`
 			<div
-				class="callout-cont ${cssMods.join(" ")}"
-				part="callout-cont"
+				class="notification-cont ${cssMods.join(" ")}"
+				part="notification-cont"
 			>
 				<div
-					class="callout"
-					part="callout"
+					class="notification"
+					part="notification"
 				>
 					<div
 						class="body"
@@ -118,8 +118,8 @@ export class PandaNotification extends LitElement {
 						</slot>					
 					</div>
 
-				</div><!-- callout -->
-			</div><!-- callout-cont -->
+				</div><!-- notification -->
+			</div><!-- notification-cont -->
 		`;
 	}
 
@@ -129,7 +129,7 @@ export class PandaNotification extends LitElement {
 				<div
 					class="btn-close"
 					part="btn-close"
-					@click="${this._onCloseCallout}"
+					@click="${this._onClose}"
 				>
 					<panda-icon icon="close"></panda-icon>
 				</div>
@@ -185,7 +185,7 @@ export class PandaNotification extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onCloseCallout(): void {
+	private _onClose(): void {
 		const event = new CustomEvent("on-close", {});
 		this.dispatchEvent(event);
 	}

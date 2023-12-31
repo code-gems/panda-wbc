@@ -2,14 +2,41 @@ import { css } from "lit"
 
 export const styles = css`
 	:host {
+		position: relative;
 		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.notifications-cont {
+		position: absolute;
+		right: 0%;
+		bottom: 0%;
+
+	}
+
+	.notifications {
+		position: absolute;
+		display: flex;
+		flex-flow: column;
+		gap: var(--panda-padding-m, 10px);
+		right: 0%;
+		bottom: 0%;
+	}
+`;
+
+export const notificationStyles = css`
+	:host {
+		display: block;
+		min-width: 20vw;
 		user-select: none;
 	}
 
-	.callout {
+	.notification {
 		display: flex;
 		flex-flow: column;
 		padding: var(--panda-padding-l, 15px);
+		
 
 		border-radius: var(--panda-border-radius-m, 5px);
 		border: 1px solid;
@@ -19,17 +46,17 @@ export const styles = css`
 		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc, hsl(0deg 0% 0% / 20%));
 	}
 
-	.with-footer .callout {
+	.with-footer .notification {
 		gap: var(--panda-padding-m, 10px);
 	}
 
-	.callout .header {
+	.notification .header {
 		display: flex;
 		flex-flow: row nowrap;
 		gap: var(--panda-padding-s, 5px);
 	}
 	
-	.callout .header .header-text {
+	.notification .header .header-text {
 		flex-grow: 1;
 		line-height: var(--panda-component-size-m, 30px);
 		color: var(--panda-input-text-color, hsl(0deg 0% 16%));
@@ -39,14 +66,14 @@ export const styles = css`
 		user-select: none;
 	}
 
-	.callout .body {
+	.notification .body {
 		display: flex;
 		flex-flow: row nowrap;
 		gap: var(--panda-padding-s, 5px);
 	}
 
-	.callout .body .icon,
-	.callout .body .btn-close {
+	.notification .body .icon,
+	.notification .body .btn-close {
 		flex-shrink: 0;
 		display: flex;
 		justify-content: center;
@@ -62,17 +89,17 @@ export const styles = css`
 		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
 
-	.callout .body .btn-close {
+	.notification .body .btn-close {
 		cursor: pointer;
 		--panda-icon-width: var(--panda-icon-size-m, 20px);
 		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
 
-	.callout .body .btn-close:hover {
+	.notification .body .btn-close:hover {
 		background-color: var(--panda-button-background-color-hover, #fff);
 	}
 
-	.callout .body .message {
+	.notification .body .message {
 		flex-grow: 1;
 		display: flex;
 		flex-flow: column;
@@ -84,11 +111,11 @@ export const styles = css`
 		user-select: none;
 	}
 
-	.with-header .callout .body .message {
+	.with-header .notification .body .message {
 		gap: var(--panda-padding-s, 5px);
 	}
 
-	.callout .footer {
+	.notification .footer {
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: flex-end;
@@ -103,43 +130,43 @@ export const styles = css`
 	/* THEMES ==================================================== */
 	
 	/* PRIMARY */
-	:host([theme~="primary"]) .callout {
+	:host([theme~="primary"]) .notification {
 		border-color: var(--panda-primary-color, hsl(209deg 78% 46%));
 		background-color: var(--panda-primary-color-10opc, hsl(209deg 78% 46% / 10%));
 	}
 
 	/* SECONDARY */
-	:host([theme~="secondary"]) .callout {
+	:host([theme~="secondary"]) .notification {
 		border-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
 		background-color: var(--panda-secondary-color-10opc, hsl(164deg 67% 45% / 10%));
 	}
 
 	/* TERTIARY */
-	:host([theme~="tertiary"]) .callout {
+	:host([theme~="tertiary"]) .notification {
 		border-color: var(--panda-tertiary-color, hsl(164deg 67% 45%));
 		background-color: var(--panda-tertiary-color-10opc, hsl(164deg 67% 45% / 10%));
 	}
 
 	/* INFO */	
-	:host([theme~="info"]) .callout {
+	:host([theme~="info"]) .notification {
 		border-color: var(--panda-action-color-info, hsl(181deg 52% 53%));
 		background-color: var(--panda-action-color-info-10opc, hsl(181deg 52% 53% / 10%));
 	}
 
 	/* DONE */
-	:host([theme~="done"]) .callout {
+	:host([theme~="done"]) .notification {
 		border-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
 		background-color: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
 	}
 
 	/* WARN */
-	:host([theme~="warn"]) .callout {
+	:host([theme~="warn"]) .notification {
 		border-color: var(--panda-action-color-warn, hsl(35deg 91% 62%));
 		background-color: var(--panda-action-color-warn-10opc, hsl(35deg 91% 62% / 10%));
 	}
 
 	/* ALERT */
-	:host([theme~="alert"]) .callout {
+	:host([theme~="alert"]) .notification {
 		border-color: var(--panda-action-color-alert, hsl(14deg 77% 62%));
 		background-color: var(--panda-action-color-alert-10opc, hsl(14deg 77% 62% / 10%));
 	}

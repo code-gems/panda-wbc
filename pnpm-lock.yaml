@@ -183,9 +183,9 @@ importers:
       '@panda-wbc/panda-multi-input':
         specifier: workspace:*
         version: link:../panda-multi-input
-      '@panda-wbc/panda-notification':
+      '@panda-wbc/panda-notifications':
         specifier: workspace:*
-        version: link:../panda-notification
+        version: link:../panda-notifications
       '@panda-wbc/panda-pagination':
         specifier: workspace:*
         version: link:../panda-pagination
@@ -337,8 +337,11 @@ importers:
         specifier: ^9.2.6
         version: 9.4.2(typescript@4.9.5)(webpack@5.83.1)
 
-  packages/panda-notification:
+  packages/panda-notifications:
     dependencies:
+      '@panda-wbc/panda-core':
+        specifier: workspace:*
+        version: link:../panda-core
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
