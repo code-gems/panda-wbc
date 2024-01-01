@@ -65,61 +65,59 @@ export class PandaNotification extends LitElement {
 		if (this._hasFooter) {
 			cssMods.push("with-footer");
 		}
+		if (this.hideIcon) {
+			cssMods.push("no-icon");
+		}
 
 		return html`
 			<div
-				class="notification-cont ${cssMods.join(" ")}"
-				part="notification-cont"
+				class="notification ${cssMods.join(" ")}"
+				part="notification"
 			>
 				<div
-					class="notification"
-					part="notification"
+					class="body"
+					part="body"
 				>
+					<!-- icon -->
+					${this._renderIcon()}
+
 					<div
-						class="body"
-						part="body"
+						class="message"
+						part="message"
 					>
-						<!-- icon -->
-						${this._renderIcon()}
-
-						<div
-							class="message"
-							part="message"
-						>
-							<div class="header">
-								<slot
-									class="header-prefix"
-									name="header-prefix"
-								></slot>
-								<slot
-									class="header-text"
-									name="header"
-									@slotchange=${this._onHeaderSlotChange}
-								></slot>
-							</div>
-
-							<!-- message slot -->
-							<slot></slot>
+						<div class="header">
+							<slot
+								class="header-prefix"
+								name="header-prefix"
+							></slot>
+							<slot
+								class="header-text"
+								name="header"
+								@slotchange=${this._onHeaderSlotChange}
+							></slot>
 						</div>
 
-						<!-- close button -->
-						${this._renderCloseButton()}
-
+						<!-- message slot -->
+						<slot></slot>
 					</div>
 
-					<div
-						class="footer"
-						part="footer"
+					<!-- close button -->
+					${this._renderCloseButton()}
+
+				</div>
+
+				<div
+					class="footer"
+					part="footer"
+				>
+					<slot
+						name="footer"
+						@slotchange=${this._onFooterSlotChange}
 					>
-						<slot
-							name="footer"
-							@slotchange=${this._onFooterSlotChange}
-						>
-						</slot>					
-					</div>
+					</slot>					
+				</div>
 
-				</div><!-- notification -->
-			</div><!-- notification-cont -->
+			</div><!-- notification -->
 		`;
 	}
 
@@ -139,7 +137,9 @@ export class PandaNotification extends LitElement {
 
 	private _renderIcon(): TemplateResult | void {
 		if (!this.hideIcon) {
-			if (String(this.theme).toLocaleLowerCase().includes("spinner")) {
+			const theme = this.theme ?? "";
+
+			if (String(theme).toLocaleLowerCase().includes("spinner")) {
 				return html`
 					<div
 						class="icon"
@@ -149,8 +149,7 @@ export class PandaNotification extends LitElement {
 					</div>
 				`;
 			} else {
-				let icon: string = "";
-				const theme = this.theme.toLocaleLowerCase();
+				let icon: string = "notification";
 
 				if (theme.includes("info")) {
 					icon = "info";
@@ -191,6 +190,7 @@ export class PandaNotification extends LitElement {
 	}
 
 	private _onHeaderSlotChange(): void {
+		console.log("%c ⚡ [PANDA NOTIFICATION] _onHeaderSlotChange()", "font-size: 24px; color: orange;");
 		this._hasHeader = this._headerNodes.length > 0;
 	}
 

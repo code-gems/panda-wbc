@@ -3,14 +3,16 @@ import { TemplateResults } from "lit";
 export interface PandaNotification {
 	id?: string;
 	scope?: string[];
-
+	hideIcon?: boolean;
 	theme?: string;
 	header?: TemplateResults | any;
+	headerPrefix?: TemplateResults | any;
 	body: TemplateResults | any;
 	footer?: TemplateResults | any;
 }
 
 export interface PandaSubscription {
-	callback: (notification: PandaNotification) => void;
+	onNotify: (notification: PandaNotification) => void;
+	onClose: (notificationId: string) => void;
 	scope?: string[];
 }

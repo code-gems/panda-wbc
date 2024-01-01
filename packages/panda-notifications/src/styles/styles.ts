@@ -9,10 +9,14 @@ export const styles = css`
 	}
 
 	.notifications-cont {
-		position: absolute;
+		position: fixed;
 		right: 0%;
 		bottom: 0%;
+		z-index: 9999;
+	}
 
+	.notifications-cont.local {
+		position: absolute;
 	}
 
 	.notifications {
@@ -22,6 +26,7 @@ export const styles = css`
 		gap: var(--panda-padding-m, 10px);
 		right: 0%;
 		bottom: 0%;
+		padding: var(--panda-padding-m);
 	}
 `;
 
@@ -33,43 +38,65 @@ export const notificationStyles = css`
 	}
 
 	.notification {
+		position: relative;
 		display: flex;
 		flex-flow: column;
 		padding: var(--panda-padding-l, 15px);
-		
+
+		animation: show;
+		animation-duration: 400ms;
+		animation-fill-mode: forwards;
 
 		border-radius: var(--panda-border-radius-m, 5px);
-		border: 1px solid;
-		border-left: 4px solid;
-		border-color: var(--panda-text-color, hsl(0deg 0% 15%));
-		background-color: var(--panda-background-color-100, hsl(0deg 0% 97%));
+		border: 1px solid var(--panda-notification-border-color, hsl(210deg 25% 35%));
+		background-color: var(--panda-notification-background-color, hsl(209deg 26% 20%));
 		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc, hsl(0deg 0% 0% / 20%));
 	}
 
-	.with-footer .notification {
+	.notification.no-icon {
+		padding-left: calc(var(--panda-padding-l, 15px) + 5px);
+	}
+
+	.notification::before {
+		position: absolute;
+		display: block;
+		content: " ";
+		width: 4px;
+		inset: 4px;
+
+		border-radius: 4px;
+		background-color: var(--panda-primary-color, hsl(209deg 78% 46%));
+		background: linear-gradient(
+			180deg,
+			var(--panda-primary-color, hsl(209deg 78% 46%)) 50%,
+			var(--panda-secondary-color) 100%, hsl(164deg 67% 45%)
+		);
+	}
+
+	.notification.with-footer {
 		gap: var(--panda-padding-m, 10px);
 	}
 
 	.notification .header {
 		display: flex;
 		flex-flow: row nowrap;
-		gap: var(--panda-padding-s, 5px);
+		gap: var(--panda-padding-m, 10px);
 	}
 	
 	.notification .header .header-text {
 		flex-grow: 1;
 		line-height: var(--panda-component-size-m, 30px);
-		color: var(--panda-input-text-color, hsl(0deg 0% 16%));
+		color: var(--panda-notification-header-text-color, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-notification-header-text-shadow, "none");
 		font-size: var(--panda-font-size-l, 14px);
 		font-family: var(--panda-font-family-bold, "Poppins-Bold");
-		text-shadow: var(--panda-header-text-shadow, "none");
 		user-select: none;
 	}
 
 	.notification .body {
 		display: flex;
 		flex-flow: row nowrap;
-		gap: var(--panda-padding-s, 5px);
+		gap: var(--panda-padding-m, 10px);
 	}
 
 	.notification .body .icon,
@@ -84,7 +111,7 @@ export const notificationStyles = css`
 		transition: all 200ms ease-in-out;
 		border-radius: var(--panda-border-radius-m, 5px);
 
-		--panda-icon-color: var(--panda-text-color, hsl(0deg 0% 15%));
+		--panda-icon-color: var(--panda-notification-text-color, hsl(0deg 0% 92%));
 		--panda-icon-width: var(--panda-icon-size-m, 20px);
 		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
@@ -96,18 +123,19 @@ export const notificationStyles = css`
 	}
 
 	.notification .body .btn-close:hover {
-		background-color: var(--panda-button-background-color-hover, #fff);
+		background-color: var(--panda-notification-button-background-color-hover, hsl(0deg 0% 100% / 10%));
 	}
 
 	.notification .body .message {
 		flex-grow: 1;
 		display: flex;
 		flex-flow: column;
+		justify-content: center;
 
-		color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-notification-text-color, hsl(0deg 0% 92%));
+		text-shadow: var(--panda-notification-text-shadow, "none");
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
-		text-shadow: var(--panda-text-shadow, "none");
 		user-select: none;
 	}
 
@@ -130,50 +158,61 @@ export const notificationStyles = css`
 	/* THEMES ==================================================== */
 	
 	/* PRIMARY */
-	:host([theme~="primary"]) .notification {
-		border-color: var(--panda-primary-color, hsl(209deg 78% 46%));
-		background-color: var(--panda-primary-color-10opc, hsl(209deg 78% 46% / 10%));
+	:host([theme~="primary"]) .notification::before {
+		background: none;
+		background-color: var(--panda-primary-color, hsl(209deg 78% 46%));
 	}
 
 	/* SECONDARY */
-	:host([theme~="secondary"]) .notification {
-		border-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
-		background-color: var(--panda-secondary-color-10opc, hsl(164deg 67% 45% / 10%));
+	:host([theme~="secondary"]) .notification::before {
+		background: none;
+		background-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
 	}
 
 	/* TERTIARY */
-	:host([theme~="tertiary"]) .notification {
-		border-color: var(--panda-tertiary-color, hsl(164deg 67% 45%));
-		background-color: var(--panda-tertiary-color-10opc, hsl(164deg 67% 45% / 10%));
+	:host([theme~="tertiary"]) .notification::before {
+		background: none;
+		background-color: var(--panda-tertiary-color, hsl(164deg 67% 45%));
 	}
 
 	/* INFO */	
-	:host([theme~="info"]) .notification {
-		border-color: var(--panda-action-color-info, hsl(181deg 52% 53%));
-		background-color: var(--panda-action-color-info-10opc, hsl(181deg 52% 53% / 10%));
+	:host([theme~="info"]) .notification::before {
+		background: none;
+		background-color: var(--panda-action-color-info, hsl(181deg 52% 53%));
 	}
 
 	/* DONE */
-	:host([theme~="done"]) .notification {
-		border-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
-		background-color: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
+	:host([theme~="done"]) .notification::before {
+		background: none;
+		background-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
 	}
 
 	/* WARN */
-	:host([theme~="warn"]) .notification {
-		border-color: var(--panda-action-color-warn, hsl(35deg 91% 62%));
-		background-color: var(--panda-action-color-warn-10opc, hsl(35deg 91% 62% / 10%));
+	:host([theme~="warn"]) .notification::before {
+		background: none;
+		background-color: var(--panda-action-color-warn, hsl(35deg 91% 62%));
 	}
 
 	/* ALERT */
-	:host([theme~="alert"]) .notification {
-		border-color: var(--panda-action-color-alert, hsl(14deg 77% 62%));
-		background-color: var(--panda-action-color-alert-10opc, hsl(14deg 77% 62% / 10%));
+	:host([theme~="alert"]) .notification::before {
+		background: none;
+		background-color: var(--panda-action-color-alert, hsl(14deg 77% 62%));
 	}
 
 	/* INLINE */
 	:host([theme~="center-icons"]) .icon,
 	:host([theme~="center-icons"]) .btn-close {
 		height: auto;
+	}
+
+	@keyframes show {
+		from {
+			opacity: 0;
+			margin-bottom: 10px;
+		}
+		to {
+			opacity: 1;
+			margin-bottom: 0px;
+		}
 	}
 `;

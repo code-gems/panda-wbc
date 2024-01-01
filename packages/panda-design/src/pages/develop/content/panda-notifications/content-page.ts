@@ -126,7 +126,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
-							<div class="row">
+							<div class="row" style="height: 600px;">
 								<div class="col-half">
 									<panda-button
 										theme="primary"
@@ -138,14 +138,15 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 								<div class="col-half">
 									<panda-button
 										theme="secondary"
-										@click="${this._onAddNotification}"
+										@click="${this._onUpdateNotification}"
 									>
-										Remove Notification
+										Update Notification
 									</panda-button>
 								</div>
 								<div class="col-full">
 									<panda-notifications
-
+										.scope="${["local"]}"
+										local-container
 									>
 									</panda-notifications>
 								</div>
@@ -283,34 +284,103 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddNotification() {
-		pandaNotificationCenter.addNotification({
-			id: "1234",
-			theme: "info",
-			body: html`Notification #1`,
+		// pandaNotificationCenter.addNotification({
+		// 	theme: "alert",
+		// 	body: html`Notification #2`
+		// });
+
+		const noteId1 = pandaNotificationCenter.addNotification({
+			theme: "warn",
+			header: html`WARNING`,
+			body: html`
+				In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate 
+				the visual form of a document or a typeface without relying on meaningful content. 
+				Lorem ipsum may be used as a placeholder before final copy is available.
+			`,
 			footer: html`
-				<panda-button>
-					Exit
+				<panda-button
+					@click="${() => this._onCloseNotification(noteId1)}"
+				>
+					Close
 				</panda-button>
-				<panda-button>
-					Accept
+			`,
+		});
+
+		const noteId2 = pandaNotificationCenter.addNotification({
+			theme: "done",
+			header: html`SUCCESS`,
+			body: html`
+				In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate 
+				the visual form of a document or a typeface without relying on meaningful content. 
+				Lorem ipsum may be used as a placeholder before final copy is available.
+			`,
+			footer: html`
+				<panda-button
+					@click="${() => this._onCloseNotification(noteId2)}"
+				>
+					Close
 				</panda-button>
 			`,
 		});
 
 		pandaNotificationCenter.addNotification({
-			theme: "alert",
-			body: html`Notification #2`
-		});
-
-		pandaNotificationCenter.addNotification({
-			theme: "warn",
-			body: html`Notification #3`
-		});
-
-		pandaNotificationCenter.addNotification({
 			theme: "primary",
 			body: html`Notification #4`
+		});		
+		
+		pandaNotificationCenter.addNotification({
+			id: "1234",
+			scope: ["local"],
+			hideIcon: true,
+			headerPrefix: html`NEW`,
+			header: html`Cookie Usage`,
+			body: html`
+				This website uses cookies to enhance your browsing experience. 
+				By continuing to use this site, you agree to the use of cookies. 
+				Cookies are small text files stored on your device that help us analyze website traffic, 
+				personalize content, and provide targeted advertisements.
+			`,
+			footer: html`
+				<panda-button
+					@click="${() => this._onCloseNotification("1234")}"
+				>
+					Exit
+				</panda-button>
+				<panda-button>
+					Accept All
+				</panda-button>
+			`,
+		});
+	}
+
+	private _onCloseNotification(notificationId: string) {
+		pandaNotificationCenter.closeNotification(notificationId);
+	}
+
+	private _onUpdateNotification() {
+		pandaNotificationCenter.addNotification({
+			id: "1234",
+			scope: ["local"],
+			hideIcon: true,
+			headerPrefix: html`OLD`,
+			header: html`Cookie Usage`,
+			body: html`
+				This website uses cookies to enhance your browsing experience. 
+				By continuing to use this site, you agree to the use of cookies. 
+				Cookies are small text files stored on your device that help us analyze website traffic, 
+				personalize content, and provide targeted advertisements.
+			`,
+			footer: html`
+				<panda-button @click="${() => this._onCloseNotification("1234")}">
+					Exit Page
+				</panda-button>
+				<panda-button>
+					Accept All
+				</panda-button>
+			`,
 		});
 
 	}
+	
+
 }

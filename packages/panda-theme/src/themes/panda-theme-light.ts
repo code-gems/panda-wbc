@@ -356,6 +356,21 @@ export const pandaThemeLight = css`
 		--panda-icon-size-hero: 46px;
 
 		/* ========================================================================================================= */
+		/* PANDA NOTIFICATION ====================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-notification-header-text-color: hsl(0deg 0% 100%);
+		--panda-notification-header-text-shadow: "none";
+		--panda-notification-text-color: hsl(0deg 0% 92%);
+		--panda-notification-text-shadow: "none";
+		
+		--panda-notification-border-color: hsl(210deg 25% 35%);
+		--panda-notification-background-color: hsl(209deg 26% 20%);
+
+		--panda-notification-button-background-color: transparent;
+		--panda-notification-button-background-color-hover: var(--panda-white-color-10opc);
+
+		/* ========================================================================================================= */
 		/* PANDA DIALOG ============================================================================================ */
 		/* ========================================================================================================= */
 

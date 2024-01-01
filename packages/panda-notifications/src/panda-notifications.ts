@@ -12,7 +12,9 @@ import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { pandaNotificationCenter } from "./panda-notification-center";
-import { generateUuid } from "@panda-wbc/panda-core";
+
+const DEFAULT_NOTIFICATION_DELAY_TIME: number = 400;
+const DEFAULT_MAX_NOTIFICATIONS: number = 100;
 
 @customElement("panda-notifications")
 export class PandaNotifications extends LitElement {
@@ -23,14 +25,14 @@ export class PandaNotifications extends LitElement {
 	@property({ type: String, attribute: true })
 	scope: string[] = [];
 
-	@property({ type: Array })
-	notificationList: PandaNotification[] = [];
-
 	@property({ type: Number, attribute: "max-notifications" })
 	maxNotifications: number | null = null;
 
 	@property({ type: Number, attribute: "notification-delay" })
-	notificationDelay: number = 1000;
+	notificationDelay: number = DEFAULT_NOTIFICATION_DELAY_TIME;
+
+	@property({ type: Boolean, attribute: "local-container" })
+	localContainer: boolean = false;
 
 	// state props
 	@state()
@@ -38,9 +40,12 @@ export class PandaNotifications extends LitElement {
 
 	@state()
 	private _scheduleTimer!: number | null;
+
+	@state()
+	private _notificationQueue: PandaNotification[] = [];
 	
 	@state()
-	private _notificationsToShow: PandaNotification[] = [];
+	private _activeNotifications: PandaNotification[] = [];
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -51,7 +56,8 @@ export class PandaNotifications extends LitElement {
 		// subscribe to notification center
 		this._subscriptionId = pandaNotificationCenter.subscribe({
 			scope: this.scope,
-			callback: this.notify.bind(this)
+			onNotify: this.notify.bind(this),
+			onClose: this.close.bind(this),
 		});
 		console.log("%c ⚡ [PANDA NOTIFICATIONS] connectedCallback() -> subscribe", "font-size: 24px; color: blueviolet;", this._subscriptionId);
 	}
@@ -68,15 +74,85 @@ export class PandaNotifications extends LitElement {
 	}
 
 	/** Callback for new notifications */
-	notify(notification: PandaNotification) {
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] notify()", "font-size: 24px; color: blueviolet;", notification);
-		// add notification to the list
-		this.notificationList.push({
-			id: generateUuid(),
-			...notification
-		});
-		this._showNotifications();
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] notificationList: ", "font-size: 24px; color: blueviolet;", this.notificationList);
+	notify(notification: PandaNotification): void {
+		console.log("%c ⚡ [PANDA NOTIFICATIONS] 1. notify()", "font-size: 24px; color: blueviolet;", notification);
+
+		// check if notification is scoped
+		// case 1: notification is scoped but notification board has no scope defined
+		// case 2: notification has no scope but notification board has scope
+		if (
+			notification?.scope?.length && !this.scope?.length || 
+			!notification?.scope?.length && this.scope?.length
+		) {
+			return;
+		}
+		// case 3: notification and notification board have scope provided
+		if (notification?.scope?.length && this.scope?.length) {
+			let inScope: boolean = false;
+			this.scope.forEach((scope) => {
+				if (notification?.scope?.includes(scope)) {
+					inScope = true;
+				}
+			});
+
+			if (!inScope) {
+				return;
+			}
+		}
+		
+		// check if notification id exists on both lists
+		const isQueued = this._notificationQueue.find((note) => note.id === notification.id);
+		const isActive = this._activeNotifications.find((note) => note.id === notification.id);
+		console.log("%c ⚡ [PANDA NOTIFICATIONS] 2.1 isQueued?", "font-size: 24px; color: blueviolet;", isQueued);
+		console.log("%c ⚡ [PANDA NOTIFICATIONS] 2.2 isActive?", "font-size: 24px; color: blueviolet;", isActive);
+		
+		// check if notification is active/shown
+		if (isActive) {
+			// update active/shown notifications
+			this._activeNotifications = this._activeNotifications.reduce(
+				// update existing notification
+				(allNotes, currentNote) => {
+					if (currentNote.id === notification.id) {
+						allNotes.push(notification);
+					} else {
+						allNotes.push(currentNote);
+					}
+					return allNotes;
+				}, [] as PandaNotification[]
+			);
+			// re-render the view
+			this.requestUpdate();
+
+		} else if (isQueued) {
+			// update notification queue
+			this._notificationQueue = this._notificationQueue.reduce(
+				// update existing notification
+				(allNotes, currentNote) => {
+					if (currentNote.id === notification.id) {
+						allNotes.push(notification);
+					} else {
+						allNotes.push(currentNote);
+					}
+					return allNotes;
+				}, [] as PandaNotification[]
+			);
+			
+		} else {
+			// add notification to the queue
+			this._notificationQueue.push(notification);
+			// display notification
+			this._showNotifications();
+		}
+
+		console.log("%c ⚡ [PANDA NOTIFICATIONS] notificationList: ", "font-size: 24px; color: blueviolet;", this._notificationQueue);
+	}
+
+	close(notificationId: string): void {
+		console.log("%c ⚡ [PANDA NOTIFICATIONS] close()", "font-size: 24px; color: blueviolet;", notificationId);
+		// remove notification from the queue
+		this._notificationQueue = this._notificationQueue.filter((note) => note.id !== notificationId);
+		// remove notification from the queue
+		this._activeNotifications = this._activeNotifications.filter((note) => note.id !== notificationId);
 	}
 
 	// ================================================================================================================
@@ -86,7 +162,7 @@ export class PandaNotifications extends LitElement {
 	render(): TemplateResult {
 		return html`
 			<slot></slot>
-			<div class="notifications-cont">
+			<div class="notifications-cont ${this.localContainer ? "local": ""}">
 				<div class="notifications">
 					${this._renderNotifications()}
 				</div>
@@ -96,32 +172,43 @@ export class PandaNotifications extends LitElement {
 
 	private _renderNotifications() {
 		return repeat(
-			this._notificationsToShow,
+			this._activeNotifications,
 			(notification) => notification.id,
 			(notification) => {
 				const {
 					id,
 					theme,
+					hideIcon = false,
+					headerPrefix = null,
 					header = null,
 					body,
 					footer = null,
 				} = notification;
-
+				// generate header slot
+				let headerPrefixHtml: TemplateResult = html``;
+				if (headerPrefix) {
+					headerPrefixHtml = html`<div slot="header-prefix">${headerPrefix}</div>`;
+				}
+				// generate header slot
+				let headerHtml: TemplateResult = html``;
+				if (header) {
+					headerHtml = html`<div slot="header">${header}</div>`;
+				}
+				// generate footer slot
 				let footerHtml: TemplateResult = html``;
 				if (footer) {
-					footerHtml = html`
-						<div slot="footer">
-							${footer}
-						</div>
-					`;
+					footerHtml = html`<div slot="footer">${footer}</div>`;
 				}
 
 				return html`
 					<panda-notification
 						.theme="${theme}"
+						.hideIcon="${hideIcon}"
 						@on-close="${() => this._onCloseNotification(id as string)}"
 						closable
 					>
+						${headerPrefixHtml}
+						${headerHtml}
 						${body}
 						${footerHtml}
 					</panda-notification>
@@ -140,30 +227,30 @@ export class PandaNotifications extends LitElement {
 		// create notification schedule
 		if (!this._scheduleTimer) {
 			this._scheduleTimer = setInterval(() => {
+				console.log("%c 📃 [PANDA NOTIFICATION] tick", "font-size: 24px; color: blueviolet;");
 
-				if (this.notificationList.length) {
+				if (this._notificationQueue.length) {
+					const maxNotifications = this.maxNotifications ?? DEFAULT_MAX_NOTIFICATIONS;
 
-					const maxNotifications = this.maxNotifications ?? 2;
-					if (this._notificationsToShow.length < maxNotifications) {
-						const [notification] = this.notificationList;
+					if (this._activeNotifications.length < maxNotifications) {
+						const [notification] = this._notificationQueue;
 
 						console.log("%c 📃 [PANDA NOTIFICATION] show notification", "font-size: 24px; color: blueviolet;", notification.body);
 
 						// show notification
-						this._notificationsToShow.unshift(notification);
+						this._activeNotifications.unshift(notification);
 						this.requestUpdate();
 						// remove notification;
-						this.notificationList.shift();
+						this._notificationQueue.shift();
 					}
 
+				} else {
 					// cancel schedule if no more notifications
-					if (!this.notificationList.length) {
-						clearInterval(this._scheduleTimer as number);
-						this._scheduleTimer = null;
-						console.log("%c 📃 [PANDA NOTIFICATION] clearTimeout", "font-size: 24px; color: blueviolet;", this._scheduleTimer, typeof this._scheduleTimer);
-					}
+					clearInterval(this._scheduleTimer as number);
+					this._scheduleTimer = null;
+					console.log("%c 📃 [PANDA NOTIFICATION] clearTimeout", "font-size: 24px; color: blueviolet;", this._scheduleTimer, typeof this._scheduleTimer);
 				}
-			}, this.notificationDelay ?? 1000);
+			}, this.notificationDelay ?? DEFAULT_NOTIFICATION_DELAY_TIME);
 		}
 	}
 
@@ -172,8 +259,8 @@ export class PandaNotifications extends LitElement {
 	// ================================================================================================================
 
 	private _onCloseNotification(notificationId: string): void {
-		// remove notification from the list
-		this._notificationsToShow = this._notificationsToShow.filter((notification) => notification.id !== notificationId);
+		// remove notification from the queue
+		this._activeNotifications = this._activeNotifications.filter((notification) => notification.id !== notificationId);
 	}
 }
 
