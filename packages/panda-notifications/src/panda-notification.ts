@@ -31,9 +31,6 @@ export class PandaNotification extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	closable: boolean = false;
 	
-	@property({ type: String, attribute: "spinner-type" })
-	spinnerType: string = "google";
-
 	@queryAssignedElements({ slot: "header", flatten: false })
 	private _headerNodes!: HTMLElement[];
 
@@ -138,45 +135,33 @@ export class PandaNotification extends LitElement {
 	private _renderIcon(): TemplateResult | void {
 		if (!this.hideIcon) {
 			const theme = this.theme ?? "";
+			let icon: string = "notification";
 
-			if (String(theme).toLocaleLowerCase().includes("spinner")) {
-				return html`
-					<div
-						class="icon"
-						part="icon"
-					>
-						<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
-					</div>
-				`;
-			} else {
-				let icon: string = "notification";
-
-				if (theme.includes("info")) {
-					icon = "info";
-				}
-				if (theme.includes("done")) {
-					icon = "check-circle";
-				}
-				if (theme.includes("warn")) {
-					icon = "warning";
-				}
-				if (theme.includes("alert")) {
-					icon = "error";
-				}
-				// check if custom icon is declared
-				if (this.icon) {
-					icon = this.icon;
-				}
-
-				return html`
-					<div
-						class="icon"
-						part="icon"
-					>
-						<panda-icon .icon="${icon}"></panda-icon>
-					</div>
-				`;
+			if (theme.includes("info")) {
+				icon = "info";
 			}
+			if (theme.includes("done")) {
+				icon = "check-circle";
+			}
+			if (theme.includes("warn")) {
+				icon = "warning";
+			}
+			if (theme.includes("alert")) {
+				icon = "error";
+			}
+			// check if custom icon is declared
+			if (this.icon) {
+				icon = this.icon;
+			}
+
+			return html`
+				<div
+					class="icon"
+					part="icon"
+				>
+					<panda-icon .icon="${icon}"></panda-icon>
+				</div>
+			`;
 		}
 	}
 	
@@ -190,7 +175,6 @@ export class PandaNotification extends LitElement {
 	}
 
 	private _onHeaderSlotChange(): void {
-		console.log("%c ⚡ [PANDA NOTIFICATION] _onHeaderSlotChange()", "font-size: 24px; color: orange;");
 		this._hasHeader = this._headerNodes.length > 0;
 	}
 

@@ -29,22 +29,16 @@ export class PandaNotificationCenter {
 				...subscription,
 			}
 		);
-		console.log("%c ⚡ [PANDA NOTIFICATION CENTER] 1. subscribe()", "font-size: 24px; color: red;", subscription);
-		console.log("%c 2. subscriptionId:", "font-size: 24px; color: red;", subscriptionId);
 		return subscriptionId;
 	}
 
 	public unsubscribe(subscriptionId: string): void {
-		console.log("%c ⚡ [PANDA NOTIFICATION CENTER] unsubscribe()", "font-size: 24px; color: red;", subscriptionId);
 		subscriptionList.delete(subscriptionId);
 	}
 
 	public addNotification(notification: PandaNotification): string {
 		// generate notification id if not provided
 		const notificationId = notification.id ?? generateUuid();
-		console.log("%c ⚡ [PANDA NOTIFICATION CENTER] 1. notificationId", "font-size: 24px; color: red;", notificationId);
-		console.log("%c ⚡ [PANDA NOTIFICATION CENTER] 2. addNotification()", "font-size: 24px; color: red;", notification);
-		
 		// notify subscribers
 		subscriptionList.forEach((subscription) => {
 			// invoke callback function
@@ -60,7 +54,6 @@ export class PandaNotificationCenter {
 	}
 
 	public closeNotification(notificationId: string): void {
-		console.log("%c ⚡ [PANDA NOTIFICATION CENTER] closeNotification()", "font-size: 24px; color: red;", notificationId);
 		// notify subscribers
 		subscriptionList.forEach((subscription) => {
 			// invoke callback function

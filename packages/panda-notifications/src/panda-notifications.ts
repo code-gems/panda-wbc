@@ -59,11 +59,9 @@ export class PandaNotifications extends LitElement {
 			onNotify: this.notify.bind(this),
 			onClose: this.close.bind(this),
 		});
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] connectedCallback() -> subscribe", "font-size: 24px; color: blueviolet;", this._subscriptionId);
 	}
 
 	disconnectedCallback(): void {
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] disconnectedCallback()", "font-size: 24px; color: blueviolet;");
 		super.disconnectedCallback();
 		// unsubscribe from notification center
 		pandaNotificationCenter.unsubscribe(this._subscriptionId);
@@ -75,8 +73,6 @@ export class PandaNotifications extends LitElement {
 
 	/** Callback for new notifications */
 	notify(notification: PandaNotification): void {
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] 1. notify()", "font-size: 24px; color: blueviolet;", notification);
-
 		// check if notification is scoped
 		// case 1: notification is scoped but notification board has no scope defined
 		// case 2: notification has no scope but notification board has scope
@@ -103,8 +99,6 @@ export class PandaNotifications extends LitElement {
 		// check if notification id exists on both lists
 		const isQueued = this._notificationQueue.find((note) => note.id === notification.id);
 		const isActive = this._activeNotifications.find((note) => note.id === notification.id);
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] 2.1 isQueued?", "font-size: 24px; color: blueviolet;", isQueued);
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] 2.2 isActive?", "font-size: 24px; color: blueviolet;", isActive);
 		
 		// check if notification is active/shown
 		if (isActive) {
@@ -143,12 +137,9 @@ export class PandaNotifications extends LitElement {
 			// display notification
 			this._showNotifications();
 		}
-
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] notificationList: ", "font-size: 24px; color: blueviolet;", this._notificationQueue);
 	}
 
 	close(notificationId: string): void {
-		console.log("%c ⚡ [PANDA NOTIFICATIONS] close()", "font-size: 24px; color: blueviolet;", notificationId);
 		// remove notification from the queue
 		this._notificationQueue = this._notificationQueue.filter((note) => note.id !== notificationId);
 		// remove notification from the queue
@@ -179,8 +170,8 @@ export class PandaNotifications extends LitElement {
 					id,
 					theme,
 					hideIcon = false,
-					headerPrefix = null,
 					header = null,
+					headerPrefix = null,
 					body,
 					footer = null,
 				} = notification;
@@ -221,22 +212,15 @@ export class PandaNotifications extends LitElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _showNotifications() {
-		console.log("%c 📃 [PANDA NOTIFICATION] _showNotifications", "font-size: 24px; color: blueviolet;", !this._scheduleTimer);
-
+	private _showNotifications(): void {
 		// create notification schedule
 		if (!this._scheduleTimer) {
 			this._scheduleTimer = setInterval(() => {
-				console.log("%c 📃 [PANDA NOTIFICATION] tick", "font-size: 24px; color: blueviolet;");
-
 				if (this._notificationQueue.length) {
 					const maxNotifications = this.maxNotifications ?? DEFAULT_MAX_NOTIFICATIONS;
 
 					if (this._activeNotifications.length < maxNotifications) {
 						const [notification] = this._notificationQueue;
-
-						console.log("%c 📃 [PANDA NOTIFICATION] show notification", "font-size: 24px; color: blueviolet;", notification.body);
-
 						// show notification
 						this._activeNotifications.unshift(notification);
 						this.requestUpdate();
@@ -248,7 +232,6 @@ export class PandaNotifications extends LitElement {
 					// cancel schedule if no more notifications
 					clearInterval(this._scheduleTimer as number);
 					this._scheduleTimer = null;
-					console.log("%c 📃 [PANDA NOTIFICATION] clearTimeout", "font-size: 24px; color: blueviolet;", this._scheduleTimer, typeof this._scheduleTimer);
 				}
 			}, this.notificationDelay ?? DEFAULT_NOTIFICATION_DELAY_TIME);
 		}
