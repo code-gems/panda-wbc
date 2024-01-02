@@ -101,6 +101,8 @@ class PandaParticleBanner extends LitElement {
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
 		// clean up
+		(this._config as any) = null;
+		(this._ctx as any) = null;
 		clearInterval(this._animationTimer);
 		// remove events
 		document.removeEventListener("mousemove", this._documentMouseMoveEvent);
@@ -266,6 +268,9 @@ class PandaParticleBanner extends LitElement {
 	}
 
 	private _draw() {
+		if (!this._ctx) {
+			return;
+		}
 		// clean up canvas
 		this._ctx.clearRect(0, 0, this._canvasEl.width, this._canvasEl.height);
 		

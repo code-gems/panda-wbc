@@ -361,9 +361,13 @@ export const pandaThemeLight = css`
 
 		--panda-notification-header-text-color: hsl(0deg 0% 100%);
 		--panda-notification-header-text-shadow: "none";
+		--panda-notification-header-font-size: var(--panda-font-size-l);
+		--panda-notification-header-font-family: var(--panda-font-family-bold);
 		--panda-notification-text-color: hsl(0deg 0% 92%);
 		--panda-notification-text-shadow: "none";
-		
+		--panda-notification-font-size: var(--panda-font-size-m);
+		--panda-notification-font-family: var(--panda-font-family);
+				
 		--panda-notification-border-color: hsl(210deg 25% 35%);
 		--panda-notification-background-color: hsl(209deg 26% 20%);
 

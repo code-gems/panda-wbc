@@ -24,7 +24,6 @@
 	"license": "MIT",
 	"dependencies": {
 		"@panda-wbc/panda-icon": "workspace:*",
-		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-core": "workspace:*",
 		"lit": "^2.7.4"
 	},

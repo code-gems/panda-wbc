@@ -88,8 +88,8 @@ export const notificationStyles = css`
 		line-height: var(--panda-component-size-m, 30px);
 		color: var(--panda-notification-header-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-notification-header-text-shadow, "none");
-		font-size: var(--panda-font-size-l, 14px);
-		font-family: var(--panda-font-family-bold, "Poppins-Bold");
+		font-size: var(--panda-notification-header-font-size, 16px);
+		font-family: var(--panda-notification-header-font-family, "Poppins-Bold");
 		user-select: none;
 	}
 
@@ -134,12 +134,12 @@ export const notificationStyles = css`
 
 		color: var(--panda-notification-text-color, hsl(0deg 0% 92%));
 		text-shadow: var(--panda-notification-text-shadow, "none");
-		font-size: var(--panda-font-size-m, 14px);
-		font-family: var(--panda-font-family, "Poppins");
+		font-size: var(--panda-notification-font-size, 14px);
+		font-family: var(--panda-notification-font-family, "Poppins");
 		user-select: none;
 	}
 
-	.with-header .notification .body .message {
+	.notification.with-header .body .message {
 		gap: var(--panda-padding-s, 5px);
 	}
 
