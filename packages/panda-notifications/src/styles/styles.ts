@@ -50,7 +50,7 @@ export const notificationStyles = css`
 		border-radius: var(--panda-border-radius-m, 5px);
 		border: 1px solid var(--panda-notification-border-color, hsl(210deg 25% 35%));
 		background-color: var(--panda-notification-background-color, hsl(209deg 26% 20%));
-		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc, hsl(0deg 0% 0% / 20%));
+		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
 	}
 
 	.notification.no-icon {
@@ -68,8 +68,8 @@ export const notificationStyles = css`
 		background-color: var(--panda-primary-color, hsl(209deg 78% 46%));
 		background: linear-gradient(
 			180deg,
-			var(--panda-primary-color, hsl(209deg 78% 46%)) 50%,
-			var(--panda-secondary-color) 100%, hsl(164deg 67% 45%)
+			var(--panda-primary-color, hsl(209deg 78% 46%)) 0%,
+			var(--panda-secondary-color, hsl(164deg 67% 45%)) 100%
 		);
 	}
 

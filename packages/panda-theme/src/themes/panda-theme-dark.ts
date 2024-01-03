@@ -7,6 +7,27 @@ export const pandaThemeDark = css`
 		/* BASE COLORS ============================================================================================= */
 		/* ========================================================================================================= */
 
+		/* BACKGROUND COLOR */
+		--panda-background-color: hsl(274deg 30% 15%);
+
+		--panda-background-color-50: hsl(274deg 30% 35%);
+		--panda-background-color-100: hsl(274deg 30% 25%);
+		--panda-background-color-300: hsl(274deg 30% 20%);
+		--panda-background-color-500: hsl(274deg 30% 15%);
+		--panda-background-color-700: hsl(274deg 30% 10%);
+		--panda-background-color-900: hsl(274deg 30% 7%);
+
+		--panda-background-color-0opc: hsl(274deg 30% 20% / 0%);
+		--panda-background-color-10opc: hsl(274deg 30% 20% / 10%);
+		--panda-background-color-20opc: hsl(274deg 30% 20% / 20%);
+		--panda-background-color-30opc: hsl(274deg 30% 20% / 30%);
+		--panda-background-color-40opc: hsl(274deg 30% 20% / 40%);
+		--panda-background-color-50opc: hsl(274deg 30% 20% / 50%);
+		--panda-background-color-60opc: hsl(274deg 30% 20% / 60%);
+		--panda-background-color-70opc: hsl(274deg 30% 20% / 70%);
+		--panda-background-color-80opc: hsl(274deg 30% 20% / 80%);
+		--panda-background-color-90opc: hsl(274deg 30% 20% / 90%);
+
 		/* BLACK COLOR */
 		--panda-black-color: hsl(0deg 0% 0%);
 
@@ -34,11 +55,103 @@ export const pandaThemeDark = css`
 		--panda-white-color-70opc: hsl(0deg 0% 100% / 70%);
 		--panda-white-color-80opc: hsl(0deg 0% 100% / 80%);
 		--panda-white-color-90opc: hsl(0deg 0% 100% / 90%);
-		
+
+		/* ========================================================================================================= */
+		/* ACCENT & BRAND COLORS =================================================================================== */
+		/* ========================================================================================================= */
+
+		/* PRIMARY COLOR */
+		--panda-primary-color: hsl(344deg 100% 64%);
+		--panda-primary-text-color: hsl(0deg 0% 100%);
+
+		--panda-primary-color-50: hsl(344deg 100% 84%);
+		--panda-primary-color-100: hsl(344deg 100% 74%);
+		--panda-primary-color-300: hsl(344deg 100% 69%);
+		--panda-primary-color-500: hsl(344deg 100% 64%);
+		--panda-primary-color-700: hsl(344deg 100% 39%);
+		--panda-primary-color-900: hsl(344deg 100% 34%);
+
+		--panda-primary-color-0opc: hsl(344deg 100% 64% / 0%);
+		--panda-primary-color-10opc: hsl(344deg 100% 64% / 10%);
+		--panda-primary-color-20opc: hsl(344deg 100% 64% / 20%);
+		--panda-primary-color-30opc: hsl(344deg 100% 64% / 30%);
+		--panda-primary-color-40opc: hsl(344deg 100% 64% / 40%);
+		--panda-primary-color-50opc: hsl(344deg 100% 64% / 50%);
+		--panda-primary-color-60opc: hsl(344deg 100% 64% / 60%);
+		--panda-primary-color-70opc: hsl(344deg 100% 64% / 70%);
+		--panda-primary-color-80opc: hsl(344deg 100% 64% / 80%);
+		--panda-primary-color-90opc: hsl(344deg 100% 64% / 90%);
+
+		/* SECONDARY */
+		--panda-secondary-color: hsl(266deg 55% 47%);
+		--panda-secondary-text-color: hsl(0deg 0% 100%);
+
+		--panda-secondary-color-50: hsl(266deg 55% 67%);
+		--panda-secondary-color-100: hsl(266deg 55% 57%);
+		--panda-secondary-color-300: hsl(266deg 55% 52%);
+		--panda-secondary-color-500: hsl(266deg 55% 47%);
+		--panda-secondary-color-700: hsl(266deg 55% 42%);
+		--panda-secondary-color-900: hsl(266deg 55% 37%);
+
+		--panda-secondary-color-0opc: hsl(266deg 55% 47% / 0%);
+		--panda-secondary-color-10opc: hsl(266deg 55% 47% / 10%);
+		--panda-secondary-color-20opc: hsl(266deg 55% 47% / 20%);
+		--panda-secondary-color-30opc: hsl(266deg 55% 47% / 30%);
+		--panda-secondary-color-40opc: hsl(266deg 55% 47% / 40%);
+		--panda-secondary-color-50opc: hsl(266deg 55% 47% / 50%);
+		--panda-secondary-color-60opc: hsl(266deg 55% 47% / 60%);
+		--panda-secondary-color-70opc: hsl(266deg 55% 47% / 70%);
+		--panda-secondary-color-80opc: hsl(266deg 55% 47% / 80%);
+		--panda-secondary-color-90opc: hsl(266deg 55% 47% / 90%);
+
+		/* TERTIARY */
+		--panda-tertiary-color: hsl(274deg 54% 20%);
+		--panda-tertiary-text-color: hsl(0deg 0% 100%);
+
+		--panda-tertiary-color-50: hsl(274deg 54% 40%);
+		--panda-tertiary-color-100: hsl(274deg 54% 30%);
+		--panda-tertiary-color-300: hsl(274deg 54% 25%);
+		--panda-tertiary-color-500: hsl(274deg 54% 20%);
+		--panda-tertiary-color-700: hsl(274deg 54% 15%);
+		--panda-tertiary-color-900: hsl(274deg 54% 10%);
+
+		--panda-tertiary-color-0opc: hsl(274deg 54% 20% / 0%);
+		--panda-tertiary-color-10opc: hsl(274deg 54% 20% / 10%);
+		--panda-tertiary-color-20opc: hsl(274deg 54% 20% / 20%);
+		--panda-tertiary-color-30opc: hsl(274deg 54% 20% / 30%);
+		--panda-tertiary-color-40opc: hsl(274deg 54% 20% / 40%);
+		--panda-tertiary-color-50opc: hsl(274deg 54% 20% / 50%);
+		--panda-tertiary-color-60opc: hsl(274deg 54% 20% / 60%);
+		--panda-tertiary-color-70opc: hsl(274deg 54% 20% / 70%);
+		--panda-tertiary-color-80opc: hsl(274deg 54% 20% / 80%);
+		--panda-tertiary-color-90opc: hsl(274deg 54% 20% / 90%);
+
 		/* ========================================================================================================= */
 		/* ACTION COLORS =========================================================================================== */
 		/* ========================================================================================================= */
 		
+		/* INFO COLOR */
+		--panda-action-color-info: hsl(261deg 66% 58%);
+		--panda-action-text-color-info: hsl(0deg 0% 100%);
+
+		--panda-action-color-info-50: hsl(261deg 66% 78%);
+		--panda-action-color-info-100: hsl(261deg 66% 68%);
+		--panda-action-color-info-300: hsl(261deg 66% 63%);
+		--panda-action-color-info-500: hsl(261deg 66% 58%);
+		--panda-action-color-info-700: hsl(261deg 66% 43%);
+		--panda-action-color-info-900: hsl(261deg 66% 38%);
+
+		--panda-action-color-info-0opc: hsl(261deg 66% 58% / 0%);
+		--panda-action-color-info-10opc: hsl(261deg 66% 58% / 10%);
+		--panda-action-color-info-20opc: hsl(261deg 66% 58% / 20%);
+		--panda-action-color-info-30opc: hsl(261deg 66% 58% / 30%);
+		--panda-action-color-info-40opc: hsl(261deg 66% 58% / 40%);
+		--panda-action-color-info-50opc: hsl(261deg 66% 58% / 50%);
+		--panda-action-color-info-60opc: hsl(261deg 66% 58% / 60%);
+		--panda-action-color-info-70opc: hsl(261deg 66% 58% / 70%);
+		--panda-action-color-info-80opc: hsl(261deg 66% 58% / 80%);
+		--panda-action-color-info-90opc: hsl(261deg 66% 58% / 90%);
+
 		/* DONE COLOR */
 		--panda-action-color-done: hsl(164deg 67% 45%);
 		--panda-action-text-color-done: hsl(0deg 0% 100%);
@@ -105,84 +218,195 @@ export const pandaThemeDark = css`
 		--panda-action-color-alert-80opc: hsl(14deg 77% 62% / 80%);
 		--panda-action-color-alert-90opc: hsl(14deg 77% 62% / 90%);
 
-		/* INFO COLOR */
-		--panda-action-color-info: hsl(181deg 52% 53%);
-		--panda-action-text-color-info: hsl(0deg 0% 100%);
-
-		--panda-action-color-info-50: hsl(181deg 52% 75%);
-		--panda-action-color-info-100: hsl(181deg 52% 63%);
-		--panda-action-color-info-300: hsl(181deg 52% 58%);
-		--panda-action-color-info-500: hsl(181deg 52% 53%);
-		--panda-action-color-info-700: hsl(181deg 52% 48%);
-		--panda-action-color-info-900: hsl(181deg 52% 43%);
-
-		--panda-action-color-info-0opc: hsl(181deg 52% 53% / 0%);
-		--panda-action-color-info-10opc: hsl(181deg 52% 53% / 10%);
-		--panda-action-color-info-20opc: hsl(181deg 52% 53% / 20%);
-		--panda-action-color-info-30opc: hsl(181deg 52% 53% / 30%);
-		--panda-action-color-info-40opc: hsl(181deg 52% 53% / 40%);
-		--panda-action-color-info-50opc: hsl(181deg 52% 53% / 50%);
-		--panda-action-color-info-60opc: hsl(181deg 52% 53% / 60%);
-		--panda-action-color-info-70opc: hsl(181deg 52% 53% / 70%);
-		--panda-action-color-info-80opc: hsl(181deg 52% 53% / 80%);
-		--panda-action-color-info-90opc: hsl(181deg 52% 53% / 90%);
-		
 		/* ========================================================================================================= */
-		/* FRAMEWORK COLORS ======================================================================================== */
+		/* TYPOGRAPHY & SIZE ======================================================================================= */
 		/* ========================================================================================================= */
 
-		/* BACKGROUND COLOR */
-		--panda-background-color: hsl(218deg 26% 19%);
+		--panda-text-color: hsl(274 21% 87%);
+		--panda-text-color-hover: hsl(0deg 0% 20%);
+		--panda-text-color-disabled: hsl(0deg 0% 44%);
+		--panda-text-shadow: none;
+		--panda-text-line-height: 1.6em;
 
-		--panda-background-color-50: hsl(218deg 26% 36%);
-		--panda-background-color-100: hsl(218deg 26% 27%);
-		--panda-background-color-300: hsl(218deg 26% 23%);
-		--panda-background-color-500: hsl(218deg 26% 19%);
-		--panda-background-color-700: hsl(218deg 26% 15%);
-		--panda-background-color-900: hsl(218deg 26% 11%);
+		--panda-header-text-color: hsl(274 21% 100%);
+		--panda-header-text-color-hover: hsl(0deg 0% 20%);
+		--panda-header-text-color-disabled: hsl(0deg 0% 80%);
+		--panda-header-text-shadow: none;
 
-		--panda-background-color-0opc: hsl(218deg 26% 19% / 0%);
-		--panda-background-color-10opc: hsl(218deg 26% 19% / 10%);
-		--panda-background-color-20opc: hsl(218deg 26% 19% / 20%);
-		--panda-background-color-30opc: hsl(218deg 26% 19% / 30%);
-		--panda-background-color-40opc: hsl(218deg 26% 19% / 40%);
-		--panda-background-color-50opc: hsl(218deg 26% 19% / 50%);
-		--panda-background-color-60opc: hsl(218deg 26% 19% / 60%);
-		--panda-background-color-70opc: hsl(218deg 26% 19% / 70%);
-		--panda-background-color-80opc: hsl(218deg 26% 19% / 80%);
-		--panda-background-color-90opc: hsl(218deg 26% 19% / 90%);
-
-		/* PANDA ICON */
-		--panda-icon-color: var(--panda-text-color);
-
-		/* ========================================================================================================= */
-		/* TYPOGRAPHY ============================================================================================== */
-		/* ========================================================================================================= */
-		
-		/* FONT */		
 		--panda-font-size-xs: 10px;
 		--panda-font-size-s: 12px;
 		--panda-font-size-m: 14px;
 		--panda-font-size-l: 16px;
-		--panda-font-size-xl: 20px;
-		--panda-font-size-hero: 36px;
+		--panda-font-size-xl: 18px;
+		--panda-font-size-hero: 24px;
 
 		--panda-font-family: "Poppins";
 		--panda-font-family-light: "Poppins-Light";
 		--panda-font-family-bold: "Poppins-Bold";
 
-		/* TEXT COLOR */
-		--panda-text-color: hsl(0deg 0% 80%);
-		--panda-text-shadow: none;
+		/* LINK COLOR */
+		--panda-link-color: hsl(216deg 86% 51%);
+		--panda-link-color-hover: hsl(216deg 86% 56%);
+		--panda-link-color-visited: hsl(271deg 100% 50%);
+		--panda-link-color-active: hsl(271deg 100% 60%);
 
+		--panda-padding-xs: 2px;
+		--panda-padding-s: 5px;
+		--panda-padding-m: 10px;
+		--panda-padding-l: 15px;
+		--panda-padding-xl: 30px;
+		--panda-padding-hero: 60px;
 
-		/* DRAGON LOGO */
-		--dragon-logo-color-100: hsl(359deg 72% 50%);
-		--dragon-logo-color-500: hsl(358deg 75% 45%);
-		--dragon-logo-color-900: hsl(358deg 70% 32%);
+		--panda-border-radius-xs: 2px;
+		--panda-border-radius-s: 3px;
+		--panda-border-radius-m: 5px;
+		--panda-border-radius-l: 10px;
+		--panda-border-radius-xl: 15px;
+		--panda-border-radius-hero: 30px;
+
+		/* ========================================================================================================= */
+		/* FORMS & COMPONENTS ====================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-component-size-s: 24px;
+		--panda-component-size-m: 30px;
+		--panda-component-size-l: 36px;
+		--panda-component-size-xl: 42px;
+
+		--panda-outline-color: var(--panda-primary-color);
+		--panda-form-border-color: hsl(0deg 0% 66%);
+
+		/* FORM VALIDATION */
+		--panda-form-validation-mandatory: var(--panda-action-color-warn);
+		--panda-form-validation-valid: var(--panda-action-color-done);
+		--panda-form-validation-invalid: var(--panda-action-color-alert);
+
+		/* LABEL */
+		--panda-label-color: hsl(0deg 0% 50%);
+		--panda-label-text-shadow: none;
+		--panda-label-font-size: var(--panda-font-size-s);
+		--panda-label-font-family: var(--panda-font-family);
 		
+		/* INPUT */
+		--panda-input-height: var(--panda-component-size-m);
+		--panda-input-padding: 0px 10px;
+		--panda-input-outline-color: var(--panda-outline-color);
+		--panda-input-text-color: var(--panda-text-color);
+		--panda-input-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-input-background-color: hsl(0deg 0% 100%);
+		--panda-input-background-color-disabled: var(--panda-background-color);
+		--panda-input-font-size: var(--panda-font-size-m);
+		--panda-input-font-family: var(--panda-font-family);
+
+		--panda-input-border-color: hsl(0deg 0% 80%);
+		--panda-input-border-color-disabled: hsl(0deg 0% 80%);
+		--panda-input-border-color-hover: hsl(0deg 0% 65%);
+		--panda-input-border-radius: 5px;
+		--panda-input-icon-color: var(--panda-icon-color);
+		--panda-input-icon-background-color: var(--panda-background-color);
+		
+		--panda-input-placeholder-color: hsl(0deg 0% 80%);
+		--panda-input-placeholder-font-size: var(--panda-font-size-m);
+		--panda-input-placeholder-font-family: var(--panda-font-family);
+		
+		/* BUTTON */
+		--panda-button-text-shadow: none;
+
+		--panda-button-text-color: var(--panda-text-color);
+		--panda-button-border-color: #fff;
+		--panda-button-background-color: #fff;
+		
+		--panda-button-text-color-hover: var(--panda-text-color-hover);
+		--panda-button-border-color-hover: #fff;
+		--panda-button-background-color-hover: #fff;
+
+		--panda-button-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-button-border-color-disabled: #fff;
+		--panda-button-background-color-disabled: #fff;
+		
+		/* DROPDOWN */
+		--panda-dropdown-border-radius: 5px;
+		--panda-dropdown-border-color: hsl(0deg 0% 80%);
+		--panda-dropdown-background-color: hsl(0deg 0% 100%);
+		
+		--panda-dropdown-item-padding: 10px 5px;
+		--panda-dropdown-item-border-radius: 5px;
+		--panda-dropdown-item-border-color: var(--panda-background-color-500);
+
+		--panda-dropdown-item-font-size: var(--panda-font-size-m);
+		--panda-dropdown-item-font-family: var(--panda-font-family);
+		--panda-dropdown-item-text-shadow: none;
+		
+		--panda-dropdown-item-text-color: var(--panda-text-color);
+		--panda-dropdown-item-background-color: transparent;
+		--panda-dropdown-item-text-color-hover: var(--panda-primary-color);
+		--panda-dropdown-item-background-color-hover: var(--panda-background-color-100);
+		--panda-dropdown-item-text-color-active: var(--panda-primary-text-color);
+		--panda-dropdown-item-background-color-active: var(--panda-primary-color);
+
+		/* ICON */
+		--panda-icon-color: var(--panda-text-color);
+		--panda-icon-color-disabled: var(--panda-text-color-disabled);
+
+		--panda-icon-size-xs: 16px;
+		--panda-icon-size-s: 18px;
+		--panda-icon-size-m: 20px;
+		--panda-icon-size-l: 24px;
+		--panda-icon-size-xl: 30px;
+		--panda-icon-size-hero: 46px;
+
+		/* ========================================================================================================= */
+		/* PANDA NOTIFICATION ====================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-notification-header-text-color: var(--panda-header-text-color);
+		--panda-notification-header-text-shadow: "none";
+		--panda-notification-header-font-size: var(--panda-font-size-l);
+		--panda-notification-header-font-family: var(--panda-font-family-bold);
+		--panda-notification-text-color: var(--panda-text-color);
+		--panda-notification-text-shadow: "none";
+		--panda-notification-font-size: var(--panda-font-size-m);
+		--panda-notification-font-family: var(--panda-font-family);
+				
+		--panda-notification-border-color: hsl(278deg 46% 17%);
+		--panda-notification-background-color: hsl(278deg 46% 7%);
+
+		--panda-notification-button-background-color: transparent;
+		--panda-notification-button-background-color-hover: var(--panda-white-color-10opc);
+
+		/* ========================================================================================================= */
+		/* PANDA DIALOG ============================================================================================ */
+		/* ========================================================================================================= */
+
+		--panda-dialog-border: 1px solid var(--panda-form-border-color);
+		--panda-dialog-border-radius: ;
+		--panda-dialog-background-color: ;
+		--panda-dialog-box-shadow: ;
+		--panda-dialog-overlay-background-color: ;
+
+		/* ========================================================================================================= */
+		/* SCROLLBAR =============================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-scrollbar-size: 6px;
+		--panda-scrollbar-size-s: 4px;
+		--panda-scrollbar-thumb-background-color: hsl(0deg 0% 80%);
+		--panda-scrollbar-thumb-background-color-hover: hsl(0deg 0% 65%);
+		--panda-scrollbar-thumb-border-radius: 3px;
+		--panda-scrollbar-track-background-color: var(--panda-background-color-100);
+		--panda-scrollbar-track-border-radius: 3px;
+
+		/* ========================================================================================================= */
+		/* FRAMEWORK COLORS ======================================================================================== */
+		/* ========================================================================================================= */
+
+		/* LOGO */
+		--panda-logo-color-100: #268ac8;
+		--panda-logo-color-500: #1a7aac;
+		--panda-logo-color-900: #19638c;
+
 		/* CODE */
-		--panda-code-text-color: hsl(271deg 95% 73%);
+		--panda-code-text-color: hsl(122deg 39% 49%);
 	}
 
 	body {
@@ -190,5 +414,4 @@ export const pandaThemeDark = css`
 		font-size: var(--panda-font-size-m);
 		font-family: var(--panda-font-family);
 	}
-
 `;

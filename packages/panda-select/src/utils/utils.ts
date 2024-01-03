@@ -52,7 +52,7 @@ export const getItemLabel = (
 
 		// check if selected label is an object or primitive
 		if (_selectedItem === undefined) {
-			console.warn("[dragon-select] No item match found for value:", value);				
+			console.warn("[select] No item match found for value:", value);				
 			return "";
 		} else if (typeof _selectedItem === "object") {
 			// check if item label patch are defined

@@ -323,7 +323,7 @@ export const uiComponents = {
 			background-image: url(./transparent.png);
 			background-position: center;
 			background-size: 20% 20%;
-			background-color: var(--dragon-black-color-10opc);
+			background-color: var(--panda-black-color-10opc);
 		}
 
 		.color-box .color {

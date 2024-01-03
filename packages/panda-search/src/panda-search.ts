@@ -108,7 +108,7 @@ export class PandaSearch extends LitElement {
 		if (this.working) {
 			spinnerHtml = html`
 				<div class="spinner-cont" part="spinner-cont">
-					<dragon-spinner .spinner="${this.spinnerType}"></dragon-spinner>
+					<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
 				</div>
 			`;
 		}
@@ -116,7 +116,7 @@ export class PandaSearch extends LitElement {
 		if (this.hideIcon) {
 			iconHtml = html`
 				<div class="icon" part="icon">
-					<dragon-icon .icon="${this.icon}"></dragon-icon>
+					<panda-icon .icon="${this.icon}"></panda-icon>
 				</div>
 			`;
 		}

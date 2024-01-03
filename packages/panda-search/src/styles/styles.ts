@@ -94,16 +94,16 @@ export const styles = css`
 	/* COMPONENT STATES =========================================== */
 	/* DISABLED */
 	:hover([disabled]) .combo-box {
-		border: 1px solid var(--dragon-input-border-color-disabled, hsl(0deg 0% 44%));
-		background-color: var(--dragon-input-background-color-disabled, hsl(0deg 0% 92%));
+		border: 1px solid var(--panda-input-border-color-disabled, hsl(0deg 0% 44%));
+		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 	
 	:hover([disabled]) .combo-box .input-field {
-		color: var(--dragon-input-text-color-disabled, hsl(0deg 0% 44%));
+		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 44%));
 	}
 
 	:hover([disabled]) .combo-box .icon {
-		--dragon-icon-color: var(--dragon-icon-color-disabled, hsl(205deg 8% 64%));
+		--panda-icon-color: var(--panda-icon-color-disabled, hsl(205deg 8% 64%));
 	}
 
 	/* FOCUSED */

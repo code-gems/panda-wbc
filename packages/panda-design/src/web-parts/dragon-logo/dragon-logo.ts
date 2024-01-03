@@ -16,9 +16,9 @@ class DragonLogo extends LitElement {
 			.cls-1, .cls-10, .cls-12, .cls-2, .cls-4, .cls-7, .cls-9 {
 				fill-rule: evenodd;
 			}
-			.cls-10 { fill: var(--dragon-logo-color-100, #db2428); }
-			.cls-7 { fill: var(--dragon-logo-color-500, #c81d24); }
-			.cls-2 { fill: var(--dragon-logo-color-900, #8c191c); }
+			.cls-10 { fill: var(--panda-logo-color-100, #db2428); }
+			.cls-7 { fill: var(--panda-logo-color-500, #c81d24); }
+			.cls-2 { fill: var(--panda-logo-color-900, #8c191c); }
 			.cls-3 { mask: url(#mask); }
 			.cls-5 { mask: url(#mask-2); }
 			.cls-6 { mask: url(#mask-3); }

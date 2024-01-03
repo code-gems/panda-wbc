@@ -400,10 +400,10 @@ export const pandaThemeLight = css`
 		/* FRAMEWORK COLORS ======================================================================================== */
 		/* ========================================================================================================= */
 
-		/* DRAGON LOGO */
-		--dragon-logo-color-100: #268ac8;
-		--dragon-logo-color-500: #1a7aac;
-		--dragon-logo-color-900: #19638c;
+		/* LOGO */
+		--panda-logo-color-100: #268ac8;
+		--panda-logo-color-500: #1a7aac;
+		--panda-logo-color-900: #19638c;
 
 		/* CODE */
 		--panda-code-text-color: hsl(122deg 39% 49%);

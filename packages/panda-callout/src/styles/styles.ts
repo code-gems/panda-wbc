@@ -16,7 +16,7 @@ export const styles = css`
 		border-left: 4px solid;
 		border-color: var(--panda-text-color, hsl(0deg 0% 15%));
 		background-color: var(--panda-background-color-100, hsl(0deg 0% 97%));
-		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc, hsl(0deg 0% 0% / 20%));
+		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
 	}
 
 	.with-footer .callout {

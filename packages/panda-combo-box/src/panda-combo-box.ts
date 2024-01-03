@@ -181,7 +181,7 @@ export class PandaComboBox extends LitElement {
 		if (this.working) {
 			spinnerHtml = html`
 				<div class="spinner-cont" part="spinner-cont">
-					<dragon-spinner spinner="${this.spinnerType}"></dragon-spinner>
+					<panda-spinner spinner="${this.spinnerType}"></panda-spinner>
 				</div>
 			`;
 		}

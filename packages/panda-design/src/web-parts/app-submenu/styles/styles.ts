@@ -50,12 +50,12 @@ export const styles = css`
 
 		border-radius: 10px;
 		background-color: var(--panda-background-color-500);
-		box-shadow: 0px 1px 2px var(--dragon-black-color-10opc);
+		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
 	}
 
 	.menu-list .list-item:hover {
 		background-color: var(--panda-background-color-300);
-		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc);
+		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
 	}
 
 	.menu-list .list-item .icon {
@@ -83,7 +83,7 @@ export const styles = css`
 
 	.menu-list .list-item.active {
 		background-color: var(--panda-primary-color);
-		box-shadow: 0px 1px 2px var(--dragon-black-color-20opc);
+		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
 		--panda-icon-color: var(--panda-primary-text-color);
 	}
 
