@@ -145,7 +145,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-full">
 									<panda-notifications
-										.scope="${["local"]}"
+										
 										local-container
 									>
 									</panda-notifications>
@@ -284,10 +284,10 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddNotification() {
-		// pandaNotificationCenter.addNotification({
-		// 	theme: "alert",
-		// 	body: html`Notification #2`
-		// });
+		pandaNotificationCenter.addNotification({
+			body: html`Notification #1`,
+			autoClose: true,
+		});
 
 		const noteId1 = pandaNotificationCenter.addNotification({
 			theme: "warn",
@@ -304,53 +304,60 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 					Close
 				</panda-button>
 			`,
-		});
-
-		const noteId2 = pandaNotificationCenter.addNotification({
-			theme: "done",
-			header: html`SUCCESS`,
-			body: html`
-				In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate 
-				the visual form of a document or a typeface without relying on meaningful content. 
-				Lorem ipsum may be used as a placeholder before final copy is available.
-			`,
-			footer: html`
-				<panda-button
-					@click="${() => this._onCloseNotification(noteId2)}"
-				>
-					Close
-				</panda-button>
-			`,
+			autoClose: true,
 		});
 
 		pandaNotificationCenter.addNotification({
-			theme: "primary",
-			body: html`Notification #4`
-		});		
+			theme: "alert",
+			body: html`Notification #2`,
+			autoClose: true,
+		});
+
+		// const noteId2 = pandaNotificationCenter.addNotification({
+		// 	theme: "done",
+		// 	header: html`SUCCESS`,
+		// 	body: html`
+		// 		In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate 
+		// 		the visual form of a document or a typeface without relying on meaningful content. 
+		// 		Lorem ipsum may be used as a placeholder before final copy is available.
+		// 	`,
+		// 	footer: html`
+		// 		<panda-button
+		// 			@click="${() => this._onCloseNotification(noteId2)}"
+		// 		>
+		// 			Close
+		// 		</panda-button>
+		// 	`,
+		// });
+
+		// pandaNotificationCenter.addNotification({
+		// 	theme: "primary",
+		// 	body: html`Notification #4`
+		// });		
 		
-		pandaNotificationCenter.addNotification({
-			id: "1234",
-			scope: ["local"],
-			hideIcon: true,
-			headerPrefix: html`NEW`,
-			header: html`Cookie Usage`,
-			body: html`
-				This website uses cookies to enhance your browsing experience. 
-				By continuing to use this site, you agree to the use of cookies. 
-				Cookies are small text files stored on your device that help us analyze website traffic, 
-				personalize content, and provide targeted advertisements.
-			`,
-			footer: html`
-				<panda-button
-					@click="${() => this._onCloseNotification("1234")}"
-				>
-					Exit
-				</panda-button>
-				<panda-button>
-					Accept All
-				</panda-button>
-			`,
-		});
+		// pandaNotificationCenter.addNotification({
+		// 	id: "1234",
+		// 	scope: ["local"],
+		// 	hideIcon: true,
+		// 	headerPrefix: html`NEW`,
+		// 	header: html`Cookie Usage`,
+		// 	body: html`
+		// 		This website uses cookies to enhance your browsing experience. 
+		// 		By continuing to use this site, you agree to the use of cookies. 
+		// 		Cookies are small text files stored on your device that help us analyze website traffic, 
+		// 		personalize content, and provide targeted advertisements.
+		// 	`,
+		// 	footer: html`
+		// 		<panda-button
+		// 			@click="${() => this._onCloseNotification("1234")}"
+		// 		>
+		// 			Exit
+		// 		</panda-button>
+		// 		<panda-button>
+		// 			Accept All
+		// 		</panda-button>
+		// 	`,
+		// });
 	}
 
 	private _onCloseNotification(notificationId: string) {

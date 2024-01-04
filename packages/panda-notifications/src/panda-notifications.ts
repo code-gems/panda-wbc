@@ -13,8 +13,9 @@ import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { pandaNotificationCenter } from "./panda-notification-center";
 
-const DEFAULT_NOTIFICATION_DELAY_TIME: number = 400;
 const DEFAULT_MAX_NOTIFICATIONS: number = 100;
+const DEFAULT_NOTIFICATION_DELAY_TIME: number = 400; // [ms]
+const DEFAULT_AUTO_CLOSE_INTERVAL: number = 3000; // [ms]
 
 @customElement("panda-notifications")
 export class PandaNotifications extends LitElement {
@@ -33,6 +34,12 @@ export class PandaNotifications extends LitElement {
 
 	@property({ type: Boolean, attribute: "local-container" })
 	localContainer: boolean = false;
+
+	@property({ type: Boolean, attribute: "auto-close" })
+	autoClose: boolean = false;
+	
+	@property({ type: Number, attribute: "auto-close-interval" })
+	autoCloseInterval: number = DEFAULT_AUTO_CLOSE_INTERVAL;
 
 	// state props
 	@state()
@@ -174,6 +181,8 @@ export class PandaNotifications extends LitElement {
 					headerPrefix = null,
 					body,
 					footer = null,
+					autoClose = false,
+					autoCloseInterval = DEFAULT_AUTO_CLOSE_INTERVAL,
 				} = notification;
 				// generate header slot
 				let headerPrefixHtml: TemplateResult = html``;
@@ -195,6 +204,8 @@ export class PandaNotifications extends LitElement {
 					<panda-notification
 						.theme="${theme}"
 						.hideIcon="${hideIcon}"
+						.autoClose="${autoClose}"
+						.autoCloseInterval="${autoCloseInterval}"
 						@on-close="${() => this._onCloseNotification(id as string)}"
 						closable
 					>

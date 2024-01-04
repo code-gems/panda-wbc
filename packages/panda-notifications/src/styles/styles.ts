@@ -37,6 +37,22 @@ export const notificationStyles = css`
 		user-select: none;
 	}
 
+	.notification-cont {
+		display: grid;
+		grid-template-rows: 1fr;
+		opacity: 1;
+		transition: all 1s ease;
+	}
+
+	.notification-cont.closing {
+		grid-template-rows: 0fr;
+		opacity: 0;
+	}
+
+	.notification-wrap {
+		overflow: hidden;
+	}
+	
 	.notification {
 		position: relative;
 		display: flex;
@@ -46,6 +62,7 @@ export const notificationStyles = css`
 		animation: show;
 		animation-duration: 400ms;
 		animation-fill-mode: forwards;
+		transition: all 400ms ease-in-out;
 
 		border-radius: var(--panda-border-radius-m, 5px);
 		border: 1px solid var(--panda-notification-border-color, hsl(210deg 25% 35%));
@@ -63,6 +80,8 @@ export const notificationStyles = css`
 		content: " ";
 		width: 4px;
 		inset: 4px;
+
+		transition: all 400ms ease-in-out;
 
 		border-radius: 4px;
 		background-color: var(--panda-primary-color, hsl(209deg 78% 46%));

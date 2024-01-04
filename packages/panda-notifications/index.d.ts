@@ -9,6 +9,8 @@ export interface PandaNotification {
 	headerPrefix?: TemplateResults | any;
 	body: TemplateResults | any;
 	footer?: TemplateResults | any;
+	autoClose?: boolean;
+	autoCloseInterval?: number;
 }
 
 export interface PandaSubscription {

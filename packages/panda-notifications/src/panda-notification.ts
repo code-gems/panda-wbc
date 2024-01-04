@@ -30,6 +30,12 @@ export class PandaNotification extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	closable: boolean = false;
+
+	@property({ type: Boolean, attribute: "auto-close" })
+	autoClose: boolean = false;
+	
+	@property({ type: Number, attribute: "auto-close-interval" })
+	autoCloseInterval: number = 3000;
 	
 	@queryAssignedElements({ slot: "header", flatten: false })
 	private _headerNodes!: HTMLElement[];
@@ -42,12 +48,50 @@ export class PandaNotification extends LitElement {
 
 	@state()
 	private _hasFooter: boolean = false;
+	
+	@state()
+	private _closing: boolean = false;
+
+	// timers
+	private _autoCloseTimer: number | null = null;
+	private _closeAnimationTimer: number | null = null;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	// ...	
+	protected firstUpdated(): void {
+		if (this.autoClose) {
+			// validate autoCloseInterval to be at least 1 second
+			let autoCloseInterval = this.autoCloseInterval <= 1000
+				? 1400
+				: Number(this.autoCloseInterval) + 400; // add 400ms for the show animation
+			// check if provided autoCloseInterval is a number
+			if (isNaN(autoCloseInterval)) {
+				autoCloseInterval = 3400;
+				console.warn("%c [PANDA NOTIFICATION] autoCloseInterval must be at least 1000ms", "font-size: 16px;");
+			}
+			// create auto close timer
+			this._autoCloseTimer = setTimeout(() => {
+				// auto close notification
+				this._onClose();
+			}, autoCloseInterval);
+		}
+	}
+
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		// remove timers
+		if (this._autoCloseTimer) {
+			clearTimeout(this._autoCloseTimer);
+			this._autoCloseTimer = null;
+		}
+		if (this._closeAnimationTimer) {
+			clearTimeout(this._closeAnimationTimer);
+			this._closeAnimationTimer = null;
+		}
+		console.log("%c [PANDA NOTIFICATION] disconnectedCallback()", "font-size: 16px; color: red;");
+	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -67,54 +111,33 @@ export class PandaNotification extends LitElement {
 		}
 
 		return html`
-			<div
-				class="notification ${cssMods.join(" ")}"
-				part="notification"
-			>
-				<div
-					class="body"
-					part="body"
-				>
-					<!-- icon -->
-					${this._renderIcon()}
+			<div class="notification-cont ${this._closing ? "closing" : ""}" part="notification-cont">
+				<div class="notification-wrap" part="notification-wrap">
 
-					<div
-						class="message"
-						part="message"
-					>
-						<div class="header">
-							<slot
-								class="header-prefix"
-								name="header-prefix"
-							></slot>
-							<slot
-								class="header-text"
-								name="header"
-								@slotchange=${this._onHeaderSlotChange}
-							></slot>
+					<div class="notification ${cssMods.join(" ")}" part="notification">
+						<div class="body" part="body">
+							<!-- icon -->
+							${this._renderIcon()}
+
+							<div class="message" part="message">
+								<div class="header">
+									<slot class="header-prefix" name="header-prefix"></slot>
+									<slot class="header-text" name="header" @slotchange=${this._onHeaderSlotChange}></slot>
+								</div>
+								<!-- message slot -->
+								<slot></slot>
+							</div>
+
+							<!-- close button -->
+							${this._renderCloseButton()}
 						</div>
-
-						<!-- message slot -->
-						<slot></slot>
-					</div>
-
-					<!-- close button -->
-					${this._renderCloseButton()}
-
-				</div>
-
-				<div
-					class="footer"
-					part="footer"
-				>
-					<slot
-						name="footer"
-						@slotchange=${this._onFooterSlotChange}
-					>
-					</slot>					
-				</div>
-
-			</div><!-- notification -->
+						<div class="footer" part="footer">
+							<slot name="footer" @slotchange=${this._onFooterSlotChange}></slot>					
+						</div>
+					</div><!-- notification -->
+				
+				</div><!-- notification-wrap -->
+			</div><!-- notification-cont -->
 		`;
 	}
 
@@ -155,10 +178,7 @@ export class PandaNotification extends LitElement {
 			}
 
 			return html`
-				<div
-					class="icon"
-					part="icon"
-				>
+				<div class="icon" part="icon">
 					<panda-icon .icon="${icon}"></panda-icon>
 				</div>
 			`;
@@ -169,9 +189,23 @@ export class PandaNotification extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onClose(): void {
+	private _triggerCloseEvent(): void {
 		const event = new CustomEvent("on-close", {});
 		this.dispatchEvent(event);
+	}
+
+	private _onClose(): void {
+		// remove timer
+		if (this._autoCloseTimer) {
+			clearTimeout(this._autoCloseTimer);
+			this._autoCloseTimer = null;
+		}
+		
+		// trigger close event after closing animation
+		this._closing = true;
+		this._closeAnimationTimer = setTimeout(() => {
+			this._triggerCloseEvent();
+		}, 1000);
 	}
 
 	private _onHeaderSlotChange(): void {
