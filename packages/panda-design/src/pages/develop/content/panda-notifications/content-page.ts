@@ -305,6 +305,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 				</panda-button>
 			`,
 			autoClose: true,
+			autoCloseInterval: 10000,
 		});
 
 		pandaNotificationCenter.addNotification({

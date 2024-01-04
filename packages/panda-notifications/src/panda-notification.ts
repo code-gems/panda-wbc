@@ -51,6 +51,9 @@ export class PandaNotification extends LitElement {
 	
 	@state()
 	private _closing: boolean = false;
+	
+	@state()
+	private _containerHeight: number | null = null;
 
 	// timers
 	private _autoCloseTimer: number | null = null;
@@ -77,6 +80,9 @@ export class PandaNotification extends LitElement {
 				this._onClose();
 			}, autoCloseInterval);
 		}
+		console.log("%c [PANDA NOTIFICATION] firstUpdated()", "font-size: 16px; color: red;", this.getBoundingClientRect());
+		const notificationDOMRect = this.getBoundingClientRect();
+		this._containerHeight = notificationDOMRect.height - 10;
 	}
 
 	disconnectedCallback(): void {
@@ -90,7 +96,6 @@ export class PandaNotification extends LitElement {
 			clearTimeout(this._closeAnimationTimer);
 			this._closeAnimationTimer = null;
 		}
-		console.log("%c [PANDA NOTIFICATION] disconnectedCallback()", "font-size: 16px; color: red;");
 	}
 
 	// ================================================================================================================
@@ -195,12 +200,6 @@ export class PandaNotification extends LitElement {
 	}
 
 	private _onClose(): void {
-		// remove timer
-		if (this._autoCloseTimer) {
-			clearTimeout(this._autoCloseTimer);
-			this._autoCloseTimer = null;
-		}
-		
 		// trigger close event after closing animation
 		this._closing = true;
 		this._closeAnimationTimer = setTimeout(() => {

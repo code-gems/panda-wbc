@@ -26,7 +26,7 @@ export const styles = css`
 		gap: var(--panda-padding-m, 10px);
 		right: 0%;
 		bottom: 0%;
-		padding: var(--panda-padding-m);
+		padding: var(--panda-padding-m, 10px);
 	}
 `;
 
@@ -227,11 +227,11 @@ export const notificationStyles = css`
 	@keyframes show {
 		from {
 			opacity: 0;
-			margin-bottom: 10px;
+			margin-top: 10px;
 		}
 		to {
 			opacity: 1;
-			margin-bottom: 0px;
+			margin-top: 0px;
 		}
 	}
 `;
