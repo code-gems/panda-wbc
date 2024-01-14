@@ -1,9 +1,8 @@
 {
-	"name": "@panda-wbc/panda-combo-box",
+	"name": "@panda-wbc/panda-sortable-list",
 	"version": "1.0.0",
-	"description": "Lit based web component - combo-box",
-	"main": "lib/panda-combo-box.js",
-	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"description": "Lit based web component - sortable list",
+	"main": "lib/panda-sortable-list.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,20 +11,20 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"dropdown",
-		"combo-box",
 		"lit",
 		"lit-element",
 		"panda-wbc",
 		"ui component",
 		"web component",
-		"combo box"
+		"sortable-list",
+		"list",
+		"order",
+		"drag and drop"
 	],
 	"author": "code-gems",
 	"license": "ISC",
 	"dependencies": {
 		"lit": "^2.7.4",
-		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-core": "workspace:*"
 	},
@@ -38,8 +37,5 @@
 		"lib",
 		"index.d.ts"
 	],
-	"types": "index.d.ts",
-	"publishConfig": {
-		"access": "public"
-	}
+	"types": "index.d.ts"
 }

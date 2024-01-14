@@ -6,7 +6,6 @@ import { notificationStyles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-icon";
-import "@panda-wbc/panda-spinner";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";

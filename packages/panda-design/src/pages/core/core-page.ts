@@ -8,7 +8,7 @@ import { AppState, PageCategory } from "panda-design-typings";
 import "../../web-parts/main-nav/main-nav";
 
 // utils
-import { html, LitElement, TemplateResult } from "lit";
+import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import PageLibrary, { page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";

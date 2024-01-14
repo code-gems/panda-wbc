@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-combo-box",
+	"name": "@panda-wbc/panda-counter",
 	"version": "1.0.0",
-	"description": "Lit based web component - combo-box",
-	"main": "lib/panda-combo-box.js",
+	"description": "Lit based web component - counter",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-counter.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,21 +12,21 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"dropdown",
-		"combo-box",
 		"lit",
 		"lit-element",
+		"web component",
 		"panda-wbc",
 		"ui component",
-		"web component",
-		"combo box"
+		"panda-counter",
+		"counter",
+		"animation",
+		"animated number display",
+		"animated text display"
 	],
 	"author": "code-gems",
-	"license": "ISC",
+	"license": "MIT",
 	"dependencies": {
 		"lit": "^2.7.4",
-		"@panda-wbc/panda-spinner": "workspace:*",
-		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-core": "workspace:*"
 	},
 	"devDependencies": {

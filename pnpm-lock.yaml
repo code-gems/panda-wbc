@@ -129,6 +129,22 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-counter:
+    dependencies:
+      '@panda-wbc/panda-core':
+        specifier: workspace:*
+        version: link:../panda-core
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-date-picker:
     dependencies:
       '@panda-wbc/panda-core':
@@ -168,6 +184,9 @@ importers:
       '@panda-wbc/panda-core':
         specifier: workspace:*
         version: link:../panda-core
+      '@panda-wbc/panda-counter':
+        specifier: workspace:*
+        version: link:../panda-counter
       '@panda-wbc/panda-date-picker':
         specifier: workspace:*
         version: link:../panda-date-picker
@@ -201,6 +220,9 @@ importers:
       '@panda-wbc/panda-select':
         specifier: workspace:*
         version: link:../panda-select
+      '@panda-wbc/panda-sortable-list':
+        specifier: workspace:*
+        version: link:../panda-sortable-list
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
@@ -345,9 +367,6 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
-      '@panda-wbc/panda-spinner':
-        specifier: workspace:*
-        version: link:../panda-spinner
       lit:
         specifier: ^2.7.4
         version: 2.7.4
@@ -443,6 +462,25 @@ importers:
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-sortable-list:
+    dependencies:
+      '@panda-wbc/panda-core':
+        specifier: workspace:*
+        version: link:../panda-core
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
       lit:
         specifier: ^2.7.4
         version: 2.7.4
