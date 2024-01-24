@@ -32,6 +32,7 @@ export const defaultIcons: PandaIconTemplate[] = [
 	// files
 	{ name: "folder", template: `<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>` },
 	{ name: "upload-file", template: `<path d="M11.3,18.9h1.5v-5l2.1,2.1l1.1-1.1L12,11.1L8.2,15L9.2,16l2.1-2.1V18.9z M5.5,22c-0.4,0-0.8-0.1-1.1-0.5c-0.3-0.3-0.4-0.6-0.4-1v-17c0-0.4,0.2-0.8,0.4-1C4.8,2.1,5.1,2,5.5,2h9L20,7.5v13c0,0.4-0.1,0.8-0.4,1c-0.3,0.3-0.7,0.5-1.1,0.5H5.5z M13.8,8.1V3.5H5.5v17h13V8.1H13.8z M5.5,3.5v4.7V3.5v17V3.5z"/>` },
+	{ name: "download-file", template: `<path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>` },
 
 	// arrows & chevrons
 	{ name: "arrow-back", template: `<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>` },

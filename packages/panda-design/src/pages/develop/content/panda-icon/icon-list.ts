@@ -30,6 +30,7 @@ export const getIconListDetails = (): IconDetails[] => {
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
 		{ name: "upload-file", 				iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o", "upload", "export"] },
+		{ name: "download-file", 			iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o", "download", "import"] },
 
 		// date & time ========================================
 		{ name: "calendar", 				iconPack: "default", group: ["Date & Time"], keywords: ["date", "time", "month", "day"] },

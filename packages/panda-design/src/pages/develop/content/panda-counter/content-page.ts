@@ -6,10 +6,12 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-counter";
+import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-icon";
 
 // utils
 import { html, TemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import {
@@ -87,6 +89,22 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 									</panda-counter>
 								</div>
 							</div>
+
+							<div class="row">
+								<div class="col-2">
+									<panda-button>
+										<div class="prefix-icon" slot="prefix">
+											<panda-icon icon="download-file"></panda-icon>
+										</div>
+										<panda-counter
+											.value="${100}"
+										>
+											<div slot="suffix">%</div>
+										</panda-counter>
+									</panda-button>
+								</div>
+							</div>
+
 							<div class="row">
 								<div class="col-full">
 									<panda-counter
@@ -100,6 +118,7 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 									</panda-counter>
 								</div>
 							</div>
+
 							<div class="row">
 								<div class="col-3">
 									<panda-button
@@ -154,6 +173,7 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 									</panda-button>
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>			

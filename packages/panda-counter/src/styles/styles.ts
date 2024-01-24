@@ -120,9 +120,9 @@ export const panelStyles = css`
 
 		background: linear-gradient(
 			180deg,
-			rgba(0,0,0,1) 0%,
-			rgba(130,130,130,1) 50%,
-			rgba(0,0,0,1) 100%
+			rgba(0, 0, 0, 1) 0%,
+			rgba(130, 130, 130, 1) 50%,
+			rgba(0, 0, 0, 1) 100%
 		);
 	}
 
