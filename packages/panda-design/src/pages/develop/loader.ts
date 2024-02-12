@@ -12,6 +12,7 @@ import "./content/panda-multi-input/content-page";
 import "./content/panda-notifications/content-page";
 import "./content/panda-pagination/content-page";
 import "./content/panda-particle-banner/content-page";
+import "./content/panda-radio-group/content-page";
 import "./content/panda-search/content-page";
 import "./content/panda-select/content-page";
 import "./content/panda-sortable-list/content-page";

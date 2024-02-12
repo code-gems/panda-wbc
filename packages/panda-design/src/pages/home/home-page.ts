@@ -17,6 +17,7 @@ import { customElement, property } from "lit/decorators.js";
 import { PageLibrary, page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { PandaParticleBannerConfig, ParticleShape } from "@panda-wbc/panda-particle-banner";
+import { bannerConfig3 } from "../../utils/particle-banner-presets";
 
 @customElement("home-page")
 @page({
@@ -92,15 +93,19 @@ class HomePage extends LitElement {
 		// };
 
 		const bannerConfig: PandaParticleBannerConfig = {
+			// smudge: true,
+			showFps: true,
+			// background: {
+			// 	color: "#fff"
+			// },
 			particleGroup: [
 				{
-					particleCount: 50,
+					particleCount: 100,
 					particleShape: ParticleShape.RECT,
-					particleLineWidth: 10,
+					particleLineWidth: 20,
 					drawParticle: (ctx, particle) => {
 						const { x, y, color, size } = particle;
 
-						// ctx.beginPath();
 						ctx.moveTo(x, y);
 						ctx.lineTo(x + (size / 2), y - (size / 2));
 
@@ -109,7 +114,6 @@ class HomePage extends LitElement {
 
 						ctx.strokeStyle = color;
 						ctx.stroke();
-						// ctx.closePath();
 					},
 
 					colors: ["#ff4778" , "#6f36bc", "#36174D"],
@@ -119,8 +123,8 @@ class HomePage extends LitElement {
 					// connect: true,
 					// connectionDistance: 50,
 
-					sizeMin: 50,
-					sizeMax: 100,
+					sizeMin: 200,
+					sizeMax: 1000,
 
 					minSpeedX: -0.2,
 					maxSpeedX: 0.2,
@@ -128,8 +132,8 @@ class HomePage extends LitElement {
 					maxSpeedY: 0.2,
 
 					blur: true,
-					blurMin: 3,
-					blurMax: 5,
+					blurMin: 1,
+					blurMax: 3,
 
 					// getBlur: (particle, metadata, index) => {
 					// 	let blur = particle.blur;
@@ -150,7 +154,15 @@ class HomePage extends LitElement {
 		return html`
 			<div class="body-wrap scroll">
 				<panda-particle-banner
-					.config="${bannerConfig}"
+					.config="${bannerConfig3}"
+				>
+				</panda-particle-banner>
+			</div>
+		`;
+		return html`
+			<div class="body-wrap scroll">
+				<panda-particle-banner
+					.config="${bannerConfig3}"
 				>
 					${pandaLogo}
 					some text here

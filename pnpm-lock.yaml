@@ -211,6 +211,9 @@ importers:
       '@panda-wbc/panda-particle-banner':
         specifier: workspace:*
         version: link:../panda-particle-banner
+      '@panda-wbc/panda-radio-group':
+        specifier: workspace:*
+        version: link:../panda-radio-group
       '@panda-wbc/panda-router':
         specifier: workspace:*
         version: link:../panda-router
@@ -405,6 +408,19 @@ importers:
       '@panda-wbc/panda-core':
         specifier: workspace:*
         version: link:../panda-core
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-radio-group:
+    dependencies:
       lit:
         specifier: ^2.7.4
         version: 2.7.4

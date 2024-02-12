@@ -20,6 +20,7 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
+import { bannerConfig1, bannerConfig2 } from "../../../../utils/particle-banner-presets";
 
 @customElement("panda-button-content-page")
 @page({
@@ -55,29 +56,47 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [{
-				particleCount: 70,
-				colors: ["#ff4778" , "#6f36bc", "#36174D"],
-				minSpeedX: -0.2,
-				maxSpeedX: 0.2,
-				minSpeedY: -0.2,
-				maxSpeedY: 0.2,
+				particleCount: 100,
+				colors: ["black"],
+				colorOpacityVariation: 50,
+				walls: true,
 
+				minSpeedX: -0.1,
+				maxSpeedX: 0.1,
+				minSpeedY: -0.1,
+				maxSpeedY: 0.1,
+				// deltaSpeedY: 0.01,
+				// deltaSpeedX: -0.01,
+
+				sizeMin: 2,
+				sizeMax: 1,
 				blur: true,
 				blurMax: 1,
 				connect: true,
-				connectionLineDash: [3, 3],
-				getConnectionLineColor: (distance) => {
+				// connectionLineDash: [1, 1],
+				// getConnectionLineColor: (distance) => {
+				// 	const alphaMax = 128;
+				// 	const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
+				// 	const hexColor = `#36174D${alpha.toString(16).padStart(2, '0')}`;
+				// 	return hexColor.toUpperCase(); // Convert to uppercase for consistency
+				// },
+				connectionLineColor: "#ff4778",
+				connectionDistance: 50,
+				getConnectionLineOpacity: (distance) => {
 					const alphaMax = 128;
 					const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
-					const hexColor = `#36174D${alpha.toString(16).padStart(2, '0')}`;
-					return hexColor.toUpperCase(); // Convert to uppercase for consistency
+					return alpha;
 				},
-			}]
+				shadowBlur: 1,
+				shadowColor: "#ff4778",
+			}],
+			showFps: true,
+			// smudge: true
 		};
 		return html`
 			<div class="banner small particle-banner">
 				<panda-particle-banner
-					.config="${bannerConfig}"					
+					.config="${bannerConfig2}"					
 				>
 					<div class="content">
 						<h1>BUTTON</h1>

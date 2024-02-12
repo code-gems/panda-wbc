@@ -101,7 +101,10 @@ export const styles = css`
 		color: var(--panda-text-color);
 		font-size: var(--panda-font-size-s);
 		font-family: var(--panda-font-family-bold);
+		user-select: none;
+		cursor: pointer;
 
+		border-radius: var(--panda-border-radius-s);
 		background-color: var(--panda-background-color-500);
 		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
 		z-index: 1;

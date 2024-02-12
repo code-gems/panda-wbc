@@ -38,6 +38,7 @@
 		"@panda-wbc/panda-notifications": "workspace:*",
 		"@panda-wbc/panda-pagination": "workspace:*",
 		"@panda-wbc/panda-particle-banner": "workspace:*",
+		"@panda-wbc/panda-radio-group": "workspace:*",
 		"@panda-wbc/panda-router": "workspace:*",
 		"@panda-wbc/panda-search": "workspace:*",
 		"@panda-wbc/panda-select": "workspace:*",

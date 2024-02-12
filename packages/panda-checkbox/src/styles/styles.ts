@@ -52,11 +52,11 @@ export const styles = css`
 	}
 
 	:host([disabled]) .icon {
-		--panda-icon-color: var(--panda-text-color-disabled, hsl(0deg 0% 44%));
+		--panda-icon-color: var(--panda-text-color-disabled, hsl(0deg 0% 66%));
 	}
 
 	:host([disabled]) slot {
-		color: var(--panda-text-color-disabled, hsl(0deg 0% 44%));
+		color: var(--panda-text-color-disabled, hsl(0deg 0% 66%));
 	}
 
 

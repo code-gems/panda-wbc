@@ -81,7 +81,7 @@ export class PandaCalloutContentPage extends ContentPageTemplate {
 				maxSpeedY: -0.5,
 				minSpeedY: -0.1,
 				sizeMax: 80,
-				sizeMin: 40
+				sizeMin: 40,
 			}]
 		};
 		return html`

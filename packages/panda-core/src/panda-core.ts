@@ -10,10 +10,12 @@ import { Debouncer } from "../index";
  * @param maxWait - maximal time to wait before executing a callback method.
  * @returns {Debouncer}
  */
-export const debounce = (callback: any, wait: number, maxWait: number = 0): () => void | null | Debouncer => {
+export const debounce = (callback: any, wait: number, maxWait: number | null = null): () => void | null | Debouncer => {
 	let timeout: any = null;
 	let maxWaitInterval: any = null;
 	let context = this;
+
+	const start = performance.now();
 
 	if (typeof wait !== "number") {
 		console.warn("%c [DEBOUNCE] 'wait' param is not a valid number", "font-size: 24px; color: green;", wait);
@@ -37,7 +39,9 @@ export const debounce = (callback: any, wait: number, maxWait: number = 0): () =
 		return _x;
 	}
 
-	let interval = !!maxWait ? gcd(wait, maxWait) : wait;
+	let interval = maxWait !== null
+		? gcd(wait, maxWait)
+		: wait;
 	console.log("%c [DEBOUNCE] interval", "font-size: 24px; color: green;", interval);
 
 	function cancel(): void {
@@ -57,14 +61,14 @@ export const debounce = (callback: any, wait: number, maxWait: number = 0): () =
 		let intervalStep = interval;
 
 		const timeoutFn = function () {
-			console.log("%c [DEBOUNCE] INVOKE CALLBACK", "font-size: 24px; color: orange;");
+			console.log("%c [DEBOUNCE] INVOKE CALLBACK", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
 			callback.apply(context, args);
 			cancel();
 		}
 
 		const watcherFn = function () {
 			if (maxWait === intervalStep) {
-				console.log("%c [DEBOUNCE] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;");
+				console.log("%c [DEBOUNCE] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
 				callback.apply(context, args);
 				cancel();
 			} else {

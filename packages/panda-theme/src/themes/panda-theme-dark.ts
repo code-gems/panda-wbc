@@ -222,13 +222,13 @@ export const pandaThemeDark = css`
 		/* TYPOGRAPHY & SIZE ======================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-text-color: hsl(274 21% 87%);
+		--panda-text-color: hsl(274deg 21% 87%);
 		--panda-text-color-hover: hsl(0deg 0% 20%);
-		--panda-text-color-disabled: hsl(0deg 0% 44%);
+		--panda-text-color-disabled: hsl(273deg 20% 40%);
 		--panda-text-shadow: none;
 		--panda-text-line-height: 1.6em;
 
-		--panda-header-text-color: hsl(274 21% 100%);
+		--panda-header-text-color: hsl(344deg 100% 64%);
 		--panda-header-text-color-hover: hsl(0deg 0% 20%);
 		--panda-header-text-color-disabled: hsl(0deg 0% 80%);
 		--panda-header-text-shadow: none;
@@ -282,7 +282,7 @@ export const pandaThemeDark = css`
 		--panda-form-validation-invalid: var(--panda-action-color-alert);
 
 		/* LABEL */
-		--panda-label-color: hsl(0deg 0% 50%);
+		--panda-label-color: hsl(273deg 20% 65%);
 		--panda-label-text-shadow: none;
 		--panda-label-font-size: var(--panda-font-size-s);
 		--panda-label-font-family: var(--panda-font-family);
@@ -354,6 +354,31 @@ export const pandaThemeDark = css`
 		--panda-icon-size-l: 24px;
 		--panda-icon-size-xl: 30px;
 		--panda-icon-size-hero: 46px;
+
+		/* ========================================================================================================= */
+		/* RADIO BUTTON ============================================================================================ */
+		/* ========================================================================================================= */
+
+		--panda-radio-button-size: 20px;
+		--panda-radio-button-color: var(--panda-primary-color);
+		--panda-radio-button-color-disabled: var(--panda-text-color-disabled);
+		--panda-radio-button-dot-color: var(--panda-primary-color);
+		--panda-radio-button-dot-color-disabled: var(--panda-text-color-disabled);
+		--panda-radio-button-focus-ring-color: var(--panda-primary-color-50opc);
+		--panda-radio-button-outline-color: var(--panda-primary-color-20opc);
+
+		--panda-radio-button-text-color: var(--panda-text-color);
+		--panda-radio-button-text-color-disabled: var(--panda-text-color-disabled);
+
+		--panda-radio-button-border-width: 1px;
+		--panda-radio-button-border-style: solid;
+		--panda-radio-button-border-color: transparent;
+		--panda-radio-button-border-color-disabled: transparent;
+		
+		--panda-radio-button-background-color: hsl(273deg 30% 40%);
+		--panda-radio-button-background-color-hover: hsl(273deg 30% 50%);
+		--panda-radio-button-background-color-checked: hsl(273deg 30% 20%);
+		--panda-radio-button-background-color-disabled: hsl(273deg 30% 25%);
 
 		/* ========================================================================================================= */
 		/* PANDA NOTIFICATION ====================================================================================== */

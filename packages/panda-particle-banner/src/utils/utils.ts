@@ -372,3 +372,19 @@ export const getHslColorString = (color: PandaParticleColor): string => {
 	} = color;
 	return `hsl(${hue}deg ${saturation}% ${lightness}% / ${alpha}%)`;
 };
+
+export const limitCheck = (value: number, limit: number | null): number => {
+	if (limit === null || limit === undefined) {
+		return value;
+	}
+
+	let _limit = Math.abs(limit);
+
+	if (value > 0 && value > _limit) {
+		return _limit;
+	} else if (value < 0 && value < -_limit) {
+		return -_limit
+	} else {
+		return value;
+	}
+};

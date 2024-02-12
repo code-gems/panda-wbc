@@ -53,6 +53,45 @@ export const uiComponents = {
 			flex-grow: 1;
 		}
 
+		.content-page .content .content-section {
+			position: relative;
+			margin: 50px 0px;
+			background-color: var(--panda-background-color-500);
+			z-index: 1;
+		}
+		.content-page .content .content-section:hover {
+			transform: skewY(0deg);
+		}
+
+		.content-page .content .content-section:nth-child(even) {
+			background-color: var(--panda-background-color-300);
+		}
+
+		.content-page .content .content-section::before,
+		.content-page .content .content-section::after {
+			position: absolute;
+			display: block;
+			height: 50px;
+			content: " ";
+			left: 0;
+			right: 0;
+
+			transform: skewY(1.5deg);
+
+			background-color: inherit;
+			z-index: -1;
+		}
+		
+		.content-page .content .content-section::before {
+			top: 0;
+			transform-origin: 100%;
+		}
+
+		.content-page .content .content-section::after {
+			bottom: 0;
+			transform-origin: 0%;
+		}
+
 		.content-page .context-menu {
 			position: relative;
 			display: block;
@@ -162,6 +201,14 @@ export const uiComponents = {
 			
 			box-sizing: border-box;
 		}
+
+		.section h1,
+		.section h2,
+		.section h3,
+		.section h4 {
+			color: var(--panda-header-text-color);
+			text-shadow: var(--panda-header-text-shadow);
+		}
 	`,
 
 	banner: css`
@@ -175,6 +222,22 @@ export const uiComponents = {
 
 			background-color: var(--panda-background-color-300);
 			box-sizing: border-box;
+		}
+
+		.banner::before {
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 20%;
+			content: " ";
+			left: 0px;
+			right: 0px;
+			bottom: 0px;
+			
+			transform-origin: 100% 0;
+			transform: skewY(-1.5deg);
+			background-color: var(--panda-background-color);
+			z-index: 1;
 		}
 
 		.banner.small {
@@ -312,6 +375,7 @@ export const uiComponents = {
 			display: flex;
 			padding: 0px 10px;
 			align-items: center;
+			text-align: left;
 		}
 
 		.table .td.align-center { justify-content: center; }
@@ -337,7 +401,7 @@ export const uiComponents = {
 
 		/* MODS */
 		.table.table-properties .tr {
-			grid-template-columns: 200px 170px 90px auto auto !important;
+			grid-template-columns: 200px 170px 90px 170px auto !important;
 		}
 
 		.table.table-events {

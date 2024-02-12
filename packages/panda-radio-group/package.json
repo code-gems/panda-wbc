@@ -1,0 +1,44 @@
+{
+	"name": "@panda-wbc/panda-radio-group",
+	"version": "1.0.0",
+	"description": "Lit based web component - radio group",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-radio-group.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"panda-wbc",
+		"ui component",
+		"panda-radio-group",
+		"radio button",
+		"radio",
+		"options",
+		"choice"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"lit": "^2.7.4"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -30,9 +30,10 @@ export type PandaParticle = {
 	y: number;
 	size: number;
 	speedX: number;
-	speedDeltaX: number;
+	deltaSpeedX: number;
 	speedY: number;
-	speedDeltaY: number;
+	deltaSpeedY: number;
+	
 	color: string; // color value eg.: red, rgb(255, 0, 0), hsl(180deg 0% 0%)
 	blur: number;
 }
@@ -46,8 +47,13 @@ export interface ParticleGroup {
 	drawParticle?: (ctx: CanvasRenderingContext2D, particle: PandaParticle) => void;
 	
 	// particle behavior =======================================
+	pauseOnClick?: boolean;
+	asyncParticleCreation?: boolean; // default to false
+	particleCreationInterval?: number; // default to 500 ms
 	walls?: boolean; // default to false
 	collisions?: boolean; // default to false
+	/** Destroy particles that moved out of the viewport. [DEFAULT: false] */
+	destroyParticles?: boolean; // default to false
 
 	// mouse offset
 	interactive?: boolean; // default to false [incompatible with walls]
@@ -56,8 +62,10 @@ export interface ParticleGroup {
 
 	// connect
 	connect?: boolean; // default to false
-	connectionDistance?: number; // default to 100
-	connectionLineColor?: string; // default to #c1c1c1
+	/** Maximal distance between two particles when connector line.will be drawn. [DEFAULT: 100] [px] */
+	connectionDistance?: number;
+	/** default to #c1c1c1 */
+	connectionLineColor?: string;
 	connectionLineDash?: number[];
 	connectionLineWidth?: number; // default to 1
 	getConnectionLineBlur?: (distance: number) => number;
@@ -65,13 +73,24 @@ export interface ParticleGroup {
 	getConnectionLineOpacity?: (distance: number) => number;
 	getConnectionLineDashOffset?: (distance: number) => number;
 
+	// position
+	getPosition?: (bannerRect: DOMRect) => { x: number, y: number; }
+
 	// speed
 	minSpeedX?: number; // default to -3
 	maxSpeedX?: number; // default to 3
-	speedDeltaX?: number; // default to 0
+	minDeltaSpeedX?: number; // default to 0
+	maxDeltaSpeedX?: number; // default to 0
+	deltaSpeedLimitX?: number; // default to null
 	minSpeedY?: number; // default to -3
 	maxSpeedY?: number; // default to 3
-	speedDeltaY?: number; // default to 0
+	minDeltaSpeedY?: number; // default to 0
+	maxDeltaSpeedY?: number; // default to 0
+	deltaSpeedLimitY?: number; // default to null
+	/**
+	 * Increase of speed value will adapt to existing speed direction. [DEFAULT: true]
+	 */
+	adaptiveDelta?: boolean;
 	
 	// particle style ==========================================
 
@@ -92,13 +111,20 @@ export interface ParticleGroup {
 	colorSaturationVariation?: number; // value between 0 and 100 default to 0;
 	colorLightnessVariation?: number; // value between 0 and 100 default to 0;
 	colorOpacityVariation?: number; // value between 0 and 100 default to 0;
+
+	// shadow
+	shadowColor?: string;
+	shadowBlur?: number;
 }
 
 export interface PandaParticleBannerConfig {
 	// particle group list
-	particleGroup: ParticleGroup[]; 
+	particleGroup: ParticleGroup[];
+	// features
+	showFps?: boolean; // default to false
+	smudge?: boolean; // default to false
 	// background options
 	background?: {
 		color: string;
-	}
+	};
 }
