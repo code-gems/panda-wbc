@@ -59,37 +59,46 @@ export class PandaRadioButtonContentPage extends ContentPageTemplate {
 
 				<div class="sample-cont">
 					<div class="sample">
+						<div class="rows">
+							<div class="row">
+								<div class="col-full">
 
-						<panda-radio-group
-							label="Select Theme:"
-							@change="${this._onChangeValue}"
-							.disabled="${true}"
-						>
-							<panda-radio-button .value="${"Light"}" checked>Light</panda-radio-button>
-							<panda-radio-button .value="${"Dark"}">Dark</panda-radio-button>
-							<panda-radio-button .value="${"Tropical Lime"}">Tropical Lime</panda-radio-button>
-							<panda-radio-button .value="${"Sunset"}" disabled>Sunset</panda-radio-button>
-							<panda-radio-button .value="${"Midnight Blue"}">Midnight Blue</panda-radio-button>
-						</panda-radio-group>
+									<panda-radio-group
+										label="Select Theme:"
+										@change="${this._onChangeValue}"
+										.disabled="${true}"
+									>
+										<panda-radio-button .value="${"Light"}" checked>Light</panda-radio-button>
+										<panda-radio-button .value="${"Dark"}">Dark</panda-radio-button>
+										<panda-radio-button .value="${"Tropical Lime"}">Tropical Lime</panda-radio-button>
+										<panda-radio-button .value="${"Sunset"}" disabled>Sunset</panda-radio-button>
+										<panda-radio-button .value="${"Midnight Blue"}">Midnight Blue</panda-radio-button>
+									</panda-radio-group>
 
-					</div>
-				</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-full">
+									<panda-radio-group
+										label="Select Gender:"
+										@change="${this._onChangeValue}"
+										.disabled="${false}"
+									>
+										<panda-radio-button .value="${"Male"}" checked>Male</panda-radio-button>
+										<panda-radio-button .value="${"Female"}">Female</panda-radio-button>
+									</panda-radio-group>
+								</div>
+							</div>
 
-				<div class="sample-cont">
-					<div class="sample">
+							<div class="row">
 
-						<panda-radio-group
-							label="Select Theme:"
-							@change="${this._onChangeValue}"
-							.disabled="${false}"
-						>
-							<panda-radio-button .value="${"Light"}" checked>Light</panda-radio-button>
-							<panda-radio-button .value="${"Dark"}">Dark</panda-radio-button>
-							<panda-radio-button .value="${"Tropical Lime"}">Tropical Lime</panda-radio-button>
-							<panda-radio-button .value="${"Sunset"}" disabled>Sunset</panda-radio-button>
-							<panda-radio-button .value="${"Midnight Blue"}">Midnight Blue</panda-radio-button>
-						</panda-radio-group>
+								<div class="col-full">
+									<panda-text-field></panda-text-field>
+								</div>
 
+							</div>
+	
+						</div>
 					</div>
 				</div>
 

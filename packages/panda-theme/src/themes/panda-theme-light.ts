@@ -365,7 +365,8 @@ export const pandaThemeLight = css`
 		--panda-radio-button-dot-color: var(--panda-primary-color);
 		--panda-radio-button-dot-color-disabled: var(--panda-text-color-disabled);
 		--panda-radio-button-focus-ring-color: var(--panda-primary-color-50opc);
-		--panda-radio-button-outline-color: var(--panda-primary-color-20opc);
+		--panda-radio-button-outline-color: var(--panda-primary-color-40opc);
+		--panda-radio-button-outline-color-disabled: var(--panda-primary-color-20opc);
 
 		--panda-radio-button-text-color: var(--panda-text-color);
 		--panda-radio-button-text-color-disabled: var(--panda-text-color-disabled);

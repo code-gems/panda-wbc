@@ -39,7 +39,7 @@ export class PandaRadioGroup extends LitElement {
 	private _radioButtonClickEvent: any = this._onChangeEvent.bind(this);
 
 	// elements
-	private _radioButtonNodeList: PandaRadioButton[] = [];
+	private _radioButtonElList: PandaRadioButton[] = [];
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -52,9 +52,9 @@ export class PandaRadioGroup extends LitElement {
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
 		// remove event listeners
-		if (this._radioButtonNodeList.length) {
-			this._radioButtonNodeList.forEach((radioButton) => {
-				radioButton.removeEventListener("on-select", this._radioButtonClickEvent);
+		if (this._radioButtonElList.length) {
+			this._radioButtonElList.forEach((radioButtonEl) => {
+				radioButtonEl.removeEventListener("on-select", this._radioButtonClickEvent);
 			});
 		}
 	}
@@ -77,7 +77,7 @@ export class PandaRadioGroup extends LitElement {
 				</div>
 			`;
 		}
-		
+
 		const orientation = this.orientationHorizontal
 			? "horizontal"
 			: "";
@@ -100,12 +100,12 @@ export class PandaRadioGroup extends LitElement {
 	/** Create radio group and preselect option */
 	private _initRadioGroup(): void {
 		// get all radio button elements
-		 Array
-		 	.from(this.children)
+		Array
+			.from(this.children)
 			.forEach((child) => {
 				// create radio button collection
 				if (child.tagName === "PANDA-RADIO-BUTTON") {
-					this._radioButtonNodeList.push(child as PandaRadioButton);
+					this._radioButtonElList.push(child as PandaRadioButton);
 					// add click event listener
 					child.addEventListener("on-select", this._radioButtonClickEvent);
 					// get selected value
@@ -121,9 +121,9 @@ export class PandaRadioGroup extends LitElement {
 		this._selectRadioButton(this.value);
 	}
 
-	/** Update 'checked' attribute on all radio buttons based on selected value */ 
+	/** Update 'checked' attribute on all radio buttons based on selected value */
 	private _selectRadioButton(value: any): void {
-		this._radioButtonNodeList.forEach((radioButton) => {
+		this._radioButtonElList.forEach((radioButton) => {
 			// set checked attribute on the selected radio button
 			radioButton.checked = radioButton.value === value;
 		});
@@ -136,7 +136,6 @@ export class PandaRadioGroup extends LitElement {
 	private _onChangeEvent(event: PandaRadioGroupChangeEvent): void {
 		this.value = event.detail.value;
 		this._selectRadioButton(event.detail.value);
-		console.log("%c [PANDA RADIO GROUP] _onChangeEvent", "font-size: 24px; color: green;", event.detail.value);
 		const changeEvent = new CustomEvent("change", {
 			detail: {
 				value: this.value

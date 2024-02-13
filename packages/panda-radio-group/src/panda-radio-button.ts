@@ -73,6 +73,8 @@ export class PandaRadioButton extends LitElement {
 				@mousedown="${this._onMouseDown}"
 				@mouseup="${this._onMouseUp}"
 				@keypress="${this._onKeyPress}"
+				@focus="${this._onFocus}"
+				@blur="${this._onBlur}"
 				tabindex="0"
 			>
 				<div class="checkmark ${checked}" part="checkmark"></div>
@@ -89,6 +91,7 @@ export class PandaRadioButton extends LitElement {
 		if (this.disabled) {
 			return;
 		}
+		this.focused = false;
 		const clickEvent = new CustomEvent("on-select", {
 			detail: {
 				value: this.value
@@ -100,6 +103,14 @@ export class PandaRadioButton extends LitElement {
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	public _onFocus(): void {
+		this.focused = true;
+	}
+	
+	public _onBlur(): void {
+		this.focused = false;
+	}
 	
 	private _onMouseDown(): void {
 		if (!this.disabled) {

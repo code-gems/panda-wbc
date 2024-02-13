@@ -18,6 +18,7 @@ export const styles = css`
 		outline: none;
 
 		border-radius: var(--panda-border-radius-m);
+		box-sizing: border-box;
 	}
 
 	.radio-button .checkmark {
@@ -68,8 +69,12 @@ export const styles = css`
 	}
 
 	/* FOCUSED STATE */
-	:host([focused]) .radio-button .checkmark {
+	:host([focused]) .radio-button:not(.clicked) {
 		box-shadow: 0px 0px 0px 2px var(--panda-radio-button-outline-color);
+	}
+
+	:host([focused][disabled]) .radio-button:not(.clicked) {
+		box-shadow: 0px 0px 0px 2px var(--panda-radio-button-outline-color-disabled);
 	}
 
 	/* CLICKED STATE */
@@ -135,6 +140,7 @@ export const radioGroupStyles = css`
 	.radio-group {
 		display: flex;
 		flex-flow: column;
+		outline: none;
 	}
 
 	.radio-group.horizontal {
