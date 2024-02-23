@@ -1,26 +1,21 @@
-# Welcome to Panda Button
-Panda Button is a Lit based web component that adds buttons to your UI. Extremely lightweight and easy to use.
+# Welcome to Panda Circular Progress Bar
+Panda Circular Progress Bar is a Lit based web component that adds stylish circular progress indicator to your UI. Extremely lightweight and easy to use.
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-button -S```
+```npm install @panda-wbc/panda-circular-progress-bar -S```
 
 or 
 
-```yarn add @panda-wbc/panda-button```
+```yarn add @panda-wbc/panda-circular-progress-bar```
 
 ### Usage
 
 ```html
-<panda-button
-	.disabled="${true/false}"
-	.busy="${true/false}"
-	@click="${...}"
+<panda-circular-progress-bar
+	.value="${50}"
 >
-	<div slot="prefix">{prefix icon}</div>
-	MY AWESOME BUTTON
-	<div slot="suffix">{suffix icon}</div>
-</panda-button>
+</panda-circular-progress-bar>
 ```
 
 ## Change Log
