@@ -42,6 +42,7 @@ export const styles = css`
 	.callout .body {
 		display: flex;
 		flex-flow: row nowrap;
+		align-items: center;
 		gap: var(--panda-padding-s, 5px);
 	}
 
