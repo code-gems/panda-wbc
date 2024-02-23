@@ -199,6 +199,9 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-menu-bar':
+        specifier: workspace:*
+        version: link:../panda-menu-bar
       '@panda-wbc/panda-multi-input':
         specifier: workspace:*
         version: link:../panda-multi-input
@@ -211,6 +214,9 @@ importers:
       '@panda-wbc/panda-particle-banner':
         specifier: workspace:*
         version: link:../panda-particle-banner
+      '@panda-wbc/panda-progress-bar':
+        specifier: workspace:*
+        version: link:../panda-progress-bar
       '@panda-wbc/panda-radio-group':
         specifier: workspace:*
         version: link:../panda-radio-group
@@ -223,6 +229,9 @@ importers:
       '@panda-wbc/panda-select':
         specifier: workspace:*
         version: link:../panda-select
+      '@panda-wbc/panda-slider':
+        specifier: workspace:*
+        version: link:../panda-slider
       '@panda-wbc/panda-sortable-list':
         specifier: workspace:*
         version: link:../panda-sortable-list
@@ -343,6 +352,22 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-menu-bar:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-multi-input:
     dependencies:
       '@panda-wbc/panda-icon':
@@ -419,6 +444,19 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-progress-bar:
+    dependencies:
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-radio-group:
     dependencies:
       lit:
@@ -478,6 +516,19 @@ importers:
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-slider:
+    dependencies:
       lit:
         specifier: ^2.7.4
         version: 2.7.4
