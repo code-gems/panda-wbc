@@ -22,5 +22,5 @@ export const pageConfig: Page = {
 		// { name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
 	],
 
-	template: html`<panda-slider-content-page></panda-slider-content-page>`,
+	template: html`<panda-circular-progress-bar-content-page></panda-circular-progress-bar-content-page>`,
 };

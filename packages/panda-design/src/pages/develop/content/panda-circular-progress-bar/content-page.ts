@@ -20,9 +20,9 @@ import {
 	installationSnippet,
 } from "./snippets/snippets";
 
-@customElement("panda-slider-content-page")
+@customElement("panda-circular-progress-bar-content-page")
 @page(pageConfig)
-export class PandaSliderContentPage extends ContentPageTemplate {
+export class ContentPage extends ContentPageTemplate {
 // page details
 public pageId: string = pageConfig.pageId;
 public customStyles = styles;
@@ -47,7 +47,7 @@ private _componentEvents: ComponentEventDetails[] = [
 _renderPageBanner(): TemplateResult {
 	return html`
 		<div class="banner small">
-			<h1>PROGRESS BAR</h1>
+			<h1>CIRCULAR PROGRESS BAR</h1>
 
 			<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 		</div>
@@ -79,12 +79,13 @@ private _renderOverviewSection(): TemplateResult {
 						<div class="row">
 							<div class="col-full">
 
-								<panda-progress-bar
+								<panda-circular-progress-bar
 									label="Loading..."
 									.value="${50}"
 									.disabled="${false}"
 								>
-								</panda-progress-bar>
+									50%
+								</panda-circular-progress-bar>
 
 							</div>
 						</div>
