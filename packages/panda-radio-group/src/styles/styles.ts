@@ -97,8 +97,8 @@ export const styles = css`
 	}
 
 	:host([checked]) .radio-button .checkmark::after {
-		width: 8px;
-		height: 8px;
+		width: var(--panda-radio-button-dot-size, 8px);
+		height: var(--panda-radio-button-dot-size, 8px);
 	}
 
 	/* DISABLED STATE */
