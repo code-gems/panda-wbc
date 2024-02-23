@@ -21,7 +21,7 @@ To add new component, run ```pnpm install``` to add your component to workspace 
 
 | Component | version |
 | ----------- | ----------- |
-| panda-icon | [<img src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./packages/panda-icon/package.json) |
-| panda-spinner | [<img src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./packages/panda-spinner/package.json) |
 | panda-button | [<img src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./packages/panda-button/package.json) |
 | panda-date-picker | [<img src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./packages/panda-date-picker/package.json) |
+| panda-icon | [<img src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./packages/panda-icon/package.json) |
+| panda-spinner | [<img src="https://img.shields.io/badge/version-v1.0.0-orange?style=for-the-badge">](./packages/panda-spinner/package.json) |

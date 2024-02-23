@@ -4,25 +4,19 @@
 // styles
 import { styles } from "./styles/styles";
 
-// components
-// import "./panda-menu-bar-overlay";
-
 // utils
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-@customElement("panda-menu-bar")
-export class PandaMenuBar extends LitElement {
+@customElement("panda-circular-progress-bar")
+export class PandaCircularProgressBar extends LitElement {
 	// css styles
 	static get styles() {
 		return styles;
 	}
 
-	@property({ type: String })
-	items!: string;
-
-	@property({ type: Boolean, attribute: true, reflect: true })
-	disabled: boolean = false;
+	@property({ type: Number })
+	value!: number;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -54,6 +48,6 @@ export class PandaMenuBar extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-menu-bar": PandaMenuBar;
+		"panda-circular-progress-bar": PandaCircularProgressBar;
 	}
 }
