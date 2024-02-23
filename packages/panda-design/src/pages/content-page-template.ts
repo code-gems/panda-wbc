@@ -177,8 +177,10 @@ export abstract class ContentPageTemplate extends LitElement {
 			`);
 		});
 
+		const modClass = hasOptions ? "with-options" : "";
+
 		return html`
-			<div class="table table-properties">
+			<div class="table table-properties ${modClass}">
 				<div class="thead">
 					<div class="tr">
 						<div class="td">PROPERTY NAME</div>

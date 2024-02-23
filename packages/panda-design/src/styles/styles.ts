@@ -401,6 +401,10 @@ export const uiComponents = {
 
 		/* MODS */
 		.table.table-properties .tr {
+			grid-template-columns: 200px 170px 90px auto !important;
+		}
+
+		.table.table-properties.with-options .tr {
 			grid-template-columns: 200px 170px 90px 170px auto !important;
 		}
 
@@ -454,6 +458,25 @@ export const uiComponents = {
 		.txt-align-center { text-align: center; }
 		.txt-color { color: var(--panda-primary-color); }
 
+		.push-s { margin-top: 5px; }
+		.push-m { margin-top: 10px; }
+		.push-l { margin-top: 15px; }
+
+		.pull-s { margin-bottom: 5px; }
+		.pull-m { margin-bottom: 10px; }
+		.pull-l { margin-bottom: 15px; }
+
+		.width-10 { width: 10dvw; }
+		.width-20 { width: 20dvw; }
+		.width-30 { width: 30dvw; }
+		.width-40 { width: 40dvw; }
+		.width-50 { width: 50dvw; }
+		.width-60 { width: 60dvw; }
+		.width-70 { width: 70dvw; }
+		.width-80 { width: 80dvw; }
+		.width-90 { width: 90dvw; }
+		.width-100 { width: 100dvw; }
+
 		code {
 			padding: 0px var(--panda-padding-s);
 			line-height: 1.6em;
@@ -489,11 +512,11 @@ export const uiComponents = {
 			padding: 0px var(--panda-padding-m);
 			line-height: 1.6em;
 
-			color: var(--panda-action-color-success);
+			color: var(--panda-action-color-done);
 			font-style: italic;
 
 			border-radius: var(--panda-border-radius-m);
-			background-color: var(--panda-action-color-success-10opc);
+			background-color: var(--panda-action-color-done-10opc);
 		}
 	`,
 }
