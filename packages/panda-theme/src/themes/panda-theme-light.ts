@@ -175,7 +175,7 @@ export const pandaThemeLight = css`
 		--panda-action-color-done-90opc: hsl(164deg 67% 45% / 90%);
 
 		/* WARN COLOR */
-		--panda-action-warn: hsl(35deg 91% 62%);
+		--panda-action-color-warn: hsl(35deg 91% 62%);
 		--panda-action-text-color-warn: hsl(0deg 0% 100%);
 
 		--panda-action-color-warn-50: hsl(35deg 91% 85%);
@@ -362,9 +362,14 @@ export const pandaThemeLight = css`
 		--panda-radio-button-size: 20px;
 		--panda-radio-button-color: var(--panda-primary-color);
 		--panda-radio-button-color-disabled: var(--panda-text-color-disabled);
+
+		--panda-radio-button-dot-size: 8px;
 		--panda-radio-button-dot-color: var(--panda-primary-color);
 		--panda-radio-button-dot-color-disabled: var(--panda-text-color-disabled);
+
 		--panda-radio-button-focus-ring-color: var(--panda-primary-color-50opc);
+		--panda-radio-button-focus-ring-color-disabled: var(--panda-primary-color-50opc);
+
 		--panda-radio-button-outline-color: var(--panda-primary-color-40opc);
 		--panda-radio-button-outline-color-disabled: var(--panda-primary-color-20opc);
 
@@ -380,6 +385,15 @@ export const pandaThemeLight = css`
 		--panda-radio-button-background-color-hover: hsl(0deg 0% 100%);
 		--panda-radio-button-background-color-checked: hsl(0deg 0% 100%);
 		--panda-radio-button-background-color-disabled: hsl(0deg 0% 90%);
+
+		/* ========================================================================================================= */
+		/* PANDA PROGRESS BAR ====================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-progress-bar-size: 10px;
+		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
+		--panda-progress-bar-border-color: var(--panda-form-border-color);
+		--panda-progress-bar-background-color: var(--panda-background-color-500);
 
 		/* ========================================================================================================= */
 		/* PANDA NOTIFICATION ====================================================================================== */
