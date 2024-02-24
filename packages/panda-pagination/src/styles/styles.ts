@@ -160,14 +160,14 @@ export const styles = css`
 	:host([theme~="secondary"][theme~="outline"]) button {
 		color: var(--panda-secondary-color-txt, hsl(0deg 0% 29%));
 		text-shadow: none;
-		border: 2px solid var(--panda-secondary-color, hsl(164deg 67% 45%));
-		background: var(--panda-secondary-color-10opc, hsl(164deg 67% 45% / 10%));
+		border: 2px solid var(--panda-secondary-color, hsl(160deg 81% 43%));
+		background: var(--panda-secondary-color-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="secondary"][theme~="outline"]) button:hover {
 		border: 2px solid var(--panda-secondary-color-hover, hsl(164deg 69% 50%));
-		background: var(--panda-secondary-color-20opc, hsl(164deg 67% 45% / 20%));
+		background: var(--panda-secondary-color-20opc, hsl(160deg 81% 43% / 20%));
 	}
 
 	:host([theme~="secondary"][theme~="outline"][disabled]) button {
@@ -191,8 +191,8 @@ export const styles = css`
 	:host([theme~="done"]) button {
 		color: var(--panda-action-color-done-txt, hsl(0deg 0% 100%));
 		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-done, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-done-50opc, hsl(164deg 67% 45% / 50%));
+		background: var(--panda-action-color-done, hsl(160deg 81% 43%));
+		box-shadow: 0px 2px 4px var(--panda-action-color-done-50opc, hsl(160deg 81% 43% / 50%));
 	}
 
 	:host([theme~="done"]) button:hover {
@@ -208,7 +208,7 @@ export const styles = css`
 	}
 
 	:host([theme~="done"][busy]) .spinner-cont {
-		background: var(--panda-action-color-done, hsl(164deg 67% 45%));
+		background: var(--panda-action-color-done, hsl(160deg 81% 43%));
 	}
 
 	:host([theme~="done"][busy]) .spinner-cont panda-spinner {
@@ -218,32 +218,32 @@ export const styles = css`
 	/* DONE - OUTLINE */
 
 	:host([theme~="done"][theme~="outline"]) button {
-		color: var(--panda-action-color-done, hsl(164deg 67% 45%));
+		color: var(--panda-action-color-done, hsl(160deg 81% 43%));
 		text-shadow: none;
-		border: 2px solid var(--panda-action-color-done, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
+		border: 2px solid var(--panda-action-color-done, hsl(160deg 81% 43%));
+		background: var(--panda-action-color-done-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="done"][theme~="outline"]) button:hover {
 		border: 2px solid var(--panda-action-color-done-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-done-20opc, hsl(164deg 67% 45% / 20%));
+		background: var(--panda-action-color-done-20opc, hsl(160deg 81% 43% / 20%));
 	}
 
 	:host([theme~="done"][theme~="outline"][disabled]) button {
 		color: var(--panda-action-color-done-disabled, hsl(164deg 54% 72%));
 		text-shadow: none;
 		border: 2px solid var(--panda-action-color-done-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-done-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="done"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-done-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	:host([theme~="done"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
+		--panda-spinner-color: var(--panda-action-color-done, hsl(160deg 81% 43%));
 	}
 
 	/* WARN */
@@ -251,8 +251,8 @@ export const styles = css`
 	:host([theme~="warn"]) button {
 		color: var(--panda-action-color-warn-txt, hsl(0deg 0% 100%));
 		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-warn, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-warn-50opc, hsl(164deg 67% 45% / 50%));
+		background: var(--panda-action-color-warn, hsl(160deg 81% 43%));
+		box-shadow: 0px 2px 4px var(--panda-action-color-warn-50opc, hsl(160deg 81% 43% / 50%));
 	}
 
 	:host([theme~="warn"]) button:hover {
@@ -268,7 +268,7 @@ export const styles = css`
 	}
 
 	:host([theme~="warn"][busy]) .spinner-cont {
-		background: var(--panda-action-color-warn, hsl(164deg 67% 45%));
+		background: var(--panda-action-color-warn, hsl(160deg 81% 43%));
 	}
 
 	:host([theme~="warn"][busy]) .spinner-cont panda-spinner {
@@ -278,32 +278,32 @@ export const styles = css`
 	/* WARN - OUTLINE */
 
 	:host([theme~="warn"][theme~="outline"]) button {
-		color: var(--panda-action-color-warn, hsl(164deg 67% 45%));
+		color: var(--panda-action-color-warn, hsl(160deg 81% 43%));
 		text-shadow: none;
-		border: 2px solid var(--panda-action-color-warn, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-warn-10opc, hsl(164deg 67% 45% / 10%));
+		border: 2px solid var(--panda-action-color-warn, hsl(160deg 81% 43%));
+		background: var(--panda-action-color-warn-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="warn"][theme~="outline"]) button:hover {
 		border: 2px solid var(--panda-action-color-warn-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-warn-20opc, hsl(164deg 67% 45% / 20%));
+		background: var(--panda-action-color-warn-20opc, hsl(160deg 81% 43% / 20%));
 	}
 
 	:host([theme~="warn"][theme~="outline"][disabled]) button {
 		color: var(--panda-action-color-warn-disabled, hsl(164deg 54% 72%));
 		text-shadow: none;
 		border: 2px solid var(--panda-action-color-warn-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-warn-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-warn-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="warn"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-warn-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-warn-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	:host([theme~="warn"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-warn, hsl(164deg 67% 45%));
+		--panda-spinner-color: var(--panda-action-color-warn, hsl(160deg 81% 43%));
 	}
 	
 	/* FAIL */
@@ -311,8 +311,8 @@ export const styles = css`
 	:host([theme~="fail"]) button {
 		color: var(--panda-action-color-fail-txt, hsl(0deg 0% 100%));
 		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-fail, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-fail-50opc, hsl(164deg 67% 45% / 50%));
+		background: var(--panda-action-color-fail, hsl(160deg 81% 43%));
+		box-shadow: 0px 2px 4px var(--panda-action-color-fail-50opc, hsl(160deg 81% 43% / 50%));
 	}
 
 	:host([theme~="fail"]) button:hover {
@@ -338,32 +338,32 @@ export const styles = css`
 	/* FAIL - OUTLINE */
 
 	:host([theme~="fail"][theme~="outline"]) button {
-		color: var(--panda-action-color-fail, hsl(164deg 67% 45%));
+		color: var(--panda-action-color-fail, hsl(160deg 81% 43%));
 		text-shadow: none;
-		border: 2px solid var(--panda-action-color-fail, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-fail-10opc, hsl(164deg 67% 45% / 10%));
+		border: 2px solid var(--panda-action-color-fail, hsl(160deg 81% 43%));
+		background: var(--panda-action-color-fail-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="fail"][theme~="outline"]) button:hover {
 		border: 2px solid var(--panda-action-color-fail-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-fail-20opc, hsl(164deg 67% 45% / 20%));
+		background: var(--panda-action-color-fail-20opc, hsl(160deg 81% 43% / 20%));
 	}
 
 	:host([theme~="fail"][theme~="outline"][disabled]) button {
 		color: var(--panda-action-color-fail-disabled, hsl(164deg 54% 72%));
 		text-shadow: none;
 		border: 2px solid var(--panda-action-color-fail-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-fail-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-fail-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="fail"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-fail-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-fail-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	:host([theme~="fail"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-fail, hsl(164deg 67% 45%));
+		--panda-spinner-color: var(--panda-action-color-fail, hsl(160deg 81% 43%));
 	}
 
 	/* INFO */
@@ -371,8 +371,8 @@ export const styles = css`
 	:host([theme~="info"]) button {
 		color: var(--panda-action-color-info-txt, hsl(0deg 0% 100%));
 		text-shadow: 0px 1px 1px var(--panda-shadow-color-50opc, hsl(0deg 0% 0% / 50%));
-		background: var(--panda-action-color-info, hsl(164deg 67% 45%));
-		box-shadow: 0px 2px 4px var(--panda-action-color-info-50opc, hsl(164deg 67% 45% / 50%));
+		background: var(--panda-action-color-info, hsl(160deg 81% 43%));
+		box-shadow: 0px 2px 4px var(--panda-action-color-info-50opc, hsl(160deg 81% 43% / 50%));
 	}
 
 	:host([theme~="info"]) button:hover {
@@ -398,32 +398,32 @@ export const styles = css`
 	/* INFO - OUTLINE */
 
 	:host([theme~="info"][theme~="outline"]) button {
-		color: var(--panda-action-color-info, hsl(164deg 67% 45%));
+		color: var(--panda-action-color-info, hsl(160deg 81% 43%));
 		text-shadow: none;
-		border: 2px solid var(--panda-action-color-info, hsl(164deg 67% 45%));
-		background: var(--panda-action-color-info-10opc, hsl(164deg 67% 45% / 10%));
+		border: 2px solid var(--panda-action-color-info, hsl(160deg 81% 43%));
+		background: var(--panda-action-color-info-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="info"][theme~="outline"]) button:hover {
 		border: 2px solid var(--panda-action-color-info-hover, hsl(164deg 69% 50%));
-		background: var(--panda-action-color-info-20opc, hsl(164deg 67% 45% / 20%));
+		background: var(--panda-action-color-info-20opc, hsl(160deg 81% 43% / 20%));
 	}
 
 	:host([theme~="info"][theme~="outline"][disabled]) button {
 		color: var(--panda-action-color-info-disabled, hsl(164deg 54% 72%));
 		text-shadow: none;
 		border: 2px solid var(--panda-action-color-info-disabled, hsl(164deg 54% 80%));
-		background: var(--panda-action-color-info-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-info-10opc, hsl(160deg 81% 43% / 10%));
 		box-shadow: none;
 	}
 
 	:host([theme~="info"][theme~="outline"][busy]) .spinner-cont {
-		background: var(--panda-action-color-info-10opc, hsl(164deg 67% 45% / 10%));
+		background: var(--panda-action-color-info-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	:host([theme~="info"][theme~="outline"][busy]) .spinner-cont panda-spinner {
-		--panda-spinner-color: var(--panda-action-color-info, hsl(164deg 67% 45%));
+		--panda-spinner-color: var(--panda-action-color-info, hsl(160deg 81% 43%));
 	}
 
 `; 

@@ -88,7 +88,7 @@ export const notificationStyles = css`
 		background: linear-gradient(
 			180deg,
 			var(--panda-primary-color, hsl(209deg 78% 46%)) 0%,
-			var(--panda-secondary-color, hsl(164deg 67% 45%)) 100%
+			var(--panda-secondary-color, hsl(160deg 81% 43%)) 100%
 		);
 	}
 
@@ -185,13 +185,13 @@ export const notificationStyles = css`
 	/* SECONDARY */
 	:host([theme~="secondary"]) .notification::before {
 		background: none;
-		background-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
+		background-color: var(--panda-secondary-color, hsl(160deg 81% 43%));
 	}
 
 	/* TERTIARY */
 	:host([theme~="tertiary"]) .notification::before {
 		background: none;
-		background-color: var(--panda-tertiary-color, hsl(164deg 67% 45%));
+		background-color: var(--panda-tertiary-color, hsl(160deg 81% 43%));
 	}
 
 	/* INFO */	
@@ -203,7 +203,7 @@ export const notificationStyles = css`
 	/* DONE */
 	:host([theme~="done"]) .notification::before {
 		background: none;
-		background-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
+		background-color: var(--panda-action-color-done, hsl(160deg 81% 43%));
 	}
 
 	/* WARN */

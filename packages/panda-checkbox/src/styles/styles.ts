@@ -70,7 +70,7 @@ export const styles = css`
 
 	/* SECONDARY */
 	:host([theme~="secondary"]) {
-		--panda-icon-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
+		--panda-icon-color: var(--panda-secondary-color, hsl(160deg 81% 43%));
 	}
 
 	/* INFO */

@@ -117,35 +117,35 @@ export const styles = css`
 
 	/* SECONDARY */
 	:host([theme~="secondary"]) .progress {
-		background-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
+		background-color: var(--panda-secondary-color, hsl(160deg 81% 43%));
 	}
 	:host([theme~="secondary"]) .buffer-progress {
-		background-color: var(--panda-secondary-color-30opc, hsl(164deg 67% 45%));
+		background-color: var(--panda-secondary-color-30opc, hsl(160deg 81% 43%));
 	}
 
 	/* TERTIARY */
 	:host([theme~="tertiary"]) .progress {
-		background-color: var(--panda-tertiary-color, hsl(164deg 67% 45%));
+		background-color: var(--panda-tertiary-color, hsl(160deg 81% 43%));
 	}
 
 	/* INFO */
 	:host([theme~="info"]) .progress {
-		background-color: var(--panda-action-color-info, hsl(164deg 67% 45%));
+		background-color: var(--panda-action-color-info, hsl(160deg 81% 43%));
 	}
 
 	/* DONE */
 	:host([theme~="done"]) .progress {
-		background-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
+		background-color: var(--panda-action-color-done, hsl(160deg 81% 43%));
 	}
 
 	/* WARN  */
 	:host([theme~="warn"]) .progress {
-		background-color: var(--panda-action-color-warn, hsl(164deg 67% 45%));
+		background-color: var(--panda-action-color-warn, hsl(160deg 81% 43%));
 	}
 
 	/* ALERT  */
 	:host([theme~="alert"]) .progress {
-		background-color: var(--panda-action-color-alert, hsl(164deg 67% 45%));
+		background-color: var(--panda-action-color-alert, hsl(160deg 81% 43%));
 	}
 
 

@@ -111,14 +111,14 @@ export const styles = css`
 
 	/* SECONDARY */
 	:host([theme~="secondary"]) .callout {
-		border-color: var(--panda-secondary-color, hsl(164deg 67% 45%));
-		background-color: var(--panda-secondary-color-10opc, hsl(164deg 67% 45% / 10%));
+		border-color: var(--panda-secondary-color, hsl(160deg 81% 43%));
+		background-color: var(--panda-secondary-color-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	/* TERTIARY */
 	:host([theme~="tertiary"]) .callout {
-		border-color: var(--panda-tertiary-color, hsl(164deg 67% 45%));
-		background-color: var(--panda-tertiary-color-10opc, hsl(164deg 67% 45% / 10%));
+		border-color: var(--panda-tertiary-color, hsl(160deg 81% 43%));
+		background-color: var(--panda-tertiary-color-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	/* INFO */	
@@ -129,8 +129,8 @@ export const styles = css`
 
 	/* DONE */
 	:host([theme~="done"]) .callout {
-		border-color: var(--panda-action-color-done, hsl(164deg 67% 45%));
-		background-color: var(--panda-action-color-done-10opc, hsl(164deg 67% 45% / 10%));
+		border-color: var(--panda-action-color-done, hsl(160deg 81% 43%));
+		background-color: var(--panda-action-color-done-10opc, hsl(160deg 81% 43% / 10%));
 	}
 
 	/* WARN */

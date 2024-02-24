@@ -77,41 +77,37 @@ private _renderOverviewSection(): TemplateResult {
 				<div class="sample">
 					<div class="rows">
 						<div class="row">
-							<div class="col-full">
+							<div class="col-4">
 
 								<panda-circular-progress-bar
-									label="Loading..."
-									.value="${50}"
-									.disabled="${false}"
+									.value="${66}"
+									.thickness="${15}"
+									dashed
 								>
-									50%
+									66%
 								</panda-circular-progress-bar>
 
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-full">
+							<div class="col-4">
 
-								<panda-progress-bar
-									label="Loading..."
-									.value="${25}"
-									.disabled="${false}"
+								<panda-circular-progress-bar
+									.value="${75}"
 								>
-								</panda-progress-bar>
+									75%
+								</panda-circular-progress-bar>
 
 							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-full">
+							<div class="col-4">
 
-								<panda-progress-bar
-									label="Loading..."
-									.value="${25}"
-									.disabled="${false}"
+								<panda-circular-progress-bar
+									.value="${50}"
+									.thickness="${3}"
+									show-scale
 								>
-								</panda-progress-bar>
+									50%
+								</panda-circular-progress-bar>
 
 							</div>
 						</div>

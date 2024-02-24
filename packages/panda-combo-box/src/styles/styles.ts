@@ -121,8 +121,8 @@ export const styles = css`
 	/* THEMES ===================================================== */
 	/* VALID */
 	.combo-box[theme~="valid"]:not([disabled]) {
-		border: 1px solid var(--panda-form-validation-valid, hsl(164deg 67% 45%));
-		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(164deg 67% 45%));
+		border: 1px solid var(--panda-form-validation-valid, hsl(160deg 81% 43%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(160deg 81% 43%));
 	}
 
 	/* INVALID */

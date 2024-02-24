@@ -127,7 +127,7 @@ export const styles = css`
 
 	:host([theme~="valid"]:not([disabled])) .date-picker,
 	:host([valid]:not([disabled])) .date-picker {
-		box-shadow: 0px 0px 0px 2px var(--panda-action-done, hsl(164deg 67% 45%));
+		box-shadow: 0px 0px 0px 2px var(--panda-action-done, hsl(160deg 81% 43%));
 	}
 
 	:host([focused]) .date-picker {
