@@ -84,7 +84,10 @@ private _renderOverviewSection(): TemplateResult {
 									.thickness="${15}"
 									dashed
 								>
-									66%
+									<div class="details">
+										<label>SALES</label>
+										<div class="progress">66%</div>
+									</div>
 								</panda-circular-progress-bar>
 
 							</div>

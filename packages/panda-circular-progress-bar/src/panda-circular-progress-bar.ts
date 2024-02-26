@@ -103,8 +103,6 @@ export class PandaCircularProgressBar extends LitElement {
 							fill="none"
 							stroke="var(--panda-form-border-color)"
 							stroke-linecap="butt"
-							stroke-width="2"
-							stroke-dasharray="2 5.65"
 						/>
 						<circle
 							class="progress ${this.dashed ? "dashed" : ""}"
