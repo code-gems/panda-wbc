@@ -5,6 +5,9 @@ import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails } from
 import { uiComponents } from "../styles/styles";
 import { scrollbar } from "@panda-wbc/panda-theme";
 
+// components & web-parts
+import "../web-parts/internal-link/internal-link";
+
 // utils
 import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";
 import { query, queryAll, property } from "lit/decorators.js";
@@ -45,8 +48,8 @@ export abstract class ContentPageTemplate extends LitElement {
 	@query("#btn-scroll-top")
 	private _btnScrollTopEl!: HTMLDivElement;
 
-	@queryAll(".content-section")
-	private _contentSectionsEl!: HTMLDivElement[];
+	@queryAll("[data-content-section-name]")
+	private _contentSectionsEls!: HTMLDivElement[];
 
 	// events
 	private _contentPageScrollEvent: any = this._onContentPageScroll.bind(this);
@@ -75,6 +78,9 @@ export abstract class ContentPageTemplate extends LitElement {
 	firstUpdated(): void {
 		// add events
 		this._contentPageEl.addEventListener("scroll", this._contentPageScrollEvent);
+		if (location.hash) {
+			this._scrollToHash();
+		}
 	}
 
 	disconnectedCallback(): void {
@@ -233,12 +239,22 @@ export abstract class ContentPageTemplate extends LitElement {
 	}
 
 	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+
+	private _scrollToHash(): void {
+		setTimeout(() => {
+			this._onContextMenuClick(location.hash.slice(1), true);
+		}, 0);
+	}
+
+	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onContextMenuClick(contextId: string) {
+	private _onContextMenuClick(contextId: string, highlight: boolean = false): void {
 		let contentSectionEl!: HTMLDivElement;
-		this._contentSectionsEl.forEach((sectionEl) => {
+		this._contentSectionsEls.forEach((sectionEl) => {
 			// find content section based on dataset
 			if (sectionEl.dataset.contentSectionName === contextId) {
 				contentSectionEl = sectionEl;
@@ -247,14 +263,19 @@ export abstract class ContentPageTemplate extends LitElement {
 		// check if content section was found
 		if (contentSectionEl) {
 			contentSectionEl.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+			// highlight section
+			if (highlight) {
+				contentSectionEl.classList.remove("highlight");
+				contentSectionEl.classList.add("highlight");
+			}
 		} else {
 			console.warn("%c Unable to locate content section. Please verify your contextMenu config.", "font-size: 16px;", contextId);
 			console.warn("%c Context menu config:", "font-size: 16px;", this._contextMenu);
-			console.warn("%c Content Sections:", "font-size: 16px;", [...this._contentSectionsEl].map((sectionEl) => sectionEl.dataset.contentSectionName));
+			console.warn("%c Content Sections:", "font-size: 16px;", [...this._contentSectionsEls].map((sectionEl) => sectionEl.dataset.contentSectionName));
 		}
 	}
 
-	private _onContentPageScroll(e: Event) {
+	private _onContentPageScroll(): void {
 		const contextMenuRect: DOMRect = this._contextMenuEl.getBoundingClientRect();
 		// check if context menu container is outside of the view port
 		if (contextMenuRect.top < 0) {

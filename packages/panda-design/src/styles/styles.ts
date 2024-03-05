@@ -202,12 +202,26 @@ export const uiComponents = {
 			box-sizing: border-box;
 		}
 
+		.section.highlight {
+			animation-name: highlight;
+			animation-delay: 1s;
+			animation-duration: 1s;
+			animation-iteration-count: 2;
+			animation-timing-function: linear;
+		}
+
 		.section h1,
 		.section h2,
 		.section h3,
 		.section h4 {
 			color: var(--panda-header-text-color);
 			text-shadow: var(--panda-header-text-shadow);
+		}
+
+		@keyframes highlight {
+			0% { background-color: var(--panda-highlight-color-0opc); }
+			50% { background-color: var(--panda-highlight-color); }
+			100% { background-color: var(--panda-highlight-color-0opc); }
 		}
 	`,
 

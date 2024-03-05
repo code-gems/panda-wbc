@@ -20,7 +20,7 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
-import { bannerConfig1, bannerConfig2 } from "../../../../utils/particle-banner-presets";
+import { bannerConfig2 } from "../../../../utils/particle-banner-presets";
 
 @customElement("panda-button-content-page")
 @page({
@@ -121,7 +121,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Buttons serve as triggers for performing actions within the application. 
 						They can initiate processes like submitting forms, saving data, navigating between pages, or executing specific tasks.
@@ -141,7 +141,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 			<!-- INSTALLATION -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.INSTALLATION}">
 				<div class="section">
-					<h2>Installation</h2>
+					<internal-link theme="h2">Installation</internal-link>
 					<p>
 						Start by initiating the installation of the npm library through a command executed in either the terminal or command prompt.
 						Utilize the package manager, indicating both the library name and its version for installation.
@@ -160,7 +160,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 			<!-- USAGE -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.USAGE}">
 				<div class="section">
-					<h2>Usage</h2>
+					<internal-link theme="h2">Usage</internal-link>
 					<p>
 						This section will help you to get familiar with component's properties and events. 
 						Purpose of this segment is to equip developers with knowledge necessary to streamline the development process and elevate your web projects.
@@ -179,8 +179,8 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	private _renderComponentPropertiesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Properties</h3>
+			<div class="section" data-content-section-name="properties">
+				<internal-link theme="h3">Properties</internal-link>
 				<p>
 					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 					and they are frequently employed for data binding purposes. 
@@ -196,9 +196,9 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 
 	private _renderComponentEventsSection(): TemplateResult {
 		return html`
-			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Events</h3>
+			<!-- COMPONENT EVENTS -->
+			<div class="section" data-content-section-name="events">
+				<internal-link theme="h3">Events</internal-link>
 				<p>
 					Component events are instrumental in elevating the interactivity and adaptability of software applications. 
 					These events serve as carefully designed triggers that facilitate communication between the component and the application, 

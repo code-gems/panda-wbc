@@ -25,43 +25,52 @@ export const bannerConfig1: PandaParticleBannerConfig = {
 	}]
 };
 
-export const bannerConfig2: PandaParticleBannerConfig = {
-	showFps: true,
-	particleGroup: [
-		{
-			particleCount: 100,
-			walls: true,
-			particleLineWidth: 20,
-			drawParticle: (ctx, particle) => {
-				const { x, y, color, size } = particle;
+export const bannerConfig2 = (): PandaParticleBannerConfig => {
+	const root = document.documentElement;
+	const style = getComputedStyle(root);
+	const primaryColor = style.getPropertyValue("--panda-primary-color");
+	const secondaryColor = style.getPropertyValue("--panda-secondary-color");
+	const tertiaryColor = style.getPropertyValue("--panda-tertiary-color");
 
-				ctx.moveTo(x, y);
-				ctx.lineTo(x + (size / 2), y - (size / 2));
-
-				ctx.lineJoin = "round";
-				ctx.lineCap = "round";
-
-				ctx.strokeStyle = color;
-				ctx.stroke();
-			},
-
-			colors: ["#ff4778" , "#6f36bc", "#36174D"],
-			colorHueVariation: 10,
-			colorOpacityVariation: 30,
-
-			sizeMin: 200,
-			sizeMax: 400,
-
-			minSpeedX: -0.1,
-			maxSpeedX: 0.1,
-			minSpeedY: -0.1,
-			maxSpeedY: 0.1,
-
-			blur: true,
-			blurMin: 1,
-			blurMax: 3,
-		}
-	],	
+	console.log("%c colors", "font-size: 24px; color: red;", primaryColor, secondaryColor, tertiaryColor);
+	return {
+		showFps: true,
+		particleGroup: [
+			{
+				particleCount: 100,
+				walls: true,
+				particleLineWidth: 20,
+				drawParticle: (ctx, particle) => {
+					const { x, y, color, size } = particle;
+	
+					ctx.moveTo(x, y);
+					ctx.lineTo(x + (size / 2), y - (size / 2));
+	
+					ctx.lineJoin = "round";
+					ctx.lineCap = "round";
+	
+					ctx.strokeStyle = color;
+					ctx.stroke();
+				},
+	
+				colors: [primaryColor, secondaryColor, tertiaryColor],
+				colorHueVariation: 10,
+				colorOpacityVariation: 30,
+	
+				sizeMin: 200,
+				sizeMax: 400,
+	
+				minSpeedX: -0.1,
+				maxSpeedX: 0.1,
+				minSpeedY: -0.1,
+				maxSpeedY: 0.1,
+	
+				blur: true,
+				blurMin: 1,
+				blurMax: 3,
+			}
+		],	
+	};
 };
 
 export const bannerConfig3: PandaParticleBannerConfig = {

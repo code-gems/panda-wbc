@@ -23,4 +23,9 @@ export const styles = css`
 		font-size: var(--panda-font-size-xl);
 		font-family: var(--panda-font-family-bold);
 	}
+
+	.custom {
+		--panda-gradient-color-1: lime;
+		--panda-gradient-color-2: red;
+	}
 `;
