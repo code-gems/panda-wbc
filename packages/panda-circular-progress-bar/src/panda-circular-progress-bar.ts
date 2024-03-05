@@ -29,10 +29,19 @@ export class PandaCircularProgressBar extends LitElement {
 	
 	@property({ type: Boolean, attribute: true, reflect: true })
 	dashed: boolean = false;
+	
+	@property({ type: Boolean, attribute: true, reflect: true })
+	busy: boolean = false;
+
+	@property({ type: Boolean, attribute: true, reflect: true })
+	counterclockwise: boolean = false;
 
 	// state props
 	@state()
 	private _progress: number = 0;
+
+	@state()
+	private _value: number = 0;
 
 	@state()
 	private _radius: number = 0;
@@ -56,7 +65,15 @@ export class PandaCircularProgressBar extends LitElement {
 
 	updated(_changedProps: PropertyValues): void {
 		if (_changedProps.has("value") && this.value !== undefined) {
-			this._animateProgress();
+			this._updateProgress();
+		}
+		// animate progress after getting back from busy state
+		if (_changedProps.has("busy") && this.busy !== undefined) {
+			if (this.busy) {
+				this._progress = this._dashArray;
+			} else {
+				this._updateProgress();
+			}
 		}
 	}
 
@@ -73,7 +90,10 @@ export class PandaCircularProgressBar extends LitElement {
 	protected render(): TemplateResult {
 		return html`
 			<div class="progress-bar-cont" part="progress-bar-cont">
-				<div class="progress-bar" part="progress-bar">
+				<div
+					class="progress-bar ${this.busy ? "busy" : ""} ${this.dashed ? "dashed" : ""}"
+					part="progress-bar"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						version="1.1"
@@ -88,15 +108,28 @@ export class PandaCircularProgressBar extends LitElement {
 								id="gradient"
 								gradientTransform="rotate(${this.gradientAngle} 0.5 0.5)"
 							>
-								<stop offset="0%" stop-color="var(--panda-gradient-color-1)" stop-opacity="1" />
-								<stop offset="100%" stop-color="var(--panda-gradient-color-2)" stop-opacity="1" />
+								<stop
+									offset="0%"
+									stop-color="var(--panda-circular-progress-bar-gradient-color-start, hsl(209deg 78% 46%))"
+									stop-opacity="1"
+								/>
+								<stop
+									offset="100%"
+									stop-color="var(--panda-circular-progress-bar-gradient-color-end, hsl(160deg 81% 43%))"
+									stop-opacity="1"
+								/>
 							</linearGradient>
-							<clipPath id="clipPath">
+							<clipPath
+								id="clipPath"
+								class="clip-path ${this.dashed ? "animate" : ""}"
+								part="clip-path"	
+							>
 								${this._renderClipPath()}
 							</clipPath>
 						</defs>
 						<circle
 							class="scale ${this.showScale ? "show" : ""}"
+							part="scale"
 							cx="50"
 							cy="50"
 							r="${this._radius}"
@@ -105,13 +138,23 @@ export class PandaCircularProgressBar extends LitElement {
 							stroke-linecap="butt"
 						/>
 						<circle
-							class="progress ${this.dashed ? "dashed" : ""}"
+							class="progress"
+							part="progress"
 							cx="50"
 							cy="50"
 							r="${this._radius}"
 							stroke-width="${this.thickness}"
 							stroke-dasharray="${this._dashArray}"
 							stroke-dashoffset="${this._progress}"
+						/>
+						<circle
+							class="loader"
+							part="loader"
+							cx="50"
+							cy="50"
+							r="${this._radius}"
+							stroke-width="${this.thickness}"
+							stroke-dasharray="${this._dashArray}"
 						/>
 					</svg>
 				</div>
@@ -137,10 +180,26 @@ export class PandaCircularProgressBar extends LitElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _animateProgress() {
+	private _updateProgress() {
 		this._animationTimer = setTimeout(() => {
-			this._progress = this._dashArray - (this.value * this._dashArray) / 100;
+			this._value = this._parseValue();
+			this._progress = this._dashArray - (this._value * this._dashArray) / 100;
 		}, 0);
+	}
+
+	private _parseValue(): number {
+		let _value: number = this.value;
+		if (_value >= 100) {
+			_value = 100;
+		} else if (_value < 0) {
+			_value = 0;
+		}
+
+		if (this.counterclockwise) {
+			_value = _value * -1;
+		}
+
+		return _value;
 	}
 
 	// ================================================================================================================
