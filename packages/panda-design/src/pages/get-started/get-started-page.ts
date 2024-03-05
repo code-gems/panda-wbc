@@ -1,5 +1,5 @@
 // types
-import { AppState } from "panda-design-typings";
+import { Store } from "panda-design-typings";
 
 // styles & mixins
 import { styles } from "./styles/styles";
@@ -37,7 +37,7 @@ class GetStartedPage extends LitElement {
 		this._pageLibrary = new PageLibrary();
 	}
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		console.log("%c [GET STARTED PAGE] stateChanged", "font-size: 24px; color: green;", state);
 	}
 

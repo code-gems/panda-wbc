@@ -1,5 +1,5 @@
 // types
-import { AppState, PageCategory } from "panda-design-typings";
+import { Store, PageCategory } from "panda-design-typings";
 
 // styles
 import { uiComponents } from "../styles/styles";
@@ -38,7 +38,7 @@ export abstract class ParentPageTemplate extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 	
-	protected stateChanged(state: AppState) {
+	protected stateChanged(state: Store) {
 		if (state?.currentPageDetails) {
 			const {
 				currentPageDetails: {

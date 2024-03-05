@@ -1,5 +1,5 @@
 // types
-import { AppState } from "panda-design-typings";
+import { Store } from "panda-design-typings";
 import { PandaRouterNavigateEvent, RouterConfig } from "@panda-wbc/panda-router";
 
 // styles
@@ -53,7 +53,7 @@ class PandaApp extends LitElement {
 		);
 	}
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		const {
 			selectedTheme
 		} = state;

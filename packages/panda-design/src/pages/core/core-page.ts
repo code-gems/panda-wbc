@@ -1,5 +1,5 @@
 // types
-import { AppState, PageCategory } from "panda-design-typings";
+import { Store, PageCategory } from "panda-design-typings";
 
 // styles & mixins
 // import { styles } from "./styles/styles";
@@ -51,7 +51,7 @@ class CorePage extends LitElement {
 		this._debounce = debounce(this._debounceCallback, 2000, 4000);
 	}
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		console.log("%c [CORE PAGE] stateChanged", "font-size: 24px; color: green;", state);
 	}
 

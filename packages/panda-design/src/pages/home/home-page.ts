@@ -1,5 +1,5 @@
 // types
-import { AppState, PageCategory } from "panda-design-typings";
+import { Store, PageCategory } from "panda-design-typings";
 
 // styles & mixins
 import { styles } from "./styles/styles";
@@ -51,7 +51,7 @@ class HomePage extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		console.log("%c [HOME PAGE] stateChanged", "font-size: 24px; color: green;", state);
 	}
 

@@ -1,5 +1,5 @@
 // types
-import { AppState, PageCategory } from "panda-design-typings";
+import { Store, PageCategory } from "panda-design-typings";
 
 // styles & mixins
 import { styles } from "./styles/styles";
@@ -50,7 +50,7 @@ class DevelopPage extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		if (state?.currentPageDetails) {
 			const {
 				currentPageDetails: {

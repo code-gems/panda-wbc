@@ -1,5 +1,5 @@
 // types
-import { AppState, PageCategory } from "panda-design-typings";
+import { PageCategory } from "panda-design-typings";
 
 // styles
 import { styles } from "./styles/styles";

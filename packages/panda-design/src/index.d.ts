@@ -45,10 +45,6 @@ declare module "panda-design-typings" {
 		subpageList?: Page[];
 	}
 
-	export interface Store {
-		// design your store here
-	}
-
 	export interface ThunkDispatch<S, E, A extends Action> {
 		(action: A): Action;
 		<R, T extends Action>(asyncAction: ThunkAction<R, S, E, T>): R;
@@ -67,10 +63,10 @@ declare module "panda-design-typings" {
 	export type Reducer<S, A extends Action> = (state: S, action: A) => S;
 
 	export interface ReducerList {
-		[reducerName: string]: Reducer<AppState, any>;
+		[reducerName: string]: Reducer<Store, any>;
 	}
 
-	export interface AppState {
+	export interface Store {
 		devMode: boolean;
 		selectedTheme: string | null;
 		currentPageDetails: {

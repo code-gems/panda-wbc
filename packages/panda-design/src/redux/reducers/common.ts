@@ -1,13 +1,13 @@
 // types
 import {
 	Reducer,
-	AppState,
+	Store,
 	GotoPageAction,
 	ChangeThemeAction,
 	ToggleDevModeAction,
 } from "panda-design-typings"
 
-export const gotoPage: Reducer<AppState, GotoPageAction> = (state, { pathname, search, searchParams }): AppState => ({
+export const gotoPage: Reducer<Store, GotoPageAction> = (state, { pathname, search, searchParams }): Store => ({
 	...state,
 	currentPageDetails: {
 		pathname,
@@ -16,12 +16,12 @@ export const gotoPage: Reducer<AppState, GotoPageAction> = (state, { pathname, s
 	}
 });
 
-export const changeTheme: Reducer<AppState, ChangeThemeAction> = (state, { themeName }): AppState => ({
+export const changeTheme: Reducer<Store, ChangeThemeAction> = (state, { themeName }): Store => ({
 	...state,
 	selectedTheme: themeName
 });
 
-export const toggleDevMode: Reducer<AppState, ToggleDevModeAction> = (state, { devMode }): AppState => ({
+export const toggleDevMode: Reducer<Store, ToggleDevModeAction> = (state, { devMode }): Store => ({
 	...state,
 	devMode
 });

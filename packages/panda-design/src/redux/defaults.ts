@@ -1,7 +1,7 @@
 // types
-import { AppState } from "panda-design-typings";
+import { Store } from "panda-design-typings";
 
-export const DEFAULT_STORE: AppState = {
+export const DEFAULT_STORE: Store = {
 	devMode: false,
 	selectedTheme: "panda-theme-dark",
 	currentPageDetails: {

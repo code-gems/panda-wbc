@@ -1,5 +1,5 @@
 // types
-import { AppState, ReducerList } from "panda-design-typings";
+import { Store, ReducerList } from "panda-design-typings";
 import { Action } from "redux";
 
 // actions
@@ -18,7 +18,7 @@ const reducerList: ReducerList = {
 	[ACTION_TYPE.TOGGLE_DEV_MODE]: toggleDevMode,
 };
 
-const reducers = (state: AppState, action: Action<string>): AppState => {
+const reducers = (state: Store, action: Action<string>): Store => {
 	// check if reducer exists on the list
 	if (reducerList[action.type]) {
 		// apply reducer

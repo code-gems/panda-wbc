@@ -1,5 +1,5 @@
 // types
-import { AppState } from "panda-design-typings";
+import { Store } from "panda-design-typings";
 import { PandaThemeSwitcherToggleEvent, PandaThemeSwitcherTheme } from "@panda-wbc/panda-theme-switcher";
 
 // styles
@@ -41,7 +41,7 @@ class AppSideBar extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		const {
 			selectedTheme,
 			currentPageDetails: {

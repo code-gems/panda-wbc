@@ -1,5 +1,5 @@
 // types
-import { AppState, PageCategory } from "panda-design-typings";
+import { Store, PageCategory } from "panda-design-typings";
 import { SearchParams } from "@panda-wbc/panda-router";
 
 // styles
@@ -48,7 +48,7 @@ class AppSubmenu extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	stateChanged(state: AppState) {
+	stateChanged(state: Store) {
 		const {
 			currentPageDetails: {
 				pathname,
