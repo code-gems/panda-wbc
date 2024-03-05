@@ -5,7 +5,7 @@ import { PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata, 
 import { styles } from "./styles/styles";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, TemplateResult, PropertyValueMap, PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { getHslColorString, getRandomInt, minMax, validateColorHue, parseColorString, limitCheck } from "./utils/utils";
 import { Debouncer, debounce } from "@panda-wbc/panda-core";
@@ -105,6 +105,16 @@ class PandaParticleBanner extends LitElement {
 		this._animate();
 	}
 
+	protected updated(_changedProps: PropertyValues): void {
+		if (_changedProps.has("config") && this.config !== undefined) {
+			this._config = {
+				particleGroup: [],
+				...this.config,
+			};
+			this._initParticles();
+		}
+	}
+
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
 		// clean up
@@ -153,23 +163,23 @@ class PandaParticleBanner extends LitElement {
 			// check if async particle creation mode is on
 			// parse all banner configs and generate particle groups
 			this._config.particleGroup.forEach((config, index) => {
-					if (config?.asyncParticleCreation) {
-						this._asyncParticleGenerator(config, index);
-					} else {
-						const { particleCount } = config;
-						const particles: PandaParticle[] = [];
-						const particleGenerator = this._generateParticle(config);
-		
-						for (let i = 0; i < particleCount; i++) {
-							// generate particle
-							particles.push(particleGenerator.next().value);
-						}
-						// add particle group
-						this._particleGroups.push(particles);
-						// update banner metadata
-						this._metadata.particleGroups = this._particleGroups;
+				if (config?.asyncParticleCreation) {
+					this._asyncParticleGenerator(config, index);
+				} else {
+					const { particleCount } = config;
+					const particles: PandaParticle[] = [];
+					const particleGenerator = this._generateParticle(config);
+
+					for (let i = 0; i < particleCount; i++) {
+						// generate particle
+						particles.push(particleGenerator.next().value);
 					}
-				});
+					// add particle group
+					this._particleGroups.push(particles);
+					// update banner metadata
+					this._metadata.particleGroups = this._particleGroups;
+				}
+			});
 		}, 0);
 	}
 
@@ -180,22 +190,23 @@ class PandaParticleBanner extends LitElement {
 		} = particleGroup;
 		const particleGenerator = this._generateParticle(particleGroup);
 		let allParticlesCount: number = 0;
-		
+
 		this._asyncParticleGeneratorTimer = setInterval(() => {
-			// generate particle
-			const particle: PandaParticle = particleGenerator.next().value;
-			// add particle to the group
-			if (this._particleGroups[index]) {
-				this._particleGroups[index].push(particle);
-			} else {
-				this._particleGroups[index] = [];
-				this._particleGroups[index].push(particle);
-			}
-			// this._metadata.particleGroups[index].push(particle);
-			allParticlesCount++;
 			// stop interval when reached particle count
-			if (allParticlesCount >= particleCount) {
+			if (allParticlesCount > particleCount || this._stopAnimation) {
 				clearInterval(this._asyncParticleGeneratorTimer);
+			} else {
+				// generate particle
+				const particle: PandaParticle = particleGenerator.next().value;
+				// add particle to the group
+				if (this._particleGroups[index]) {
+					this._particleGroups[index].push(particle);
+				} else {
+					this._particleGroups[index] = [];
+					this._particleGroups[index].push(particle);
+				}
+				// this._metadata.particleGroups[index].push(particle);
+				allParticlesCount++;
 			}
 		}, particleCreationInterval);
 	}
@@ -228,6 +239,7 @@ class PandaParticleBanner extends LitElement {
 		} = particleGroup;
 		let colorIndex = 0;
 		const colorCount = colors.length;
+		console.log("%c [GENERATOR] colors", "font-size: 24px; color: red;", colors);
 
 		while (true) {
 			// particle style ==================================
@@ -239,7 +251,6 @@ class PandaParticleBanner extends LitElement {
 			// randomize color hue
 			if (colorHueVariation) {
 				// randomize color hue
-				// let hue = 
 				const hueMin = _color.hue - colorHueVariation;
 				const hueMax = _color.hue + colorHueVariation;
 				const variation = getRandomInt(hueMax, hueMin, 0);
