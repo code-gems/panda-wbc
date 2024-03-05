@@ -229,7 +229,7 @@ export const pandaThemeDark = css`
 		--panda-text-line-height: 1.6em;
 
 		--panda-header-text-color: hsl(344deg 100% 64%);
-		--panda-header-text-color-hover: hsl(0deg 0% 20%);
+		--panda-header-text-color-hover: hsl(344deg 100% 74%);
 		--panda-header-text-color-disabled: hsl(0deg 0% 80%);
 		--panda-header-text-shadow: none;
 
@@ -263,6 +263,23 @@ export const pandaThemeDark = css`
 		--panda-border-radius-l: 10px;
 		--panda-border-radius-xl: 15px;
 		--panda-border-radius-hero: 30px;
+		
+		/* ========================================================================================================= */
+		/* HIGHLIGHT COLOR ========================================================================================= */
+		/* ========================================================================================================= */
+
+		--panda-highlight-color: hsl(45deg 100% 74%);
+
+		--panda-highlight-color-0opc: hsl(45deg 100% 74% / 0%);
+		--panda-highlight-color-10opc: hsl(45deg 100% 74% / 10%);
+		--panda-highlight-color-20opc: hsl(45deg 100% 74% / 20%);
+		--panda-highlight-color-30opc: hsl(45deg 100% 74% / 30%);
+		--panda-highlight-color-40opc: hsl(45deg 100% 74% / 40%);
+		--panda-highlight-color-50opc: hsl(45deg 100% 74% / 50%);
+		--panda-highlight-color-60opc: hsl(45deg 100% 74% / 60%);
+		--panda-highlight-color-70opc: hsl(45deg 100% 74% / 70%);
+		--panda-highlight-color-80opc: hsl(45deg 100% 74% / 80%);
+		--panda-highlight-color-90opc: hsl(45deg 100% 74% / 90%);
 
 		/* ========================================================================================================= */
 		/* FORMS & COMPONENTS ====================================================================================== */
@@ -394,6 +411,24 @@ export const pandaThemeDark = css`
 		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
 		--panda-progress-bar-border-color: var(--panda-form-border-color);
 		--panda-progress-bar-background-color: var(--panda-background-color-500);
+
+		/* ========================================================================================================= */
+		/* PANDA CIRCULAR PROGRESS BAR ============================================================================= */
+		/* ========================================================================================================= */
+
+		--panda-circular-progress-bar-size: 100px;
+		--panda-circular-progress-bar-linecap: round;
+		--panda-circular-progress-bar-gradient-color-end: var(--panda-secondary-color);
+		--panda-circular-progress-bar-gradient-color-start: var(--panda-primary-color);
+		
+		--panda-circular-progress-bar-scale-color: var(--panda-label-color);
+		--panda-circular-progress-bar-scale-stroke-dasharray: 2 5.65;
+		--panda-circular-progress-bar-scale-stroke-width: 2;
+		
+		--panda-circular-progress-bar-loader-color: var(--panda-text-color);
+
+		--panda-circular-progress-bar-background-color: transparent;
+		--panda-circular-progress-bar-box-shadow: none;
 
 		/* ========================================================================================================= */
 		/* PANDA NOTIFICATION ====================================================================================== */
