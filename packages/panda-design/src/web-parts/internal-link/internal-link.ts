@@ -15,13 +15,22 @@ class InternalLink extends LitElement {
 	@property({ type: String })
 	target: string = "";
 
+	private _copyToClipboardTimer!: number;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	protected firstUpdated(): void {
-		console.log("%c [INTERNAL LINK] parent", "font-size: 24px; color: red;", this.parentElement?.parentElement);
 		this._getTarget();
+	}
+
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		// clear timers
+		if (this._copyToClipboardTimer) {
+			clearTimeout(this._copyToClipboardTimer);
+		}
 	}
 
 	// ================================================================================================================
@@ -33,27 +42,41 @@ class InternalLink extends LitElement {
 			<a
 				class="link"
 				href="#${this.target}"
+				@click="${this._onInternalLinkClick}"
 			>
 				<slot></slot>
 			</a>
 		`;
 	}
 
+	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+
 	private _getTarget() {
 		if (this.target === "") {
 			let _target = "";
 			let attr = this.parentElement?.attributes.getNamedItem("data-content-section-name");
-			console.log("%c 1 attr", "font-size: 24px; color: red;", attr);
 
+			// check if attribute exists on parent element
+			// if not, drill one level more
 			if (!attr) {
 				attr = this.parentElement?.parentElement?.attributes.getNamedItem("data-content-section-name");
-				console.log("%c 2 attr", "font-size: 24px; color: red;", attr);
 			}
 
 			_target = attr?.value || "";
 			this.target = _target;
-			console.log("%c [INTERNAL LINK] target", "font-size: 24px; color: red;", attr, _target);
 		}
+	}
+
+	// ================================================================================================================
+	// EVENTS =========================================================================================================
+	// ================================================================================================================
+
+	private _onInternalLinkClick(): void {
+		this._copyToClipboardTimer = setTimeout(() => {
+			navigator.clipboard.writeText(location.href)
+		}, 200);
 	}
 }
 

@@ -199,9 +199,11 @@ export const uiComponents = {
 			font-family: var(--panda-font-family);
 			text-align: justify;
 			
+			border-radius: var(--panda-border-radius-m);
 			box-sizing: border-box;
 		}
 
+		.content-section.highlight,
 		.section.highlight {
 			animation-name: highlight;
 			animation-delay: 1s;
