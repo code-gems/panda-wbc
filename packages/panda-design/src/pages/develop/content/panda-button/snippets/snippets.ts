@@ -33,11 +33,61 @@ import "@panda-wbc/panda-button";
 </panda-button>
 `;
 
-export const workingStateSnippet = `
+export const busyStateSnippet = `
 import "@panda-wbc/panda-button";
 
 <panda-button
-  .working="\${true}"
+  .busy="\${true}"
+>
+  MY BUTTON
+</panda-button>
+`;
+
+export const infoThemeSnippet = `
+import "@panda-wbc/panda-button";
+
+<panda-button
+  theme="info"
+>
+  MY BUTTON
+</panda-button>
+`;
+
+export const doneThemeSnippet = `
+import "@panda-wbc/panda-button";
+
+<panda-button
+  theme="done"
+>
+  MY BUTTON
+</panda-button>
+`;
+
+export const warnThemeSnippet = `
+import "@panda-wbc/panda-button";
+
+<panda-button
+  theme="warn"
+>
+  MY BUTTON
+</panda-button>
+`;
+
+export const alertThemeSnippet = `
+import "@panda-wbc/panda-button";
+
+<panda-button
+  theme="alert"
+>
+  MY BUTTON
+</panda-button>
+`;
+
+export const primaryThemeSnippet = `
+import "@panda-wbc/panda-button";
+
+<panda-button
+  theme="primary"
 >
   MY BUTTON
 </panda-button>

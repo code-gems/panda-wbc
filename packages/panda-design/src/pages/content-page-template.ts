@@ -7,6 +7,8 @@ import { scrollbar } from "@panda-wbc/panda-theme";
 
 // components & web-parts
 import "../web-parts/internal-link/internal-link";
+import "../web-parts/version-shield/version-shield";
+import "../web-parts/code-sample/code-sample";
 
 // utils
 import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";

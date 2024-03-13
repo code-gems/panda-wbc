@@ -56,7 +56,11 @@ export class PandaButton extends LitElement {
 		}
 		
 		return html`
-			<button class="${this.disabled ? "disabled" : ""}" part="button">
+			<button
+				class="${this.disabled ? "disabled" : ""}"
+				part="button"
+				.disabled="${this.disabled}"
+			>
 				<slot name="prefix" part="prefix"></slot>
 				<div class="content" part="content">
 					<slot></slot>

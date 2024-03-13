@@ -441,7 +441,6 @@ export const uiComponents = {
 		.row {
 			display: grid;
 			grid-template-columns: repeat(12, minmax(0, 1fr));
-			grid-auto-rows: minmax(50px, 1fr);
 			column-gap: 10px;
 		}
 

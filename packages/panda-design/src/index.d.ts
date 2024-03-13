@@ -20,6 +20,8 @@ declare module "panda-design-typings" {
 		VALIDATION = "validation",
 		THEMING = "theming",
 		CUSTOMIZATION = "customization",
+		PROPERTIES = "properties",
+		EVENTS = "events",
 		// miscellaneous 
 		LIST = "list",
 	}

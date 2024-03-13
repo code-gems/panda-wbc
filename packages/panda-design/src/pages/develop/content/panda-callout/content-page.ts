@@ -2,7 +2,6 @@
 import {
 	ComponentPropertyDetails,
 	ComponentEventDetails,
-	PageCategory,
 	ContentSectionName,
 } from "panda-design-typings";
 
@@ -19,34 +18,18 @@ import { CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
-import {
-	pageId,
-	pageName,
-	pageUri,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
+import { pageConfig } from "./page-config";
 import { implementationSnippet, installationSnippet } from "./snippets/snippets";
 
 // static data
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 @customElement("panda-callout-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-callout-content-page></panda-callout-content-page>`
-})
+@page(pageConfig)
 export class PandaCalloutContentPage extends ContentPageTemplate {
 	// page details
 	public customStyles: CSSResultGroup = styles;
-	public pageId: string = pageId;
+	public pageId: string = pageConfig.pageId;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Component color theme." },

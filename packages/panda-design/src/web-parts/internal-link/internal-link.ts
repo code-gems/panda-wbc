@@ -55,17 +55,13 @@ class InternalLink extends LitElement {
 
 	private _getTarget() {
 		if (this.target === "") {
-			let _target = "";
-			let attr = this.parentElement?.attributes.getNamedItem("data-content-section-name");
-
 			// check if attribute exists on parent element
+			let attr = this.parentElement?.attributes.getNamedItem("data-content-section-name");
 			// if not, drill one level more
 			if (!attr) {
 				attr = this.parentElement?.parentElement?.attributes.getNamedItem("data-content-section-name");
 			}
-
-			_target = attr?.value || "";
-			this.target = _target;
+			this.target = attr?.value ?? "";
 		}
 	}
 
