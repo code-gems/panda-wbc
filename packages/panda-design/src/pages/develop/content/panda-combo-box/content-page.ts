@@ -199,7 +199,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Combo boxes are widely used in various applications, such as forms, configuration panels, and settings menus. 
 						They enhance the user experience by providing a compact and intuitive interface for selecting options, 
@@ -281,7 +281,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="installation">
 				<div class="section">
-					<h2>Installation</h2>
+					<internal-link theme="h2">Installation</internal-link>
 					<p>
 						Begin by installing the npm library by running a command in the terminal or command prompt. 
 						Use the npm package manager, specifying the library name and version.
@@ -300,7 +300,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="usage">
 				<div class="section">
-					<h2>Usage</h2>
+					<internal-link theme="h2">Usage</internal-link>
 					<p>
 						The following example showcase use of component:
 					</p>

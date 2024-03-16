@@ -46,7 +46,7 @@ export class PandaRadioButtonContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview" style="height: 1000px;">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Radio buttons are a type of input used in web applications to present a list of options where the user can select only one. 
 						They are typically used when the user needs to see all available options listed and can select only one of them. 

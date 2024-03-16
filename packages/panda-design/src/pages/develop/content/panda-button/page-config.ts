@@ -5,12 +5,12 @@ import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
-	pageName: "Button",
-	pageId: "panda-button",
-	pageUri: "/develop?page=panda-button",
+	pageName: "Circular Countdown Timer",
+	pageId: "panda-circular-countdown-timer",
+	pageUri: "/develop?page=panda-circular-countdown-timer",
 	category: PageCategory.DEVELOP,
-	keywords: ["button", "cta", "action", "interface", "form"],
-	description: ["Showcase of a panda-button element."],
+	keywords: ["circular", "countdown", "timer"],
+	description: ["Showcase of a panda-circular-countdown-timer element."],
 	
 	contextMenu: [		
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
@@ -22,6 +22,6 @@ export const pageConfig: Page = {
 		{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
 	],
 
-	template: html`<panda-button-content-page></panda-button-content-page>`,
+	template: html`<panda-circular-countdown-timer-content-page></panda-circular-countdown-timer-content-page>`,
 };
 	

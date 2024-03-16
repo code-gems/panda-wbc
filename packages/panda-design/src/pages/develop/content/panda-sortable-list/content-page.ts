@@ -120,7 +120,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Callout component is valuable element in web applications designed to draw attention to specific information or actions. 
 						These components often feature visually distinct styles, such as borders, background colors, or icons, making them stand out within a user interface.
@@ -154,7 +154,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 			<!-- INSTALLATION -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.INSTALLATION}">
 				<div class="section">
-					<h2>Installation</h2>
+					<internal-link theme="h2">Installation</internal-link>
 					<p>
 						Start by initiating the installation of the npm library through a command executed in either the terminal or command prompt.
 						Utilize the package manager, indicating both the library name and its version for installation.
@@ -173,7 +173,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 			<!-- USAGE -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.USAGE}">
 				<div class="section">
-					<h2>Usage</h2>
+					<internal-link theme="h2">Usage</internal-link>
 					<p>
 						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
 					</p>
@@ -231,7 +231,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 			<!-- COMPONENT STATES -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.COMPONENT_STATES}">
 				<div class="section">
-					<h2>Component States</h2>
+					<internal-link theme="h2">Component States</internal-link>
 					<p>
 						Web components typically exhibit various states that mirror their behavior and appearance, adapting to user interactions or the logic of the application. 
 						Provided below is a selection of commonly encountered states:

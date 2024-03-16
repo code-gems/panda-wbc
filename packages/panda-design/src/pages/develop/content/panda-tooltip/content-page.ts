@@ -78,7 +78,7 @@ export class PandaTooltipContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview" style="height: 1000px;">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Tooltips are essential user interface components in web applications that provide additional information and context to users when they interact with elements on a webpage. 
 						They serve as a valuable UX enhancement tool by offering concise explanations, hints, or descriptions of elements such as buttons, icons, links, or form fields.

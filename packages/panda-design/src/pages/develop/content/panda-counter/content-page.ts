@@ -68,7 +68,7 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview" style="height: 1000px;">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						The Panda Counter is a web component that provides a simple and visually appealing way to display and animate numerical counters for your application.
 						This component is designed for scenarios where you want to showcase fast changing values, such as counting the number of likes, comments, or any other quantifiable metric.

@@ -6,6 +6,7 @@ import {
 	ContentSectionName,
 } from "panda-design-typings";
 import { PandaSwitchChangeEvent } from "@panda-wbc/panda-switch";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
@@ -29,8 +30,7 @@ import {
 import { implementationSnippet, installationSnippet } from "./snippets/snippets";
 
 // static data
-import { getCountryList } from "../../static-data";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
+// ...
 
 @customElement("panda-switch-content-page")
 @page({
@@ -107,7 +107,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Select component in web applications offers a flexible and versatile way to create dropdown menus that align with the application's design and functionality requirements. 
 						Its ability to enhance styling, provide customization options, improve accessibility, and support various user interactions makes it a valuable component 
@@ -146,7 +146,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 			<!-- INSTALLATION -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.INSTALLATION}">
 				<div class="section">
-					<h2>Installation</h2>
+					<internal-link theme="h2">Installation</internal-link>
 					<p>
 						Start by initiating the installation of the npm library through a command executed in either the terminal or command prompt.
 						Utilize the package manager, indicating both the library name and its version for installation.
@@ -165,7 +165,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 			<!-- USAGE -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.USAGE}">
 				<div class="section">
-					<h2>Usage</h2>
+					<internal-link theme="h2">Usage</internal-link>
 					<p>
 						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
 					</p>
@@ -184,8 +184,8 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 	private _renderComponentPropertiesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Properties</h3>
+			<div class="section" data-content-section-name="${ContentSectionName.PROPERTIES}">
+				<internal-link theme="h3">Properties</internal-link>
 				<p>
 					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 					and they are frequently employed for data binding purposes. 
@@ -202,8 +202,8 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 	private _renderComponentEventsSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Events</h3>
+			<div class="section" data-content-section-name="${ContentSectionName.EVENTS}">
+				<internal-link theme="h3">Events</internal-link>
 				<p>
 					Component events are instrumental in elevating the interactivity and adaptability of software applications. 
 					These events serve as carefully designed triggers that facilitate communication between the component and the application, 
@@ -223,7 +223,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 			<!-- COMPONENT STATES -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.COMPONENT_STATES}">
 				<div class="section">
-					<h2>Component States</h2>
+					<internal-link theme="h2">Component States</internal-link>
 					<p>
 						Web components typically exhibit various states that mirror their behavior and appearance, adapting to user interactions or the logic of the application. 
 						Provided below is a selection of commonly encountered states:
@@ -242,7 +242,7 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 
 	private _renderDefaultComponentStateSection(): TemplateResult {
 		return html`
-			<div class="section">
+			<div class="section" data-content-section-name="component-states-default">
 				<h3>Default</h3>
 				<p>
 					The default state represents the initial appearance and behavior of the component when it is first rendered or loaded.

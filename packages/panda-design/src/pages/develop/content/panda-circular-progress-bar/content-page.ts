@@ -91,7 +91,7 @@ export class ContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 
 					</p>
@@ -183,7 +183,7 @@ export class ContentPage extends ContentPageTemplate {
 			<!-- INSTALLATION -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.INSTALLATION}">
 				<div class="section">
-					<h2>Installation</h2>
+					<internal-link theme="h2">Installation</internal-link>
 					<p>
 						Start by initiating the installation of the npm library through a command executed in either the terminal or command prompt.
 						Utilize the package manager, indicating both the library name and its version for installation.
@@ -202,7 +202,7 @@ export class ContentPage extends ContentPageTemplate {
 			<!-- USAGE -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.USAGE}">
 				<div class="section">
-					<h2>Usage</h2>
+					<internal-link theme="h2">Usage</internal-link>
 					<p>
 						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
 					</p>

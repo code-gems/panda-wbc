@@ -14,7 +14,6 @@ import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
-import { bannerConfig2 } from "../../../../utils/particle-banner-presets";
 
 // code snippets
 import {
@@ -31,7 +30,7 @@ import {
 } from "./snippets/snippets";
 
 @page(pageConfig)
-@customElement("panda-button-content-page")
+@customElement(pageConfig.pageId)
 export class PandaButtonContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;
@@ -116,6 +115,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
 			${this._renderComponentStatesSection()}
+			${this._renderFeaturesSection()}
 			${this._renderThemingSection()}
 		`;
 	}
@@ -223,7 +223,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 			<!-- COMPONENT STATES -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.COMPONENT_STATES}">
 				<div class="section">
-					<internal-link theme="h3">Component States</internal-link>
+					<internal-link theme="h2">Component States</internal-link>
 					<p>
 						Web components typically have different states that reflect their behavior and appearance based on user interaction or application logic.
 						Below is the list of few states that are typical to this component:
@@ -392,6 +392,82 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 
 				<code-sample header="Busy State Example">
 					${busyStateSnippet}
+				</code-sample>
+			</div>
+		`;
+	}
+
+	private _renderFeaturesSection(): TemplateResult {
+		return html`
+			<!-- FEATURES -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.FEATURES}">
+				<div class="section">
+					<internal-link theme="h2">Features</internal-link>
+					<p>
+						TDB
+					</p>
+				</div>
+
+				${this._renderPrefixFeatureSection()}
+			</div> <!-- END OF CONTENT SECTION -->
+		`;
+	}
+
+	private _renderPrefixFeatureSection(): TemplateResult {
+		return html`
+			<div class="section" data-content-section-name="feature-prefix">
+				<internal-link theme="h3">Prefix</internal-link>
+				<p>
+					TBD
+				</p>
+
+				<!-- SAMPLE -->
+				<div class="sample-cont">
+					<div class="sample">
+						<div class="rows">
+							<div class="row">
+								<div class="col-4">
+									<panda-button
+										theme="info"
+										@click="${this._onClick}"
+									>
+										<div slot="prefix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+										Click Me!
+									</panda-button>
+								</div>
+								<div class="col-4">
+									<panda-button
+										theme="info"
+										@click="${this._onClick}"
+										disabled
+									>
+										<div slot="prefix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+										Click Me!
+									</panda-button>
+								</div>
+								<div class="col-4">
+									<panda-button
+										theme="info"
+										@click="${this._onClick}"
+										busy
+									>
+										<div slot="prefix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+										Click Me!
+									</panda-button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<code-sample header="Info Theme Example">
+					${infoThemeSnippet}
 				</code-sample>
 			</div>
 		`;

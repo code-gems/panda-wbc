@@ -82,7 +82,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
-					<h2>Overview</h2>
+					<internal-link theme="h2">Overview</internal-link>
 					<p>
 						Panda Flag is a versatile and dynamic solution designed to effortlessly incorporate national flags into your user interface. 
 						This intuitive component serves as a visual gateway to represent countries, fostering a rich and engaging user experience.
