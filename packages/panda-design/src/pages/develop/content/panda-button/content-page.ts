@@ -30,7 +30,7 @@ import {
 } from "./snippets/snippets";
 
 @page(pageConfig)
-@customElement(pageConfig.pageId)
+@customElement("panda-button-content-page")
 export class PandaButtonContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;

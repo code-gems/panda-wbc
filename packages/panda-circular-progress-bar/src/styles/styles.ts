@@ -77,7 +77,6 @@ export const styles = css`
 		transition: opacity 500ms ease;
 		transform-origin: center;
 		
-		animation-fill-mode: forwards;
 		animation: spin 1s infinite linear;
 	}
 

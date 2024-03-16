@@ -60,7 +60,7 @@ export class PandaCircularProgressBar extends LitElement {
 		super.connectedCallback();
 		this._radius = 50 - (this.thickness / 2);
 		this._dashArray = 2 * Math.PI * this._radius;
-		this._progress = this._dashArray;
+		this._progress = this._dashArray; // set progress to 0
 	}
 
 	updated(_changedProps: PropertyValues): void {

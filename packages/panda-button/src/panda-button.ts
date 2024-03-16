@@ -6,7 +6,7 @@ import "@panda-wbc/panda-spinner";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, queryAssignedElements } from "lit/decorators.js";
 
 @customElement("panda-button")
 export class PandaButton extends LitElement {
@@ -27,11 +27,18 @@ export class PandaButton extends LitElement {
 	@property({ type: String })
 	theme!: string;
 
+	@queryAssignedElements({ slot: "prefix" })
+	_prefixSlot: any;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	// ...
+	protected firstUpdated(): void {
+
+		console.log("%c _prefixSlot", "font-size: 24px; color: red;", this._prefixSlot);
+		
+	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -61,7 +68,12 @@ export class PandaButton extends LitElement {
 				part="button"
 				.disabled="${this.disabled}"
 			>
-				<slot name="prefix" part="prefix"></slot>
+				<slot
+					name="prefix"
+					part="prefix"
+					@slotchange="${this._onPrefixSlotChange}"
+				>
+				</slot>
 				<div class="content" part="content">
 					<slot></slot>
 				</div>
@@ -75,7 +87,9 @@ export class PandaButton extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _onPrefixSlotChange(event: any) {
+		console.log("%c _onPrefixSlotChange", "font-size: 48px; color: red;", event);
+	}
 }
 
 declare global {

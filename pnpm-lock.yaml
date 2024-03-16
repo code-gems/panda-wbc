@@ -85,6 +85,19 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-circular-countdown-timer:
+    dependencies:
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-circular-progress-bar:
     dependencies:
       lit:
@@ -191,6 +204,9 @@ importers:
       '@panda-wbc/panda-checkbox':
         specifier: workspace:*
         version: link:../panda-checkbox
+      '@panda-wbc/panda-circular-countdown-timer':
+        specifier: workspace:*
+        version: link:../panda-circular-countdown-timer
       '@panda-wbc/panda-circular-progress-bar':
         specifier: workspace:*
         version: link:../panda-circular-progress-bar

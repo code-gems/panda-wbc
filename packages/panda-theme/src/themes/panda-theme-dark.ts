@@ -413,6 +413,21 @@ export const pandaThemeDark = css`
 		--panda-progress-bar-background-color: var(--panda-background-color-500);
 
 		/* ========================================================================================================= */
+		/* PANDA COUNTDOWN TIMER =================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-countdown-timer-color: var(--panda-text-color);
+		--panda-countdown-timer-text-color: var(--panda-label-color);
+		--panda-countdown-timer-background-color: var(--panda-background-color);
+		
+		--panda-countdown-timer-donut-size: 10;
+		--panda-countdown-timer-donut-color: var(--panda-text-color);
+		--panda-countdown-timer-donut-text-color: var(--panda-text-color);
+
+		--panda-countdown-timer-loader-size: 10;
+		--panda-countdown-timer-loader-color: var(--panda-label-color);
+
+		/* ========================================================================================================= */
 		/* PANDA CIRCULAR PROGRESS BAR ============================================================================= */
 		/* ========================================================================================================= */
 
