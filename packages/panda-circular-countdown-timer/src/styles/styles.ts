@@ -80,10 +80,9 @@ export const styles = css`
 	.scale {
 		opacity: 0;
 		fill: none;
-		stroke: var(--panda-countdown-timer-donut-color, hsl(0deg 0% 92%));
-		stroke-width: var(--panda-countdown-timer-donut-size, 10);
-		stroke-width: var(--panda-circular-progress-bar-scale-stroke-width, 2);
-		stroke-dasharray: var(--panda-circular-progress-bar-scale-stroke-dasharray, 2 5.65);
+		stroke: var(--panda-countdown-timer-scale-color, hsl(0deg 0% 92%));
+		stroke-width: var(--panda-countdown-timer-scale-stroke-width, 2);
+		stroke-dasharray: var(--panda-countdown-timer-scale-stroke-dasharray, 2 5.65);
 
 		r: 45;
 	}

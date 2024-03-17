@@ -20,14 +20,17 @@ class PandaCircularCountdownTimer extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	autostart: boolean = false;
 
-	@property({ type: Boolean, attribute: "show-interval", reflect: true })
-	showInterval: boolean = false;
+	@property({ type: Boolean, attribute: "show-time", reflect: true })
+	showTime: boolean = false;
 
 	@property({ type: String })
 	format: string = "MM:SS";
 
 	@property({ type: Boolean, attribute: "show-scale", reflect: true })
 	showScale: boolean = false;
+
+	@property({ type: Boolean, reflect: true })
+	clockwise: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
 	paused: boolean = false;
@@ -185,12 +188,17 @@ class PandaCircularCountdownTimer extends LitElement {
 	}
 
 	private _updateTimer(): void {
+		let _progress: number = 0;
 		// round up to avoid gaps
-		const _progress: number = Math.ceil((this._totalLength * this._time) / this.time);
+		if (this.clockwise) {
+			_progress = Math.ceil((this._totalLength * this._time) / this.time);
+		} else {
+			_progress = Math.ceil(this._totalLength - (this._totalLength * this._time) / this.time);
+		}
 		this._circleEl.style.strokeDasharray = `${_progress} ${this._totalLength}`;
 
 		// calculate counter if enabled
-		if (this.showInterval && !this.busy) {
+		if (this.showTime && !this.busy) {
 			this._counter = this._formatTime(Math.round(this.time - this._time), this.format);
 		} else {
 			this._counter = "";
