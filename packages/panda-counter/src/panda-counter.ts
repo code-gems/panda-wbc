@@ -36,10 +36,10 @@ export class PandaCounter extends LitElement {
 
 	@property({ type: Number, attribute: "maximum-fraction-digits" })
 	maximumFractionDigits: number = 2;
-	
+
 	@property({ type: String })
-	charSet: string[] = ["-", "+", ",", ".", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "];
-	
+	charSet!: string[];
+
 	@property({ type: String })
 	animation: PandaCounterAnimation = PandaCounterAnimation.EASE;
 
@@ -47,6 +47,9 @@ export class PandaCounter extends LitElement {
 	debounce: boolean = false;
 
 	// state props
+	@state()
+	private _charSet: string[] = [];
+	
 	@state()
 	private _charList: string[] = [];
 
@@ -84,6 +87,28 @@ export class PandaCounter extends LitElement {
 				this._parseValue();
 			}
 		}
+		// check counter style and apply proper char set
+		if (changedProps.has("counterStyle") && this.counterStyle !== undefined) {
+			switch(this.counterStyle) {
+				case (PandaCounterStyle.ALPHANUMERIC):
+					this._charSet = [
+						"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+						"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+						"~", "!", "?", "\"", "'", "/", "@", "#", "$", "%", "^", "&", "*", "(", ")", "[", "]", "{", "}", "<", ">", ":", ";", "_", "=", "`", "\\", "|",
+						"-", "+", ",", ".", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "
+					];
+					break;
+				// PandaCounterStyle.DECIMAL
+				// PandaCounterStyle.CURRENCY
+				default:
+					this._charSet = ["-", "+", ",", ".", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "];
+					break;
+			}
+		}
+		// check if we have custom char set
+		if (changedProps.has("charSet") && this.charSet !== undefined) {
+			this._charSet = [...this.charSet];
+		}
 	}
 
 	disconnectedCallback(): void {
@@ -115,7 +140,7 @@ export class PandaCounter extends LitElement {
 		return html`
 			${labelHtml}
 			<div class="counter" part="counter">
-				<div id="text-metrics" class="text-metrics">${this.charSet.join("")}</div>
+				<div id="text-metrics" class="text-metrics">${this._charSet.join("")}</div>
 				<slot name="prefix"></slot>
 				${this._renderPanels()}
 				<slot name="suffix"></slot>
@@ -131,7 +156,7 @@ export class PandaCounter extends LitElement {
 					.animation="${this.animation}"
 					.index="${index}"
 					.char="${char}"
-					.charSet="${this.charSet}"
+					.charSet="${this._charSet}"
 					.textHeight="${this._textHeight}"
 				>
 				</panda-counter-panel>

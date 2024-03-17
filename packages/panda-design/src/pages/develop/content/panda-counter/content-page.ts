@@ -64,6 +64,7 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
+		const _customCharSet = ["狗", "猫"];
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview" style="height: 1000px;">
@@ -97,7 +98,7 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 											<panda-icon icon="download-file"></panda-icon>
 										</div>
 										<panda-counter
-											.value="${100}"
+											.value="${this._value}"
 										>
 											<div slot="suffix">%</div>
 										</panda-counter>
@@ -111,8 +112,20 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 										theme="big-display"
 										label="My Account:"
 										.value="${this._value}"
-										counter-style="0"
+										counter-style="2"
 										.animation="${7}"
+										debounce
+									>
+									</panda-counter>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-full">
+									<panda-counter
+										label="Custom characters:"
+										.value="${this._value}"
+										.charSet="${_customCharSet}"
 										debounce
 									>
 									</panda-counter>
@@ -170,6 +183,26 @@ export class PandaCounterContentPage extends ContentPageTemplate {
 										@click="${() => this._onSetValue("1000.02")}"
 									>
 										1000.02
+									</panda-button>
+									<panda-button
+										@click="${() => this._onSetValue("USD")}"
+									>
+										USD
+									</panda-button>
+									<panda-button
+										@click="${() => this._onSetValue("SGD")}"
+									>
+										SGD
+									</panda-button>
+									<panda-button
+										@click="${() => this._onSetValue("狗")}"
+									>
+										狗
+									</panda-button>
+									<panda-button
+										@click="${() => this._onSetValue("猫")}"
+									>
+										猫
 									</panda-button>
 								</div>
 							</div>

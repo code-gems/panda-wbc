@@ -1,6 +1,7 @@
 export const enum PandaCounterStyle {
 	DECIMAL, // [default]
 	CURRENCY,
+	ALPHANUMERIC,
 }
 
 export const enum PandaCounterAnimation {
