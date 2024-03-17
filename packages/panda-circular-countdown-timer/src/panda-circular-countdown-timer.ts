@@ -23,6 +23,9 @@ class PandaCircularCountdownTimer extends LitElement {
 	@property({ type: Boolean, attribute: "show-interval", reflect: true })
 	showInterval: boolean = false;
 
+	@property({ type: String })
+	format: string = "MM:SS";
+
 	@property({ type: Boolean, attribute: "show-scale", reflect: true })
 	showScale: boolean = false;
 
@@ -55,7 +58,7 @@ class PandaCircularCountdownTimer extends LitElement {
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-		
+
 	protected firstUpdated(): void {
 		this._totalLength = this._circleEl.getTotalLength();
 		this._circleEl.style.strokeDasharray = `0 ${this._totalLength}`; // set progress indication to 0 
@@ -118,7 +121,7 @@ class PandaCircularCountdownTimer extends LitElement {
 					class="counter"
 					part="counter"
 				>
-					${this._counter ?? ""}
+					${this._counter}
 					<slot></slot>
 				</div>
 			`;
@@ -142,6 +145,7 @@ class PandaCircularCountdownTimer extends LitElement {
 		this._updateTimer();
 		if (this._countdownTimer) {
 			clearInterval(this._countdownTimer);
+			this._countdownTimer = null;
 		}
 	}
 
@@ -167,10 +171,10 @@ class PandaCircularCountdownTimer extends LitElement {
 		if (!this.busy && !this.paused) {
 			this._time++;
 			this._updateTimer();
-	
+
 			// trigger countdown event
 			this._triggerTickEvent();
-	
+
 			// check if countdown is over
 			if (this._time >= this.time) {
 				this._time = 0;
@@ -184,12 +188,54 @@ class PandaCircularCountdownTimer extends LitElement {
 		// round up to avoid gaps
 		const _progress: number = Math.ceil((this._totalLength * this._time) / this.time);
 		this._circleEl.style.strokeDasharray = `${_progress} ${this._totalLength}`;
-		
+
 		// calculate counter if enabled
 		if (this.showInterval && !this.busy) {
-			this._counter = `${Math.round(this.time - this._time)}s`;
+			this._counter = this._formatTime(Math.round(this.time - this._time), this.format);
 		} else {
 			this._counter = "";
+		}
+	}
+
+	private _formatTime(seconds: number, format: string = "MM:SS"): string {
+		if (isNaN(seconds) || seconds < 0) {
+			return format.replace(/HH|MM|SS/g, '00');
+		}
+
+		const hours = Math.floor(seconds / 3600);
+		const minutes = Math.floor((seconds % 3600) / 60);
+		const remainingSeconds = Math.floor(seconds % 60);
+		// formatting
+		const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+
+		// check if format string contains HH (hours)
+		if (
+			!format.includes("HH") &&
+			format.includes("MM") &&
+			format.includes("SS")
+		) {
+			// add hours to minutes
+			const totalMinutes = hours * 60 + minutes;
+			// format: MM:SS
+			return format
+				.replace("MM", totalMinutes.toString().padStart(2, "0"))
+				.replace("SS", formattedSeconds);
+		} else if (
+			!format.includes("HH") &&
+			!format.includes("MM") &&
+			format.includes("SS")
+		) {
+			// format: SS
+			return format.replace("SS", seconds.toString().padStart(2, '0'));
+		} else {
+			// formatting
+			const formattedHours = hours.toString().padStart(2, '0');
+			const formattedMinutes = minutes.toString().padStart(2, '0');
+			// format: HH:MM:SS
+			return format
+				.replace("HH", formattedHours)
+				.replace("MM", formattedMinutes)
+				.replace("SS", formattedSeconds);
 		}
 	}
 

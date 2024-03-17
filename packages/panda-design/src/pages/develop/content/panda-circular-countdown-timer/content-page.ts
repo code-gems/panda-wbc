@@ -11,7 +11,7 @@ import "@panda-wbc/panda-button";
 
 // utils & config
 import { TemplateResult, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, state, query } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
@@ -47,6 +47,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _paused: boolean = false;
+
+	@query("#timer")
+	private _timer!: any;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -90,7 +93,9 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="sample">
 
 						<panda-circular-countdown-timer
-							.time="${10}"
+							id="timer"
+							.time="${90}"
+							.format="${"SSs"}"
 							autostart
 							show-interval
 							show-scale
@@ -102,7 +107,8 @@ export class ContentPage extends ContentPageTemplate {
 
 						<panda-circular-countdown-timer
 							theme="donut"
-							.time="${10}"
+							.time="${90}"
+							.format="${"MMm SSs"}"
 							show-interval
 							show-scale
 							autostart
@@ -116,9 +122,19 @@ export class ContentPage extends ContentPageTemplate {
 				</div>
 
 				<panda-button
+					@click="${this._onStart}"
+				>
+					START
+				</panda-button>
+				<panda-button
 					@click="${this._onTogglePause}"
 				>
-					TOGGLE PAUSED STATE
+					PAUSE
+				</panda-button>
+				<panda-button
+					@click="${this._onStop}"
+				>
+					STOP
 				</panda-button>
 				<panda-button
 					@click="${this._onToggleBusy}"
@@ -198,6 +214,14 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onTogglePause(): void {
 		this._paused = !this._paused;
+	}
+
+	private _onStart(): void {
+		this._timer.start();
+	}
+
+	private _onStop(): void {
+		this._timer.stop();
 	}
 
 	private _onCountdownOver(): void {

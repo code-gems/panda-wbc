@@ -25,6 +25,7 @@ export const styles = css`
 		color: var(--panda-countdown-timer-text-color, hsl(0deg 0% 50%));
 		font-size: var(--panda-font-size-l);
 		font-family: var(--panda-font-family-bold);
+		text-align: center;
 		user-select: none;
 	}
 
