@@ -38,7 +38,7 @@ export class PandaCounter extends LitElement {
 	maximumFractionDigits: number = 2;
 	
 	@property({ type: String })
-	charSet: string[] = ["-", "+", " ", ",", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+	charSet: string[] = ["-", "+", ",", ".", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " "];
 	
 	@property({ type: String })
 	animation: PandaCounterAnimation = PandaCounterAnimation.EASE;
