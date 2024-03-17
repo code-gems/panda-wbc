@@ -22,6 +22,7 @@ declare module "panda-design-typings" {
 		CUSTOMIZATION = "customization",
 		PROPERTIES = "properties",
 		EVENTS = "events",
+		INTERFACE = "interface",
 		// miscellaneous 
 		LIST = "list",
 	}
@@ -88,6 +89,12 @@ declare module "panda-design-typings" {
 	}
 
 	export interface ComponentEventDetails {
+		name: string;
+		returnType: string;
+		description: string;
+	}
+
+	export interface ComponentInterfaceDetails {
 		name: string;
 		returnType: string;
 		description: string;

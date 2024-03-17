@@ -424,8 +424,12 @@ export const uiComponents = {
 			grid-template-columns: 200px 170px 90px 170px auto !important;
 		}
 
-		.table.table-events {
+		.table.table-events .tr {
+			grid-template-columns: 200px 170px auto !important;
+		}
 
+		.table.table-interface .tr {
+			grid-template-columns: 200px 170px auto !important;
 		}
 
 	`,

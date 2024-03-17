@@ -1,6 +1,7 @@
 // types
 import {
 	ComponentEventDetails,
+	ComponentInterfaceDetails,
 	ComponentPropertyDetails,
 	ContentSectionName,
 } from "panda-design-typings";
@@ -52,6 +53,13 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "countdown-over", returnType: "Event", description: "Triggered when countdown is over." },
 	];
 
+	private _componentInterface: ComponentInterfaceDetails[] = [
+		{ name: "start", returnType: "void", description: "Starts/Resumes countdown timer." },
+		{ name: "pause", returnType: "void", description: "Pauses/Resumes countdown timer." },
+		{ name: "stop", returnType: "void", description: "Stops countdown timer and resets timer to the initial value." },
+		{ name: "restart", returnType: "void", description: "Restarts countdown timer from the initial value." },
+	];
+
 	@state()
 	private _busy: boolean = false;
 
@@ -95,7 +103,9 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-
+						Panda Circular Countdown Timer is a versatile component that can be used in web applications to visually display and track time intervals.
+						This component enriches user experiences by offering a dynamic and intuitive representation of time, enhancing engagement and usability.
+						Developers can leverage this component across various use cases, including countdowns for events, progress indicators for time-bound tasks.
 					</p>
 				</div>
 
@@ -195,6 +205,7 @@ export class ContentPage extends ContentPageTemplate {
 				</div>
 				${this._renderComponentPropertiesSection()}
 				${this._renderComponentEventsSection()}
+				${this._renderComponentInterfaceSection()}
 			</div>
 		`;
 	}
@@ -202,8 +213,8 @@ export class ContentPage extends ContentPageTemplate {
 	private _renderComponentPropertiesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Properties</h3>
+			<div class="section" data-content-section-name="${ContentSectionName.PROPERTIES}">
+				<internal-link theme="h3">Properties</internal-link>
 				<p>
 					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 					and they are frequently employed for data binding purposes. 
@@ -232,6 +243,23 @@ export class ContentPage extends ContentPageTemplate {
 				</p>
 				
 				${this._renderComponentEventsTable(this._componentEvents)}
+			</div>
+		`;
+	}
+
+	private _renderComponentInterfaceSection(): TemplateResult {
+		return html`
+			<!-- COMPONENT INTERFACE -->
+			<div class="section" data-content-section-name="${ContentSectionName.INTERFACE}">
+				<internal-link theme="h3">Interface</internal-link>
+				<p>
+					The component interface serves as the bridge between the component's functionality and the implementation layer, enabling seamless integration and interaction with component. 
+				</p>
+				<p>
+					See the list of available functionalities:
+				</p>
+				
+				${this._renderComponentInterfaceTable(this._componentInterface)}
 			</div>
 		`;
 	}
