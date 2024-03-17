@@ -24,18 +24,21 @@ export const styles = css`
 		display: block;
 		content: "#";
 		top: 50%;
-		left: -0.8em;
+		left: -1.8em;
 
 		opacity: 0;
-		color: var(--panda-header-text-color-hover);
+		color: var(--panda-header-text-color);
 		transform: translate(-50%, -50%);
 		transition: all 200ms ease;
+		user-select: none;
+		pointer-events: none;
 
 		z-index: 1;
 	}
 
 	.link:hover::before {
 		opacity: 1;
+		left: -0.8em;
 		color: var(--panda-header-text-color-hover);
 	}
 
