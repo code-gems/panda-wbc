@@ -6,6 +6,7 @@
 	"main": "lib/panda-chart.js",
 	"scripts": {
 		"compile": "tsc",
+		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
 		"prepublishOnly": "npm run clean && npm run compile"

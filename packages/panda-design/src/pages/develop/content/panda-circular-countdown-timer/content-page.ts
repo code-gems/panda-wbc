@@ -10,7 +10,7 @@ import {
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-circular-countdown-timer";
+import "@panda-wbc/panda-countdown-timer";
 import "@panda-wbc/panda-counter";
 import "@panda-wbc/panda-button";
 

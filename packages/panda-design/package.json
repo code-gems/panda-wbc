@@ -26,8 +26,9 @@
 	"dependencies": {
 		"@panda-wbc/panda-button": "workspace:*",
 		"@panda-wbc/panda-callout": "workspace:*",
+		"@panda-wbc/panda-chart": "workspace:*",
 		"@panda-wbc/panda-checkbox": "workspace:*",
-		"@panda-wbc/panda-circular-countdown-timer": "workspace:*",
+		"@panda-wbc/panda-countdown-timer": "workspace:*",
 		"@panda-wbc/panda-circular-progress-bar": "workspace:*",
 		"@panda-wbc/panda-combo-box": "workspace:*",
 		"@panda-wbc/panda-core": "workspace:*",

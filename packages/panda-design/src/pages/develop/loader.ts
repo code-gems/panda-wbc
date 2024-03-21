@@ -10,6 +10,7 @@ import "./content/panda-date-picker/content-page";
 import "./content/panda-dialog/content-page";
 import "./content/panda-flag/content-page";
 import "./content/panda-icon/content-page";
+import "./content/panda-line-chart/content-page";
 import "./content/panda-menu-bar/content-page";
 import "./content/panda-multi-input/content-page";
 import "./content/panda-notifications/content-page";

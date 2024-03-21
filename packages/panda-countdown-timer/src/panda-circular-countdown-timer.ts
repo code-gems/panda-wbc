@@ -120,12 +120,9 @@ class PandaCircularCountdownTimer extends LitElement {
 	private _renderCounter(): TemplateResult | void {
 		if (!this.busy) {
 			return html`
-				<div
-					class="counter"
-					part="counter"
-				>
-					${this._counter}
+				<div class="counter" part="counter">
 					<slot></slot>
+					${this._counter}
 				</div>
 			`;
 		}
