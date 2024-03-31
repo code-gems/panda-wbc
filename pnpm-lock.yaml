@@ -695,6 +695,9 @@ importers:
 
   packages/panda-toggle:
     dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner

@@ -8,7 +8,9 @@ export const styles = css`
 	}
 
 	.icon {
-		display: block;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		width: 100%;
 		height: 100%;
 	}

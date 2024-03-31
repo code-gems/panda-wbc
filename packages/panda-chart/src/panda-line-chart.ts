@@ -1,6 +1,6 @@
 import { PandaChartData } from "../index";
 
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css, svg, TemplateResult } from 'lit';
 import { property, customElement } from "lit/decorators.js";
 
 @customElement("panda-line-chart")
@@ -38,7 +38,7 @@ class LineChart extends LitElement {
 		`;
 	}
 
-	private _renderChart() {
+	private _renderChart(): TemplateResult {
 		const {
 			labels = [],
 			datasets

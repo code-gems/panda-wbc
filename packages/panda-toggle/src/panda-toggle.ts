@@ -1,7 +1,11 @@
+// types
+import { PandaToggleChangeEvent } from "../index";
+
 // style
 import { styles } from "./styles/styles";
 
 // components
+import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-spinner";
 
 // utils
@@ -16,7 +20,7 @@ export class PandaToggle extends LitElement {
 	}
 
 	@property({ type: Boolean, attribute: true, reflect: true })
-	checked: boolean = false;
+	selected: boolean = false;
 
 	@property({ type: Boolean, attribute: true, reflect: true })
 	indeterminate: boolean = false;
@@ -29,6 +33,12 @@ export class PandaToggle extends LitElement {
 
 	@property({ type: String, attribute: true })
 	spinner: string = "dots";
+	
+	@property({ type: String, attribute: "selected-icon" })
+	selectedIcon: string | null = null;
+
+	@property({ type: String, attribute: "unselected-icon" })
+	unselectedIcon: string | null = null;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -41,9 +51,14 @@ export class PandaToggle extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
-		const spinnerHtml: TemplateResult[] = [];
+		const selectedCss = this.selected ? "selected" : "";
+		const modCss: string[] = [];
+		let spinnerHtml: TemplateResult = html``;
+		let selectedIconHtml: TemplateResult = html``;
+		let unselectedIconHtml: TemplateResult = html``;
+
 		if (this.busy) {
-			spinnerHtml.push(html`
+			spinnerHtml = html`
 				<div
 					class="spinner-cont"
 					part="spinner-cont"
@@ -54,38 +69,87 @@ export class PandaToggle extends LitElement {
 					>
 					</panda-spinner>
 				</div>
-			`);
+			`;
 		}
-		return html`
-			<label class="toggle" part="toggle">
-				<input
-					type="checkbox"
-					.checked=${this.checked}
-					.disabled=${this.disabled} 
-					.indeterminate=${this.indeterminate}
-					@change=${this._onToggle}
+		// apply selected icon
+		if (this.selectedIcon) {
+			selectedIconHtml = html`
+				<panda-icon
+					class="icon icon-selected"
+					part="icon selected"
+					.icon="${this.selectedIcon}"
 				>
-				<span class="slider"></span>
+				</panda-icon>
+			`;
+		}
+		// apply unselected icon
+		if (this.unselectedIcon) {
+			unselectedIconHtml = html`
+				<panda-icon
+					class="icon icon-unselected"
+					part="icon unselected"
+					.icon="${this.unselectedIcon}"
+				>
+				</panda-icon>
+			`;
+		}
+		// aggregate modifier/status css classes
+		if (this.selected) modCss.push("selected");
+		if (this.disabled) modCss.push("disabled");
+
+		return html`
+			<div
+				class="toggle ${modCss.join(" ")}"
+				part="toggle ${selectedCss}"
+				@click="${this._onToggle}"
+				@keydown="${this._onKeyDown}"
+				.tabIndex="${this.disabled ? -1 : 0}"
+			>
+				<div class="toggle-track" part="toggle-track"></div>
+				<div
+					class="toggle-handle"
+					part="toggle-handle"
+				>
+					${selectedIconHtml}
+					${unselectedIconHtml}
+				</div>
 				${spinnerHtml}
-			</label>
+			</div>
 		`;
+	}
+
+	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+
+	private _triggerChangeEvent(): void {
+		const event: PandaToggleChangeEvent = new CustomEvent('change', {
+			detail: {
+				selected: this.selected,
+			}
+		});
+		this.dispatchEvent(event);
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onToggle(e: any) {
-		this.checked = e.target.checked;
-		this.indeterminate = e.target.indeterminate;
+	private _onToggle(selected: boolean | null = null) {
+		if (!this.disabled && !this.busy) {
+			this.selected = selected === null ? !this.selected : selected;
+			this.indeterminate = false;
+		}
+	}
 
-		const event = new CustomEvent('change', {
-			detail: {
-				checked: this.checked,
-				indeterminate: this.indeterminate
-			}
-		});
-		this.dispatchEvent(event);
+	private _onKeyDown(event: KeyboardEvent): void {
+		console.log("%c something", "font-size: 24px; color: green;", event);
+		
+		if (event.code === "Space") {
+			event.stopPropagation();
+			event.preventDefault();
+			this._onToggle();
+		}
 	}
 }
 

@@ -70,11 +70,11 @@ export const styles = css`
 
 	/* FOCUSED STATE */
 	:host([focused]) .radio-button:not(.clicked) {
-		box-shadow: 0px 0px 0px 2px var(--panda-radio-button-outline-color);
+		box-shadow: 0px 0px 0px 2px var(--panda-outline-color);
 	}
 
 	:host([focused][disabled]) .radio-button:not(.clicked) {
-		box-shadow: 0px 0px 0px 2px var(--panda-radio-button-outline-color-disabled);
+		box-shadow: 0px 0px 0px 2px var(--panda-outline-color-disabled);
 	}
 
 	/* CLICKED STATE */

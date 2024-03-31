@@ -285,15 +285,18 @@ export const pandaThemeLight = css`
 		/* FORMS & COMPONENTS ====================================================================================== */
 		/* ========================================================================================================= */
 
+		/* COMPONENT SIZE */
 		--panda-component-size-s: 24px;
 		--panda-component-size-m: 30px;
 		--panda-component-size-l: 36px;
 		--panda-component-size-xl: 42px;
 
-		--panda-outline-color: var(--panda-primary-color);
+		/* OUTLINE & FOCUS */
+		--panda-outline-color: var(--panda-primary-color-40opc);
+		--panda-outline-color-disabled: var(--panda-primary-color-20opc);
+		
+		/* FORMS & VALIDATION */
 		--panda-form-border-color: hsl(0deg 0% 66%);
-
-		/* FORM VALIDATION */
 		--panda-form-validation-mandatory: var(--panda-action-color-warn);
 		--panda-form-validation-valid: var(--panda-action-color-done);
 		--panda-form-validation-invalid: var(--panda-action-color-alert);
@@ -361,16 +364,38 @@ export const pandaThemeLight = css`
 		--panda-dropdown-item-text-color-active: var(--panda-primary-text-color);
 		--panda-dropdown-item-background-color-active: var(--panda-primary-color);
 
-		/* ICON */
+		/* ========================================================================================================= */
+		/* ICONS =================================================================================================== */
+		/* ========================================================================================================= */
+
 		--panda-icon-color: var(--panda-text-color);
 		--panda-icon-color-disabled: var(--panda-text-color-disabled);
 
+		--panda-icon-size-xxs: 12px;
 		--panda-icon-size-xs: 16px;
 		--panda-icon-size-s: 18px;
 		--panda-icon-size-m: 20px;
 		--panda-icon-size-l: 24px;
 		--panda-icon-size-xl: 30px;
 		--panda-icon-size-hero: 46px;
+
+		/* ========================================================================================================= */
+		/* SPINNER ================================================================================================= */
+		/* ========================================================================================================= */
+
+		--panda-spinner-width: var(--panda-icon-size-m);
+		--panda-spinner-height: var(--panda-icon-size-m);
+		--panda-spinner-color: var(--panda-text-color);
+
+		/* ========================================================================================================= */
+		/* TOGGLE ================================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-toggle-handle-gap: 3px;
+		--panda-toggle-track-color: hsl(0deg 0% 32%);
+		--panda-toggle-track-color-disabled: hsl(0deg 0% 80%);
+		--panda-toggle-handle-color: hsl(0deg 0% 100%); 
+		--panda-toggle-handle-color-disabled: var(--panda-text-color-disabled);
 
 		/* ========================================================================================================= */
 		/* RADIO BUTTON ============================================================================================ */
@@ -386,9 +411,6 @@ export const pandaThemeLight = css`
 
 		--panda-radio-button-focus-ring-color: var(--panda-primary-color-50opc);
 		--panda-radio-button-focus-ring-color-disabled: var(--panda-primary-color-50opc);
-
-		--panda-radio-button-outline-color: var(--panda-primary-color-40opc);
-		--panda-radio-button-outline-color-disabled: var(--panda-primary-color-20opc);
 
 		--panda-radio-button-text-color: var(--panda-text-color);
 		--panda-radio-button-text-color-disabled: var(--panda-text-color-disabled);
