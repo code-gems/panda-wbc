@@ -17,7 +17,7 @@ import "@panda-wbc/panda-particle-banner";
 
 // utils
 import { CSSResultGroup, html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import {
@@ -57,6 +57,10 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 	private _componentInterface: ComponentEventDetails[] = [
 		{ name: "toggle()", returnType: "void", description: "Toggle value of the component." },
 	];
+
+	// demo props
+	@state()
+	private _showOption4: boolean = false;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -105,6 +109,18 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
+		let option4html: TemplateResult = html``;
+
+		if (this._showOption4) {
+			option4html = html`
+				<panda-checkbox
+					name="option-4"
+				>
+					Study
+				</panda-checkbox>
+			`;
+		}
+
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
@@ -126,34 +142,35 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 				<!-- OVERVIEW -->
 				<div class="sample-cont">
 					<div class="sample">
-						<div class="rows">
-							<div class="col-full">
-								<panda-checkbox
-									checked
-									@change="${this._onChange}"
-									strikethrough
-								>
-									Get milk
-								</panda-checkbox>
-							</div>
 
-							<div class="col-full">
-								<panda-checkbox
-									@change="${this._onChange}"
-								>
-									Feed my cat
-								</panda-checkbox>
-							</div>
-							
-							<div class="col-full">
-								<panda-checkbox
-									@change="${this._onChange}"
-								>
-									Play with my pet
-								</panda-checkbox>
-							</div>
-						</div>
-					</div>
+						<panda-checkbox-group
+							@change="${this._onChange}"
+						>
+							<panda-checkbox
+								name="option-1"
+								checked
+							>
+								Get milk
+							</panda-checkbox>
+							<panda-checkbox
+								name="option-2"
+							>
+								Feed my cat
+							</panda-checkbox>
+							<panda-checkbox
+								name="option-3"
+							>
+								Play with my pet
+							</panda-checkbox>
+							${option4html}
+						</panda-checkbox-group>
+
+
+						<panda-button
+							@click="${this._onToggleOption}"
+						>
+							TOGGLE OPTION 4
+						</panda-button>
 				</div>
 			</div>
 		`;
@@ -306,7 +323,11 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onChange(event: PandaCheckboxChangeEvent): void {
-		console.log("%c ⚡ [CHECKBOX DEMO PAGE] checked", "font-size: 24px; color: orange;", event.detail.checked);
+		console.log("%c ⚡ [CHECKBOX DEMO PAGE] checked", "font-size: 24px; color: orange;", event.detail.name, event.detail.checked);
 
+	}
+
+	private _onToggleOption(): void {
+		this._showOption4 = !this._showOption4;
 	}
 }

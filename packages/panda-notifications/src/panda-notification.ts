@@ -126,7 +126,7 @@ export class PandaNotification extends LitElement {
 							<div class="message" part="message">
 								<div class="header">
 									<slot class="header-prefix" name="header-prefix"></slot>
-									<slot class="header-text" name="header" @slotchange=${this._onHeaderSlotChange}></slot>
+									<slot class="header-text" name="header" @slotchange="${this._onHeaderSlotChange}"></slot>
 								</div>
 								<!-- message slot -->
 								<slot></slot>
@@ -136,7 +136,7 @@ export class PandaNotification extends LitElement {
 							${this._renderCloseButton()}
 						</div>
 						<div class="footer" part="footer">
-							<slot name="footer" @slotchange=${this._onFooterSlotChange}></slot>					
+							<slot name="footer" @slotchange="${this._onFooterSlotChange}"></slot>					
 						</div>
 					</div><!-- notification -->
 				

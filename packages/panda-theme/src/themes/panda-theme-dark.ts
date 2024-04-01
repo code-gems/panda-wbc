@@ -522,7 +522,7 @@ export const pandaThemeDark = css`
 		--panda-logo-color-900: #19638c;
 
 		/* CODE */
-		--panda-code-text-color: hsl(122deg 39% 49%);
+		--panda-code-text-color: hsl(262deg 100% 72%);
 	}
 
 	body {

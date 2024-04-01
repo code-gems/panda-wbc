@@ -3,7 +3,7 @@ import { css } from "lit"
 export const styles = css`
 	:host {
 		display: inline-block;
-		height: var(--panda-button-height-m, 40px);
+		height: var(--panda-component-size-m, 30px);
 	}
 
 	:host slot {
@@ -11,24 +11,34 @@ export const styles = css`
 		user-select: none;
 	}
 
-	input {
-		display: none;
+	.label {
+		display: block;
+		line-height: 1.6em;
+
+		color: var(--panda-label-color, hsl(0deg 0% 50%));
+		font-size: var(--panda-label-font-size, 12px);
+		font-family: var(--panda-label-font-family, "Poppins");
+		text-shadow: var(--panda-label-text-shadow, none);
+		user-select: none;
 	}
 
-	.checkbox-cont {
+	.checkbox {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
+		outline: none;
 
 		color: var(--panda-text-color, hsl(0deg 0% 15%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 		text-shadow: var(--panda-text-shadow, none);
 		cursor: pointer;
+
+		border-radius: var(--panda-border-radius-m, 5px);
 	}
 
-	input:checked ~ .icon {
-		--panda-icon-color: var(--panda-primary-color, hsl(209deg 78% 46%));
+	.checkbox:not(.disabled):focus-visible {
+		box-shadow: 0px 0px 0px 3px var(--panda-outline-color, hsl(209deg 78% 46% / 40%));
 	}
 
 	.icon {
@@ -43,12 +53,21 @@ export const styles = css`
 		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
 
-	/* COMPONENT STATE =========================================== */
+	.checkbox.checked .icon {
+		--panda-icon-color: var(--panda-primary-color, hsl(209deg 78% 46%));
+	}
+
+	.checkbox.align-right {
+		flex-direction: row-reverse;
+	}
+
+	/* ===================================================================== */
+	/* COMPONENT STATES ==================================================== */
+	/* ===================================================================== */
 
 	/* DISABLED */
-	:host([disabled]) .checkbox-cont {
+	:host([disabled]) .checkbox {
 		cursor: not-allowed;
-		pointer-events: none;
 	}
 
 	:host([disabled]) .icon {
@@ -59,11 +78,11 @@ export const styles = css`
 		color: var(--panda-text-color-disabled, hsl(0deg 0% 66%));
 	}
 
-
-	/* THEMES ==================================================== */
+	/* ===================================================================== */
+	/* THEMES ============================================================== */
+	/* ===================================================================== */
 	
 	/* STRIKETHROUGH */
-
 	:host([strikethrough]) slot {
 		text-decoration: line-through;
 	}
@@ -77,6 +96,31 @@ export const styles = css`
 	:host([theme~="info"]) {
 		--panda-icon-color: var(--panda-action-color-info, hsl(181deg 52% 53%));
 	}
-	
 
+	/* DONE */
+	:host([theme~="done"]) {
+		--panda-icon-color: var(--panda-action-color-done, hsl(181deg 52% 53%));
+	}
+
+	/* WARN */
+	:host([theme~="warn"]) {
+		--panda-icon-color: var(--panda-action-color-warn, hsl(181deg 52% 53%));
+	}
+
+	/* ALERT */
+	:host([theme~="alert"]) {
+		--panda-icon-color: var(--panda-action-color-alert, hsl(181deg 52% 53%));
+	}
+`;
+
+export const groupStyles = css`
+	slot {
+		display: flex;
+		flex-flow: column;
+	}
+
+	slot.horizontal {
+		flex-flow: row;
+		gap: var(--panda-padding-m, 10px);
+	}
 `;

@@ -6,7 +6,8 @@ export type PandaCheckbox = typeof PandaCheckbox;
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export interface PandaCheckboxChange {
+type PandaCheckboxChange = {
+	name: string;
 	checked: boolean;
 }
 

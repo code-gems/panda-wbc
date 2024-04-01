@@ -19,21 +19,21 @@ export class PandaToggle extends LitElement {
 		return styles;
 	}
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	selected: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	indeterminate: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
 
-	@property({ type: String, attribute: true })
+	@property({ type: String })
 	spinner: string = "dots";
-	
+
 	@property({ type: String, attribute: "selected-icon" })
 	selectedIcon: string | null = null;
 
@@ -51,7 +51,8 @@ export class PandaToggle extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
-		const selectedCss = this.selected ? "selected" : "";
+		const selected = this.selected ? "selected" : "";
+		const indeterminate = this.indeterminate ? "indeterminate" : "";
 		const modCss: string[] = [];
 		let spinnerHtml: TemplateResult = html``;
 		let selectedIconHtml: TemplateResult = html``;
@@ -96,20 +97,18 @@ export class PandaToggle extends LitElement {
 		// aggregate modifier/status css classes
 		if (this.selected) modCss.push("selected");
 		if (this.disabled) modCss.push("disabled");
+		if (this.indeterminate) modCss.push("indeterminate");
 
 		return html`
 			<div
 				class="toggle ${modCss.join(" ")}"
-				part="toggle ${selectedCss}"
+				part="toggle ${selected} ${indeterminate}"
 				@click="${this._onToggle}"
 				@keydown="${this._onKeyDown}"
 				.tabIndex="${this.disabled ? -1 : 0}"
 			>
 				<div class="toggle-track" part="toggle-track"></div>
-				<div
-					class="toggle-handle"
-					part="toggle-handle"
-				>
+				<div class="toggle-handle" part="toggle-handle">
 					${selectedIconHtml}
 					${unselectedIconHtml}
 				</div>
@@ -129,26 +128,52 @@ export class PandaToggle extends LitElement {
 			}
 		});
 		this.dispatchEvent(event);
+		console.log("%c _triggerChangeEvent", "font-size: 24px; color: orange;", event);
+	}
+
+	private _setSelected(selected: boolean): void {
+		if (
+			!this.disabled && !this.busy && this.selected !== selected ||
+			!this.disabled && !this.busy && this.indeterminate
+		) {
+			this.selected = selected;
+			this.indeterminate = false;
+			this._triggerChangeEvent();
+		}
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onToggle(selected: boolean | null = null) {
+	private _onToggle(): void {
 		if (!this.disabled && !this.busy) {
-			this.selected = selected === null ? !this.selected : selected;
+			this.selected = !this.selected;
 			this.indeterminate = false;
+			this._triggerChangeEvent();
 		}
 	}
 
 	private _onKeyDown(event: KeyboardEvent): void {
 		console.log("%c something", "font-size: 24px; color: green;", event);
-		
-		if (event.code === "Space") {
-			event.stopPropagation();
-			event.preventDefault();
-			this._onToggle();
+
+		switch (event.code) {
+			case "Space":
+			case "Enter":
+				this._onToggle();
+				event.stopPropagation();
+				event.preventDefault();
+				break;
+			case "ArrowLeft":
+				this._setSelected(false);
+				event.stopPropagation();
+				event.preventDefault();
+				break;
+			case "ArrowRight":
+				this._setSelected(true);
+				event.stopPropagation();
+				event.preventDefault();
+				break;
 		}
 	}
 }

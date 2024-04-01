@@ -108,6 +108,7 @@ export class ContentPage extends ContentPageTemplate {
 								<panda-toggle
 									selected-icon="check"
 									unselected-icon="close"
+									indeterminate
 								></panda-toggle>
 
 								<panda-toggle
@@ -148,6 +149,7 @@ export class ContentPage extends ContentPageTemplate {
 								<panda-toggle theme="slim"></panda-toggle>
 								<panda-toggle theme="slim" selected></panda-toggle>
 								<panda-toggle theme="slim" disabled></panda-toggle>
+								<panda-toggle theme="slim" indeterminate></panda-toggle>
 								<panda-toggle theme="slim done" selected></panda-toggle>
 								<panda-toggle theme="slim done" selected busy></panda-toggle>
 							</div>

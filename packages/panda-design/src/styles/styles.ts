@@ -439,13 +439,13 @@ export const uiComponents = {
 		.rows {
 			display: flex;
 			flex-flow: column;
-			gap: var(--panda-padding-m);	
+			/* gap: var(--panda-padding-m);	*/
 		}
 
 		.row {
 			display: grid;
 			grid-template-columns: repeat(12, minmax(0, 1fr));
-			column-gap: 10px;
+			column-gap: var(--panda-padding-m);
 		}
 
 		[class*=" col-"],

@@ -4,8 +4,8 @@ export const styles = css`
 	:host {
 		display: inline-block;
 		position: relative;
-		width: calc(var(--panda-component-size-m) * 2);
-		height: var(--panda-component-size-m);
+		width: calc(var(--panda-component-size-m, 30px) * 2);
+		height: var(--panda-component-size-m, 30px);
 		user-select: none;
 	}
 	
@@ -29,7 +29,7 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: calc(var(--panda-component-size-m) / 2);
+		border-radius: calc(var(--panda-component-size-m, 30px) / 2);
 		background-color: var(--panda-toggle-track-color);
 		--panda-spinner-color: var(--panda-toggle-handle-color);
 	}
@@ -41,11 +41,11 @@ export const styles = css`
 		height: 100%;
 		outline: none;
 		cursor: pointer;
-		border-radius: calc(var(--panda-component-size-m) / 2);
+		border-radius: calc(var(--panda-component-size-m, 30px) / 2);
 	}
 
-	.toggle:not(.disabled):focus {
-		box-shadow: 0px 0px 0px 3px var(--panda-outline-color);
+	.toggle:not(.disabled):focus-visible {
+		box-shadow: 0px 0px 0px 3px var(--panda-outline-color, hsl(209deg 78% 46% / 40%));
 	}
 
 	.toggle-track {
@@ -59,7 +59,7 @@ export const styles = css`
 		transform: translate(-50%, -50%);
 		transition: all 400ms ease-in-out;
 
-		border-radius: calc(var(--panda-component-size-m) / 2);
+		border-radius: calc(var(--panda-component-size-m, 30px) / 2);
 		background-color: var(--panda-toggle-track-color);
 	}
 
@@ -69,16 +69,31 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 
-		width: calc(var(--panda-component-size-m) - calc(var(--panda-toggle-handle-gap) * 2));
-		height: calc(var(--panda-component-size-m) - calc(var(--panda-toggle-handle-gap) * 2));
+		width: calc(var(--panda-component-size-m, 30px) - calc(var(--panda-toggle-handle-gap) * 2));
+		height: calc(var(--panda-component-size-m, 30px) - calc(var(--panda-toggle-handle-gap) * 2));
 		top: var(--panda-toggle-handle-gap);
-		
+		left: 0%;
+
 		transform: translateX(var(--panda-toggle-handle-gap));
-		transition: transform 400ms ease-in-out;
+		transition: all 400ms ease-in-out;
 
 		border-radius: 50%;
 		background-color: var(--panda-toggle-handle-color);
 		box-shadow: 0px 1px 2px var(--panda-black-color-50opc);
+	}
+
+	.toggle-handle::before {
+		display: block;
+		content: " ";
+		width: 60%;
+		height: 4px;
+		top: 50%;
+		left: 50%;
+		opacity: 0;
+		transition: opacity 100ms ease-in-out;
+
+		border-radius: 2px;
+		background-color: var(--panda-toggle-track-color);
 	}
 
 	.toggle.selected .toggle-track {
@@ -86,7 +101,7 @@ export const styles = css`
 	}
 
 	.toggle.selected .toggle-handle {
-		transform: translateX(calc(var(--panda-component-size-m) + var(--panda-toggle-handle-gap)));
+		transform: translateX(calc(var(--panda-component-size-m, 30px) + var(--panda-toggle-handle-gap)));
 	}
 
 	.icon {
@@ -98,10 +113,10 @@ export const styles = css`
 		--panda-icon-height: var(--panda-icon-size-s);
 	}
 	
-	.icon-selected { opacity: 0; }
-	.icon-unselected { opacity: 1; }
-	.selected .icon-selected { opacity: 1; }
-	.selected .icon-unselected { opacity: 0; }
+	.toggle:not(.indeterminate) .icon-selected { opacity: 0; }
+	.toggle:not(.indeterminate) .icon-unselected { opacity: 1; }
+	.toggle:not(.indeterminate).selected .icon-selected { opacity: 1; }
+	.toggle:not(.indeterminate).selected .icon-unselected { opacity: 0; }
 
 	/* ===================================================================== */
 	/* COMPONENT STATES ==================================================== */
@@ -109,11 +124,12 @@ export const styles = css`
 
 	/* INDETERMINATE */
 	:host([indeterminate]) .toggle-handle {
-		height: 4px;
-		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
-		border-radius: 2px;
+		transform: translateX(-50%);
+	}
+
+	:host([indeterminate]) .toggle-handle::before {
+		opacity: 1;
 	}
 
 	/* DISABLED */
