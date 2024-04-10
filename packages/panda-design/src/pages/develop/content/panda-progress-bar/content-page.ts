@@ -30,7 +30,7 @@ class ContentPage extends ContentPageTemplate {
 
 	// demo props
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "theme", type: "String", defaultValue: "-", description: "Component color theme." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "value", type: "Number", defaultValue: "-", description: "Currently progress value." },
 		{ name: "bufferValue", type: "Number", defaultValue: "0", description: "Currently buffered progress value." },
 		{ name: "min", type: "Number", defaultValue: "0", description: "The minimal progress value." },

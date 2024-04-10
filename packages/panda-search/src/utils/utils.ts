@@ -56,7 +56,7 @@ export const getItemLabel = (
 			if (allowCustomValue) {
 				return String(value);
 			} else {
-				console.warn("[dragon-combo-box] No item match found for value:", value);				
+				console.warn("[panda-combo-box] No item match found for value:", value);				
 				return "";
 			}
 		} else if (typeof _selectedItem === "object") {

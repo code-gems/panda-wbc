@@ -286,6 +286,33 @@ export const uiComponents = {
 		}
 	`,
 
+	cards: css`
+		.cards {
+			display: flex;
+			flex-flow: row wrap;
+			gap: var(--panda-padding-l);
+			padding: var(--panda-padding-hero);
+		}
+
+		.cards .card {
+			flex-basis: 30%;
+			flex-grow: 1;
+			padding: var(--panda-padding-xl);
+
+			border-radius: 10px;
+			border: 1px solid var(--panda-background-color-500);
+			background-color: var(--panda-background-color-50opc);
+			box-shadow: 0px 5px 10px var(--panda-black-color-10opc);
+			box-sizing: border-box;
+		}
+
+		.cards h1 {
+			margin: 0;
+			color: var(--panda-header-text-color);
+			text-shadow: var(--panda-header-text-shadow);
+		}
+	`,
+
 	form: css`
 		.form {
 			display: flex;
@@ -425,7 +452,7 @@ export const uiComponents = {
 		}
 
 		.table.table-events .tr {
-			grid-template-columns: 200px 170px auto !important;
+			grid-template-columns: 200px 250px auto !important;
 		}
 
 		.table.table-interface .tr {

@@ -29,7 +29,7 @@ class ContentPage extends ContentPageTemplate {
 
 	// demo props
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "theme", type: "String", defaultValue: "-", description: "Component color theme." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "value", type: "Number", defaultValue: "-", description: "Currently selected value." },
 		{ name: "min", type: "Number", defaultValue: "0", description: "The lowest selectable value." },
 		{ name: "max", type: "Number", defaultValue: "100", description: "The highest selectable value." },

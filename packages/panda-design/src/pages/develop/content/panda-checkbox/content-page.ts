@@ -1,10 +1,5 @@
 // types
-import {
-	ComponentPropertyDetails,
-	ComponentEventDetails,
-	PageCategory,
-	ContentSectionName,
-} from "panda-design-typings";
+import { ComponentPropertyDetails, ComponentEventDetails, ContentSectionName } from "panda-design-typings";
 import { PandaCheckboxChangeEvent } from "@panda-wbc/panda-checkbox";
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
@@ -20,34 +15,24 @@ import { CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
-import {
-	pageId,
-	pageName,
-	pageUri,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
+import { pageConfig } from "./page-config";
 import { implementationSnippet, installationSnippet } from "./snippets/snippets";
 
+@page(pageConfig)
 @customElement("panda-checkbox-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-checkbox-content-page></panda-checkbox-content-page>`,
-})
 export class PandaCheckboxContentPage extends ContentPageTemplate {
 	// page details
 	public customStyles: CSSResultGroup = styles;
-	public pageId: string = pageId;
+	public pageId: string = pageConfig.pageId;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "checked", type: "Boolean", defaultValue: "-", description: "Initial component value." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
+		{ name: "name", type: "String", defaultValue: "-", description: "Name used to identify component. Used to assign value when used with checkbox group." },
+		{ name: "checked", type: "Boolean", defaultValue: "false", description: "Initial component value." },
+		{ name: "indeterminate", type: "Boolean", defaultValue: "false", description: "Sets indeterminate state of the component." },
+		{ name: "strikethrough", type: "Boolean", defaultValue: "false", description: "Applies strikethrough style to the component label." },
+		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled state for the component." },
+		{ name: "alignRight", type: "boolean", defaultValue: "false", description: "Aligns checkbox to the right side." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
@@ -221,7 +206,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
 			<div class="section">
-				<h3>Properties</h3>
+				<internal-link theme="h3">Properties</internal-link>
 				<p>
 					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 					and they are frequently employed for data binding purposes. 
@@ -239,7 +224,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 		return html`
 			<!-- COMPONENT EVENTS -->
 			<div class="section">
-				<h3>Events</h3>
+				<internal-link theme="h3">Events</internal-link>
 				<p>
 					Component events are instrumental in elevating the interactivity and adaptability of software applications. 
 					These events serve as carefully designed triggers that facilitate communication between the component and the application, 
@@ -258,7 +243,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 		return html`
 			<!-- COMPONENT INTERFACE -->
 			<div class="section">
-				<h3>Interface</h3>
+				<internal-link theme="h3">Interface</internal-link>
 				<p>
 					Component interface allow developers to interact with and manipulate component from the code level.
 					These APIs provide the means to access and control various aspects and functionalities of the element dynamically.

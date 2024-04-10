@@ -34,7 +34,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	// demo props
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "theme", type: "String", defaultValue: "-", description: "Sets components color theme." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "value", type: "Number", defaultValue: "-", description: "Sets progress bar value between 0 - 100 [deg]." },
 		{ name: "gradientAngle", type: "Number", defaultValue: "180", description: "Changes rotation angle of two progress bar gradient colors [deg]." },
 		{ name: "thickness", type: "Number", defaultValue: "5", description: "Changes progress bar default thickness [px]." },

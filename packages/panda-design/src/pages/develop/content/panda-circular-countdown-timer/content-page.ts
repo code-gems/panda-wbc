@@ -44,7 +44,7 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "paused", type: "Boolean", defaultValue: "false", description: "Pause the countdown, and set the component into paused state." },
 		{ name: "showScale", type: "Boolean", defaultValue: "false", description: "Shows the scale indicator for the countdown timer." },
 		{ name: "showTime", type: "Boolean", defaultValue: "false", description: "Shows remaining countdown time." },
-		{ name: "theme", type: "String", defaultValue: "-", description: "Sets components color theme." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "time", type: "Number", defaultValue: "-", description: "Sets countdown time. [seconds]" },
 	];	
 

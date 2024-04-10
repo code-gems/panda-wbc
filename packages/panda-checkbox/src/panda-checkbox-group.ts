@@ -37,6 +37,16 @@ export class PandaCheckboxGroup extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		// remove event listeners
+		this._checkboxEls.forEach((checkboxEl) => {
+			checkboxEl.removeEventListener("change", this._onChangeEvent);
+		});
+		// clean up
+		this._checkboxEls = [];
+	}
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -84,6 +94,7 @@ export class PandaCheckboxGroup extends LitElement {
 		}
 		// add event listeners
 		this._slotNodes.forEach((checkboxEl) => {
+			console.log("%c _onSlotChange -> _slotNodes", "font-size: 24px; color: red;", checkboxEl);
 			checkboxEl.addEventListener("change", this._onChangeEvent);
 			this._checkboxEls.push(checkboxEl);
 		});

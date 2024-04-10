@@ -67,7 +67,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
 		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
 		{ name: "placeholder", type: "string", defaultValue: "-", description: "Text to show in case no value is selected" },
-		{ name: "theme", type: "string", defaultValue: "-", description: "Color theme for a component" },
+		{ name: "theme", type: "string", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "spinnerType", type: "string", defaultValue: "dots", description: "Spinner animation type for working state" },
 		{ name: "itemLabelPath", type: "string", defaultValue: "label", description: "Property path to the item's label" },
 		{ name: "itemValuePath", type: "string", defaultValue: "value", description: "Property path to the item's value" },

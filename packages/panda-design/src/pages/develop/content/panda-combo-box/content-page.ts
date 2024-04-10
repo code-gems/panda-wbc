@@ -62,7 +62,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
 		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component." },
 		{ name: "placeholder", type: "String", defaultValue: "-", description: "Text to show in case no value is selected." },
-		{ name: "theme", type: "String", defaultValue: "-", description: "Color theme for a component." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component.." },
 		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 		{ name: "itemLabelPath", type: "String", defaultValue: "label", description: "Property path to the item's label." },
 		{ name: "itemValuePath", type: "String", defaultValue: "value", description: "Property path to the item's value." },

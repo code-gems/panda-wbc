@@ -58,7 +58,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		{ name: "autoselect", type: "Boolean", defaultValue: "false", description: "Select component value when given focus." },
 		{ name: "spellcheck", type: "Boolean", defaultValue: "false", description: "Enables spellcheck for the entered values." },
 		{ name: "mandatory", type: "Boolean", defaultValue: "false", description: "Visually indicates required field if value is not set." },
-		{ name: "theme", type: "String", defaultValue: "-", description: "Color theme for a component." },
+		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component.." },
 		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 

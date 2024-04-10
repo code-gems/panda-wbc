@@ -3,6 +3,7 @@ import { Store, PageCategory } from "panda-design-typings";
 
 // styles
 import { uiComponents } from "../styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme";
 
 // components & web-parts
 import "../web-parts/app-side-bar/app-side-bar";
@@ -19,8 +20,10 @@ export abstract class ParentPageTemplate extends LitElement {
 	// css styles
 	static get styles() {
 		return [
-			uiComponents.banner,
+			scrollbar,
 			uiComponents.appLayout,
+			uiComponents.banner,
+			uiComponents.cards,
 			uiComponents.modifiers,
 		];
 	}
@@ -66,7 +69,9 @@ export abstract class ParentPageTemplate extends LitElement {
 					<app-submenu .pageCategory="${this.pageCategory}"></app-submenu>
 				</div>
 				<div class="body">
-					${this._renderPageTemplate()}
+					<div class="body-wrap scrollbar">
+						${this._renderPageTemplate()}
+					</div>
 				</div>
 			</div>
 		`;
