@@ -263,7 +263,7 @@ export abstract class ContentPageTemplate extends LitElement {
 			<div class="table table-interface">
 				<div class="thead">
 					<div class="tr">
-						<div class="td">METHOD</div>
+						<div class="td">API</div>
 						<div class="td">RETURN TYPE</div>
 						<div class="td">DESCRIPTION</div>
 					</div>

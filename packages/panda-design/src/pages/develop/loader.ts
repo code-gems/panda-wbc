@@ -5,6 +5,7 @@ import "./content/panda-carousel/content-page";
 import "./content/panda-checkbox/content-page";
 import "./content/panda-circular-countdown-timer/content-page";
 import "./content/panda-circular-progress-bar/content-page";
+import "./content/panda-click-to-copy/content-page";
 import "./content/panda-combo-box/content-page";
 import "./content/panda-counter/content-page";
 import "./content/panda-date-picker/content-page";

@@ -9,6 +9,7 @@
 		"pnpm": ">=6"
 	},
 	"scripts": {
+		"start": "pnpm --filter \"./packages/panda-design\" start",
 		"setup": "pnpm install && npm run compile",
 		"version": "pnpm version",
 		"demo": "demo-cli skog",

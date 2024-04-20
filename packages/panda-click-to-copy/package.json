@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-accordion",
+	"name": "@panda-wbc/panda-click-to-copy",
 	"version": "1.0.0",
-	"description": "Lit based web component - accordion",
+	"description": "Lit based web component - click-to-copy",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-accordion.js",
+	"main": "lib/panda-click-to-copy.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -17,7 +17,8 @@
 		"web component",
 		"panda-wbc",
 		"ui component",
-		"accordion"
+		"click to copy",
+		"clipboard"
 	],
 	"author": "code-gems",
 	"license": "MIT",

@@ -21,6 +21,22 @@ importers:
         specifier: ^8.5.1
         version: 8.6.6
 
+  packages/panda-accordion:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-button:
     dependencies:
       '@panda-wbc/panda-spinner':
@@ -106,6 +122,22 @@ importers:
 
   packages/panda-circular-progress-bar:
     dependencies:
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-click-to-copy:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
       lit:
         specifier: ^2.7.4
         version: 2.7.4
@@ -232,6 +264,9 @@ importers:
       '@panda-wbc/panda-circular-progress-bar':
         specifier: workspace:*
         version: link:../panda-circular-progress-bar
+      '@panda-wbc/panda-click-to-copy':
+        specifier: workspace:*
+        version: link:../panda-click-to-copy
       '@panda-wbc/panda-combo-box':
         specifier: workspace:*
         version: link:../panda-combo-box

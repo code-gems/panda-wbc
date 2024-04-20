@@ -404,7 +404,11 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Features</internal-link>
 					<p>
-						TDB
+						The component feature section provides a comprehensive overview of the available features and capabilities of the component. 
+						This section serves as a valuable resource for developers, enabling them to understand the full potential of the component and how it can be effectively utilized within their projects. 
+					</p>
+					<p>
+						See list of all supported features below:
 					</p>
 				</div>
 
