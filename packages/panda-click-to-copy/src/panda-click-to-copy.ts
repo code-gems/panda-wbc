@@ -83,7 +83,7 @@ export class PandaClickToCopy extends LitElement {
 						_textContentArray.push(" ");
 					}
 					// remove multiple spaces, tabs and new line chars and replace with one space
-					_text = _text.trim().split(/[\s,\t,\n]+/).join(" ");
+					_text = _text.trim().split(/\s+/).join(" ");
 
 					_textContentArray.push(_text);
 				}
