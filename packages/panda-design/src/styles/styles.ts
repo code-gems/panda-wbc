@@ -76,7 +76,7 @@ export const uiComponents = {
 			left: 0;
 			right: 0;
 
-			transform: skewY(1.5deg);
+			transform: skewY(1deg);
 
 			background-color: inherit;
 			z-index: -1;
@@ -158,7 +158,6 @@ export const uiComponents = {
 		}
 
 		.content-list .list .list-item label {
-
 			line-height: 1.5em;
 			padding: 11px 4px;
 			flex-grow: 1;
@@ -251,7 +250,7 @@ export const uiComponents = {
 			bottom: 0px;
 			
 			transform-origin: 100% 0;
-			transform: skewY(-1.5deg);
+			transform: skewY(-1deg);
 			background-color: var(--panda-background-color);
 			z-index: 1;
 		}

@@ -330,19 +330,24 @@ export const pandaThemeLight = css`
 		--panda-input-placeholder-font-family: var(--panda-font-family);
 		
 		/* BUTTON */
-		--panda-button-text-shadow: none;
-
+		
 		--panda-button-text-color: var(--panda-text-color);
+		--panda-button-text-shadow: 0px 1px 1px var(--panda-text-shadow);
 		--panda-button-border-color: #fff;
 		--panda-button-background-color: #fff;
+		--panda-button-box-shadow: 0px 2px 4px var(--panda-black-color-20opc);
 		
 		--panda-button-text-color-hover: var(--panda-text-color-hover);
+		--panda-button-text-shadow-hover: 0px 1px 1px var(--panda-text-shadow);
 		--panda-button-border-color-hover: #fff;
 		--panda-button-background-color-hover: #fff;
-
+		--panda-button-box-shadow-hover: 0px 2px 4px var(--panda-black-color-40opc);
+		
 		--panda-button-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-button-text-shadow-disabled: none;
 		--panda-button-border-color-disabled: #fff;
 		--panda-button-background-color-disabled: #fff;
+		--panda-button-box-shadow-disabled: none;
 		
 		/* DROPDOWN */
 		--panda-dropdown-border-radius: 5px;

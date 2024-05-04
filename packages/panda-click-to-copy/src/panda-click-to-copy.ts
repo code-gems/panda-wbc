@@ -8,7 +8,7 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-icon";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, state, queryAssignedNodes } from "lit/decorators.js";
 
 @customElement("panda-click-to-copy")
@@ -27,26 +27,49 @@ export class PandaClickToCopy extends LitElement {
 	@state()
 	private _content: string = "";
 
+	@state()
+	private _copied: boolean = false;
+
 	@queryAssignedNodes()
 	private _contentSlot!: HTMLSlotElement[];
+
+	// timer
+	private _animationTimer!: number;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	// ...
+	updated(_changedProperties: PropertyValues): void {
+		if (_changedProperties.has("_copied") && this._copied) {
+			this._animationTimer = setTimeout(() => {
+				this._copied = false;
+			}, 2000);
+		}
+	}
+
+	disconnectedCallback(): void {
+		// clean up
+		if (this._animationTimer) {
+			clearTimeout(this._animationTimer);
+		}
+	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render(): TemplateResult {
+		const icon = this._copied ? "check" : "copy";
+		const done = this._copied ? "done" : "";
 		return html`
 			<div
 				class="content"
 				@click="${this.copyToClipboard}"
 			>
-				<div class="div"></div>
+				<div class="btn-copy ${done}">
+					<panda-icon icon="${icon}"></panda-icon>
+				</div>
 				<slot></slot>
 			</div>
 		`;
@@ -103,6 +126,7 @@ export class PandaClickToCopy extends LitElement {
 
 	private _copyToClipboard(): void {
 		navigator.clipboard.writeText(this._content);
+		this._copied = true;
 	}
 
 	// ================================================================================================================

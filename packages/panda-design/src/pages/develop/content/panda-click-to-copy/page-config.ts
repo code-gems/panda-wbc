@@ -10,7 +10,7 @@ export const pageConfig: Page = {
 	pageUri: `/develop?page=panda-click-to-copy`,
 
 	category: PageCategory.DEVELOP,
-	keywords: ["clipboard", "copy content"],
+	keywords: ["clipboard", "copy", "content", "html"],
 	description: ["Showcase of a panda-click-to-copy component."],
 	
 	contextMenu: [
