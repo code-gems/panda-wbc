@@ -1,19 +1,27 @@
 // types
-import { html } from "lit";
-import { ContextMenuItem } from "panda-design-typings";
+import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 
-export const pageId = "panda-search";
-export const pageName = "Search";
-export const pageUri = `/develop?page=${pageId}`;
-export const pageTemplate = html`<${pageId}-content-page></${pageId}-content-page>`;
-export const keywords = ["search", "box", "find", "input", "text", "field"];
-export const description = ["Showcase of a panda-search element."];
-export const contextMenu: ContextMenuItem[] = [
-	{ name: "Overview", contextId: "overview" },
-	{ name: "Installation", contextId: "installation" },
-	{ name: "Usage", contextId: "usage" },
-	{ name: "Component States", contextId: "component-states" },
-	{ name: "Features", contextId: "features" },
-	{ name: "Themes", contextId: "themes" },
-	{ name: "Customization", contextId: "customization" },
-];
+// utils
+import { html } from "lit";
+
+export const pageConfig: Page = {
+	pageName: "Search",
+	pageId: "panda-search",
+	pageUri: "/develop?page=panda-search",
+	category: PageCategory.DEVELOP,
+	keywords: ["search", "find", "input", "text"],
+	description: ["Showcase of a panda-search element."],
+	
+	contextMenu: [		
+		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
+		{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
+		{ name: "Usage", contextId: ContentSectionName.USAGE },
+		{ name: "Component States", contextId: ContentSectionName.COMPONENT_STATES },
+		{ name: "Features", contextId: ContentSectionName.FEATURES },
+		{ name: "Theming", contextId: ContentSectionName.THEMING },
+		{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
+	],
+
+	template: html`<panda-search-content-page></panda-search-content-page>`,
+};
+	

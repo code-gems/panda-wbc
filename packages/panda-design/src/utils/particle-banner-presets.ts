@@ -79,10 +79,10 @@ export const bannerConfig3: PandaParticleBannerConfig = {
 	particleGroup: [
 		{
 			asyncParticleCreation: true,
-			particleCreationInterval: 100,
+			particleCreationInterval: 400,
 			destroyParticles: true,
 
-			particleCount: 1,
+			particleCount: 100,
 			particleShape: ParticleShape.RECT_FILLED,
 
 			getPosition: (bannerRect) => {
@@ -98,8 +98,8 @@ export const bannerConfig3: PandaParticleBannerConfig = {
 			colorHueVariation: 10,
 			colorOpacityVariation: 60,
 
-			sizeMin: 5,
-			sizeMax: 5,
+			sizeMin: 3,
+			sizeMax: 1,
 
 			minSpeedX: -0.01,
 			maxSpeedX: 0.01,
@@ -116,22 +116,22 @@ export const bannerConfig3: PandaParticleBannerConfig = {
 			// blurMin: 0,
 			// blurMax: 1,
 		},
-		{
-			particleCount: 1,
-			particleShape: ParticleShape.CIRCLE,
+		// {
+		// 	particleCount: 10,
+		// 	particleShape: ParticleShape.CIRCLE,
 
-			minSpeedX: -1,
-			maxSpeedX: 1,
-			minSpeedY: -1,
-			maxSpeedY: 1,
+		// 	minSpeedX: -1,
+		// 	maxSpeedX: 1,
+		// 	minSpeedY: -1,
+		// 	maxSpeedY: 1,
 
-			// connect: true,
+		// 	// connect: true,
 
-			colors: ["red"],
+		// 	colors: ["red"],
 
-			sizeMin: 10,
-			sizeMax: 10,
+		// 	sizeMin: 10,
+		// 	sizeMax: 10,
 
-		}
+		// }
 	],	
 };

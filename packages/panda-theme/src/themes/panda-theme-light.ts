@@ -290,13 +290,14 @@ export const pandaThemeLight = css`
 		--panda-component-size-m: 30px;
 		--panda-component-size-l: 36px;
 		--panda-component-size-xl: 42px;
+		
+		--panda-border-color: hsl(0deg 0% 85%);
 
 		/* OUTLINE & FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);
 		--panda-outline-color-disabled: var(--panda-primary-color-20opc);
 		
-		/* FORMS & VALIDATION */
-		--panda-form-border-color: hsl(0deg 0% 66%);
+		/* VALIDATION */
 		--panda-form-validation-mandatory: var(--panda-action-color-warn);
 		--panda-form-validation-valid: var(--panda-action-color-done);
 		--panda-form-validation-invalid: var(--panda-action-color-alert);
@@ -422,7 +423,7 @@ export const pandaThemeLight = css`
 
 		--panda-radio-button-border-width: 1px;
 		--panda-radio-button-border-style: solid;
-		--panda-radio-button-border-color: var(--panda-form-border-color);
+		--panda-radio-button-border-color: var(--panda-border-color);
 		--panda-radio-button-border-color-disabled: hsl(0deg 0% 80%);
 		
 		--panda-radio-button-background-color: hsl(0deg 0% 95%);
@@ -436,7 +437,7 @@ export const pandaThemeLight = css`
 
 		--panda-progress-bar-size: 10px;
 		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
-		--panda-progress-bar-border-color: var(--panda-form-border-color);
+		--panda-progress-bar-border-color: var(--panda-border-color);
 		--panda-progress-bar-background-color: var(--panda-background-color-500);
 
 		/* ========================================================================================================= */
@@ -498,11 +499,11 @@ export const pandaThemeLight = css`
 		/* DIALOG ================================================================================================== */
 		/* ========================================================================================================= */
 
-		--panda-dialog-border: 1px solid var(--panda-form-border-color);
-		--panda-dialog-border-radius: ;
-		--panda-dialog-background-color: ;
-		--panda-dialog-box-shadow: ;
-		--panda-dialog-overlay-background-color: ;
+		--panda-dialog-border: 1px solid var(--panda-border-color);
+		--panda-dialog-border-radius: var(--panda-border-radius-m);
+		--panda-dialog-background-color: var(--panda-background-color-50);
+		--panda-dialog-box-shadow: 0px 2px 4px var(--panda-black-color-20opc);
+		--panda-dialog-overlay-background-color: var(--panda-background-color-50opc);
 
 		/* ========================================================================================================= */
 		/* SCROLLBAR =============================================================================================== */

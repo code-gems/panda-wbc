@@ -1,5 +1,4 @@
 // types
-import { PageCategory } from "panda-design-typings";
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
@@ -15,43 +14,16 @@ import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
-import {
-	pageId,
-	pageName,
-	pageUri,
-	pageTemplate,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
 
+// page details
+import { pageConfig } from "./page-config";
+
+@page(pageConfig)
 @customElement("panda-search-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: pageTemplate, // html`<panda-search-content-page></panda-search-content-page>`
-})
-export class PandaSearchContentPage extends ContentPageTemplate {
-	// css styles
-	static get styles() {
-		return [
-			styles,
-			uiComponents.banner,
-			uiComponents.sample,
-			uiComponents.form,
-			uiComponents.appLayout,
-			uiComponents.columnSystem,
-			uiComponents.modifiers,
-		];
-	}
-
+export class ContentPage extends ContentPageTemplate {
 	// page details
-	pageId: string = pageId;
+	public pageId = pageConfig.pageId;
+	public customStyles = styles;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================

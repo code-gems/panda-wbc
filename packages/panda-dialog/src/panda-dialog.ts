@@ -18,15 +18,12 @@ export class PandaDialog extends LitElement {
 		return styles;
 	}
 
-	@property({ type: Boolean, attribute: true })
+	@property({ type: Boolean, attribute: true, reflect: true })
 	opened: boolean = false;
 
 	// HTML Elements
 	private _template: Element = document.createElement("div");
 	private _dialog: PandaDialogOverlay | null = null;
-
-	// events
-	private _closeDialogEvent = this._onCloseDialogOverlay.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -41,6 +38,9 @@ export class PandaDialog extends LitElement {
 					this._template.innerHTML = child.innerHTML;
 				}
 			});
+
+		// add global event listener for external use
+		document.addEventListener("panda-dialog-close", this._onCloseDialogOverlay.bind(this));
 	}
 
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -54,13 +54,9 @@ export class PandaDialog extends LitElement {
 		if (this._dialog !== null) {
 			document.body.removeChild(this._dialog);
 		}
+		// remove global event listener
+		document.removeEventListener("panda-dialog-close", this._onCloseDialogOverlay.bind(this));
 	}
-
-	// ================================================================================================================
-	// RENDERERS ======================================================================================================
-	// ================================================================================================================
-
-	// ...
 
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
@@ -72,8 +68,8 @@ export class PandaDialog extends LitElement {
 			this._dialog = document.createElement("panda-dialog-overlay");
 			// set overlay props
 			this._dialog.template = this._template;
-			// add events
-			this._dialog.addEventListener("close", this._closeDialogEvent);
+			// add events listeners
+			this._dialog.addEventListener("close", this._onCloseDialogOverlay.bind(this));
 			// append overlay to the document body
 			document.body.appendChild(this._dialog);
 		}
@@ -81,9 +77,16 @@ export class PandaDialog extends LitElement {
 
 	private _closeDialog() {
 		if (this._dialog !== null) {
+			// remove event listeners
+			this._dialog.removeEventListener("close", this._onCloseDialogOverlay.bind(this));
 			document.body.removeChild(this._dialog);
 			this._dialog = null;
 		}
+	}
+
+	private _triggerCloseEvent(): void {
+		const event = new CustomEvent("close", {});
+		this.dispatchEvent(event);
 	}
 
 	// ================================================================================================================
@@ -92,6 +95,7 @@ export class PandaDialog extends LitElement {
 
 	private _onCloseDialogOverlay(): void {
 		this._closeDialog();
+		this._triggerCloseEvent();
 	}
 }
 

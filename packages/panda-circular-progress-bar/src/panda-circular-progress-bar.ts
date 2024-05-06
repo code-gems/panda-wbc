@@ -134,7 +134,7 @@ export class PandaCircularProgressBar extends LitElement {
 							cy="50"
 							r="${this._radius}"
 							fill="none"
-							stroke="var(--panda-form-border-color)"
+							stroke="var(--panda-border-color)"
 							stroke-linecap="butt"
 						/>
 						<circle

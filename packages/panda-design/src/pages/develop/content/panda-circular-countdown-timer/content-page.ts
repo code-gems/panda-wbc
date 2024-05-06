@@ -54,10 +54,10 @@ export class ContentPage extends ContentPageTemplate {
 	];
 
 	private _componentInterface: ComponentInterfaceDetails[] = [
-		{ name: "start", returnType: "void", description: "Starts/Resumes countdown timer." },
-		{ name: "pause", returnType: "void", description: "Pauses/Resumes countdown timer." },
-		{ name: "stop", returnType: "void", description: "Stops countdown timer and resets timer to the initial value." },
-		{ name: "restart", returnType: "void", description: "Restarts countdown timer from the initial value." },
+		{ method: "start", returnType: "void", description: "Starts/Resumes countdown timer." },
+		{ method: "pause", returnType: "void", description: "Pauses/Resumes countdown timer." },
+		{ method: "stop", returnType: "void", description: "Stops countdown timer and resets timer to the initial value." },
+		{ method: "restart", returnType: "void", description: "Restarts countdown timer from the initial value." },
 	];
 
 	@state()

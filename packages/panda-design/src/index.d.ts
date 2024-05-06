@@ -95,7 +95,7 @@ declare module "panda-design-typings" {
 	}
 
 	export interface ComponentInterfaceDetails {
-		name: string;
+		method: string;
 		returnType: string;
 		description: string;
 	}

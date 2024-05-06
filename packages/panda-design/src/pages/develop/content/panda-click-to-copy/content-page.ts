@@ -1,5 +1,5 @@
 // types
-import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
+import { ComponentEventDetails, ComponentInterfaceDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
 
 // styles
 import { styles } from "./styles/styles";
@@ -35,6 +35,10 @@ private _componentProperties: ComponentPropertyDetails[] = [
 
 private _componentEvents: ComponentEventDetails[] = [
 	{ name: "@on-copy", returnType: "PandaClickToCopyEvent", description: "Triggered after user copied component content." }
+];
+
+private _componentInterface: ComponentInterfaceDetails[] = [
+	{ method: "copyToClipboard", returnType: "void", description: "Copy component's content to clipboard." }
 ];
 
 @state()
@@ -206,13 +210,14 @@ private _renderComponentApiSection(): TemplateResult {
 		<div class="section">
 			<internal-link theme="h3">API</internal-link>
 			<p>
-				...
+				The API enables developers to interact with the component seamlessly from their codebase. 
+				It provides a straightforward interface to access the component's methods. 
 			</p>
 			<p>
 				See list of APIs provided below:
 			</p>
 			
-			${this._renderComponentInterfaceTable(this._componentEvents)}
+			${this._renderComponentInterfaceTable(this._componentInterface)}
 		</div>
 	`;
 }

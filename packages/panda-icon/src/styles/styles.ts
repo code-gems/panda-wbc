@@ -16,6 +16,7 @@ export const styles = css`
 	}
 
 	svg {
+		transition: all 300ms ease-in-out;
 		fill: var(--panda-icon-color, hsl(0deg 0% 29%));
 	}
 `;

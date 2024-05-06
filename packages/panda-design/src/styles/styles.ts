@@ -312,6 +312,78 @@ export const uiComponents = {
 		}
 	`,
 
+	dialog: css`
+		.dialog {
+			display: flex;
+			flex-flow: column;
+			gap: var(--panda-padding-m);
+			padding: var(--panda-padding-m);
+			height: 100%;
+			box-sizing: border-box;
+		}
+		
+		.dialog > .header {
+			display: flex;
+			flex-flow: row nowrap;
+			flex-shrink: 0;
+			height: var(--panda-component-size-m);
+			margin-top: calc(var(--panda-padding-m, 5px) * -1);
+			margin-left: calc(var(--panda-padding-m, 5px) * -1);
+			margin-right: calc(var(--panda-padding-m, 5px) * -1);
+		}
+		
+		.dialog > .header label {
+			flex-grow: 1;
+			line-height: var(--panda-component-size-m);
+			padding: 0px var(--panda-padding-m);
+
+			color: var(--panda-header-text-color);
+			font-size: var(--panda-font-size-m);
+			font-family: var(--panda-font-family-bold);
+		}
+		
+		.dialog > .header .btn-close {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-shrink: 0;
+			width: var(--panda-component-size-m);
+			height: var(--panda-component-size-m);
+			transition: all 300ms ease-in-out;
+			cursor: pointer;
+
+			border-radius: var(--panda-border-radius-m);
+			--panda-icon-color: var(--panda-text-color);
+			--panda-icon-width: var(--panda-icon-size-m);
+			--panda-icon-height: var(--panda-icon-size-m);
+		}
+		
+		.dialog > .header .btn-close:hover {
+			background-color: var(--panda-action-color-alert);
+			--panda-icon-color: var(--panda-action-text-color-alert);
+		}
+		
+		.dialog > .body {
+			display: flex;
+			flex-grow: 1;
+			height: 100%;
+			overflow: auto;
+			box-sizing: border-box;
+		}
+
+		.dialog > .body > .body-wrap {
+			height: 100%;
+		}
+
+		.dialog > .footer {
+			display: flex;
+			flex-shrink: 0;
+			flex-flow: row nowrap;
+			gap: var(--panda-padding-m);
+			box-sizing: border-box;
+		}
+	`,
+
 	form: css`
 		.form {
 			display: flex;
@@ -320,7 +392,7 @@ export const uiComponents = {
 			max-width: 400px;
 
 			border-radius: 5px;
-			border: 1px solid var(--panda-form-border-color);
+			border: 1px solid var(--panda-border-color);
 			background-color: var(--panda-background-color-500);
 			box-shadow: 0px 2px 4px var(--panda-black-color-20px);
 		}
@@ -333,7 +405,7 @@ export const uiComponents = {
 		}
 
 		.form .form-section.bg-700 {
-			border-bottom: 1px solid var(--panda-form-border-color);
+			border-bottom: 1px solid var(--panda-border-color);
 			background-color: var(--panda-background-color-700);
 		}
 
@@ -343,7 +415,7 @@ export const uiComponents = {
 			justify-content: center;
 			padding: 10px 20px;
 
-			border-top: 1px solid var(--panda-form-border-color);
+			border-top: 1px solid var(--panda-border-color);
 			background-color: var(--panda-background-color-900);
 		}
 
@@ -384,7 +456,7 @@ export const uiComponents = {
 			border: 1px solid var(--panda-background-color-900);
 			background: radial-gradient(
 				circle at 1px 1px,
-				var(--panda-form-border-color) 0px,
+				var(--panda-border-color) 0px,
 				#0000 1px
 			)
 			0 0 / 16px 16px;
@@ -455,7 +527,7 @@ export const uiComponents = {
 		}
 
 		.table.table-interface .tr {
-			grid-template-columns: 200px 170px auto !important;
+			grid-template-columns: 200px 250px auto !important;
 		}
 
 	`,

@@ -1,14 +1,23 @@
 // types
-import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
+import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 
-export const pageId = "panda-icon";
-export const pageName = "Icons";
-export const pageUri = `/develop?page=${pageId}`;
-export const keywords = ["icon"];
-export const description = ["Icon description"];
+// utils
+import { html } from "lit";
 
-export const contextMenu: ContextMenuItem[] = [
-	{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
-	{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
-	{ name: "Icon List", contextId: ContentSectionName.LIST },
-];
+export const pageConfig: Page = {
+	pageName: "Icons",
+	pageId: "panda-icon",
+	pageUri: "/develop?page=panda-icon",
+	category: PageCategory.DEVELOP,
+	keywords: ["icon"],
+	description: ["Showcase of a panda-icon element."],
+	
+	contextMenu: [		
+		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
+		{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
+		{ name: "Icon List", contextId: ContentSectionName.LIST },
+	],
+
+	template: html`<panda-icon-content-page></panda-icon-content-page>`,
+};
+	

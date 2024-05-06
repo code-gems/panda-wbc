@@ -245,14 +245,14 @@ export abstract class ContentPageTemplate extends LitElement {
 
 		componentPropertyList.forEach((propertyDetails) => {
 			const {
-				name,
+				method,
 				returnType,
 				description,
 			} = propertyDetails;
 
 			tableBodyHtml.push(html`
 				<div class="tr">
-					<div class="td"><i class="code">${name}</i></div>
+					<div class="td"><i class="code">${method}</i></div>
 					<div class="td"><span class="variable-type">${returnType}</span></div>
 					<div class="td">${description}</div>
 				</div>

@@ -292,12 +292,13 @@ export const pandaThemeDark = css`
 		--panda-component-size-l: 36px;
 		--panda-component-size-xl: 42px;
 
+		--panda-border-color: hsl(278deg 31% 17%);
+
 		/* OUTLINE / FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);
 		--panda-outline-color-disabled: var(--panda-primary-color-20opc);
 		
-		/* FORMS & VALIDATION */
-		--panda-form-border-color: hsl(0deg 0% 66%);
+		/* VALIDATION */
 		--panda-form-validation-mandatory: var(--panda-action-color-warn);
 		--panda-form-validation-valid: var(--panda-action-color-done);
 		--panda-form-validation-invalid: var(--panda-action-color-alert);
@@ -432,7 +433,7 @@ export const pandaThemeDark = css`
 
 		--panda-progress-bar-size: 10px;
 		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
-		--panda-progress-bar-border-color: var(--panda-form-border-color);
+		--panda-progress-bar-border-color: var(--panda-border-color);
 		--panda-progress-bar-background-color: var(--panda-background-color-500);
 
 		/* ========================================================================================================= */
@@ -494,11 +495,11 @@ export const pandaThemeDark = css`
 		/* PANDA DIALOG ============================================================================================ */
 		/* ========================================================================================================= */
 
-		--panda-dialog-border: 1px solid var(--panda-form-border-color);
-		--panda-dialog-border-radius: ;
-		--panda-dialog-background-color: ;
-		--panda-dialog-box-shadow: ;
-		--panda-dialog-overlay-background-color: ;
+		--panda-dialog-border: 1px solid var(--panda-border-color);
+		--panda-dialog-border-radius: var(--panda-border-radius-m);
+		--panda-dialog-background-color: var(--panda-background-color-900);
+		--panda-dialog-box-shadow: 0px 5px 10px var(--panda-black-color-50opc);
+		--panda-dialog-overlay-background-color: var(--panda-background-color-50opc);
 
 		/* ========================================================================================================= */
 		/* SCROLLBAR =============================================================================================== */

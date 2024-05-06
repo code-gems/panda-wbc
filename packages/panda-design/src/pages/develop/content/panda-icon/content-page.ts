@@ -1,10 +1,9 @@
 // types
-import { ComponentPropertyDetails, ContentSectionName, PageCategory } from "panda-design-typings";
+import { ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
 import { IconDetails } from "panda-icon-typings";
 
 // styles
 import { styles } from "./styles/styles";
-import { uiComponents } from "../../../../styles/styles";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -12,47 +11,50 @@ import "@panda-wbc/panda-icon/lib/food-icon-pack";
 import "@panda-wbc/panda-icon/lib/av-icon-pack";
 import "@panda-wbc/panda-icon/lib/map-icon-pack";
 import "@panda-wbc/panda-text-field";
+import "@panda-wbc/panda-dialog";
+import "./components/icon-details-dialog/icon-details-dialog";
 
 // utils & config
-import { CSSResultGroup, html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { html, TemplateResult } from "lit";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { getIconListDetails } from "./icon-list";
 import { ContentPageTemplate } from "../../../content-page-template";
 
 // page details
-import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
-import { reduxify } from "../../../../redux/store";
-import { implementationSnippet, installationSnippet } from "./snippets/snippets";
+import { pageConfig } from "./page-config";
 
+// code snippets
+import {
+	implementationSnippet,
+	installationSnippet,
+} from "./snippets/snippets";
+
+@page(pageConfig)
 @customElement("panda-icon-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-icon-content-page></panda-icon-content-page>`
-})
-@reduxify()
-export class PandaIconContentPage extends ContentPageTemplate {
+export class ContentPage extends ContentPageTemplate {
 	// page details
-	public pageId = pageId;
-	public customStyles: CSSResultGroup = styles;
+	public pageId = pageConfig.pageId;
+	public customStyles = styles;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "icon", type: "String", defaultValue: "-", description: "Name of an icon to display." },
+		{ name: "icon", type: "String", defaultValue: "-", description: "Icon name to display." },
 	];
 
-	@property({ type: String, attribute: false })
+	@state()
 	private _searchText: string = ""; 
-
+	
+	@state()
 	private _iconList: IconDetails[] = getIconListDetails();
 
-	@property({ type: Map })
+	@state()
 	private _iconPackMap: Map<string, IconDetails[]> = new Map();
+	
+	@state()
+	private _selectedIconName: string | null = null;
+
+	@state()
+	private _showIconDetailsDialog: boolean = false;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -91,6 +93,9 @@ export class PandaIconContentPage extends ContentPageTemplate {
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
 			${this._renderIconListSection()}
+
+			<!-- ICON DETAILS DIALOG -->
+			${this._renderIconDetailsDialog()}
 		`;
 	}
 
@@ -152,8 +157,8 @@ export class PandaIconContentPage extends ContentPageTemplate {
 	private _renderComponentPropertiesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Properties</h3>
+			<div class="section" data-content-section-name="${ContentSectionName.PROPERTIES}">
+				<internal-link theme="h3">Properties</internal-link>
 				<p>
 					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 					and they are frequently employed for data binding purposes. 
@@ -172,9 +177,9 @@ export class PandaIconContentPage extends ContentPageTemplate {
 			<!-- ICON LIST -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.LIST}">
 				<div class="section">
-					<h2>Icon List</h2>
+					<internal-link theme="h2">Icon List</internal-link>
 					<p>
-
+						The following is a categorized list of available icons, organized into different icon packs based on the types of icons they represent.
 					</p>
 					<div class="row">
 						<div class="col-full">
@@ -182,7 +187,7 @@ export class PandaIconContentPage extends ContentPageTemplate {
 								placeholder="Find..."
 								@on-input="${(e: any) => this._onIconSearch(e.target.value)}"
 							>
-								<div class="suffix" slot="suffix">
+								<div class="suffix-icon" slot="suffix-icon">
 									<panda-icon icon="search"></panda-icon>
 								</div>
 							</panda-text-field>
@@ -205,7 +210,10 @@ export class PandaIconContentPage extends ContentPageTemplate {
 			// add section header
 			iconListHtml.push(html`
 				<div class="list-header">
-					${iconPack}
+					<div class="btn">
+						<panda-icon icon="chevron-down"></panda-icon>
+					</div>
+					<label>${iconPack}</label>
 				</div>
 			`);
 
@@ -214,7 +222,10 @@ export class PandaIconContentPage extends ContentPageTemplate {
 
 				if (this._searchText === "" || this._iconMatch(iconDetail)) {
 					iconListHtml.push(html`
-						<div class="list-item">
+						<div
+							class="list-item"
+							@click="${() => this._onShowIconDetailsDialog(name)}"
+						>
 							<div class="icon">
 								<panda-icon icon="${name}"></panda-icon>
 							</div>
@@ -230,6 +241,21 @@ export class PandaIconContentPage extends ContentPageTemplate {
 				${iconListHtml}
 			</div>
 		`;
+	}
+
+	private _renderIconDetailsDialog(): TemplateResult | void {
+		if (this._showIconDetailsDialog && this._selectedIconName) {
+			return html`
+				<panda-dialog
+					opened
+					@close="${this._onDialogClose}"
+				>
+					<div template>
+						<icon-details-dialog icon="${this._selectedIconName}"></icon-details-dialog>
+					</div>	
+				</panda-dialog>
+			`;
+		}
 	}
 
 	// ================================================================================================================
@@ -269,7 +295,18 @@ export class PandaIconContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onIconSearch(searchText: string) {
-		console.log("%c _onIconSearch", "font-size: 24px; color: green;", searchText);
 		this._searchText = searchText;
+	}
+	
+	private _onShowIconDetailsDialog(iconName: string) {
+		this._selectedIconName = iconName;
+		this._showIconDetailsDialog = true;
+		console.log("%c _onShowIconDetailsDialog", "font-size: 24px; color: red;", iconName);
+	}
+
+	private _onDialogClose() {
+		console.log("%c _onDialogClose", "font-size: 24px; color: red;");
+		this._selectedIconName = null;
+		this._showIconDetailsDialog = false;
 	}
 }
