@@ -30,7 +30,7 @@ class PandaCircularCountdownTimer extends LitElement {
 	showScale: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
-	clockwise: boolean = false;
+	backward: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
 	paused: boolean = false;
@@ -179,6 +179,7 @@ class PandaCircularCountdownTimer extends LitElement {
 			if (this._time >= this.time) {
 				this._time = 0;
 				clearInterval(this._countdownTimer as number);
+				this._countdownTimer = null;
 				this._triggerCountdownOverEvent();
 			}
 		}
@@ -187,7 +188,7 @@ class PandaCircularCountdownTimer extends LitElement {
 	private _updateTimer(): void {
 		let _progress: number = 0;
 		// round up to avoid gaps
-		if (this.clockwise) {
+		if (this.backward) {
 			_progress = Math.ceil((this._totalLength * this._time) / this.time);
 		} else {
 			_progress = Math.ceil(this._totalLength - (this._totalLength * this._time) / this.time);

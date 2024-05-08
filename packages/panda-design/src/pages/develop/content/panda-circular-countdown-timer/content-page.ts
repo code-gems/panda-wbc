@@ -39,6 +39,7 @@ export class ContentPage extends ContentPageTemplate {
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "autostart", type: "Boolean", defaultValue: "false", description: "Starts countdown timer immediately when time is set." },
 		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Sets busy state for the component and displays loading animation." },
+		{ name: "backward", type: "Boolean", defaultValue: "false", description: "Changes default countdown style to backward." },
 		{ name: "clockwise", type: "Boolean", defaultValue: "false", description: "Changes default countdown direction to clockwise." },
 		{ name: "format", type: "String", defaultValue: "MM:SS", description: "Sets the format of remaining time. Only works with 'showTime' feature." },
 		{ name: "paused", type: "Boolean", defaultValue: "false", description: "Pause the countdown, and set the component into paused state." },
@@ -114,7 +115,8 @@ export class ContentPage extends ContentPageTemplate {
 
 						<panda-circular-countdown-timer
 							id="timer"
-							.time="${10}"
+							theme="info"
+							.time="${60}"
 							.format="${"SSs"}"
 							autostart
 							show-time
@@ -129,7 +131,7 @@ export class ContentPage extends ContentPageTemplate {
 						</panda-circular-countdown-timer>
 
 						<panda-circular-countdown-timer
-							theme="donut"
+							theme="primary donut"
 							.time="${90}"
 							.format="${"MMm SSs"}"
 							show-time

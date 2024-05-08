@@ -94,7 +94,74 @@ export const styles = css`
 		animation-timing-function: ease-in-out;
 	}
 
+	:host([clockwise]) .progress {
+		transform: scaleX(-1) rotate(270deg);
+	}
+
 	/* THEMES */
+
+	/* PRIMARY */
+	:host([theme~="primary"]) .progress {
+		stroke: var(--panda-action-color-primary, hsl(209deg 78% 46%));
+	}
+
+	:host([theme~="primary"]) .counter {
+		color: var(--panda-action-text-color-primary, hsl(0deg 0% 100%));
+	}
+
+	/* SECONDARY */
+	:host([theme~="secondary"]) .progress {
+		stroke: var(--panda-action-color-secondary, hsl(160deg 81% 43%));
+	}
+
+	:host([theme~="secondary"]) .counter {
+		color: var(--panda-action-text-color-secondary, hsl(0deg 0% 100%));
+	}
+
+	/* TERTIARY */
+	:host([theme~="tertiary"]) .progress {
+		stroke: var(--panda-action-color-tertiary, hsl(160deg 81% 43%));
+	}
+
+	:host([theme~="tertiary"]) .counter {
+		color: var(--panda-action-text-color-tertiary, hsl(0deg 0% 100%));
+	}
+
+	/* INFO */
+	:host([theme~="info"]) .progress {
+		stroke: var(--panda-action-color-info, hsl(261deg 66% 58%));
+	}
+
+	:host([theme~="info"]) .counter {
+		color: var(--panda-action-text-color-info, hsl(0deg 0% 100%));
+	}
+
+	/* DONE */
+	:host([theme~="done"]) .progress {
+		stroke: var(--panda-action-color-done, hsl(160deg 81% 43%));
+	}
+
+	:host([theme~="done"]) .counter {
+		color: var(--panda-action-text-color-done, hsl(0deg 0% 100%));
+	}
+
+	/* WARN */
+	:host([theme~="warn"]) .progress {
+		stroke: var(--panda-action-color-warn, hsl(35deg 91% 62%));
+	}
+
+	:host([theme~="warn"]) .counter {
+		color: var(--panda-action-text-color-warn, hsl(0deg 0% 100%));
+	}
+
+	/* ALERT */
+	:host([theme~="alert"]) .progress {
+		stroke: var(--panda-action-color-alert, hsl(14deg 77% 62%));
+	}
+
+	:host([theme~="alert"]) .counter {
+		color: var(--panda-action-text-color-alert, hsl(0deg 0% 100%));
+	}
 
 	/* DONUT */
 	:host([theme~="donut"]) .progress {

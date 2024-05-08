@@ -13,9 +13,13 @@ import "@panda-wbc/panda-icon/lib/map-icon-pack";
 import "../../../../../../web-parts/code-sample/code-sample";
 
 // utils
-import { LitElement, TemplateResult, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { LitElement, PropertyValueMap, TemplateResult, html } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 import { uiComponents } from "../../../../../../styles/styles";
+
+// config
+import { getIconListDetails } from "../../icon-list";
+import { IconDetails } from "panda-icon-typings";
 
 @customElement("icon-details-dialog")
 export class IconDetailsDialog extends LitElement {
@@ -30,11 +34,27 @@ export class IconDetailsDialog extends LitElement {
 	@property({ type: String, attribute: true, reflect: true })
 	icon!: string;
 
+	@state()
+	private _selectedIconDetails: IconDetails | null = null;
+
+	@state()
+	private _iconListDetail: IconDetails[] = [];
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
+	protected firstUpdated(): void {
+		// get icon list details
+		this._iconListDetail = getIconListDetails();
+	}
 
+	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+		if (_changedProperties.has("icon") && this.icon) {
+			// extract selected icon details
+			this._selectedIconDetails = this._iconListDetail.find(({ name }) => name === this.icon) ?? null;
+		}
+	}
 	
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -54,8 +74,7 @@ export class IconDetailsDialog extends LitElement {
 				</div>
 				<div class="body scrollbar">
 					<div class="body-wrap">
-						asd
-
+						${this._renderIconDetails()}
 					</div>
 				</div>
 				<div class="footer">
@@ -68,6 +87,39 @@ export class IconDetailsDialog extends LitElement {
 				</div>
 			</div>
 		`;
+	}
+
+	private _renderIconDetails(): TemplateResult {
+		const icon = this._selectedIconDetails?.name;
+		return html`
+			<div class="layout">
+				<div class="body">
+					<div class="icon">
+						<panda-icon icon="${icon}"></panda-icon>
+					</div>
+					<div class="details">
+
+					</div>
+				</div>
+				<div class="footer">
+					${this._renderTags()}
+				</div>
+			</div>
+		`;
+	}
+
+	private _renderTags(): TemplateResult[] | void {
+		if (this._selectedIconDetails) {
+			const tagListHtml: TemplateResult[] = [];
+			
+			this._selectedIconDetails.keywords.forEach((keyword) => {
+				tagListHtml.push(html`
+					<div class="tag">${keyword}</div>
+				`);
+			});
+
+			return tagListHtml;
+		}
 	}
 
 	// ================================================================================================================
