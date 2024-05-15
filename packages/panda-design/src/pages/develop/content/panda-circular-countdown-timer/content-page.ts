@@ -14,6 +14,7 @@ import "@panda-wbc/panda-countdown-timer";
 import "@panda-wbc/panda-counter";
 import "@panda-wbc/panda-button";
 
+
 // utils & config
 import { TemplateResult, html } from "lit";
 import { customElement, state, query } from "lit/decorators.js";
@@ -21,6 +22,9 @@ import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
 import { bannerConfig2 } from "../../../../utils/particle-banner-presets";
+
+// samples
+import "./samples/action-themes-sample";
 
 // code snippets
 import {
@@ -64,9 +68,6 @@ export class ContentPage extends ContentPageTemplate {
 	@state()
 	private _busy: boolean = false;
 
-	@state()
-	private _paused: boolean = false;
-
 	@query("#timer")
 	private _timer!: any;
 
@@ -94,6 +95,7 @@ export class ContentPage extends ContentPageTemplate {
 			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
+			${this._renderThemingSection()}
 		`;
 	}
 
@@ -112,60 +114,42 @@ export class ContentPage extends ContentPageTemplate {
 
 				<div class="sample-cont">
 					<div class="sample">
+						<div class="rows">
+							<div class="row">
+								<div class="col-half content-center">
 
-						<panda-circular-countdown-timer
-							id="timer"
-							theme="info"
-							.time="${60}"
-							.format="${"SSs"}"
-							autostart
-							show-time
-							show-scale
-							clockwise
-							.paused="${this._paused}"
-							.busy="${this._busy}"
-							@countdown-over="${this._onCountdownOver}"
-							@countdown-tick="${this._onCountdownTick}"
-						>
-							Quick
-						</panda-circular-countdown-timer>
+									<panda-circular-countdown-timer
+										id="timer"
+										theme="info"
+										.time="${60}"
+										.format="${"SSs"}"
+										autostart
+										show-time
+										show-scale
+										clockwise
+										.busy="${this._busy}"
+										@countdown-over="${this._onCountdownOver}"
+										@countdown-tick="${this._onCountdownTick}"
+									>
+										Quick
+									</panda-circular-countdown-timer>
+									
+								</div>
 
-						<panda-circular-countdown-timer
-							theme="primary donut"
-							.time="${90}"
-							.format="${"MMm SSs"}"
-							show-time
-							show-scale
-							autostart
-							.paused="${this._paused}"
-							.busy="${this._busy}"
-							@countdown-over="${this._onCountdownOver}"
-						>
-						</panda-circular-countdown-timer>
+								<div class="col-half">
 
+									<panda-button @click="${this._onStart}">START</panda-button>
+									<panda-button @click="${this._onTogglePause}">PAUSE</panda-button>
+									<panda-button @click="${this._onStop}">STOP</panda-button>
+									<panda-button @click="${this._onRestart}">RESTART</panda-button>
+									<panda-button @click="${this._onToggleBusy}">TOGGLE BUSY STATE</panda-button>
+
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<panda-button
-					@click="${this._onStart}"
-				>
-					START
-				</panda-button>
-				<panda-button
-					@click="${this._onTogglePause}"
-				>
-					PAUSE
-				</panda-button>
-				<panda-button
-					@click="${this._onStop}"
-				>
-					STOP
-				</panda-button>
-				<panda-button
-					@click="${this._onToggleBusy}"
-				>
-					TOGGLE BUSY STATE
-				</panda-button>
 
 			</div> <!-- END OF CONTENT SECTION -->
 		`;
@@ -266,6 +250,42 @@ export class ContentPage extends ContentPageTemplate {
 		`;
 	}
 
+	private _renderThemingSection(): TemplateResult {
+		return html`
+			<!-- THEMING -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.THEMING}">
+				<div class="section">
+					<internal-link theme="h2">Theming</internal-link>
+					<p>
+						Theming enables developers to change the default appearance of components by providing themes.
+						Component offers built-in themes, allowing developers to choose from pre-defined styles.
+						Some themes can be used in combination with the other themes enabling developers with even more options.
+					</p>
+					<p>
+						See the list of available themes below:
+					</p>
+					${this._renderActionColorsThemingSection()}
+				</div>
+			</div>
+		`;
+	}
+
+	private _renderActionColorsThemingSection(): TemplateResult {
+		return html`
+			<div class="content-section" data-content-section-name="theming-action-colors">
+				<div class="section">
+					<internal-link theme="h3">Action Colors</internal-link>
+					<p>
+						Countdown timer comes with predefined action color themes: 
+					</p>
+				</div>
+
+				<panda-circular-countdown-timer-action-colors-themes>
+				</panda-circular-countdown-timer-action-colors-themes>
+			</div>
+		`;
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
@@ -275,7 +295,7 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onTogglePause(): void {
-		this._paused = !this._paused;
+		this._timer.pause();
 	}
 
 	private _onStart(): void {
@@ -284,6 +304,10 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onStop(): void {
 		this._timer.stop();
+	}
+
+	private _onRestart(): void {
+		this._timer.restart();
 	}
 
 	private _onCountdownOver(): void {

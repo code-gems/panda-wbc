@@ -14,6 +14,9 @@ class PandaCircularCountdownTimer extends LitElement {
 		return styles;
 	}
 
+	@property({ type: String, reflect: true })
+	theme!: string;
+
 	@property({ type: Number })
 	time: number = 0;
 
@@ -37,9 +40,6 @@ class PandaCircularCountdownTimer extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
-
-	@property({ type: String })
-	theme!: string;
 
 	// state props
 	@state()
@@ -133,6 +133,7 @@ class PandaCircularCountdownTimer extends LitElement {
 	// ================================================================================================================
 
 	public start(): void {
+		this.paused = false;
 		this._startCountdown();
 	}
 
@@ -151,6 +152,8 @@ class PandaCircularCountdownTimer extends LitElement {
 
 	public restart(): void {
 		this._time = 0;
+		this.paused = false;
+		this._updateTimer();
 		this._startCountdown();
 	}
 

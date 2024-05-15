@@ -100,35 +100,65 @@ export const styles = css`
 
 	/* THEMES */
 
+	/* DONUT */
+	:host([theme~="donut"]) .progress {
+		stroke-width: var(--panda-countdown-timer-donut-size, 10);
+		r: 45;
+	}
+
+	:host([theme~="donut"]) .counter {
+		color: var(--panda-countdown-timer-donut-text-color, hsl(0deg 0% 15%));
+	}
+
 	/* PRIMARY */
 	:host([theme~="primary"]) .progress {
-		stroke: var(--panda-action-color-primary, hsl(209deg 78% 46%));
+		stroke: var(--panda-primary-color, hsl(209deg 78% 46%));
+		fill: var(--panda-primary-color-20opc, hsl(209deg 78% 46% / 20%));
+	}
+
+	:host([theme~="primary"]) .scale {
+		stroke: var(--panda-primary-color, hsl(209deg 78% 46%));
 	}
 
 	:host([theme~="primary"]) .counter {
-		color: var(--panda-action-text-color-primary, hsl(0deg 0% 100%));
+		color: var(--panda-primary-text-color, hsl(0deg 0% 100%));
 	}
 
 	/* SECONDARY */
 	:host([theme~="secondary"]) .progress {
-		stroke: var(--panda-action-color-secondary, hsl(160deg 81% 43%));
+		stroke: var(--panda-secondary-color, hsl(160deg 81% 43%));
+		fill: var(--panda-secondary-color-20opc, hsl(160deg 81% 43% / 20%));
+	}
+
+	:host([theme~="secondary"]) .scale {
+		stroke: var(--panda-secondary-color, hsl(160deg 81% 43%));
 	}
 
 	:host([theme~="secondary"]) .counter {
-		color: var(--panda-action-text-color-secondary, hsl(0deg 0% 100%));
+		color: var(--panda-secondary-text-color, hsl(0deg 0% 100%));
 	}
 
 	/* TERTIARY */
 	:host([theme~="tertiary"]) .progress {
-		stroke: var(--panda-action-color-tertiary, hsl(160deg 81% 43%));
+		stroke: var(--panda-tertiary-color, hsl(160deg 81% 43%));
+		fill: var(--panda-tertiary-color-20opc, hsl(160deg 81% 43% / 20%));
+	}
+
+	:host([theme~="tertiary"]) .scale {
+		stroke: var(--panda-tertiary-color, hsl(160deg 81% 43%));
 	}
 
 	:host([theme~="tertiary"]) .counter {
-		color: var(--panda-action-text-color-tertiary, hsl(0deg 0% 100%));
+		color: var(--panda-tertiary-text-color, hsl(0deg 0% 100%));
 	}
 
 	/* INFO */
 	:host([theme~="info"]) .progress {
+		stroke: var(--panda-action-color-info, hsl(261deg 66% 58%));
+		fill: var(--panda-action-color-info-20opc, hsl(261deg 66% 58% / 20%));
+	}
+
+	:host([theme~="info"]) .scale {
 		stroke: var(--panda-action-color-info, hsl(261deg 66% 58%));
 	}
 
@@ -139,6 +169,11 @@ export const styles = css`
 	/* DONE */
 	:host([theme~="done"]) .progress {
 		stroke: var(--panda-action-color-done, hsl(160deg 81% 43%));
+		fill: var(--panda-action-color-done-20opc, hsl(160deg 81% 43% / 20%));
+	}
+
+	:host([theme~="done"]) .scale {
+		stroke: var(--panda-action-color-done, hsl(160deg 81% 43%));
 	}
 
 	:host([theme~="done"]) .counter {
@@ -147,6 +182,11 @@ export const styles = css`
 
 	/* WARN */
 	:host([theme~="warn"]) .progress {
+		stroke: var(--panda-action-color-warn, hsl(35deg 91% 62%));
+		fill: var(--panda-action-color-warn-20opc, hsl(35deg 91% 62% / 20%));
+	}
+
+	:host([theme~="warn"]) .scale {
 		stroke: var(--panda-action-color-warn, hsl(35deg 91% 62%));
 	}
 
@@ -157,20 +197,15 @@ export const styles = css`
 	/* ALERT */
 	:host([theme~="alert"]) .progress {
 		stroke: var(--panda-action-color-alert, hsl(14deg 77% 62%));
+		fill: var(--panda-action-color-alert-20opc, hsl(14deg 77% 62% / 20%));
+	}
+
+	:host([theme~="alert"]) .scale {
+		stroke: var(--panda-action-color-alert, hsl(14deg 77% 62%));
 	}
 
 	:host([theme~="alert"]) .counter {
 		color: var(--panda-action-text-color-alert, hsl(0deg 0% 100%));
-	}
-
-	/* DONUT */
-	:host([theme~="donut"]) .progress {
-		stroke-width: var(--panda-countdown-timer-donut-size, 10);
-		r: 45;
-	}
-
-	:host([theme~="donut"]) .counter {
-		color: var(--panda-countdown-timer-donut-text-color, hsl(0deg 0% 15%));
 	}
 
 	@keyframes rotateScale {

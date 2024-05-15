@@ -567,6 +567,11 @@ export const uiComponents = {
 		.col-11 { grid-column: span 11 / auto; }
 		.col-12,
 		.col-full { grid-column: span 12 / auto; }
+
+		.row > .content-center {
+			justify-content: center;
+			align-items: center;
+		}
 	`,
 	
 	modifiers: css`
