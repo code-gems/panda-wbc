@@ -153,6 +153,10 @@ class PandaCircularCountdownTimer extends LitElement {
 	public restart(): void {
 		this._time = 0;
 		this.paused = false;
+		if (this._countdownTimer) {
+			clearInterval(this._countdownTimer);
+			this._countdownTimer = null;
+		}
 		this._updateTimer();
 		this._startCountdown();
 	}
