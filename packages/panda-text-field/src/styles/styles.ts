@@ -70,7 +70,31 @@ export const styles = css`
 		border: 1px solid var(--panda-input-border-color-hover, hsl(0deg 0% 65%));
 	}
 
-	/* COMPONENT STATES */
+	/* THEMES ====================================================================================================== */
+	/* VALIDATION */
+
+	.text-field.mandatory,
+	.text-field.mandatory:hover {
+		border: 1px solid var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
+	}
+
+	.text-field[theme="valid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-valid, hsl(151deg 74% 43%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(151deg 74% 43%));
+	}
+
+	.text-field[theme="mandatory"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
+	}
+
+	.text-field[theme="invalid"]:not([disabled]) {
+		border: 1px solid var(--panda-form-validation-invalid, hsl(352deg 70% 45%));
+		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(352deg 70% 45%));
+	}
+
+	/* COMPONENT STATES ============================================================================================ */
 
 	:host([disabled]) .text-field {
 		border: 1px solid var(--panda-input-border-color-disabled, hsl(0deg 0% 80%));
@@ -81,28 +105,9 @@ export const styles = css`
 		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 68%));
 	}
 
-	.text-field.mandatory,
-	.text-field.mandatory:hover {
-		border: 1px solid var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
-		box-shadow: 0px 0px 1px 1px var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
-	}
-
-	/* VALIDATION */
-
-	.text-field[theme="valid"]:not([disabled]) {
-		border: 1px solid var(--panda-form-validation-valid, hsl(151deg 74% 43%));
-		box-shadow: 0px 0px 1px 1px var(--panda-form-validation-valid, hsl(151deg 74% 43%));
-	}
-
-	.text-field[theme="invalid"]:not([disabled]) {
-		border: 1px solid var(--panda-form-validation-invalid, hsl(352deg 70% 45%));
-		box-shadow: 0px 0px 1px 1px var(--panda-form-validation-invalid, hsl(352deg 70% 45%));
-	}
-
 	/* FOCUSED STATE */
 	:host([focused]) .text-field {
-		border: 1px solid var(--panda-input-outline-color, hsl(216deg 88% 60%));
-		box-shadow: 0px 0px 1px 1px var(--panda-input-outline-color, hsl(216deg 88% 60%));
+		box-shadow: var(--panda-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
 	}
 
 	/* PREFIX / SUFFIX ICONS */

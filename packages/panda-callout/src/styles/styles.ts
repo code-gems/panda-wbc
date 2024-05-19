@@ -7,16 +7,31 @@ export const styles = css`
 	}
 
 	.callout {
+		position: relative;
 		display: flex;
 		flex-flow: column;
 		padding: var(--panda-padding-l, 15px);
 
 		border-radius: var(--panda-border-radius-m, 5px);
 		border: 1px solid;
-		border-left: 4px solid;
 		border-color: var(--panda-text-color, hsl(0deg 0% 15%));
 		background-color: var(--panda-background-color-100, hsl(0deg 0% 97%));
 		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
+		box-sizing: border-box;
+	}
+
+	.callout:before {
+		position: absolute;
+		display: block;
+		width: 5px;
+		height: calc(100% - (2 * var(--panda-padding-s, 5px)));
+		top: var(--panda-padding-s, 5px);
+		left: var(--panda-padding-s, 5px);
+		content: " ";
+
+
+		border-radius: var(--panda-border-radius-m, 5px);
+		background-color: var(--panda-text-color, hsl(0deg 0% 15%));
 	}
 
 	.with-footer .callout {

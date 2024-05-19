@@ -102,7 +102,7 @@ export class PandaCheckboxGroup extends LitElement {
 
 	private _onChange(event: PandaCheckboxChangeEvent): void {
 		if (!this.disabled) {
-			const {name, checked } = event.detail;
+			const { name, checked } = event.detail;
 			this._triggerChangeEvent(name, checked);
 		}
 	}

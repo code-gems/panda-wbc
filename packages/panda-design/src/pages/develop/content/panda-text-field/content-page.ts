@@ -51,7 +51,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "value", type: "String", defaultValue: "-", description: "Component input value." },
 		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component." },
-		{ name: "placeholder", type: "String", defaultValue: "-", description: "Text to show in case no value is selected." },
+		{ name: "placeholder", type: "String", defaultValue: "-", description: "Placeholder text shown in case no initial value is provided." },
 		{ name: "disabled", type: "Boolean", defaultValue: "false", description: "Sets a disabled state for the component." },
 		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Sets busy state for the component." },
 		{ name: "autofocus", type: "Boolean", defaultValue: "false", description: "Sets the focus to the component on page load." },

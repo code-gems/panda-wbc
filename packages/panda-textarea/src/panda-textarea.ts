@@ -1,28 +1,26 @@
 // types
-import { PandaTextFieldOnInputEvent } from "../index";
+import { PandaTextareaOnInputDetail } from "../index";
 
-// style
+// styles
 import { styles } from "./styles/styles";
-
-// components
-import "@panda-wbc/panda-spinner";
+import { scrollbar } from "@panda-wbc/panda-theme";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValueMap } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 
-@customElement("panda-text-field")
-export class PandaTextField extends LitElement {
-	// css style
+@customElement("panda-textarea")
+export class PandaTextarea extends LitElement {
+	// css styles
 	static get styles() {
-		return styles;
+		return [styles, scrollbar];
 	}
 
 	@property({ type: String, attribute: true, reflect: true })
 	theme!: string;
 
 	@property({ type: String })
-	value!: string | null;
+	value: string = "";
 
 	@property({ type: String })
 	label: string | null = null;
@@ -30,37 +28,67 @@ export class PandaTextField extends LitElement {
 	@property({ type: String })
 	placeholder: string | null = null;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	// @property({
+	// 	type: String,
+	// 	reflect: true,
+	// 	converter: {
+	// 		fromAttribute(value, type) {
+	// 			console.log("%c (converter)", "font-size: 24px; color: red;", typeof value, value);
+	// 			return value === "vertical" ? true : "h";
+	// 		}
+	// 	}
+	// })
+	// resize: string | boolean | null = null;
+
+	@property({ type: Number, reflect: true })
+	rows!: number;
+
+	@property({ type: Number, reflect: true })
+	cols!: number;
+
+	@property({ type: Number, attribute: "maxlength", reflect: true })
+	maxLength: number | null = null;
+
+	@property({ type: Boolean, attribute: "hard-limit", reflect: true })
+	hardLimit: boolean = false;
+
+	@property({ type: Boolean, attribute: "show-length", reflect: true })
+	showLength: boolean = false;
+
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: String, attribute: "spinner-type", reflect: true })
+	spinnerType: string = "dots";
+
+	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	autofocus: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	autoselect: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	spellcheck: boolean = false;
-
+	
 	@property({ type: Boolean, attribute: true })
 	mandatory: boolean = false;
 
-	@property({ type: String, attribute: "spinner-type" })
-	spinnerType: string = "dots";
-
-	// view props
+	// state props
 	@property({ type: Boolean, attribute: true, reflect: true })
 	private _mandatory: boolean = false;
 
+	@state()
+	private _counter: number = 0;
+
 	// elements
-	@query("#input")
-	private _inputEl!: HTMLInputElement;
+	@query("#textarea")
+	private _textareaEl!: HTMLInputElement;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -71,8 +99,9 @@ export class PandaTextField extends LitElement {
 		this._evaluateMandatoryFlag();
 		// autofocus
 		if (this.autofocus) {
-			this._inputEl.focus();
+			this._textareaEl.focus();
 		}
+		this._counter = this.value.length;
 	}
 
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
@@ -80,26 +109,38 @@ export class PandaTextField extends LitElement {
 			// update mandatory flag
 			this._evaluateMandatoryFlag();
 		}
+
+		if (_changedProperties.has("spellcheck")) {
+			// focus on the textarea to rerender text
+			this._textareaEl.focus();
+		}
+
+		// set input max length
+		if (_changedProperties.has("maxLength") && this.maxLength !== undefined) {
+			if (typeof this.maxLength === "number" && this.hardLimit) {
+				this._textareaEl.maxLength = this.maxLength;
+			}
+		}
 	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	protected render(): TemplateResult {
 		let labelHtml: TemplateResult = html``;
 		let spinnerHtml: TemplateResult = html``;
+		let counterHtml: TemplateResult = html``;
+		let cssMod: string[] = [];
+
+		// validate counter
+		if (typeof this.maxLength === "number" && !this.hardLimit && this.maxLength < this._counter) {
+			cssMod.push("invalid");
+		}
 
 		// generate label if defined
 		if (this.label) {
-			labelHtml = html`
-				<div
-					class="label"
-					part="label"
-				>
-					${this.label}
-				</div>
-			`;
+			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
 		}
 
 		// check if component is in busy state
@@ -117,32 +158,46 @@ export class PandaTextField extends LitElement {
 				</div>
 			`;
 		}
-		
+
+		if (this.showLength) {
+			const max = this.maxLength ? `/${this.maxLength}` : ``;
+			counterHtml = html`
+				<div class="counter ${cssMod.join(" ")}" part="counter ${cssMod.join(" ")}">
+					${this._counter}${max}
+				</div>
+			`;
+		}
+
+		// calculate mod css
+		if (this._mandatory) cssMod.push("mandatory");
+		if (this.disabled) cssMod.push("disabled");
+		if (this.busy) cssMod.push("busy");
+
 		return html`
 			${labelHtml}
 			<div
-				class="text-field ${this.disabled ? "disabled" : ""} ${this._mandatory ? "mandatory" : ""}"
-				part="text-field"
-				theme="${this.theme}"
+				class="textarea-cont ${cssMod.join(" ")}"
+				part="textarea-cont ${cssMod.join(" ")}"
 			>
-				<slot name="prefix"></slot>
-				<input
-					type="text"
-					id="input"
-					class="input"
-					part="input"
+				<textarea
+					id="textarea"
+					class="textarea scrollbar"
+					part="textarea"
+					.value="${this.value}"
 					.placeholder="${this.placeholder ?? ""}"
-					.value="${this.value ?? ""}"
+					.rows="${this.rows}"
+					.cols="${this.cols}"
+					.spellcheck="${this.spellcheck}"
 					.disabled="${this.disabled}"
 					?autofocus="${this.autofocus}"
-					.spellcheck="${this.spellcheck}"
 					@input="${this._onInput}"
+					@change="${this._onChange}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
-				/>
-				<slot name="suffix"></slot>
+				></textarea>
 				${spinnerHtml}
 			</div>
+			${counterHtml}
 		`;
 	}
 
@@ -150,12 +205,21 @@ export class PandaTextField extends LitElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _triggerInputEvent() {
-		const event: PandaTextFieldOnInputEvent = new CustomEvent("on-input", {
+	private _triggerInputEvent(): void {
+		const event = new CustomEvent<PandaTextareaOnInputDetail>("on-input", {
 			detail: {
-				value: this.value as string
+				value: this.value
 			}
-		})
+		});
+		this.dispatchEvent(event);
+	}
+
+	private _triggerChangeEvent(): void {
+		const event = new CustomEvent<PandaTextareaOnInputDetail>("change", {
+			detail: {
+				value: this.value
+			}
+		});
 		this.dispatchEvent(event);
 	}
 
@@ -174,14 +238,14 @@ export class PandaTextField extends LitElement {
 			}
 		}
 	}
-
+	
 	// ================================================================================================================
 	// API ============================================================================================================
 	// ================================================================================================================
 
 	public focus(): void {
 		this._onFocus();
-		this._inputEl.focus();
+		this._textareaEl.focus();
 	}
 
 	public clear(): void {
@@ -193,26 +257,32 @@ export class PandaTextField extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onInput(e: Event) {
-		this.value = (e.target as HTMLInputElement).value;
-		this._triggerInputEvent();
-	}
-
 	private _onFocus() {
 		this.focused = true;
 		// check autoselect feature
 		if (this.autoselect) {
-			this._inputEl.select();
+			this._textareaEl.select();
 		}
 	}
 
 	private _onBlur() {
 		this.focused = false;
 	}
+
+	private _onInput(event: Event): void {
+		this.value = (event.target as HTMLInputElement).value;
+		this._counter = this.value.length;
+		this._triggerInputEvent();
+	}
+
+	private _onChange(event: Event): void {
+		this.value = (event.target as HTMLInputElement).value;
+		this._triggerChangeEvent();
+	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-text-field": PandaTextField;
+		"panda-textarea": PandaTextarea;
 	}
 }

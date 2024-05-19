@@ -1,14 +1,14 @@
-import { PandaTextField } from "./src/panda-text-field";
+import { PandaTextarea } from "./src/panda-textarea";
 
-export type PandaTextField = typeof PandaTextField;
+export type PandaTextarea = typeof PandaTextarea;
 
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export type PandaTextFieldOnInputDetail = {
+export type PandaTextareaOnInputDetail = {
 	value: string;
 }
 
-export interface PandaTextFieldOnInputEvent extends CustomEvent<PandaTextFieldOnInputDetail> {}
-export interface PandaTextFieldChangeEvent extends CustomEvent<PandaTextFieldOnInputDetail> {}
+export interface PandaTextareaOnInputEvent extends CustomEvent<PandaTextareaOnInputDetail> {}
+export interface PandaTextareaChangeEvent extends CustomEvent<PandaTextareaOnInputDetail> {}

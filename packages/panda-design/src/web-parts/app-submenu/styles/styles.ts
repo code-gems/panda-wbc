@@ -23,6 +23,11 @@ export const styles = css`
 		flex-shrink: 0;
 	}
 
+	.submenu .header .search {
+		padding: var(--panda-padding-m);
+		box-sizing: border-box;
+	}
+
 	.submenu .body {
 		flex-grow: 1;
 		overflow: overlay;

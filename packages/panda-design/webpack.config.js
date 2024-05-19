@@ -50,6 +50,7 @@ module.exports = {
 			directory: path.resolve(__dirname, "dist"),
 		},
 		port: 8080,
-		historyApiFallback: true
+		historyApiFallback: true,
+		hot: false
 	},
 };

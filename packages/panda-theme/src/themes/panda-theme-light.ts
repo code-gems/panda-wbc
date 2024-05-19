@@ -265,6 +265,15 @@ export const pandaThemeLight = css`
 		--panda-border-radius-hero: 30px;
 
 		/* ========================================================================================================= */
+		/* ELEVATION / DEPTH ======================================================================================= */
+		/* ========================================================================================================= */
+
+		--panda-elevation-s: 0px 1px 2px var(--dragon-black-color-20opc);
+		--panda-elevation-m: 0px 2px 4px var(--dragon-black-color-20opc);
+		--panda-elevation-l: 0px 5px 10px var(--dragon-black-color-20opc);
+		--panda-elevation-hero: 0px 10px 30px var(--dragon-black-color-50opc);
+
+		/* ========================================================================================================= */
 		/* HIGHLIGHT COLOR ========================================================================================= */
 		/* ========================================================================================================= */
 
@@ -296,7 +305,8 @@ export const pandaThemeLight = css`
 		/* OUTLINE & FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);
 		--panda-outline-color-disabled: var(--panda-primary-color-20opc);
-		
+		--panda-outline: 0px 0px 0px 2px var(--panda-primary-color-40opc);
+
 		/* VALIDATION */
 		--panda-form-validation-mandatory: var(--panda-action-color-warn);
 		--panda-form-validation-valid: var(--panda-action-color-done);
