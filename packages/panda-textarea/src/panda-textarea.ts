@@ -110,16 +110,22 @@ export class PandaTextarea extends LitElement {
 			this._evaluateMandatoryFlag();
 		}
 
-		if (_changedProperties.has("spellcheck")) {
-			// focus on the textarea to rerender text
-			this._textareaEl.focus();
-		}
-
 		// set input max length
 		if (_changedProperties.has("maxLength") && this.maxLength !== undefined) {
 			if (typeof this.maxLength === "number" && this.hardLimit) {
 				this._textareaEl.maxLength = this.maxLength;
 			}
+		}
+
+		// trim text length if max length and hard limit are set
+		if (
+			_changedProperties.has("value") &&
+			this.value !== undefined &&
+			typeof this.maxLength === "number" &&
+			this.hardLimit
+		) {
+			this._textareaEl.value = this.value.substring(0, this.maxLength);
+			this._counter = this.maxLength;
 		}
 	}
 

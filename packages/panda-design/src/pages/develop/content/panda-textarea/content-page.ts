@@ -117,7 +117,6 @@ private _renderOverviewSection(): TemplateResult {
 								</panda-text-field>
 
 								<panda-textarea
-									theme="valid"
 									label="Remarks:"
 									placeholder="Enter remarks..."
 									resize="vertical"

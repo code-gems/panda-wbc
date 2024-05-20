@@ -112,19 +112,19 @@ export const styles = css`
 	/* THEMES ====================================================================================================== */
 
 	/* VALID */
-	:host[theme~="valid"]:not([disabled]) .textarea-cont {
+	:host([theme~="valid"]) .textarea-cont:not(.disabled) {
 		border: 1px solid var(--panda-form-validation-valid, hsl(160deg 81% 43%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(160deg 81% 43%));
 	}
 
 	/* MANDATORY */
-	:host[theme~="mandatory"]:not([disabled]) .textarea-cont {
+	:host([theme~="mandatory"]) .textarea-cont:not(.disabled) {
 		border: 1px solid var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(29deg 100% 59%));
 	}
 
 	/* INVALID */
-	:host[theme~="invalid"]:not([disabled]) .textarea-cont {
+	:host([theme~="invalid"]) .textarea-cont:not(.disabled) {
 		border: 1px solid var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 	}
