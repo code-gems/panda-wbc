@@ -5,6 +5,9 @@ import { PandaTextareaOnInputDetail } from "../index";
 import { styles } from "./styles/styles";
 import { scrollbar } from "@panda-wbc/panda-theme";
 
+// components
+import "@panda-wbc/panda-spinner";
+
 // utils
 import { LitElement, html, TemplateResult, PropertyValueMap } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";

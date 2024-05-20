@@ -783,9 +783,9 @@ importers:
 
   packages/panda-textarea:
     dependencies:
-      '@panda-wbc/panda-icon':
+      '@panda-wbc/panda-spinner':
         specifier: workspace:*
-        version: link:../panda-icon
+        version: link:../panda-spinner
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
