@@ -125,7 +125,8 @@ export class PandaTextarea extends LitElement {
 			_changedProperties.has("value") &&
 			this.value !== undefined &&
 			typeof this.maxLength === "number" &&
-			this.hardLimit
+			this.hardLimit &&
+			this.value.length > this.maxLength
 		) {
 			this._textareaEl.value = this.value.substring(0, this.maxLength);
 			this._counter = this.maxLength;
@@ -169,9 +170,12 @@ export class PandaTextarea extends LitElement {
 		}
 
 		if (this.showLength) {
-			const max = this.maxLength ? `/${this.maxLength}` : ``;
+			const max = this.maxLength ? `/${this.maxLength}` : "";
 			counterHtml = html`
-				<div class="counter ${cssMod.join(" ")}" part="counter ${cssMod.join(" ")}">
+				<div
+					class="counter ${cssMod.join(" ")}"
+					part="counter ${cssMod.join(" ")}"
+				>
 					${this._counter}${max}
 				</div>
 			`;
