@@ -1,5 +1,9 @@
-export interface PandaCountdownTimerTickEventDetails {
-	interval: number;
+
+
+// EVENTS =============================================================================================================
+
+export interface PandaPipsPagerChangeEventDetails {
+	pageIndex: number;
 }
 
-export interface PandaCountdownTimerTickEvent extends CustomEvent<PandaCountdownTimerTickEventDetails> {}
+export interface PandaPipsPagerChangeEvent extends CustomEvent<PandaPipsPagerChangeEventDetails> {}

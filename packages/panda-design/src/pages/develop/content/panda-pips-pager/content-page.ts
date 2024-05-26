@@ -69,17 +69,25 @@ private _renderOverviewSection(): TemplateResult {
 			<div class="section">
 				<internal-link theme="h2">Overview</internal-link>
 				<p>
-
+					Pips Pager, also known as pagination dots is a user interface component commonly used in carousel or slideshow designs 
+					to indicate the current position within a set of items or steps. These small circular elements provide a visual cue to users, 
+					allowing them to easily navigate through the content by clicking or tapping on the desired position.
 				</p>
 			</div>
 
 			<div class="sample-cont">
 				<div class="sample">
 					
-					<panda-pips-pager
-					
-					>
-					</panda-pips-pager>
+					<div style="width: 100px;">
+
+						<panda-pips-pager
+							.selected="${2}"
+							.total="${5}"
+							@change="${this._onChange}"
+						>
+						</panda-pips-pager>
+	
+					</div>
 
 				</div>
 			</div>
@@ -87,7 +95,6 @@ private _renderOverviewSection(): TemplateResult {
 		</div> <!-- END OF CONTENT SECTION -->
 	`;
 }
-
 
 private _renderInstallationSection(): TemplateResult {
 	return html`
@@ -132,8 +139,8 @@ private _renderUsageSection(): TemplateResult {
 private _renderComponentPropertiesSection(): TemplateResult {
 	return html`
 		<!-- COMPONENT PROPERTIES -->
-		<div class="section">
-			<h3>Properties</h3>
+		<div class="section" data-content-section-name="${ContentSectionName.PROPERTIES}">
+			<internal-link theme="h3">Properties</internal-link>
 			<p>
 				Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 				and they are frequently employed for data binding purposes. 
@@ -150,8 +157,8 @@ private _renderComponentPropertiesSection(): TemplateResult {
 private _renderComponentEventsSection(): TemplateResult {
 	return html`
 		<!-- COMPONENT EVENTS -->
-		<div class="section">
-			<h3>Events</h3>
+		<div class="section" data-content-section-name="${ContentSectionName.EVENTS}">
+			<internal-link theme="h3">Events</internal-link>
 			<p>
 				Component events are instrumental in elevating the interactivity and adaptability of software applications. 
 				These events serve as carefully designed triggers that facilitate communication between the component and the application, 
@@ -170,5 +177,7 @@ private _renderComponentEventsSection(): TemplateResult {
 // EVENTS =========================================================================================================
 // ================================================================================================================
 
-// ...
+	private _onChange(event: any): void {
+		console.log("%c [DEMO PAGE] _onChange", "font-size: 24px; color: green;", event.detail);
+	} 
 }

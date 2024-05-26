@@ -15,8 +15,8 @@ export const pageConfig: Page = {
 	
 	contextMenu: [
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
-		// { name: "Installation", contextId: ContentSectionName.INSTALLATION },
-		// { name: "Usage", contextId: ContentSectionName.USAGE },
+		{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
+		{ name: "Usage", contextId: ContentSectionName.USAGE },
 		// { name: "Features", contextId: ContentSectionName.FEATURES },
 		// { name: "Theming", contextId: ContentSectionName.THEMING },
 		// { name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
