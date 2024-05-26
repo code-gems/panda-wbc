@@ -306,7 +306,7 @@ export const pandaThemeDark = css`
 		/* OUTLINE / FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);
 		--panda-outline-color-disabled: var(--panda-primary-color-20opc);
-		--panda-outline: 0px 0px 0px 2px var(--panda-primary-color-40opc);
+		--panda-outline: 0px 0px 0px 2px var(--panda-outline-color);
 		
 		/* VALIDATION */
 		--panda-form-validation-mandatory: var(--panda-action-color-warn);
