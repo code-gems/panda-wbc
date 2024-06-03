@@ -77,7 +77,7 @@ private _renderOverviewSection(): TemplateResult {
 			<div class="section">
 				<internal-link theme="h2">Overview</internal-link>
 				<p>
-					Panda Click to Copy component allows users to instantly copy text or content by simply clicking on it, 
+					Panda Click to Copy component allows users to instantly copy text or HTML content by simply clicking on it, 
 					eliminating the need for manual selection and copy commands. 
 					This user-friendly UI element streamlines the copying process, 
 					making it more efficient and intuitive for scenarios where users need to copy information like code snippets, 
@@ -107,7 +107,9 @@ private _renderOverviewSection(): TemplateResult {
 						${content}
 					</panda-click-to-copy>
 					<panda-click-to-copy
+						position="top"
 						@on-copy="${this._onCopyContent}"
+						copy-caption="Copy email content"
 					>
 						<h1>Header</h1>
 						<div>

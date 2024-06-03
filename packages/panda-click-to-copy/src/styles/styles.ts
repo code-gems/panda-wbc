@@ -11,35 +11,95 @@ export const styles = css`
 		cursor: pointer;
 	}
 
-	.btn-copy {
+	.content.show-tooltip .tooltip,
+	.content:hover .tooltip {
+		opacity: 1;
+	}
+
+	.tooltip {
 		position: absolute;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-component-size-m);
-		height: var(--panda-component-size-m);
+		padding: var(--panda-padding-s);
 		top: 0px;
-		right: 0px;
-		opacity: 0;
+		left: 100%;
+		opacity: 1;
 		
-		transition: all 400ms ease-in-out;
+		transition: opacity 300ms ease-in-out;
+		pointer-events: none;
+		user-select: none;
 
 		border-radius: var(--panda-border-radius-m);
-		border-width: var(--panda-button-border-width, 1px);
 		background-color: var(--panda-button-background-color);
-		box-shadow: var(--panda-button-box-shadow, 0px 5px 10px rgba(0 0 0 / 10%));
+		box-shadow: var(--panda-elevation-m, 0px 5px 10px hsl(0deg 0% 0% / 10%));
+		z-index: 1;
+	}
 
-		--panda-icon-color: var(--panda-button-text-color);
+	.tooltip .icon {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		width: var(--panda-component-size-m);
+		height: var(--panda-component-size-m);
+
+		--panda-icon-color: var(--panda-text-color);
 		--panda-icon-width: var(--panda-icon-size-m);
 		--panda-icon-height: var(--panda-icon-size-m);
 	}
 	
-	.btn-copy.done {
+	.tooltip .caption {
+		display: flex;
+		align-items: center;
+		min-height: var(--panda-component-size-m);
+		padding: 0px var(--panda-padding-s);
+
+		line-height: 1.2rem;
+		color: var(--panda-text-color);
+		font-size: var(--panda-font-size-m);
+		font-family: var(--panda-font-family);
+	}
+
+	/* COMPONENT STATE ========================================================================= */
+
+	.tooltip.done {
 		opacity: 1;
 		color: var(--panda-action-text-color-done, hsl(0deg 0% 100%));
 		background-color: var(--panda-action-color-done, hsl(160deg 81% 43%));
 		--panda-icon-color: var(--panda-action-text-color-done, hsl(0deg 0% 100%));
 	}
 
-	.content:hover .btn-copy { opacity: 1; }
+	.tooltip.done .icon {
+		--panda-icon-color: var(--panda-action-text-color-success, hsl(0deg 0% 100%));
+	}
+	
+	.tooltip.done .caption {
+		color: var(--panda-action-text-color-success, hsl(0deg 0% 100%));
+	}
+
+	/* TOOLTIP POSITION ======================================================================== */
+
+	.tooltip.top {
+		top: unset;
+		left: 50%;
+		bottom: 100%;
+		transform: translateX(-50%);
+	}
+
+	.tooltip.right {
+		left: 100%;
+		right: unset;
+	}
+
+	.tooltip.bottom {
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.tooltip.left {
+		right: 100%;
+		left: unset;
+	}
 `;

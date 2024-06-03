@@ -1,5 +1,5 @@
 // types
-import { PandaClickToCopyEvent } from "../index";
+import { PandaClickToCopyEvent, PandaClickToCopyTooltipPosition } from "../index";
 
 // styles
 import { styles } from "./styles/styles";
@@ -20,9 +20,24 @@ export class PandaClickToCopy extends LitElement {
 
 	@property({ type: String })
 	content: string | null = null;
-	
+
 	@property({ type: Boolean, attribute: "copy-as-html", reflect: true })
 	copyAsHtml: boolean = false;
+
+	@property({ type: Boolean, attribute: "hide-icon", reflect: true })
+	hideIcon: boolean = false;
+
+	@property({ type: Boolean, attribute: "hide-caption", reflect: true })
+	hideCaption: boolean = false;
+
+	@property({ type: String, attribute: "copy-caption", reflect: true })
+	copyCaption: string = "COPY";
+
+	@property({ type: String, attribute: "done-caption", reflect: true })
+	doneCaption: string = "DONE";
+
+	@property({ type: String, reflect: true })
+	position: PandaClickToCopyTooltipPosition = PandaClickToCopyTooltipPosition.RIGHT;
 
 	@state()
 	private _content: string = "";
@@ -60,17 +75,85 @@ export class PandaClickToCopy extends LitElement {
 	// ================================================================================================================
 
 	protected render(): TemplateResult {
-		const icon = this._copied ? "check" : "copy";
-		const done = this._copied ? "done" : "";
+		const _showTooltip = this._copied
+		 	? "show-tooltip"
+			: "";
+
 		return html`
 			<div
-				class="content"
+				class="content ${_showTooltip}"
+				part="content ${_showTooltip}"
 				@click="${this.copyToClipboard}"
 			>
-				<div class="btn-copy ${done}">
-					<panda-icon icon="${icon}"></panda-icon>
-				</div>
 				<slot></slot>
+				${this._renderTooltip()}
+			</div>
+		`;
+	}
+
+	private _renderTooltip(): TemplateResult {
+		if (this.hideIcon && this.hideCaption) {
+			return html``;
+		}
+		let _iconHtml: TemplateResult = html``;
+		let _captionHtml: TemplateResult = html``;
+
+		const _done = this._copied
+			? "done"
+			: "";
+
+		if (!this.hideIcon) {
+			const _icon = this._copied
+				? "check"
+				: "copy";
+
+			_iconHtml = html`
+				<div class="icon" part="icon">
+					<panda-icon icon="${_icon}"></panda-icon>
+				</div>
+			`;
+		}
+
+		if (!this.hideCaption) {
+			const _caption = this._copied
+				? this.doneCaption
+				: this.copyCaption;
+
+			_captionHtml = html`
+				<div
+					class="caption"
+					class="caption"
+				>
+					${_caption}
+				</div>
+			`;
+		}
+
+		// apply tooltip position
+		let _position: string = "";
+		switch (this.position) {
+			case PandaClickToCopyTooltipPosition.TOP:
+				_position = "top";
+				break;
+			case PandaClickToCopyTooltipPosition.LEFT:
+				_position = "left";
+				break;
+			case PandaClickToCopyTooltipPosition.BOTTOM:
+				_position = "bottom";
+				break;
+			case PandaClickToCopyTooltipPosition.RIGHT:
+			default:
+				_position = "right";
+				break;
+		}
+
+		return html`
+			<div
+				class="tooltip ${_done} ${_position}"
+				part="tooltip ${_done} ${_position}"
+			>
+				${_iconHtml}
+				${_captionHtml}
 			</div>
 		`;
 	}
@@ -125,7 +208,15 @@ export class PandaClickToCopy extends LitElement {
 	}
 
 	private _copyToClipboard(): void {
-		navigator.clipboard.writeText(this._content);
+		if (this.copyAsHtml) {
+			const clipboardItem = new ClipboardItem({
+				"text/plain": new Blob([this._content], { type: "text/plain" }),
+				"text/html": new Blob([this._content], { type: "text/html" }),
+			});
+			navigator.clipboard.write([clipboardItem]);
+		} else {
+			navigator.clipboard.writeText(this._content);
+		}
 		this._copied = true;
 	}
 
