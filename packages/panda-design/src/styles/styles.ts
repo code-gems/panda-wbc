@@ -96,7 +96,7 @@ export const uiComponents = {
 			position: relative;
 			display: block;
 			width: 15vw;
-			padding: 40px;
+			padding: 20px; /* menu container padding */
 			flex-shrink: 0;
 			box-sizing: border-box;
 		}
@@ -104,7 +104,7 @@ export const uiComponents = {
 		.content-list {
 			display: flex;
 			flex-flow: column;
-			width: calc(15vw - 80px); /* context-menu width - 2x padding */
+			width: calc(15vw - 40px); /* context-menu width - 2x menu container padding */
 			padding: 10px;
 			gap: 10px;
 
@@ -164,7 +164,7 @@ export const uiComponents = {
 			overflow: hidden;
 
 			color: var(--panda-text-color);
-			font-size: var(--panda-font-size-m);
+			font-size: var(--panda-font-size-s);
 			font-family: var(--panda-font-family);
 			text-overflow: ellipsis;
 			user-select: none;

@@ -1,15 +1,12 @@
 // types
-import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName, PageCategory } from "panda-design-typings";
+import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
-import { uiComponents } from "../../../../styles/styles";
 
 // components
 import "@panda-wbc/panda-combo-box";
-import "../../../../web-parts/code-sample/code-sample";
-import "../../../../web-parts/version-shield/version-shield";
 
 // utils
 import { html, TemplateResult } from "lit";
@@ -26,36 +23,14 @@ import {
 import { getCcyPairs, getCountryList } from "../../static-data";
 
 // page config
-import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
+import { pageConfig } from "./page-config";
 
+@page(pageConfig)
 @customElement("panda-combo-box-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-combo-box-content-page></panda-combo-box-content-page>`,
-})
 export class PandaComboBoxContentPage extends ContentPageTemplate {
-	// css styles
-	static get styles() {
-		return [
-			styles,
-			uiComponents.banner,
-			uiComponents.table,
-			uiComponents.sample,
-			uiComponents.form,
-			uiComponents.appLayout,
-			uiComponents.columnSystem,
-			uiComponents.modifiers,
-		];
-	}
-
 	// page details
-	pageId: string = pageId;
+	pageId: string = pageConfig.pageId;
+	public customStyles = styles;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },

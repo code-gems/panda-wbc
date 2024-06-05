@@ -260,6 +260,8 @@ export class PandaComboBox extends LitElement {
 	 */
 	private _openOverlay() {
 		if (!this._overlayEl && !this.disabled) {
+			console.log("%c ⚡ [COMBO-BOX] _openOverlay", "font-size: 24px; color: orange;");
+
 			// create overlay element
 			this._overlayEl = document.createElement("panda-combo-box-overlay");
 			// add event listeners
@@ -384,6 +386,7 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onFocus() {
+		console.log("%c ⚡ [COMBO-BOX] _onFocus", "font-size: 24px; color: orange;");
 		this.focused = true;
 		// check for autoselect flag
 		if (this.autoselect) {
@@ -394,7 +397,7 @@ export class PandaComboBox extends LitElement {
 	private _onBlur() {
 		console.log("%c ⚡ [COMBO-BOX] _onBlur", "font-size: 24px; color: orange;");
 		this.focused = false;
-		// this._validateInput();
+		this._validateInput();
 	}
 
 	private _onInput(value: string) {
@@ -419,8 +422,9 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
-	private _onKeyDown(e: KeyboardEvent) {
-		switch (e.key) {
+	private _onKeyDown(event: KeyboardEvent) {
+		console.log("%c ⚡ [COMBO-BOX] _onKeyDown", "font-size: 24px; color: orange;", event?.key);
+		switch (event.key) {
 			case "Enter":
 			case "Tab":
 				this._validateInput();
@@ -433,22 +437,22 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
-	private _onKeyPress(e: KeyboardEvent) {
+	private _onKeyPress(event: KeyboardEvent) {
 		// check if allowed characters pattern is defined
 		if (this.allowedCharPattern) {
 			const regExp = new RegExp(this.allowedCharPattern);
 			// stop input if key does not match the pattern
-			if (!regExp.test(e.key)) {
-				e.preventDefault();
+			if (!regExp.test(event.key)) {
+				event.preventDefault();
 				return false;
 			}
 		}
 	}
 
-	private _onSelect(e: PandaComboBoxChangeEvent) {
-		console.log("%c ⚡ [COMBO-BOX] _onSelect", "font-size: 24px; color: orange;", e.detail.value);
+	private _onSelect(event: PandaComboBoxChangeEvent) {
+		console.log("%c ⚡ [COMBO-BOX] _onSelect", "font-size: 24px; color: orange;", event.detail.value);
 		// update value
-		this.value = e.detail.value;
+		this.value = event.detail.value;
 		this._inputFieldEl.value = getLabelFromItems(
 			this.items,
 			this.value,
@@ -459,10 +463,10 @@ export class PandaComboBox extends LitElement {
 		this._triggerChangeEvent();
 	}
 
-	private _onChange(e: PandaComboBoxChangeEvent) {
-		console.log("%c ⚡ [COMBO-BOX] _onChange", "font-size: 24px; color: orange;", e.detail.value);
+	private _onChange(event: PandaComboBoxChangeEvent) {
+		console.log("%c ⚡ [COMBO-BOX] _onChange", "font-size: 24px; color: orange;", event.detail.value);
 		// update value
-		this.value = e.detail.value;
+		this.value = event.detail.value;
 		this._inputFieldEl.value = getLabelFromItems(
 			this.items,
 			this.value,
@@ -475,8 +479,8 @@ export class PandaComboBox extends LitElement {
 		this._triggerChangeEvent();
 	}
 
-	private _onChangeEvent(e: any) {
-		console.log("%c ⚡ [COMBO-BOX] _onChangeEvent", "font-size: 24px; color: orange;", e);
+	private _onChangeEvent(event: any) {
+		console.log("%c ⚡ [COMBO-BOX] _onChangeEvent", "font-size: 24px; color: orange;", event);
 	}
 
 	private _onToggleDropdown() {

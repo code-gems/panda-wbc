@@ -24,7 +24,7 @@ export const styles = css`
 		padding: var(--panda-padding-s);
 		top: 0px;
 		left: 100%;
-		opacity: 1;
+		opacity: 0;
 		
 		transition: opacity 300ms ease-in-out;
 		pointer-events: none;

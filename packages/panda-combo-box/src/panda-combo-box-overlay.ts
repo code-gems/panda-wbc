@@ -181,6 +181,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	private _showOverlayContent(): void {
 		setTimeout(() => {
+			console.log("%c ⚡ [COMBO-BOX-OVERLAY] _showOverlayContent", "font-size: 24px; color: orange;");
 			// reset dropdown height
 			this._dropdownContEl.style.height = `auto`;
 
@@ -367,6 +368,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _onChange(value: any): void {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onChange", "font-size: 24px; color: orange;", value);
 		const event = new CustomEvent("change", {
 			detail: {
 				value
@@ -376,19 +378,23 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onKeyDown", "font-size: 24px; color: orange;", event.key);
 		switch (event.key) {
 			case "ArrowUp":
 				event.stopPropagation();
+				// event.stopImmediatePropagation();
 				this._selectPreviousItem();
 				break;
 			case "ArrowDown":
 				event.stopPropagation();
+				// event.stopImmediatePropagation();
 				this._selectNextItem();
 				break;
 		}
 	}
 
 	private _onOverlayScroll() {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onOverlayScroll", "font-size: 24px; color: orange;");
 		// update overlay position
 		this._showOverlayContent();
 	}
