@@ -1,5 +1,5 @@
 // types
-import { ElementDetails, PandaComboBoxItem } from "../index";
+import { ElementDetails, PandaComboBoxItem, PandaComboBoxOverlayUpdateInputFieldEvent } from "../index";
 
 interface ParsedComboBoxItem {
 	index: number;
@@ -42,7 +42,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	itemValuePath: string | null = null;
 
 	@property({ type: String })
-	searchText!: string | null;
+	searchText: string | null = null;
 
 	parentDetails!: ElementDetails;
 
@@ -108,6 +108,15 @@ export class PandaComboBoxOverlay extends LitElement {
 			this._getSelectedItemIndex();
 			this._showOverlayContent();
 		}
+
+		if (_changedProperties.has("searchText") && this.searchText !== undefined) {
+			console.log(
+				"%c ⚡ [COMBO-BOX-OVERLAY] (updated) searchText / is null? ",
+				"font-size: 24px; color: pink;",
+				this.searchText,
+				this.searchText === null
+			);
+		}
 	}
 
 	// ================================================================================================================
@@ -146,7 +155,7 @@ export class PandaComboBoxOverlay extends LitElement {
 				<div
 					class="item ${active ? "active" : ""}"
 					part="item"
-					@click="${() => this._onChange(value)}"
+					@click="${() => this._triggerChangeEvent(value)}"
 				>
 					${label}
 				</div>
@@ -181,7 +190,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	private _showOverlayContent(): void {
 		setTimeout(() => {
-			console.log("%c ⚡ [COMBO-BOX-OVERLAY] _showOverlayContent", "font-size: 24px; color: orange;");
+			console.log("%c ⚡ [COMBO-BOX-OVERLAY] _showOverlayContent", "font-size: 24px; color: pink;");
 			// reset dropdown height
 			this._dropdownContEl.style.height = `auto`;
 
@@ -240,7 +249,7 @@ export class PandaComboBoxOverlay extends LitElement {
 		this._selectedItemIndex = this._parsedItems.find((item) => item.value === this.value)?.index ?? null;
 	}
 
-	/** Filter items against search string using includes condition */	
+	/** Filter items against search string using "includes" condition */	
 	private _filterItemsWithIncludes(searchText: string, items: PandaComboBoxItem[] | any[]): PandaComboBoxItem[] | any[] {
 		const filteredItems: PandaComboBoxItem[] | any[] = [];
 
@@ -285,26 +294,14 @@ export class PandaComboBoxOverlay extends LitElement {
 				// check if user is searching and if we have matches
 				this._parsedItems.push({
 					index,
-					active: this.value === _value,
+					// active: this.value === _value,
+					active: false,
 					value: _value,
 					label: _label,
 				});
 				index++;
 			});
 		}
-	}
-
-	private _updateActiveItem() {
-		this._parsedItems = this._parsedItems.reduce(
-			(itemList, item) => {
-				// update active flag
-				itemList.push({
-					...item,
-					active: item.value === this.value
-				});
-				return itemList;
-			}, [] as ParsedComboBoxItem[]
-		);
 	}
 
 	private _selectPreviousItem(): void {
@@ -344,17 +341,50 @@ export class PandaComboBoxOverlay extends LitElement {
 	private _selectItemByIndex(index: number) {
 		const selectedItem = this._parsedItems.find((item) => item.index === index);
 		this.value = selectedItem?.value;
-		this._updateActiveItem();
 
-		const event = new CustomEvent("select", {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_selectItemByIndex)", "font-size: 24px; color: pink;", selectedItem?.label, index);
+
+		// update active flag
+		this._parsedItems = this._parsedItems.map((item) => {
+			return {
+				...item,
+				active: item.value === this.value
+			};
+		});
+
+		// check if item was selected and update combo-box input field value
+		if (selectedItem) {
+			this._triggerUpdateInputFieldEvent(selectedItem.label);
+		}
+		// show active element after change
+		this._showActiveElement();
+	}
+
+	private _triggerChangeEvent(value: any, searchText: string | null = null): void {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_triggerChangeEvent) value, searchText", "font-size: 24px; color: pink;", value, searchText);
+		const event = new CustomEvent("change", {
 			detail: {
-				value: selectedItem?.value
+				value,
+				searchText,
 			}
 		});
 		this.dispatchEvent(event);
+	}
 
-		// show active element after change
-		this._showActiveElement();
+	/**
+	 * Update combo-box input field value when navigating list with arrows
+	 * @param value - value to be send to combo-box input
+	 */
+	private _triggerUpdateInputFieldEvent(value: any): void {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_triggerUpdateInputFieldEvent) value:", "font-size: 24px; color: pink;", value);
+		const event: PandaComboBoxOverlayUpdateInputFieldEvent = new CustomEvent("update-input-field", {
+			detail: {
+				value
+			}
+		});
+		this.dispatchEvent(event);
+		// clean up search text
+		this.searchText = null;
 	}
 
 	// ================================================================================================================
@@ -367,34 +397,33 @@ export class PandaComboBoxOverlay extends LitElement {
 		event.preventDefault();
 	}
 
-	private _onChange(value: any): void {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onChange", "font-size: 24px; color: orange;", value);
-		const event = new CustomEvent("change", {
-			detail: {
-				value
-			}
-		});
-		this.dispatchEvent(event);
-	}
-
 	private _onKeyDown(event: KeyboardEvent) {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onKeyDown", "font-size: 24px; color: orange;", event.key);
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) key: ", "font-size: 24px; color: pink;", event.key);
 		switch (event.key) {
+			case "Enter":
+			case "Tab":
+				event.stopPropagation();
+				console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> value", "font-size: 24px; color: red;", this.value);
+				console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> searchText / is null?", "font-size: 24px; color: red;", this.searchText, this.searchText ===  null);
+				this._triggerChangeEvent(this.value, this.searchText);
+				break;
 			case "ArrowUp":
 				event.stopPropagation();
-				// event.stopImmediatePropagation();
 				this._selectPreviousItem();
 				break;
 			case "ArrowDown":
 				event.stopPropagation();
-				// event.stopImmediatePropagation();
 				this._selectNextItem();
+				break;
+			case "Escape":
+				event.stopPropagation();
+				this.close();
 				break;
 		}
 	}
 
 	private _onOverlayScroll() {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onOverlayScroll", "font-size: 24px; color: orange;");
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onOverlayScroll", "font-size: 24px; color: pink;");
 		// update overlay position
 		this._showOverlayContent();
 	}

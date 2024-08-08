@@ -98,7 +98,7 @@ export const styles = css`
 	}
 	
 	:host([disabled]) .select .input-field {
-		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 44%));
+		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 36%));
 	}
 
 	:host([disabled]) .select .icon {

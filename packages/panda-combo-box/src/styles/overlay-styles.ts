@@ -75,7 +75,6 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 
 		border-radius: var(--panda-dropdown-item-border-radius, 5px);
-		border-bottom: 1px dashed var(--panda-dropdown-item-border-color, hsl(0deg 0% 92%));
 		background-color: var(--panda-dropdown-item-background-color, transparent);
 		box-sizing: border-box;
 	}

@@ -4,6 +4,7 @@
 import { styles } from "./styles/styles";
 
 // components
+import "@panda-wbc/panda-pips-pager";
 import "./panda-slideshow-slide";
 
 // utils
@@ -17,8 +18,8 @@ export class PandaSlideshow extends LitElement {
 		return styles;
 	}
 
-	@property({ type: Number, attribute: "selected-page" })
-	selectedPage: number = 0;
+	@property({ type: Number, attribute: "selected", reflect: true })
+	selected: number = 0;
 
 	@property({ type: Boolean, attribute: "hide-pagination", reflect: true })
 	hidePagination: boolean = false;
@@ -38,8 +39,8 @@ export class PandaSlideshow extends LitElement {
 	// swipe / mouse drag distance in px
     swipeThreshold: number = 50;
     
-	// or 'horizontal'
-    orientation: string = "vertical"; 
+	// or 'vertical'
+    orientation: string = "horizontal"; 
     
 	// drag / scroll freely instead of snapping to the next page
     freeScroll: boolean = false;
@@ -67,30 +68,49 @@ export class PandaSlideshow extends LitElement {
 
 	
 
+	// props for calculations
+	private _slideWidth: number = 300; // width of a slide
+	private _slideHeight: number = 250; // height of a slide
+	private _slideGap: number = 10; // gap between slides
+
 
 	// elements
-	private _fullPageRect!: DOMRect;
+	@query("#slideshow")
+	private _slideshowEl!: HTMLElement;
 
-	@query("slot")
-	private _slotEl!: HTMLSlotElement;
+	private _slideshowRect!: DOMRect;
 
-	@queryAssignedElements({ selector: "panda-full-page-content"})
-	private _contentEls!: HTMLElement[]; 
+	@queryAssignedElements({ selector: "panda-slideshow-slide"})
+	private _slideEls!: HTMLElement[]; 
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	firstUpdated(): void {
-		console.log("%c 1. firstUpdated -> _slotEl", "font-size: 24px; color: green;", this._slotEl.assignedNodes({ flatten: true }));
-		console.log("%c 2. firstUpdated -> _slotEl", "font-size: 24px; color: green;", this._slotEl.assignedNodes({ flatten: true }).filter((node) => node.nodeName === "PANDA-FULL-PAGE-CONTENT"));
-		console.log("%c 3. firstUpdated -> _contentEls (winner)", "font-size: 24px; color: green;", this._contentEls);
+		const _computedStyle = getComputedStyle(this);
+		// get slide size
+		const _slideWidth = _computedStyle.getPropertyValue("--panda-slideshow-slide-width");
+		this._slideWidth = parseInt(_slideWidth) || 300;
+		const _slideHeight = _computedStyle.getPropertyValue("--panda-slideshow-slide-height");
+		this._slideHeight = parseInt(_slideHeight) || 250;
+		console.log("%c 💎 _slideSize", "font-size: 24px; color: blueviolet;", this._slideWidth, this._slideHeight);
 
-		this._fullPageRect = this.getBoundingClientRect();
-		console.log("%c 4. firstUpdated -> _fullPageRect", "font-size: 24px; color: green;", this._fullPageRect);
+		// get slide gap
+		const _slideGap = _computedStyle.getPropertyValue("--panda-slideshow-slide-gap");
+		this._slideGap = parseInt(_slideGap) || 10;
+		console.log("%c 💎 _slideGap", "font-size: 24px; color: blueviolet;", this._slideGap);
+
+
+		
+		console.log("%c 💎 firstUpdated -> _contentEls", "font-size: 24px; color: blueviolet;", this._slideEls);
+		this._slideshowRect = this._slideshowEl.getBoundingClientRect();
+		console.log("%c 💎 firstUpdated -> slideshow RECT", "font-size: 24px; color: blueviolet;", this._slideshowRect);
 		// initialize pages position
-		this._initPages();
+		this._initSlideshow();
 	}
+
+
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -98,22 +118,47 @@ export class PandaSlideshow extends LitElement {
 
 	protected render(): TemplateResult {
 		return html`
-			<slot
-				class="page-cont"
-				part="page-cont"
-				@wheel=${this._onPageScroll}
+			<div
+				class="slideshow-cont"
+				part="slideshow-cont"
 			>
-			</slot>
+				<slot
+					id="slideshow"
+					class="slideshow"
+					part="slideshow"
+					@wheel=${this._onPageScroll}
+				>
+				</slot>
+				<div class="pagination">
+					<panda-pips-pager
+					
+					>
+					</panda-pips-pager>
+				</div>
+			</div>
 		`;
 	}
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _initPages(): void {
-		this._contentEls.forEach((contentEl, index) => {
-			contentEl.style.top = `${index * this._fullPageRect.height}px`;
+	private _initSlideshow(): void {
+
+		this._slideEls.forEach((contentEl, index) => {
+			contentEl.style.top = `0px`;
+			const _left = (index * this._slideWidth) + (index * this._slideGap);
+			contentEl.style.left = `${_left}px`;
 		});
+
+		// 0 -> 
+		// 1 -> 
+		// 2 -> 
+		// 3 -> 
+
+		// 4 -> 0
+		// 5 -> 0
+		// 6 -> 0
+		// 7 -> 0
 	}
 
 	// ================================================================================================================

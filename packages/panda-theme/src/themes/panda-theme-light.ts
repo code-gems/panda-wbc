@@ -224,7 +224,7 @@ export const pandaThemeLight = css`
 
 		--panda-text-color: hsl(0deg 0% 15%);
 		--panda-text-color-hover: hsl(0deg 0% 20%);
-		--panda-text-color-disabled: hsl(0deg 0% 66%);
+		--panda-text-color-disabled: hsl(0deg 0% 36%);
 		--panda-text-shadow: none;
 		--panda-text-line-height: 1.6em;
 

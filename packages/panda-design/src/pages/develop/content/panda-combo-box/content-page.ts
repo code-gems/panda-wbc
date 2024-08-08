@@ -2,15 +2,21 @@
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
+type Log = {
+	message: string;
+	timestamp: number;
+}
+
 // styles
 import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-combo-box";
+import "@panda-wbc/panda-time-ago";
 
 // utils
 import { html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 
@@ -20,7 +26,7 @@ import {
 } from "./snippets/snippets";
 
 // static demo data
-import { getCcyPairs, getCountryList } from "../../static-data";
+import { getCcyPairs, getCountryList, getStateList } from "../../static-data";
 
 // page config
 import { pageConfig } from "./page-config";
@@ -45,7 +51,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "disabled", type: "Boolean", defaultValue: "false", description: "Sets a disabled state for the component." },
 		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Sets busy state for the component." },
 		{ name: "mandatory", type: "Boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
-		
+
 		{ name: "autoselect", type: "Boolean", defaultValue: "false", description: "Select component value when given focus." },
 		{ name: "allowCustomValue", type: "Boolean", defaultValue: "false", description: "Allow entering values which are not specified on within the preset." },
 		{ name: "pattern", type: "String", defaultValue: "-", description: "A regular expression that the value is checked against. The pattern must match the entire value. If value entered by user do not match the pattern component will be marked as invalid." },
@@ -58,10 +64,13 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	];
 
 	// view props
-	@property({ type: String })
+	@state()
 	private _value: string | null = "value 4";
 
-	@property({ type: Array })
+	@state()
+	private _stateList: any[] = getStateList();
+
+	@state()
 	private _items: any[] = [
 		{ label: "Item #1", value: "value 1" },
 		{ label: "Item #2", value: "value 2" },
@@ -71,7 +80,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ label: "Item #6", value: "value 6" },
 	];
 
-	@property({ type: Array })
+	@state()
 	private _codes: any[] = [
 		{ name: "Code #1", code: "code 01" },
 		{ name: "Code #2", code: "code 02" },
@@ -85,8 +94,14 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	private _countryList = getCountryList();
 
-	@property({ type: Boolean })
+	@state()
 	private _disabled: boolean = false;
+
+	@state()
+	private _selectedValue!: string;
+	
+	@state()
+	private _log: Log[] = [];
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -105,8 +120,8 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 					particleCount: 10,
 					sizeMin: 200,
 					sizeMax: 100,
-					
-					colors: ["#ff4778" , "#6f36bc", "#36174D"],
+
+					colors: ["#ff4778", "#6f36bc", "#36174D"],
 					colorOpacityVariation: 70,
 					colorHueVariation: 20,
 
@@ -124,7 +139,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 					sizeMin: 3,
 					sizeMax: 5,
 
-					colors: ["#ff4778" , "#6f36bc", "#36174D"],
+					colors: ["#ff4778", "#6f36bc", "#36174D"],
 					colorOpacityVariation: 70,
 
 					minSpeedX: -0.3,
@@ -138,9 +153,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		};
 		return html`
 			<div class="banner small particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig}"					
-				>
+				<panda-particle-banner .config="${bannerConfig}">
 					<div class="content">
 						<h1>COMBO BOX</h1>
 					</div>
@@ -152,14 +165,50 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	_renderPageContent(): TemplateResult {
 		return html`
-			${this._renderOverviewSection()}
-			${this._renderInstallationSection()}
-			${this._renderUsageSection()}
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
+				<div class="section">
+					<panda-combo-box
+						label="Select Destination:"
+						.value="${this._selectedValue}"
+						.items="${this._stateList}"
+						@change="${this._onChange}"
+						
+					>
+					</panda-combo-box>
+					<br />
+					${this._selectedValue}
+					<hr />
+					${this._renderLogs()}
+				</div>
+			</div>
+		`;
+		// return html`
+		// 	${this._renderOverviewSection()}
+		// 	${this._renderInstallationSection()}
+		// 	${this._renderUsageSection()}
+		// `;
+	}
+
+	private _renderLogs(): TemplateResult {
+		return html`
+			<div class="console-log">
+				${
+					this._log.map(
+						({ message, timestamp }) => html`
+							<div class="log">
+								<div class="message">${message}</div>
+								<div class="timestamp">
+									<panda-time-ago .time="${timestamp}"></panda-time-ago>
+								</div>
+							</div>
+						`
+					)
+				}
+			</div>
 		`;
 	}
 
 	private _renderOverviewSection(): TemplateResult {
-
 		const customFilter = (searchText: string, items: any[] = []): any[] => {
 			const filteredItems: any[] = [];
 			items.forEach((item) => {
@@ -203,10 +252,11 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 											mandatory
 										>
 										</panda-combo-box>
+
 										<panda-combo-box
 											.label="${"Select Destination:"}"
 											.value="${2}"
-											.items="${[1,2,3]}"
+											.items="${[1, 2, 3]}"
 											@change="${this._onChange}"
 										>
 										</panda-combo-box>
@@ -290,7 +340,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 			</div>
 		`;
 	}
-		
+
 	private _renderComponentPropertiesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
@@ -333,11 +383,18 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onChange(event: any) {
-		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", event.detail.value);
+		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: blueviolet;", event.detail.value);
+		this._selectedValue = event.detail.value;
+		// add logs
+		this._log.unshift({
+			message: `Selected item: "${event.detail.value}"`,
+			timestamp: new Date().getTime()
+		});
+		this.requestUpdate();
 	}
 
 	private _onChangeAndDisable(event: any) {
-		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: orange;", event.detail.value);
+		console.log("%c 🔥 [COMBO BOX DEMO PAGE] _onChange::value", "font-size: 24px; color: blueviolet;", event.detail.value);
 
 		this._disabled = true;
 		setTimeout(() => {

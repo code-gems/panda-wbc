@@ -99,7 +99,7 @@ export const styles = css`
 	}
 	
 	:hover([disabled]) .combo-box .input-field {
-		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 44%));
+		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 36%));
 	}
 
 	:hover([disabled]) .combo-box .icon {

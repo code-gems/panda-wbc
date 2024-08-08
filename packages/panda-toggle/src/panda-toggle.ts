@@ -50,7 +50,7 @@ export class PandaToggle extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	protected render(): TemplateResult {
 		const selected = this.selected ? "selected" : "";
 		const indeterminate = this.indeterminate ? "indeterminate" : "";
 		const modCss: string[] = [];

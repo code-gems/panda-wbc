@@ -1,6 +1,9 @@
 // types
-import { PageCategory } from "panda-design-typings";
 import { PandaEvent } from "@panda-wbc/panda-date-picker";
+import { ContentSectionName } from "panda-design-typings";
+
+// styles
+import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-date-picker";
@@ -8,36 +11,26 @@ import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-icon/lib/food-icon-pack";
 
 // utils & config
-import { html, LitElement } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { html, TemplateResult } from "lit";
+import { customElement, query, state } from "lit/decorators.js";
+import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
-// import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
+import { pageConfig } from "./page-config";
 
-export const pageId = "panda-date-picker";
-export const pageName = "Date Picker";
-export const pageUri = "/develop?page=panda-date-picker";
-export const keywords = ["date", "picker", "month", "calendar", "ui", "component", "form", "time", "date range"];
-export const description = ["Date Picker description"];
-export const contextMenu = [];
+// code snippets
+import {
+	implementationSnippet,
+	installationSnippet
+} from "./snippets/snippets";
 
+@page(pageConfig)
 @customElement("panda-date-picker-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-date-picker-content-page></panda-date-picker-content-page>`
-})
-export class PandaIconContentPage extends LitElement {
-	//css styles
-	// static get styles() {
-	// 	return styles;
-	// }
+export class ContentPage extends ContentPageTemplate {
+	// page details
+	public pageId = pageConfig.pageId;
+	public customStyles = styles;
 
-	@property({ type: Array })
+	@state()
 	private _presetDates = [
 		{ label: "My B-Day", date: "2022-09-01" },
 		{ label: "Christmas", date: "2022-12-25" },
@@ -54,7 +47,7 @@ export class PandaIconContentPage extends LitElement {
 		{ label: "Christmas", date: "2022-12-25" },
 	];
 
-	@property({ type: Array })
+	@state()
 	private _events: PandaEvent[] = [
 		{ date: "2022-12-25", label: "Interview", description: "Wish me luck ;)", time: "14:30" },
 		{ date: "2022-12-28", label: "Dinner with friends", description: "John's Pizza, Orchard St. #01-21 B1", time: "19:00" },
@@ -66,16 +59,35 @@ export class PandaIconContentPage extends LitElement {
 	private _datePickerEl!: any;
 
 	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
-	// ...
-
-	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	_renderPageBanner(): TemplateResult {
+		return html``;
+	}
+
+	_renderPageContent(): TemplateResult {
+		return html`
+			${this._renderOverviewSection()}
+		`;
+	}
+
+	private _renderOverviewSection(): TemplateResult {
+		return html`
+			<!-- OVERVIEW -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
+				<div class="section">
+					<internal-link theme="h2">Overview</internal-link>
+					<p>
+
+
+					</p>
+				</div>
+			</div>
+		`;
+	}
+
+	demo(): TemplateResult {
 		return html`
 
 			<div style="display: flex; flex-flow: row; gap: 10px; padding: 40px;">

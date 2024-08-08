@@ -61,7 +61,7 @@ export const styles = css`
 		color: var(--panda-text-color, hsl(0deg 0% 29%));
 		font-family: var(--panda-font-family, "Poppins");
 		font-size: var(--panda-font-size-m, 14px);
-		font-weight: bold;
+		font-weight: normal;
 
 		transition: all 200ms ease-in-out;
 
@@ -93,16 +93,16 @@ export const styles = css`
 
 	/* COMPONENT STATES =========================================== */
 	/* DISABLED */
-	:hover([disabled]) .combo-box {
+	:host([disabled]) .combo-box {
 		border: 1px solid var(--panda-input-border-color-disabled, hsl(0deg 0% 44%));
 		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 	
-	:hover([disabled]) .combo-box .input-field {
-		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 44%));
+	:host([disabled]) .combo-box .input-field {
+		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 36%));
 	}
 
-	:hover([disabled]) .combo-box .icon {
+	:host([disabled]) .combo-box .icon {
 		--panda-icon-color: var(--panda-icon-color-disabled, hsl(205deg 8% 64%));
 	}
 

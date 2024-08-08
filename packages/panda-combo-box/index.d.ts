@@ -21,7 +21,20 @@ export interface PandaComboBoxItem {
 // ====================================================================================================================
 
 export type PandaComboBoxChangeEventDetails = {
-	value: string | number | any;
+	value: string | number | null | any;
 }
 
-export interface PandaComboBoxChangeEvent extends CustomEvent<PandaComboBoxChange> {}
+export type PandaComboBoxOverlayChangeEventDetails = {
+	value: string | number | null | any;
+	searchText: string | null;
+}
+
+export type PandaComboBoxOverlayUpdateInputFieldEventDetails = {
+	value: any;
+}
+
+export interface PandaComboBoxChangeEvent extends CustomEvent<PandaComboBoxChangeEventDetails> {}
+
+export interface PandaComboBoxOverlayChangeEvent extends CustomEvent<PandaComboBoxOverlayChangeEventDetails> {}
+
+export interface PandaComboBoxOverlayUpdateInputFieldEvent extends CustomEvent<PandaComboBoxOverlayUpdateInputFieldEventDetails> {}

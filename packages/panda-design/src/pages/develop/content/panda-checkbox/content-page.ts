@@ -11,19 +11,24 @@ import "@panda-wbc/panda-checkbox";
 import "@panda-wbc/panda-particle-banner";
 
 // utils
-import { CSSResultGroup, html, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
-import { implementationSnippet, installationSnippet } from "./snippets/snippets";
+
+// code snippets
+import {
+	implementationSnippet,
+	installationSnippet
+} from "./snippets/snippets";
 
 @page(pageConfig)
 @customElement("panda-checkbox-content-page")
 export class PandaCheckboxContentPage extends ContentPageTemplate {
 	// page details
-	public customStyles: CSSResultGroup = styles;
-	public pageId: string = pageConfig.pageId;
+	public pageId = pageConfig.pageId;
+	public customStyles = styles;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },

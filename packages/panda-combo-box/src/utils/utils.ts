@@ -115,7 +115,7 @@ export const findItemByLabel = (
 		_label = String(item);
 	}
 
-	if (_label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
+	if (_label.toLocaleLowerCase() === searchText.toLocaleLowerCase()) {
 		return item;
 	} else {
 		return null;

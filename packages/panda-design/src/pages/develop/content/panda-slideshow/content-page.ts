@@ -57,8 +57,8 @@ _renderPageBanner(): TemplateResult {
 _renderPageContent(): TemplateResult {
 	return html`
 		${this._renderOverviewSection()}
-		${this._renderInstallationSection()}
-		${this._renderUsageSection()}
+		<!-- ${this._renderInstallationSection()} -->
+		<!-- ${this._renderUsageSection()} -->
 	`;
 }
 
@@ -79,8 +79,14 @@ private _renderOverviewSection(): TemplateResult {
 					<panda-slideshow
 						
 					>
-						</panda-slideshow-slide>
-						</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #1</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #2</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #3</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #4</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #5</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #6</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #7</panda-slideshow-slide>
+						<panda-slideshow-slide>Slide #8</panda-slideshow-slide>
 					</panda-slideshow>
 
 				</div>

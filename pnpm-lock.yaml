@@ -357,6 +357,9 @@ importers:
       '@panda-wbc/panda-theme-switcher':
         specifier: workspace:*
         version: link:../panda-theme-switcher
+      '@panda-wbc/panda-time-ago':
+        specifier: workspace:*
+        version: link:../panda-time-ago
       '@panda-wbc/panda-toggle':
         specifier: workspace:*
         version: link:../panda-toggle
@@ -678,6 +681,9 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-pips-pager':
+        specifier: workspace:*
+        version: link:../panda-pips-pager
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
@@ -818,6 +824,19 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-time-ago:
+    dependencies:
       lit:
         specifier: ^2.7.4
         version: 2.7.4
@@ -2307,6 +2326,7 @@ packages:
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
