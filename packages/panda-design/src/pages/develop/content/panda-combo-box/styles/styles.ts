@@ -31,5 +31,7 @@ export const styles = css`
 	
 	.console-log .log .timestamp {
 		flex-shrink: 0;
+		color: var(--panda-label-color);
+		font-size: var(--panda-font-size-s);
 	}
 `;

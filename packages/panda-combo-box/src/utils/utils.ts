@@ -121,3 +121,7 @@ export const findItemByLabel = (
 		return null;
 	}
 }
+
+export const isValueSet = (value: any): boolean => {
+	return value !== null && value !== undefined && value !== "";
+}

@@ -85,12 +85,17 @@ export const styles = css`
 
 	.dropdown .item:hover {
 		color: var(--panda-dropdown-item-text-color-hover, hsl(196deg 100% 47%));
-		background-color: var(--panda-dropdown-item-background-color-hover, hsl(0deg 0% 97%));
+		background-color: var(--panda-dropdown-item-background-color-hover, hsl(209deg 78% 46% / 10%));
 	}
 
 	.dropdown .item.active {
 		color: var(--panda-dropdown-item-text-color-active, hsl(0deg 0% 100%));
-		background-color: var(--panda-dropdown-item-background-color-active, hsl(196deg 100% 47%));
+		background-color: var(--panda-dropdown-item-background-color-active, hsl(209deg 78% 46% / 10%));
+	}
+
+	.dropdown .item.selected {
+		color: var(--panda-dropdown-item-text-color-selected, hsl(0deg 0% 100%));
+		background-color: var(--panda-dropdown-item-background-color-selected, hsl(196deg 100% 47%));
 	}
 
 	.scroll::-webkit-scrollbar { width: 6px; height: 6px; }

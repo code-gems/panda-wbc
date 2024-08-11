@@ -360,7 +360,10 @@ export const pandaThemeLight = css`
 		--panda-button-background-color-disabled: #fff;
 		--panda-button-box-shadow-disabled: none;
 		
-		/* DROPDOWN */
+		/* ========================================================================================================= */
+		/* DROPDOWN ================================================================================================ */
+		/* ========================================================================================================= */
+
 		--panda-dropdown-border-radius: 5px;
 		--panda-dropdown-border-color: hsl(0deg 0% 80%);
 		--panda-dropdown-background-color: hsl(0deg 0% 100%);
@@ -376,9 +379,11 @@ export const pandaThemeLight = css`
 		--panda-dropdown-item-text-color: var(--panda-text-color);
 		--panda-dropdown-item-background-color: transparent;
 		--panda-dropdown-item-text-color-hover: var(--panda-primary-color);
-		--panda-dropdown-item-background-color-hover: var(--panda-background-color-100);
-		--panda-dropdown-item-text-color-active: var(--panda-primary-text-color);
-		--panda-dropdown-item-background-color-active: var(--panda-primary-color);
+		--panda-dropdown-item-background-color-hover: var(--panda-primary-color-10opc);
+		--panda-dropdown-item-text-color-active: var(--panda-primary-color);
+		--panda-dropdown-item-background-color-active: var(--panda-primary-color-10opc);
+		--panda-dropdown-item-text-color-selected: var(--panda-primary-text-color);
+		--panda-dropdown-item-background-color-selected: var(--panda-primary-color);
 
 		/* ========================================================================================================= */
 		/* ICONS =================================================================================================== */

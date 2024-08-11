@@ -98,7 +98,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	private _disabled: boolean = false;
 
 	@state()
-	private _selectedValue!: string;
+	private _selectedValue: string = "";
 	
 	@state()
 	private _log: Log[] = [];

@@ -1,19 +1,17 @@
 // types
-import { ElementDetails, PandaComboBoxItem, PandaComboBoxOverlayUpdateInputFieldEvent } from "../index";
-
-interface ParsedComboBoxItem {
-	index: number;
-	value: any;
-	label: string;
-	active: boolean;
-}
+import {
+	ElementDetails,
+	PandaComboBoxItem,
+	PostMessageAction,
+	SuperComboBoxItem,
+} from "../index";
 
 // style
 import { styles } from "./styles/overlay-styles";
 
 // utils
 import { LitElement, html, PropertyValues, TemplateResult, PropertyValueMap } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import {
 	getItemValue,
 	minValue,
@@ -48,14 +46,17 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	filter!: (searchText: string | number, items: PandaComboBoxItem[] | any[]) => PandaComboBoxItem[] | any[];
 
-	// view props
+	// state props
 	private _initialized: boolean = false;
 
-	@property({ type: Array })
-	private _parsedItems: ParsedComboBoxItem[] = [];
+	@state()
+	private _parsedItems: SuperComboBoxItem[] = [];
 
-	@property({ type: Number })
+	@state()
 	private _selectedItemIndex!: number | null;
+	
+	@state()
+	private _updateAfterClose: boolean = false;
 
 	// elements
 	@query("#overlay")
@@ -65,7 +66,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	private _dropdownContEl!: HTMLDivElement;
 
 	// events
-	private _windowResizeEvent: any = this.close.bind(this); // close overlay when window resizes;
+	private _windowResizeEvent: any = this._onClose.bind(this); // close overlay when window resizes;
 	private _keyDownEvent: any = this._onKeyDown.bind(this);
 	private _scrollEvent: any = this._onOverlayScroll.bind(this);
 
@@ -108,15 +109,6 @@ export class PandaComboBoxOverlay extends LitElement {
 			this._getSelectedItemIndex();
 			this._showOverlayContent();
 		}
-
-		if (_changedProperties.has("searchText") && this.searchText !== undefined) {
-			console.log(
-				"%c ⚡ [COMBO-BOX-OVERLAY] (updated) searchText / is null? ",
-				"font-size: 24px; color: pink;",
-				this.searchText,
-				this.searchText === null
-			);
-		}
 	}
 
 	// ================================================================================================================
@@ -128,7 +120,7 @@ export class PandaComboBoxOverlay extends LitElement {
 			<div
 				class="overlay-cont"
 				part="overlay-cont"
-				@click="${this.close}"
+				@click="${this._onClose}"
 			>
 				<div
 					id="overlay"
@@ -150,12 +142,21 @@ export class PandaComboBoxOverlay extends LitElement {
 	private _renderDropdown(): TemplateResult {
 		const itemsHtml: TemplateResult[] = [];
 
-		this._parsedItems.forEach(({ label, value, active }) => {
+		this._parsedItems.forEach(({ label, value, selected, active }) => {
+			const modCss: string[] = [];
+
+			if (selected) {
+				modCss.push("selected");
+			}
+			if (active) {
+				modCss.push("active");
+			}
+
 			itemsHtml.push(html`
 				<div
-					class="item ${active ? "active" : ""}"
-					part="item"
-					@click="${() => this._triggerChangeEvent(value)}"
+					class="item ${modCss.join(" ")}"
+					part="item ${modCss.join(" ")}"
+					@click="${() => this._onChange(value)}"
 				>
 					${label}
 				</div>
@@ -174,14 +175,6 @@ export class PandaComboBoxOverlay extends LitElement {
 		} else {
 			return html``;
 		}
-	}
-
-	// ================================================================================================================
-	// API ============================================================================================================
-	// ================================================================================================================
-
-	public close() {
-		this.dispatchEvent(new CustomEvent("close", {}));
 	}
 
 	// ================================================================================================================
@@ -294,10 +287,10 @@ export class PandaComboBoxOverlay extends LitElement {
 				// check if user is searching and if we have matches
 				this._parsedItems.push({
 					index,
-					// active: this.value === _value,
-					active: false,
-					value: _value,
 					label: _label,
+					value: _value,
+					active: index === this._selectedItemIndex,
+					selected: this.value === _value,
 				});
 				index++;
 			});
@@ -354,37 +347,44 @@ export class PandaComboBoxOverlay extends LitElement {
 
 		// check if item was selected and update combo-box input field value
 		if (selectedItem) {
-			this._triggerUpdateInputFieldEvent(selectedItem.label);
+			this._triggerPostMessageEvent(
+				PostMessageAction.UPDATE_INPUT,
+				selectedItem.label,
+			);
+			this._updateAfterClose = true;
+			// clean up search text
+			this.searchText = null;
 		}
 		// show active element after change
 		this._showActiveElement();
 	}
 
-	private _triggerChangeEvent(value: any, searchText: string | null = null): void {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_triggerChangeEvent) value, searchText", "font-size: 24px; color: pink;", value, searchText);
-		const event = new CustomEvent("change", {
+	/**
+	 * Communicate with combo box component using custom event
+	 * @param {PostMessageAction} action - type of action for combo box to take as a result of this event
+	 * @param {Any} value - value to be selected
+	 * @param {String} searchText - search text that user entered
+	 */
+	private _triggerPostMessageEvent(
+		action: PostMessageAction,
+		value: any = null,
+		searchText: string | null = null
+	): void {
+		console.log(
+			"%c ⚡ [COMBO-BOX-OVERLAY] (_triggerPostMessageEvent) action/value/searchText",
+			"font-size: 24px; color: pink;",
+			action,
+			value,
+			searchText,
+		);
+		const event = new CustomEvent("post-message", {
 			detail: {
+				action,
 				value,
 				searchText,
 			}
 		});
 		this.dispatchEvent(event);
-	}
-
-	/**
-	 * Update combo-box input field value when navigating list with arrows
-	 * @param value - value to be send to combo-box input
-	 */
-	private _triggerUpdateInputFieldEvent(value: any): void {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_triggerUpdateInputFieldEvent) value:", "font-size: 24px; color: pink;", value);
-		const event: PandaComboBoxOverlayUpdateInputFieldEvent = new CustomEvent("update-input-field", {
-			detail: {
-				value
-			}
-		});
-		this.dispatchEvent(event);
-		// clean up search text
-		this.searchText = null;
 	}
 
 	// ================================================================================================================
@@ -405,7 +405,7 @@ export class PandaComboBoxOverlay extends LitElement {
 				event.stopPropagation();
 				console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> value", "font-size: 24px; color: red;", this.value);
 				console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> searchText / is null?", "font-size: 24px; color: red;", this.searchText, this.searchText ===  null);
-				this._triggerChangeEvent(this.value, this.searchText);
+				this._onChange(this.value, this.searchText);
 				break;
 			case "ArrowUp":
 				event.stopPropagation();
@@ -417,15 +417,33 @@ export class PandaComboBoxOverlay extends LitElement {
 				break;
 			case "Escape":
 				event.stopPropagation();
-				this.close();
+				this._updateAfterClose = false;
+				this._onClose();
 				break;
 		}
 	}
 
 	private _onOverlayScroll() {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] _onOverlayScroll", "font-size: 24px; color: pink;");
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onOverlayScroll)", "font-size: 24px; color: pink;");
 		// update overlay position
 		this._showOverlayContent();
+	}
+
+	private _onChange(value: any, searchText: string | null = null): void {
+		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onChange) value, searchText", "font-size: 24px; color: pink;", value, searchText);
+		this._triggerPostMessageEvent(
+			PostMessageAction.CHANGE,
+			value,
+			searchText,
+		);
+	}
+
+	private _onClose(): void {
+		const action: PostMessageAction = this._updateAfterClose
+			? PostMessageAction.CLOSE_AND_UPDATE
+			: PostMessageAction.CLOSE_AND_CANCEL;
+
+		this._triggerPostMessageEvent(action);
 	}
 }
 

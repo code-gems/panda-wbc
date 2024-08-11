@@ -1,3 +1,9 @@
+export const enum PostMessageAction {
+	CLOSE_AND_UPDATE = "CLOSE_AND_UPDATE",
+	CLOSE_AND_CANCEL = "CLOSE_AND_CANCEL",
+	CHANGE = "CHANGE",
+	UPDATE_INPUT = "UPDATE_INPUT",
+}
 
 export type ElementDetails = {
 	width: number;
@@ -16,6 +22,14 @@ export interface PandaComboBoxItem {
 	[propertyName: string]: string | number | any;
 }
 
+export interface SuperComboBoxItem {
+	index: number;
+	value: any;
+	label: string;
+	active: boolean;
+	selected: boolean;
+}
+
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
@@ -24,17 +38,12 @@ export type PandaComboBoxChangeEventDetails = {
 	value: string | number | null | any;
 }
 
-export type PandaComboBoxOverlayChangeEventDetails = {
+export type PostMessageEventDetails = {
+	action: PostMessageAction;
 	value: string | number | null | any;
 	searchText: string | null;
 }
 
-export type PandaComboBoxOverlayUpdateInputFieldEventDetails = {
-	value: any;
-}
+export interface PostMessageEvent extends CustomEvent<PostMessageEventDetails> {}
 
 export interface PandaComboBoxChangeEvent extends CustomEvent<PandaComboBoxChangeEventDetails> {}
-
-export interface PandaComboBoxOverlayChangeEvent extends CustomEvent<PandaComboBoxOverlayChangeEventDetails> {}
-
-export interface PandaComboBoxOverlayUpdateInputFieldEvent extends CustomEvent<PandaComboBoxOverlayUpdateInputFieldEventDetails> {}

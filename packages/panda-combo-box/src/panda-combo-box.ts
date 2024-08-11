@@ -3,8 +3,7 @@ import {
 	ElementDetails,
 	PandaComboBoxChangeEvent,
 	PandaComboBoxItem,
-	PandaComboBoxOverlayChangeEvent,
-	PandaComboBoxOverlayUpdateInputFieldEvent,
+	PostMessageAction,
 } from "../index";
 import { PandaComboBoxOverlay } from "./panda-combo-box-overlay";
 
@@ -19,7 +18,7 @@ import "./panda-combo-box-overlay";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { findItemByLabel, getLabelFromItems, getItemValue, minValue } from "./utils/utils";
+import { findItemByLabel, getLabelFromItems, getItemValue, minValue, isValueSet } from "./utils/utils";
 
 @customElement("panda-combo-box")
 export class PandaComboBox extends LitElement {
@@ -130,17 +129,8 @@ export class PandaComboBox extends LitElement {
 	
 	private _overlayEl!: PandaComboBoxOverlay | null;
 
-	/**
-	 * This prop is used to determine if user was navigating through drop-down list
-	 * and if drop-down was closed without selection. Expectation is to select item
-	 * user selected with up/down arrow keys anyway on close or outside click
-	*/
-	private _updateAfterClose: boolean = false;
-
-	// overlay events
-	private _changeEvent: (e: any) => void = this._onChange.bind(this);
-	private _updateInputFieldEvent: (e: any) => void = this._onUpdateInputField.bind(this);
-	private _closeOverlayEvent: (e: any) => void = this._closeOverlay.bind(this);
+	// events
+	private _postMessageEvent: (e: any) => void = this._onPostMessage.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -168,14 +158,14 @@ export class PandaComboBox extends LitElement {
 			changedProps.has("disabled") && this.disabled ||
 			changedProps.has("working") && this.working
 		) {
-			this._closeOverlay();
+			this._onClose();
 		}
 	}
 
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
 		// close overlay and remove all events
-		this._closeOverlay();
+		this._onClose();
 	}
 
 	// ================================================================================================================
@@ -268,9 +258,7 @@ export class PandaComboBox extends LitElement {
 		};
 	}
 
-	/**
-	 * Open overlay and attach it to document body.
-	 */
+	/** Open overlay and attach it to document body. */
 	private _openOverlay() {
 		if (!this._overlayEl && !this.disabled) {
 			console.log("%c ⚡ [COMBO-BOX] _openOverlay", "font-size: 24px; color: orange;");
@@ -278,9 +266,7 @@ export class PandaComboBox extends LitElement {
 			// create overlay element
 			this._overlayEl = document.createElement("panda-combo-box-overlay");
 			// add event listeners
-			this._overlayEl.addEventListener("change", this._changeEvent);
-			this._overlayEl.addEventListener("update-input-field", this._updateInputFieldEvent);
-			this._overlayEl.addEventListener("close", this._closeOverlayEvent);
+			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
 			// overlay props
 			this._overlayEl.items = this.items;
 			this._overlayEl.value = this.value;
@@ -292,38 +278,6 @@ export class PandaComboBox extends LitElement {
 			// append element to document body
 			document.body.appendChild(this._overlayEl);
 			this.opened = true;
-		}
-	}
-
-	private _closeOverlay() {
-		if (this._overlayEl) {
-			// remove event listeners
-			this._overlayEl.removeEventListener("change", this._changeEvent);
-			this._overlayEl.removeEventListener("update-input-field", this._updateInputFieldEvent);
-			this._overlayEl.removeEventListener("close", this._closeOverlayEvent);
-			// clean up
-			document.body.removeChild(this._overlayEl);
-			this._overlayEl = null;
-			this.opened = false;
-
-			console.log("%c (_closeOverlay) searchText: ", "font-size: 24px; color: green;", this._searchText);
-			console.log("%c (_closeOverlay) _value", "font-size: 24px; color: green;", this._value);
-			console.log("%c (_closeOverlay) _updateAfterClose", "font-size: 24px; color: green;", this._updateAfterClose);
-			
-			// check if user closed dropdown after searching but did not select anything
-			if (
-				this._searchText !== null &&
-				this._searchText !== this._value &&
-				!this._updateAfterClose
-			) {
-				this._inputFieldEl.value = this._value;
-				this._searchText = null;
-				console.log("%c (_closeOverlay) Clean up search text", "font-size: 24px; color: green;");
-			}
-			// check if user was using arrow keys to select item and close drop-down
-			if (this._updateAfterClose) {
-				this._updateValue();
-			}
 		}
 	}
 
@@ -403,7 +357,7 @@ export class PandaComboBox extends LitElement {
 	// ================================================================================================================
 	
 	public close() {
-		this._closeOverlay();
+		this._onClose();
 	}
 
 	public clear() {
@@ -482,6 +436,9 @@ export class PandaComboBox extends LitElement {
 				event.preventDefault();
 				this._openOverlay();
 				break;
+			case "Escape":
+				// TODO: for manual entries with disableAutoOpen feature ESC may cancel change
+				break;
 		}
 	}
 
@@ -497,51 +454,100 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
-	private _onChange(event: PandaComboBoxOverlayChangeEvent) {
-		const { value, searchText } = event.detail;
-		console.log("%c ⚡ [COMBO-BOX] (_onChange) value:", "font-size: 24px; color: orange;", value);
-
-		// cancel update on close
-		this._updateAfterClose = false;
-		
-		// check if user backspaced entire value and hit [ENTER]
-		if (searchText === "") {
-			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> User backspaced value:", "font-size: 24px; color: orange;", searchText === "");
-			this.value = null;
-			this._inputFieldEl.value = "";
-			this._triggerChangeEvent();
-			this._closeOverlay();
-		
-			// check if user was searching for dropdown items	
-		} else if (searchText !== null && searchText !== "") {
-			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> _updateValue -> searchText:", "font-size: 24px; color: orange;", searchText);
-			this._updateValue();
-			this._closeOverlay();
-		} else {
-			// update value
-			this.value = value;
-			this._inputFieldEl.value = getLabelFromItems(
-				this.items,
-				this.value,
-				this.itemValuePath,
-				this.itemLabelPath
-			);
-			this._closeOverlay();
-			this._triggerChangeEvent();
-		}
-	}
-
-	private _onUpdateInputField(event: PandaComboBoxOverlayUpdateInputFieldEvent): void {
-		const { value } = event.detail;
-		this._inputFieldEl.value = value;
-		this._inputFieldEl.select();
-		this._updateAfterClose = true;
-	}
-
 	private _onToggleDropdown() {
 		if (!this.disabled) {
 			this._inputFieldEl.focus();
 			this._openOverlay();
+		}
+	}
+
+	private _onChange(value: any, searchText: string) {
+		console.log("%c ⚡ [COMBO-BOX] (_onChange) value:", "font-size: 24px; color: orange;", value);
+		console.log("%c ⚡ [COMBO-BOX] (_onChange) local value:", "font-size: 24px; color: orange;", this.value);
+		console.log("%c ⚡ [COMBO-BOX] (_onChange) local searchText/ remote searchText:", "font-size: 24px; color: orange;", this._searchText, searchText);
+
+		// check if user backspaced entire value and hit [ENTER]
+		if (searchText === "") {
+			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> User backspaced value:", "font-size: 24px; color: orange;", searchText === "");
+			const _isValueSet = isValueSet(this.value);
+			this.value = null;
+			this._inputFieldEl.value = "";
+			// check if value was already null to prevent from dispatching change event when value did not change
+			if (_isValueSet) {
+				this._triggerChangeEvent();
+			}
+
+			// check if user was searching for dropdown items	
+		} else if (searchText !== null && searchText !== "") {
+			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> _updateValue -> searchText:", "font-size: 24px; color: orange;", searchText);
+			this._updateValue();
+		} else {
+			// check if user selected the same value
+			if (value !== this.value) {
+				// update value
+				this.value = value;
+				this._inputFieldEl.value = getLabelFromItems(
+					this.items,
+					this.value,
+					this.itemValuePath,
+					this.itemLabelPath
+				);
+				this._triggerChangeEvent();
+			}
+		}
+		// close overlay
+		this._onClose();
+	}
+
+	private _onUpdateInputField(value: any): void {
+		this._inputFieldEl.focus();
+		this._inputFieldEl.value = value;
+		this._inputFieldEl.select();
+		console.log("%c ⚡ [COMBO-BOX] (_onUpdateInputField) -> value/_updateAfterClose", "font-size: 24px; color: orange;", value);
+	}
+	
+	private _onClose(updateAfterClose: boolean = false): void {
+		if (this._overlayEl) {
+			// remove event listeners
+			this._overlayEl.removeEventListener("post-message", this._postMessageEvent);
+			// clean up
+			document.body.removeChild(this._overlayEl);
+			this._overlayEl = null;
+			this.opened = false;
+
+			console.log("%c (_closeOverlay) searchText: ", "font-size: 24px; color: green;", this._searchText);
+			console.log("%c (_closeOverlay) _value", "font-size: 24px; color: green;", this._value);
+			console.log("%c (_closeOverlay) updateAfterClose", "font-size: 24px; color: green;", updateAfterClose);
+			
+			// check if user was using up/down arrow keys to select item and close drop-down
+			if (updateAfterClose) {
+				this._updateValue();
+			} else {
+				// check if user closed dropdown after searching but did not select anything
+				this._inputFieldEl.value = this._value;
+				this._searchText = null;
+				console.log("%c (_closeOverlay) Clean up search text", "font-size: 24px; color: green;");
+			}
+		}
+	}
+
+	private _onPostMessage(event: any): void {
+		const { action, value, searchText } = event.detail;
+		console.log("%c ⚡ [COMBO-BOX] (_onPostMessage)", "font-size: 24px; color: red;", action, value, searchText, searchText === null);
+
+		switch (action) {
+			case PostMessageAction.CHANGE:
+				this._onChange(value, searchText);
+				break;
+			case PostMessageAction.UPDATE_INPUT:
+				this._onUpdateInputField(value);
+				break;
+			case PostMessageAction.CLOSE_AND_CANCEL:
+				this._onClose();
+				break;
+			case PostMessageAction.CLOSE_AND_UPDATE:
+				this._onClose(true);
+				break;
 		}
 	}
 }

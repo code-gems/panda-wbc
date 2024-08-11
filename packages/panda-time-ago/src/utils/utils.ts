@@ -29,18 +29,18 @@ export const getTimeAgo = (
 	let timeAgo = "";
 
 	// years
-	if (whenYears > 1) timeAgo = `~ ${whenYears} ${i18n.yearsAgo}`;
+	if (whenYears > 1) timeAgo = `${whenYears} ${i18n.yearsAgo}`;
 	if (whenYears === 1) timeAgo = i18n.yearAgo;
 	// months
-	if (whenMonths > 1 && whenMonths < 12) timeAgo = `~ ${whenMonths} ${i18n.monthsAgo}`;
+	if (whenMonths > 1 && whenMonths < 12) timeAgo = `${whenMonths} ${i18n.monthsAgo}`;
 	if (whenMonths === 1) timeAgo = i18n.monthAgo;
 	// days
 	if (whenDays > 1 && whenDays < 30) timeAgo = `${whenDays} ${i18n.daysAgo}`;
 	if (whenDays < 30) {
 		if (whenWeeks === 1) {
-			timeAgo = `~ ${i18n.weekAgo}`;
+			timeAgo = i18n.weekAgo;
 		} else {
-			timeAgo = `~ ${whenWeeks} ${i18n.weeksAgo}`;
+			timeAgo = `${whenWeeks} ${i18n.weeksAgo}`;
 		}
 	}
 	if (whenDays === 14) timeAgo = `2 ${i18n.weeksAgo}`;
@@ -48,34 +48,34 @@ export const getTimeAgo = (
 	if (whenDays === 7) timeAgo = i18n.weekAgo;
 	if (whenDays === 1) timeAgo = i18n.yesterday;
 	// hours
-	if (whenHours < 24) timeAgo = `~ ${whenHours} ${i18n.hoursAgo}`;
+	if (whenHours < 24) timeAgo = `${whenHours} ${i18n.hoursAgo}`;
 	if (whenHours === 1) timeAgo = i18n.hourAgo;
 	// minutes
-	if (whenMinutes < 60) timeAgo = `~ ${whenMinutes} ${i18n.minAgo}`;
+	if (whenMinutes < 60) timeAgo = `${whenMinutes} ${i18n.minAgo}`;
 	// seconds
 	if (whenSeconds < 60 && whenSeconds >= 0) timeAgo = i18n.justNow;
 
 	if (allowFuture) {
 		// years
-		if (whenYears < -1) timeAgo = `~ ${Math.abs(whenYears)} ${i18n.yearsFromNow}`;
+		if (whenYears < -1) timeAgo = `${Math.abs(whenYears)} ${i18n.yearsFromNow}`;
 		if (whenYears === -1) timeAgo = i18n.nextYear;
 		// months
-		if (whenMonths < -1 && whenMonths > -12) timeAgo = `~ ${Math.abs(whenMonths)} ${i18n.monthsFromNow}`;
+		if (whenMonths < -1 && whenMonths > -12) timeAgo = `${Math.abs(whenMonths)} ${i18n.monthsFromNow}`;
 		if (whenMonths === -1) timeAgo = i18n.nextMonth;
 		// days
-		if (whenDays < -1 && whenDays > -30) timeAgo = `~ ${Math.abs(whenDays)} ${i18n.daysFromNow}`;
+		if (whenDays < -1 && whenDays > -30) timeAgo = `${Math.abs(whenDays)} ${i18n.daysFromNow}`;
 		if (whenDays < -7 && whenDays > -30) {
 			if (whenWeeks === 1) {
-				timeAgo = `~ ${i18n.nextWeek}`;
+				timeAgo = i18n.nextWeek;
 			} else {
-				timeAgo = `~ ${whenWeeks} ${i18n.weeksFromNow}`;
+				timeAgo = `${whenWeeks} ${i18n.weeksFromNow}`;
 			}
 		}
 		if (whenDays === -14) timeAgo = `2 ${i18n.weeksFromNow}`;
 		if (whenDays === -7) timeAgo = i18n.nextWeek;
 		if (whenDays === -1) timeAgo = i18n.tomorrow;
 		// hours
-		if (whenHours > -24 && whenHours < 0) timeAgo = `~ ${Math.abs(whenHours)} ${i18n.hoursFromNow}`;
+		if (whenHours > -24 && whenHours < 0) timeAgo = `${Math.abs(whenHours)} ${i18n.hoursFromNow}`;
 		if (whenHours === -1) timeAgo = i18n.hourFromNow;
 		// minutes
 		if (whenMinutes > -60 && whenMinutes < 0) timeAgo = `${Math.abs(whenMinutes)} ${i18n.minFromNow}`;
