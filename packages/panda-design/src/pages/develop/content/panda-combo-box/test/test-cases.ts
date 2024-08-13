@@ -141,7 +141,7 @@
  * EXPECTATION:
  * - after opening dropdown second time, selected item is visually marked as selected
  * 
- * STATUS: ❌ FAIL
+ * STATUS: ✅ PASS
  */
 
 /**
@@ -154,5 +154,45 @@
  * - combo box input is empty
  * - dropdown is closed
  * 
- * STATUS: ❌ FAIL
+ * STATUS: ✅ PASS
  */
+
+
+// ====================================================================================================================
+// FEATURE TESTING ====================================================================================================
+// ====================================================================================================================
+
+// ALLOW CUSTOM VALUES FEATURE
+
+/**
+ * CASE 14 - User can enter custom value
+ * 1. Type in any value that is not part of the dropdown list and hit [ENTER]
+ * 
+ * EXPECTATION:
+ * - @change event is dispatched and value is set to entered by user
+ * - combo box shows user entered value
+ * 
+ * STATUS: ✅ PASS
+*/
+
+/**
+ * CASE 15 - User can select item from dropdown despite allow-custom-value feature
+ * 1. Select first item from the dropdown eg: "Alabama"
+ * 
+ * EXPECTATION:
+ * - @change event is dispatched and value (AL) is set
+ * - combo box shows "Alabama"
+ * 
+ * STATUS: ❌ FAIL
+*/
+
+/**
+ * CASE 16 - User can search and select existing item from dropdown despite allow-custom-value feature
+ * 1. Type in "Alaska" and hit [ENTER] to select item from dropdown
+ * 
+ * EXPECTATION:
+ * - @change event is dispatched and value (AK) is set
+ * - combo box shows "Alaska"
+ * 
+ * STATUS: ❌ FAIL
+*/

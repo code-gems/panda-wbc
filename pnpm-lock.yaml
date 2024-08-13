@@ -164,15 +164,15 @@ importers:
 
   packages/panda-combo-box:
     dependencies:
-      '@panda-wbc/panda-core':
-        specifier: workspace:*
-        version: link:../panda-core
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
       lit:
         specifier: ^2.7.4
         version: 2.7.4

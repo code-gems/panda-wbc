@@ -18,7 +18,14 @@ import "./panda-combo-box-overlay";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { findItemByLabel, getLabelFromItems, getItemValue, minValue, isValueSet } from "./utils/utils";
+import {
+	findItemByLabel,
+	getItemByLabel,
+	getItemValue,
+	getLabelFromItems,
+	isValueSet,
+	minValue,
+} from "./utils/utils";
 
 @customElement("panda-combo-box")
 export class PandaComboBox extends LitElement {
@@ -29,43 +36,43 @@ export class PandaComboBox extends LitElement {
 		];
 	}
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	label!: string;
 
 	@property({ type: String })
 	value: string | number | null = null;
 	
 	@property({ type: Array })
-	items: PandaComboBoxItem[] | any[] | null | undefined = [];
+	items: PandaComboBoxItem[] | any[] | null = [];
 
-	@property({ type: String, attribute: "item-label-path" })
+	@property({ type: String, attribute: "item-label-path", reflect: true })
 	itemLabelPath: string | null = null;
 
-	@property({ type: String, attribute: "item-value-path" })
+	@property({ type: String, attribute: "item-value-path", reflect: true })
 	itemValuePath: string | null = null;
 
-	@property({ type: Boolean, attribute: "allow-custom-value" })
+	@property({ type: Boolean, attribute: "allow-custom-value", reflect: true })
 	allowCustomValue: boolean = false;
 
-	@property({ type: Boolean, attribute: "disable-auto-open" })
+	@property({ type: Boolean, attribute: "disable-auto-open", reflect: true })
 	disableAutoOpen: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	autoselect: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	working: boolean = false;
 
-	@property({ type: String, attribute: true })
+	@property({ type: String, reflect: true })
 	placeholder: string | null = null;
 
-	@property({ type: String, attribute: "spinner-type" })
+	@property({ type: String, attribute: "spinner-type", reflect: true })
 	spinnerType: string = "dots";
 
 	/**
@@ -84,7 +91,7 @@ export class PandaComboBox extends LitElement {
 	 * 
 	 * [DEFAULT] null
 	 */
-	@property({ type: String, attribute: true })
+	@property({ type: String, reflect: true })
 	pattern: string | null = null;
 
 	/**
@@ -94,10 +101,10 @@ export class PandaComboBox extends LitElement {
 	 * 
 	 * [DEFAULT] null
 	 */
-	@property({ type: String, attribute: "allowed-char-pattern" })
+	@property({ type: String, attribute: "allowed-char-pattern", reflect: true })
 	allowedCharPattern: string | null = null;
 
-	@property({ type: Boolean, attribute: true })
+	@property({ type: Boolean, reflect: true })
 	mandatory: boolean = false;
 
 	// state props
@@ -285,6 +292,7 @@ export class PandaComboBox extends LitElement {
 		const _inputValue = this._inputFieldEl.value;
 		// check if value has changed
 		if (_inputValue === this._value) {
+			console.log("%c ⚡ [COMBO-BOX] (_updateValue) value didn't change EXIT;", "font-size: 24px; color: red;");
 			return;
 		}
 		// check if input value is empty
@@ -315,7 +323,6 @@ export class PandaComboBox extends LitElement {
 					this.value,
 					this.itemValuePath,
 					this.itemLabelPath,
-					this.allowCustomValue	
 				);
 			} else {
 				this.value = null;
@@ -462,9 +469,9 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _onChange(value: any, searchText: string) {
-		console.log("%c ⚡ [COMBO-BOX] (_onChange) value:", "font-size: 24px; color: orange;", value);
-		console.log("%c ⚡ [COMBO-BOX] (_onChange) local value:", "font-size: 24px; color: orange;", this.value);
-		console.log("%c ⚡ [COMBO-BOX] (_onChange) local searchText/ remote searchText:", "font-size: 24px; color: orange;", this._searchText, searchText);
+		console.log("%c ⚡ [COMBO-BOX] (_onChange) value:", "font-size: 24px; color: lime;", value);
+		console.log("%c ⚡ [COMBO-BOX] (_onChange) local value:", "font-size: 24px; color: lime;", this.value);
+		console.log("%c ⚡ [COMBO-BOX] (_onChange) local searchText/ remote searchText:", "font-size: 24px; color: lime;", this._searchText, searchText);
 
 		// check if user backspaced entire value and hit [ENTER]
 		if (searchText === "") {
@@ -474,6 +481,25 @@ export class PandaComboBox extends LitElement {
 			this._inputFieldEl.value = "";
 			// check if value was already null to prevent from dispatching change event when value did not change
 			if (_isValueSet) {
+				this._triggerChangeEvent();
+			}
+
+			// check if allow-custom-value is enabled
+		} else if (this.allowCustomValue) {
+			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> allowCustomValue: value / this._searchText", "font-size: 24px; color: orange;", value, this._searchText);
+
+			const findItem = getItemByLabel(
+				this.items,
+				value,
+				this.itemValuePath,
+			);
+			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> allowCustomValue: findItem", "font-size: 24px; color: orange;", findItem);
+
+			if (this.value !== searchText) {
+				this.value = searchText;
+				this._inputFieldEl.value = searchText;
+				this._searchText = null;
+
 				this._triggerChangeEvent();
 			}
 

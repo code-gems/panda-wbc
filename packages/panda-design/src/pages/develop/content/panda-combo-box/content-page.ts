@@ -172,7 +172,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 						.value="${this._selectedValue}"
 						.items="${this._stateList}"
 						@change="${this._onChange}"
-						
+						allow-custom-value
 					>
 					</panda-combo-box>
 					<br />
