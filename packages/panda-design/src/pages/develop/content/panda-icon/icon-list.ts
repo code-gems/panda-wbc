@@ -10,6 +10,7 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "error",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "error-outline",			iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "warning",					iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
+		{ name: "warning-badge",			iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "warning-box",				iconPack: "default", group: ["System"], keywords: ["interface", "message, box"] },
 		{ name: "help",						iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "help-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },

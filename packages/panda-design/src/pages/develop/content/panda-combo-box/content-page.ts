@@ -98,6 +98,12 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	private _disabled: boolean = false;
 
 	@state()
+	private _allowCustomValue: boolean = false;
+	
+	@state()
+	private _disableAutoOpen: boolean = false;
+
+	@state()
 	private _selectedValue: string = "";
 	
 	@state()
@@ -153,11 +159,13 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		};
 		return html`
 			<div class="banner small particle-banner">
+			<!--	
 				<panda-particle-banner .config="${bannerConfig}">
 					<div class="content">
 						<h1>COMBO BOX</h1>
 					</div>
 				</panda-particle-banner>
+			-->
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -171,14 +179,43 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 						label="Select Destination:"
 						.value="${this._selectedValue}"
 						.items="${this._stateList}"
+						.allowCustomValue="${this._allowCustomValue}"
+						.disableAutoOpen="${this._disableAutoOpen}"
 						@change="${this._onChange}"
-						allow-custom-value
 					>
 					</panda-combo-box>
 					<br />
 					${this._selectedValue}
 					<hr />
+					<panda-checkbox
+						.checked="${this._allowCustomValue}"
+						@change="${this._onToggleAllowCustomValue}"
+					>
+						allow-custom-value
+					</panda-checkbox>
+					<br />
+
+					<panda-checkbox
+						.checked="${this._disableAutoOpen}"
+						@change="${this._onToggleDisableAutoOpen}"
+					>
+						disable-auto-open
+					</panda-checkbox>
+					
+					<hr />
 					${this._renderLogs()}
+					
+					<hr />
+					<panda-combo-box
+						label="Select Destination:"
+						.value="${undefined}"
+						.items="${[1,2,3,4]}"
+						.allowCustomValue="${this._allowCustomValue}"
+						.disableAutoOpen="${this._disableAutoOpen}"
+						@change="${this._onChange}"
+					>
+					</panda-combo-box>
+
 				</div>
 			</div>
 		`;
@@ -400,5 +437,13 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		setTimeout(() => {
 			this._disabled = false;
 		}, 2000);
+	}
+
+	private _onToggleAllowCustomValue(): void {
+		this._allowCustomValue = !this._allowCustomValue;
+	}
+
+	private _onToggleDisableAutoOpen(): void {
+		this._disableAutoOpen = !this._disableAutoOpen;
 	}
 }

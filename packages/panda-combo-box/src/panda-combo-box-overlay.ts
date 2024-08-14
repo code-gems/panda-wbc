@@ -13,9 +13,10 @@ import { styles } from "./styles/overlay-styles";
 import { LitElement, html, PropertyValues, TemplateResult, PropertyValueMap } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import {
+	filterItemsWithIncludes,
+	getItemLabel,
 	getItemValue,
 	minValue,
-	getItemLabel,
 } from "./utils/utils";
 
 @customElement("panda-combo-box-overlay")
@@ -242,21 +243,6 @@ export class PandaComboBoxOverlay extends LitElement {
 		this._selectedItemIndex = this._parsedItems.find((item) => item.value === this.value)?.index ?? null;
 	}
 
-	/** Filter items against search string using "includes" condition */	
-	private _filterItemsWithIncludes(searchText: string, items: PandaComboBoxItem[] | any[]): PandaComboBoxItem[] | any[] {
-		const filteredItems: PandaComboBoxItem[] | any[] = [];
-
-		items.forEach((item) => {
-			const _label = getItemLabel(item, this.itemLabelPath);
-			// filter items
-			if (_label && _label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
-				filteredItems.push(item);
-			}
-		});
-
-		return filteredItems;
-	}
-
 	/**
 	 * Parse provided items for further processing.
 	 * Filter items if user entered searching text.
@@ -274,7 +260,11 @@ export class PandaComboBoxOverlay extends LitElement {
 				if (this.filter && typeof this.filter === "function") {
 					_items = this.filter(this.searchText, this.items);
 				} else {
-					_items = this._filterItemsWithIncludes(this.searchText, this.items);
+					_items = filterItemsWithIncludes(
+						this.items,
+						this.searchText,
+						this.itemLabelPath,
+					);
 				}
 			} else {
 				_items = this.items;

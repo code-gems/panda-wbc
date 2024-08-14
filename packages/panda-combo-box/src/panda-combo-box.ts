@@ -20,7 +20,8 @@ import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import {
 	findItemByLabel,
-	getItemByLabel,
+	getItemByValue,
+	getItemLabel,
 	getItemValue,
 	getLabelFromItems,
 	isValueSet,
@@ -41,7 +42,7 @@ export class PandaComboBox extends LitElement {
 
 	@property({ type: String })
 	value: string | number | null = null;
-	
+
 	@property({ type: Array })
 	items: PandaComboBoxItem[] | any[] | null = [];
 
@@ -133,7 +134,7 @@ export class PandaComboBox extends LitElement {
 
 	@query("#input-field")
 	private _inputFieldEl!: HTMLInputElement;
-	
+
 	private _overlayEl!: PandaComboBoxOverlay | null;
 
 	// events
@@ -292,7 +293,7 @@ export class PandaComboBox extends LitElement {
 		const _inputValue = this._inputFieldEl.value;
 		// check if value has changed
 		if (_inputValue === this._value) {
-			console.log("%c ⚡ [COMBO-BOX] (_updateValue) value didn't change EXIT;", "font-size: 24px; color: red;");
+			console.log("%c ⚡ [COMBO-BOX] (_updateValue) value didn't change [EXIT]", "font-size: 24px; color: red;");
 			return;
 		}
 		// check if input value is empty
@@ -300,6 +301,25 @@ export class PandaComboBox extends LitElement {
 			this.value = null;
 			this._inputFieldEl.value = "";
 			this._triggerChangeEvent();
+		} else if (this.allowCustomValue) {
+			console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> allowCustomValue", "font-size: 24px; color: red;", _inputValue);
+			console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> allowCustomValue: value", "font-size: 24px; color: red;", this.value);
+
+			// check if entered value is part of dropdown items
+			const _selectedItem = getItemByValue(
+				this.items,
+				_inputValue,
+				this.itemLabelPath ?? "label"
+			);
+
+			if (_selectedItem !== undefined) {
+				this.value = getItemValue(_selectedItem, this.itemValuePath);
+			} else {
+				this.value = _inputValue;
+			}
+			this._triggerChangeEvent();
+
+			// find selected item and update selection
 		} else if (this.items) {
 			let _items: PandaComboBoxItem[] | any[] = [];
 			// check if custom filter is defined
@@ -362,7 +382,7 @@ export class PandaComboBox extends LitElement {
 	// ================================================================================================================
 	// API ============================================================================================================
 	// ================================================================================================================
-	
+
 	public close() {
 		this._onClose();
 	}
@@ -486,21 +506,68 @@ export class PandaComboBox extends LitElement {
 
 			// check if allow-custom-value is enabled
 		} else if (this.allowCustomValue) {
-			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> allowCustomValue: value / this._searchText", "font-size: 24px; color: orange;", value, this._searchText);
+			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> allowCustomValue: value", "font-size: 24px; color: orange;", value, value === null);
+			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> allowCustomValue: searchText", "font-size: 24px; color: orange;", searchText, searchText === null);
 
-			const findItem = getItemByLabel(
-				this.items,
-				value,
-				this.itemValuePath,
-			);
-			console.log("%c ⚡ [COMBO-BOX] (_onChange) -> allowCustomValue: findItem", "font-size: 24px; color: orange;", findItem);
+			// check if item was selected from the existing options w.o. searching
+			if (
+				value !== null &&
+				value !== "" &&
+				searchText === null
+			) {
+				// find selected item by value
+				const _selectedItem = getItemByValue(
+					this.items,
+					value,
+					this.itemValuePath ?? "value",
+				);
+				console.log("%c ⚡ 1. [COMBO-BOX] (_onChange) -> allowCustomValue: findItem", "font-size: 24px; color: orange;", _selectedItem);
+				console.log("%c ⚡ 1. [COMBO-BOX] (_onChange) -> allowCustomValue: value", "font-size: 24px; color: orange;", value);
+				console.log("%c ⚡ 1. [COMBO-BOX] (_onChange) -> allowCustomValue: searchText", "font-size: 24px; color: orange;", searchText, searchText === null);
 
-			if (this.value !== searchText) {
-				this.value = searchText;
-				this._inputFieldEl.value = searchText;
-				this._searchText = null;
+				// check if selection changed
+				if (this.value !== value && _selectedItem !== null) {
+					this.value = getItemValue(_selectedItem, this.itemValuePath);
+					this._inputFieldEl.value = getItemLabel(_selectedItem, this.itemLabelPath);
+					this._searchText = null;
 
-				this._triggerChangeEvent();
+					this._triggerChangeEvent();
+				}
+
+				// check if item was search for and selected
+			} else if (
+				searchText !== null &&
+				searchText !== ""
+			) {
+				// find selected item by label
+				const _selectedItem = getItemByValue(
+					this.items,
+					searchText,
+					this.itemLabelPath ?? "label",
+				);
+				console.log("%c ⚡ 2. [COMBO-BOX] (_onChange) -> allowCustomValue: findItem", "font-size: 24px; color: orange;", _selectedItem);
+				console.log("%c ⚡ 2. [COMBO-BOX] (_onChange) -> allowCustomValue: value", "font-size: 24px; color: orange;", value);
+				console.log("%c ⚡ 2. [COMBO-BOX] (_onChange) -> allowCustomValue: searchText", "font-size: 24px; color: orange;", searchText);
+
+				// check if selection changed
+				if (this.value !== searchText && _selectedItem !== undefined) {
+					this.value = getItemValue(_selectedItem, this.itemValuePath);
+					this._inputFieldEl.value = getItemLabel(_selectedItem, this.itemLabelPath);
+					this._searchText = null;
+
+					this._triggerChangeEvent();
+				}
+
+				// if user entered something that is not part of dropdown, add it as custom value
+				if (_selectedItem === undefined && this.value !== searchText) {
+					console.log("%c ⚡ 3. [COMBO-BOX] (_onChange) -> allowCustomValue: searchText", "font-size: 24px; color: orange;", searchText);
+					// check if selection changed
+					this.value = searchText;
+					this._inputFieldEl.value = searchText;
+					this._searchText = null;
+
+					this._triggerChangeEvent();
+				}
 			}
 
 			// check if user was searching for dropdown items	
@@ -531,7 +598,7 @@ export class PandaComboBox extends LitElement {
 		this._inputFieldEl.select();
 		console.log("%c ⚡ [COMBO-BOX] (_onUpdateInputField) -> value/_updateAfterClose", "font-size: 24px; color: orange;", value);
 	}
-	
+
 	private _onClose(updateAfterClose: boolean = false): void {
 		if (this._overlayEl) {
 			// remove event listeners
@@ -544,7 +611,7 @@ export class PandaComboBox extends LitElement {
 			console.log("%c (_closeOverlay) searchText: ", "font-size: 24px; color: green;", this._searchText);
 			console.log("%c (_closeOverlay) _value", "font-size: 24px; color: green;", this._value);
 			console.log("%c (_closeOverlay) updateAfterClose", "font-size: 24px; color: green;", updateAfterClose);
-			
+
 			// check if user was using up/down arrow keys to select item and close drop-down
 			if (updateAfterClose) {
 				this._updateValue();
@@ -559,7 +626,7 @@ export class PandaComboBox extends LitElement {
 
 	private _onPostMessage(event: any): void {
 		const { action, value, searchText } = event.detail;
-		console.log("%c ⚡ [COMBO-BOX] (_onPostMessage)", "font-size: 24px; color: red;", action, value, searchText, searchText === null);
+		console.log("%c ⚡ [COMBO-BOX] (_onPostMessage)", "font-size: 24px; color: red;", event.detail, action, value, searchText, searchText === null);
 
 		switch (action) {
 			case PostMessageAction.CHANGE:

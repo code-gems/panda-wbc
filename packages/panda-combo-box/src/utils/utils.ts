@@ -8,7 +8,7 @@ export const minValue = (value: number, min: number): number => value < min ? mi
  * @returns {String} value associated with an item
  */
 export const getItemValue = (
-	item: PandaComboBoxItem,
+	item: PandaComboBoxItem | string | number | any,
 	itemValuePath: string | null
 ): string | number | null => {
 	if (typeof item === "object") {
@@ -28,7 +28,7 @@ export const getItemValue = (
  * @returns {String} label associated with selected value
  */
 export const getItemLabel = (
-	item: PandaComboBoxItem,
+	item: PandaComboBoxItem | string | number | any,
 	itemLabelPath: string | null
 ): string => {
 	if (typeof item === "object") {
@@ -122,33 +122,62 @@ export const findItemByLabel = (
 	}
 }
 
-export const getItemByLabel = (
+/**
+ * Search through array of items and find first matched item
+ * @param items - array of items to search through
+ * @param value - searched value
+ * @param valuePath - value patch in case of dealing with array of objects
+ * @returns matched element of an array
+ */
+export const getItemByValue = (
 	items: PandaComboBoxItem[] | any[] | null,
-	label: any,
-	itemLabelPath: string | null,
-): PandaComboBoxItem | string | number | null => {
+	value: any,
+	valuePath: string,
+): PandaComboBoxItem | string | number | null | undefined => {
 	if (items) {
 		// check if item is not a primitive
 		if (typeof items[0] === "object") {
 			return items.find((item) => {
-				const _itemLabel = itemLabelPath
-					? item[itemLabelPath] ?? null
-					: item?.value;
+				const _itemValue = item[valuePath] ?? null;
 				// check what type of data are we comparing
-				if (typeof _itemLabel === "string") {
-					return _itemLabel.toLocaleLowerCase() === label.toLocaleLowerCase();
+				if (typeof _itemValue === "string") {
+					return _itemValue.toLocaleLowerCase() === value.toLocaleLowerCase();
 				} else {
-					return _itemLabel === label;
+					return _itemValue === value;
 				}
 			});
 		} else if (typeof items[0] === "string") {
-			return items.find((item) => item.toLocaleLowerCase() === label.toLocaleLowerCase());
+			return items.find((item) => item.toLocaleLowerCase() === value.toLocaleLowerCase());
 		} else {
-			return items.find((item) => item === label);
+			return items.find((item) => item === value);
 		}
 	} else {
 		return null;
 	}
+}
+
+/**
+ * Filter items against search string using "includes" condition.
+ * 
+ * @param items - items to filter through
+ * @param searchText - search text to filter against
+ * @param itemLabelPath - path to a label in an item object
+ * @returns elements of an array matching search criteria
+ */
+export const filterItemsWithIncludes = (
+	items: PandaComboBoxItem[] | any[],
+	searchText: string,
+	itemLabelPath: string | null,
+): PandaComboBoxItem[] | any[] => {
+	return items.filter((item) => {
+		const _label = getItemLabel(item, itemLabelPath);
+		// check type of item data
+		if (typeof _label === "string") {
+			return _label.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+		} else {
+			return _label === searchText;
+		}
+	});
 }
 
 export const isValueSet = (value: any): boolean => {

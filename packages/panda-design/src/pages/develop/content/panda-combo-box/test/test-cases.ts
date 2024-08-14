@@ -176,23 +176,59 @@
 */
 
 /**
- * CASE 15 - User can select item from dropdown despite allow-custom-value feature
+ * CASE 15 - User can select item from the dropdown
  * 1. Select first item from the dropdown eg: "Alabama"
  * 
  * EXPECTATION:
  * - @change event is dispatched and value (AL) is set
  * - combo box shows "Alabama"
  * 
- * STATUS: ❌ FAIL
+ * STATUS: ✅ PASS
 */
 
 /**
- * CASE 16 - User can search and select existing item from dropdown despite allow-custom-value feature
+ * CASE 16 - User can search and select existing item from dropdown
  * 1. Type in "Alaska" and hit [ENTER] to select item from dropdown
  * 
  * EXPECTATION:
  * - @change event is dispatched and value (AK) is set
  * - combo box shows "Alaska"
  * 
- * STATUS: ❌ FAIL
+ * STATUS: ✅ PASS
+*/
+
+/**
+ * CASE 16 - User can remove currently selected item by backspacing it
+ * 1. Select first item from the dropdown eg: "Alabama"
+ * 2. Backspace entire value and hit [ENTER]
+ * 
+ * EXPECTATION:
+ * - @change event is dispatched and value (null) is set
+ * - combo box is empty
+ * 
+ * STATUS: ✅ PASS
+*/
+
+// DISABLE AUTO OPEN FEATURE
+
+/**
+ * CASE 14 - User can type is name of an item from the dropdown and select it
+ * 1. Type in "Alaska" and hit [ENTER]
+ * 
+ * EXPECTATION:
+ * - @change event is dispatched and value is set (AK)
+ * - combo box shows "Alaska"
+ * 
+ * STATUS: ✅ PASS
+*/
+
+/**
+ * CASE 14 - User can type is name of an item from the dropdown and select it
+ * 1. Type in "Alaska" and hit [ENTER]
+ * 
+ * EXPECTATION:
+ * - @change event is dispatched and value is set (AK)
+ * - combo box shows "Alaska"
+ * 
+ * STATUS: ✅ PASS
 */

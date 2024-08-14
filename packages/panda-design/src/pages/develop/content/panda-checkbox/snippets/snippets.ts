@@ -7,5 +7,6 @@ import "@panda-wbc/panda-checkbox";
   .checked="\$false"
   @change="\${this._onChange}"
 >
+  Remember me
 </panda-checkbox>
 `;
