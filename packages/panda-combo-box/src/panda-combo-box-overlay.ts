@@ -10,7 +10,7 @@ import {
 import { styles } from "./styles/overlay-styles";
 
 // utils
-import { LitElement, html, PropertyValues, TemplateResult, PropertyValueMap } from "lit";
+import { LitElement, html, TemplateResult, PropertyValueMap } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import {
 	filterItemsWithIncludes,
@@ -23,9 +23,7 @@ import {
 export class PandaComboBoxOverlay extends LitElement {
 	// css style
 	static get styles() {
-		return [
-			styles,
-		];
+		return styles;
 	}
 
 	@property({ type: String })
@@ -75,7 +73,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	protected firstUpdated(_changedProperties: PropertyValues): void {
+	protected firstUpdated(): void {
 		this._showOverlayContent();
 	}
 	
@@ -249,8 +247,8 @@ export class PandaComboBoxOverlay extends LitElement {
 	*/
 	private _parseComboBoxItems(): void {
 		this._parsedItems = [];
-		let _items = [];
 		let index = 0;
+		let _items: PandaComboBoxItem[] | any[] = [];
 
 		// check if we have items to filter and parse
 		if (this.items?.length) {

@@ -160,6 +160,8 @@ export class PandaComboBox extends LitElement {
 			);
 			// update mandatory flag
 			this._evaluateMandatoryFlag();
+			// validate input
+			this._validateInput(this.value);
 		}
 		// close overlay on disabled/working
 		if (
@@ -366,6 +368,20 @@ export class PandaComboBox extends LitElement {
 		this.dispatchEvent(event);
 		// clear search text
 		this._searchText = null;
+	}
+
+	private _validateInput(inputValue: string | number | null) {
+		// check if pattern is defined
+		if (this.pattern && inputValue !== null && inputValue !== undefined) {
+			const regExp = new RegExp(this.pattern);
+			const value = inputValue as string;
+			// validate user input
+			if (!regExp.test(value)) {
+				this._invalid = true;
+			} else {
+				this._invalid = false;
+			}
+		}
 	}
 
 	private _evaluateMandatoryFlag() {

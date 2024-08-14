@@ -76,7 +76,6 @@ export const getLabelFromItems = (
 			if (allowCustomValue) {
 				return String(value);
 			} else {
-				console.warn("[combo-box] No item match found for value:", value);
 				return "";
 			}
 		} else if (typeof _selectedItem === "object") {
