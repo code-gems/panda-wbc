@@ -291,7 +291,7 @@ export class PandaComboBox extends LitElement {
 		}
 	}
 
-	private _updateValue(): void {
+	private _updateValue(revertIfNoMatch: boolean = false): void {
 		const _inputValue = this._inputFieldEl.value;
 		// check if value has changed
 		if (_inputValue === this._value) {
@@ -300,6 +300,7 @@ export class PandaComboBox extends LitElement {
 		}
 		// check if input value is empty
 		if (_inputValue === "") {
+			console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> CLEAR VALUE", "font-size: 24px; color: red;");
 			this.value = null;
 			this._inputFieldEl.value = "";
 			this._triggerChangeEvent();
@@ -346,7 +347,20 @@ export class PandaComboBox extends LitElement {
 					this.itemValuePath,
 					this.itemLabelPath,
 				);
+			} else if (!_match && revertIfNoMatch) {
+				const _selectedItem = getItemByValue(
+					this.items,
+					this.value,
+					this.itemValuePath ?? "value",
+				) as string;
+				
+				console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> NO MATCH / REVERT VALUE", "font-size: 24px; color: red;", this.value, _selectedItem);
+
+				this._inputFieldEl.value = getItemLabel(_selectedItem, this.itemLabelPath);
+				this._searchText = null;
 			} else {
+				console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> NO MATCH / CLEAR VALUE", "font-size: 24px; color: red;");
+
 				this.value = null;
 				this._inputFieldEl.value = "";
 				this._searchText = null;
@@ -630,7 +644,8 @@ export class PandaComboBox extends LitElement {
 
 			// check if user was using up/down arrow keys to select item and close drop-down
 			if (updateAfterClose) {
-				this._updateValue();
+				// in this case if update logic can not find searched value, it will revert to last selected
+				this._updateValue(true);
 			} else {
 				// check if user closed dropdown after searching but did not select anything
 				this._inputFieldEl.value = this._value;

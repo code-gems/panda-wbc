@@ -119,7 +119,7 @@ export class PandaComboBoxOverlay extends LitElement {
 			<div
 				class="overlay-cont"
 				part="overlay-cont"
-				@click="${this._onClose}"
+				@click="${this._onOverlayClick}"
 			>
 				<div
 					id="overlay"
@@ -229,7 +229,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	private _showActiveElement(_scrollIntoViewBlock: ScrollLogicalPosition = "center") {
 		setTimeout(() => {
-			const activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".active");
+			const activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".selected");
 			if (activeEl) {
 				activeEl.scrollIntoView({ block: _scrollIntoViewBlock });
 			}
@@ -424,6 +424,14 @@ export class PandaComboBoxOverlay extends LitElement {
 			value,
 			searchText,
 		);
+	}
+
+	private _onOverlayClick(): void {
+		// check if user entered some search text
+		if (this.searchText !== null) {
+			this._updateAfterClose = true;
+		}
+		this._onClose();
 	}
 
 	private _onClose(): void {
