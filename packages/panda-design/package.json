@@ -62,6 +62,7 @@
 		"@panda-wbc/panda-theme-switcher": "workspace:*",
 		"@panda-wbc/panda-theme": "workspace:*",
 		"@panda-wbc/panda-time-ago": "workspace:*",
+		"@panda-wbc/panda-toast": "workspace:*",
 		"@panda-wbc/panda-toggle": "workspace:*",
 		"@panda-wbc/panda-tooltip": "workspace:*",
 		"@panda-wbc/panda-upload": "workspace:*",

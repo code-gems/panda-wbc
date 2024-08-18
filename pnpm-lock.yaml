@@ -360,6 +360,9 @@ importers:
       '@panda-wbc/panda-time-ago':
         specifier: workspace:*
         version: link:../panda-time-ago
+      '@panda-wbc/panda-toast':
+        specifier: workspace:*
+        version: link:../panda-toast
       '@panda-wbc/panda-toggle':
         specifier: workspace:*
         version: link:../panda-toggle
@@ -836,6 +839,19 @@ importers:
         version: 4.9.5
 
   packages/panda-time-ago:
+    dependencies:
+      lit:
+        specifier: ^2.7.4
+        version: 2.7.4
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-toast:
     dependencies:
       lit:
         specifier: ^2.7.4
@@ -2129,6 +2145,7 @@ packages:
 
   /glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
