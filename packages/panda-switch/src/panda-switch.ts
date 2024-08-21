@@ -17,33 +17,33 @@ import { customElement, property } from "lit/decorators.js";
 export class PandaSwitch extends LitElement {
 	// css styles
 	static get styles() {
-		return [
-			styles
-		];
+		return styles;
 	}
+
+	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
 	@property({ type: Boolean, reflect: true })
 	checked: boolean = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true  })
 	label: string | null = null;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
 
-	@property({ type: String, attribute: "light-icon" })
+	@property({ type: String, attribute: "light-icon", reflect: true })
 	iconOn: string | null = null;
 
-	@property({ type: String, attribute: "dark-icon" })
+	@property({ type: String, attribute: "dark-icon", reflect: true })
 	iconOff: string | null = null;
 
-	@property({ type: String, attribute: "spinner-type" })
+	@property({ type: String, attribute: "spinner-type", reflect: true  })
 	spinnerType: string = "dots";
 
 	// ================================================================================================================

@@ -131,7 +131,7 @@ export const styles = css`
 
 	/* FOCUSED STATE */
 	:host([focused]) .textarea-cont {
-		box-shadow: var(--panda-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
 	}
 
 `;

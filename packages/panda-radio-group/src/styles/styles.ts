@@ -70,7 +70,7 @@ export const styles = css`
 
 	/* FOCUSED STATE */
 	:host([focused]) .radio-button:not(.clicked) {
-		box-shadow: 0px 0px 0px 2px var(--panda-outline-color);
+		box-shadow:var(--panda-component-outline, 0px 0px 0px 2px hsl(344deg 100% 64% / 40%));
 	}
 
 	:host([focused][disabled]) .radio-button:not(.clicked) {

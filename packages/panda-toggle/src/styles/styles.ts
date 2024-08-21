@@ -45,7 +45,7 @@ export const styles = css`
 	}
 
 	.toggle:not(.disabled):focus-visible {
-		box-shadow: 0px 0px 0px 3px var(--panda-outline-color, hsl(209deg 78% 46% / 40%));
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 3px hsl(209deg 78% 46% / 40%));
 	}
 
 	.toggle-track {

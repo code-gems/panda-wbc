@@ -21,11 +21,16 @@ export const styles = css`
 		text-shadow: var(--panda-button-text-shadow-color, "none");
 		transition: all 200ms ease-in-out;
 		cursor: pointer;
+		outline: none;
 
 		border: none;
 		border-radius: var(--panda-button-border-radius, var(--panda-border-radius-m, 5px));
 		background-color: var(--panda-button-background-color, hsl(196deg 100% 47%));
 		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
+	}
+
+	button:focus-visible {
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
 	}
 
 	.content {

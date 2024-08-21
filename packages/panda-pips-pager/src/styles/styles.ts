@@ -60,6 +60,6 @@ export const styles = css`
 		width: var(--panda-pips-pager-size-active, 12px);
 		height: var(--panda-pips-pager-size-active, 12px);
 		background-color: var(--panda-primary-color);
-		box-shadow: 0px 0px 0px 5px var(--panda-outline-color, hsl(209deg 78% 46% / 40%));
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%));
 	}
 `;

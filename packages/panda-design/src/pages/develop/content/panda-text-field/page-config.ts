@@ -1,18 +1,26 @@
 // types
-import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
+import { PageCategory, ContentSectionName, Page } from "panda-design-typings";
 
-export const pageId = "panda-text-field";
-export const pageName = "Text Field";
-export const pageUri = `/develop?page=${pageId}`;
-export const keywords = ["text", "text box", "text field", "input"];
-export const description = ["Showcase of a panda-text-field element."];
+// utils
+import { html } from "lit"; 
 
-export const contextMenu: ContextMenuItem[] = [
-	{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
-	{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
-	{ name: "Usage", contextId: ContentSectionName.USAGE },
-	{ name: "Component States", contextId: ContentSectionName.COMPONENT_STATES },
-	{ name: "Features", contextId: ContentSectionName.FEATURES },
-	{ name: "Theming", contextId: ContentSectionName.THEMING },
-	{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
-];
+export const pageConfig: Page = {
+	pageId: "panda-text-field",
+	pageName: "Text Field",
+	pageUri: "/develop?page=panda-text-field",
+	category: PageCategory.DEVELOP,
+	keywords: ["text", "text box", "text field", "input"],
+	description: ["Showcase of a panda-text-field element."],
+	
+	contextMenu: [
+		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
+		{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
+		{ name: "Usage", contextId: ContentSectionName.USAGE },
+		{ name: "Component States", contextId: ContentSectionName.COMPONENT_STATES },
+		{ name: "Features", contextId: ContentSectionName.FEATURES },
+		{ name: "Theming", contextId: ContentSectionName.THEMING },
+		{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
+	],
+
+	template: html`<panda-text-field-content-page></panda-text-field-content-page>`
+};

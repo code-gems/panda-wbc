@@ -32,10 +32,10 @@ import {
 export class PandaComboBox extends LitElement {
 	// css style
 	static get styles() {
-		return [
-			styles
-		];
+		return styles;
 	}
+
+	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
 	@property({ type: String, reflect: true })
 	label!: string;
@@ -234,6 +234,7 @@ export class PandaComboBox extends LitElement {
 					@blur="${this._onBlur}"
 					@input="${(e: InputEvent) => this._onInput((e.target as HTMLInputElement).value)}"
 					@click="${this._onClick}"
+					tabindex="0"
 				/>
 				<div
 					class="icon ${this.opened ? "rotate" : ""}"

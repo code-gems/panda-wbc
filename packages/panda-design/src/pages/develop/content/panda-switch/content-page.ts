@@ -2,7 +2,6 @@
 import {
 	ComponentPropertyDetails,
 	ComponentEventDetails,
-	PageCategory,
 	ContentSectionName,
 } from "panda-design-typings";
 import { PandaSwitchChangeEvent } from "@panda-wbc/panda-switch";
@@ -15,38 +14,27 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-switch";
 
 // utils
-import { CSSResultGroup, html, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
+import { pageConfig } from "./page-config";
+
+// code snippets
 import {
-	pageId,
-	pageName,
-	pageUri,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
-import { implementationSnippet, installationSnippet } from "./snippets/snippets";
+	implementationSnippet,
+	installationSnippet,
+} from "./snippets/snippets";
 
 // static data
 // ...
 
+@page(pageConfig)
 @customElement("panda-switch-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-switch-content-page></panda-switch-content-page>`
-})
 export class PandaSwitchContentPage extends ContentPageTemplate {
 	// page details
-	public customStyles: CSSResultGroup = styles;
-	public pageId: string = pageId;
+	public customStyles = styles;
+	public pageId = pageConfig.pageId;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "checked", type: "Boolean", defaultValue: "-", description: "Initial component value." },
@@ -123,6 +111,13 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 								<panda-text-field></panda-text-field>
 							</div>
 
+							<div class="col-full">
+								<panda-switch
+									label="User Active"
+									@change="${this._onChange}"
+								>
+								</panda-select>
+							</div>
 							<div class="col-full">
 								<panda-switch
 									label="User Active"

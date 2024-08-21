@@ -18,6 +18,8 @@ export class PandaTextField extends LitElement {
 		return styles;
 	}
 
+	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
 	@property({ type: String, attribute: true, reflect: true })
 	theme!: string;
 
@@ -136,9 +138,11 @@ export class PandaTextField extends LitElement {
 					.disabled="${this.disabled}"
 					?autofocus="${this.autofocus}"
 					.spellcheck="${this.spellcheck}"
+					autocomplete="off"
 					@input="${this._onInput}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
+					tabindex="0"
 				/>
 				<slot name="suffix"></slot>
 				${spinnerHtml}
@@ -180,7 +184,6 @@ export class PandaTextField extends LitElement {
 	// ================================================================================================================
 
 	public focus(): void {
-		this._onFocus();
 		this._inputEl.focus();
 	}
 
@@ -198,11 +201,17 @@ export class PandaTextField extends LitElement {
 		this._triggerInputEvent();
 	}
 
-	private _onFocus() {
+	private _onFocus(event: FocusEvent) {
 		this.focused = true;
 		// check autoselect feature
 		if (this.autoselect) {
 			this._inputEl.select();
+		} else if (this.value !== null && this.value !== undefined) {
+			// if user uses tab key to get to the component, by default
+			// all text will be selected ignoring autoselect flag
+			// set selection caret to the end of the text
+			const _inputValue = (event as any).target.value;
+			this._inputEl.setSelectionRange(_inputValue.length + 1, _inputValue.length + 1);
 		}
 	}
 

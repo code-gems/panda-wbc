@@ -15,6 +15,8 @@ export class PandaButton extends LitElement {
 		return styles;
 	}
 
+	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
 	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
@@ -67,6 +69,7 @@ export class PandaButton extends LitElement {
 				class="${this.disabled ? "disabled" : ""}"
 				part="button"
 				.disabled="${this.disabled}"
+				tabindex="0"
 			>
 				<slot
 					name="prefix"

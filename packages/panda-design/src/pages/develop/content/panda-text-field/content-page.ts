@@ -1,5 +1,10 @@
 // types
-import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName, PageCategory } from "panda-design-typings";
+import {
+	ComponentEventDetails,
+	ComponentPropertyDetails,
+	ContentSectionName,
+} from "panda-design-typings";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
@@ -13,15 +18,7 @@ import { CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
-import {
-	pageId,
-	pageName,
-	pageUri,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
+import { pageConfig } from "./page-config";
 
 // code snippets
 import {
@@ -32,20 +29,11 @@ import {
 } from "./snippets/snippets";
 import { PandaTextFieldOnInputEvent } from "@panda-wbc/panda-text-field";
 
+@page(pageConfig)
 @customElement("panda-text-field-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-text-field-content-page></panda-text-field-content-page>`
-})
 export class PandaTextFieldContentPage extends ContentPageTemplate {
 	// page details
-	public pageId: string = pageId;
+	public pageId: string = pageConfig.pageId;
 	public customStyles: CSSResultGroup = styles;
 
 	private _componentProperties: ComponentPropertyDetails[] = [
@@ -126,6 +114,51 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 						For example, they can be used to gather feedback, complete surveys, submit contents, or enter search queries.
 						Text fields allow users to communicate their thoughts or provide specific input to the application.
 					</p>
+				</div>
+
+				<!-- SAMPLE -->
+				<div class="sample-cont">
+					<div class="sample">
+						<div class="form">
+							<div class="form-section">
+								<div class="row">
+									<div class="col-full">
+										<panda-text-field
+											label="First Name:"
+											placeholder="Enter..."
+											tabindex="1"
+											autofocus
+											autoselect
+											.value="${"John"}"
+											@on-input="${this._onInput}"
+										>
+										</panda-text-field>
+									</div>
+									<div class="col-full">
+										<panda-text-field
+											label="Last Name:"
+											placeholder="Enter..."
+											tabindex="2"
+											disabled
+											.value="${"Doe"}"
+											@on-input="${this._onInput}"
+										>
+										</panda-text-field>
+									</div>
+									<div class="col-full">
+										<panda-text-field
+											label="Address:"
+											placeholder="Enter..."
+											tabindex="3"
+											.value="${"Wall St."}"
+											@on-input="${this._onInput}"
+										>
+										</panda-text-field>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		`;
