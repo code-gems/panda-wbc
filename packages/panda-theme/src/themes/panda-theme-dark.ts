@@ -268,10 +268,10 @@ export const pandaThemeDark = css`
 		/* ELEVATION / DEPTH ======================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-elevation-s: 0px 1px 2px var(--dragon-black-color-20opc);
-		--panda-elevation-m: 0px 2px 4px var(--dragon-black-color-20opc);
-		--panda-elevation-l: 0px 5px 10px var(--dragon-black-color-20opc);
-		--panda-elevation-hero: 0px 10px 30px var(--dragon-black-color-50opc);
+		--panda-elevation-s: 0px 1px 2px var(--panda-black-color-20opc);
+		--panda-elevation-m: 0px 2px 4px var(--panda-black-color-20opc);
+		--panda-elevation-l: 0px 5px 10px var(--panda-black-color-20opc);
+		--panda-elevation-hero: 0px 10px 30px var(--panda-black-color-50opc);
 
 		/* ========================================================================================================= */
 		/* HIGHLIGHT COLOR ========================================================================================= */
