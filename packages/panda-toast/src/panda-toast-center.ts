@@ -12,7 +12,7 @@ export class PandaToastCenter {
 	}
 
 	public createToast(toast: PandaToast) {
-
+		
 	}
 
 	private _showToast() {
