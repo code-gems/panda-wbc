@@ -31,31 +31,34 @@ export class PandaSearch extends LitElement {
 	@property({ type: String })
 	value: string | number | null = null;
 
-	@property({ type: String, attribute: true })
+	@property({ type: String, reflect: true })
 	placeholder: string | null = null;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	working: boolean = false;
+
+	@property({ type: Boolean, reflect: true })
+	searching: boolean = false;
 	
-	@property({ type: String, attribute: true })
+	@property({ type: String, reflect: true })
 	icon: string = "find";
 
 	@property({ type: Boolean, attribute: "hide-icon", reflect: true })
 	hideIcon: boolean = false;
 
-	@property({ type: String, attribute: "spinner-type" })
+	@property({ type: String, attribute: "spinner-type", reflect: true })
 	spinnerType: string = "dots";
 
-	@property({ type: Number, attribute: "delay-interval" })
+	@property({ type: Number, attribute: "delay-interval", reflect: true })
 	delayInterval: number = 1000;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	autoselect: boolean = false;
 
 	// private props
@@ -121,6 +124,14 @@ export class PandaSearch extends LitElement {
 			`;
 		}
 
+		if (this.searching) {
+			iconHtml = html`
+				<div class="icon" part="icon">
+					<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
+				</div>
+			`;
+		}
+
 		return html`
 			${labelHtml}
 			<div
@@ -134,6 +145,7 @@ export class PandaSearch extends LitElement {
 					class="input-field"
 					part="input-field"
 					type="text"
+					autocomplete="off"
 					.placeholder="${this.placeholder ?? ""}"
 					.value="${this.value}"
 					.disabled="${this.disabled}"

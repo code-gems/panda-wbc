@@ -30,7 +30,7 @@ export const styles = css`
 		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
-	.combo-box {
+	.input-cont {
 		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
@@ -47,21 +47,20 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	.combo-box:not([disabled]):hover {
+	.input-cont:not([disabled]):hover {
 		border: 1px solid var(--panda-input-border-color-hover, hsl(0deg 0% 65%));
 	}
 
-	.combo-box .input-field {
+	.input-cont .input-field {
 		width: 100%;
 		height: 100%;
 		padding: var(--panda-input-padding, 0px 10px);
 		outline: none;
 		flex-grow: 1;
 		
-		color: var(--panda-text-color, hsl(0deg 0% 29%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-family: var(--panda-font-family, "Poppins");
 		font-size: var(--panda-font-size-m, 14px);
-		font-weight: bold;
 
 		transition: all 200ms ease-in-out;
 
@@ -70,11 +69,11 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	.combo-box .input-field::placeholder {
+	.input-cont .input-field::placeholder {
 		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
 	}
 
-	.combo-box .icon {
+	.input-cont .icon {
 		display: flex;
 		flex-shrink: 0;
 		justify-content: center;
@@ -85,7 +84,7 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 	}
 
-	.combo-box:not(.disabled) .icon { cursor: pointer; }
+	.input-cont:not(.disabled) .icon { cursor: pointer; }
 
 	.rotate {
 		transform: rotate(180deg);
@@ -93,43 +92,43 @@ export const styles = css`
 
 	/* COMPONENT STATES =========================================== */
 	/* DISABLED */
-	:hover([disabled]) .combo-box {
+	:hover([disabled]) .input-cont {
 		border: 1px solid var(--panda-input-border-color-disabled, hsl(0deg 0% 44%));
 		background-color: var(--panda-input-background-color-disabled, hsl(0deg 0% 92%));
 	}
 	
-	:hover([disabled]) .combo-box .input-field {
+	:hover([disabled]) .input-cont .input-field {
 		color: var(--panda-input-text-color-disabled, hsl(0deg 0% 36%));
 	}
 
-	:hover([disabled]) .combo-box .icon {
-		--panda-icon-color: var(--panda-icon-color-disabled, hsl(205deg 8% 64%));
+	:hover([disabled]) .input-cont .icon {
+		--panda-icon-color: var(--panda-icon-color-disabled, hsl(210deg 5% 55%));
 	}
 
 	/* FOCUSED */
-	:host([focused]) .combo-box  {
-		box-shadow: 0px 0px 0px 2px var(--panda-input-outline-color, hsl(216deg 88% 60%));
+	:host([focused]) .input-cont  {
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60%));
 	}
 
 	/* MANDATORY */
-	:host([mandatory]) .combo-box  {
+	:host([mandatory]) .input-cont  {
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-mandatory, hsl(35deg 91% 62%));
 	}
 
 	/* THEMES ===================================================== */
 	/* VALID */
-	.combo-box[theme~="valid"]:not([disabled]) {
+	.input-cont[theme~="valid"]:not([disabled]) {
 		border: 1px solid var(--panda-form-validation-valid, hsl(160deg 81% 43%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-valid, hsl(160deg 81% 43%));
 	}
 
 	/* INVALID */
-	.combo-box[theme~="invalid"]:not([disabled]) {
+	.input-cont[theme~="invalid"]:not([disabled]) {
 		border: 1px solid var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 	}
 
-	.combo-box.invalid:not(.disabled) {
+	.input-cont.invalid:not(.disabled) {
 		border: 1px solid var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 		box-shadow: 0px 0px 0px 2px var(--panda-form-validation-invalid, hsl(14deg 77% 62%));
 	}

@@ -20,7 +20,7 @@ export const styles = css`
 		flex-flow: row nowrap;
 		overflow: hidden;
 
-		color: var(--panda-text-color, hsl(274 21% 87%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 		text-shadow: var(--panda-text-shadow, "none");
@@ -59,7 +59,7 @@ export const panelStyles = css`
 	:host {
 		display: inline;
 
-		color: var(--panda-text-color, hsl(274 21% 87%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 		text-shadow: var(--panda-text-shadow, "none");

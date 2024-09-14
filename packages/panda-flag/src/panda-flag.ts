@@ -8,44 +8,45 @@ import { LitElement, html, TemplateResult, svg } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 // flags
-import { flagAm, flagAmSquare } from "./resources/am"; // Armenia
-import { flagAt, flagAtSquare } from "./resources/at"; // Austria
-import { flagBe, flagBeSquare } from "./resources/be"; // Belgium
-import { flagCh, flagChSquare } from "./resources/ch"; // Switzerland
-import { flagCn, flagCnSquare } from "./resources/cn"; // China
-import { flagDe, flagDeSquare } from "./resources/de"; // Germany
-import { flagDk, flagDkSquare } from "./resources/dk"; // Denmark
-import { flagFi, flagFiSquare } from "./resources/fi"; // Finland
-import { flagFr, flagFrSquare } from "./resources/fr"; // France
-import { flagGb, flagGbSquare } from "./resources/gb"; // Great Britain
-import { flagGr, flagGrSquare } from "./resources/gr"; // Greece
-import { flagHk, flagHkSquare } from "./resources/hk"; // Hong Kong
-import { flagHn, flagHnSquare } from "./resources/hn"; // Honduras
-import { flagHu, flagHuSquare } from "./resources/hu"; // Hungary
-import { flagId, flagIdSquare } from "./resources/id"; // Indonesia
-import { flagIe, flagIeSquare } from "./resources/ie"; // Ireland
-import { flagIt, flagItSquare } from "./resources/it"; // Italy
-import { flagJp, flagJpSquare } from "./resources/jp"; // Japan
-import { flagLu, flagLuSquare } from "./resources/lu"; // Luxembourg
-import { flagMc, flagMcSquare } from "./resources/mc"; // Monaco
-import { flagMo, flagMoSquare } from "./resources/mo"; // Macao
-import { flagNg, flagNgSquare } from "./resources/ng"; // Nigeria
-import { flagNl, flagNlSquare } from "./resources/nl"; // Netherlands
-import { flagNo, flagNoSquare } from "./resources/no"; // Norway
-import { flagPa, flagPaSquare } from "./resources/pa"; // Panama
-import { flagPe, flagPeSquare } from "./resources/pe"; // Peru
-import { flagPl, flagPlSquare } from "./resources/pl"; // Poland
-import { flagPt, flagPtSquare } from "./resources/pt"; // Portugal
-import { flagQa, flagQaSquare } from "./resources/qa"; // Qatar
-import { flagRu, flagRuSquare } from "./resources/ru"; // Russia
-import { flagSe, flagSeSquare } from "./resources/se"; // Sweden
-import { flagSg, flagSgSquare } from "./resources/sg"; // Singapore
-import { flagSv, flagSvSquare } from "./resources/sv"; // El Salvador
-import { flagTw, flagTwSquare } from "./resources/tw"; // Taiwan
-import { flagUa, flagUaSquare } from "./resources/ua"; // Ukraine
-import { flagUs, flagUsSquare } from "./resources/us"; // Unites States
-import { flagVe, flagVeSquare } from "./resources/ve"; // Venezuela
-import { flagVn, flagVnSquare } from "./resources/vn"; // Vietnam
+import { flagAm } from "./resources/am"; // Armenia
+import { flagAt } from "./resources/at"; // Austria
+import { flagBe } from "./resources/be"; // Belgium
+import { flagCh } from "./resources/ch"; // Switzerland
+import { flagCn } from "./resources/cn"; // China
+import { flagDe } from "./resources/de"; // Germany
+import { flagDk } from "./resources/dk"; // Denmark
+import { flagFi } from "./resources/fi"; // Finland
+import { flagFr } from "./resources/fr"; // France
+import { flagGb } from "./resources/gb"; // Great Britain
+import { flagGr } from "./resources/gr"; // Greece
+import { flagHk } from "./resources/hk"; // Hong Kong
+import { flagHn } from "./resources/hn"; // Honduras
+import { flagHu } from "./resources/hu"; // Hungary
+import { flagId } from "./resources/id"; // Indonesia
+import { flagIe } from "./resources/ie"; // Ireland
+import { flagIt } from "./resources/it"; // Italy
+import { flagJp } from "./resources/jp"; // Japan
+import { flagLu } from "./resources/lu"; // Luxembourg
+import { flagMc } from "./resources/mc"; // Monaco
+import { flagMo } from "./resources/mo"; // Macao
+import { flagNg } from "./resources/ng"; // Nigeria
+import { flagNl } from "./resources/nl"; // Netherlands
+import { flagNo } from "./resources/no"; // Norway
+import { flagPa } from "./resources/pa"; // Panama
+import { flagPe } from "./resources/pe"; // Peru
+import { flagPl } from "./resources/pl"; // Poland
+import { flagPs } from "./resources/ps"; // Palestine
+import { flagPt } from "./resources/pt"; // Portugal
+import { flagQa } from "./resources/qa"; // Qatar
+import { flagRu } from "./resources/ru"; // Russia
+import { flagSe } from "./resources/se"; // Sweden
+import { flagSg } from "./resources/sg"; // Singapore
+import { flagSv } from "./resources/sv"; // El Salvador
+import { flagTw } from "./resources/tw"; // Taiwan
+import { flagUa } from "./resources/ua"; // Ukraine
+import { flagUs } from "./resources/us"; // Unites States
+import { flagVe } from "./resources/ve"; // Venezuela
+import { flagVn } from "./resources/vn"; // Vietnam
 
 @customElement("panda-flag")
 export class PandaFlag extends LitElement {
@@ -54,69 +55,57 @@ export class PandaFlag extends LitElement {
 		return styles;
 	}
 
-	@property({ type: String, attribute: true })
-	flag!: string;
+	@property({ type: String, reflect: true })
+	flag: string = "";
 
-	@property({ type: Boolean, attribute: true })
-	square!: boolean;
+	@property({ type: Boolean, reflect: true })
+	square: boolean = false;
 
-	private flagMapper!: { [countryCode: string]: (square: boolean) => TemplateResult; };
-
-	// ================================================================================================================
-	// ===================================================================================================== LIFE CYCLE
-	// ================================================================================================================
-
-	constructor() {
-		super();
-		this.flag = "";
-		this.square = false;
-
-		// flag mapper
-		this.flagMapper = {
-			am: (square) => square ? flagAmSquare : flagAm,
-			at: (square) => square ? flagAtSquare : flagAt,
-			be: (square) => square ? flagBeSquare : flagBe,
-			ch: (square) => square ? flagChSquare : flagCh,
-			cn: (square) => square ? flagCnSquare : flagCn,
-			de: (square) => square ? flagDeSquare : flagDe,
-			dk: (square) => square ? flagDkSquare : flagDk,
-			fi: (square) => square ? flagFiSquare : flagFi,
-			fr: (square) => square ? flagFrSquare : flagFr,
-			gb: (square) => square ? flagGbSquare : flagGb,
-			gr: (square) => square ? flagGrSquare : flagGr,
-			hk: (square) => square ? flagHkSquare : flagHk,
-			hn: (square) => square ? flagHnSquare : flagHn,
-			hu: (square) => square ? flagHuSquare : flagHu,
-			id: (square) => square ? flagIdSquare : flagId,
-			ie: (square) => square ? flagIeSquare : flagIe,
-			it: (square) => square ? flagItSquare : flagIt,
-			jp: (square) => square ? flagJpSquare : flagJp,
-			lu: (square) => square ? flagLuSquare : flagLu,
-			mo: (square) => square ? flagMoSquare : flagMo,
-			mc: (square) => square ? flagMcSquare : flagMc,
-			no: (square) => square ? flagNoSquare : flagNo,
-			ng: (square) => square ? flagNgSquare : flagNg,
-			nl: (square) => square ? flagNlSquare : flagNl,
-			pa: (square) => square ? flagPaSquare : flagPa,
-			pe: (square) => square ? flagPeSquare : flagPe,
-			pl: (square) => square ? flagPlSquare : flagPl,
-			pt: (square) => square ? flagPtSquare : flagPt,
-			qa: (square) => square ? flagQaSquare : flagQa,
-			ru: (square) => square ? flagRuSquare : flagRu,
-			se: (square) => square ? flagSeSquare : flagSe,
-			sg: (square) => square ? flagSgSquare : flagSg,
-			sv: (square) => square ? flagSvSquare : flagSv,
-			tw: (square) => square ? flagTwSquare : flagTw,
-			ua: (square) => square ? flagUaSquare : flagUa,
-			uk: (square) => square ? flagGbSquare : flagGb,
-			us: (square) => square ? flagUsSquare : flagUs,
-			ve: (square) => square ? flagVeSquare : flagVe,
-			vn: (square) => square ? flagVnSquare : flagVn,
-		};
-	}
+	private readonly flagMapper: { [countryCode: string]: (square: boolean) => TemplateResult; } = {
+		am: flagAm,
+		at: flagAt,
+		be: flagBe,
+		ch: flagCh,
+		cn: flagCn,
+		de: flagDe,
+		dk: flagDk,
+		fi: flagFi,
+		fr: flagFr,
+		gb: flagGb,
+		gr: flagGr,
+		hk: flagHk,
+		hn: flagHn,
+		hu: flagHu,
+		id: flagId,
+		ie: flagIe,
+		it: flagIt,
+		jp: flagJp,
+		lu: flagLu,
+		mo: flagMo,
+		mc: flagMc,
+		no: flagNo,
+		ng: flagNg,
+		nl: flagNl,
+		pa: flagPa,
+		pe: flagPe,
+		pl: flagPl,
+		ps: flagPs,
+		pt: flagPt,
+		qa: flagQa,
+		ru: flagRu,
+		se: flagSe,
+		sg: flagSg,
+		sv: flagSv,
+		tw: flagTw,
+		ua: flagUa,
+		uk: flagGb,
+		us: flagUs,
+		ve: flagVe,
+		vn: flagVn,
+	};
 
 	// ================================================================================================================
-	// ====================================================================================================== RENDERERS
+	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	protected render() {
@@ -132,7 +121,7 @@ export class PandaFlag extends LitElement {
 	}
 
 	// ================================================================================================================
-	// ======================================================================================================== HELPERS
+	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
 	/**
@@ -187,6 +176,8 @@ export class PandaFlag extends LitElement {
 			france: "fr",
 
 			// Great Britain
+			"826": "gb",
+			gbr: "gb",
 			["great britain"]: "gb",
 			["united kingdom"]: "gb",
 
@@ -196,6 +187,8 @@ export class PandaFlag extends LitElement {
 			greece: "gr",
 
 			// Hong Kong
+			"344": "hk",
+			hkg: "hk",
 			["hong kong"]: "hk",
 
 			// Honduras
@@ -204,28 +197,44 @@ export class PandaFlag extends LitElement {
 			honduras: "hn",
 
 			// Hungary
+			"348": "hu",
+			hun: "hu",
 			hungary: "hu",
 
 			// Indonesia
+			"360": "id",
+			idn: "id",
 			indonesia: "id",
 
 			// Ireland
+			"372": "ie",
+			irl: "ie",
 			ireland: "ie",
 
 			// Italy
+			"380": "it",
+			ita: "it",
 			italy: "it",
 
 			// Japan
+			"392": "jp",
+			jpn: "jp",
 			japan: "jp",
 
 			// Luxembourg
+			"442": "lu",
+			lux: "lu",
 			luxembourg: "lu",
 
 			// Macau
+			"446": "mo",
+			mac: "mo",
 			macao: "mo",
 			macau: "mo",
 
 			// Monaco
+			"492": "mo",
+			mco: "mo",
 			monaco: "mc",
 
 			// Nigeria
@@ -258,6 +267,11 @@ export class PandaFlag extends LitElement {
 			"616": "pl",
 			pol: "pl",
 			poland: "pl",
+
+			// Palestine
+			"275": "ps",
+			pse: "ps",
+			palestine: "ps",
 
 			// Portugal
 			"620": "pt",

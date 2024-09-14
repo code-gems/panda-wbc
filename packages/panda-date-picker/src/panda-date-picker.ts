@@ -347,6 +347,7 @@ export class PandaDatePicker extends LitElement {
 						class="input-field"
 						part="input-field"
 						type="text"
+						autocomplete="off"
 						.value="${this._displayValue}"
 						.placeholder="${this.placeholder}"
 						.disabled="${this.disabled}"

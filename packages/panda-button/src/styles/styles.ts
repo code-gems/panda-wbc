@@ -15,7 +15,7 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 
-		color: var(--panda-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family-bold, "Poppins");
 		text-shadow: var(--panda-button-text-shadow-color, "none");

@@ -23,7 +23,7 @@ export const styles = css`
 	.content {
 		display: block;
 		
-		color: var(--panda-text-color, hsl(0deg 0% 29%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 

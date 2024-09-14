@@ -14,7 +14,7 @@ export const styles = css`
 
 		border-radius: var(--panda-border-radius-m, 5px);
 		border: 1px solid;
-		border-color: var(--panda-text-color, hsl(0deg 0% 15%));
+		border-color: var(--panda-text-color, hsl(210deg 5% 25%));
 		background-color: var(--panda-background-color-100, hsl(0deg 0% 97%));
 		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
 		box-sizing: border-box;
@@ -31,7 +31,7 @@ export const styles = css`
 
 
 		border-radius: var(--panda-border-radius-m, 5px);
-		background-color: var(--panda-text-color, hsl(0deg 0% 15%));
+		background-color: var(--panda-text-color, hsl(210deg 5% 25%));
 	}
 
 	.with-footer .callout {
@@ -73,7 +73,7 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 		border-radius: var(--panda-border-radius-m, 5px);
 
-		--panda-icon-color: var(--panda-text-color, hsl(0deg 0% 15%));
+		--panda-icon-color: var(--panda-text-color, hsl(210deg 5% 25%));
 		--panda-icon-width: var(--panda-icon-size-m, 20px);
 		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
@@ -93,7 +93,7 @@ export const styles = css`
 		display: flex;
 		flex-flow: column;
 
-		color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-input-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 		text-shadow: var(--panda-text-shadow, "none");

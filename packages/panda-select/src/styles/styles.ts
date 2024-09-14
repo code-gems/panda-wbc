@@ -55,7 +55,7 @@ export const styles = css`
 		outline: none;
 		flex-grow: 1;
 		
-		color: var(--panda-text-color, hsl(0deg 0% 29%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-family: var(--panda-font-family, "Poppins");
 		font-size: var(--panda-font-size-m, 14px);
 
@@ -102,7 +102,7 @@ export const styles = css`
 	}
 
 	:host([disabled]) .select .icon {
-		--panda-icon-color: var(--panda-icon-color-disabled, hsl(205deg 8% 64%));
+		--panda-icon-color: var(--panda-icon-color-disabled, hsl(210deg 5% 55%));
 	}
 
 	/* FOCUSED */
@@ -171,7 +171,7 @@ export const styles = css`
 		height: 100%;
 		flex-shrink: 0;
 
-		--panda-icon-color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		--panda-icon-color: var(--panda-input-text-color, hsl(210deg 5% 25%));
 		--panda-icon--width: var(--panda-icon-size-s, 18px);
 		--panda-icon--height: var(--panda-icon-size-s, 18px);
 	}

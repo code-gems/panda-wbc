@@ -222,15 +222,15 @@ export const pandaThemeLight = css`
 		/* TYPOGRAPHY & SIZE ======================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-text-color: hsl(0deg 0% 15%);
-		--panda-text-color-hover: hsl(0deg 0% 20%);
-		--panda-text-color-disabled: hsl(0deg 0% 36%);
+		--panda-text-color: hsl(210deg 5% 25%);
+		--panda-text-color-hover: hsl(210deg 5% 30%);
+		--panda-text-color-disabled: hsl(210deg 5% 35%);
 		--panda-text-shadow: none;
 		--panda-text-line-height: 1.6em;
 
-		--panda-header-text-color: hsl(0deg 0% 15%);
-		--panda-header-text-color-hover: hsl(0deg 0% 20%);
-		--panda-header-text-color-disabled: hsl(0deg 0% 80%);
+		--panda-header-text-color: hsl(210deg 5% 25%);
+		--panda-header-text-color-hover: hsl(210deg 5% 30%);
+		--panda-header-text-color-disabled: hsl(210deg 5% 35%);
 		--panda-header-text-shadow: none;
 
 		--panda-font-size-xs: 10px;
@@ -389,8 +389,8 @@ export const pandaThemeLight = css`
 		/* ICONS =================================================================================================== */
 		/* ========================================================================================================= */
 
-		--panda-icon-color: var(--panda-text-color);
-		--panda-icon-color-disabled: var(--panda-text-color-disabled);
+		--panda-icon-color: hsl(210deg 5% 45%);
+		--panda-icon-color-disabled: hsl(210deg 5% 55%);
 
 		--panda-icon-size-xxs: 12px;
 		--panda-icon-size-xs: 16px;

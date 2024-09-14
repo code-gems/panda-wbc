@@ -107,7 +107,7 @@ export const styles = css`
 	}
 
 	:host([theme~="donut"]) .counter {
-		color: var(--panda-countdown-timer-donut-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-countdown-timer-donut-text-color, hsl(210deg 5% 25%));
 	}
 
 	/* PRIMARY */

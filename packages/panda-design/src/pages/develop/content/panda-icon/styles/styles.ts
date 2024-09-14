@@ -84,7 +84,6 @@ export const styles = css`
 		align-items: center;
 		flex-shrink: 0;
 
-		--panda-icon-color: var(--panda-text-color);
 		--panda-icon-width: var(--panda-icon-size-l);
 		--panda-icon-height: var(--panda-icon-size-l);
 	}

@@ -93,7 +93,9 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "notification-add", 		iconPack: "default", group: ["Social"], keywords: ["social", "alert", "bell", "outline", "new"] },
 		
 		// E-commerce ===========================================
-		{ name: "credit-card", 				iconPack: "default", group: ["E-commerce"], keywords: ["payment", "money", "shop"] },
+		{ name: "credit-card", 				iconPack: "default", group: ["E-commerce"], keywords: ["payment", "money", "shop", "buy"] },
+		{ name: "price-tag", 				iconPack: "default", group: ["E-commerce"], keywords: ["payment", "money", "shop", "buy", "cost", "tag"] },
+		{ name: "ticket", 					iconPack: "default", group: ["E-commerce"], keywords: ["movie", "cinema"] },
 		
 		// Cloud ================================================
 		{ name: "cloud", 					iconPack: "default", group: ["Cloud"], keywords: ["cloud"] },
@@ -121,6 +123,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "ai",						iconPack: "default", group: ["Miscellaneous"], keywords: ["artificial", "intelligence", "stars", "magic"] },
 		{ name: "trend-up",					iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
 		{ name: "trend-down",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
+		{ name: "visibility",				iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show"] },
+		{ name: "visibility-off",			iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show", "hide"] },
 
 		// Food Icon Pack =======================================
 		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },

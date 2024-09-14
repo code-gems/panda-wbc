@@ -25,7 +25,7 @@ export const styles = css`
 	}
 
 	.progress-bar-cont .progress-value {
-		color: var(--panda-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-s, 12px);
 		font-family: var(--panda-font-family, "Poppins");
 		user-select: none;

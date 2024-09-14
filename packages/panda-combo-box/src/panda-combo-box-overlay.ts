@@ -223,15 +223,24 @@ export class PandaComboBoxOverlay extends LitElement {
 			this._initialized = true;
 
 			// scroll active item into view
-			this._showActiveElement(_scrollIntoViewBlock);
+			this._showSelectedElement();
 		}, 0);
 	}
 
-	private _showActiveElement(_scrollIntoViewBlock: ScrollLogicalPosition = "center") {
+	private _showActiveElement(): void {
 		setTimeout(() => {
-			const activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".selected");
-			if (activeEl) {
-				activeEl.scrollIntoView({ block: _scrollIntoViewBlock });
+			const _activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".active");
+			if (_activeEl) {
+				_activeEl.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+			}
+		}, 0);
+	}
+
+	private _showSelectedElement(): void {
+		setTimeout(() => {
+			const _selectedEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".selected");
+			if (_selectedEl) {
+				_selectedEl.scrollIntoView({ block: "nearest", inline: "nearest" });
 			}
 		}, 0);
 	}

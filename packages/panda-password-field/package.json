@@ -1,0 +1,43 @@
+{
+	"name": "@panda-wbc/panda-password-field",
+	"version": "1.0.0",
+	"description": "Lit based web component - password field",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-password-field.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"panda-wbc",
+		"ui component",
+		"password",
+		"input"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"lit": "^3.0.2",
+		"@panda-wbc/panda-icon": "workspace:*",
+		"@panda-wbc/panda-spinner": "workspace:*"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

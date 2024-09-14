@@ -1,19 +1,27 @@
 // types
-import { ContextMenuItem, ContentSectionName } from "panda-design-typings";
+import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 
-export const pageId = "panda-flag";
-export const pageName = "Flag";
-export const pageUri = `/develop?page=${pageId}`;
-export const keywords = ["flags", "country"];
-export const description = ["Flag description"];
+// utils
+import { html } from "lit";
 
-export const contextMenu: ContextMenuItem[] = [
-	{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
-	{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
-	{ name: "Usage", contextId: ContentSectionName.USAGE },
-	{ name: "Component States", contextId: ContentSectionName.COMPONENT_STATES },
-	{ name: "Features", contextId: ContentSectionName.FEATURES },
-	{ name: "Validation", contextId: ContentSectionName.VALIDATION },
-	{ name: "Theming", contextId: ContentSectionName.THEMING },
-	{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
-];
+export const pageConfig: Page = {
+	pageId: "panda-flag",
+	pageName: "Flag",
+	pageUri: "/develop?page=panda-flag",
+	category: PageCategory.DEVELOP,
+	keywords: ["flags", "country"],
+	description: ["Flag description"],
+	
+	contextMenu: [
+		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
+		{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
+		{ name: "Usage", contextId: ContentSectionName.USAGE },
+		{ name: "Component States", contextId: ContentSectionName.COMPONENT_STATES },
+		{ name: "Features", contextId: ContentSectionName.FEATURES },
+		{ name: "Validation", contextId: ContentSectionName.VALIDATION },
+		{ name: "Theming", contextId: ContentSectionName.THEMING },
+		{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
+	],
+
+	template: html`<panda-flag-content-page></panda-flag-content-page>`
+}

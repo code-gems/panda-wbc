@@ -58,7 +58,7 @@ export const styles = css`
 		outline: none;
 		flex-grow: 1;
 		
-		color: var(--panda-text-color, hsl(0deg 0% 29%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-family: var(--panda-font-family, "Poppins");
 		font-size: var(--panda-font-size-m, 14px);
 		font-weight: normal;
@@ -103,7 +103,7 @@ export const styles = css`
 	}
 
 	:host([disabled]) .combo-box .icon {
-		--panda-icon-color: var(--panda-icon-color-disabled, hsl(205deg 8% 64%));
+		--panda-icon-color: var(--panda-icon-color-disabled, hsl(210deg 5% 55%));
 	}
 
 	/* FOCUSED */

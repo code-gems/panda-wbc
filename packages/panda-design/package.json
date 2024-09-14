@@ -6,21 +6,14 @@
 	"main": "./dist/app.js",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"scripts": {
-		"start": "webpack-dev-server --mode development",
+		"start": "webpack serve",
 		"compile": "tsc",
 		"build": "webpack",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
-	"keywords": [
-		"lit",
-		"lit-element",
-		"web component",
-		"ui component",
-		"flags",
-		"country"
-	],
+	"keywords": [],
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
@@ -45,6 +38,7 @@
 		"@panda-wbc/panda-notifications": "workspace:*",
 		"@panda-wbc/panda-pagination": "workspace:*",
 		"@panda-wbc/panda-particle-banner": "workspace:*",
+		"@panda-wbc/panda-password-field": "workspace:*",
 		"@panda-wbc/panda-pips-pager": "workspace:*",
 		"@panda-wbc/panda-progress-bar": "workspace:*",
 		"@panda-wbc/panda-radio-group": "workspace:*",
@@ -66,7 +60,7 @@
 		"@panda-wbc/panda-toggle": "workspace:*",
 		"@panda-wbc/panda-tooltip": "workspace:*",
 		"@panda-wbc/panda-upload": "workspace:*",
-		"lit": "^2.7.4",
+		"lit": "^3.0.2",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"
 	},
@@ -77,7 +71,7 @@
 		"ts-loader": "^9.2.6",
 		"typescript": "^4.5.4",
 		"webpack": "^5.65.0",
-		"webpack-cli": "^4.9.1",
+		"webpack-cli": "^5.1.4",
 		"webpack-dev-server": "^4.7.2"
 	},
 	"files": [

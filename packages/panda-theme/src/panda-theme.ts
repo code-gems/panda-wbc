@@ -6,7 +6,7 @@ import { pandaThemeLight } from "./themes/panda-theme-light";
 import { pandaThemeDark } from "./themes/panda-theme-dark";
 
 // utils
-import { LitElement } from "lit";
+import { LitElement, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("panda-theme")
@@ -40,12 +40,12 @@ export class PandaTheme extends LitElement {
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	protected firstUpdated(_changedProperties: Map<string, any>) {
+	protected firstUpdated(): void {
 		// init theme
 		this._applyTheme();
 	}
 
-	protected updated(_changedProperties: Map<string, any>) {
+	protected updated(_changedProperties: PropertyValues): void {
 		if (_changedProperties.has("theme") && this.theme) {
 			this._applyTheme();
 		}
@@ -57,6 +57,10 @@ export class PandaTheme extends LitElement {
 
 	public getThemeList(): PandaThemeGroup[] {
 		return this._themeList;
+	}
+
+	public registerTheme(theme: PandaThemeGroup): void {
+		
 	}
 
 	// ================================================================================================================

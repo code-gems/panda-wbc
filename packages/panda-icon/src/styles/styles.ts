@@ -16,6 +16,6 @@ export const styles = css`
 	}
 
 	svg {
-		fill: var(--panda-icon-color, hsl(0deg 0% 29%));
+		fill: var(--panda-icon-color, hsl(210deg 5% 45%));
 	}
 `;

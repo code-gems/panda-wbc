@@ -2,7 +2,7 @@
 import { styles } from "./styles/styles";
 
 // components
-
+import "./panda-grid-panel";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";

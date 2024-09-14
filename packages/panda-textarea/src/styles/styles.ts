@@ -59,7 +59,7 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 
-		color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-input-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-label-font-family, "Poppins");
 		outline: none;

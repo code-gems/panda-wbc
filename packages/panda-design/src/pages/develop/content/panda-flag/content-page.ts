@@ -1,60 +1,56 @@
 // types
-import { ComponentPropertyDetails, ContentSectionName, PageCategory } from "panda-design-typings";
+import { ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
+import { FlagDetails } from "./flag-list";
 
 // styles
 import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-flag";
-import "../../../../web-parts/code-sample/code-sample";
-import "../../../../web-parts/version-shield/version-shield";
+import "@panda-wbc/panda-search";
 
 // utils & config
-import { CSSResultGroup, html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { page } from "../../../../utils/page-library";
+import { html, TemplateResult } from "lit";
+import { customElement, state } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
+import { page } from "../../../../utils/page-library";
+
+// static data
+import { flagList } from "./flag-list";
 
 // page config
-import {
-	pageId,
-	pageName,
-	pageUri,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
+import { pageConfig } from "./page-config";
 
 @customElement("panda-flag-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-flag-content-page></panda-flag-content-page>`
-})
+@page(pageConfig)
 export class PandaFlagContentPage extends ContentPageTemplate {
-	// css styles
-	public customStyles: CSSResultGroup = styles;
-
 	// page details
-	pageId: string = pageId;
-	
-	
+	public pageId = pageConfig.pageId;
+	public customStyles = styles;
+
+	// component props
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "flag", type: "String", defaultValue: "-", description: "Country code or other country id compliant with ISO 3166 international standard." },
 		{ name: "square", type: "Boolean", defaultValue: "false", description: "Show flag as a square box." },
 	];
 
 	// view props
+	@state()
+	private _searchText: string = "";
+
+	@state()
+	private _flagList: FlagDetails[] = flagList();
+
+	@state()
+	private _selectedFlagName: string | null = null;
+
+	@state()
+	private _showFlagDetailsDialog: boolean = false;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-	
+
 	// ...
 
 	// ================================================================================================================
@@ -91,6 +87,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 						Component offers an aesthetically pleasing display of flags based on specified country codes compliant with ISO 3166 international standard. 
 						With a focus on simplicity and flexibility, this component offers two size formats to fit your preference. 
 					</p>
+					<panda-flag flag="ps" square></panda-flag>
 				</div>
 			</div>
 			${this._renderComponentPropertiesSection()}
@@ -117,14 +114,101 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 
 	private _renderFlagListSection(): TemplateResult {
 		return html`
-			<div>
-			
+			<!-- FLAG LIST -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.LIST}">
+				<div class="section">
+					<internal-link theme="h2">Flag List</internal-link>
+					<p>
+						...TBD	
+					</p>
+					<div class="row">
+						<div class="col-full">
+							<panda-search
+								placeholder="Find..."
+								@on-input="${this._onFlagSearch}"
+							>
+							</panda-search>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-full">
+							${this._renderFlagList()}
+						</div>
+					</div>
+				</div>
+			</div> <!-- END OF CONTENT SECTION -->		
+		`;
+	}
+
+	private _renderFlagList(): TemplateResult {
+		const listHtml: TemplateResult[] = [];
+
+		this._flagList.forEach((flagDetail) => {
+			const { fullName, name, keywords } = flagDetail;
+
+			if (this._searchText === "" || this._flagMatch(flagDetail)) {
+				listHtml.push(html`
+					<div
+						class="list-item"
+						@click="${() => this._onShowIconDetailsDialog(name)}"
+					>
+						<div class="flag">
+							<panda-flag flag="${name}"></panda-flag>
+						</div>
+						<div class="name">${fullName}</div>
+						<div class="keywords">${name}, ${keywords.join(", ")}</div>
+					</div>
+				`);
+			}
+		});
+
+		return html`
+			<div class="flag-list scrollbar">
+				${listHtml}
 			</div>
 		`;
+	}
+
+	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+
+	private _flagMatch(flagDetails: FlagDetails): boolean {
+		let found: boolean = false;
+
+		// do not filter if search text is empty
+		if (this._searchText === "") {
+			found = true;
+		} else {
+			const { fullName, name, keywords } = flagDetails;
+			// check if search text matches the icon name
+			if (fullName.match(this._searchText.toLowerCase())) {
+				found = true;
+			}
+			// check if search text matches the icon name
+			if (name.match(this._searchText.toLowerCase())) {
+				found = true;
+			}
+			// check if search text matches the icon keywords
+			keywords.forEach((keyword) => {
+				if (keyword.match(this._searchText.toLowerCase())) {
+					found = true;
+				}
+			});
+		}
+		return found;
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
+	private _onFlagSearch(event: any) {
+		this._searchText = event.detail.value;
+	}
+
+	private _onShowIconDetailsDialog(iconName: string) {
+		this._selectedFlagName = iconName;
+		this._showFlagDetailsDialog = true;
+	}
 }

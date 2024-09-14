@@ -5,7 +5,7 @@ export const styles = css`
 		display: inline-block;
 		height: var(--panda-component-size-m, 30px);
 
-		color: var(--panda-radio-button-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-radio-button-text-color, hsl(210deg 5% 25%));
 		user-select: none;
 	}
 
@@ -103,7 +103,7 @@ export const styles = css`
 
 	/* DISABLED STATE */
 	:host([disabled]) {
-		color: var(--panda-text-color-disabled, hsl(0deg 0% 66%));
+		color: var(--panda-text-color-disabled, hsl(210deg 5% 35%));
 	}
 	
 	:host([disabled]) .checkmark {

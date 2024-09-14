@@ -28,7 +28,7 @@ export const styles = css`
 		align-items: center;
 		outline: none;
 
-		color: var(--panda-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-font-family, "Poppins");
 		text-shadow: var(--panda-text-shadow, none);
@@ -48,7 +48,7 @@ export const styles = css`
 		width: var(--panda-input-height, 30px);
 		height: var(--panda-input-height, 30px);
 
-		--panda-icon-color: var(--panda-text-color, hsl(0deg 0% 15%));
+		--panda-icon-color: var(--panda-text-color, hsl(210deg 5% 25%));
 		--panda-icon-width: var(--panda-icon-size-m, 20px);
 		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
@@ -71,11 +71,11 @@ export const styles = css`
 	}
 
 	:host([disabled]) .icon {
-		--panda-icon-color: var(--panda-text-color-disabled, hsl(0deg 0% 66%));
+		--panda-icon-color: var(--panda-text-color-disabled, hsl(210deg 5% 35%));
 	}
 
 	:host([disabled]) slot {
-		color: var(--panda-text-color-disabled, hsl(0deg 0% 66%));
+		color: var(--panda-text-color-disabled, hsl(210deg 5% 35%));
 	}
 
 	/* ===================================================================== */

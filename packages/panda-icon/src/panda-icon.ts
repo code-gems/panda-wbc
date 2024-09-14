@@ -23,8 +23,8 @@ export class PandaIcon extends LitElement {
 		return styles;
 	}
 
-	@property({ type: String, attribute: true })
-	icon!: string;
+	@property({ type: String, reflect: true })
+	icon: string = "";
 
 	@query("#svg")
 	private _svgEl!: any;

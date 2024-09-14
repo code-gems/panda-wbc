@@ -456,10 +456,10 @@ export const uiComponents = {
 			border: 1px solid var(--panda-background-color-900);
 			background: radial-gradient(
 				circle at 1px 1px,
-				var(--panda-border-color) 0px,
-				#0000 1px
+				var(--panda-border-color) 1px,
+				transparent 0px
 			)
-			0 0 / 16px 16px;
+			0px 0px / 16px 16px;
 		}
 	`,
 

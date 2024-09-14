@@ -25,7 +25,7 @@
 	"author": "code-gems",
 	"license": "ISC",
 	"dependencies": {
-		"lit": "^2.7.4",
+		"lit": "^3.0.2",
 		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-core": "workspace:*"

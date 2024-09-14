@@ -50,7 +50,7 @@ export const styles = css`
 		height: 100%;
 		padding: var(--panda-input-padding, 0px 10px);
 
-		color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		color: var(--panda-input-text-color, hsl(210deg 5% 25%));
 		font-size: var(--panda-font-size-m, 14px);
 		font-family: var(--panda-label-font-family, "Poppins");
 		outline: none;
@@ -153,7 +153,7 @@ export const styles = css`
 		height: 100%;
 		flex-shrink: 0;
 
-		--panda-icon-color: var(--panda-input-text-color, hsl(0deg 0% 15%));
+		--panda-icon-color: var(--panda-input-text-color, hsl(210deg 5% 25%));
 		--panda-icon-width: var(--panda-icon-size-s, 18px);
 		--panda-icon-height: var(--panda-icon-size-s, 18px);
 	}
