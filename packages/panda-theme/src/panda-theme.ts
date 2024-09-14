@@ -59,8 +59,8 @@ export class PandaTheme extends LitElement {
 		return this._themeList;
 	}
 
-	public registerTheme(theme: PandaThemeGroup): void {
-		
+	public registerTheme(themeGroup: PandaThemeGroup): void {
+		this._themeList.push(themeGroup);
 	}
 
 	// ================================================================================================================
