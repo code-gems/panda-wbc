@@ -172,13 +172,13 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onCreateToast(): void {
 		pandaToastCenter.createToast({
-			theme: "primary",
+			theme: "",
 			icon: "cake",
 			header: "Happy birthday!",
 			message: "Congratulations! you are now 1 year older!",
 			closable: true,
 			interval: 5000,
-			position: ToastPosition.TOP_CENTER,
+			position: ToastPosition.BOTTOM_RIGHT,
 		});
 	}
 }

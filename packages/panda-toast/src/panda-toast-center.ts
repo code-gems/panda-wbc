@@ -33,11 +33,12 @@ export class PandaToastCenter {
 		this._toastQueue.push(toast);
 		console.log("%c createToast", "font-size: 24px; color: green;", toast);
 
-		// start 
-		if (this._checkQueueTimer === null) {
-			console.log("%c add check queue timer", "font-size: 24px; color: green;");
-			this._checkQueueTimer = setInterval(this._checkQueue.bind(this), 500);
-		}
+		this._checkQueue();
+		// // start 
+		// if (this._checkQueueTimer === null) {
+		// 	console.log("%c add check queue timer", "font-size: 24px; color: green;");
+		// 	this._checkQueueTimer = setInterval(this._checkQueue.bind(this), 500);
+		// }
 	}
 
 	// ================================================================================================================
@@ -60,6 +61,7 @@ export class PandaToastCenter {
 		this._toastEl.header = toast.header ?? "";
 		this._toastEl.message = toast.message ?? "";
 		this._toastEl.closable = toast.closable ?? false;
+		this._toastEl.interval = toast.interval ?? 3000;
 		// add event listeners
 		this._toastEl.addEventListener("close", this._closeToastEvent);
 		// add styles
@@ -73,7 +75,7 @@ export class PandaToastCenter {
 		document.body.appendChild(this._toastEl);
 	}
 
-	private _hideToast(): void {
+	private async _hideToast(): Promise<void> {
 		if (this._toastEl !== null) {
 			console.log("%c _hideToast", "font-size: 24px; color: green;");
 			
@@ -83,7 +85,8 @@ export class PandaToastCenter {
 			document.body.removeChild(this._toastEl);
 			this._toastEl = null;
 			this._toastQueue.shift();
-			// this._checkQueue();
+			await new Promise((r) => setTimeout(r, 200));
+			this._checkQueue();
 		}
 	}
 

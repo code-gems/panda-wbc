@@ -96,6 +96,32 @@ export const styles = css`
 		bottom: unset;
 	}
 
+	:host(.top-left) {
+		top: 10px;
+		bottom: unset;
+		left: 10px;
+		transform: unset;
+	}
+
+	:host(.top-right) {
+		top: 10px;
+		bottom: unset;
+		left: unset;
+		right: 10px;
+		transform: unset;
+	}
+
+	:host(.bottom-left) {
+		left: 10px;
+		transform: unset;
+	}
+
+	:host(.bottom-right) {
+		left: unset;
+		right: 10px;
+		transform: unset;
+	}
+
 	/* ===================================================================== */
 	/* THEMES ============================================================== */
 	/* ===================================================================== */
