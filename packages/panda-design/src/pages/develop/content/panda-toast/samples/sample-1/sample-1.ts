@@ -1,34 +1,23 @@
 // types
 import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
-import { PandaCheckboxChangeEvent } from "@panda-wbc/panda-checkbox";
 
 // components
-import "@panda-wbc/panda-countdown-timer/lib/panda-circular-countdown-timer";
 import "@panda-wbc/panda-select";
 import "@panda-wbc/panda-checkbox";
 import "@panda-wbc/panda-button";
 
 // utils
 import { html, TemplateResult } from "lit";
-import { customElement, query, state } from "lit/decorators.js";
-import { SampleTemplate } from "../../../../sample-template";
+import { customElement, state } from "lit/decorators.js";
+import { SampleTemplate } from "../../../../../sample-template";
 
-@customElement("panda-circular-countdown-timer-action-colors-themes")
+@customElement("panda-toast-themes-sample")
 class Sample extends SampleTemplate {
 	@state()
 	private _themeList: string[] = ["info", "done", "warn", "alert", "primary", "secondary", "tertiary"];
 
 	@state()
 	private _theme: string = "info";
-
-	@state()
-	private _showScale: boolean = true;
-	
-	@state()
-	private _busy: boolean = false;
-
-	@query("#timer")
-	private _timerEl!: any;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -46,33 +35,16 @@ class Sample extends SampleTemplate {
 							@change="${this._onChangeTheme}"
 						>
 						</panda-select>
-
-						<panda-button @click="${this._onStart}">START</panda-button>
-						<panda-button @click="${this._onTogglePause}">PAUSE</panda-button>
-						<panda-button @click="${this._onStop}">STOP</panda-button>
-						<panda-button @click="${this._onRestart}">RESTART</panda-button>
-						<panda-button @click="${this._onToggleBusy}">TOGGLE BUSY STATE</panda-button>
-
-						<panda-checkbox
-							.checked="${this._showScale}"
-							@change="${this._onToggleShowScale}"
-						>
-							Show scale
-						</panda-checkbox>
-
 					</div>
 					<div class="col-half content-center">
-						<panda-circular-countdown-timer
-							id="timer"
+						<panda-toast
 							.theme="${this._theme}"
-							.time="${60}"
-							.format="${"SSs"}"
-							.showScale="${this._showScale}"
-							.busy="${this._busy}"
-							show-time
-							autostart
+							icon="cake"
+							header="Happy birthday!"
+							message="Congratulations! you are now 1 year older!"
+							closable
 						>
-						</panda-circular-countdown-timer>
+						</panda-toast>
 					</div>
 				</div>
 			</div>
@@ -88,30 +60,4 @@ class Sample extends SampleTemplate {
 		this._theme = _theme;
 		console.log("%c _onChangeTheme", "font-size: 24px; color: green;", _theme);
 	}
-
-	private _onToggleBusy(): void {
-		this._busy = !this._busy;
-	}
-
-	private _onTogglePause(): void {
-		this._timerEl.pause();
-	}
-
-	private _onStart(): void {
-		this._timerEl.start();
-	}
-
-	private _onStop(): void {
-		this._timerEl.stop();
-	}
-
-	private _onRestart(): void {
-		this._timerEl.restart();
-	}
-
-	private _onToggleShowScale(event: PandaCheckboxChangeEvent) {
-		console.log("%c (_onToggleShowScale) checked", "font-size: 24px; color: green;", event.detail.checked);
-		this._showScale = event.detail.checked;
-	}
-
 }

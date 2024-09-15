@@ -1,4 +1,5 @@
 // types
+// ...
 
 // styles
 import { styles } from "./styles/styles";
@@ -8,16 +9,16 @@ import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
 @customElement("panda-toast")
-class PandaToastElement extends LitElement {
+export class PandaToastElement extends LitElement {
 	static get styles() {
 		return styles;
 	}
 
-	@property({ type: String })
-	id!: string;
+	@property({ type: String, reflect: true })
+	theme!: string;
 	
 	@property({ type: String, reflect: true })
-	title: string = "";
+	header: string = "";
 	
 	@property({ type: String, reflect: true })
 	message: string = "";
@@ -29,7 +30,7 @@ class PandaToastElement extends LitElement {
 	interval: number = 3000;
 	
 	@property({ type: Boolean, reflect: true })
-	closable: boolean = true;
+	closable: boolean = false;
 
 	// state props
 
@@ -43,12 +44,16 @@ class PandaToastElement extends LitElement {
 	// ================================================================================================================
 	
 	firstUpdated(): void {
-		// show toast
-		this._show = true;
-
-		this._closingTimer = setTimeout(() => {
-			this._show = false;
-		}, this.interval);
+		setTimeout(() => {
+			// show toast
+			this._show = true;
+	
+			this._closingTimer = setTimeout(async () => {
+				this._show = false;
+				await new Promise((r) => setTimeout(r, 200));
+				this._onCloseToast();
+			}, this.interval);
+		}, 0);
 	}
 
 	disconnectedCallback(): void {
@@ -62,21 +67,18 @@ class PandaToastElement extends LitElement {
 	// ================================================================================================================
 	
 	render(): TemplateResult {
-		let _titleHtml: TemplateResult = html``;
+		let _iconHtml: TemplateResult = html``;
+		let _headerHtml: TemplateResult = html``;
 		let _closeBtnHtml: TemplateResult = html``;
 
-		if (this.title) {
-			_titleHtml = html`<div class="title" part="title">${this.title ?? ""}</div>`;
+		if (this.header) {
+			_headerHtml = html`<div class="title" part="title">${this.header ?? ""}</div>`;
 		}
 
-		if (this.closable) {
-			_closeBtnHtml = html`
-				<div
-					class="btn-close"
-					part="btn-close"
-					@click="${this._onCloseToast}"
-				>
-					<panda-icon icon="close" part="icon"></panda-icon>
+		if (this.icon) {
+			_iconHtml = html`
+				<div class="icon" part="icon">
+					<panda-icon icon="${this.icon ?? "info"}"></panda-icon>
 				</div>
 			`;
 		}
@@ -98,8 +100,12 @@ class PandaToastElement extends LitElement {
 				class="toast ${this._show ? "show" : ""}"
 				part="toast"
 			>
-				${_titleHtml}
-				<div class="message" part="message">${this.message}</div>
+				${_iconHtml}
+				<div class="content" part="content">
+					${_headerHtml}
+					<div class="message" part="message">${this.message}</div>
+				</div>
+				${_closeBtnHtml}
 			</div>
 		`;
 	}

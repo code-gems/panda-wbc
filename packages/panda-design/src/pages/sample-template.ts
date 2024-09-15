@@ -1,3 +1,6 @@
+// types
+import { LogEntry } from "panda-design-typings";
+
 // styles
 import { scrollbar } from "@panda-wbc/panda-theme";
 import { uiComponents } from "../styles/styles";
@@ -16,6 +19,8 @@ export abstract class SampleTemplate extends LitElement {
 
 	public customStyles!: CSSResultGroup;
 
+	public logs: LogEntry[] = [];
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -25,7 +30,20 @@ export abstract class SampleTemplate extends LitElement {
 			<style>
 				${this.customStyles || ""}
 			</style>
-			${this.renderSample()}
+			<div>
+				<div>
+					${this.renderSample()}
+				</div>
+				<div>
+					${this._renderLogs()}
+				</div>
+			</div>
+		`;
+	}
+
+	private _renderLogs(): TemplateResult {
+		return html`
+			
 		`;
 	}
 

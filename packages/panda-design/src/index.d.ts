@@ -48,6 +48,12 @@ declare module "panda-design-typings" {
 		subpageList?: Page[];
 	}
 
+	export interface LogEntry {
+		type: "log" | "warn" | "error"; 
+		message: any;
+		timestamp: number;
+	}
+
 	export interface ThunkDispatch<S, E, A extends Action> {
 		(action: A): Action;
 		<R, T extends Action>(asyncAction: ThunkAction<R, S, E, T>): R;
