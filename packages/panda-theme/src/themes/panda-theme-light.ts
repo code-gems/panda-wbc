@@ -105,26 +105,26 @@ export const pandaThemeLight = css`
 		--panda-secondary-color-90opc: hsl(160deg 81% 43% / 90%);
 
 		/* TERTIARY */
-		--panda-tertiary-color: hsl(160deg 81% 43%);
+		--panda-tertiary-color: hsl(209deg 24% 47%);
 		--panda-tertiary-text-color: hsl(0deg 0% 100%);
 
-		--panda-tertiary-color-50: hsl(164deg 67% 75%);
-		--panda-tertiary-color-100: hsl(164deg 67% 55%);
-		--panda-tertiary-color-300: hsl(164deg 67% 50%);
-		--panda-tertiary-color-500: hsl(160deg 81% 43%);
-		--panda-tertiary-color-700: hsl(164deg 67% 40%);
-		--panda-tertiary-color-900: hsl(164deg 67% 35%);
+		--panda-tertiary-color-50: hsl(209deg 24% 77%);
+		--panda-tertiary-color-100: hsl(209deg 24% 57%);
+		--panda-tertiary-color-300: hsl(209deg 24% 52%);
+		--panda-tertiary-color-500: hsl(209deg 24% 47%);
+		--panda-tertiary-color-700: hsl(209deg 24% 42%);
+		--panda-tertiary-color-900: hsl(209deg 24% 37%);
 
-		--panda-tertiary-color-0opc: hsl(160deg 81% 43% / 0%);
-		--panda-tertiary-color-10opc: hsl(160deg 81% 43% / 10%);
-		--panda-tertiary-color-20opc: hsl(160deg 81% 43% / 20%);
-		--panda-tertiary-color-30opc: hsl(160deg 81% 43% / 30%);
-		--panda-tertiary-color-40opc: hsl(160deg 81% 43% / 40%);
-		--panda-tertiary-color-50opc: hsl(160deg 81% 43% / 50%);
-		--panda-tertiary-color-60opc: hsl(160deg 81% 43% / 60%);
-		--panda-tertiary-color-70opc: hsl(160deg 81% 43% / 70%);
-		--panda-tertiary-color-80opc: hsl(160deg 81% 43% / 80%);
-		--panda-tertiary-color-90opc: hsl(160deg 81% 43% / 90%);
+		--panda-tertiary-color-0opc: hsl(209deg 24% 47% / 0%);
+		--panda-tertiary-color-10opc: hsl(209deg 24% 47% / 10%);
+		--panda-tertiary-color-20opc: hsl(209deg 24% 47% / 20%);
+		--panda-tertiary-color-30opc: hsl(209deg 24% 47% / 30%);
+		--panda-tertiary-color-40opc: hsl(209deg 24% 47% / 40%);
+		--panda-tertiary-color-50opc: hsl(209deg 24% 47% / 50%);
+		--panda-tertiary-color-60opc: hsl(209deg 24% 47% / 60%);
+		--panda-tertiary-color-70opc: hsl(209deg 24% 47% / 70%);
+		--panda-tertiary-color-80opc: hsl(209deg 24% 47% / 80%);
+		--panda-tertiary-color-90opc: hsl(209deg 24% 47% / 90%);
 
 		/* ========================================================================================================= */
 		/* ACTION COLORS =========================================================================================== */
@@ -509,6 +509,26 @@ export const pandaThemeLight = css`
 
 		--panda-notification-button-background-color: transparent;
 		--panda-notification-button-background-color-hover: var(--panda-white-color-10opc);
+
+		/* ========================================================================================================= */
+		/* TOAST =================================================================================================== */
+		/* ========================================================================================================= */
+
+		--pand-toast-text-color: hsl(0deg 0% 92%);
+		--panda-toast-font-size: var(--panda-font-size-m);
+		--panda-toast-font-family: var(--panda-font-family);
+
+		--pand-toast-header-text-color: hsl(0deg 0% 100%);
+		--panda-toast-header-font-size: var(--panda-font-size-l);
+		--panda-toast-header-font-family: var(--panda-font-family-bold);
+
+		--pand-toast-icon-color: hsl(0deg 0% 100%);
+		--pand-toast-border-color: hsl(210deg 25% 35%);
+		--pand-toast-background-color: hsl(209deg 26% 20%);
+		--pand-toast-elevation: var(--panda-elevation-m);
+
+		--panda-toast-button-background-color: transparent;
+		--panda-toast-button-background-color-hover: var(--panda-white-color-10opc);
 
 		/* ========================================================================================================= */
 		/* DIALOG ================================================================================================== */
