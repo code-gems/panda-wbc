@@ -16,7 +16,7 @@ export const styles = css`
 		display: flex;
 		flex-flow: row nowrap;
 		width: fit-content;
-		max-width: 15dvw;
+		max-width: 20dvw;
 		padding: var(--panda-padding-l, 15px);
 		gap: var(--panda-padding-m, 10px);
 		opacity: 0;
@@ -61,7 +61,7 @@ export const styles = css`
 	}
 
 	.toast .message {
-		color: var(--pand-toast-text-color, hsl(0deg 0% 92%));
+		color: var(--panda-toast-text-color, hsl(0deg 0% 92%));
 		font-size: var(--panda-toast-font-size, 14px);
 		font-family: var(--panda-toast-font-family, "Poppins");
 		user-select: none;
@@ -227,7 +227,7 @@ export const styles = css`
 	/* TERTIARY */
 
 	:host([theme~="tertiary"]) .toast {
-		background-color: var(--panda-tertiary-color, hsl(209deg 24% 47%);
+		background-color: var(--panda-tertiary-color, hsl(209deg 24% 47%));
 	}
 
 	:host([theme~="tertiary"]) .toast .title,

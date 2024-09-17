@@ -1,13 +1,10 @@
 // types
-import { PandaToast, ToastPosition } from "../index";
+import { PandaToast } from "../index";
 import { PandaToastElement } from "./panda-toast";
 
 export class PandaToastCenter {
-	static instance: any;
 
 	private _toastQueue: PandaToast[] = [];
-
-	private _checkQueueTimer: number | null = null;
 
 	private _toastEl: PandaToastElement | null = null;
 
@@ -15,30 +12,12 @@ export class PandaToastCenter {
 	private _closeToastEvent = this._onCloseToast.bind(this);
 
 	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
-	constructor() {
-		if (!PandaToastCenter.instance) {
-			PandaToastCenter.instance = this;
-		}
-		return PandaToastCenter.instance;
-	}
-
-	// ================================================================================================================
 	// API ============================================================================================================
 	// ================================================================================================================
 
 	public createToast(toast: PandaToast): void {
 		this._toastQueue.push(toast);
-		console.log("%c createToast", "font-size: 24px; color: green;", toast);
-
 		this._checkQueue();
-		// // start 
-		// if (this._checkQueueTimer === null) {
-		// 	console.log("%c add check queue timer", "font-size: 24px; color: green;");
-		// 	this._checkQueueTimer = setInterval(this._checkQueue.bind(this), 500);
-		// }
 	}
 
 	// ================================================================================================================
@@ -46,7 +25,6 @@ export class PandaToastCenter {
 	// ================================================================================================================
 
 	private _checkQueue(): void {
-		console.log("%c _checkQueue", "font-size: 24px; color: green;", this._toastEl === null && this._toastQueue.length);
 		if (this._toastEl === null && this._toastQueue.length) {
 			const _toast = this._toastQueue[0];
 			this._showToast(_toast);
@@ -54,7 +32,6 @@ export class PandaToastCenter {
 	}
 
 	private _showToast(toast: PandaToast): void {
-		console.log("%c _showToast", "font-size: 24px; color: green;", toast);
 		this._toastEl = document.createElement("panda-toast");
 		this._toastEl.theme = toast.theme ?? "";
 		this._toastEl.icon = toast.icon ?? "";
@@ -77,8 +54,6 @@ export class PandaToastCenter {
 
 	private async _hideToast(): Promise<void> {
 		if (this._toastEl !== null) {
-			console.log("%c _hideToast", "font-size: 24px; color: green;");
-			
 			// remove event listeners
 			this._toastEl.removeEventListener("close", this._closeToastEvent);
 			// remove element
@@ -95,9 +70,6 @@ export class PandaToastCenter {
 	// ================================================================================================================
 
 	private _onCloseToast(): void {
-		console.log("%c _onCloseToast", "font-size: 24px; color: red;");
 		this._hideToast();
 	}
 }
-
-export const pandaToastCenter = new PandaToastCenter();

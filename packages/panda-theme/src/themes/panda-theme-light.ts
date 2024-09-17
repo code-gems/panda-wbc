@@ -514,18 +514,18 @@ export const pandaThemeLight = css`
 		/* TOAST =================================================================================================== */
 		/* ========================================================================================================= */
 
-		--pand-toast-text-color: hsl(0deg 0% 92%);
+		--panda-toast-text-color: hsl(0deg 0% 92%);
 		--panda-toast-font-size: var(--panda-font-size-m);
 		--panda-toast-font-family: var(--panda-font-family);
 
-		--pand-toast-header-text-color: hsl(0deg 0% 100%);
+		--panda-toast-header-text-color: hsl(0deg 0% 100%);
 		--panda-toast-header-font-size: var(--panda-font-size-l);
 		--panda-toast-header-font-family: var(--panda-font-family-bold);
 
-		--pand-toast-icon-color: hsl(0deg 0% 100%);
-		--pand-toast-border-color: hsl(210deg 25% 35%);
-		--pand-toast-background-color: hsl(209deg 26% 20%);
-		--pand-toast-elevation: var(--panda-elevation-m);
+		--panda-toast-icon-color: hsl(0deg 0% 100%);
+		--panda-toast-border: 1px solid hsl(209deg 26% 25%);
+		--panda-toast-background-color: hsl(209deg 26% 20%);
+		--panda-toast-elevation: var(--panda-elevation-m);
 
 		--panda-toast-button-background-color: transparent;
 		--panda-toast-button-background-color-hover: var(--panda-white-color-10opc);

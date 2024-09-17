@@ -14,7 +14,7 @@ import { customElement } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
-import { pandaToastCenter } from "@panda-wbc/panda-toast/lib/panda-toast-center";
+import { PandaToastCenter } from "@panda-wbc/panda-toast/lib/panda-toast-center";
 
 // component samples
 import "./samples/sample-1/sample-1";
@@ -44,6 +44,9 @@ export class ContentPage extends ContentPageTemplate {
 	private _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
+
+	// demo props
+	private _pandaToastCenter = new PandaToastCenter();
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -171,7 +174,7 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onCreateToast(): void {
-		pandaToastCenter.createToast({
+		this._pandaToastCenter.createToast({
 			theme: "tertiary",
 			// icon: "cake",
 			// header: "Happy birthday!",

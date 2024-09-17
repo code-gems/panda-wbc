@@ -437,29 +437,59 @@ export const uiComponents = {
 		}
 	`,
 
+	// sample: css`
+	// 	.sample-cont {
+	// 		display: flex;
+	// 		flex-flow: row;
+	// 		justify-content: center;
+	// 		align-items: center;
+	// 		padding: 40px;
+	// 	}
+
+	// 	.sample-cont .sample {
+	// 		display: flex;
+	// 		justify-content: center;
+	// 		width: 100%;
+	// 		padding: 40px;
+
+	// 		border-radius: 10px;
+	// 		border: 1px solid var(--panda-background-color-900);
+	// 		background: radial-gradient(
+	// 			circle at 1px 1px,
+	// 			var(--panda-border-color) 1px,
+	// 			transparent 0px
+	// 		)
+	// 		0px 0px / 16px 16px;
+	// 	}
+	// `,
+
 	sample: css`
-		.sample-cont {
+		.sample {
 			display: flex;
-			flex-flow: row;
-			justify-content: center;
-			align-items: center;
-			padding: 40px;
+			flex-flow: column;
+			width: 100%;
+
+			border: 1px solid var(--panda-border-color);
+			border-radius: var(--panda-border-radius-m);
+			background-color: var(--panda-background-color-500);
 		}
 
-		.sample-cont .sample {
+		.sample .tabs {
 			display: flex;
-			justify-content: center;
-			width: 100%;
-			padding: 40px;
+			flex-flow: row nowrap;
+			height: var(--panda-component-size-m);
+		}
 
-			border-radius: 10px;
-			border: 1px solid var(--panda-background-color-900);
-			background: radial-gradient(
-				circle at 1px 1px,
-				var(--panda-border-color) 1px,
-				transparent 0px
-			)
-			0px 0px / 16px 16px;
+		.sample .tabs .tab {
+
+		}
+
+		.sample .content {
+
+		}
+
+		.sample .content .tab-cont {
+
 		}
 	`,
 

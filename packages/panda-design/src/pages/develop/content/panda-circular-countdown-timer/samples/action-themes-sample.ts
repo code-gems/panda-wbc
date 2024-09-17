@@ -34,7 +34,7 @@ class Sample extends SampleTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	renderSample(): TemplateResult {
+	renderDemo(): TemplateResult {
 		return html`
 			<div class="rows">
 				<div class="row">
