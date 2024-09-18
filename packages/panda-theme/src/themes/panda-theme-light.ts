@@ -257,21 +257,21 @@ export const pandaThemeLight = css`
 		--panda-padding-xl: 30px;
 		--panda-padding-hero: 60px;
 
-		--panda-border-radius-xs: 2px;
-		--panda-border-radius-s: 3px;
-		--panda-border-radius-m: 5px;
-		--panda-border-radius-l: 10px;
-		--panda-border-radius-xl: 15px;
+		--panda-border-radius-xs: 3px;
+		--panda-border-radius-s: 5px;
+		--panda-border-radius-m: 10px;
+		--panda-border-radius-l: 15px;
+		--panda-border-radius-xl: 20px;
 		--panda-border-radius-hero: 30px;
 
 		/* ========================================================================================================= */
 		/* ELEVATION / DEPTH ======================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-elevation-s: 0px 1px 2px var(--panda-black-color-20opc);
-		--panda-elevation-m: 0px 2px 4px var(--panda-black-color-20opc);
-		--panda-elevation-l: 0px 5px 10px var(--panda-black-color-20opc);
-		--panda-elevation-hero: 0px 10px 30px var(--panda-black-color-50opc);
+		--panda-elevation-s: 0px 1px 1px var(--panda-black-color-10opc);
+		--panda-elevation-m: 0px 1px 2px var(--panda-black-color-20opc);
+		--panda-elevation-l: 0px 2px 4px var(--panda-black-color-20opc);
+		--panda-elevation-hero: 0px 2px 15px var(--panda-black-color-10opc);
 
 		/* ========================================================================================================= */
 		/* HIGHLIGHT COLOR ========================================================================================= */
@@ -296,9 +296,9 @@ export const pandaThemeLight = css`
 
 		/* COMPONENT SIZE */
 		--panda-component-size-s: 24px;
-		--panda-component-size-m: 30px;
-		--panda-component-size-l: 36px;
-		--panda-component-size-xl: 42px;
+		--panda-component-size-m: 32px;
+		--panda-component-size-l: 40px;
+		--panda-component-size-xl: 48px;
 		
 		--panda-border-color: hsl(0deg 0% 85%);
 
@@ -389,7 +389,7 @@ export const pandaThemeLight = css`
 		/* ICONS =================================================================================================== */
 		/* ========================================================================================================= */
 
-		--panda-icon-color: hsl(210deg 5% 45%);
+		--panda-icon-color: hsl(210deg 5% 30%);
 		--panda-icon-color-disabled: hsl(210deg 5% 55%);
 
 		--panda-icon-size-xxs: 12px;

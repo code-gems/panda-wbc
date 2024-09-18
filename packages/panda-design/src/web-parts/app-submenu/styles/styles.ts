@@ -40,8 +40,8 @@ export const styles = css`
 	.menu-list {
 		display: flex;
 		flex-flow: column;
-		padding: 10px;
-		gap: 10px;
+		padding: var(--panda-padding-m);
+		gap: var(--panda-padding-m);
 
 		box-sizing: border-box;
 	}
@@ -49,18 +49,21 @@ export const styles = css`
 	.menu-list .list-item {
 		display: flex;
 		flex-flow: row nowrap;
-		min-height: 50px;
+		min-height: var(--panda-component-size-m);
+		padding: var(--panda-padding-m);
+		
 		cursor: pointer;
 		transition: all 400ms ease-in-out;
 
-		border-radius: 10px;
-		background-color: var(--panda-background-color-500);
-		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
+		border-radius: var(--panda-border-radius-m);
+		background-color: var(--panda-background-color);
+		box-shadow: var(--panda-elevation-m);
+		box-sizing: border-box;
 	}
 
 	.menu-list .list-item:hover {
 		background-color: var(--panda-background-color-300);
-		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
+		box-shadow: var(--panda-elevation-l);
 	}
 
 	.menu-list .list-item .icon {
@@ -68,13 +71,13 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 		flex-shrink: 0;
-		width: 50px;
-		height: 50px;
+		width: var(--panda-component-size-m);
+		height: var(--panda-component-size-m);
 	}
 
 	.menu-list .list-item label {
-		line-height: 50px;
-		padding: 0px 20px;
+		line-height: var(--panda-component-size-m);
+		padding: 0px var(--panda-padding-m);
 		flex-grow: 1;
 
 		color: var(--panda-text-color);
@@ -88,7 +91,7 @@ export const styles = css`
 
 	.menu-list .list-item.active {
 		background-color: var(--panda-primary-color);
-		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
+		box-shadow: var(--panda-elevation-l);
 		--panda-icon-color: var(--panda-primary-text-color);
 	}
 

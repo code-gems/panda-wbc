@@ -38,7 +38,8 @@ export const styles = css`
 		flex-flow: row nowrap;
 		width: 100%;
 		height: var(--panda-input-height, 30px);
-
+		overflow: hidden;
+		
 		transition: all 200ms ease-in-out;
 
 		border: 1px solid var(--panda-input-border-color, hsl(0deg 0% 80%));
@@ -107,7 +108,7 @@ export const styles = css`
 
 	/* FOCUSED */
 	:host([focused]) .select {
-		box-shadow: 0px 0px 0px 2px var(--panda-input-outline-color, hsl(216deg 88% 60%));
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60%));
 	}
 
 	/* MANDATORY */

@@ -19,10 +19,10 @@ import { minValue, getItemLabel } from "./utils/utils";
 export class PandaSelect extends LitElement {
 	// css styles
 	static get styles() {
-		return [
-			styles
-		];
+		return styles;
 	}
+
+	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
 	@property({ type: String })
 	label!: string;
@@ -208,6 +208,7 @@ export class PandaSelect extends LitElement {
 					@blur="${this._onBlur}"
 					@click="${this._onClick}"
 					readonly
+					tabindex="0"
 				/>
 				${suffixIconHtml}
 				<slot name="suffix"></slot>

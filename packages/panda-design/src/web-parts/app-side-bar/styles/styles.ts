@@ -13,7 +13,7 @@ export const styles = css`
 		flex-flow: column;
 		width: 100%;
 		height: 100%;
-		gap: 10px;
+		gap: var(--panda-padding-m);
 		overflow: hidden;
 
 		background-color: var(--panda-background-color-900);
@@ -27,8 +27,8 @@ export const styles = css`
 		display: flex;
 		flex-flow: column;
 		flex-grow: 1;
-		padding: 10px;
-		gap: 10px;
+		padding: var(--panda-padding-m);
+		gap: var(--panda-padding-m);
 		overflow: overlay;
 	}
 
@@ -48,15 +48,15 @@ export const styles = css`
 		transition: all 400ms ease-in-out;
 		cursor: pointer;
 
-		border-radius: 10px;
+		border-radius: var(--panda-border-radius-m);
 		background-color: var(--panda-background-color-700);
-		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
+		box-shadow: var(--panda-elevation-m);
 		box-sizing: border-box;
 	}
 
 	.side-bar .btn:hover {
-		background-color: var(--panda-background-color-500);
-		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
+		background-color: var(--panda-background-color);
+		box-shadow: var(--panda-elevation-l);
 	}
 
 	.side-bar .btn .icon {
@@ -66,9 +66,9 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 	
-		--panda-icon-fill-color: var(--panda-text-color);
-		--panda-icon-width: 30px;
-		--panda-icon-height: 30px;
+		--panda-icon-color: var(--panda-icon-color);
+		--panda-icon-width: var(--panda-component-size-m);
+		--panda-icon-height: var(--panda-component-size-m);
 	}
 
 	.side-bar .btn label {
@@ -86,7 +86,7 @@ export const styles = css`
 	}
 
 	.side-bar .btn.active {
-		background-color: var(--panda-primary-color-500);
+		background-color: var(--panda-primary-color);
 	}
 
 	.side-bar .btn.active .icon {

@@ -468,10 +468,14 @@ export const uiComponents = {
 			display: flex;
 			flex-flow: column;
 			width: 100%;
+			padding: var(--panda-padding-m);
 
 			border: 1px solid var(--panda-border-color);
 			border-radius: var(--panda-border-radius-m);
 			background-color: var(--panda-background-color-500);
+			box-shadow: var(--panda-elevation-m);
+			box-sizing: border-box;
+
 		}
 
 		.sample .tabs {
