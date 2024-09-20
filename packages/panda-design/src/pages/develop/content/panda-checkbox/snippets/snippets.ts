@@ -4,7 +4,7 @@ export const implementationSnippet = `
 import "@panda-wbc/panda-checkbox";
 
 <panda-checkbox
-  .checked="\$false"
+  .checked="false"
   @change="\${this._onChange}"
 >
   Remember me

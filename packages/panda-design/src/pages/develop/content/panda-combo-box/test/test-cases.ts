@@ -28,7 +28,29 @@
  */
 
 /**
- * CASE 3 - Filtering list with invalid entry
+ * CASE 3 - Typing in value that is NOT part of the list and confirm with [ENTER] 
+ * 1. Type in "abc" and hit [ENTER]
+ * 
+ * EXPECTATION:
+ * - no new @change event should be dispatched
+ * - input should be cleared
+ * 
+ * STATUS: ❌ FAIL
+ */
+
+/**
+ * CASE 4 - Typing in value that is NOT part of the list and click outside of the list
+ * 1. Type in "abc" and hit [ENTER]
+ * 
+ * EXPECTATION:
+ * - no new @change event should be dispatched
+ * - input should be cleared
+ * 
+ * STATUS: ❌ FAIL
+ */
+
+/**
+ * CASE 5 - Filtering list with invalid entry
  * 1. Select first item from the dropdown eg: "Alabama"
  * 2. Backspace one character eg. you should be seeing "Alabam" and hit [ENTER]
  * 
@@ -41,7 +63,7 @@
  */
 
 /**
- * CASE 4 - Filtering but not confirming selection
+ * CASE 6 - Filtering but not confirming selection
  * 1. Select first item from the dropdown eg: "Alabama"
  * 2. Backspace one character eg. you should be seeing "Alabam"
  * 3. Close dropdown by clicking outside (do not select it with mouse or hit ENTER/TAB)
@@ -54,7 +76,7 @@
  */
 
 /**
- * CASE 5 - Removing selected value by backspacing it from the input
+ * CASE 7 - Removing selected value by backspacing it from the input
  * 1. Select any item from the dropdown
  * 2. Backspace everything from input and hit [ENTER]
  * 
@@ -66,7 +88,7 @@
  */
 
 /**
- * CASE 6 - No change event dispatched if value did not change
+ * CASE 8 - No change event dispatched if value did not change
  * 1. Select any item from the dropdown
  * 2. Select the same item from the dropdown
  * 
@@ -76,7 +98,7 @@
  */
 
 /**
- * CASE 7 - No change event dispatched if value is cleared again
+ * CASE 9 - No change event dispatched if value is cleared again
  * 1. Select any item from the dropdown
  * 2. Backspace everything from input and hit [ENTER]
  * 3. Type some value and backspace it again and hit [ENTER]
@@ -87,7 +109,7 @@
  */
 
 /**
- * CASE 8 - No change event is dispatched if filtering for the same selected item
+ * CASE 10 - No change event is dispatched if filtering for the same selected item
  * 1. Select any item from the dropdown
  * 2. Searched for the same item and hit [ENTER]
  * 
@@ -97,7 +119,7 @@
  */
 
 /**
- * CASE 9 - Select the same value after searching through the list
+ * CASE 11 - Select the same value after searching through the list
  * 1. Select any item from the dropdown eg. "Alabama"
  * 2. Search for the same item by typing eg. "Alaba"
  * 3. Select "Alabama" from the dropdown again
@@ -108,7 +130,7 @@
  */
 
 /**
- * CASE 10 - Searching for item that is not part of the selection
+ * CASE 12 - Searching for item that is not part of the selection
  * 1. Select any item from the dropdown eg. "Alabama"
  * 2. Search for the value that does NOT exist on the list and hit [ENTER]
  * 
@@ -120,7 +142,7 @@
  */
 
 /**
- * CASE 11 - Searching for items then using arrows for selection and confirming with [ENTER]
+ * CASE 13 - Searching for items then using arrows for selection and confirming with [ENTER]
  * 1. Type in "ca" to see search results on the dropdown
  * 2. Navigate to California with up/down arrows and hit [ENTER]
  * 
@@ -132,7 +154,7 @@
  *
 
 /**
- * CASE 12 - Searching for items then using arrows for selection and clicking outside of dropdown
+ * CASE 14 - Searching for items then using arrows for selection and clicking outside of dropdown
  * 1. Type in "ca" to see search results on the dropdown
  * 2. Navigate to California with up/down arrows and click outside of dropdown
  * 
@@ -144,7 +166,7 @@
  */
 
 /**
- * CASE 13 - Searching for items then selecting not the first filtered item
+ * CASE 15 - Searching for items then selecting not the first filtered item
  * 1. Type in "ca" to see search results on the dropdown
  * 2. Using mouse, click/select "North Carolina"
  * 
@@ -156,7 +178,7 @@
  */
 
 /**
- * CASE 14 - Show/Scroll to selected item in the dropdown after opening dropdown
+ * CASE 16 - Show/Scroll to selected item in the dropdown after opening dropdown
  * 1. Using up/down arrow keys select last item on the list and hit [ENTER]
  * 2. Open dropdown again
  * 
@@ -168,7 +190,7 @@
  */
 
 /**
- * CASE 15 - Cancel selection by pressing [ESC]
+ * CASE 17 - Cancel selection by pressing [ESC]
  * 1. Navigate dropdown by using up/down arrow keys but don't select anything
  * 2. Press [ESC] to close dropdown
  * 
@@ -188,7 +210,7 @@
 // ALLOW CUSTOM VALUES FEATURE
 
 /**
- * CASE 16 - User can enter custom value
+ * CASE 18 - User can enter custom value
  * 1. Type in any value that is not part of the dropdown list and hit [ENTER]
  * 
  * EXPECTATION:
@@ -202,7 +224,7 @@
 */
 
 /**
- * CASE 17 - User can select item from the dropdown
+ * CASE 19 - User can select item from the dropdown
  * 1. Select first item from the dropdown eg: "Alabama"
  * 
  * EXPECTATION:
@@ -216,7 +238,7 @@
 */
 
 /**
- * CASE 18 - User can search and select existing item from dropdown
+ * CASE 20 - User can search and select existing item from dropdown
  * 1. Type in "Alaska" and hit [ENTER] to select item from dropdown
  * 
  * EXPECTATION:
@@ -230,7 +252,7 @@
 */
 
 /**
- * CASE 19 - User can remove currently selected item by backspacing it
+ * CASE 21 - User can remove currently selected item by backspacing it
  * 1. Select first item from the dropdown eg: "Alabama"
  * 2. Backspace entire value and hit [ENTER]
  * 
@@ -247,7 +269,7 @@
 // DISABLE AUTO OPEN FEATURE
 
 /**
- * CASE 20 - User can type in value that exists on the list and hit ENTER
+ * CASE 22 - User can type in value that exists on the list and hit ENTER
  * 1. Type in "Alaska" and hit [ENTER]
  * 
  * EXPECTATION:
@@ -261,7 +283,7 @@
 */
 
 /**
- * CASE 21 - User can type in value that exists on the list and click outside
+ * CASE 23 - User can type in value that exists on the list and click outside
  * 1. Type in "Alaska" and click outside of the field
  * 
  * EXPECTATION:
@@ -275,7 +297,7 @@
 */
 
 /**
- * CASE 22 - User can type in value that exists on the list and click outside
+ * CASE 24 - User can type in value that exists on the list and click outside
  * 1. Type in "Ohio" and click outside of the field
  * 
  * EXPECTATION:
