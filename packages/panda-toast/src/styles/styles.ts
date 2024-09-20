@@ -42,8 +42,8 @@ export const styles = css`
 		width: var(--panda-component-size-m, 30px);
 		height: var(--panda-component-size-m, 30px);
 
-		--dragon-icon-width: var(--panda-icon-size-m, 20px);
-		--dragon-icon-height: var(--panda-icon-size-m, 20px);
+		--panda-icon-width: var(--panda-icon-size-m, 20px);
+		--panda-icon-height: var(--panda-icon-size-m, 20px);
 	}
 
 	.toast .content {
