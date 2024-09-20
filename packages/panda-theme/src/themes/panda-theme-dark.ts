@@ -175,7 +175,7 @@ export const pandaThemeDark = css`
 		--panda-action-color-done-90opc: hsl(160deg 81% 43% / 90%);
 
 		/* WARN COLOR */
-		--panda-action-warn: hsl(35deg 91% 62%);
+		--panda-action-color-warn: hsl(35deg 91% 62%);
 		--panda-action-text-color-warn: hsl(0deg 0% 100%);
 
 		--panda-action-color-warn-50: hsl(35deg 91% 85%);

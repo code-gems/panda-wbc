@@ -257,11 +257,11 @@ export const pandaThemeLight = css`
 		--panda-padding-xl: 30px;
 		--panda-padding-hero: 60px;
 
-		--panda-border-radius-xs: 3px;
-		--panda-border-radius-s: 5px;
-		--panda-border-radius-m: 10px;
-		--panda-border-radius-l: 15px;
-		--panda-border-radius-xl: 20px;
+		--panda-border-radius-xs: 2px;
+		--panda-border-radius-s: 3px;
+		--panda-border-radius-m: 5px;
+		--panda-border-radius-l: 10px;
+		--panda-border-radius-xl: 15px;
 		--panda-border-radius-hero: 30px;
 
 		/* ========================================================================================================= */
