@@ -133,7 +133,7 @@ export const getItemByValue = (
 	value: any,
 	valuePath: string,
 ): PandaComboBoxItem | string | number | null | undefined => {
-	if (items) {
+	if (items && value !== null) {
 		// check if item is not a primitive
 		if (typeof items[0] === "object") {
 			return items.find((item) => {

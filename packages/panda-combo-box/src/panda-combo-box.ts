@@ -354,10 +354,10 @@ export class PandaComboBox extends LitElement {
 					this.value,
 					this.itemValuePath ?? "value",
 				) as string;
+				const _itemLabel = getItemLabel(_selectedItem, this.itemLabelPath);
 				
-				console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> NO MATCH / REVERT VALUE", "font-size: 24px; color: red;", this.value, _selectedItem);
-
-				this._inputFieldEl.value = getItemLabel(_selectedItem, this.itemLabelPath);
+				console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> NO MATCH / REVERT VALUE", "font-size: 24px; color: red;", this.value, _selectedItem, _itemLabel);
+				this._inputFieldEl.value = _itemLabel ?? "";
 				this._searchText = null;
 			} else {
 				console.log("%c ⚡ [COMBO-BOX] (_updateValue) -> NO MATCH / CLEAR VALUE", "font-size: 24px; color: red;");
@@ -374,15 +374,17 @@ export class PandaComboBox extends LitElement {
 	}
 
 	private _triggerChangeEvent() {
-		console.log("%c ⚡ [COMBO-BOX] _triggerChangeEvent", "font-size: 24px; color: orange;", this.value);
-		const event: PandaComboBoxChangeEvent = new CustomEvent("change", {
-			detail: {
-				value: this.value
-			}
-		});
-		this.dispatchEvent(event);
-		// clear search text
-		this._searchText = null;
+		setTimeout(() => {
+			console.log("%c ⚡ [COMBO-BOX] _triggerChangeEvent", "font-size: 24px; color: orange;", this.value);
+			const event: PandaComboBoxChangeEvent = new CustomEvent("change", {
+				detail: {
+					value: this.value
+				}
+			});
+			this.dispatchEvent(event);
+			// clear search text
+			this._searchText = null;
+		}, 0);
 	}
 
 	private _validateInput(inputValue: string | number | null) {
