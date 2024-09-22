@@ -81,8 +81,8 @@ class Sample extends SampleTemplate {
 
 		this._pandaToastCenter.createToast({
 			theme: this._selectedTheme,
-			icon: "cake",
-			header: "Happy birthday!",
+			// icon: "cake",
+			// header: "Happy birthday!",
 			message: "Congratulations! you are now 1 year older!",
 			closable: this._closable,
 			// interval: 5 * 60 * 1000,

@@ -94,3 +94,9 @@ export class PandaThemeSwitcher extends LitElement {
 		this.dispatchEvent(event);
 	}
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		"panda-theme-switcher": PandaThemeSwitcher;
+	}
+}

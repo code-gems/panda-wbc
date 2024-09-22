@@ -5,7 +5,7 @@ import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } f
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-template";
+import "@panda-wbc/panda-tetris";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -21,7 +21,7 @@ import {
 } from "./snippets/snippets";
 
 @page(pageConfig)
-@customElement("panda-template-content-page")
+@customElement("panda-tetris-content-page")
 export class PandaSliderContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;
@@ -29,15 +29,9 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 
 	// demo props
 	private _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
-		{ name: "icon", type: "String", defaultValue: "-", description: "Custom icon to be shown on the component." },
-		{ name: "hideIcon", type: "Boolean", defaultValue: "false", description: "Hide callout icon." },
-		{ name: "closable", type: "Boolean", defaultValue: "false", description: "Adds close button to the callout's header and makes it closable." },
-		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
-		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 
 	// ================================================================================================================
@@ -47,7 +41,8 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
-				<h1>TEMPLATE</h1>
+				<h1>TETRIS</h1>
+
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -75,14 +70,16 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
+
 							<div class="row">
 								<div class="col-full">
 
-									<panda-template>
-									</panda-template>
+									<panda-tetris>
+									</panda-tetris>
 
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -118,8 +115,7 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Usage</internal-link>
 					<p>
-						Please refer below for instructions on utilizing our component. 
-						Experiment with the provided sample code to explore all the features of the component.
+						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
 					</p>
 
 					<code-sample header="Implementation">
@@ -136,8 +132,8 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 	private _renderComponentPropertiesSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT PROPERTIES -->
-			<div class="section" data-content-section-name="usage-properties">
-				<internal-link theme="h3">Properties</internal-link>
+			<div class="section">
+				<h3>Properties</h3>
 				<p>
 					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
 					and they are frequently employed for data binding purposes. 
@@ -154,8 +150,8 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 	private _renderComponentEventsSection(): TemplateResult {
 		return html`
 			<!-- COMPONENT EVENTS -->
-			<div class="section" data-content-section-name="usage-events">
-				<internal-link theme="h3">Events</internal-link>
+			<div class="section">
+				<h3>Events</h3>
 				<p>
 					Component events are instrumental in elevating the interactivity and adaptability of software applications. 
 					These events serve as carefully designed triggers that facilitate communication between the component and the application, 

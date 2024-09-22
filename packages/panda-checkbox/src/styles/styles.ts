@@ -11,17 +11,6 @@ export const styles = css`
 		user-select: none;
 	}
 
-	.label {
-		display: block;
-		line-height: 1.6em;
-
-		color: var(--panda-label-color, hsl(0deg 0% 50%));
-		font-size: var(--panda-label-font-size, 12px);
-		font-family: var(--panda-label-font-family, "Poppins");
-		text-shadow: var(--panda-label-text-shadow, none);
-		user-select: none;
-	}
-
 	.checkbox {
 		display: flex;
 		flex-flow: row nowrap;
@@ -114,6 +103,17 @@ export const styles = css`
 `;
 
 export const groupStyles = css`
+	.label {
+		display: block;
+		line-height: 1.6em;
+
+		color: var(--panda-label-color, hsl(0deg 0% 50%));
+		font-size: var(--panda-label-font-size, 12px);
+		font-family: var(--panda-label-font-family, "Poppins");
+		text-shadow: var(--panda-label-text-shadow, none);
+		user-select: none;
+	}
+
 	slot {
 		display: flex;
 		flex-flow: column;

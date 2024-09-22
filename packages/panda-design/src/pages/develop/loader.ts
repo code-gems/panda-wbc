@@ -30,6 +30,7 @@ import "./content/panda-slideshow/content-page";
 import "./content/panda-sortable-list/content-page";
 import "./content/panda-spinner/content-page";
 import "./content/panda-switch/content-page";
+import "./content/panda-tetris/content-page";
 import "./content/panda-text-editor/content-page";
 import "./content/panda-text-field/content-page";
 import "./content/panda-textarea/content-page";

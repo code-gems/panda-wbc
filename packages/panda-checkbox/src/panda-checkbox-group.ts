@@ -15,6 +15,9 @@ export class PandaCheckboxGroup extends LitElement {
 		return groupStyles;
 	}
 
+	@property({ type: String, reflect: true })
+	label!: string;
+
 	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
@@ -53,7 +56,14 @@ export class PandaCheckboxGroup extends LitElement {
 
 	protected render(): TemplateResult {
 		const horizontal = this.horizontal ? " horizontal" : "";
+		let labelHtml: TemplateResult = html``;
+
+		if (this.label) {
+			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
+		}
+
 		return html`
+			${labelHtml}
 			<slot
 				class="checkbox-group"
 				part="checkbox-group"
