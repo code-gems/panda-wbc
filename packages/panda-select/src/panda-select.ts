@@ -22,7 +22,7 @@ export class PandaSelect extends LitElement {
 		return styles;
 	}
 
-	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
 	@property({ type: String })
 	label!: string;

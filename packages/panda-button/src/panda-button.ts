@@ -15,7 +15,7 @@ export class PandaButton extends LitElement {
 		return styles;
 	}
 
-	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
 	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;

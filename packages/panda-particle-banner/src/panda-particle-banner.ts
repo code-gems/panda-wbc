@@ -1,14 +1,21 @@
 // types
-import { PandaParticle, PandaParticleBannerConfig, PandaParticleBannerMetadata, PandaParticleColor, ParticleGroup, ParticleShape } from "../index";
+import {
+	PandaParticle,
+	PandaParticleBannerConfig,
+	PandaParticleBannerMetadata,
+	PandaParticleColor,
+	ParticleGroup,
+	ParticleShape,
+} from "../index";
 
 // styles
 import { styles } from "./styles/styles";
 
 // utils
-import { LitElement, html, TemplateResult, PropertyValueMap, PropertyValues } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { getHslColorString, getRandomInt, minMax, validateColorHue, parseColorString, limitCheck } from "./utils/utils";
-import { Debouncer, debounce } from "@panda-wbc/panda-core";
+import { debounce } from "@panda-wbc/panda-utils";
 
 @customElement("panda-particle-banner")
 class PandaParticleBanner extends LitElement {

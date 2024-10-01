@@ -25,7 +25,6 @@
 		"@panda-wbc/panda-circular-progress-bar": "workspace:*",
 		"@panda-wbc/panda-click-to-copy": "workspace:*",
 		"@panda-wbc/panda-combo-box": "workspace:*",
-		"@panda-wbc/panda-core": "workspace:*",
 		"@panda-wbc/panda-countdown-timer": "workspace:*",
 		"@panda-wbc/panda-counter": "workspace:*",
 		"@panda-wbc/panda-date-picker": "workspace:*",
@@ -61,6 +60,7 @@
 		"@panda-wbc/panda-toggle": "workspace:*",
 		"@panda-wbc/panda-tooltip": "workspace:*",
 		"@panda-wbc/panda-upload": "workspace:*",
+		"@panda-wbc/panda-utils": "workspace:*",
 		"lit": "^3.0.2",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"

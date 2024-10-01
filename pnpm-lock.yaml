@@ -184,15 +184,6 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
-  packages/panda-core:
-    devDependencies:
-      rimraf:
-        specifier: ^3.0.2
-        version: 3.0.2
-      typescript:
-        specifier: ^4.5.4
-        version: 4.9.5
-
   packages/panda-countdown-timer:
     dependencies:
       lit:
@@ -208,9 +199,9 @@ importers:
 
   packages/panda-counter:
     dependencies:
-      '@panda-wbc/panda-core':
+      '@panda-wbc/panda-utils':
         specifier: workspace:*
-        version: link:../panda-core
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -224,15 +215,15 @@ importers:
 
   packages/panda-date-picker:
     dependencies:
-      '@panda-wbc/panda-core':
-        specifier: workspace:^1.0.0
-        version: link:../panda-core
       '@panda-wbc/panda-icon':
         specifier: workspace:^1.0.0
         version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:^1.0.0
         version: link:../panda-spinner
+      '@panda-wbc/panda-utils':
+        specifier: workspace:^1.0.0
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -270,9 +261,6 @@ importers:
       '@panda-wbc/panda-combo-box':
         specifier: workspace:*
         version: link:../panda-combo-box
-      '@panda-wbc/panda-core':
-        specifier: workspace:*
-        version: link:../panda-core
       '@panda-wbc/panda-countdown-timer':
         specifier: workspace:*
         version: link:../panda-countdown-timer
@@ -378,6 +366,9 @@ importers:
       '@panda-wbc/panda-upload':
         specifier: workspace:*
         version: link:../panda-upload
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -518,12 +509,12 @@ importers:
 
   packages/panda-notifications:
     dependencies:
-      '@panda-wbc/panda-core':
-        specifier: workspace:*
-        version: link:../panda-core
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -559,9 +550,9 @@ importers:
 
   packages/panda-particle-banner:
     dependencies:
-      '@panda-wbc/panda-core':
+      '@panda-wbc/panda-utils':
         specifier: workspace:*
-        version: link:../panda-core
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -649,15 +640,18 @@ importers:
 
   packages/panda-search:
     dependencies:
-      '@panda-wbc/panda-core':
+      '@panda-wbc/panda-button':
         specifier: workspace:*
-        version: link:../panda-core
+        version: link:../panda-button
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -728,12 +722,12 @@ importers:
 
   packages/panda-sortable-list:
     dependencies:
-      '@panda-wbc/panda-core':
-        specifier: workspace:*
-        version: link:../panda-core
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -951,6 +945,15 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-utils:
     devDependencies:
       rimraf:
         specifier: ^3.0.2

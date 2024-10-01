@@ -24,7 +24,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@panda-wbc/panda-icon": "workspace:*",
-		"@panda-wbc/panda-core": "workspace:*",
+		"@panda-wbc/panda-utils": "workspace:*",
 		"lit": "^3.0.2"
 	},
 	"devDependencies": {

@@ -16,7 +16,7 @@ export class PandaTheme extends LitElement {
 	theme!: string;
 
 	// theme element
-	private _themeEl!: HTMLStyleElement;
+	private _themeEl!: CSSStyleSheet;
 
 	private readonly _themeList: PandaThemeGroup[] = [
 		{
@@ -85,12 +85,11 @@ export class PandaTheme extends LitElement {
 	private _applyTheme() {
 		// check if theme element exists
 		if (this._themeEl) {
-			this._themeEl.innerHTML = this._getThemeString(this.theme);
+			this._themeEl.replaceSync(this._getThemeString(this.theme));
 		} else {
-			this._themeEl = document.createElement("style");
-			this._themeEl.setAttribute("panda-theme", "");
-			this._themeEl.innerHTML = this._getThemeString(this.theme);
-			document.head.appendChild(this._themeEl);
+			this._themeEl = new CSSStyleSheet();
+			this._themeEl.replaceSync(this._getThemeString(this.theme));
+			document.adoptedStyleSheets = [this._themeEl];
 		}
 	}
 }

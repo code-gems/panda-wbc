@@ -7,4 +7,4 @@ export interface Debouncer {
 
 // utils
 
-export * from "./src/panda-core";
+export * from "./src/panda-utils";

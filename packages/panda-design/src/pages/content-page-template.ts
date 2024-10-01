@@ -6,6 +6,7 @@ import { uiComponents } from "../styles/styles";
 import { scrollbar } from "@panda-wbc/panda-theme";
 
 // components & web-parts
+import "@panda-wbc/panda-particle-banner";
 import "../web-parts/internal-link/internal-link";
 import "../web-parts/version-shield/version-shield";
 import "../web-parts/code-sample/code-sample";

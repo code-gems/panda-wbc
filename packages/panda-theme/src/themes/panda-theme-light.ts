@@ -268,10 +268,15 @@ export const pandaThemeLight = css`
 		/* ELEVATION / DEPTH ======================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-elevation-s: 0px 1px 1px var(--panda-black-color-10opc);
-		--panda-elevation-m: 0px 1px 2px var(--panda-black-color-20opc);
-		--panda-elevation-l: 0px 2px 4px var(--panda-black-color-20opc);
-		--panda-elevation-hero: 0px 2px 15px var(--panda-black-color-10opc);
+		--panda-elevation-s: 0px 1px 2px var(--panda-black-color-20opc);
+		--panda-elevation-m: 0px 2px 4px var(--panda-black-color-20opc);
+		--panda-elevation-l: 0px 4px 8px var(--panda-black-color-30opc);
+		--panda-elevation-hero: 0px 6px 12px var(--panda-black-color-30opc);
+
+		--panda-depth-s: 0px 1px 2px var(--panda-black-color-20opc) inset;
+		--panda-depth-m: 0px 2px 4px var(--panda-black-color-20opc) inset;
+		--panda-depth-l: 0px 4px 8px var(--panda-black-color-30opc) inset;
+		--panda-depth-hero: 0px 6px 12px var(--panda-black-color-30opc) inset;
 
 		/* ========================================================================================================= */
 		/* HIGHLIGHT COLOR ========================================================================================= */
@@ -389,7 +394,7 @@ export const pandaThemeLight = css`
 		/* ICONS =================================================================================================== */
 		/* ========================================================================================================= */
 
-		--panda-icon-color: hsl(210deg 5% 30%);
+		--panda-icon-color: hsl(210deg 5% 35%);
 		--panda-icon-color-disabled: hsl(210deg 5% 55%);
 
 		--panda-icon-size-xxs: 12px;

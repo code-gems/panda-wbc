@@ -1,5 +1,6 @@
 // type
-import { PandaComboBoxChange, PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
+// import { PandaComboBoxChange, PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
+import { PandaSearchIconPosition, PandaSearchItem, PandaSearchOnInputEvent, PandaSearchOnInputEventDetails } from "../index";
 import { PandaSearchOverlay } from "./panda-search-overlay";
 
 // style
@@ -13,23 +14,35 @@ import "./panda-search-overlay";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { debounce } from "@panda-wbc/panda-core";
-import { findItemByLabel, getItemLabel, getItemValue, minValue } from "./utils/utils";
+import { debounce } from "@panda-wbc/panda-utils";
+import { isEmpty } from "./utils/utils";
 
 @customElement("panda-search")
 export class PandaSearch extends LitElement {
 	// css style
 	static get styles() {
-		return [
-			styles
-		];
+		return styles;
 	}
+
+	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+	
+	@property({ type: String, reflect: true })
+	theme!: string;
 
 	@property({ type: String })
 	label!: string;
 
 	@property({ type: String })
-	value: string | number | null = null;
+	value!: string;
+	
+	@property({ type: Array })
+	items: PandaSearchItem[] | null | undefined = [];
+
+	@property({ type: String, attribute: "item-label-path", reflect: true })
+	itemLabelPath: string | null = null;
+
+	@property({ type: String, attribute: "item-value-path", reflect: true })
+	itemValuePath: string | null = null;
 
 	@property({ type: String, reflect: true })
 	placeholder: string | null = null;
@@ -41,19 +54,22 @@ export class PandaSearch extends LitElement {
 	disabled: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
-	working: boolean = false;
-
-	@property({ type: Boolean, reflect: true })
 	searching: boolean = false;
 	
+	@property({ type: Boolean, reflect: true })
+	spellcheck: boolean = false;
+
 	@property({ type: String, reflect: true })
-	icon: string = "find";
+	icon: string = "search";
+
+	@property({ type: String, attribute: "icon-position", reflect: true })
+	iconPosition: PandaSearchIconPosition = PandaSearchIconPosition.RIGHT;
 
 	@property({ type: Boolean, attribute: "hide-icon", reflect: true })
 	hideIcon: boolean = false;
 
 	@property({ type: String, attribute: "spinner-type", reflect: true })
-	spinnerType: string = "dots";
+	spinnerType: string = "google";
 
 	@property({ type: Number, attribute: "delay-interval", reflect: true })
 	delayInterval: number = 1000;
@@ -67,7 +83,10 @@ export class PandaSearch extends LitElement {
 	@query("#input-field")
 	private _inputFieldEl!: HTMLInputElement;
 
+	private _overlayEl!: PandaSearchOverlay | null;
+
 	// overlay events
+	private _postMessageEvent: (e: any) => void = this._onPostMessage.bind(this);
 
 	// debouncer
 	private _onInputDebouncer: any;
@@ -79,11 +98,13 @@ export class PandaSearch extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		// initialize debouncer
-		this._onInputDebouncer = debounce(this._triggerInputDebouncedEvent, this.delayInterval);
+		this._onInputDebouncer = debounce(this._triggerInputDebouncedEvent.bind(this), this.delayInterval);
 	}
 
-	protected updated(changedProps: PropertyValues): void {
-		
+	protected updated(_changedProps: PropertyValues): void {
+		if (_changedProps.has("items") && this.items !== undefined) {
+			console.log("%c [PANDA SEARCH] items", "font-size: 24px; color: green;", this.items);
+		}
 	}
 
 	disconnectedCallback(): void {
@@ -99,63 +120,88 @@ export class PandaSearch extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
-		let labelHtml: TemplateResult = html``;
-		let spinnerHtml: TemplateResult = html``;
-		let iconHtml: TemplateResult = html``;
+		let _labelHtml: TemplateResult = html``;
+		let _iconLeftHtml: TemplateResult = html``;
+		let _iconRightHtml: TemplateResult = html``;
 
 		if (this.label) {
-			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
+			_labelHtml = html`<div class="label" part="label">${this.label}</div>`;
 		}
 
-		// check if component is in working state
-		if (this.working) {
-			spinnerHtml = html`
-				<div class="spinner-cont" part="spinner-cont">
-					<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
-				</div>
-			`;
+		if (!this.hideIcon) {
+			const _icon = isEmpty(this.value)
+				? this.icon ?? "search"
+				: "close";
+
+			if (this.iconPosition === PandaSearchIconPosition.LEFT) {
+				_iconLeftHtml = html`
+					<div
+						class="icon"
+						part="icon"
+						@click="${this._onClearSearch}"
+					>
+						<panda-icon .icon="${_icon}"></panda-icon>
+					</div>
+				`;
+			} else {
+				_iconRightHtml = html`
+					<div
+						class="icon"
+						part="icon"
+						@click="${this._onClearSearch}"
+					>
+						<panda-icon .icon="${_icon}"></panda-icon>
+					</div>
+				`;
+			}
 		}
 
-		if (this.hideIcon) {
-			iconHtml = html`
-				<div class="icon" part="icon">
-					<panda-icon .icon="${this.icon}"></panda-icon>
-				</div>
-			`;
+		if (this.searching && !this.hideIcon) {
+			if (this.iconPosition === PandaSearchIconPosition.LEFT) {
+				_iconLeftHtml = html`
+					<div class="icon" part="icon">
+						<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
+					</div>
+				`;
+			} else {
+				_iconRightHtml = html`
+					<div class="icon" part="icon">
+						<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
+					</div>
+				`;
+			}
 		}
 
-		if (this.searching) {
-			iconHtml = html`
-				<div class="icon" part="icon">
-					<panda-spinner .spinner="${this.spinnerType}"></panda-spinner>
-				</div>
-			`;
-		}
+		const _position = this.iconPosition === PandaSearchIconPosition.LEFT && !this.hideIcon
+			? "no-padding-left"
+			: "";
 
 		return html`
-			${labelHtml}
+			${_labelHtml}
 			<div
 				id="input-cont"
 				class="input-cont"
 				part="input-cont"
 			>
 				<slot name="prefix"></slot>
+				${_iconLeftHtml}
 				<input
 					id="input-field"
-					class="input-field"
+					class="input-field ${_position}"
 					part="input-field"
 					type="text"
 					autocomplete="off"
+					.spellcheck="${this.spellcheck}"
 					.placeholder="${this.placeholder ?? ""}"
 					.value="${this.value}"
 					.disabled="${this.disabled}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
 					@input="${this._onInput}"
+					tabindex="0"
 				/>
+				${_iconRightHtml}
 				<slot name="suffix"></slot>
-				${iconHtml}
-				${spinnerHtml}
 			</div>
 		`;
 	}
@@ -165,7 +211,7 @@ export class PandaSearch extends LitElement {
 	// ================================================================================================================
 
 	private _triggerInputEvent() {
-		const event: CustomEvent<any> = new CustomEvent("on-input", {
+		const event: PandaSearchOnInputEvent = new CustomEvent("on-input", {
 			detail: {
 				value: this.value,
 			}
@@ -174,7 +220,7 @@ export class PandaSearch extends LitElement {
 	}
 
 	private _triggerInputDebouncedEvent() {
-		const event: CustomEvent<any> = new CustomEvent("on-input-debounced", {
+		const event = new CustomEvent<PandaSearchOnInputEventDetails>("on-input-debounced", {
 			detail: {
 				value: this.value,
 			}
@@ -204,8 +250,20 @@ export class PandaSearch extends LitElement {
 		this.focused = false;
 	}
 
-	private _onInput(value: string) {
+	private _onInput(event: any) {
+		this.value = event.target.value;
+		this._triggerInputEvent();
+		this._onInputDebouncer();
+	}
 
+	private _onClearSearch() {
+		this.value = "";
+		this._triggerInputEvent();
+		this._onInputDebouncer();
+	}
+
+	private _onPostMessage(event: any): void {
+		console.log("%c ⚡ [PANDA_SEARCH] (_onPostMessage)", "font-size: 24px; color: red;", event.detail);
 	}
 }
 

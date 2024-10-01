@@ -12,7 +12,7 @@ import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import PageLibrary, { page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
-import { debounce } from "@panda-wbc/panda-core";
+import { debounce } from "@panda-wbc/panda-utils";
 
 
 @customElement("core-page")

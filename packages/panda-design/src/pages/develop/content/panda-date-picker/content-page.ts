@@ -83,6 +83,21 @@ export class ContentPage extends ContentPageTemplate {
 
 					</p>
 				</div>
+
+				<panda-date-picker
+					id="date-picker"
+					style="width: 200px;"
+					placeholder="Select..."
+					theme="valid"
+					.events="${this._events}"
+					.value="${"2022-05-23"}"
+					.format="${"DD MMM YYYY"}"
+					.presetDates="${this._presetDates}"
+					.disabled="${false}"
+					@change="${this._onDateChange}"
+				>
+				</panda-date-picker>
+				
 			</div>
 		`;
 	}

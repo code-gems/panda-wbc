@@ -26,7 +26,7 @@
 	"dependencies": {
 		"lit": "^3.0.2",
 		"@panda-wbc/panda-icon": "workspace:*",
-		"@panda-wbc/panda-core": "workspace:*"
+		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",

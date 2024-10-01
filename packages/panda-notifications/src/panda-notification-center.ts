@@ -2,7 +2,7 @@
 import { PandaNotification, PandaSubscription } from "../index";
 
 // utils
-import { generateUuid } from "@panda-wbc/panda-core";
+import { generateUuid } from "@panda-wbc/panda-utils";
 
 const subscriptionList: Map<string, PandaSubscription> = new Map();
 

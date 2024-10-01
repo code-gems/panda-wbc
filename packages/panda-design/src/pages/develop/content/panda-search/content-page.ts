@@ -3,20 +3,19 @@ import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
-import { uiComponents } from "../../../../styles/styles";
 
 // components
 import "@panda-wbc/panda-search";
-import "@panda-wbc/panda-particle-banner";
 
 // utils
 import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
-
-// page details
 import { pageConfig } from "./page-config";
+
+// samples
+import "./samples/sample-1/sample-1";
 
 @page(pageConfig)
 @customElement("panda-search-content-page")
@@ -30,23 +29,44 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
-		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const _primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const _secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
+		const _tertiaryColor = getComputedStyle(this).getPropertyValue("--panda-tertiary-color");
 		const bannerConfig: PandaParticleBannerConfig = {
-			particleGroup: [{
-				particleCount: 50,
-				blur: true,
-				blurMax: 5,
-				blurMin: 2,
-				colors: [primaryColor],
-				colorOpacityVariation: 50,
-				colorSaturationVariation: 10,
-				maxSpeedX: 0.1,
-				minSpeedX: -0.1,
-				maxSpeedY: -0.5,
-				minSpeedY: -0.1,
-				sizeMax: 80,
-				sizeMin: 40
-			}]
+			particleGroup: [
+				{
+					particleCount: 30,
+					blur: true,
+					blurMax: 2,
+					blurMin: 1,
+					colors: [_primaryColor, _secondaryColor, _tertiaryColor],
+					colorOpacityVariation: 80,
+					colorSaturationVariation: 10,
+					maxSpeedX: 0.1,
+					minSpeedX: -0.1,
+					maxSpeedY: -0.5,
+					minSpeedY: -0.1,
+					sizeMax: 15,
+					sizeMin: 5,
+				},
+				{
+					particleCount: 20,
+					blur: true,
+					blurMax: 5,
+					blurMin: 2,
+					colors: [_primaryColor, _secondaryColor, _tertiaryColor],
+					colorOpacityVariation: 90,
+					// colorSaturationVariation: 20,
+
+					maxSpeedX: 0.1,
+					minSpeedX: -0.1,
+					maxSpeedY: -0.1,
+					minSpeedY: -0.1,
+					sizeMax: 120,
+					sizeMin: 80,
+
+				}
+			]
 		};
 		return html`
 			<div class="banner small particle-banner">
@@ -83,11 +103,7 @@ export class ContentPage extends ContentPageTemplate {
 				<!-- OVERVIEW -->
 				<div class="sample-cont">
 					<div class="sample">
-						<panda-search
-							label="Search:"
-							placeholder="Find..."
-						>
-						</panda-search>
+						<panda-search-sample-1></panda-search-sample-1>
 					</div>
 				</div>
 			</div>

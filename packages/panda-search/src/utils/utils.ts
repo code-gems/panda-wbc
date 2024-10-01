@@ -1,5 +1,4 @@
 // types
-import { PandaComboBoxItem } from "../../index";
 
 export const minValue = (value: number, min: number): number => value < min ? min : value;
 
@@ -8,7 +7,7 @@ export const minValue = (value: number, min: number): number => value < min ? mi
  * @returns {String} value associated with an item
  */
 export const getItemValue = (
-	item: PandaComboBoxItem,
+	item: any,
 	itemValuePath: string | null
 ): string | number | null => {
 	if (typeof item === "object") {
@@ -28,12 +27,12 @@ export const getItemValue = (
  * @returns {String} label associated with selected value
  */
 export const getItemLabel = (
-	items: PandaComboBoxItem[] | any[] | null | undefined,
+	items: any[] | any[] | null | undefined,
 	value: string | number | null,
 	itemValuePath: string | null,
 	itemLabelPath: string | null,
 	allowCustomValue: boolean = false
-): string =>  {
+): string => {
 	if (items && value !== null) {
 		const _selectedItem = items.find((item) => {
 			// check if item is an object or primitive
@@ -56,7 +55,7 @@ export const getItemLabel = (
 			if (allowCustomValue) {
 				return String(value);
 			} else {
-				console.warn("[panda-combo-box] No item match found for value:", value);				
+				console.warn("[panda-combo-box] No item match found for value:", value);
 				return "";
 			}
 		} else if (typeof _selectedItem === "object") {
@@ -77,10 +76,10 @@ export const getItemLabel = (
 }
 
 export const findItemByLabel = (
-	item: PandaComboBoxItem,
+	item: any,
 	itemLabelPath: string | null,
 	searchText: string
-): PandaComboBoxItem | null=> {
+): any | null => {
 	let _label: string;
 
 	// check if item is not a primitive
@@ -100,4 +99,8 @@ export const findItemByLabel = (
 	} else {
 		return null;
 	}
+}
+
+export const isEmpty = (value: any): boolean => {
+	return value === null || value === "" || value === undefined;
 }

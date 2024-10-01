@@ -10,7 +10,7 @@ import "./panda-counter-panel";
 // utils
 import { LitElement, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state, query } from "lit/decorators.js";
-import { debounce } from "@panda-wbc/panda-core";
+import { debounce } from "@panda-wbc/panda-utils";
 
 @customElement("panda-counter")
 export class PandaCounter extends LitElement {

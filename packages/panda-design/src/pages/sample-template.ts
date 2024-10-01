@@ -1,5 +1,5 @@
 // types
-import { LogEntry } from "panda-design-typings";
+import { EventLogger } from "../web-parts/event-logger/event-logger";
 
 const enum SampleTab {
 	DEMO,
@@ -11,11 +11,11 @@ import { scrollbar } from "@panda-wbc/panda-theme";
 import { uiComponents } from "../styles/styles";
 
 // components
-import "@panda-wbc/panda-time-ago";
+import "../web-parts/event-logger/event-logger";
 
 // utils
 import { LitElement, html, TemplateResult, CSSResultGroup } from "lit";
-import { state } from "lit/decorators.js";
+import { query, state } from "lit/decorators.js";
 
 export abstract class SampleTemplate extends LitElement {
 	// css styles
@@ -30,12 +30,11 @@ export abstract class SampleTemplate extends LitElement {
 	public customStyles!: CSSResultGroup;
 
 	// state props
-
-	@state()
-	private _logs: LogEntry[] = [];
-
 	@state()
 	private _selectedTab: SampleTab = SampleTab.DEMO;
+
+	@query("#logger")
+	private _eventLoggerEl!: EventLogger;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -66,28 +65,12 @@ export abstract class SampleTemplate extends LitElement {
 				<div class="content">
 					<div class="tab-cont">
 						${this.renderDemo()}
-						${this._renderLogs()}
+						<event-logger id="logger"></event-logger>
 					</div>
 					<div class="tab-cont">
 						${this._renderCodeSample()}
 					</div>
 				</div>
-			</div>
-		`;
-	}
-
-	private _renderLogs(): TemplateResult {
-		const _logsHtml: TemplateResult[] = [];
-		this._logs.forEach((log) => {
-			_logsHtml.push(html`
-				<div class="logs">
-					
-				</div>
-			`);
-		});
-		return html`
-			<div class="logs">
-				${_logsHtml}
 			</div>
 		`;
 	}
@@ -102,10 +85,22 @@ export abstract class SampleTemplate extends LitElement {
 	// API ============================================================================================================
 	// ================================================================================================================
 
-	public addLog(log: LogEntry): void {
-		this._logs.push(log);
+	public log(message: string): void {
+		this._eventLoggerEl.log(message);
 	}
 
+	public warn(message: string): void {
+		this._eventLoggerEl.warn(message);
+	}
+
+	public error(message: string): void {
+		this._eventLoggerEl.error(message);
+	}
+
+	public clear(): void {
+		this._eventLoggerEl.clear();
+	}
+	
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================

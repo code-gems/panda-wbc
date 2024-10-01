@@ -18,9 +18,9 @@ export class PandaTextField extends LitElement {
 		return styles;
 	}
 
-	static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
-	@property({ type: String, attribute: true, reflect: true })
+	@property({ type: String, reflect: true })
 	theme!: string;
 
 	@property({ type: String })
@@ -32,32 +32,32 @@ export class PandaTextField extends LitElement {
 	@property({ type: String })
 	placeholder: string | null = null;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	autofocus: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	autoselect: boolean = false;
 
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	spellcheck: boolean = false;
 
-	@property({ type: Boolean, attribute: true })
+	@property({ type: Boolean })
 	mandatory: boolean = false;
 
 	@property({ type: String, attribute: "spinner-type" })
 	spinnerType: string = "dots";
 
 	// view props
-	@property({ type: Boolean, attribute: true, reflect: true })
+	@property({ type: Boolean, reflect: true })
 	private _mandatory: boolean = false;
 
 	// elements
@@ -89,16 +89,14 @@ export class PandaTextField extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
+		const modCss: string[] = [];
 		let labelHtml: TemplateResult = html``;
 		let spinnerHtml: TemplateResult = html``;
 
 		// generate label if defined
 		if (this.label) {
 			labelHtml = html`
-				<div
-					class="label"
-					part="label"
-				>
+				<div class="label" part="label">
 					${this.label}
 				</div>
 			`;
@@ -107,10 +105,7 @@ export class PandaTextField extends LitElement {
 		// check if component is in busy state
 		if (this.busy) {
 			spinnerHtml = html`
-				<div
-					class="spinner-cont"
-					part="spinner-cont"
-				>
+				<div class="spinner-cont" part="spinner-cont">
 					<panda-spinner
 						part="spinner"
 						spinner="${this.spinnerType}"
@@ -119,12 +114,19 @@ export class PandaTextField extends LitElement {
 				</div>
 			`;
 		}
-		
+
+		if (this.disabled) {
+			modCss.push("disabled");
+		}
+		if (this.mandatory) {
+			modCss.push("mandatory");
+		}
+
 		return html`
 			${labelHtml}
 			<div
-				class="text-field ${this.disabled ? "disabled" : ""} ${this._mandatory ? "mandatory" : ""}"
-				part="text-field"
+				class="text-field ${modCss.join(" ")}"
+				part="text-field ${modCss.join(" ")}"
 				theme="${this.theme}"
 			>
 				<slot name="prefix"></slot>
@@ -132,7 +134,7 @@ export class PandaTextField extends LitElement {
 					type="text"
 					id="input"
 					class="input"
-					part="input"
+					part="input ${modCss.join(" ")}"
 					.placeholder="${this.placeholder ?? ""}"
 					.value="${this.value ?? ""}"
 					.disabled="${this.disabled}"

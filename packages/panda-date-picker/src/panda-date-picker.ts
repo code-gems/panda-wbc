@@ -24,7 +24,7 @@ import {
 	parseDate,
 	isDateDisabled
 } from "./utils/utils";
-import { debounce, Debouncer } from "@panda-wbc/panda-core";
+import { debounce, Debouncer } from "@panda-wbc/panda-utils";
 
 @customElement("panda-date-picker")
 export class PandaDatePicker extends LitElement {

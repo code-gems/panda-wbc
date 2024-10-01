@@ -1,28 +1,19 @@
-export type PandaComboBoxChange = {
-	value: string | number | any;
+export const enum PandaSearchIconPosition {
+	LEFT = "left",
+	RIGHT = "right",
 }
 
-export type ElementDetails = {
-	width: number;
-	height: number;
-	top: number;
-	left: number;
-	bottom: number;
-	right: number;
+export type PandaSearchOnInputEventDetails = {
+	value: string;
 }
 
-export interface PandaComboBoxItem {
-	label?: string;
-	value?: string | number | any;
-
-	group?: string;
-	[propertyName: string]: string | number | any;
+export type PandaSearchItem = {
+	label: string;
+	value: string;
 }
 
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export interface PandaComboBoxChangeEvent {
-	detail: PandaComboBoxChange;
-}
+export interface PandaSearchOnInputEvent extends CustomEvent<PandaSearchOnInputEventDetails> {}

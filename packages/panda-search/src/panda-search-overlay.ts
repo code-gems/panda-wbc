@@ -1,5 +1,4 @@
 // types
-import { ElementDetails, PandaComboBoxItem } from "../index";
 
 interface ParsedComboBoxItem {
 	index: number;
@@ -33,7 +32,7 @@ export class PandaSearchOverlay extends LitElement {
 	value: string | number | null = null;
 	
 	@property({ type: Array })
-	items: PandaComboBoxItem[] | null | undefined = [];
+	items: any[] | null | undefined = [];
 
 	@property({ type: String, attribute: "item-label-path" })
 	itemLabelPath: string | null = null;
@@ -44,7 +43,7 @@ export class PandaSearchOverlay extends LitElement {
 	@property({ type: String })
 	searchText!: string | null;
 
-	parentDetails!: ElementDetails;
+	parentDetails!: any;
 
 	// view props
 	private _initialized: boolean = false;
