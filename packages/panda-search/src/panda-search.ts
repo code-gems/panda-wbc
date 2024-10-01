@@ -1,6 +1,12 @@
 // type
-// import { PandaComboBoxChange, PandaComboBoxChangeEvent, ElementDetails, PandaComboBoxItem } from "../index";
-import { PandaSearchIconPosition, PandaSearchItem, PandaSearchOnInputEvent, PandaSearchOnInputEventDetails } from "../index";
+import {
+	ElementDetails,
+	PandaSearchIconPosition,
+	PandaSearchItem,
+	PandaSearchOnInputEvent,
+	PandaSearchOnInputEventDetails,
+	PostMessageAction,
+} from "../index";
 import { PandaSearchOverlay } from "./panda-search-overlay";
 
 // style
@@ -13,9 +19,9 @@ import "./panda-search-overlay";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { debounce } from "@panda-wbc/panda-utils";
-import { isEmpty } from "./utils/utils";
+import { isEmpty, minValue } from "./utils/utils";
 
 @customElement("panda-search")
 export class PandaSearch extends LitElement {
@@ -77,7 +83,12 @@ export class PandaSearch extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	autoselect: boolean = false;
 
-	// private props
+	// state props
+	@property({ type: Boolean, reflect: true })
+	private opened: boolean = false;
+
+	@state()
+	private _selectedItem: any = null;
 
 	// elements
 	@query("#input-field")
@@ -209,6 +220,44 @@ export class PandaSearch extends LitElement {
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
+	
+	private _getElementDetails(): ElementDetails {
+		const rect = this._inputFieldEl.getBoundingClientRect();
+		const top = minValue(rect.top + window.scrollY, 0);
+		const left = minValue(rect.left + window.scrollX, 0);
+		const bottom = minValue(rect.bottom + window.scrollY, 0);
+		const right = minValue(rect.right + window.scrollX, 0);
+
+		return {
+			width: rect.width,
+			height: rect.height,
+			top,
+			left,
+			bottom,
+			right,
+		};
+	}
+
+	/** Open overlay and attach it to document body. */
+	private _openOverlay() {
+		if (!this._overlayEl && !this.disabled) {
+			console.log("%c ⚡ [PANDA SEARCH] _openOverlay", "font-size: 24px; color: orange;");
+
+			// create overlay element
+			this._overlayEl = document.createElement("panda-search-overlay");
+			// add event listeners
+			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
+			// overlay props
+			this._overlayEl.items = this.items;
+			this._overlayEl.value = this.value;
+			this._overlayEl.itemLabelPath = this.itemLabelPath;
+			this._overlayEl.itemValuePath = this.itemValuePath;
+			this._overlayEl.parentDetails = this._getElementDetails();
+			// append element to document body
+			document.body.appendChild(this._overlayEl);
+			this.opened = true;
+		}
+	}
 
 	private _triggerInputEvent() {
 		const event: PandaSearchOnInputEvent = new CustomEvent("on-input", {
@@ -223,6 +272,15 @@ export class PandaSearch extends LitElement {
 		const event = new CustomEvent<PandaSearchOnInputEventDetails>("on-input-debounced", {
 			detail: {
 				value: this.value,
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
+	private _triggerChangeEvent() {
+		const event = new CustomEvent<PandaSearchOnInputEventDetails>("change", {
+			detail: {
+				value: this._selectedItem,
 			}
 		});
 		this.dispatchEvent(event);
@@ -262,8 +320,33 @@ export class PandaSearch extends LitElement {
 		this._onInputDebouncer();
 	}
 
+	private _onClose(): void {
+		if (this._overlayEl) {
+			// remove event listeners
+			this._overlayEl.removeEventListener("post-message", this._postMessageEvent);
+			// clean up
+			document.body.removeChild(this._overlayEl);
+			this._overlayEl = null;
+			this.opened = false;
+		}
+	}
+
 	private _onPostMessage(event: any): void {
+		const { action, value } = event.detail;
 		console.log("%c ⚡ [PANDA_SEARCH] (_onPostMessage)", "font-size: 24px; color: red;", event.detail);
+
+		switch (action) {
+			case PostMessageAction.CHANGE:
+				this._onChange(value);
+				break;
+			case PostMessageAction.CLOSE:
+				this._onClose();
+				break;
+		}
+	}
+	
+	private _onChange(value: any): void {
+		this._selectedItem = value;
 	}
 }
 

@@ -43,6 +43,8 @@ class Sample extends SampleTemplate {
 							icon-position="left"
 							@on-input="${this._onSearch}"
 							@on-input-debounced="${this._onSearchDebounced}"
+							@focus="${this._onFocus}"
+							@blur="${this._onBlur}"
 							?searching="${this._searchInProgress}"
 						>
 						</panda-search>
@@ -81,6 +83,14 @@ class Sample extends SampleTemplate {
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _onFocus(): void {
+		this.log("(_onFocus)");
+	}
+
+	private _onBlur(): void {
+		this.log("(_onBlur)");
+	}
 
 	private _onSearch(): void {
 		this._searchResults = [];
