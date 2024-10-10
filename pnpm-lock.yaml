@@ -279,6 +279,9 @@ importers:
       '@panda-wbc/panda-full-page':
         specifier: workspace:*
         version: link:../panda-full-page
+      '@panda-wbc/panda-grid-layout':
+        specifier: workspace:*
+        version: link:../panda-grid-layout
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
@@ -406,6 +409,9 @@ importers:
 
   packages/panda-dialog:
     dependencies:
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
       lit:
         specifier: ^3.0.2
         version: 3.0.2

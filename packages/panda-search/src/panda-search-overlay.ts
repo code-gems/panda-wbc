@@ -13,11 +13,7 @@ import { styles } from "./styles/overlay-styles";
 // utils
 import { LitElement, html, PropertyValues, TemplateResult, PropertyValueMap } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import {
-	getItemLabel,
-	getItemValue,
-	minValue
-} from "./utils/utils";
+import { minValue } from "./utils/utils";
 
 @customElement("panda-search-overlay")
 export class PandaSearchOverlay extends LitElement {
@@ -248,24 +244,24 @@ export class PandaSearchOverlay extends LitElement {
 
 		if (this.items) {
 			this.items.forEach((item) => {
-				const _value = getItemValue(item, this.itemValuePath);
-				const _label = getItemLabel(
-					this.items,
-					_value,
-					this.itemValuePath,
-					this.itemLabelPath
-				);
+				// const _value = getItemValue(item, this.itemValuePath);
+				// const _label = getItemLabel(
+				// 	this.items,
+				// 	_value,
+				// 	this.itemValuePath,
+				// 	this.itemLabelPath
+				// );
 
-				// check if user is searching and if we have matches
-				if (!this.searchText || _label.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())) {
-					this._parsedItems.push({
-						index,
-						active: this.value === _value,
-						value: _value,
-						label: _label,
-					});
-					index++;
-				}
+				// // check if user is searching and if we have matches
+				// if (!this.searchText || _label.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())) {
+				// 	this._parsedItems.push({
+				// 		index,
+				// 		active: this.value === _value,
+				// 		value: _value,
+				// 		label: _label,
+				// 	});
+				// 	index++;
+				// }
 			});
 		}
 	}

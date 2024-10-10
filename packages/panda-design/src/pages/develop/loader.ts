@@ -12,6 +12,7 @@ import "./content/panda-date-picker/content-page";
 import "./content/panda-dialog/content-page";
 import "./content/panda-flag/content-page";
 import "./content/panda-full-page/content-page";
+import "./content/panda-grid-layout/content-page";
 import "./content/panda-icon/content-page";
 import "./content/panda-line-chart/content-page";
 import "./content/panda-menu-bar/content-page";

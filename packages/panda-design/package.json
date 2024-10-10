@@ -31,6 +31,7 @@
 		"@panda-wbc/panda-dialog": "workspace:*",
 		"@panda-wbc/panda-flag": "workspace:*",
 		"@panda-wbc/panda-full-page": "workspace:*",
+		"@panda-wbc/panda-grid-layout": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-menu-bar": "workspace:*",
 		"@panda-wbc/panda-multi-input": "workspace:*",
