@@ -2,16 +2,28 @@
 import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
 import { PandaCheckboxChangeEvent } from "@panda-wbc/panda-checkbox";
 
-const enum BLOCK_SIZE {
+const enum ScreenType {
+	HOME,
+	OPTIONS,
+	PAUSE,
+	GAME_OVER,
+}
+
+const enum BlockSize {
 	NORMAL = "NORMAL",
 	SMALL = "SMALL",
 	TINY = "TINY",
 }
 
-const enum BLOCK_TYPE {
+const enum BlockType {
 	CLASSIC = "CLASSIC",
 	WILD = "WILD",
 	EXTREME = "EXTREME",
+}
+
+type GridCell = {
+	filled: boolean;
+	color: string;
 }
 
 export type Piece = {
@@ -44,18 +56,18 @@ export class PandaTetris extends LitElement {
 		return styles;
 	}
 
-	private _blockSize = BLOCK_SIZE.NORMAL;
+	private _blockSize = BlockSize.NORMAL;
 
-	private _blockSizeList: BLOCK_SIZE[] = [
-		BLOCK_SIZE.NORMAL,
-		BLOCK_SIZE.SMALL,
-		BLOCK_SIZE.TINY,
+	private _blockSizeList: BlockSize[] = [
+		BlockSize.NORMAL,
+		BlockSize.SMALL,
+		BlockSize.TINY,
 	];
 
 	@state()
-	private _selectedBlockTypes = new Set<BLOCK_TYPE>([BLOCK_TYPE.CLASSIC]);
+	private _selectedBlockTypes = new Set<BlockType>([BlockType.CLASSIC]);
 
-	private _grid: number[][] = [];
+	private _grid: GridCell[][] = [];
 
 	@state()
 	private _pieces: number[][][] = [...classicBlocks];
@@ -91,16 +103,23 @@ export class PandaTetris extends LitElement {
 	private _gamePaused: boolean = false;
 
 	@state()
-	private _showSettings: boolean = false;
+	private _showOptions: boolean = false;
 
 	@state()
 	private _gameOver: boolean = false;
+	
+	@state()
+	private _showScreen: ScreenType = ScreenType.HOME;
+
+	private readonly _computedStyle: CSSStyleDeclaration = getComputedStyle(this);
+
+	private _borderColor!: string;
 
 	private _ctx!: CanvasRenderingContext2D;
 
 	private _metadata: any = {
-		blockType: [BLOCK_TYPE.CLASSIC],
-		blockSize: BLOCK_SIZE.NORMAL,
+		blockType: [BlockType.CLASSIC],
+		blockSize: BlockSize.NORMAL,
 		topScore: 0,
 		topBlocksPlaced: 0,
 	};
@@ -123,6 +142,8 @@ export class PandaTetris extends LitElement {
 		this._ctx = this._canvasEl.getContext('2d')!;
 		// add events
 		document.addEventListener("keydown", this._onKeyPress.bind(this));
+		// get colors
+		this._borderColor = this._computedStyle.getPropertyValue("--panda-border-color");
 	}
 
 	disconnectedCallback(): void {
@@ -141,7 +162,7 @@ export class PandaTetris extends LitElement {
 		return html`
 			<div class="menu-cont">
 				${this._renderHomeScreen()}
-				${this._renderSettings()}
+				${this._renderOptions()}
 				${this._renderPauseScreen()}
 				${this._renderGameOverScreen()}
 				<canvas id="game" width="300" height="600"></canvas>
@@ -161,19 +182,19 @@ export class PandaTetris extends LitElement {
 					<panda-button @click="${this._onNewGame}">
 						NEW GAME
 					</panda-button>
-					<panda-button @click="${this._toggleShowSettings}">
-						SETTINGS
+					<panda-button @click="${this._toggleShowOptions}">
+						OPTIONS
 					</panda-button>
 				</div>
 			`;
 		}
 	}
 
-	private _renderSettings(): TemplateResult | void {
-		if (this._showSettings) {
+	private _renderOptions(): TemplateResult | void {
+		if (this._showOptions) {
 			return html`
 				<div class="menu">
-					<h1 class="header">SETTINGS</h1>
+					<h1 class="header">OPTIONS</h1>
 
 					<!-- BLOCK SIZE -->
 					<panda-select
@@ -190,26 +211,26 @@ export class PandaTetris extends LitElement {
 						@change="${this._onChangeBlockType}"
 					>
 						<panda-checkbox
-							.name="${BLOCK_TYPE.CLASSIC}"
-							.checked="${this._selectedBlockTypes.has(BLOCK_TYPE.CLASSIC)}"
+							.name="${BlockType.CLASSIC}"
+							.checked="${this._selectedBlockTypes.has(BlockType.CLASSIC)}"
 						>
 							DEFAULT
 						</panda-checkbox>
 						<panda-checkbox
-							.name="${BLOCK_TYPE.WILD}"
-							.checked="${this._selectedBlockTypes.has(BLOCK_TYPE.WILD)}"
+							.name="${BlockType.WILD}"
+							.checked="${this._selectedBlockTypes.has(BlockType.WILD)}"
 						>
 							WILD
 						</panda-checkbox>
 						<panda-checkbox
-							.name="${BLOCK_TYPE.EXTREME}"
-							.checked="${this._selectedBlockTypes.has(BLOCK_TYPE.EXTREME)}"
+							.name="${BlockType.EXTREME}"
+							.checked="${this._selectedBlockTypes.has(BlockType.EXTREME)}"
 						>
 							EXTREME
 						</panda-checkbox>
 					</panda-checkbox-group>
 
-					<panda-button @click="${() => this._toggleShowSettings(false)}">
+					<panda-button @click="${() => this._toggleShowOptions(false)}">
 						BACK
 					</panda-button>
 				</div>
@@ -239,12 +260,16 @@ export class PandaTetris extends LitElement {
 			return html`
 				<div class="menu">
 					<h1 class="header">GAME OVER</h1>
+					<p>
+						Score: ${this._score}<br />
+						Blocks:${this._blocksPlaced}
+					</p>
 
 					<panda-button @click="${this._onNewGame}">
 						NEW GAME
 					</panda-button>
-					<panda-button @click="${this._toggleShowSettings}">
-						OPTIONS
+					<panda-button @click="${this._onEndGame}">
+						BACK
 					</panda-button>
 				</div>
 			`;
@@ -261,13 +286,13 @@ export class PandaTetris extends LitElement {
 			const _metadataString = localStorage.getItem("__TETRIS_METADATA");
 			if (_metadataString) {
 				this._metadata = JSON.parse(_metadataString);
-				
+
 				this._blockSize = this._metadata.blockSize;
 				this._applyBlockSize();
-				
+
 				this._selectedBlockTypes = new Set([...this._metadata.blockType]);
 				this._applyBlockTypes();
-				
+
 				// load top score
 				this._topScore = this._metadata.topScore;
 				this._topBlocksPlaced = this._metadata.topBlocksPlaced;
@@ -280,14 +305,14 @@ export class PandaTetris extends LitElement {
 			blockType: [...this._selectedBlockTypes.values()],
 			blockSize: this._blockSize,
 			topScore: this._topScore,
-			topBlocksPlaced: this._topBlocksPlaced,	
+			topBlocksPlaced: this._topBlocksPlaced,
 		};
 		console.log("%c (SAVE)", "font-size: 24px; color: green;", _metadata);
 		localStorage.setItem("__TETRIS_METADATA", JSON.stringify(_metadata));
 	}
 
-	private _createGrid(): number[][] {
-		return Array.from({ length: this._gridRows }, () => Array(this._gridColumns).fill(0));
+	private _createGrid(): GridCell[][] {
+		return Array.from({ length: this._gridRows }, () => Array(this._gridColumns).fill({ filled: false, color: "" }));
 	}
 
 	private _getRandomPiece(): Piece {
@@ -353,12 +378,12 @@ export class PandaTetris extends LitElement {
 
 	private _drawBoard(): void {
 		this._grid.forEach((row, y) => {
-			row.forEach((value, x) => {
-				if (value !== 0) {
+			row.forEach(({ filled, color }, x) => {
+				if (filled) {
 					this._drawSquare(
 						x,
 						y,
-						"#0c3051"
+						color
 					);
 				}
 			});
@@ -384,7 +409,8 @@ export class PandaTetris extends LitElement {
 					continue;
 				}
 
-				if (this._grid[newY][newX] !== 0) {
+				const cell = this._grid[newY][newX];
+				if (cell.filled) {
 					return true;
 				}
 			}
@@ -436,7 +462,10 @@ export class PandaTetris extends LitElement {
 		this._currentPiece.shape.forEach((row, y) => {
 			row.forEach((value, x) => {
 				if (value !== 0) {
-					this._grid[this._currentY + y][this._currentX + x] = value;
+					this._grid[this._currentY + y][this._currentX + x] = {
+						filled: !!value,
+						color: this._currentPiece.color,
+					};
 				}
 			});
 		});
@@ -446,7 +475,7 @@ export class PandaTetris extends LitElement {
 	private _removeFullRows(): void {
 		const rowsToRemove: number[] = [];
 		this._grid.forEach((row, y) => {
-			if (row.every(value => value !== 0)) {
+			if (row.every(({ filled }) => filled)) {
 				rowsToRemove.push(y);
 			}
 		});
@@ -460,6 +489,25 @@ export class PandaTetris extends LitElement {
 	private _draw(): void {
 		// clear board
 		this._ctx.clearRect(0, 0, this._canvasEl.width, this._canvasEl.height);
+
+		// draw grid
+		this._ctx.strokeStyle = this._borderColor;
+		for (let x = 0; x < this._gridColumns; x++) {
+			const _canvasHeight = this._gridRows * this._blockSizePx;
+			const _currentX = x * this._blockSizePx;
+			this._ctx.moveTo(_currentX, 0);
+			this._ctx.lineTo(_currentX, _canvasHeight);
+		}
+		// draw row lines
+		for (let y = 0; y < this._gridRows; y++) {
+			const _canvasWidth = this._gridColumns * this._blockSizePx;
+			const _currentY = y * this._blockSizePx;
+
+			this._ctx.moveTo(0, _currentY);
+			this._ctx.lineTo(_canvasWidth, _currentY);
+		}
+		this._ctx.stroke();
+
 		// show score
 		this._ctx.filter = "blur(0px)";
 		this._ctx.fillStyle = "#3d4043";
@@ -496,19 +544,19 @@ export class PandaTetris extends LitElement {
 	private _applyBlockSize(): void {
 		// apply block size change
 		switch (this._blockSize) {
-			case BLOCK_SIZE.SMALL:
+			case BlockSize.SMALL:
 				this._gridColumns = 20;
 				this._gridRows = 40;
 				this._blockSizePx = 15;
 				break;
 
-			case BLOCK_SIZE.TINY:
+			case BlockSize.TINY:
 				this._gridColumns = 30;
 				this._gridRows = 60;
 				this._blockSizePx = 10;
 				break;
 
-			case BLOCK_SIZE.NORMAL:
+			case BlockSize.NORMAL:
 			default:
 				this._gridColumns = 10;
 				this._gridRows = 20;
@@ -516,24 +564,24 @@ export class PandaTetris extends LitElement {
 				break;
 		}
 	}
-	
+
 	private _applyBlockTypes(): void {
 		// reset block list
 		this._pieces = [];
-		if (this._selectedBlockTypes.has(BLOCK_TYPE.CLASSIC)) {
+		if (this._selectedBlockTypes.has(BlockType.CLASSIC)) {
 			this._pieces = this._pieces.concat(classicBlocks);
 		}
-		if (this._selectedBlockTypes.has(BLOCK_TYPE.WILD)) {
+		if (this._selectedBlockTypes.has(BlockType.WILD)) {
 			this._pieces = this._pieces.concat(wildBlocks);
 		}
-		if (this._selectedBlockTypes.has(BLOCK_TYPE.EXTREME)) {
+		if (this._selectedBlockTypes.has(BlockType.EXTREME)) {
 			this._pieces = this._pieces.concat(extremeBlocks);
 		}
 
 		// [VALIDATION]: add classic pieces if nothing was selected
 		if (this._pieces.length === 0) {
 			this._pieces = [...classicBlocks];
-			this._selectedBlockTypes = new Set<BLOCK_TYPE>([BLOCK_TYPE.CLASSIC]);
+			this._selectedBlockTypes = new Set<BlockType>([BlockType.CLASSIC]);
 		}
 	}
 
@@ -556,7 +604,7 @@ export class PandaTetris extends LitElement {
 		this._gameStarted = true;
 		this._gameOver = false;
 		this._gamePaused = false;
-		this._showSettings = false;
+		this._showOptions = false;
 		// start game
 		this._gameLoop();
 	}
@@ -571,7 +619,7 @@ export class PandaTetris extends LitElement {
 		this._gameStarted = false;
 		this._gameOver = false;
 		this._gamePaused = false;
-		this._showSettings = false;
+		this._showOptions = false;
 	}
 
 	private _onToggleGamePause(): void {
@@ -579,12 +627,12 @@ export class PandaTetris extends LitElement {
 		this._gameLoop();
 	}
 
-	private _toggleShowSettings(show: boolean = true): void {
-		this._showSettings = show;
+	private _toggleShowOptions(show: boolean = true): void {
+		this._showOptions = show;
 	}
 
 	private _onChangeBlockSize(event: PandaSelectChangeEvent) {
-		this._blockSize = event.detail.value ?? BLOCK_SIZE.NORMAL;
+		this._blockSize = event.detail.value ?? BlockSize.NORMAL;
 		this._applyBlockSize();
 		// save settings
 		this._saveMetadata();
@@ -595,25 +643,25 @@ export class PandaTetris extends LitElement {
 		const _optionEnabled = event.detail.checked;
 
 		// toggle block types
-		if (_optionName === BLOCK_TYPE.CLASSIC) {
+		if (_optionName === BlockType.CLASSIC) {
 			if (_optionEnabled) {
-				this._selectedBlockTypes.add(BLOCK_TYPE.CLASSIC);
+				this._selectedBlockTypes.add(BlockType.CLASSIC);
 			} else {
-				this._selectedBlockTypes.delete(BLOCK_TYPE.CLASSIC);
+				this._selectedBlockTypes.delete(BlockType.CLASSIC);
 			}
 		}
-		if (_optionName === BLOCK_TYPE.WILD) {
+		if (_optionName === BlockType.WILD) {
 			if (_optionEnabled) {
-				this._selectedBlockTypes.add(BLOCK_TYPE.WILD);
+				this._selectedBlockTypes.add(BlockType.WILD);
 			} else {
-				this._selectedBlockTypes.delete(BLOCK_TYPE.WILD);
+				this._selectedBlockTypes.delete(BlockType.WILD);
 			}
 		}
-		if (_optionName === BLOCK_TYPE.EXTREME) {
+		if (_optionName === BlockType.EXTREME) {
 			if (_optionEnabled) {
-				this._selectedBlockTypes.add(BLOCK_TYPE.EXTREME);
+				this._selectedBlockTypes.add(BlockType.EXTREME);
 			} else {
-				this._selectedBlockTypes.delete(BLOCK_TYPE.EXTREME);
+				this._selectedBlockTypes.delete(BlockType.EXTREME);
 			}
 		}
 		this._applyBlockTypes();

@@ -83,6 +83,18 @@ export const wildBlocks = [
 		[0, 1],
 		[1, 1],
 	],
+	// large L - block
+	[
+		[1, 1, 1],
+		[1, 0, 0],
+		[1, 0, 0],
+	],
+	// large L - block (reversed)
+	[
+		[1, 1, 1],
+		[0, 0, 1],
+		[0, 0, 1],
+	],
 ];
 
 // extreme TETRIS blocks (inc. reversed)
@@ -124,5 +136,18 @@ export const extremeBlocks = [
 	[
 		[1, 1, 1, 1],
 		[0, 0, 0, 1],
+	],
+
+	// big box
+	[
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+	],
+	
+	// long pipe
+	[
+		[1, 1, 1, 1, 1],
 	],
 ];
