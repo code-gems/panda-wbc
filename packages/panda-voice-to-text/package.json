@@ -1,0 +1,42 @@
+{
+	"name": "@panda-wbc/panda-voice-to-text",
+	"version": "1.0.0",
+	"description": "Lit based web component - voice to text",
+	"main": "lib/panda-voice-to-text.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"find",
+		"search",
+		"suggestions",
+		"lit",
+		"lit-element",
+		"panda-wbc",
+		"ui component",
+		"web component",
+		"voice recognition",
+		"audio to text",
+		"voice to text"
+	],
+	"author": "code-gems",
+	"license": "ISC",
+	"dependencies": {
+		"lit": "^3.0.2",
+		"@panda-wbc/panda-icon": "workspace:*"
+	},
+	"devDependencies": {
+		"rimraf": "^3.0.2",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts"
+}

@@ -62,6 +62,7 @@
 		"@panda-wbc/panda-tooltip": "workspace:*",
 		"@panda-wbc/panda-upload": "workspace:*",
 		"@panda-wbc/panda-utils": "workspace:*",
+		"@panda-wbc/panda-voice-to-text": "workspace:*",
 		"lit": "^3.0.2",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"

@@ -39,3 +39,4 @@ import "./content/panda-toast/content-page";
 import "./content/panda-toggle/content-page";
 import "./content/panda-tooltip/content-page";
 import "./content/panda-upload/content-page";
+import "./content/panda-voice-to-text/content-page";

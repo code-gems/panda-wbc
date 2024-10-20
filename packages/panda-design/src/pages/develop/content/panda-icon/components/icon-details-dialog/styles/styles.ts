@@ -20,7 +20,21 @@ export const styles = css`
 		gap: var(--panda-padding-m);
 	}
 
-	.layout .icon {}
+	.layout .icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100px;
+		height: 100px;
+		overflow: hidden;
+
+		border-radius: var(--panda-border-radius-m);
+		background: url(/transparent.png);
+		box-shadow: var(--panda-elevation-m);
+
+		--panda-icon-width: var(--panda-icon-size-hero);
+		--panda-icon-height: var(--panda-icon-size-hero);
+	}
 
 	.layout .icon .label {}
 	

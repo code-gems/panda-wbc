@@ -15,7 +15,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "help",						iconPack: "default", group: ["System"], keywords: ["interface", "message"] },
 		{ name: "help-outline",				iconPack: "default", group: ["System"], keywords: ["interface", "message", "outline"] },
 		{ name: "settings",					iconPack: "default", group: ["System"], keywords: ["interface", "gear"] },
-		{ name: "more",						iconPack: "default", group: ["System"], keywords: ["interface", "dots", "options", "menu"] },
+		{ name: "more", 					iconPack: "default", group: ["System"], keywords: ["interface", "options", "menu", "dots", "horizontal"] },
+		{ name: "more-v", 					iconPack: "default", group: ["System"], keywords: ["interface", "options", "menu", "dots", "vertical"] },
 		{ name: "check", 					iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
 		{ name: "check-circle", 			iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
 		{ name: "check-circle-outline",		iconPack: "default", group: ["System"], keywords: ["interface", "checkbox", "completed", "confirmation", "success", "done"] },
@@ -133,6 +134,12 @@ export const getIconListDetails = (): IconDetails[] => {
 		
 		// AV Icon Pack =========================================
 		{ name: "full-screen", 				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["expand"] },
+		{ name: "mic",						iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["mic", "audio", "voice", "speech", "sound", "record"] },
+		{ name: "mic-off",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["mic", "audio", "voice", "speech", "sound", "record", "off", "disabled", "mute"] },
+		{ name: "mic-outline",				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["mic", "outline", "audio", "voice", "speech", "sound", "record"] },
+		{ name: "mic-off-outline",			iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["mic", "outline", "audio", "voice", "speech", "sound", "record", "off", "disabled", "mute"] },
+		{ name: "voice",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "record"] },
+		{ name: "voice-mute",				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "record", "off", "disabled", "mute"] },
 
 		// Map Icon Pack ========================================
 

@@ -372,6 +372,9 @@ importers:
       '@panda-wbc/panda-utils':
         specifier: workspace:*
         version: link:../panda-utils
+      '@panda-wbc/panda-voice-to-text':
+        specifier: workspace:*
+        version: link:../panda-voice-to-text
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -960,6 +963,22 @@ importers:
         version: 4.9.5
 
   packages/panda-utils:
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-voice-to-text:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
     devDependencies:
       rimraf:
         specifier: ^3.0.2

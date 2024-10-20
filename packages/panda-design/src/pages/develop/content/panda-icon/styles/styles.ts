@@ -79,6 +79,7 @@ export const styles = css`
 
 	.icon-list .list-item .icon {
 		display: flex;
+		width: 40px;
 		height: 40px;
 		justify-content: center;
 		align-items: center;
