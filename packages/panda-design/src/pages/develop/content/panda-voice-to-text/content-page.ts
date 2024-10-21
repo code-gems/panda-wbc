@@ -29,11 +29,11 @@ export class ContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 
@@ -80,9 +80,11 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-full">
 
 									<panda-voice-to-text
+										@speech-start="${this._onSpeechStart}"
 										@speech-end="${this._onSpeechEnd}"
 									>
 									</panda-voice-to-text>
+									<hr />
 									<div id="output"></div>
 								</div>
 							</div>
@@ -177,9 +179,13 @@ export class ContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onSpeechEnd(event: PandaVoiceToTextSpeechEndEvent) {
-		console.log("[DEMO] text:", event.detail.text);
+	private _onSpeechStart(): void {
+		console.log("%c [DEMO] (_onSpeechStart):", "font-size: 16px; color: green;");
+		this._outputEl.innerHTML = "";
+	}
 
+	private _onSpeechEnd(event: PandaVoiceToTextSpeechEndEvent): void {
+		console.log("%c [DEMO] (_onSpeechEnd) text:", "font-size: 16px; color: green;", event.detail.text);
 		this._outputEl.innerHTML = event.detail.text;
 	}
 }

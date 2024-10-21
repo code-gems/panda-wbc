@@ -35,9 +35,15 @@ export class PandaVoiceToText extends LitElement {
 	@property({ type: Boolean, attribute: "no-interim-results", reflect: true })
 	noInterimResults: boolean = false;
 
+	@property({ type: Boolean, reflect: true })
+	disabled: boolean = false;
+
 	// state props
 	@state()
 	private _browserSupport: boolean = false;
+
+	@state()
+	private _micPermission: boolean = false;
 
 	@state()
 	private _listening: boolean = false;
@@ -59,6 +65,8 @@ export class PandaVoiceToText extends LitElement {
 		super.connectedCallback();
 		// check browser support for speech recognition and initialize
 		this._initialize();
+		// check microphone permission
+		this._checkMicrophonePermission();
 	}
 
 	// ================================================================================================================
@@ -70,10 +78,18 @@ export class PandaVoiceToText extends LitElement {
 			? this.icon
 			: this.noSupportIcon;
 
+		const _cssMod: string[] = [];
+		if (this._listening) {
+			_cssMod.push("active");
+		}
+		if (this.disabled || !this._micPermission) {
+			_cssMod.push("disabled");
+		}
+
 		return html`
 			<div
-				class="toggle-btn"
-				part="toggle-btn ${this._listening ? "on" : "off"}"
+				class="toggle-btn ${_cssMod.join(" ")}"
+				part="toggle-btn ${_cssMod.join(" ")}"
 				@click="${this._onToggleListen}"
 				tabindex="0"
 			>
@@ -116,7 +132,6 @@ export class PandaVoiceToText extends LitElement {
 					if (event.results[i].isFinal) {
 						this._finalTranscript += transcript + " ";
 						console.log("%c [FINAL]:", "font-size: 24px; color: orange;", transcript);
-						// 
 						this._triggerSpeechEndEvent();
 					} else {
 						this._interimTranscript += transcript;
@@ -127,6 +142,15 @@ export class PandaVoiceToText extends LitElement {
 
 			this._speechRecognition.onerror = (event: any): void => {
 				console.log("%c Speech recognition error:", "font-size: 16px; color: red;", event.error);
+				if (event.error === "not-allowed") {
+					console.warn("%c [PANDA-VOICE-TO-TEXT] Microphone permission has been denied!", "font-size: 16px;");
+					this._micPermission = false;
+					this._triggerPermissionDeniedEvent();
+				} else if (event.error === "no-speech") {
+					this._triggerNoSpeechEvent();
+				} else {
+					this._micPermission = true;
+				}
 				this._onStop();
 			};
 
@@ -152,6 +176,11 @@ export class PandaVoiceToText extends LitElement {
 		}
 	}
 
+	private _triggerSpeechStartEvent(): void {
+		const event = new CustomEvent("speech-start", {});
+		this.dispatchEvent(event);
+	}
+
 	private _triggerSpeechEndEvent(): void {
 		const event: PandaVoiceToTextSpeechEndEvent = new CustomEvent("speech-end", {
 			detail: {
@@ -161,12 +190,37 @@ export class PandaVoiceToText extends LitElement {
 		this.dispatchEvent(event);
 	}
 
+	private _triggerNoSpeechEvent(): void {
+		const event = new CustomEvent("on-", {});
+		this.dispatchEvent(event);
+	}
+
+	private _triggerPermissionDeniedEvent(): void {
+		const event = new CustomEvent("on-permission-denied", {});
+		this.dispatchEvent(event);
+	}
+
 	private _resetSilenceTimer(): void {
 		clearTimeout(this._silenceTimer as number);
 		this._silenceTimer = setTimeout(() => {
 			// auto stop
 			this._onStop();
 		}, 2000);
+	}
+
+	async _checkMicrophonePermission(): Promise<void> {
+		try {
+			const permissionStatus = await (navigator.permissions as any).query({ name: "microphone" });
+			if (permissionStatus.state === "denied") {
+				console.warn("%c [PANDA-VOICE-TO-TEXT] Microphone permission has been denied!", "font-size: 16px;");
+				this._micPermission = false;
+				this._triggerPermissionDeniedEvent();
+			} else {
+				this._micPermission = true;
+			}
+		} catch (error) {
+			this._micPermission = false;
+		}
 	}
 
 	// ================================================================================================================
@@ -183,6 +237,7 @@ export class PandaVoiceToText extends LitElement {
 		if (!this._listening) {
 			this._speechRecognition.start();
 			this._listening = true;
+			this._triggerSpeechStartEvent();
 		}
 	}
 

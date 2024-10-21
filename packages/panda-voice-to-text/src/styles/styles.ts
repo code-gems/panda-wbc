@@ -37,6 +37,10 @@ export const styles = css`
 		cursor: not-allowed;
 	}
 
+	.toggle-btn.disabled {
+		--panda-icon-color: var(--panda-icon-color-disabled, hsl(210deg 5% 55%));
+	}
+
 	.active {
 		animation-name: blink;
 		animation-duration: 2s;
