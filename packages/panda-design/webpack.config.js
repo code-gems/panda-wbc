@@ -45,6 +45,11 @@ module.exports = {
 			template: "./src/index.html"
 		})
 	],
+	watchOptions: {
+		aggregateTimeout: 2000,
+		poll: 2000,
+		ignored: /node_modules/,
+	},
 	devServer: {
 		static: {
 			directory: path.resolve(__dirname, "dist"),

@@ -41,6 +41,7 @@
 		"@panda-wbc/panda-password-field": "workspace:*",
 		"@panda-wbc/panda-pips-pager": "workspace:*",
 		"@panda-wbc/panda-progress-bar": "workspace:*",
+		"@panda-wbc/panda-qr-code": "workspace:*",
 		"@panda-wbc/panda-radio-group": "workspace:*",
 		"@panda-wbc/panda-router": "workspace:*",
 		"@panda-wbc/panda-search": "workspace:*",

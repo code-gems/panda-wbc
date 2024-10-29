@@ -5,7 +5,7 @@ import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } f
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-grid-layout";
+import "@panda-wbc/panda-qr-code";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -21,7 +21,7 @@ import {
 } from "./snippets/snippets";
 
 @page(pageConfig)
-@customElement("panda-grid-layout-content-page")
+@customElement("panda-qr-code-content-page")
 export class ContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;
@@ -30,10 +30,6 @@ export class ContentPage extends ContentPageTemplate {
 	// demo props
 	private _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
-		{ name: "icon", type: "String", defaultValue: "-", description: "Custom icon to be shown on the component." },
-		{ name: "hideIcon", type: "Boolean", defaultValue: "false", description: "Hide callout icon." },
-		{ name: "closable", type: "Boolean", defaultValue: "false", description: "Adds close button to the callout's header and makes it closable." },
-		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
@@ -47,7 +43,7 @@ export class ContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
-				<h1>GRID LAYOUT</h1>
+				<h1>QR CODE</h1>
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -78,18 +74,10 @@ export class ContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-full">
 
-									<panda-grid-layout>
-										<panda-grid-panel
-											width="1"
-											height="2"
-										>
-											Panel #1
-										</panda-grid-panel>
-										<panda-grid-panel>Panel #2</panda-grid-panel>
-										<panda-grid-panel>Panel #3</panda-grid-panel>
-										<panda-grid-panel>Panel #4</panda-grid-panel>
-										<div>Panel #5</div>
-									</panda-grid-layout>
+									<panda-qr-code
+										.data="code-gems"
+									>
+									</panda-qr-code>
 
 								</div>
 							</div>

@@ -309,6 +309,9 @@ importers:
       '@panda-wbc/panda-progress-bar':
         specifier: workspace:*
         version: link:../panda-progress-bar
+      '@panda-wbc/panda-qr-code':
+        specifier: workspace:*
+        version: link:../panda-qr-code
       '@panda-wbc/panda-radio-group':
         specifier: workspace:*
         version: link:../panda-radio-group
@@ -609,6 +612,19 @@ importers:
         version: 4.9.5
 
   packages/panda-progress-bar:
+    dependencies:
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-qr-code:
     dependencies:
       lit:
         specifier: ^3.0.2

@@ -1,5 +1,6 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
+import { PandaVoiceToTextSpeechEndEvent } from "@panda-wbc/panda-voice-to-text";
 
 // styles
 import { styles } from "./styles/styles";
@@ -19,7 +20,6 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
-import { PandaVoiceToTextSpeechEndEvent } from "@panda-wbc/panda-voice-to-text";
 
 @page(pageConfig)
 @customElement("panda-voice-to-text-content-page")

@@ -23,6 +23,7 @@ import "./content/panda-particle-banner/content-page";
 import "./content/panda-password-field/content-page";
 import "./content/panda-pips-pager/content-page";
 import "./content/panda-progress-bar/content-page";
+import "./content/panda-qr-code/content-page";
 import "./content/panda-radio-group/content-page";
 import "./content/panda-search/content-page";
 import "./content/panda-select/content-page";

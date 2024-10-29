@@ -6,6 +6,7 @@ export const styles = css`
 		display: inline;
 		bottom: 20px;
 		left: 20px;
+		z-index: 1;
 	}
 
 	.shield {

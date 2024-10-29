@@ -1,8 +1,8 @@
 {
-	"name": "@panda-wbc/panda-voice-to-text",
+	"name": "@panda-wbc/panda-qr-code",
 	"version": "1.0.0",
-	"description": "Lit based web component - voice to text",
-	"main": "lib/panda-voice-to-text.js",
+	"description": "Lit based web component - qr code generator",
+	"main": "lib/panda-qr-code.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -16,15 +16,12 @@
 		"panda-wbc",
 		"ui component",
 		"web component",
-		"voice recognition",
-		"audio to text",
-		"voice to text"
+		"qr code"
 	],
 	"author": "code-gems",
 	"license": "ISC",
 	"dependencies": {
-		"lit": "^3.0.2",
-		"@panda-wbc/panda-icon": "workspace:*"
+		"lit": "^3.0.2"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
