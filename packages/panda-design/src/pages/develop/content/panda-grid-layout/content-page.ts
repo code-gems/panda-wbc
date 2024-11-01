@@ -9,7 +9,7 @@ import "@panda-wbc/panda-grid-layout";
 
 // utils & config
 import { TemplateResult, html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, query, state } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
@@ -19,6 +19,7 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
+import { PandaGridPanel } from "@panda-wbc/panda-grid-layout/lib/panda-grid-panel";
 
 @page(pageConfig)
 @customElement("panda-grid-layout-content-page")
@@ -39,6 +40,17 @@ export class ContentPage extends ContentPageTemplate {
 	private _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
+
+	@state()
+	private _addElement: boolean = false;
+
+	private _gridConfig = {
+		panelSize: 300,
+		responsive: false,
+	};
+
+	@query("#first-panel")
+	private _firstPanelEl!: PandaGridPanel;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -62,6 +74,20 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
+		let _elementHtml = html``;
+		if (this._addElement) {
+			_elementHtml = html`
+				<panda-grid-panel
+					width="3"
+					height="1"
+					movable
+					resizable
+				>
+					Panel #6
+				</panda-grid-panel>
+			`;
+		}
+
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
@@ -76,19 +102,48 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
+								<div class="col-3">
+									<button @click="${this._onAddPanel}">ADD ELEMENT</button>
+								</div>
+								<div class="col-3">
+									<button @click="${this._onMovePanel}">MOVE PANEL</button>
+								</div>
 								<div class="col-full">
 
-									<panda-grid-layout>
+									<panda-grid-layout
+										.gridConfig="${this._gridConfig}"
+										responsive
+									>
 										<panda-grid-panel
+											id="first-panel"
 											width="1"
-											height="2"
+											height="1"
+											resizable
+											movable
 										>
 											Panel #1
 										</panda-grid-panel>
-										<panda-grid-panel>Panel #2</panda-grid-panel>
-										<panda-grid-panel>Panel #3</panda-grid-panel>
-										<panda-grid-panel>Panel #4</panda-grid-panel>
-										<div>Panel #5</div>
+
+										<panda-grid-panel
+											width="3"
+											height="1"
+											movable
+											resizable
+										>
+											Panel #2
+										</panda-grid-panel>
+
+										<panda-grid-panel
+											width="3"
+											height="1"
+											movable
+											resizable
+										>
+											Panel #3
+										</panda-grid-panel>
+	
+										
+										${_elementHtml}
 									</panda-grid-layout>
 
 								</div>
@@ -184,5 +239,13 @@ export class ContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _onAddPanel(): void {
+		this._addElement = true;
+	}
+
+	private _onMovePanel(): void {
+		this._firstPanelEl.top = 2;
+	}
+
+	
 }
