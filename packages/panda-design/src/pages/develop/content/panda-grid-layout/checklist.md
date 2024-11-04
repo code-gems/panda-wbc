@@ -9,25 +9,3 @@
 9. add support for resize for panels so that they reposition colliding panels
 10. add support for resize of grid/window
 11. testing
-
-// Save the original fetch function
-const originalFetch = window.fetch;
-
-// Create a mock fetch function
-function mockFetch(response) {
-  return function(url, options) {
-    return new Promise((resolve) => {
-      resolve({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve(response),
-        text: () => Promise.resolve(JSON.stringify(response)),
-      });
-    });
-  };
-}
-
-// Function to restore the original fetch
-function restoreFetch() {
-  window.fetch = originalFetch;
-}

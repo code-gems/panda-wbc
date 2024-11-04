@@ -155,8 +155,6 @@ export class PandaGridLayout extends LitElement {
 		console.log("%c ⚡ (_updateGridMetadata)", "font-size: 24px; color: blueviolet;");
 		// get grid width
 		const _gridRect: DOMRect = this._gridEl.getBoundingClientRect();
-		// this._gridTop = _gridRect.top;
-		// this._gridLeft = _gridRect.left;
 		this._gridWidth = _gridRect.width;
 		// calculate max number of columns
 		this._maxColumns = Math.floor(minValue(this._gridWidth / this._panelSize, 1));

@@ -83,7 +83,8 @@ export class ContentPage extends ContentPageTemplate {
 					movable
 					resizable
 				>
-					Panel #6
+					<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
+					New Panel
 				</panda-grid-panel>
 			`;
 		}

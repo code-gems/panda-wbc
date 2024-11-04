@@ -60,15 +60,23 @@ export const panelStyles = css`
 		display: block;
 		width: 100%;
 		height: 100%;
+
+		transition: margin-top 400ms ease-in-out,
+					margin-left 400ms ease-in-out;
 	}
 
-	:host([dragging]) {}
+	:host([dragging]) {
+		z-index: 1;
+		transition: none;
+		box-shadow: var(--panda-elevation-m);
+	}
 
 	.panel {
 		position: relative;
 		display: block;
 		width: 100%;
 		height: 100%;
+		padding: 5px;
 
 		border: 2px solid;
 		background-color: hsl(151deg 74% 43%);
