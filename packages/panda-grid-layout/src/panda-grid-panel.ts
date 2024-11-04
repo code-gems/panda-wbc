@@ -70,13 +70,13 @@ export class PandaGridPanel extends LitElement {
 
 	// state props
 
-	// grid metadata ======================================
+	// grid / panel metadata ==============================
 	
-	/** grid top position on the page used to calculate relative mouse position */
-	private _gridTop: number = 0;
+	/** panel top position on the page used to calculate relative mouse position */
+	private _panelTop: number = 0;
 	
-	/** grid left position on the page used to calculate relative mouse position */
-	private _gridLeft: number = 0;
+	/** panel left position on the page used to calculate relative mouse position */
+	private _panelLeft: number = 0;
 	
 	/** column size used to calculate coordinates */
 	private _columnWidth: number = 0;
@@ -144,8 +144,8 @@ export class PandaGridPanel extends LitElement {
 		return html`
 			<div class="panel" part="panel">
 				<slot
-					class="drag-handle"
 					name="drag-handle"
+					class="drag-handle"
 					part="drag-handle"
 					@slotchange="${this._onDragHandleSlotChange}"
 				></slot>
@@ -160,14 +160,10 @@ export class PandaGridPanel extends LitElement {
 
 	private _parseGridMetadata(): void {
 		const {
-			gridTop,
-			gridLeft,
 			columnWidth,
 			maxColumns,
 			dragDistance,
 		} = this.metadata;
-		this._gridTop = gridTop;
-		this._gridLeft = gridLeft;
 		this._columnWidth = columnWidth;
 		this._maxColumns = maxColumns;
 		this._dragDistance = dragDistance;
@@ -248,8 +244,8 @@ export class PandaGridPanel extends LitElement {
 		this._dragHandleEl.addEventListener("mousedown", this._dragHandleMouseDownEvent);
 		document.addEventListener("mousemove", this._dragHandleMouseMoveEvent);
 		document.addEventListener("mouseup", this._dragHandleMouseUpEvent);
-		document.addEventListener("touchmove", this._dragHandleMouseMoveEvent);
-		document.addEventListener("touchend", this._dragHandleMouseUpEvent);
+		// document.addEventListener("touchmove", this._dragHandleMouseMoveEvent);
+		// document.addEventListener("touchend", this._dragHandleMouseUpEvent);
 
 		console.log("%c 👆🏻 (_onDragHandleSlotChange) assignedElements", "font-size: 24px; color: orange;", assignedElements);
 	}
@@ -266,16 +262,16 @@ export class PandaGridPanel extends LitElement {
 		}
 
 		const panelRect = this.getBoundingClientRect();
-		const _panelTop = panelRect.top;
-		const _panelLeft = panelRect.left;
-		console.log("%c 🖱️ (_onMouseDown) x:", "font-size: 24px; color: orange;", _panelLeft);
-		console.log("%c 🖱️ (_onMouseDown) y:", "font-size: 24px; color: orange;", _panelTop);
+		this._panelTop = panelRect.top;
+		this._panelLeft = panelRect.left;
+		console.log("%c 🖱️ (_onDragHandleMouseDown) panelLeft:", "font-size: 24px; color: orange;", this._panelLeft);
+		console.log("%c 🖱️ (_onDragHandleMouseDown) panelTop:", "font-size: 24px; color: orange;", this._panelTop);
 
 		// get mouse position
-		this._dragStartPosition = getMousePosition(event, _panelLeft, _panelTop);
+		this._dragStartPosition = getMousePosition(event, this._panelLeft, this._panelTop);
 		// start dragging
 		this._dragStart = true;
-		console.log("%c 🖱️ (_onMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
+		console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
 		
 	}
 
@@ -283,22 +279,43 @@ export class PandaGridPanel extends LitElement {
 		if (!this._dragStart) {
 			return;
 		}
+
 		// get current mouse position
-		this._mousePosition = getMousePosition(event, this._gridLeft, this._gridTop);
+		this._mousePosition = getMousePosition(event, this._panelLeft, this._panelTop);
+
+		console.log(
+			"%c 🖱️ (_onDragHandleMouseMove) top, left", "font-size: 24px; color: orange;",
+			this._panelTop,
+			this._panelLeft
+		);
+		
 		// calculate drag distance
 		const distance: number = Math.sqrt(
 			Math.pow(this._dragStartPosition!.x - this._mousePosition.x, 2) +
 			Math.pow(this._dragStartPosition!.y - this._mousePosition.y, 2)
 		);
-		console.log("%c 🖱️ (_onMouseMove) distance, event", "font-size: 24px; color: orange;", distance, this._mousePosition.x, this._mousePosition.y);
-
+		
 		if (distance >= this._dragDistance) {
 			this.dragging = true;
 		}
+		
+		// update panel position
+		
+		console.log(
+			"%c 🖱️ (_onDragHandleMouseMove) distance, x/y", "font-size: 24px; color: orange;",
+			distance,
+			this._mousePosition.x,
+			this._mousePosition.y
+		);
+		// this.style.transform = `translate(${this._mousePosition.x}, ${this._mousePosition.y})`;
+		this.style.marginTop = `${this._mousePosition.y}px`;
+		this.style.marginLeft = `${this._mousePosition.x}px`;
+		// event.stopPropagation();
+		// event.preventDefault();
 	}
 
 	private _onDragHandleMouseUp(event: MouseEvent | TouchEvent): void {
-		console.log("%c 🖱️ (_onMouseUp) event", "font-size: 24px; color: orange;", event);
+		console.log("%c 🖱️ (_onDragHandleMouseUp) event", "font-size: 24px; color: orange;", event);
 		if (!this._dragStart) {
 			return;
 		}

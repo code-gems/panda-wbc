@@ -53,10 +53,10 @@ export class PandaGridLayout extends LitElement {
 	// GRID METADATA ======================================
 
 	/** Grid top position on the screen used for relative mouse position calculation */
-	private _gridTop: number = 0;
+	// private _gridTop: number = 0;
 	
 	/** Grid left position on the screen used for relative mouse position calculation */
-	private _gridLeft: number = 0;
+	// private _gridLeft: number = 0;
 
 	/** Grid element width used for column calculation */
 	private _gridWidth: number = 0;
@@ -155,8 +155,8 @@ export class PandaGridLayout extends LitElement {
 		console.log("%c ⚡ (_updateGridMetadata)", "font-size: 24px; color: blueviolet;");
 		// get grid width
 		const _gridRect: DOMRect = this._gridEl.getBoundingClientRect();
-		this._gridTop = _gridRect.top;
-		this._gridLeft = _gridRect.left;
+		// this._gridTop = _gridRect.top;
+		// this._gridLeft = _gridRect.left;
 		this._gridWidth = _gridRect.width;
 		// calculate max number of columns
 		this._maxColumns = Math.floor(minValue(this._gridWidth / this._panelSize, 1));
@@ -165,7 +165,7 @@ export class PandaGridLayout extends LitElement {
 		if (this._responsive) {
 			// for responsive grid, calculate column size dynamically
 			// column width can't be less than panel size
-			this._columnWidth = minValue(Math.floor(this._gridWidth / this._maxColumns), this._panelSize);
+			this._columnWidth = minValue(Math.round(this._gridWidth / this._maxColumns), this._panelSize);
 		}
 
 		console.log("%c panel size:", "font-size: 24px; color: blueviolet;", this._panelSize);
@@ -196,8 +196,6 @@ export class PandaGridLayout extends LitElement {
 					(element as PandaGridPanel).order = index;
 					// set grid metadata onto panel element
 					(element as PandaGridPanel).metadata = {
-						gridTop: this._gridTop,
-						gridLeft: this._gridLeft,
 						columnWidth: this._columnWidth,
 						maxColumns: this._maxColumns,
 						dragDistance: this._dragDistance,

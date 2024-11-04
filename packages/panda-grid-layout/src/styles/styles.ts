@@ -62,10 +62,7 @@ export const panelStyles = css`
 		height: 100%;
 	}
 
-	:host([dragging]) {
-		position: absolute;
-		z-index: 1;
-	}
+	:host([dragging]) {}
 
 	.panel {
 		position: relative;
