@@ -78,7 +78,7 @@ export const isIntercepted = (position: PanelPosition, obstacle: PandaGridPanel)
 	return true;
 }
 
-export const getMousePosition = (event: any, offsetX: number = 0, offsetY: number = 0): MousePosition => {
+export const getMousePosition = (event: any): MousePosition => {
 	// check if this is a touch event
 	const touchEvent = event.originalEvent &&
 		event.originalEvent.touches &&
@@ -87,14 +87,14 @@ export const getMousePosition = (event: any, offsetX: number = 0, offsetY: numbe
 	if (touchEvent) {
 		// return touch position
 		return {
-			x: event.touches[0].clientX - offsetX,
-			y: event.touches[0].clientY - offsetY,
+			x: event.touches[0].clientX,
+			y: event.touches[0].clientY,
 		};
 	} else {
 		// return mouse position
 		return {
-			x: event.clientX - offsetX,
-			y: event.clientY - offsetY,
+			x: event.clientX,
+			y: event.clientY,
 		};
 	}
 }

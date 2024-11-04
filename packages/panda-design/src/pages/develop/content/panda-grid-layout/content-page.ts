@@ -45,7 +45,7 @@ export class ContentPage extends ContentPageTemplate {
 	private _addElement: boolean = false;
 
 	private _gridConfig = {
-		panelSize: 300,
+		panelSize: 100,
 		responsive: false,
 	};
 

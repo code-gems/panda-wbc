@@ -35,7 +35,7 @@ export const styles = css`
 		opacity: 0;
 
 		animation: animate-border 500ms infinite linear;
-		border-radius: var(--panda-border-radius-m, 10px);
+		border-radius: var(--panda-border-radius-m, 5px);
 		background: var(--panda-primary-color-20opc, hsl(209deg 78% 46% / 20%));
 		background-image: linear-gradient(90deg, var(--panda-primary-color, hsl(209deg 78% 46%)) 50%, transparent 50%), 
 						linear-gradient(90deg, var(--panda-primary-color, hsl(209deg 78% 46%)) 50%, transparent 50%), 
@@ -47,7 +47,10 @@ export const styles = css`
 		z-index: 0;
 	}
 
-	.placeholder.show { opacity: 1; }
+	.placeholder.show {
+		position: relative;
+		opacity: 1;
+	}
 
 	@keyframes animate-border {
 		0% { background-position: left top, right bottom, left bottom, right top; }

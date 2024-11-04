@@ -1,5 +1,5 @@
 // types
-import { MousePosition, GridMetadata } from "../index";
+import { MousePosition, GridMetadata, PanelMessageType } from "../index";
 
 // style
 import { panelStyles } from "./styles/styles";
@@ -9,8 +9,8 @@ import { panelStyles } from "./styles/styles";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { getMousePosition, valueBetween } from "./utils/utils";
+import { customElement, property, state } from "lit/decorators.js";
+import { getMousePosition, minValue, valueBetween } from "./utils/utils";
 
 @customElement("panda-grid-panel")
 export class PandaGridPanel extends LitElement {
@@ -70,12 +70,6 @@ export class PandaGridPanel extends LitElement {
 
 	// grid / panel metadata ==============================
 
-	/** panel top position on the page used to calculate relative mouse position */
-	private _panelTop: number = 0;
-
-	/** panel left position on the page used to calculate relative mouse position */
-	private _panelLeft: number = 0;
-
 	/** column size used to calculate coordinates */
 	private _columnWidth: number = 0;
 
@@ -92,9 +86,11 @@ export class PandaGridPanel extends LitElement {
 	private _dragDistance: number = 50;
 
 	/** Used to store x position offset calculated based on dragged distance and column width */
+	@state()
 	private _positionOffsetX: number = 0;
 	
 	/** Used to store y position offset calculated based on dragged distance and column width */
+	@state()
 	private _positionOffsetY: number = 0;
 
 	private _mousePosition: MousePosition = {
@@ -129,6 +125,13 @@ export class PandaGridPanel extends LitElement {
 		) {
 			console.log("%c (updated) width:", "font-size: 24px; color: red;", this.width);
 			this._updatePanelStyle();
+		}
+		// check for new temporary position
+		if (
+			_changedProps.has("_positionOffsetX") && this._positionOffsetX !== undefined ||
+			_changedProps.has("_positionOffsetY") && this._positionOffsetY !== undefined
+		) {
+			this._calculateNewPosition();
 		}
 	}
 
@@ -174,44 +177,6 @@ export class PandaGridPanel extends LitElement {
 		this._dragDistance = dragDistance;
 	}
 
-	private _triggerMoveStartEvent() {
-		const event = new CustomEvent("on-move-start", {
-			detail: {
-				top: 0,
-				left: 0,
-				width: this.width,
-				height: this.height,
-			}
-		});
-		this.dispatchEvent(event);
-	}
-
-	private _triggerMoveEndEvent() {
-		const event = new CustomEvent("on-move-end", {
-			detail: {
-				top: 0,
-				left: 0,
-				width: this.width,
-				height: this.height,
-			}
-		});
-		this.dispatchEvent(event);
-	}
-
-	private _triggerResizeEvent() {
-		const event = new CustomEvent("on-resize", {
-			detail: {
-				width: 0,
-				height: 0,
-			}
-		});
-		this.dispatchEvent(event);
-	}
-
-	// ================================================================================================================
-	// HELPERS ========================================================================================================
-	// ================================================================================================================
-
 	/** Update panel size and position based on provided metadata */
 	private _updatePanelStyle(): void {
 		if (this.metadata) {
@@ -235,8 +200,43 @@ export class PandaGridPanel extends LitElement {
 		}
 	}
 
+	private _triggerMessageEvent(
+		type: PanelMessageType,
+		top: number | null = null,
+		left: number | null = null,
+		width: number | null = null,
+		height: number | null = null
+	): void {
+		const event = new CustomEvent("on-message", {
+			detail: {
+				type,
+				top,
+				left,
+				width,
+				height,
+				order: this.order,
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
+	/** Convert drag offset to new panel position */
 	private _calculateNewPosition(): void {
-		
+		const newTop = minValue(this.top + this._positionOffsetY, 0);
+		const newLeft = valueBetween(
+			this.left + this._positionOffsetX,
+			0, // min value
+			this._maxColumns - this.width // max value
+		);
+		console.log("%c ⚡ (_calculateNewPosition) top/left:", "font-size: 24px; color: red;", newTop, newLeft);
+		// notify grid about drag position
+		this._triggerMessageEvent(
+			PanelMessageType.DRAG_START,
+			newTop,
+			newLeft,
+			this.width,
+			this.height,
+		);
 	}
 
 	// ================================================================================================================
@@ -267,15 +267,8 @@ export class PandaGridPanel extends LitElement {
 		if (!this.movable) {
 			return;
 		}
-
-		const panelRect = this.getBoundingClientRect();
-		this._panelTop = panelRect.top;
-		this._panelLeft = panelRect.left;
-		console.log("%c 🖱️ (_onDragHandleMouseDown) panelLeft:", "font-size: 24px; color: orange;", this._panelLeft);
-		console.log("%c 🖱️ (_onDragHandleMouseDown) panelTop:", "font-size: 24px; color: orange;", this._panelTop);
-
 		// get mouse position
-		this._dragStartPosition = getMousePosition(event, this._panelLeft, this._panelTop);
+		this._dragStartPosition = getMousePosition(event);
 		// start dragging
 		this.dragging = true;
 		console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
@@ -286,17 +279,12 @@ export class PandaGridPanel extends LitElement {
 			return;
 		}
 		// get current mouse position
-		this._mousePosition = getMousePosition(event, this._panelLeft, this._panelTop);
+		this._mousePosition = getMousePosition(event);
 		// calculate drag distance
-		const distance: number = Math.sqrt(
-			Math.pow(this._dragStartPosition!.x - this._mousePosition.x, 2) +
-			Math.pow(this._dragStartPosition!.y - this._mousePosition.y, 2)
-		);
-
-		// if (distance >= this._dragDistance) {
 		const distanceX: number = this._mousePosition.x - this._dragStartPosition!.x;
 		const distanceY: number = this._mousePosition.y - this._dragStartPosition!.y;
-		
+		// Offset properties are being observed and each time they change,
+		// panel will recalculate its temporary position and notify grid
 		this._positionOffsetX = Math.round(distanceX / this._columnWidth);
 		this._positionOffsetY = Math.round(distanceY / this._columnWidth);
 
@@ -314,11 +302,16 @@ export class PandaGridPanel extends LitElement {
 		}
 		// reset drag start coordinates
 		this._dragStartPosition = null;
+		
 		// stop dragging
 		this.dragging = false;
+		
 		// clear position offset
 		this.style.marginTop = "0px";
 		this.style.marginLeft = "0px";
+
+		// notify grid about drag end
+		this._triggerMessageEvent(PanelMessageType.DRAG_END);
 	}
 }
 

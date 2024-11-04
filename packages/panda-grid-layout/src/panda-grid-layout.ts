@@ -1,5 +1,5 @@
 // types
-import { GridConfig, PanelPosition } from "../index";
+import { GridConfig, PanelMessageType, PanelPosition } from "../index";
 import { PandaGridPanel } from "./panda-grid-panel";
 
 // style
@@ -72,6 +72,10 @@ export class PandaGridLayout extends LitElement {
 
 	private _dragDistance: number = 50;
 
+	// events =============================================
+
+	private _panelMessageEvent = this._onPanelMessage.bind(this);
+
 	// elements ===========================================
 
 	@query("#grid-layout")
@@ -129,7 +133,7 @@ export class PandaGridLayout extends LitElement {
 
 	/** Calculate grid metadata */
 	private _initializeGrid(): void {
-		console.log("%c ⚡ (_initializeGrid)", "font-size: 24px; color: blueviolet;");
+		console.log("%c ⚡ [GRID] (_initializeGrid)", "font-size: 24px; color: blueviolet;");
 		// deconstruct provided grid config first
 		this._parseGridConfig();
 		this._updateGridMetadata();
@@ -138,7 +142,7 @@ export class PandaGridLayout extends LitElement {
 
 	/** Map grid config settings and set default values */
 	private _parseGridConfig(): void {
-		console.log("%c ⚡ (_parseGridConfig)", "font-size: 24px; color: blueviolet;");
+		console.log("%c ⚡ [GRID] (_parseGridConfig)", "font-size: 24px; color: blueviolet;");
 		const {
 			panelSize = 300,
 			responsive = false,
@@ -152,7 +156,7 @@ export class PandaGridLayout extends LitElement {
 
 	/** Update grid metadata based on available space and grid config */
 	private _updateGridMetadata(): void {
-		console.log("%c ⚡ (_updateGridMetadata)", "font-size: 24px; color: blueviolet;");
+		console.log("%c ⚡ [GRID] (_updateGridMetadata)", "font-size: 24px; color: blueviolet;");
 		// get grid width
 		const _gridRect: DOMRect = this._gridEl.getBoundingClientRect();
 		this._gridWidth = _gridRect.width;
@@ -184,7 +188,7 @@ export class PandaGridLayout extends LitElement {
 	 * @returns {Array<GridPanel>} list of grid panels
 	 */
 	private _parseGridPanels(elements: LitElement[]): void {
-		// console.log("%c (parseGridPanels) elements", "font-size: 24px; color: red;", elements);
+		console.log("%c [GRID] 🧑🏻‍💻 (_parseGridPanels) elements", "font-size: 24px; color: red;", elements);
 		if (elements?.length) {
 			Array.from(elements).forEach((element, index) => {
 				// console.log("%c (parseGridPanels) element", "font-size: 24px; color: red;", element, element.tagName);
@@ -201,8 +205,7 @@ export class PandaGridLayout extends LitElement {
 					// find suitable position for all slotted panels
 					this._initializePanelPosition(element as PandaGridPanel);
 					// add events to panel
-					element.addEventListener("on-move-start", this._onPanelMoveStart.bind(this));
-					element.addEventListener("on-move-end", this._onPanelMoveEnd.bind(this));
+					element.addEventListener("on-message", this._panelMessageEvent);
 					// add panels to the list
 					this._panelList.push(element as PandaGridPanel);
 				}
@@ -280,8 +283,22 @@ export class PandaGridLayout extends LitElement {
 
 	}
 
-	private _showPlaceholder(): void {
-
+	private _showPlaceholder(top: number, left: number, width: number, height: number): void {
+		// update grid area props
+		const _rowStart = top + 1;
+		const _rowEnd = _rowStart + height;
+		const _columnStart = left + 1;
+		const _columnEnd = _columnStart + width;
+		
+		this._placeholderEl.style.gridRowStart = String(_rowStart);
+		this._placeholderEl.style.gridColumnStart = String(_columnStart);
+		this._placeholderEl.style.gridRowEnd = String(_rowEnd);
+		this._placeholderEl.style.gridColumnEnd = String(_columnEnd);
+		this._placeholderEl.classList.add("show");
+	}
+	
+	private _hidePlaceholder(): void {
+		this._placeholderEl.classList.remove("show");
 	}
 
 	// ================================================================================================================
@@ -291,19 +308,26 @@ export class PandaGridLayout extends LitElement {
 	private _onSlotChange(event: Event): void {
 		const slotEl: any = event.target;
 		const assignedElements = slotEl.assignedElements();
-		console.log("%c ⚡ (_onSlotChange) assignedElements", "font-size: 24px; color: orange;", assignedElements.length, assignedElements);
+		console.log("%c ⚡ [GRID] (_onSlotChange) assignedElements", "font-size: 24px; color: orange;", assignedElements.length, assignedElements);
 		// parse slotted elements and create list of grid panels
 		this._panelList = [];
 		this._parseGridPanels(assignedElements);
 	}
 
-	private _onPanelMoveStart(event: any): void {
-		console.log("%c ⚡ (_onPanelMoveStart) event target:", "font-size: 24px; color: blueviolet;", event.target);
+	private _onPanelMessage(event: any): void {
+		console.log("%c ⚡ [GRID] (_onPanelMessage) event target:", "font-size: 24px; color: blueviolet;", event.detail);
+		const { type, top, left, width, height, order } = event.detail;
+
+		switch (type) {
+			case PanelMessageType.DRAG_START:
+				this._showPlaceholder(top, left, width, height);
+				break;
+			case PanelMessageType.DRAG_END:
+				this._hidePlaceholder();
+				break;
+		}
 	}
 
-	private _onPanelMoveEnd(event: any): void {
-		console.log("%c ⚡ (_onPanelMoveEnd) event target:", "font-size: 24px; color: blueviolet;", event.target);
-	}
 }
 
 declare global {

@@ -1,3 +1,10 @@
+export const enum PanelMessageType {
+	DRAG_START,
+	DRAG_END,
+	RESIZE_START,
+	RESIZE_END,
+}
+
 export interface GridConfig {
 	/**
 	 * Min value for the panel size [px]. 
