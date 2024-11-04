@@ -6,7 +6,11 @@
 	"main": "lib/panda-utils.js",
 	"author": "code-gems",
 	"license": "MIT",
-	"keywords": ["utils", "debounce", "generateUuid"],
+	"keywords": [
+		"utils",
+		"debounce",
+		"generateUuid"
+	],
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -21,6 +25,8 @@
 	"files": [
 		"src/**/*",
 		"lib/**/*",
-		"index.ts"
-	]
+		"index.ts",
+		"types.d.ts"
+	],
+	"types": "index.ts"
 }

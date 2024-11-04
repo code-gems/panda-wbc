@@ -1,5 +1,5 @@
 // types
-import { PanelPosition } from "../../index";
+import { MousePosition, PanelPosition } from "../../index";
 import { PandaGridPanel } from "../panda-grid-panel";
 
 /**
@@ -38,11 +38,13 @@ export const maxValue = (value: number, maxValue: number): number => {
  * @returns {Number} value between min and max limit
  */
 export const valueBetween = (value: number, minValue: number, maxValue: number): number => {
-	return value > maxValue
-		? maxValue
-		: value < minValue
-			? minValue
-			: value;
+	if (value > maxValue) {
+		return maxValue;
+	} else if (value < minValue) {
+		return minValue;
+	} else {
+		return value;
+	}
 }
 
 /**
@@ -55,23 +57,44 @@ export const isIntercepted = (position: PanelPosition, obstacle: PandaGridPanel)
 	console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacle, obstacle.top, obstacle.left);
 	// panel is left of obstacle
 	if (position.right <= obstacle.left) {
-		console.log("%c (isIntercepted) EXIT 1", "font-size: 24px; color: lime;");
+		console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is right of obstacle
 	if (position.left >= obstacle.left + obstacle.width) {
-		console.log("%c (isIntercepted) EXIT 2", "font-size: 24px; color: lime;");
+		console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is above obstacle
 	if (position.bottom <= obstacle.top) {
-		console.log("%c (isIntercepted) EXIT 3", "font-size: 24px; color: lime;");
+		console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is below obstacle
 	if (position.top >= obstacle.top + obstacle.height) {
-		console.log("%c (isIntercepted) EXIT 4", "font-size: 24px; color: lime;");
+		console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	return true;
+}
+
+export const getMousePosition = (event: any, offsetX: number = 0, offsetY: number = 0): MousePosition => {
+	// check if this is a touch event
+	const touchEvent = event.originalEvent &&
+		event.originalEvent.touches &&
+		event.originalEvent.touches[0];
+
+	if (touchEvent) {
+		// return touch position
+		return {
+			x: event.touches[0].clientX - offsetX,
+			y: event.touches[0].clientY - offsetY,
+		};
+	} else {
+		// return mouse position
+		return {
+			x: event.clientX - offsetX,
+			y: event.clientY - offsetY,
+		};
+	}
 }

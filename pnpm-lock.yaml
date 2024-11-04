@@ -460,6 +460,9 @@ importers:
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
       lit:
         specifier: ^3.0.2
         version: 3.0.2

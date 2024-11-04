@@ -10,6 +10,7 @@ import { panelStyles } from "./styles/styles";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { getMousePosition } from "./utils/utils";
 
 @customElement("panda-grid-panel")
 export class PandaGridPanel extends LitElement {
@@ -52,24 +53,44 @@ export class PandaGridPanel extends LitElement {
 	maxHeight: number | null = null;
 
 	@property({ type: Number, reflect: true })
-	top: number = 0;
+	top!: number;
 
 	@property({ type: Number, reflect: true })
-	left: number = 0;
+	left!: number;
 
 	@property({ type: Number, reflect: true })
 	order!: number;
 
-	/** For internal use only */
+	/**
+	 * Property used to determine if panel was dragged far enough to count it as reposition attempt.
+	 * For internal use only.
+	 */
 	@property({ type: Boolean, reflect: true })
 	dragging: boolean = false;
 
 	// state props
 
+	// grid metadata ======================================
+	
+	/** grid top position on the page used to calculate relative mouse position */
+	private _gridTop: number = 0;
+	
+	/** grid left position on the page used to calculate relative mouse position */
+	private _gridLeft: number = 0;
+	
+	/** column size used to calculate coordinates */
 	private _columnWidth: number = 0;
 
+	/** max number of available columns */
 	private _maxColumns: number = 1; // must be at least 1
 
+	/** prop used to determine if dragging of panel begun */
+	private _dragStart: boolean = false;
+
+	/** prop representing the start coordinates of drag, used to calculate drag distance */
+	private _dragStartPosition: MousePosition | null = null;
+
+	/** setting used to compare dragging distance */
 	private _dragDistance: number = 50;
 
 	private _mousePosition: MousePosition = {
@@ -77,8 +98,13 @@ export class PandaGridPanel extends LitElement {
 		y: 0,
 	};
 
-	// elements
+	// mouse events for drag handle
+	private readonly _dragHandleMouseDownEvent = this._onDragHandleMouseDown.bind(this);
+	private readonly _dragHandleMouseMoveEvent = this._onDragHandleMouseMove.bind(this);
+	private readonly _dragHandleMouseUpEvent = this._onDragHandleMouseUp.bind(this);
 
+	// elements
+	private _dragHandleEl!: HTMLDivElement;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -102,6 +128,14 @@ export class PandaGridPanel extends LitElement {
 		}
 	}
 
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		// remove event listener
+		this._dragHandleEl.removeEventListener("mousedown", this._dragHandleMouseDownEvent);
+		document.removeEventListener("mousemove", this._dragHandleMouseMoveEvent);
+		document.removeEventListener("mouseup", this._dragHandleMouseUpEvent);
+	}
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -109,13 +143,13 @@ export class PandaGridPanel extends LitElement {
 	protected render(): TemplateResult {
 		return html`
 			<div class="panel" part="panel">
-				<slot name="drag-handle" part="drag-handle"></slot>
+				<slot
+					class="drag-handle"
+					name="drag-handle"
+					part="drag-handle"
+					@slotchange="${this._onDragHandleSlotChange}"
+				></slot>
 				<slot></slot>
-				<button
-					@click="${this._onResize}"
-				>
-					RESIZE
-				</button>
 			</div>
 		`;
 	}
@@ -126,17 +160,33 @@ export class PandaGridPanel extends LitElement {
 
 	private _parseGridMetadata(): void {
 		const {
+			gridTop,
+			gridLeft,
 			columnWidth,
 			maxColumns,
 			dragDistance,
 		} = this.metadata;
+		this._gridTop = gridTop;
+		this._gridLeft = gridLeft;
 		this._columnWidth = columnWidth;
 		this._maxColumns = maxColumns;
 		this._dragDistance = dragDistance;
 	}
 
-	private _triggerMoveEvent() {
-		const event = new CustomEvent("on-move", {
+	private _triggerMoveStartEvent() {
+		const event = new CustomEvent("on-move-start", {
+			detail: {
+				top: 0,
+				left: 0,
+				width: this.width,
+				height: this.height,
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
+	private _triggerMoveEndEvent() {
+		const event = new CustomEvent("on-move-end", {
 			detail: {
 				top: 0,
 				left: 0,
@@ -188,8 +238,75 @@ export class PandaGridPanel extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onResize(): void {
-		this.width = 2;
+	private _onDragHandleSlotChange(event: Event): void {
+		const slotEl: any = event.target;
+		const assignedElements = slotEl.assignedElements();
+
+		// get drag handle element
+		this._dragHandleEl = assignedElements[0];
+		// add event listeners
+		this._dragHandleEl.addEventListener("mousedown", this._dragHandleMouseDownEvent);
+		document.addEventListener("mousemove", this._dragHandleMouseMoveEvent);
+		document.addEventListener("mouseup", this._dragHandleMouseUpEvent);
+		document.addEventListener("touchmove", this._dragHandleMouseMoveEvent);
+		document.addEventListener("touchend", this._dragHandleMouseUpEvent);
+
+		console.log("%c 👆🏻 (_onDragHandleSlotChange) assignedElements", "font-size: 24px; color: orange;", assignedElements);
+	}
+
+	// ================================================================================================================
+	// EVENTS - DRAG HANDLE ===========================================================================================
+	// ================================================================================================================
+
+	private _onDragHandleMouseDown(event: MouseEvent): void {
+		// event.stopPropagation();
+		// event.preventDefault();
+		if (!this.movable) {
+			return;
+		}
+
+		const panelRect = this.getBoundingClientRect();
+		const _panelTop = panelRect.top;
+		const _panelLeft = panelRect.left;
+		console.log("%c 🖱️ (_onMouseDown) x:", "font-size: 24px; color: orange;", _panelLeft);
+		console.log("%c 🖱️ (_onMouseDown) y:", "font-size: 24px; color: orange;", _panelTop);
+
+		// get mouse position
+		this._dragStartPosition = getMousePosition(event, _panelLeft, _panelTop);
+		// start dragging
+		this._dragStart = true;
+		console.log("%c 🖱️ (_onMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
+		
+	}
+
+	private _onDragHandleMouseMove(event: MouseEvent | TouchEvent): void {
+		if (!this._dragStart) {
+			return;
+		}
+		// get current mouse position
+		this._mousePosition = getMousePosition(event, this._gridLeft, this._gridTop);
+		// calculate drag distance
+		const distance: number = Math.sqrt(
+			Math.pow(this._dragStartPosition!.x - this._mousePosition.x, 2) +
+			Math.pow(this._dragStartPosition!.y - this._mousePosition.y, 2)
+		);
+		console.log("%c 🖱️ (_onMouseMove) distance, event", "font-size: 24px; color: orange;", distance, this._mousePosition.x, this._mousePosition.y);
+
+		if (distance >= this._dragDistance) {
+			this.dragging = true;
+		}
+	}
+
+	private _onDragHandleMouseUp(event: MouseEvent | TouchEvent): void {
+		console.log("%c 🖱️ (_onMouseUp) event", "font-size: 24px; color: orange;", event);
+		if (!this._dragStart) {
+			return;
+		}
+		// reset drag start coordinates
+		this._dragStartPosition = null;
+		// stop dragging
+		this._dragStart = false;
+		this.dragging = false;
 	}
 }
 

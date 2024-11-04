@@ -1,5 +1,6 @@
 // types
 import { Store, PageCategory } from "panda-design-typings";
+import { Debouncer } from "@panda-wbc/panda-utils/types";
 
 // styles & mixins
 // import { styles } from "./styles/styles";
@@ -36,23 +37,23 @@ class CorePage extends LitElement {
 	// 	];
 	// }
 
-	private _pageLibrary!: PageLibrary;
+	private _pageLibrary: PageLibrary = new PageLibrary();;
 
-	private _debounce: any;
+	private _debounce = debounce(this._debounceCallback, 2000, 4000);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	constructor() {
-		super();
-		// init page library 
-		this._pageLibrary = new PageLibrary();
-		this._debounce = debounce(this._debounceCallback, 2000, 4000);
-	}
-
 	stateChanged(state: Store) {
 		console.log("%c [CORE PAGE] stateChanged", "font-size: 24px; color: green;", state);
+	}
+
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		if (this._debounce) {
+			this._debounce.cancel();
+		}
 	}
 
 	// ================================================================================================================

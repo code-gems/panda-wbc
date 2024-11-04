@@ -1,6 +1,7 @@
 // type
 import { ElementDetails, PandaDatePreset, PandaDateRange, PandaEvent } from "../index";
 import { PandaDatePickerOverlay } from "./panda-date-picker-overlay";
+import { Debouncer } from "@panda-wbc/panda-utils/types";
 
 // style
 import { styles, modifiers } from "./styles/styles";
@@ -24,7 +25,7 @@ import {
 	parseDate,
 	isDateDisabled
 } from "./utils/utils";
-import { debounce, Debouncer } from "@panda-wbc/panda-utils";
+import { debounce } from "@panda-wbc/panda-utils";
 
 @customElement("panda-date-picker")
 export class PandaDatePicker extends LitElement {
@@ -266,12 +267,12 @@ export class PandaDatePicker extends LitElement {
 	private _overlayEl!: PandaDatePickerOverlay | null;
 
 	// event bindings
-	private _selectDateEventBinding: (e: any) => void = this._onSelectedDateChange.bind(this);
+	private readonly _selectDateEventBinding: (e: any) => void = this._onSelectedDateChange.bind(this);
 	
-	private _hideOverlayEventBinding: (e: any) => void = this._closeOverlay.bind(this);
+	private readonly _hideOverlayEventBinding: (e: any) => void = this._closeOverlay.bind(this);
 
 	// debouncers
-	private _evaluateDateDebouncer: () => void | Debouncer | null = debounce(this._evaluateDate, 50);
+	private readonly _evaluateDateDebouncer: Debouncer = debounce(this._evaluateDate, 50);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -298,6 +299,8 @@ export class PandaDatePicker extends LitElement {
 	protected render() {
 		let spinnerHtml: TemplateResult = html``;
 		let clearIconHtml: TemplateResult = html``;
+
+		this._evaluateDateDebouncer.cancel();
 
 		if (this.busy) {
 			spinnerHtml = html`

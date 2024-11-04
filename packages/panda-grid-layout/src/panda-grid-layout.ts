@@ -1,5 +1,6 @@
 // types
 import { GridConfig, PanelPosition } from "../index";
+import { PandaGridPanel } from "./panda-grid-panel";
 
 // style
 import { styles } from "./styles/styles";
@@ -9,18 +10,13 @@ import "./panda-grid-panel";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";
-import {
-	customElement,
-	property,
-	query,
-	state,	
-} from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
+import { isEmpty } from "@panda-wbc/panda-utils";
 import {
 	isIntercepted,
 	minValue,
 	valueBetween,
 } from "./utils/utils";
-import { PandaGridPanel } from "./panda-grid-panel";
 
 @customElement("panda-grid-layout")
 export class PandaGridLayout extends LitElement {
@@ -49,18 +45,26 @@ export class PandaGridLayout extends LitElement {
 
 	@state()
 	private _panelList: PandaGridPanel[] = [];
-	
+
 	@state()
 	private _panelListTemp: PandaGridPanel[] = [];
 
 
 	// GRID METADATA ======================================
 
-	private _responsive: boolean = false;
+	/** Grid top position on the screen used for relative mouse position calculation */
+	private _gridTop: number = 0;
+	
+	/** Grid left position on the screen used for relative mouse position calculation */
+	private _gridLeft: number = 0;
+
+	/** Grid element width used for column calculation */
+	private _gridWidth: number = 0;
 
 	private _panelSize: number = 0;
 
-	private _gridWidth: number = 0;
+	/** This property is used to hold the final evaluation of the responsive setting */
+	private _responsive: boolean = false;
 
 	private _maxColumns: number = 1; // must be at least 1
 
@@ -68,17 +72,21 @@ export class PandaGridLayout extends LitElement {
 
 	private _dragDistance: number = 50;
 
-	// elements
+	// elements ===========================================
+
 	@query("#grid-layout")
 	private _gridEl!: HTMLDivElement;
+	
+	@query("#placeholder")
+	private _placeholderEl!: HTMLDivElement;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
 	protected firstUpdated(): void {
-	// 	console.log("%c ⚡ (firstUpdated) _slottedPanels", "font-size: 24px; color: orange;", this._slottedElements);
-	// 	this._panelList = parseGridPanels(this._slottedElements);
+		// 	console.log("%c ⚡ (firstUpdated) _slottedPanels", "font-size: 24px; color: orange;", this._slottedElements);
+		// 	this._panelList = parseGridPanels(this._slottedElements);
 
 		this._initializeGrid();
 	}
@@ -94,7 +102,6 @@ export class PandaGridLayout extends LitElement {
 
 	protected render(): TemplateResult {
 		return html`
-			<button @click="${this._resizePanel}">RESIZE</button>
 			<div
 				class="grid-layout-cont"
 				part="grid-layout-cont"
@@ -104,6 +111,12 @@ export class PandaGridLayout extends LitElement {
 					class="grid-layout"
 					part="grid-layout"
 				>
+					<div
+						id="placeholder"
+						class="placeholder"
+						part="placeholder"
+					>
+					</div>
 					<slot @slotchange="${this._onSlotChange}"></slot>
 				</div>
 			</div>
@@ -139,8 +152,11 @@ export class PandaGridLayout extends LitElement {
 
 	/** Update grid metadata based on available space and grid config */
 	private _updateGridMetadata(): void {
+		console.log("%c ⚡ (_updateGridMetadata)", "font-size: 24px; color: blueviolet;");
 		// get grid width
 		const _gridRect: DOMRect = this._gridEl.getBoundingClientRect();
+		this._gridTop = _gridRect.top;
+		this._gridLeft = _gridRect.left;
 		this._gridWidth = _gridRect.width;
 		// calculate max number of columns
 		this._maxColumns = Math.floor(minValue(this._gridWidth / this._panelSize, 1));
@@ -159,7 +175,6 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	private _updateGridLayoutStyles(): void {
-		// this._gridEl.style.gridTemplateColumns = ``;
 		this._gridEl.style.gridTemplateColumns = `repeat(${this._maxColumns}, ${this._columnWidth}px)`;
 		this._gridEl.style.gridAutoRows = `${this._columnWidth}px`;
 	}
@@ -181,12 +196,17 @@ export class PandaGridLayout extends LitElement {
 					(element as PandaGridPanel).order = index;
 					// set grid metadata onto panel element
 					(element as PandaGridPanel).metadata = {
+						gridTop: this._gridTop,
+						gridLeft: this._gridLeft,
 						columnWidth: this._columnWidth,
 						maxColumns: this._maxColumns,
 						dragDistance: this._dragDistance,
 					};
 					// find suitable position for all slotted panels
 					this._initializePanelPosition(element as PandaGridPanel);
+					// add events to panel
+					element.addEventListener("on-move-start", this._onPanelMoveStart.bind(this));
+					element.addEventListener("on-move-end", this._onPanelMoveEnd.bind(this));
 					// add panels to the list
 					this._panelList.push(element as PandaGridPanel);
 				}
@@ -196,7 +216,9 @@ export class PandaGridLayout extends LitElement {
 
 	/** Find suitable position for panel unless it has top/left attributes already */
 	private _initializePanelPosition(panel: PandaGridPanel): void {
-		if (panel?.top && panel?.left) {
+		console.log("%c 🚀 (_initializePanelPosition)", "font-size: 24px; color: orange;", panel, isEmpty(panel?.top), isEmpty(panel?.left));
+		if (!isEmpty(panel?.top) && !isEmpty(panel?.left)) {
+			console.log("%c 🚀 (_initializePanelPosition) PANEL ALREADY HAS POSITION ASSIGNED ============================", "font-size: 24px; color: pink;", panel, panel.top, panel.left);
 
 		} else {
 			let found: boolean = false;
@@ -224,7 +246,7 @@ export class PandaGridLayout extends LitElement {
 				right = valueBetween(
 					left + panel.width,
 					panel.minWidth,
-					this._maxColumns					
+					this._maxColumns
 				);
 
 				const bottom = top + panel.height;
@@ -262,6 +284,10 @@ export class PandaGridLayout extends LitElement {
 
 	}
 
+	private _showPlaceholder(): void {
+
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
@@ -275,10 +301,12 @@ export class PandaGridLayout extends LitElement {
 		this._parseGridPanels(assignedElements);
 	}
 
-	_resizePanel() {
-		const panelEl = this._panelList[0];
-		console.log("%c ⚡ (_resizePanel) panel:", "font-size: 24px; color: blueviolet;", panelEl);
-		panelEl.width = 2;
+	private _onPanelMoveStart(event: any): void {
+		console.log("%c ⚡ (_onPanelMoveStart) event target:", "font-size: 24px; color: blueviolet;", event.target);
+	}
+
+	private _onPanelMoveEnd(event: any): void {
+		console.log("%c ⚡ (_onPanelMoveEnd) event target:", "font-size: 24px; color: blueviolet;", event.target);
 	}
 }
 

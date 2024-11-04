@@ -34,6 +34,8 @@ export interface GridConfig {
 
 /** Grid metadata shared with all panels for their use */
 export type GridMetadata = {
+	gridTop: number;
+	gridLeft: number;
 	columnWidth: number;
 	maxColumns: number;
 	dragDistance: number;

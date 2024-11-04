@@ -1,10 +1,2 @@
-// types
-
-export interface Debouncer {
-	cancel: () => void;
-	isRunning: () => boolean;
-}
-
-// utils
-
+// export all utils
 export * from "./src/panda-utils";

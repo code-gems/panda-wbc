@@ -1,24 +1,30 @@
 // types
-import { Debouncer } from "../index";
+import { Debouncer } from "../types";
 
 /**
  * Debouncer is a programming tool commonly used in front-end development to control the frequency of execution of a particular function, 
  * especially in scenarios where a function might be called too frequently, such as in response to user input events like keyPresses' or window resizing. 
  * The debouncer ensures that the function is not invoked until a certain period of time has passed since the last invocation.
+ * 
  * @param callback - callback method to be invoked after certain period of time.
  * @param wait - time to wait before callback invocation.
  * @param maxWait - maximal time to wait before executing a callback method.
  * @returns {Debouncer}
  */
-export const debounce = (callback: any, wait: number, maxWait: number | null = null): () => void | null | Debouncer => {
-	let timeout: any = null;
-	let maxWaitInterval: any = null;
+export const debounce = (
+	callback: any,
+	wait: number,
+	maxWait: number | null = null
+): Debouncer => {
+	let timeout: ReturnType<typeof setTimeout> | null = null;
+	let maxWaitInterval: ReturnType<typeof setTimeout> | null = null;
 	let context = this;
 
 	const start = performance.now();
 
 	if (typeof wait !== "number") {
 		console.warn("%c [DEBOUNCE] 'wait' param is not a valid number", "font-size: 24px; color: green;", wait);
+		// @ts-expect-error: ignore
 		return () => null;
 	}
 	console.log("%c [DEBOUNCE] wait, maxDelay", "font-size: 24px; color: green;", wait, maxWait);
@@ -39,21 +45,21 @@ export const debounce = (callback: any, wait: number, maxWait: number | null = n
 		return _x;
 	}
 
-	let interval = maxWait !== null
+	const interval = maxWait !== null
 		? gcd(wait, maxWait)
 		: wait;
 	console.log("%c [DEBOUNCE] interval", "font-size: 24px; color: green;", interval);
 
 	function cancel(): void {
 		console.log("%c [DEBOUNCE] CANCEL", "font-size: 24px; color: orange;");
-		clearTimeout(timeout);
-		clearTimeout(maxWaitInterval);
+		clearTimeout(timeout as number);
+		clearTimeout(maxWaitInterval as number);
 		timeout = null;
 		maxWaitInterval = null;
 	}
 
 	function isRunning(): boolean {
-		return timeout !== null;
+		return timeout !== undefined;
 	}
 
 	function debounced() {
@@ -62,14 +68,14 @@ export const debounce = (callback: any, wait: number, maxWait: number | null = n
 
 		const timeoutFn = function () {
 			console.log("%c [DEBOUNCE] INVOKE CALLBACK", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
-			callback.apply(context, args);
+			callback.apply(context, args as any);
 			cancel();
 		}
 
 		const watcherFn = function () {
 			if (maxWait === intervalStep) {
 				console.log("%c [DEBOUNCE] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
-				callback.apply(context, args);
+				callback.apply(context, args as any);
 				cancel();
 			} else {
 				console.log("%c [DEBOUNCE] TICK", "font-size: 24px; color: orange;");
@@ -77,7 +83,7 @@ export const debounce = (callback: any, wait: number, maxWait: number | null = n
 			}
 		}
 
-		clearTimeout(timeout);
+		clearTimeout(timeout as number);
 		timeout = setTimeout(timeoutFn, interval);
 		console.log("%c [DEBOUNCE] START DEBOUNCE", "font-size: 24px; color: green;", wait, maxWait);
 		if (!!maxWait && !maxWaitInterval) {
@@ -87,9 +93,32 @@ export const debounce = (callback: any, wait: number, maxWait: number | null = n
 
 	debounced.cancel = cancel;
 	debounced.isRunning = isRunning;
-	return debounced;
+	return debounced as any;
 };
 
+export const debouncePromise = <T extends (...args: Parameters<T>) => ReturnType<T>> (
+	callback: T,
+	delay: number
+) => {
+	let timer: ReturnType<typeof setTimeout>;
+	return (...args: Parameters<T>) => {
+		const p = new Promise<ReturnType<T> | Error>((resolve, reject) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				try {
+					let output = callback(...args);
+					resolve(output);
+				} catch (err) {
+					if (err instanceof Error) {
+						reject(err);
+					}
+					reject(new Error(`An error has occurred:${err}`));
+				}
+			}, delay);
+		});
+		return p;
+	};
+}
 
 /**
  * This function creates a random UUID by replacing certain characters in a predefined pattern.
@@ -104,3 +133,16 @@ export const generateUuid = (): string => {
 		return value.toString(16);
 	});
 };
+
+/**
+ * Utility function designed to check if a given value is considered "empty".
+ * The function takes a single parameter value of type any, which means it can accept any type of input.
+ * 
+ * @param value - input to be validated
+ * @returns boolean value (true or false) indicating whether the input is considered empty or not.
+ */
+export const isEmpty = (value: any): boolean => {
+	return value === "" ||
+		value === null ||
+		value === undefined;
+}

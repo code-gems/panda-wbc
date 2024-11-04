@@ -121,24 +121,29 @@ export class ContentPage extends ContentPageTemplate {
 											resizable
 											movable
 										>
+											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
 											Panel #1
 										</panda-grid-panel>
 
 										<panda-grid-panel
-											width="3"
+											id="panel-2"
+											width="2"
 											height="1"
 											movable
 											resizable
 										>
+											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
 											Panel #2
 										</panda-grid-panel>
 
 										<panda-grid-panel
-											width="3"
+											id="panel-3"
+											width="2"
 											height="1"
 											movable
 											resizable
 										>
+											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
 											Panel #3
 										</panda-grid-panel>
 	
@@ -240,7 +245,7 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddPanel(): void {
-		this._addElement = true;
+		this._addElement = !this._addElement;
 	}
 
 	private _onMovePanel(): void {
