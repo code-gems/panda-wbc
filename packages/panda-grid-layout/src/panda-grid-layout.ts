@@ -194,8 +194,8 @@ export class PandaGridLayout extends LitElement {
 				// console.log("%c (parseGridPanels) element", "font-size: 24px; color: red;", element, element.tagName);
 				if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
 					// console.log("%c (parseGridPanels) ADD ELEMENT", "font-size: 24px; color: red;", element);
-					// set panel order property
-					(element as PandaGridPanel).order = index;
+					// set panel index property
+					(element as PandaGridPanel).index = index;
 					// set grid metadata onto panel element
 					(element as PandaGridPanel).metadata = {
 						columnWidth: this._columnWidth,
@@ -316,7 +316,7 @@ export class PandaGridLayout extends LitElement {
 
 	private _onPanelMessage(event: any): void {
 		console.log("%c ⚡ [GRID] (_onPanelMessage) event target:", "font-size: 24px; color: blueviolet;", event.detail);
-		const { type, top, left, width, height, order } = event.detail;
+		const { type, top, left, width, height, index } = event.detail;
 
 		switch (type) {
 			case PanelMessageType.DRAG_START:
@@ -327,7 +327,6 @@ export class PandaGridLayout extends LitElement {
 				break;
 		}
 	}
-
 }
 
 declare global {

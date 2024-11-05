@@ -58,9 +58,9 @@ export class PandaGridPanel extends LitElement {
 	@property({ type: Number, reflect: true })
 	left!: number;
 
-	/** Panels order on the grid */
+	/** Panels index in the grid layout */
 	@property({ type: Number, reflect: true })
-	order!: number;
+	index!: number;
 
 	/** Property used to determine if panel is being dragged */
 	@property({ type: Boolean, reflect: true })
@@ -131,7 +131,7 @@ export class PandaGridPanel extends LitElement {
 			_changedProps.has("_positionOffsetX") && this._positionOffsetX !== undefined ||
 			_changedProps.has("_positionOffsetY") && this._positionOffsetY !== undefined
 		) {
-			this._calculateNewPosition();
+			this._setTemporaryPosition();
 		}
 	}
 
@@ -214,26 +214,45 @@ export class PandaGridPanel extends LitElement {
 				left,
 				width,
 				height,
-				order: this.order,
+				index: this.index,
 			}
 		});
 		this.dispatchEvent(event);
 	}
 
-	/** Convert drag offset to new panel position */
-	private _calculateNewPosition(): void {
-		const newTop = minValue(this.top + this._positionOffsetY, 0);
-		const newLeft = valueBetween(
+	/** Convert drag offset to new temporary panel position and inform grid */
+	private _setTemporaryPosition(): void {
+		const _top = minValue(this.top + this._positionOffsetY, 0);
+		const _left = valueBetween(
 			this.left + this._positionOffsetX,
 			0, // min value
 			this._maxColumns - this.width // max value
 		);
-		console.log("%c ⚡ (_calculateNewPosition) top/left:", "font-size: 24px; color: red;", newTop, newLeft);
+		console.log("%c ⚡ (_setTemporaryPosition) TEMP POSITION t/l:", "font-size: 24px; color: red;", _top, _left);
 		// notify grid about drag position
 		this._triggerMessageEvent(
 			PanelMessageType.DRAG_START,
-			newTop,
-			newLeft,
+			_top,
+			_left,
+			this.width,
+			this.height,
+		);
+	}
+
+	/** Convert drag offset to final panel position and notify grid */
+	private _setFinalPosition(): void {
+		this.top = minValue(this.top + this._positionOffsetY, 0);
+		this.left = valueBetween(
+			this.left + this._positionOffsetX,
+			0, // min value
+			this._maxColumns - this.width // max value
+		);
+		console.log("%c ⚡ (_setFinalPosition) FINAL POSITION t/l:", "font-size: 24px; color: red;", this.top, this.left);
+		// notify grid about drag position
+		this._triggerMessageEvent(
+			PanelMessageType.DRAG_END,
+			this.top,
+			this.left,
 			this.width,
 			this.height,
 		);
@@ -310,8 +329,8 @@ export class PandaGridPanel extends LitElement {
 		this.style.marginTop = "0px";
 		this.style.marginLeft = "0px";
 
-		// notify grid about drag end
-		this._triggerMessageEvent(PanelMessageType.DRAG_END);
+		// set final position and notify grid about drag end
+		this._setFinalPosition();
 	}
 }
 

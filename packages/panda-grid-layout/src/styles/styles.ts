@@ -34,6 +34,8 @@ export const styles = css`
 		height: 100%;
 		opacity: 0;
 
+		transition: none;
+
 		animation: animate-border 500ms infinite linear;
 		border-radius: var(--panda-border-radius-m, 5px);
 		background: var(--panda-primary-color-20opc, hsl(209deg 78% 46% / 20%));
@@ -50,6 +52,7 @@ export const styles = css`
 	.placeholder.show {
 		position: relative;
 		opacity: 1;
+		transition: all 400ms ease;
 	}
 
 	@keyframes animate-border {
@@ -63,14 +66,10 @@ export const panelStyles = css`
 		display: block;
 		width: 100%;
 		height: 100%;
-
-		transition: margin-top 400ms ease-in-out,
-					margin-left 400ms ease-in-out;
 	}
 
 	:host([dragging]) {
 		z-index: 1;
-		transition: none;
 		box-shadow: var(--panda-elevation-m);
 	}
 
@@ -89,7 +88,6 @@ export const panelStyles = css`
 	slot.drag-handle {
 		user-select: none;
 		cursor: move;
-
 		background: red;
 	}
 `;
