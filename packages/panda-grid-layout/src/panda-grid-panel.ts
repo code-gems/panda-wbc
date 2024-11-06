@@ -1,11 +1,16 @@
 // types
-import { MousePosition, GridMetadata, PanelMessageType } from "../index";
+import {
+	GridMetadata,
+	MousePosition,
+	PanelMessageType,
+	PanelMetadata,	
+} from "../index";
 
 // style
 import { panelStyles } from "./styles/styles";
 
 // components
-
+// import "@panda-wbc/panda-icon";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
@@ -57,6 +62,9 @@ export class PandaGridPanel extends LitElement {
 
 	@property({ type: Number, reflect: true })
 	left!: number;
+	
+	@property({ type: Number, reflect: true })
+	tempLeft: number = 0;
 
 	/** Panels index in the grid layout */
 	@property({ type: Number, reflect: true })
@@ -133,6 +141,10 @@ export class PandaGridPanel extends LitElement {
 		) {
 			this._setTemporaryPosition();
 		}
+		// check for indicative position change
+		if (_changedProps.has("tempLeft") && this.tempLeft !== undefined) {
+			this._updatePanelTemporaryPosition();
+		}
 	}
 
 	disconnectedCallback(): void {
@@ -200,6 +212,11 @@ export class PandaGridPanel extends LitElement {
 		}
 	}
 
+	private _updatePanelTemporaryPosition(): void {
+		// update panel position
+		this.style.marginLeft = `${this.tempLeft * this._columnWidth}px`;
+	}
+
 	private _triggerMessageEvent(
 		type: PanelMessageType,
 		top: number | null = null,
@@ -220,42 +237,95 @@ export class PandaGridPanel extends LitElement {
 		this.dispatchEvent(event);
 	}
 
-	/** Convert drag offset to new temporary panel position and inform grid */
-	private _setTemporaryPosition(): void {
-		const _top = minValue(this.top + this._positionOffsetY, 0);
-		const _left = valueBetween(
+	/** Get panel position/size metadata with applied offset */
+	private _getPanelMetadataWithOffset(): PanelMetadata {
+		// get top from offset
+		const top = minValue(this.top + this._positionOffsetY, 0);
+		// get left form offset
+		let left = valueBetween(
 			this.left + this._positionOffsetX,
 			0, // min value
 			this._maxColumns - this.width // max value
 		);
-		console.log("%c ⚡ (_setTemporaryPosition) TEMP POSITION t/l:", "font-size: 24px; color: red;", _top, _left);
+		let width = this.width;
+		
+		// check if panel can be resized
+		if (this.resizable) {
+			left = valueBetween(
+				this.left + this._positionOffsetX,
+				0, // min value
+				this._maxColumns - this.minWidth // max value
+			);
+			// check if width has to be adjusted
+			if (this._maxColumns - left < this.width) {
+				// resize panels width
+				width = this._maxColumns - left;
+			}
+		}
+		const right = left + width;
+		const bottom = top + this.height;
+		const height = this.height;
+
+		return {
+			width,
+			height,
+			top,
+			left,
+			bottom,
+			right,
+			index: this.index
+		};
+	}
+
+	/** Convert drag offset to new temporary panel position and inform grid */
+	private _setTemporaryPosition(): void {
+		// get temporary panel position with applied offset
+		const {
+			top,
+			left,
+			width,
+			height,
+		} = this._getPanelMetadataWithOffset();
+		
+		console.log("%c ⚡ (_setTemporaryPosition) TEMP POSITION t/l:", "font-size: 24px; color: red;", top, left);
 		// notify grid about drag position
 		this._triggerMessageEvent(
 			PanelMessageType.DRAG_START,
-			_top,
-			_left,
-			this.width,
-			this.height,
+			top,
+			left,
+			width,
+			height,
 		);
 	}
 
 	/** Convert drag offset to final panel position and notify grid */
 	private _setFinalPosition(): void {
-		this.top = minValue(this.top + this._positionOffsetY, 0);
-		this.left = valueBetween(
-			this.left + this._positionOffsetX,
-			0, // min value
-			this._maxColumns - this.width // max value
-		);
-		console.log("%c ⚡ (_setFinalPosition) FINAL POSITION t/l:", "font-size: 24px; color: red;", this.top, this.left);
-		// notify grid about drag position
-		this._triggerMessageEvent(
-			PanelMessageType.DRAG_END,
-			this.top,
-			this.left,
-			this.width,
-			this.height,
-		);
+		// get temporary panel position with applied offset
+		const {
+			top,
+			left,
+			width,
+		} = this._getPanelMetadataWithOffset();
+
+		// check if position changed
+		if (this.top !== top || this.left !== left || this.width !== width) {
+			console.log("%c ⚡ (_setFinalPosition) FINAL POSITION t/l:", "font-size: 24px; color: red;", this.top, this.left);
+			// set new position
+			this.top = top;
+			this.left = left;
+			this.width = width;
+			// notify grid about drag position
+			this._triggerMessageEvent(
+				PanelMessageType.DRAG_END,
+				this.top,
+				this.left,
+				this.width,
+				this.height,
+			);
+			// reset offset
+			this._positionOffsetX = 0;
+			this._positionOffsetY = 0;
+		}
 	}
 
 	// ================================================================================================================

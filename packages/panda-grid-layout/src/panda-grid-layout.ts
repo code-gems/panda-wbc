@@ -1,5 +1,5 @@
 // types
-import { GridConfig, PanelMessageType, PanelPosition } from "../index";
+import { GridConfig, PanelMessageType, PanelMetadata } from "../index";
 import { PandaGridPanel } from "./panda-grid-panel";
 
 // style
@@ -13,6 +13,7 @@ import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { isEmpty } from "@panda-wbc/panda-utils";
 import {
+	getPanelMetadata,
 	isIntercepted,
 	minValue,
 	valueBetween,
@@ -213,7 +214,10 @@ export class PandaGridLayout extends LitElement {
 		}
 	}
 
-	/** Find suitable position for panel unless it has top/left attributes already */
+	/**
+	 * Find suitable position for panel unless it has top/left attributes already
+	 * @param {PandaGridPanel} panel - grid panel element handle 
+	 */
 	private _initializePanelPosition(panel: PandaGridPanel): void {
 		console.log("%c 🚀 (_initializePanelPosition)", "font-size: 24px; color: orange;", panel, isEmpty(panel?.top), isEmpty(panel?.left));
 		if (!isEmpty(panel?.top) && !isEmpty(panel?.left)) {
@@ -249,7 +253,8 @@ export class PandaGridLayout extends LitElement {
 				);
 
 				const bottom = top + panel.height;
-				const panelPosition: PanelPosition = {
+				const panelMetadata: PanelMetadata = {
+					...getPanelMetadata(panel),
 					top,
 					left,
 					right,
@@ -259,7 +264,8 @@ export class PandaGridLayout extends LitElement {
 				let collide = false;
 				for (const obstacle of this._panelList) {
 					console.log("%c 🚀 (_initializePanelPosition) OBSTACLE LOOP =========================", "font-size: 24px; color: red;");
-					if (isIntercepted(panelPosition, obstacle)) {
+					const obstacleMetadata = getPanelMetadata(obstacle);
+					if (isIntercepted(panelMetadata, obstacleMetadata)) {
 						collide = true;
 						break;
 					}
@@ -267,10 +273,10 @@ export class PandaGridLayout extends LitElement {
 
 				if (!collide) {
 					found = true; // exit loop
-					panel.top = panelPosition.top;
-					panel.left = panelPosition.left;
+					panel.top = panelMetadata.top;
+					panel.left = panelMetadata.left;
 
-					console.log("%c 🚀 (_initializePanelPosition) set position:", "font-size: 24px; color: red;", panelPosition);
+					console.log("%c 🚀 (_initializePanelPosition) set position:", "font-size: 24px; color: red;", panelMetadata);
 				}
 				// move left and try again
 				left++;
@@ -279,8 +285,53 @@ export class PandaGridLayout extends LitElement {
 				}
 			} // end of loop
 		}
+	}
+
+	/**
+	 * Check if provided panel metadata is colliding with other grd panels and resolve collision.
+	 * @param {PanelMetadata} panelMetadata - metadata of a panel
+	 */
+	private _detectCollision(panelMetadata: PanelMetadata): void {
+		this._panelList.forEach((obstacle) => {
+			// skip panel that initiated collision
+			if (obstacle.index !== panelMetadata.index) {
+				// get obstacle metadata
+				const obstacleMetadata = getPanelMetadata(obstacle);
+				// check if obstacle is colliding
+				if (isIntercepted(panelMetadata, obstacleMetadata)) {
+					console.log("%c [GRID] ⚡ (_detectCollision) COLLISION:", "font-size: 24px; color: red;", obstacle.index);
+					obstacle.tempLeft = panelMetadata.left + panelMetadata.width - obstacle.left;
+					console.log("%c [GRID] ⚡ (_detectCollision) TEMP LEFT:", "font-size: 24px; color: red;", obstacle.tempLeft);
+				} else {
+					console.log("%c [GRID] ⚡ (_detectCollision) NO COLLISION:", "font-size: 24px; color: red;", obstacle.index);
+					obstacle.tempLeft = 0;
+				}
+			} else {
+				console.log("%c [GRID] ⚡ (_detectCollision) SKIP INDEX:", "font-size: 24px; color: red;", panelMetadata.index);
+			}
+		});
+	}
 
 
+	// private _fixCollision(panelMetadata: PanelMetadata, obstacleMetadata: PanelMetadata): PanelMetadata {
+	// 	if (panelMetadata.index > obstacleMetadata.index) {
+	// 		return obstacleMetadata;
+	// 	} else {
+
+	// 	}
+	// 	newMetadata: PanelMetadata = 
+	// 	return {
+
+	// 	};
+	// }
+
+	/**
+	 * Find panel element by index and return its handle.
+	 * @param {Number} index - panel index
+	 * @returns {PandaGridPanel} panel handle that matches provided index or [undefined]
+	 */
+	private _getPanelByIndex(index: number): PandaGridPanel | undefined {
+		return this._panelList.find((panel) => panel.index === index);
 	}
 
 	private _showPlaceholder(top: number, left: number, width: number, height: number): void {
@@ -297,7 +348,7 @@ export class PandaGridLayout extends LitElement {
 		this._placeholderEl.classList.add("show");
 	}
 	
-	private _hidePlaceholder(): void {
+	private _hidePlaceholder(): void {  
 		this._placeholderEl.classList.remove("show");
 	}
 
@@ -317,10 +368,28 @@ export class PandaGridLayout extends LitElement {
 	private _onPanelMessage(event: any): void {
 		console.log("%c ⚡ [GRID] (_onPanelMessage) event target:", "font-size: 24px; color: blueviolet;", event.detail);
 		const { type, top, left, width, height, index } = event.detail;
-
+		
+		// check message type
 		switch (type) {
 			case PanelMessageType.DRAG_START:
 				this._showPlaceholder(top, left, width, height);
+				const thisPanel = this._getPanelByIndex(index);
+				console.log("%c ⚡ [GRID] (_onPanelMessage) 1. thisPanel:", "font-size: 24px; color: blueviolet;", thisPanel);
+				if (thisPanel) {
+					let panelMetadata = getPanelMetadata(thisPanel);
+					// apply temporary new position
+					panelMetadata = {
+						...panelMetadata,
+						top,
+						left,
+						width,
+						height,
+						right: left + width,
+						bottom: top + height,
+					};
+					console.log("%c ⚡ [GRID] (_onPanelMessage) 2. panelMetadata:", "font-size: 24px; color: blueviolet;", panelMetadata);
+					this._detectCollision(panelMetadata);
+				}
 				break;
 			case PanelMessageType.DRAG_END:
 				this._hidePlaceholder();

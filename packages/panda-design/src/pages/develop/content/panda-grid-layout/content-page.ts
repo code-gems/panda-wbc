@@ -80,6 +80,7 @@ export class ContentPage extends ContentPageTemplate {
 				<panda-grid-panel
 					width="3"
 					height="1"
+					min-width="2"
 					movable
 					resizable
 				>

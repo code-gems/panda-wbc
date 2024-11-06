@@ -1,5 +1,5 @@
 // types
-import { MousePosition, PanelPosition } from "../../index";
+import { MousePosition, PanelMetadata } from "../../index";
 import { PandaGridPanel } from "../panda-grid-panel";
 
 /**
@@ -50,29 +50,29 @@ export const valueBetween = (value: number, minValue: number, maxValue: number):
 /**
  * Check if panel position intercepts obstacle.
  * @param panel - panel position metadata.
- * @param obstacle - existing panel to check interception against.
+ * @param obstacleMetadata - existing panel to check interception against.
  * @returns {Boolean} false if there is no interception between both panels.
  */
-export const isIntercepted = (position: PanelPosition, obstacle: PandaGridPanel): boolean => {
-	console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacle, obstacle.top, obstacle.left);
+export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: PanelMetadata): boolean => {
+	// console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacleMetadata, obstacleMetadata.top, obstacleMetadata.left);
 	// panel is left of obstacle
-	if (position.right <= obstacle.left) {
-		console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
+	if (panelMetadata.right <= obstacleMetadata.left) {
+		// console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is right of obstacle
-	if (position.left >= obstacle.left + obstacle.width) {
-		console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
+	if (panelMetadata.left >= obstacleMetadata.left + obstacleMetadata.width) {
+		// console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is above obstacle
-	if (position.bottom <= obstacle.top) {
-		console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
+	if (panelMetadata.bottom <= obstacleMetadata.top) {
+		// console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is below obstacle
-	if (position.top >= obstacle.top + obstacle.height) {
-		console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
+	if (panelMetadata.top >= obstacleMetadata.top + obstacleMetadata.height) {
+		// console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	return true;
@@ -97,4 +97,25 @@ export const getMousePosition = (event: any): MousePosition => {
 			y: event.clientY,
 		};
 	}
+}
+
+/**
+ * Extract panel metadata for further processing. Metadata contain position and size of a panel aside with its index value.
+ * 
+ * @param panel - Panel element
+ * @returns panel metadata
+ */
+export const getPanelMetadata = (panel: PandaGridPanel): PanelMetadata => {
+	const _right = panel.left + panel.width;
+	const _bottom = panel.top + panel.height;
+	return {
+		width: panel.width,
+		height: panel.height,
+		top: panel.top,
+		left: panel.left,
+		index: panel.index,
+		// extras
+		right: _right,
+		bottom: _bottom,
+	};
 }

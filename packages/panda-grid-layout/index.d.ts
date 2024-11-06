@@ -46,6 +46,16 @@ export type GridMetadata = {
 	dragDistance: number;
 }
 
+export type PanelMetadata = {
+	width: number;
+	height: number;
+	top: number;
+	right: number;
+	bottom: number;
+	left: number;
+	index: number;
+}
+
 export type MousePosition = {
 	x: number;
 	y: number;
@@ -54,11 +64,4 @@ export type MousePosition = {
 export type DragInfo = {
 	dragStart: number;
 	distance: number;
-}
-
-export type PanelPosition = {
-	top: number;
-	right: number;
-	bottom: number;
-	left: number;
 }
