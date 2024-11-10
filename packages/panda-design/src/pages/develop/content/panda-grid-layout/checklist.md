@@ -6,7 +6,7 @@
 6. allow panels to be pinned (immovable, fixed size)
 7. allow panels to be resized by dragging resize handles
 8. create compacting logic and integrate it with placeholder and panel new position
-9. create collision and protrusion detection for panels [WIP]
-10. add support for resize for panels so that they reposition colliding panels
+9. create collision and protrusion detection for panels [DONE]
+10. add support for resize for panels so that they reposition colliding panels [WIP]
 11. add support for resize of grid/window
 12. testing

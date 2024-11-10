@@ -54,24 +54,35 @@ export const valueBetween = (value: number, minValue: number, maxValue: number):
  * @returns {Boolean} false if there is no interception between both panels.
  */
 export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: PanelMetadata): boolean => {
+
 	// console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacleMetadata, obstacleMetadata.top, obstacleMetadata.left);
 	// panel is left of obstacle
-	if (panelMetadata.right <= obstacleMetadata.left) {
+	const panelTop = panelMetadata.tempTop ?? panelMetadata.top;
+	const panelLeft = panelMetadata.tempLeft ?? panelMetadata.left;
+	const panelRight = panelLeft + panelMetadata.width;
+	const panelBottom = panelTop + panelMetadata.height;
+
+	const obstacleTop = obstacleMetadata.tempTop ?? obstacleMetadata.top;
+	const obstacleLeft = obstacleMetadata.tempLeft ?? obstacleMetadata.left;
+	const obstacleRight = obstacleLeft + obstacleMetadata.width;
+	const obstacleBottom = obstacleTop + obstacleMetadata.height;
+
+	if (panelRight <= obstacleLeft) {
 		// console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is right of obstacle
-	if (panelMetadata.left >= obstacleMetadata.left + obstacleMetadata.width) {
+	if (panelLeft >= obstacleRight) {
 		// console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is above obstacle
-	if (panelMetadata.bottom <= obstacleMetadata.top) {
+	if (panelBottom <= obstacleTop) {
 		// console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
 	// panel is below obstacle
-	if (panelMetadata.top >= obstacleMetadata.top + obstacleMetadata.height) {
+	if (panelTop >= obstacleBottom) {
 		// console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
 		return false;
 	}
@@ -113,6 +124,8 @@ export const getPanelMetadata = (panel: PandaGridPanel): PanelMetadata => {
 		height: panel.height,
 		top: panel.top,
 		left: panel.left,
+		tempLeft: panel.tempLeft,
+		tempTop: panel.tempTop,
 		index: panel.index,
 		// extras
 		right: _right,

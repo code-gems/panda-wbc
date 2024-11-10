@@ -50,9 +50,11 @@ export type PanelMetadata = {
 	width: number;
 	height: number;
 	top: number;
+	tempTop: number | null;
+	left: number;
+	tempLeft: number | null;
 	right: number;
 	bottom: number;
-	left: number;
 	index: number;
 }
 

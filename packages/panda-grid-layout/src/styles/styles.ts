@@ -73,6 +73,10 @@ export const panelStyles = css`
 		box-shadow: var(--panda-elevation-m);
 	}
 
+	:host([temporary-position]) {
+		transition: transform 200ms ease;
+	}
+
 	.panel {
 		position: relative;
 		display: block;

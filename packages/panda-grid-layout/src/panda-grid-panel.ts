@@ -59,12 +59,15 @@ export class PandaGridPanel extends LitElement {
 
 	@property({ type: Number, reflect: true })
 	top!: number;
+	
+	@property({ type: Number, attribute: "temp-top", reflect: true })
+	tempTop: number | null = null;
 
 	@property({ type: Number, reflect: true })
 	left!: number;
 	
-	@property({ type: Number, reflect: true })
-	tempLeft: number = 0;
+	@property({ type: Number, attribute: "temp-left", reflect: true })
+	tempLeft: number | null = null;
 
 	/** Panels index in the grid layout */
 	@property({ type: Number, reflect: true })
@@ -73,6 +76,10 @@ export class PandaGridPanel extends LitElement {
 	/** Property used to determine if panel is being dragged */
 	@property({ type: Boolean, reflect: true })
 	dragging: boolean = false;
+
+	/** Property used to determine if panel is being dragged */
+	@property({ type: Boolean, attribute: "temporary-position", reflect: true })
+	temporaryPosition: boolean = false;
 
 	// state props
 
@@ -139,12 +146,15 @@ export class PandaGridPanel extends LitElement {
 			_changedProps.has("_positionOffsetX") && this._positionOffsetX !== undefined ||
 			_changedProps.has("_positionOffsetY") && this._positionOffsetY !== undefined
 		) {
+			console.log("%c (updated) _positionOffsetX / _positionOffsetY:", "font-size: 24px; color: red;", this._positionOffsetX, this._positionOffsetY);
 			this._setTemporaryPosition();
 		}
 		// check for indicative position change
-		if (_changedProps.has("tempLeft") && this.tempLeft !== undefined) {
-			this._updatePanelTemporaryPosition();
-		}
+		// if (
+		// 	_changedProps.has("tempTop") && this.tempTop !== undefined ||
+		// 	_changedProps.has("tempLeft") && this.tempLeft !== undefined
+		// ) {
+		// }
 	}
 
 	disconnectedCallback(): void {
@@ -160,8 +170,15 @@ export class PandaGridPanel extends LitElement {
 	// ================================================================================================================
 
 	protected render(): TemplateResult {
+		let absolute = "";
+		if (this.temporaryPosition) {
+			absolute = "absolute";
+		}
 		return html`
-			<div class="panel" part="panel">
+			<div
+				class="panel ${absolute}"
+				part="panel"
+			>
 				<slot
 					name="drag-handle"
 					class="drag-handle"
@@ -198,7 +215,6 @@ export class PandaGridPanel extends LitElement {
 			const _heightPx = this.height * this._columnWidth;
 			this.style.width = `${_widthPx}px`;
 			this.style.height = `${_heightPx}px`;
-
 			// update grid area props
 			const _rowStart = this.top + 1;
 			const _rowEnd = _rowStart + this.height;
@@ -212,9 +228,19 @@ export class PandaGridPanel extends LitElement {
 		}
 	}
 
+	/** Update panel styling to reflect temporary position */
 	private _updatePanelTemporaryPosition(): void {
-		// update panel position
-		this.style.marginLeft = `${this.tempLeft * this._columnWidth}px`;
+		if (this.temporaryPosition) {
+
+			const _tempTop = this.tempTop ?? 0;
+			const _tempLeft = this.tempLeft ?? 0;
+			// update panel indicative position
+			const _top = (_tempTop - this.top) * this._columnWidth;
+			const _left = (_tempLeft - this.left) * this._columnWidth;
+			this.style.transform = `translate(${_left}px, ${_top}px)`;
+		} else {
+			this.style.transform = `translate(0px, 0px)`;
+		}
 	}
 
 	private _triggerMessageEvent(
@@ -264,13 +290,14 @@ export class PandaGridPanel extends LitElement {
 		}
 		const right = left + width;
 		const bottom = top + this.height;
-		const height = this.height;
 
 		return {
 			width,
-			height,
+			height: this.height,
 			top,
+			tempTop: this.tempTop,
 			left,
+			tempLeft: this.tempLeft,
 			bottom,
 			right,
 			index: this.index
@@ -279,6 +306,11 @@ export class PandaGridPanel extends LitElement {
 
 	/** Convert drag offset to new temporary panel position and inform grid */
 	private _setTemporaryPosition(): void {
+		// cancel if not dragging
+		if (!this.dragging) {
+			return;
+		}
+
 		// get temporary panel position with applied offset
 		const {
 			top,
@@ -329,6 +361,34 @@ export class PandaGridPanel extends LitElement {
 	}
 
 	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	public setTempPosition(top: number, left: number): void {
+		console.log("%c >>>>>>>>>>>>>> (setTempPosition) PANEL %s %s %s", "font-size: 24px; color: red;", this.index, top, left);
+		this.tempTop = top;
+		this.tempLeft = left;
+		this.temporaryPosition = true;
+		this._updatePanelTemporaryPosition();
+	}
+
+	public resetTempPosition(): void {
+		this.tempTop = null;
+		this.tempLeft = null;
+		this.temporaryPosition = false;
+		this._updatePanelTemporaryPosition();
+	}
+
+	public applyTempPosition(): void {
+		this.top = this.tempTop ?? this.top;
+		this.left = this.tempLeft ?? this.left;
+		this.tempTop = null;
+		this.tempLeft = null;
+		this.temporaryPosition = false;
+		this._updatePanelTemporaryPosition();
+	}
+
+	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
@@ -360,7 +420,7 @@ export class PandaGridPanel extends LitElement {
 		this._dragStartPosition = getMousePosition(event);
 		// start dragging
 		this.dragging = true;
-		console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
+		// console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
 	}
 
 	private _onDragHandleMouseMove(event: MouseEvent | TouchEvent): void {
@@ -374,10 +434,10 @@ export class PandaGridPanel extends LitElement {
 		const distanceY: number = this._mousePosition.y - this._dragStartPosition!.y;
 		// Offset properties are being observed and each time they change,
 		// panel will recalculate its temporary position and notify grid
-		this._positionOffsetX = Math.round(distanceX / this._columnWidth);
-		this._positionOffsetY = Math.round(distanceY / this._columnWidth);
+		this._positionOffsetX = Math.round(distanceX / this._columnWidth) + 0;
+		this._positionOffsetY = Math.round(distanceY / this._columnWidth) + 0;
 
-		console.log("%c 🖱️ (_onDragHandleMouseMove) offset", "font-size: 24px; color: orange;", this._positionOffsetX + 0, this._positionOffsetY + 0);
+		// console.log("%c 🖱️ (_onDragHandleMouseMove) offset", "font-size: 24px; color: orange;", this._positionOffsetX + 0, this._positionOffsetY + 0);
 
 		// update panel position
 		this.style.marginTop = `${this._mousePosition.y - this._dragStartPosition!.y}px`;
@@ -385,7 +445,7 @@ export class PandaGridPanel extends LitElement {
 	}
 
 	private _onDragHandleMouseUp(event: MouseEvent | TouchEvent): void {
-		console.log("%c 🖱️ (_onDragHandleMouseUp) event", "font-size: 24px; color: orange;", event);
+		// console.log("%c 🖱️ (_onDragHandleMouseUp) event", "font-size: 24px; color: orange;", event);
 		if (!this.dragging) {
 			return;
 		}

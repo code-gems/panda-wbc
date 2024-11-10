@@ -49,7 +49,7 @@ export class ContentPage extends ContentPageTemplate {
 		responsive: false,
 	};
 
-	@query("#first-panel")
+	@query("#panel-0")
 	private _firstPanelEl!: PandaGridPanel;
 
 	// ================================================================================================================
@@ -78,9 +78,9 @@ export class ContentPage extends ContentPageTemplate {
 		if (this._addElement) {
 			_elementHtml = html`
 				<panda-grid-panel
-					width="3"
+					width="1"
 					height="1"
-					min-width="2"
+					min-width="1"
 					movable
 					resizable
 				>
@@ -115,13 +115,25 @@ export class ContentPage extends ContentPageTemplate {
 									<panda-grid-layout
 										.gridConfig="${this._gridConfig}"
 										responsive
+										style="width: 350px;"
 									>
 										<panda-grid-panel
-											id="first-panel"
+											id="panel-0"
 											width="1"
 											height="1"
 											resizable
 											movable
+										>
+											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
+											Panel #0
+										</panda-grid-panel>
+
+										<panda-grid-panel
+											id="panel-1"
+											width="1"
+											height="1"
+											movable
+											resizable
 										>
 											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
 											Panel #1
@@ -129,7 +141,7 @@ export class ContentPage extends ContentPageTemplate {
 
 										<panda-grid-panel
 											id="panel-2"
-											width="2"
+											width="1"
 											height="1"
 											movable
 											resizable
@@ -140,7 +152,7 @@ export class ContentPage extends ContentPageTemplate {
 
 										<panda-grid-panel
 											id="panel-3"
-											width="2"
+											width="1"
 											height="1"
 											movable
 											resizable
@@ -148,8 +160,7 @@ export class ContentPage extends ContentPageTemplate {
 											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
 											Panel #3
 										</panda-grid-panel>
-	
-										
+
 										${_elementHtml}
 									</panda-grid-layout>
 
@@ -251,7 +262,7 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onMovePanel(): void {
-		this._firstPanelEl.top = 2;
+		this._firstPanelEl.height = 2;
 	}
 
 	
