@@ -34,7 +34,7 @@ export const styles = css`
 		height: 100%;
 		opacity: 0;
 
-		transition: none;
+		transition: opacity 200ms ease;
 
 		animation: animate-border 500ms infinite linear;
 		border-radius: var(--panda-border-radius-m, 5px);
@@ -52,7 +52,6 @@ export const styles = css`
 	.placeholder.show {
 		position: relative;
 		opacity: 1;
-		transition: all 400ms ease;
 	}
 
 	@keyframes animate-border {
