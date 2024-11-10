@@ -27,7 +27,7 @@ export const debounce = (
 		// @ts-expect-error: ignore
 		return () => null;
 	}
-	console.log("%c [DEBOUNCE] wait, maxDelay", "font-size: 24px; color: green;", wait, maxWait);
+	// console.log("%c [DEBOUNCE] wait, maxDelay", "font-size: 24px; color: green;", wait, maxWait);
 
 	/** Greatest common divisor */
 	function gcd(x: number, y: number): number {
@@ -48,10 +48,10 @@ export const debounce = (
 	const interval = maxWait !== null
 		? gcd(wait, maxWait)
 		: wait;
-	console.log("%c [DEBOUNCE] interval", "font-size: 24px; color: green;", interval);
+	// console.log("%c [DEBOUNCE] interval", "font-size: 24px; color: green;", interval);
 
 	function cancel(): void {
-		console.log("%c [DEBOUNCE] CANCEL", "font-size: 24px; color: orange;");
+		// console.log("%c [DEBOUNCE] CANCEL", "font-size: 24px; color: orange;");
 		clearTimeout(timeout as number);
 		clearTimeout(maxWaitInterval as number);
 		timeout = null;
@@ -67,25 +67,25 @@ export const debounce = (
 		let intervalStep = interval;
 
 		const timeoutFn = function () {
-			console.log("%c [DEBOUNCE] INVOKE CALLBACK", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
+			// console.log("%c [DEBOUNCE] INVOKE CALLBACK", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
 			callback.apply(context, args as any);
 			cancel();
 		}
 
 		const watcherFn = function () {
 			if (maxWait === intervalStep) {
-				console.log("%c [DEBOUNCE] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
+				// console.log("%c [DEBOUNCE] INVOKE CALLBACK MAX", "font-size: 24px; color: orange;", Math.round(performance.now() - start), "ms");
 				callback.apply(context, args as any);
 				cancel();
 			} else {
-				console.log("%c [DEBOUNCE] TICK", "font-size: 24px; color: orange;");
+				// console.log("%c [DEBOUNCE] TICK", "font-size: 24px; color: orange;");
 				intervalStep += interval;
 			}
 		}
 
 		clearTimeout(timeout as number);
 		timeout = setTimeout(timeoutFn, interval);
-		console.log("%c [DEBOUNCE] START DEBOUNCE", "font-size: 24px; color: green;", wait, maxWait);
+		// console.log("%c [DEBOUNCE] START DEBOUNCE", "font-size: 24px; color: green;", wait, maxWait);
 		if (!!maxWait && !maxWaitInterval) {
 			maxWaitInterval = setInterval(watcherFn, interval);
 		}

@@ -49,6 +49,20 @@ export class ContentPage extends ContentPageTemplate {
 		responsive: false,
 	};
 
+	private _panelList = [
+		{ id: "panel-0", width: 1, height: 1 },
+		{ id: "panel-1", width: 1, height: 1 },
+		// { id: "panel-2", width: 1, height: 1 },
+		// { id: "panel-3", width: 1, height: 2 },
+		// { id: "panel-4", width: 1, height: 1 },
+		// { id: "panel-5", width: 1, height: 1 },
+		// { id: "panel-6", width: 1, height: 1 },
+		// { id: "panel-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
+		// { id: "panel-8", width: 1, height: 1 },
+		// { id: "panel-9", width: 1, height: 1 },
+		// { id: "panel-10", width: 1, height: 1 },
+	]
+
 	@query("#panel-0")
 	private _firstPanelEl!: PandaGridPanel;
 
@@ -108,58 +122,17 @@ export class ContentPage extends ContentPageTemplate {
 									<button @click="${this._onAddPanel}">ADD ELEMENT</button>
 								</div>
 								<div class="col-3">
-									<button @click="${this._onMovePanel}">MOVE PANEL</button>
+									<button @click="${this._onMovePanel}">RESIZE PANEL</button>
 								</div>
 								<div class="col-full">
 
 									<panda-grid-layout
 										.gridConfig="${this._gridConfig}"
 										responsive
-										style="width: 350px;"
+										style="width: 100%;"
+										@on-layout-change="${this._onLayoutChange}"
 									>
-										<panda-grid-panel
-											id="panel-0"
-											width="1"
-											height="1"
-											resizable
-											movable
-										>
-											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
-											Panel #0
-										</panda-grid-panel>
-
-										<panda-grid-panel
-											id="panel-1"
-											width="1"
-											height="1"
-											movable
-											resizable
-										>
-											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
-											Panel #1
-										</panda-grid-panel>
-
-										<panda-grid-panel
-											id="panel-2"
-											width="1"
-											height="1"
-											movable
-											resizable
-										>
-											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
-											Panel #2
-										</panda-grid-panel>
-
-										<panda-grid-panel
-											id="panel-3"
-											width="1"
-											height="1"
-											movable
-											resizable
-										>
-											<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
-											Panel #3
-										</panda-grid-panel>
+										${this._renderGridPanels()}							
 
 										${_elementHtml}
 									</panda-grid-layout>
@@ -174,6 +147,37 @@ export class ContentPage extends ContentPageTemplate {
 		`;
 	}
 
+	private _renderGridPanels(): TemplateResult[] {
+		const panelsHtml: TemplateResult[] = [];
+	
+		this._panelList.forEach((panel, index) => {
+			const {
+				id,
+				width,
+				minWidth = undefined,
+				height,
+				minHeight = undefined,
+			} = panel as any;
+			panelsHtml.push(html`
+				<panda-grid-panel
+					id="${id}"
+					.width="${width}"
+					.minWidth="${minWidth}"
+					.height="${height}"
+					.minHeight="${minHeight}"
+					movable
+					resizable
+				>
+					<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
+					Panel #${index}
+				</panda-grid-panel>
+				
+			`);
+		});
+
+
+		return panelsHtml;
+	}
 
 	private _renderInstallationSection(): TemplateResult {
 		return html`
@@ -262,7 +266,12 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onMovePanel(): void {
+		this._firstPanelEl.width = 2;
 		this._firstPanelEl.height = 2;
+	}
+
+	private _onLayoutChange(event: any): void {
+		console.log("%c [DEMO] (_onLayoutChange) event", "font-size: 24px; color: green;", event.detail);
 	}
 
 	

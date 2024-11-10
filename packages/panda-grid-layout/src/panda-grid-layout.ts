@@ -10,12 +10,13 @@ import "./panda-grid-panel";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
-import { isEmpty } from "@panda-wbc/panda-utils";
+import { customElement, property, query, queryAssignedElements, state } from "lit/decorators.js";
+import { debounce, isEmpty } from "@panda-wbc/panda-utils";
 import {
 	getPanelMetadata,
 	isIntercepted,
 	minValue,
+	serializePanelMetadata,
 	valueBetween,
 } from "./utils/utils";
 
@@ -47,17 +48,7 @@ export class PandaGridLayout extends LitElement {
 	@state()
 	private _panelList: PandaGridPanel[] = [];
 
-	@state()
-	private _panelListTemp: PandaGridPanel[] = [];
-
-
 	// GRID METADATA ======================================
-
-	/** Grid top position on the screen used for relative mouse position calculation */
-	// private _gridTop: number = 0;
-
-	/** Grid left position on the screen used for relative mouse position calculation */
-	// private _gridLeft: number = 0;
 
 	/** Grid element width used for column calculation */
 	private _gridWidth: number = 0;
@@ -71,11 +62,25 @@ export class PandaGridLayout extends LitElement {
 
 	private _columnWidth: number = 300;
 
-	private _dragDistance: number = 50;
+	private _resizeObserver!: ResizeObserver;
+
+	/** This property is used to ignore initial resize observer invocation */
+	private _initializeResizeObserver: boolean = false;
+
+	/** This property is used to ignore grid resize event while in the middle of dragging panel to new location */
+	private _ignoreGridResize: boolean = false;
 
 	// events =============================================
 
 	private _panelMessageEvent = this._onPanelMessage.bind(this);
+
+	// timers =============================================
+
+	private _sizeChangeTimer!: ReturnType<typeof setTimeout>;
+
+	// debouncers =========================================
+
+	private _gridResizeDebouncer = debounce(this._onGridResize.bind(this), 500);
 
 	// elements ===========================================
 
@@ -85,20 +90,34 @@ export class PandaGridLayout extends LitElement {
 	@query("#placeholder")
 	private _placeholderEl!: HTMLDivElement;
 
+	@queryAssignedElements()
+	private _slottedPanels!: LitElement[];
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	protected firstUpdated(): void {
-		// 	this._panelList = parseGridPanels(this._slottedElements);
+	connectedCallback(): void {
+		super.connectedCallback();
+		// register resize observer
+		const resizeObserver = new ResizeObserver(this._gridResizeDebouncer);
+		resizeObserver.observe(this);
+	}
 
+	protected firstUpdated(): void {
 		this._initializeGrid();
 	}
 
-	// updated(_changedProps: PropertyValues): void {
-	// 	console.log("%c ⚡ (updated) _changedProps", "font-size: 24px; color: red;", _changedProps);
-	// 	console.log("%c ⚡ (updated) _slottedPanels", "font-size: 24px; color: red;", this._slottedElements);
-	// }
+	disconnectedCallback(): void {
+		super.disconnectedCallback();
+		// cancel timers
+		clearTimeout(this._sizeChangeTimer);
+		// disconnect resize observer
+		this._resizeObserver.disconnect();
+
+		// cancel debouncer
+		this._gridResizeDebouncer.cancel();
+	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -133,7 +152,7 @@ export class PandaGridLayout extends LitElement {
 
 	/** Calculate grid metadata */
 	private _initializeGrid(): void {
-		console.log("%c ⚡ [GRID] (_initializeGrid)", "font-size: 24px; color: blueviolet;");
+		// console.log("%c ⚡ [GRID] (_initializeGrid)", "font-size: 16px; color: blueviolet;");
 		// deconstruct provided grid config first
 		this._parseGridConfig();
 		this._updateGridMetadata();
@@ -142,21 +161,19 @@ export class PandaGridLayout extends LitElement {
 
 	/** Map grid config settings and set default values */
 	private _parseGridConfig(): void {
-		console.log("%c ⚡ [GRID] (_parseGridConfig)", "font-size: 24px; color: blueviolet;");
+		// console.log("%c ⚡ [GRID] (_parseGridConfig)", "font-size: 16px; color: blueviolet;");
 		const {
 			panelSize = 300,
 			responsive = false,
-			dragDistance = 50,
 		} = this.gridConfig;
 
 		this._panelSize = panelSize;
-		this._dragDistance = dragDistance;
 		this._responsive = responsive || this.responsive;
 	}
 
 	/** Update grid metadata based on available space and grid config */
 	private _updateGridMetadata(): void {
-		console.log("%c ⚡ [GRID] (_updateGridMetadata)", "font-size: 24px; color: blueviolet;");
+		// console.log("%c ⚡ [GRID] (_updateGridMetadata)", "font-size: 16px; color: blueviolet;");
 		// get grid width
 		const _gridRect: DOMRect = this._gridEl.getBoundingClientRect();
 		this._gridWidth = _gridRect.width;
@@ -167,15 +184,16 @@ export class PandaGridLayout extends LitElement {
 		if (this._responsive) {
 			// for responsive grid, calculate column size dynamically
 			// column width can't be less than panel size
-			this._columnWidth = minValue(Math.round(this._gridWidth / this._maxColumns), this._panelSize);
+			this._columnWidth = minValue(this._gridWidth / this._maxColumns, this._panelSize);
 		}
 
-		console.log("%c panel size:", "font-size: 24px; color: blueviolet;", this._panelSize);
-		console.log("%c grid width:", "font-size: 24px; color: blueviolet;", this._gridWidth);
-		console.log("%c max columns:", "font-size: 24px; color: blueviolet;", this._maxColumns);
-		console.log("%c column width:", "font-size: 24px; color: blueviolet;", this._columnWidth);
+		// console.log("%c panel size:", "font-size: 16px; color: blueviolet;", this._panelSize);
+		// console.log("%c grid width:", "font-size: 16px; color: blueviolet;", this._gridWidth);
+		// console.log("%c max columns:", "font-size: 16px; color: blueviolet;", this._maxColumns);
+		// console.log("%c column width:", "font-size: 16px; color: blueviolet;", this._columnWidth);
 	}
 
+	/** Update grid style based on grid metadata */
 	private _updateGridLayoutStyles(): void {
 		this._gridEl.style.gridTemplateColumns = `repeat(${this._maxColumns}, ${this._columnWidth}px)`;
 		this._gridEl.style.gridAutoRows = `${this._columnWidth}px`;
@@ -188,30 +206,31 @@ export class PandaGridLayout extends LitElement {
 	 * @returns {Array<GridPanel>} list of grid panels
 	 */
 	private _parseGridPanels(elements: LitElement[]): void {
-		console.log("%c [GRID] 🧑🏻‍💻 (_parseGridPanels) elements", "font-size: 24px; color: red;", elements);
+		// console.log("%c [GRID] 🧑🏻‍💻 (_parseGridPanels) elements", "font-size: 16px; color: red;", elements);
 		if (elements?.length) {
-			Array.from(elements).forEach((element, index) => {
-				// console.log("%c (parseGridPanels) element", "font-size: 24px; color: red;", element, element.tagName);
-				if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
-					// console.log("%c (parseGridPanels) ADD ELEMENT", "font-size: 24px; color: red;", element);
-					// set panel index property
-					(element as PandaGridPanel).index = index;
-					// set grid metadata onto panel element
-					(element as PandaGridPanel).metadata = {
-						columnWidth: this._columnWidth,
-						maxColumns: this._maxColumns,
-						dragDistance: this._dragDistance,
-					};
-					// reset temp position
-					(element as PandaGridPanel).resetTempPosition();
-					// find suitable position for all slotted panels
-					this._initializePanelPosition(element as PandaGridPanel);
-					// add events to panel
-					element.addEventListener("on-message", this._panelMessageEvent);
-					// add panels to the list
-					this._panelList.push(element as PandaGridPanel);
-				}
-			});
+			Array
+				.from(elements)
+				.forEach((element, index) => {
+					// console.log("%c (parseGridPanels) element", "font-size: 16px; color: red;", element, element.tagName);
+					if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
+						// console.log("%c (parseGridPanels) ADD ELEMENT", "font-size: 16px; color: red;", element);
+						// set panel index property
+						(element as PandaGridPanel).index = index;
+						// set grid metadata onto panel element
+						(element as PandaGridPanel).metadata = {
+							columnWidth: this._columnWidth,
+							maxColumns: this._maxColumns,
+						};
+						// reset temp position
+						(element as PandaGridPanel).resetTempPosition();
+						// find suitable position for all slotted panels
+						this._initializePanelPosition(element as PandaGridPanel);
+						// add events to panel
+						element.addEventListener("on-message", this._panelMessageEvent);
+						// add panels to the list
+						this._panelList.push(element as PandaGridPanel);
+					}
+				});
 		}
 	}
 
@@ -220,30 +239,33 @@ export class PandaGridLayout extends LitElement {
 	 * @param {PandaGridPanel} panel - grid panel element handle 
 	 */
 	private _initializePanelPosition(panel: PandaGridPanel): void {
-		console.log("%c 🚀 (_initializePanelPosition)", "font-size: 24px; color: orange;", panel, isEmpty(panel?.top), isEmpty(panel?.left));
+		// console.log("%c 🚀 (_initializePanelPosition)", "font-size: 16px; color: orange;", panel, isEmpty(panel?.top), isEmpty(panel?.left));
 		if (!isEmpty(panel?.top) && !isEmpty(panel?.left)) {
-			console.log("%c 🚀 (_initializePanelPosition) PANEL ALREADY HAS POSITION ASSIGNED ============================", "font-size: 24px; color: pink;", panel, panel.top, panel.left);
-
+			// console.log("%c 🚀 (_initializePanelPosition) PANEL ALREADY HAS POSITION ASSIGNED ============================", "font-size: 16px; color: pink;", panel, panel.top, panel.left);
+			// 1. check protrusion and collision with existing panels
+			// 2. if panel protruding or colliding with current coordinates then find empty slot
+			// 3. if panel does not collides and do not protrudes, leave coordinates unchanged
+			// 4. sort panel list
 		} else {
 			let found: boolean = false;
 			let top: number = 0;
 			let left: number = 0;
-			console.log("%c 🚀 (_initializePanelPosition) START ============================", "font-size: 24px; color: red;");
+			// console.log("%c 🚀 (_initializePanelPosition) START ============================", "font-size: 16px; color: red;");
 
 			// fine empty space for panel to fit in
 			while (!found) {
 				let right = left + panel.width;
 
-				console.log("%c right:", "font-size: 24px; color: red;", right);
-				console.log("%c left + panel.width:", "font-size: 24px; color: red;", left + panel.width);
-				console.log("%c panel.minWidth:", "font-size: 24px; color: red;", panel.minWidth);
-				console.log("%c max columns:", "font-size: 24px; color: red;", this._maxColumns);
+				// console.log("%c right:", "font-size: 16px; color: red;", right);
+				// console.log("%c left + panel.width:", "font-size: 16px; color: red;", left + panel.width);
+				// console.log("%c panel.minWidth:", "font-size: 16px; color: red;", panel.minWidth);
+				// console.log("%c max columns:", "font-size: 16px; color: red;", this._maxColumns);
 
 				// check if panel is too long and protrudes outside of the available space
 				if (right > this._maxColumns) {
 					left = 0;
 					top++;
-					console.log("%c 🚀 (_initializePanelPosition) MOVE TO THE NEXT ROW =======", "font-size: 24px; color: red;");
+					// console.log("%c 🚀 (_initializePanelPosition) MOVE TO THE NEXT ROW =======", "font-size: 16px; color: red;");
 				}
 
 				// make sure panel won't be sized less then minWidth
@@ -264,7 +286,7 @@ export class PandaGridLayout extends LitElement {
 
 				let collide = false;
 				for (const obstacle of this._panelList) {
-					console.log("%c 🚀 (_initializePanelPosition) OBSTACLE LOOP =========================", "font-size: 24px; color: red;");
+					// console.log("%c 🚀 (_initializePanelPosition) OBSTACLE LOOP =========================", "font-size: 16px; color: red;");
 					const obstacleMetadata = getPanelMetadata(obstacle);
 					if (isIntercepted(panelMetadata, obstacleMetadata)) {
 						collide = true;
@@ -277,13 +299,13 @@ export class PandaGridLayout extends LitElement {
 					panel.top = panelMetadata.top;
 					panel.left = panelMetadata.left;
 
-					console.log("%c 🚀 (_initializePanelPosition) set position:", "font-size: 24px; color: red;", panelMetadata);
+					// console.log("%c 🚀 (_initializePanelPosition) set position:", "font-size: 16px; color: red;", panelMetadata);
 				}
 				// move left and try again
 				left++;
-				if (collide) {
-					console.log("%c 🚀 (_initializePanelPosition) MOVE LEFT ============================", "font-size: 24px; color: red;");
-				}
+				// if (collide) {
+				// 	console.log("%c 🚀 (_initializePanelPosition) MOVE LEFT ============================", "font-size: 16px; color: red;");
+				// }
 			} // end of loop
 		}
 	}
@@ -293,26 +315,26 @@ export class PandaGridLayout extends LitElement {
 	 * @param {PanelMetadata} panelMetadata - metadata of a panel
 	 */
 	private _detectCollision(panelMetadata: PanelMetadata, draggedPanelIndex: number | null = null): void {
-		console.log("%c 0. START panel index:", "font-size: 24px; color: red;", panelMetadata.index);
-		console.log("%c 0. draggedPanelIndex:", "font-size: 24px; color: red;", draggedPanelIndex);
+		console.log("%c 0. START panel index:", "font-size: 16px; color: red;", panelMetadata.index);
+		console.log("%c 0. draggedPanelIndex:", "font-size: 16px; color: red;", draggedPanelIndex);
 
 		this._panelList.forEach((obstacle) => {
 			// skip panel that initiated collision
-			console.log("%c 1. obstacle index:", "font-size: 24px; color: red;", obstacle.index);
-			console.log("%c 1. draggedPanelIndex:", "font-size: 24px; color: red;", draggedPanelIndex);
-			console.log("%c 1. panel index:", "font-size: 24px; color: red;", panelMetadata.index);
+			console.log("%c 1. obstacle index:", "font-size: 16px; color: red;", obstacle.index);
+			console.log("%c 1. draggedPanelIndex:", "font-size: 16px; color: red;", draggedPanelIndex);
+			console.log("%c 1. panel index:", "font-size: 16px; color: red;", panelMetadata.index);
 
 			if (obstacle.index !== panelMetadata.index && obstacle.index !== draggedPanelIndex) {
 				// get obstacle metadata
 				const obstacleMetadata = getPanelMetadata(obstacle);
 				// check if obstacle is colliding
 				if (isIntercepted(panelMetadata, obstacleMetadata)) {
-					console.log("%c 2.1 COLLISION:", "font-size: 24px; color: red;", panelMetadata.index, "with", obstacle.index);
+					console.log("%c 2.1 COLLISION:", "font-size: 16px; color: red;", panelMetadata.index, "with", obstacle.index);
 					if (draggedPanelIndex === null) {
 						// resolve collision
 						obstacle.tempLeft = panelMetadata.right;
-						console.log("%c 2.1 change obstacle temp left to:", "font-size: 24px; color: red;", obstacle.tempLeft);
-						console.log("%c 2.1 detect collision for obstacle", "font-size: 24px; color: red;");
+						console.log("%c 2.1 change obstacle temp left to:", "font-size: 16px; color: red;", obstacle.tempLeft);
+						console.log("%c 2.1 detect collision for obstacle", "font-size: 16px; color: red;");
 
 						this._detectCollision(
 							getPanelMetadata(obstacle),
@@ -321,9 +343,9 @@ export class PandaGridLayout extends LitElement {
 					} else if (draggedPanelIndex !== null && panelMetadata.tempLeft) {
 						// resolve collision
 						obstacle.tempLeft = obstacle.left + panelMetadata.tempLeft - panelMetadata.left;
-						console.log("%c 2.2 COLLISION:", "font-size: 24px; color: red;", panelMetadata.index, "with", obstacle.index);
-						console.log("%c 2.2 change obstacle temp left to:", "font-size: 24px; color: red;", obstacle.tempLeft);
-						console.log("%c 2.2 detect collision for obstacle", "font-size: 24px; color: red;");
+						console.log("%c 2.2 COLLISION:", "font-size: 16px; color: red;", panelMetadata.index, "with", obstacle.index);
+						console.log("%c 2.2 change obstacle temp left to:", "font-size: 16px; color: red;", obstacle.tempLeft);
+						console.log("%c 2.2 detect collision for obstacle", "font-size: 16px; color: red;");
 
 						this._detectCollision(
 							getPanelMetadata(obstacle),
@@ -331,21 +353,22 @@ export class PandaGridLayout extends LitElement {
 						);
 					}
 				} else {
-					console.log("%c 2. NO COLLISION:", "font-size: 24px; color: red;", obstacle.index);
-					console.log("%c panelMetadata", "font-size: 24px; color: red;", panelMetadata);
-					console.log("%c obstacleMetadata", "font-size: 24px; color: red;", obstacleMetadata);
+					console.log("%c 2. NO COLLISION:", "font-size: 16px; color: red;", obstacle.index);
+					console.log("%c panelMetadata", "font-size: 16px; color: red;", panelMetadata);
+					console.log("%c obstacleMetadata", "font-size: 16px; color: red;", obstacleMetadata);
 					// reset temporary position if not colliding
 					obstacle.resetTempPosition();
 				}
 			} else {
-				console.log("%c [GRID] ⚡ (_detectCollision) SKIP INDEX:", "font-size: 24px; color: red;", panelMetadata.index, "draggedPanelIndex", draggedPanelIndex);
-				console.log("%c draggedPanelIndex:", "font-size: 24px; color: red;", draggedPanelIndex);
-				console.log("%c obstacle.index:", "font-size: 24px; color: red;", obstacle.index);
+				console.log("%c [GRID] ⚡ (_detectCollision) SKIP INDEX:", "font-size: 16px; color: red;", panelMetadata.index, "draggedPanelIndex", draggedPanelIndex);
+				console.log("%c draggedPanelIndex:", "font-size: 16px; color: red;", draggedPanelIndex);
+				console.log("%c obstacle.index:", "font-size: 16px; color: red;", obstacle.index);
 			}
 		});
 	}
 
 	private _detectCollision2(panelMetadata: PanelMetadata): void {
+		// console.log("%c ⚡ (_detectCollision2) FOR PANEL %s", "font-size: 16px; color: red;", panelMetadata.index);
 		// go through all panels and check for collisions
 		this._panelList.forEach((obstacle) => {
 			// skip panel itself
@@ -357,12 +380,12 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	/**
-	 * 
+	 * Resolve panel collision
 	 * @param panelMetadata - initiator panel, one that bas been moved to the new position by user
 	 * @param obstacle - panel that needs new position in response to user changing layout
 	 */
 	private _fixCollision(panelMetadata: PanelMetadata, obstacle: PandaGridPanel): void {
-		console.log("%c ⚡ (START) 0. FIX COLLISION FOR:", "font-size: 24px; color: orange;", obstacle.index);
+		// console.log("%c ⚡ (START) 0. FIX COLLISION FOR:", "font-size: 16px; color: orange;", obstacle.index);
 
 		let found: boolean = false;
 		let top: number = 0;
@@ -373,9 +396,9 @@ export class PandaGridLayout extends LitElement {
 			if (right > this._maxColumns) {
 				left = 0;
 				top++;
-				console.log("%c ⚡ 0. MOVE DOWN:", "font-size: 24px; color: orange;");
-				console.log("%c ⚡ 0. RIGHT:", "font-size: 24px; color: orange;", right);
-				console.log("%c ⚡ 0. MAX COLUMNS:", "font-size: 24px; color: orange;", this._maxColumns);
+				// console.log("%c ⚡ 0. MOVE DOWN:", "font-size: 16px; color: orange;");
+				// console.log("%c ⚡ 0. RIGHT:", "font-size: 16px; color: orange;", right);
+				// console.log("%c ⚡ 0. MAX COLUMNS:", "font-size: 16px; color: orange;", this._maxColumns);
 			}
 			// update value of right
 			right = valueBetween(
@@ -393,9 +416,9 @@ export class PandaGridLayout extends LitElement {
 				bottom,
 			};
 
-			console.log("%c ⚡ 1. NEW POSITION:", "font-size: 24px; color: orange;", obstacleMetadata.top, obstacleMetadata.left);
+			// console.log("%c ⚡ 1. NEW POSITION:", "font-size: 16px; color: orange;", obstacleMetadata.top, obstacleMetadata.left);
 
-			console.log("%c ⚡ 2. CHECK INTERCEPTION AGAINST OTHER PANELS:", "font-size: 24px; color: orange;");
+			// console.log("%c ⚡ 2. CHECK INTERCEPTION AGAINST OTHER PANELS:", "font-size: 16px; color: orange;");
 
 			let collide = false;
 			// validate new obstacle position against all panels
@@ -406,8 +429,8 @@ export class PandaGridLayout extends LitElement {
 					continue;
 				}
 
-				console.log("%c (LOOP) >>> 2.1 CHECK OBSTACLE AGAINST PANEL: %s", "font-size: 24px; color: red;", panel.index);
-				console.log("%c CHECK IF OBSTACLE: %s %s %s", "font-size: 24px; color: orange;", obstacle.index, "COLLIDES WITH PANEL:", panel.index);
+				// console.log("%c (LOOP) >>> 2.1 CHECK OBSTACLE AGAINST PANEL: %s", "font-size: 16px; color: red;", panel.index);
+				// console.log("%c CHECK IF OBSTACLE: %s %s %s", "font-size: 16px; color: orange;", obstacle.index, "COLLIDES WITH PANEL:", panel.index);
 
 				// check certain panels for collision
 				// 1. initiator panel moved by user
@@ -426,29 +449,28 @@ export class PandaGridLayout extends LitElement {
 
 					// check if obstacle after updating its position still collides with other panels
 					if (isIntercepted(currentPanelMetadata, obstacleMetadata)) {
-						console.log("%c [COLLISION!!!] ⚡ 2.1.a NEW POSITION COLLIDES AGAINST PANEL %s", "font-size: 24px; color: orange;", panel.index);
-						console.log("%c [COLLISION] PANEL", "font-size: 24px; color: orange;", currentPanelMetadata);
-						console.log("%c [COLLISION] OBSTACLE", "font-size: 24px; color: orange;", obstacleMetadata);
+						// console.log("%c [COLLISION!!!] ⚡ 2.1.a NEW POSITION COLLIDES AGAINST PANEL %s", "font-size: 16px; color: orange;", panel.index);
+						// console.log("%c [COLLISION] PANEL", "font-size: 16px; color: orange;", currentPanelMetadata);
+						// console.log("%c [COLLISION] OBSTACLE", "font-size: 16px; color: orange;", obstacleMetadata);
 						const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
 						const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
-						console.log("%c PANEL INDEX %s %s %s %s", "font-size: 24px; color: orange;", panel.index, " pos:", _top, _left);
+						// console.log("%c PANEL INDEX %s %s %s %s", "font-size: 16px; color: orange;", panel.index, " pos:", _top, _left);
 
 						collide = true;
 						break;
 					} else {
-						console.log("%c ⚡ 2.1.b NEW POSITION FOR PANEL FINE:", "font-size: 24px; color: green;", obstacleMetadata.index);
-
-						console.log("%c NEW POSITION FOR PANEL INDEX %s %s %s %s", "font-size: 24px; color: green;", obstacleMetadata.index, "pos:", obstacleMetadata.top, obstacleMetadata.left);
+						// console.log("%c ⚡ 2.1.b NEW POSITION IS FINE FOR PANEL %s", "font-size: 16px; color: green;", obstacleMetadata.index);
+						// console.log("%c NEW POSITION FOR PANEL INDEX %s %s %s %s", "font-size: 16px; color: green;", obstacleMetadata.index, "pos:", obstacleMetadata.top, obstacleMetadata.left);
 
 						const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
 						const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
-						console.log("%c CURRENT PANEL INDEX %s %s %s %s", "font-size: 24px; color: orange;", currentPanelMetadata.index, " pos:", _top, _left);
+						// console.log("%c CURRENT PANEL INDEX %s %s %s %s", "font-size: 16px; color: orange;", currentPanelMetadata.index, " pos:", _top, _left);
 					}
 
-				} else {
-					console.log("%c ⚡ 2.2 SKIP PANEL:", "font-size: 24px; color: orange;", panel.index);
-					console.log("%c ⚡ REASON 1 (skip, its not initiator panel):", "font-size: 24px; color: orange;", panel.index !== panelMetadata.index);
-					console.log("%c ⚡ REASON 2 (skip, panel index is higher than obstacle index):", "font-size: 24px; color: orange;", panel.index > obstacle.index);
+					// } else {
+					// 	console.log("%c ⚡ 2.2 SKIP PANEL:", "font-size: 16px; color: orange;", panel.index);
+					// 	console.log("%c ⚡ REASON 1 (skip, its not initiator panel):", "font-size: 16px; color: orange;", panel.index !== panelMetadata.index);
+					// 	console.log("%c ⚡ REASON 2 (skip, panel index is higher than obstacle index):", "font-size: 16px; color: orange;", panel.index > obstacle.index);
 				}
 
 			} // end of - for
@@ -458,18 +480,18 @@ export class PandaGridLayout extends LitElement {
 				found = true; // exit loop
 				// set temporary position
 				obstacle.setTempPosition(obstacleMetadata.top, obstacleMetadata.left);
-				console.log("%c ⚡ 3. (END) APPLY NEW TEMP POSITION:", "font-size: 24px; color: green;", obstacleMetadata.index, " new pos: ", obstacleMetadata.top, obstacleMetadata.left);
+				// console.log("%c ⚡ 3. (END) APPLY NEW TEMP POSITION:", "font-size: 16px; color: green;", obstacleMetadata.index, " new pos: ", obstacleMetadata.top, obstacleMetadata.left);
 			}
 
 			left++;
 			if (collide) {
-				console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 24px; color: orange;");
+				// console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 16px; color: orange;");
 			}
 		} // end of - while
 	}
 
 	private _sortPanels(): void {
-		console.log("%c ⚡ (_sortPanels)", "font-size: 24px; color: orange;");
+		// console.log("%c ⚡ (_sortPanels)", "font-size: 16px; color: orange;");
 		this._panelList
 			.sort((panelA, panelB) => {
 				return panelA.left - panelB.left;
@@ -480,7 +502,7 @@ export class PandaGridLayout extends LitElement {
 		// set correct indexes
 		this._panelList.forEach((panel, index) => panel.index = index);
 
-		console.log("%c ⚡ PANEL LIST:", "font-size: 24px; color: orange;", this._panelList);
+		// console.log("%c ⚡ PANEL LIST:", "font-size: 16px; color: orange;", this._panelList);
 	}
 
 	/** Apply all indicative positions to panels and reset their temp positions */
@@ -519,31 +541,44 @@ export class PandaGridLayout extends LitElement {
 		this._placeholderEl.classList.remove("show");
 	}
 
+	/** Notify implementation layer about layout change */
+	private _triggerLayoutChangeEvent(): void {
+		const event = new CustomEvent("on-layout-change", {
+			detail: {
+				panelList: serializePanelMetadata(this._panelList)
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
 	private _onSlotChange(event: Event): void {
 		const slotEl: any = event.target;
-		const assignedElements = slotEl.assignedElements();
-		console.log("%c ⚡ [GRID] (_onSlotChange) assignedElements", "font-size: 24px; color: orange;", assignedElements.length, assignedElements);
+		const assignedElements: LitElement[] = slotEl.assignedElements();
+		// console.log("%c ⚡ [GRID] (_onSlotChange) assignedElements", "font-size: 16px; color: orange;", assignedElements.length, assignedElements);
 		// parse slotted elements and create list of grid panels
 		this._panelList = [];
 		this._parseGridPanels(assignedElements);
 	}
 
 	private _onPanelMessage(event: any): void {
-		console.log("%c ⚡ [GRID] (_onPanelMessage) event target:", "font-size: 24px; color: blueviolet;", event.detail);
+		// console.log("%c ⚡ [GRID] (_onPanelMessage) event target:", "font-size: 16px; color: blueviolet;", event.detail);
 		const { type, top, left, width, height, index } = event.detail;
+		const thisPanel = this._getPanelByIndex(index);
+		// check if panel is on the list
+		if (thisPanel) {
+			let panelMetadata = getPanelMetadata(thisPanel);
 
-		// check message type
-		switch (type) {
-			case PanelMessageType.DRAG_START:
-				this._showPlaceholder(top, left, width, height);
-				const thisPanel = this._getPanelByIndex(index);
-				console.log("%c ⚡ [GRID] (_onPanelMessage) 1. thisPanel:", "font-size: 24px; color: blueviolet;", thisPanel);
-				if (thisPanel) {
-					let panelMetadata = getPanelMetadata(thisPanel);
+			// check message type
+			switch (type) {
+				case PanelMessageType.DRAG_START:
+					// ignore grid resize events triggered by moving placeholder
+					this._ignoreGridResize = true;
+
+					this._showPlaceholder(top, left, width, height);
 					// apply temporary new position
 					panelMetadata = {
 						...panelMetadata,
@@ -555,22 +590,71 @@ export class PandaGridLayout extends LitElement {
 						bottom: top + height,
 					};
 
-					console.log("%c ⚡ [GRID] (_onPanelMessage) 2. panelMetadata:", "font-size: 24px; color: blueviolet;", panelMetadata);
 					this._panelList.forEach((obstacle) => {
-						if (thisPanel.index !== obstacle.index) {
-							obstacle.resetTempPosition();
-						}
+						obstacle.resetTempPosition();
 					});
 
 					this._detectCollision2(panelMetadata);
-				}
-				break;
-			case PanelMessageType.DRAG_END:
-				console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END !!!", "font-size: 24px; color: blueviolet;");
-				this._hidePlaceholder();
-				this._applyTemporaryPosition();
-				break;
+					break;
+
+				case PanelMessageType.DRAG_END_NO_CHANGE:
+					// console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END NO CHANGE", "font-size: 16px; color: blueviolet;");
+					this._panelList.forEach((obstacle) => {
+						obstacle.resetTempPosition();
+					});
+					this._hidePlaceholder();
+					break;
+
+				case PanelMessageType.DRAG_END:
+					// console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END !!!", "font-size: 16px; color: blueviolet;");
+					this._hidePlaceholder();
+					this._applyTemporaryPosition();
+					// trigger layout change event
+					this._triggerLayoutChangeEvent();
+					break;
+
+				case PanelMessageType.SIZE_CHANGE:
+					// console.log("%c ⚡ [GRID] (_onPanelMessage) PANEL SIZE CHANGE !!!", "font-size: 16px; color: blueviolet;");
+					panelMetadata = {
+						...panelMetadata,
+						top,
+						left,
+						width,
+						height,
+						right: left + width,
+						bottom: top + height,
+					};
+					this._detectCollision2(panelMetadata);
+					this._sizeChangeTimer = setTimeout(() => {
+						this._applyTemporaryPosition();
+					}, 300);
+					break;
+			}
 		}
+	}
+
+	/** Handle grid resize */
+	private _onGridResize() {
+		// ignore initial resize observer invocation
+		if (!this._initializeResizeObserver) {
+			this._initializeResizeObserver = true;
+			return;
+		}
+		// ignore resize event while in the middle of dragging panel to new location
+		if (this._ignoreGridResize) {
+			this._ignoreGridResize = false;
+			return;
+		}
+		// console.log("%c ⚡ [GRID] (_onGridResize) event", "font-size: 16px; color: blueviolet;", this._slottedPanels);
+		// recalculate grid metadata based on new size
+		this._updateGridMetadata();
+		this._updateGridLayoutStyles();
+		// reinitialize all panels
+		this._panelList = [];
+		this._parseGridPanels(this._slottedPanels);
+
+		// trigger layout change event
+		this._triggerLayoutChangeEvent();
 	}
 }
 

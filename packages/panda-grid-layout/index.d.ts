@@ -1,8 +1,10 @@
 export const enum PanelMessageType {
-	DRAG_START,
-	DRAG_END,
+	DRAG_START, // used to notify grid about ongoing panel position change
+	DRAG_END, // used to notify grid about final position change
+	DRAG_END_NO_CHANGE, // used to notify grid about drag end with no change in position
 	RESIZE_START,
 	RESIZE_END,
+	SIZE_CHANGE, // used to notify panel size change from outside of the grid (programmatically) 
 }
 
 export interface GridConfig {
@@ -14,14 +16,6 @@ export interface GridConfig {
 	 * DEFAULT: 300 [px]
 	 */
 	panelSize: number;
-
-	/**
-	 * This property is used to regulate panel dragging sensitivity.
-	 * It's the distance that panel needs to be dragged to initiate position change.
-	 *  
-	 * DEFAULT: 50 [px]
-	 */
-	dragDistance?: number;
 
 	/**
 	 * When layout is set to responsive, panel size
@@ -43,7 +37,6 @@ export interface GridConfig {
 export type GridMetadata = {
 	columnWidth: number;
 	maxColumns: number;
-	dragDistance: number;
 }
 
 export type PanelMetadata = {

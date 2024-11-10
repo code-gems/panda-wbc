@@ -15,7 +15,12 @@ import { panelStyles } from "./styles/styles";
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { getMousePosition, minValue, valueBetween } from "./utils/utils";
+import {
+	getMousePosition,
+	maxValue,
+	minValue,
+	valueBetween,	
+} from "./utils/utils";
 
 @customElement("panda-grid-panel")
 export class PandaGridPanel extends LitElement {
@@ -97,9 +102,6 @@ export class PandaGridPanel extends LitElement {
 	/** prop representing the start coordinates of drag, used to calculate drag distance */
 	private _dragStartPosition: MousePosition | null = null;
 
-	/** Setting used to compare dragging distance */
-	private _dragDistance: number = 50;
-
 	/** Used to store x position offset calculated based on dragged distance and column width */
 	@state()
 	private _positionOffsetX: number = 0;
@@ -127,7 +129,7 @@ export class PandaGridPanel extends LitElement {
 
 	protected updated(_changedProps: PropertyValues): void {
 		if (_changedProps.has("metadata") && this.metadata !== undefined) {
-			console.log("%c (updated) metadata:", "font-size: 24px; color: red;", this.metadata);
+			// console.log("%c (updated) metadata:", "font-size: 16px; color: red;", this.metadata);
 			this._parseGridMetadata();
 			this._updatePanelStyle();
 		}
@@ -138,31 +140,39 @@ export class PandaGridPanel extends LitElement {
 			_changedProps.has("top") && this.top !== undefined ||
 			_changedProps.has("left") && this.left !== undefined
 		) {
-			console.log("%c (updated) width:", "font-size: 24px; color: red;", this.width);
 			this._updatePanelStyle();
 		}
+		// check if size was changed programmatically
+		if (
+			_changedProps.has("width") && _changedProps.get("width") !== undefined && this.width !== undefined ||
+			_changedProps.has("height") && _changedProps.get("height") !== undefined && this.height !== undefined
+		) {
+			this._notifySizeChange();
+		}
+
 		// check for new temporary position
 		if (
 			_changedProps.has("_positionOffsetX") && this._positionOffsetX !== undefined ||
 			_changedProps.has("_positionOffsetY") && this._positionOffsetY !== undefined
 		) {
-			console.log("%c (updated) _positionOffsetX / _positionOffsetY:", "font-size: 24px; color: red;", this._positionOffsetX, this._positionOffsetY);
 			this._setTemporaryPosition();
 		}
-		// check for indicative position change
-		// if (
-		// 	_changedProps.has("tempTop") && this.tempTop !== undefined ||
-		// 	_changedProps.has("tempLeft") && this.tempLeft !== undefined
-		// ) {
-		// }
 	}
 
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
 		// remove event listener
-		this._dragHandleEl.removeEventListener("mousedown", this._dragHandleMouseDownEvent);
+		if (this._dragHandleEl) {
+			this._dragHandleEl.removeEventListener("mousedown", this._dragHandleMouseDownEvent);
+		}
 		document.removeEventListener("mousemove", this._dragHandleMouseMoveEvent);
 		document.removeEventListener("mouseup", this._dragHandleMouseUpEvent);
+		// remove touch events
+		if (this._dragHandleEl) {
+			this._dragHandleEl.addEventListener("touchstart", this._dragHandleMouseDownEvent);
+		}
+		document.removeEventListener("touchmove", this._dragHandleMouseMoveEvent);
+		document.removeEventListener("touchend", this._dragHandleMouseUpEvent);
 	}
 
 	// ================================================================================================================
@@ -193,19 +203,17 @@ export class PandaGridPanel extends LitElement {
 		const {
 			columnWidth,
 			maxColumns,
-			dragDistance,
 		} = this.metadata;
 		this._columnWidth = columnWidth;
 		this._maxColumns = maxColumns;
-		this._dragDistance = dragDistance;
 	}
 
 	/** Update panel size and position based on provided metadata */
 	private _updatePanelStyle(): void {
 		if (this.metadata) {
-			console.log("%c [PANEL] (_updatePanelStyle)", "font-size: 24px; color: green;");
+			// console.log("%c [PANEL] (_updatePanelStyle)", "font-size: 16px; color: green;");
 			// update width and height
-			const _widthPx = this.width * this._columnWidth;
+			const _widthPx = maxValue(this.width, this._maxColumns) * this._columnWidth;
 			const _heightPx = this.height * this._columnWidth;
 			this.style.width = `${_widthPx}px`;
 			this.style.height = `${_heightPx}px`;
@@ -213,7 +221,12 @@ export class PandaGridPanel extends LitElement {
 			const _rowStart = this.top + 1;
 			const _rowEnd = _rowStart + this.height;
 			const _columnStart = this.left + 1;
-			const _columnEnd = _columnStart + this.width;
+			// const _columnEnd = _columnStart + this.width + 1;
+			const _columnEnd = valueBetween(
+				_columnStart + this.width + 1,
+				1,
+				this._maxColumns + 1
+			);
 
 			this.style.gridRowStart = String(_rowStart);
 			this.style.gridColumnStart = String(_columnStart);
@@ -302,6 +315,7 @@ export class PandaGridPanel extends LitElement {
 	private _setTemporaryPosition(): void {
 		// cancel if not dragging
 		if (!this.dragging) {
+			this.resetTempPosition();
 			return;
 		}
 
@@ -313,7 +327,7 @@ export class PandaGridPanel extends LitElement {
 			height,
 		} = this._getPanelMetadataWithOffset();
 		
-		console.log("%c ⚡ (_setTemporaryPosition) TEMP POSITION t/l:", "font-size: 24px; color: red;", top, left);
+		// console.log("%c ⚡ (_setTemporaryPosition) TEMP POSITION t/l:", "font-size: 16px; color: red;", top, left);
 		// notify grid about drag position
 		this._triggerMessageEvent(
 			PanelMessageType.DRAG_START,
@@ -335,7 +349,7 @@ export class PandaGridPanel extends LitElement {
 
 		// check if position changed
 		if (this.top !== top || this.left !== left || this.width !== width) {
-			console.log("%c ⚡ (_setFinalPosition) FINAL POSITION t/l:", "font-size: 24px; color: red;", this.top, this.left);
+			// console.log("%c ⚡ (_setFinalPosition) FINAL POSITION t/l:", "font-size: 16px; color: red;", this.top, this.left);
 			// set new position
 			this.top = top;
 			this.left = left;
@@ -351,7 +365,25 @@ export class PandaGridPanel extends LitElement {
 			// reset offset
 			this._positionOffsetX = 0;
 			this._positionOffsetY = 0;
+		} else {
+			this._triggerMessageEvent(
+				PanelMessageType.DRAG_END_NO_CHANGE,
+				this.top,
+				this.left,
+				this.width,
+				this.height,
+			);
 		}
+	}
+
+	private _notifySizeChange(): void {
+		this._triggerMessageEvent(
+			PanelMessageType.SIZE_CHANGE,
+			this.top,
+			this.left,
+			this.width,
+			this.height,
+		);
 	}
 
 	// ================================================================================================================
@@ -359,7 +391,7 @@ export class PandaGridPanel extends LitElement {
 	// ================================================================================================================
 
 	public setTempPosition(top: number, left: number): void {
-		console.log("%c >>>>>>>>>>>>>> (setTempPosition) PANEL %s %s %s", "font-size: 24px; color: red;", this.index, top, left);
+		// console.log("%c 🧪 [PANEL] (setTempPosition) PANEL %s %s %s", "font-size: 16px; color: limegreen;", this.index, top, left);
 		this.tempTop = top;
 		this.tempLeft = left;
 		this.temporaryPosition = true;
@@ -367,6 +399,7 @@ export class PandaGridPanel extends LitElement {
 	}
 
 	public resetTempPosition(): void {
+		// console.log("%c 🧪 [PANEL] (resetTempPosition) PANEL %s", "font-size: 16px; color: limegreen;", this.index);
 		this.tempTop = null;
 		this.tempLeft = null;
 		this.temporaryPosition = false;
@@ -374,6 +407,7 @@ export class PandaGridPanel extends LitElement {
 	}
 
 	public applyTempPosition(): void {
+		// console.log("%c 🧪 [PANEL] (applyTempPosition) PANEL %s", "font-size: 16px; color: limegreen;", this.index);
 		this.top = this.tempTop ?? this.top;
 		this.left = this.tempLeft ?? this.left;
 		this.tempTop = null;
@@ -396,17 +430,22 @@ export class PandaGridPanel extends LitElement {
 		this._dragHandleEl.addEventListener("mousedown", this._dragHandleMouseDownEvent);
 		document.addEventListener("mousemove", this._dragHandleMouseMoveEvent);
 		document.addEventListener("mouseup", this._dragHandleMouseUpEvent);
-		// document.addEventListener("touchmove", this._dragHandleMouseMoveEvent);
-		// document.addEventListener("touchend", this._dragHandleMouseUpEvent);
+		// add touch events
+		this._dragHandleEl.addEventListener("touchstart", this._dragHandleMouseDownEvent);
+		document.addEventListener("touchmove", this._dragHandleMouseMoveEvent, false);
+		document.addEventListener("touchend", this._dragHandleMouseUpEvent, false);
 
-		console.log("%c 👆🏻 [PANEL] (_onDragHandleSlotChange) assignedElements:", "font-size: 24px; color: orange;", assignedElements);
+		// console.log("%c 👆🏻 [PANEL] (_onDragHandleSlotChange) assignedElements:", "font-size: 16px; color: orange;", assignedElements);
 	}
 
 	// ================================================================================================================
 	// EVENTS - DRAG HANDLE ===========================================================================================
 	// ================================================================================================================
 
-	private _onDragHandleMouseDown(event: MouseEvent): void {
+	private _onDragHandleMouseDown(event: MouseEvent | TouchEvent): void {
+		// console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 16px; color: orange;", event);
+		event.preventDefault();
+		event.stopPropagation();
 		if (!this.movable) {
 			return;
 		}
@@ -414,10 +453,12 @@ export class PandaGridPanel extends LitElement {
 		this._dragStartPosition = getMousePosition(event);
 		// start dragging
 		this.dragging = true;
-		// console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 24px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
+		// console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 16px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
 	}
 
 	private _onDragHandleMouseMove(event: MouseEvent | TouchEvent): void {
+		event.preventDefault();
+		event.stopPropagation();
 		if (!this.dragging) {
 			return;
 		}
@@ -431,7 +472,7 @@ export class PandaGridPanel extends LitElement {
 		this._positionOffsetX = Math.round(distanceX / this._columnWidth) + 0;
 		this._positionOffsetY = Math.round(distanceY / this._columnWidth) + 0;
 
-		// console.log("%c 🖱️ (_onDragHandleMouseMove) offset", "font-size: 24px; color: orange;", this._positionOffsetX + 0, this._positionOffsetY + 0);
+		// console.log("%c 🖱️ (_onDragHandleMouseMove) offset", "font-size: 16px; color: orange;", this._positionOffsetX + 0, this._positionOffsetY + 0);
 
 		// update panel position
 		this.style.marginTop = `${this._mousePosition.y - this._dragStartPosition!.y}px`;
@@ -439,7 +480,9 @@ export class PandaGridPanel extends LitElement {
 	}
 
 	private _onDragHandleMouseUp(event: MouseEvent | TouchEvent): void {
-		// console.log("%c 🖱️ (_onDragHandleMouseUp) event", "font-size: 24px; color: orange;", event);
+		event.preventDefault();
+		event.stopPropagation();
+		// console.log("%c 🖱️ (_onDragHandleMouseUp) event", "font-size: 16px; color: orange;", event);
 		if (!this.dragging) {
 			return;
 		}

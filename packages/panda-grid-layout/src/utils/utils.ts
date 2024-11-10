@@ -27,6 +27,15 @@ export const maxValue = (value: number, maxValue: number): number => {
 }
 
 /**
+ * Return serializable metadata of panel list. 
+ * @param panelList - list of panels
+ * @returns - serialized list of panel metadata
+ */
+export const serializePanelMetadata = (panelList: PandaGridPanel[]): PanelMetadata[] => {
+	return panelList.map((panel) => getPanelMetadata(panel));
+}
+
+/**
  * Return a number between min and max values provided for evaluation.
  * If number provided is between min/max values, it will be returned as is.
  * If value is less than minValue it will return minValue.
@@ -54,7 +63,6 @@ export const valueBetween = (value: number, minValue: number, maxValue: number):
  * @returns {Boolean} false if there is no interception between both panels.
  */
 export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: PanelMetadata): boolean => {
-
 	// console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacleMetadata, obstacleMetadata.top, obstacleMetadata.left);
 	// panel is left of obstacle
 	const panelTop = panelMetadata.tempTop ?? panelMetadata.top;
@@ -91,10 +99,7 @@ export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: Pa
 
 export const getMousePosition = (event: any): MousePosition => {
 	// check if this is a touch event
-	const touchEvent = event.originalEvent &&
-		event.originalEvent.touches &&
-		event.originalEvent.touches[0];
-
+	const touchEvent = event.touches &&	event.touches[0];
 	if (touchEvent) {
 		// return touch position
 		return {

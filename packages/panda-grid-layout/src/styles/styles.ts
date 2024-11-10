@@ -65,15 +65,16 @@ export const panelStyles = css`
 		display: block;
 		width: 100%;
 		height: 100%;
+		border-radius: var(--panda-border-radius-m, 5px);
 	}
 
 	:host([dragging]) {
 		z-index: 1;
-		box-shadow: var(--panda-elevation-m);
+		box-shadow: var(--panda-elevation-l);
 	}
 
 	:host([temporary-position]) {
-		transition: transform 200ms ease;
+		transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
 
 	.panel {
@@ -83,7 +84,7 @@ export const panelStyles = css`
 		height: 100%;
 		padding: 5px;
 
-		border: 2px solid;
+		border: 1px solid;
 		background-color: hsl(151deg 74% 43%);
 		box-sizing: border-box;
 	}
