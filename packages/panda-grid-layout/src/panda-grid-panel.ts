@@ -170,21 +170,15 @@ export class PandaGridPanel extends LitElement {
 	// ================================================================================================================
 
 	protected render(): TemplateResult {
-		let absolute = "";
-		if (this.temporaryPosition) {
-			absolute = "absolute";
-		}
 		return html`
-			<div
-				class="panel ${absolute}"
-				part="panel"
-			>
+			<div class="panel" part="panel">
 				<slot
 					name="drag-handle"
 					class="drag-handle"
 					part="drag-handle"
 					@slotchange="${this._onDragHandleSlotChange}"
-				></slot>
+				>
+				</slot>
 				<slot></slot>
 			</div>
 		`;
