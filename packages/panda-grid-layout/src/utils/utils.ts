@@ -28,8 +28,8 @@ export const maxValue = (value: number, maxValue: number): number => {
 
 /**
  * Return serializable metadata of panel list. 
- * @param panelList - list of panels
- * @returns - serialized list of panel metadata
+ * @param {Array<PandaGridPanel>} panelList - list of panels
+ * @returns {Array<PanelMetadata>} - serialized list of panel metadata
  */
 export const serializePanelMetadata = (panelList: PandaGridPanel[]): PanelMetadata[] => {
 	return panelList.map((panel) => getPanelMetadata(panel));
@@ -58,9 +58,10 @@ export const valueBetween = (value: number, minValue: number, maxValue: number):
 
 /**
  * Check if panel position intercepts obstacle.
- * @param panel - panel position metadata.
- * @param obstacleMetadata - existing panel to check interception against.
- * @returns {Boolean} false if there is no interception between both panels.
+ * 
+ * @param {PanelMetadata} panelMetadata - panel position metadata.
+ * @param {PanelMetadata} obstacleMetadata - existing panel to check interception against.
+ * @returns {Boolean} true if there is interception between provided panels.
  */
 export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: PanelMetadata): boolean => {
 	// console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacleMetadata, obstacleMetadata.top, obstacleMetadata.left);
@@ -97,29 +98,36 @@ export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: Pa
 	return true;
 }
 
-export const getMousePosition = (event: any): MousePosition => {
+/**
+ * Get mouse / touch details from the event object.
+ * 
+ * @param {MouseEvent|TouchEvent} event - mouse or touch event
+ * @returns {MousePosition} mouse position details
+ */
+export const getMousePosition = (event: MouseEvent | TouchEvent): MousePosition => {
 	// check if this is a touch event
-	const touchEvent = event.touches &&	event.touches[0];
+	const touchEvent = (event as TouchEvent).touches && (event as TouchEvent).touches[0];
 	if (touchEvent) {
 		// return touch position
 		return {
-			x: event.touches[0].clientX,
-			y: event.touches[0].clientY,
+			x: (event as TouchEvent).touches[0].clientX,
+			y: (event as TouchEvent).touches[0].clientY,
 		};
 	} else {
 		// return mouse position
 		return {
-			x: event.clientX,
-			y: event.clientY,
+			x: (event as MouseEvent).clientX,
+			y: (event as MouseEvent).clientY,
 		};
 	}
 }
 
 /**
- * Extract panel metadata for further processing. Metadata contain position and size of a panel aside with its index value.
+ * Extract panel metadata for further processing. 
+ * Metadata contain position and size of a panel aside with its index value.
  * 
- * @param panel - Panel element
- * @returns panel metadata
+ * @param {PandaGridPanel} panel - Panel element
+ * @returns {PanelMetadata} panel metadata
  */
 export const getPanelMetadata = (panel: PandaGridPanel): PanelMetadata => {
 	const _right = panel.left + panel.width;
@@ -136,4 +144,99 @@ export const getPanelMetadata = (panel: PandaGridPanel): PanelMetadata => {
 		right: _right,
 		bottom: _bottom,
 	};
+}
+
+/**
+ * Check if panel is protruding outside the grid available space.
+ * 
+ * @param {PanelMetadata} panelMetadata - panel position metadata
+ * @param {Number} maxColumns - max columns that grid can show
+ * @returns {Boolean} true if outside of available space 
+ */
+export const isProtruding = (panelMetadata: PanelMetadata, maxColumns: number): boolean => {
+	return panelMetadata.right > maxColumns;
+}
+
+/**
+ * Check panel position metadata against panel list for collisions.
+ * 
+ * @param {PanelMetadata} panelMetadata - panel position/size metadata to verify
+ * @param {Array<PanelMetadata>} obstacleMetadataList - list of existing panels to check against
+ * @returns {Boolean} true if colliding with any other panel from the list
+ */
+export const isColliding = (panelMetadata: PanelMetadata, obstacleMetadataList: PanelMetadata[]): boolean => {
+	let colliding = false;
+	// check if panel list is not empty
+	if (obstacleMetadataList?.length) {
+		// check for collisions
+		for (const obstacleMetadata of obstacleMetadataList) {
+			if (
+				obstacleMetadata.index !== panelMetadata.index && // don't validate interception against itself
+				isIntercepted(panelMetadata, obstacleMetadata) // check for interception
+			) {
+				colliding = true;
+				break;
+			}
+		}
+	}
+	return colliding;
+}
+
+/**
+ * Find an empty slot sufficient for the panel and update its position.
+ * [IMPORTANT] This is not a pure function and it will modify position of provided panel.
+ * 
+ * @param {PandaGridPanel} panel - panel to be repositioned
+ * @param {Array<PanelMetadata>} obstacleMetadataList - list of all existing panels metadata 
+ * @param {Number} maxColumns - max allowed columns 
+ */
+export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: PanelMetadata[], maxColumns: number): void => {
+	let found: boolean = false;
+	let top: number = 0;
+	let left: number = 0;
+
+	// fine empty space for panel to fit in
+	while (!found) {
+		let right = left + panel.width;
+		// check if panel is too long and protrudes outside of the available space
+		if (right > maxColumns) {
+			left = 0;
+			top++;
+		}
+
+		// make sure panel won't be sized less then minWidth
+		right = valueBetween(
+			left + panel.width,
+			panel.minWidth,
+			maxColumns
+		);
+
+		const bottom = top + panel.height;
+		const panelMetadata: PanelMetadata = {
+			...getPanelMetadata(panel),
+			top,
+			left,
+			right,
+			bottom,
+		};
+
+		let collide = false;
+		for (const obstacleMetadata of obstacleMetadataList) {
+			if (
+				obstacleMetadata.index !== panel.index &&
+				isIntercepted(panelMetadata, obstacleMetadata)
+			) {
+				collide = true;
+				break;
+			}
+		}
+
+		if (!collide) {
+			found = true; // exit loop
+			panel.top = panelMetadata.top;
+			panel.left = panelMetadata.left;
+		}
+		// move left and try again
+		left++;
+	} // end of loop
 }

@@ -14,8 +14,11 @@ import { customElement, property, query, queryAssignedElements, state } from "li
 import { debounce, isEmpty } from "@panda-wbc/panda-utils";
 import {
 	getPanelMetadata,
+	isColliding,
 	isIntercepted,
+	isProtruding,
 	minValue,
+	repositionPanel,
 	serializePanelMetadata,
 	valueBetween,
 } from "./utils/utils";
@@ -199,6 +202,11 @@ export class PandaGridLayout extends LitElement {
 		this._gridEl.style.gridAutoRows = `${this._columnWidth}px`;
 	}
 
+	/** Check if panel is protruding outside the grid available space */
+	private _isProtruding(panelMetadata: PanelMetadata): boolean {
+		return panelMetadata.right > this._maxColumns;
+	}
+
 	/**
 	 * Parse slotted grid elements and return list of grid panels.
 	 * Any other element will be ignored. 
@@ -231,6 +239,8 @@ export class PandaGridLayout extends LitElement {
 						this._panelList.push(element as PandaGridPanel);
 					}
 				});
+			// sort panels
+			this._sortPanels();
 		}
 	}
 
@@ -240,81 +250,31 @@ export class PandaGridLayout extends LitElement {
 	 */
 	private _initializePanelPosition(panel: PandaGridPanel): void {
 		// console.log("%c 🚀 (_initializePanelPosition)", "font-size: 16px; color: orange;", panel, isEmpty(panel?.top), isEmpty(panel?.left));
+		const serializedPanelList = serializePanelMetadata(this._panelList);
+
 		if (!isEmpty(panel?.top) && !isEmpty(panel?.left)) {
-			// console.log("%c 🚀 (_initializePanelPosition) PANEL ALREADY HAS POSITION ASSIGNED ============================", "font-size: 16px; color: pink;", panel, panel.top, panel.left);
-			// 1. check protrusion and collision with existing panels
-			// 2. if panel protruding or colliding with current coordinates then find empty slot
-			// 3. if panel does not collides and do not protrudes, leave coordinates unchanged
-			// 4. sort panel list
+			// check protrusion and collision with existing panels
+			const panelMetadata = getPanelMetadata(panel);
+			if (
+				isProtruding(panelMetadata, this._maxColumns) || // check if panels protrudes outside of grid available space
+				isColliding(panelMetadata, serializedPanelList) // check if panel collides with other panels
+			) {
+				// console.log("%c 🚀 (_initializePanelPosition) REPOSITION PANEL ============================", "font-size: 16px; color: red;", panel.index);
+				// find better position
+				repositionPanel(panel, serializedPanelList, this._maxColumns);
+			}
 		} else {
-			let found: boolean = false;
-			let top: number = 0;
-			let left: number = 0;
-			// console.log("%c 🚀 (_initializePanelPosition) START ============================", "font-size: 16px; color: red;");
-
-			// fine empty space for panel to fit in
-			while (!found) {
-				let right = left + panel.width;
-
-				// console.log("%c right:", "font-size: 16px; color: red;", right);
-				// console.log("%c left + panel.width:", "font-size: 16px; color: red;", left + panel.width);
-				// console.log("%c panel.minWidth:", "font-size: 16px; color: red;", panel.minWidth);
-				// console.log("%c max columns:", "font-size: 16px; color: red;", this._maxColumns);
-
-				// check if panel is too long and protrudes outside of the available space
-				if (right > this._maxColumns) {
-					left = 0;
-					top++;
-					// console.log("%c 🚀 (_initializePanelPosition) MOVE TO THE NEXT ROW =======", "font-size: 16px; color: red;");
-				}
-
-				// make sure panel won't be sized less then minWidth
-				right = valueBetween(
-					left + panel.width,
-					panel.minWidth,
-					this._maxColumns
-				);
-
-				const bottom = top + panel.height;
-				const panelMetadata: PanelMetadata = {
-					...getPanelMetadata(panel),
-					top,
-					left,
-					right,
-					bottom,
-				};
-
-				let collide = false;
-				for (const obstacle of this._panelList) {
-					// console.log("%c 🚀 (_initializePanelPosition) OBSTACLE LOOP =========================", "font-size: 16px; color: red;");
-					const obstacleMetadata = getPanelMetadata(obstacle);
-					if (isIntercepted(panelMetadata, obstacleMetadata)) {
-						collide = true;
-						break;
-					}
-				}
-
-				if (!collide) {
-					found = true; // exit loop
-					panel.top = panelMetadata.top;
-					panel.left = panelMetadata.left;
-
-					// console.log("%c 🚀 (_initializePanelPosition) set position:", "font-size: 16px; color: red;", panelMetadata);
-				}
-				// move left and try again
-				left++;
-				// if (collide) {
-				// 	console.log("%c 🚀 (_initializePanelPosition) MOVE LEFT ============================", "font-size: 16px; color: red;");
-				// }
-			} // end of loop
+			// find better position
+			repositionPanel(panel, serializedPanelList, this._maxColumns);
 		}
 	}
 
 	/**
+	 * THIS IS A PROTOTYPE
 	 * Check if provided panel metadata is colliding with other grd panels and resolve collision.
 	 * @param {PanelMetadata} panelMetadata - metadata of a panel
 	 */
-	private _detectCollision(panelMetadata: PanelMetadata, draggedPanelIndex: number | null = null): void {
+	private _detectCollision2(panelMetadata: PanelMetadata, draggedPanelIndex: number | null = null): void {
 		console.log("%c 0. START panel index:", "font-size: 16px; color: red;", panelMetadata.index);
 		console.log("%c 0. draggedPanelIndex:", "font-size: 16px; color: red;", draggedPanelIndex);
 
@@ -336,7 +296,7 @@ export class PandaGridLayout extends LitElement {
 						console.log("%c 2.1 change obstacle temp left to:", "font-size: 16px; color: red;", obstacle.tempLeft);
 						console.log("%c 2.1 detect collision for obstacle", "font-size: 16px; color: red;");
 
-						this._detectCollision(
+						this._detectCollision2(
 							getPanelMetadata(obstacle),
 							panelMetadata.index
 						);
@@ -347,7 +307,7 @@ export class PandaGridLayout extends LitElement {
 						console.log("%c 2.2 change obstacle temp left to:", "font-size: 16px; color: red;", obstacle.tempLeft);
 						console.log("%c 2.2 detect collision for obstacle", "font-size: 16px; color: red;");
 
-						this._detectCollision(
+						this._detectCollision2(
 							getPanelMetadata(obstacle),
 							draggedPanelIndex
 						);
@@ -367,7 +327,7 @@ export class PandaGridLayout extends LitElement {
 		});
 	}
 
-	private _detectCollision2(panelMetadata: PanelMetadata): void {
+	private _detectCollision(panelMetadata: PanelMetadata): void {
 		// console.log("%c ⚡ (_detectCollision2) FOR PANEL %s", "font-size: 16px; color: red;", panelMetadata.index);
 		// go through all panels and check for collisions
 		this._panelList.forEach((obstacle) => {
@@ -501,7 +461,6 @@ export class PandaGridLayout extends LitElement {
 			});
 		// set correct indexes
 		this._panelList.forEach((panel, index) => panel.index = index);
-
 		// console.log("%c ⚡ PANEL LIST:", "font-size: 16px; color: orange;", this._panelList);
 	}
 
@@ -594,7 +553,7 @@ export class PandaGridLayout extends LitElement {
 						obstacle.resetTempPosition();
 					});
 
-					this._detectCollision2(panelMetadata);
+					this._detectCollision(panelMetadata);
 					break;
 
 				case PanelMessageType.DRAG_END_NO_CHANGE:
@@ -624,7 +583,7 @@ export class PandaGridLayout extends LitElement {
 						right: left + width,
 						bottom: top + height,
 					};
-					this._detectCollision2(panelMetadata);
+					this._detectCollision(panelMetadata);
 					this._sizeChangeTimer = setTimeout(() => {
 						this._applyTemporaryPosition();
 					}, 300);

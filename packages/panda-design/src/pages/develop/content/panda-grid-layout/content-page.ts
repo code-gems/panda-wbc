@@ -50,10 +50,10 @@ export class ContentPage extends ContentPageTemplate {
 	};
 
 	private _panelList = [
-		{ id: "panel-0", width: 1, height: 1 },
+		{ id: "panel-0", top: 0, left: 10, width: 1, height: 1 },
 		{ id: "panel-1", width: 1, height: 1 },
-		// { id: "panel-2", width: 1, height: 1 },
-		// { id: "panel-3", width: 1, height: 2 },
+		{ id: "panel-2", top: 2, left: 0, width: 1, height: 1 },
+		{ id: "panel-3", top: 0, left: 2, width: 1, height: 1 },
 		// { id: "panel-4", width: 1, height: 1 },
 		// { id: "panel-5", width: 1, height: 1 },
 		// { id: "panel-6", width: 1, height: 1 },
@@ -153,6 +153,8 @@ export class ContentPage extends ContentPageTemplate {
 		this._panelList.forEach((panel, index) => {
 			const {
 				id,
+				top = undefined,
+				left = undefined,
 				width,
 				minWidth = undefined,
 				height,
@@ -161,6 +163,8 @@ export class ContentPage extends ContentPageTemplate {
 			panelsHtml.push(html`
 				<panda-grid-panel
 					id="${id}"
+					.top="${top}"
+					.left="${left}"
 					.width="${width}"
 					.minWidth="${minWidth}"
 					.height="${height}"
