@@ -146,6 +146,7 @@ export const getPanelMetadata = (panel: PandaGridPanel): PanelMetadata => {
 	const _right = panel.left + panel.width;
 	const _bottom = panel.top + panel.height;
 	return {
+		panelId: panel.panelId,
 		width: panel.width,
 		height: panel.height,
 		top: panel.top,
