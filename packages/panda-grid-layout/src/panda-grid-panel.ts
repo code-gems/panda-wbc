@@ -2,8 +2,9 @@
 import {
 	GridMetadata,
 	MousePosition,
+	PandaGridLayoutPanelMessageEvent,
 	PanelMessageType,
-	PanelMetadata,	
+	PanelMetadata,
 } from "../index";
 
 // style
@@ -17,9 +18,8 @@ import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import {
 	getMousePosition,
-	maxValue,
 	minValue,
-	valueBetween,	
+	valueBetween,
 } from "./utils/utils";
 
 @customElement("panda-grid-panel")
@@ -28,6 +28,9 @@ export class PandaGridPanel extends LitElement {
 	static get styles() {
 		return panelStyles;
 	}
+
+	@property({ type: String, attribute: "panel-id" })
+	panelId!: string;
 
 	@property({ type: Object })
 	metadata!: GridMetadata;
@@ -64,13 +67,13 @@ export class PandaGridPanel extends LitElement {
 
 	@property({ type: Number, reflect: true })
 	top!: number;
-	
+
 	@property({ type: Number, attribute: "temp-top", reflect: true })
 	tempTop: number | null = null;
 
 	@property({ type: Number, reflect: true })
 	left!: number;
-	
+
 	@property({ type: Number, attribute: "temp-left", reflect: true })
 	tempLeft: number | null = null;
 
@@ -105,7 +108,7 @@ export class PandaGridPanel extends LitElement {
 	/** Used to store x position offset calculated based on dragged distance and column width */
 	@state()
 	private _positionOffsetX: number = 0;
-	
+
 	/** Used to store y position offset calculated based on dragged distance and column width */
 	@state()
 	private _positionOffsetY: number = 0;
@@ -211,17 +214,22 @@ export class PandaGridPanel extends LitElement {
 	/** Update panel size and position based on provided metadata */
 	private _updatePanelStyle(): void {
 		if (this.metadata) {
-			// console.log("%c [PANEL] (_updatePanelStyle)", "font-size: 16px; color: green;");
 			// update width and height
-			const _widthPx = maxValue(this.width, this._maxColumns) * this._columnWidth;
+			const _widthPx = valueBetween(
+				this.width,
+				this.minWidth ?? 1, // min
+				this._maxColumns // max
+			) * this._columnWidth;
 			const _heightPx = this.height * this._columnWidth;
+
+			// console.log("%c 👆🏻 [PANEL] (_updatePanelStyle) width %s %s", "font-size: 16px; color: orange;", this.width, _widthPx);
+
 			this.style.width = `${_widthPx}px`;
 			this.style.height = `${_heightPx}px`;
 			// update grid area props
 			const _rowStart = this.top + 1;
 			const _rowEnd = _rowStart + this.height;
 			const _columnStart = this.left + 1;
-			// const _columnEnd = _columnStart + this.width + 1;
 			const _columnEnd = valueBetween(
 				_columnStart + this.width + 1,
 				1,
@@ -257,7 +265,7 @@ export class PandaGridPanel extends LitElement {
 		width: number | null = null,
 		height: number | null = null
 	): void {
-		const event = new CustomEvent("on-message", {
+		const event: PandaGridLayoutPanelMessageEvent = new CustomEvent("on-message", {
 			detail: {
 				type,
 				top,
@@ -281,18 +289,21 @@ export class PandaGridPanel extends LitElement {
 			this._maxColumns - this.width // max value
 		);
 		let width = this.width;
-		
+
 		// check if panel can be resized
 		if (this.resizable) {
 			left = valueBetween(
 				this.left + this._positionOffsetX,
 				0, // min value
-				this._maxColumns - this.minWidth // max value
+				this._maxColumns - (this.minWidth ?? 1) // max value
 			);
 			// check if width has to be adjusted
 			if (this._maxColumns - left < this.width) {
 				// resize panels width
-				width = this._maxColumns - left;
+				width = minValue(
+					this._maxColumns - left,
+					this.minWidth ?? 1
+				);
 			}
 		}
 		const right = left + width;
@@ -326,7 +337,8 @@ export class PandaGridPanel extends LitElement {
 			width,
 			height,
 		} = this._getPanelMetadataWithOffset();
-		
+
+		// console.log("%c ⚡ (_setTemporaryPosition) width %s", "font-size: 16px; color: red;", width);
 		// console.log("%c ⚡ (_setTemporaryPosition) TEMP POSITION t/l:", "font-size: 16px; color: red;", top, left);
 		// notify grid about drag position
 		this._triggerMessageEvent(
@@ -422,7 +434,7 @@ export class PandaGridPanel extends LitElement {
 
 	private _onDragHandleSlotChange(event: Event): void {
 		const slotEl: any = event.target;
-		const assignedElements = slotEl.assignedElements();
+		const assignedElements: HTMLDivElement[] = slotEl.assignedElements();
 
 		// get drag handle element
 		this._dragHandleEl = assignedElements[0];
@@ -488,10 +500,10 @@ export class PandaGridPanel extends LitElement {
 		}
 		// reset drag start coordinates
 		this._dragStartPosition = null;
-		
+
 		// stop dragging
 		this.dragging = false;
-		
+
 		// clear position offset
 		this.style.marginTop = "0px";
 		this.style.marginLeft = "0px";

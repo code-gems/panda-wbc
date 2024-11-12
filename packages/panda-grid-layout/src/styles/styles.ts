@@ -11,10 +11,10 @@ export const styles = css`
 		display: block;
 		width: 100%;
 		height: 100%;
-		padding: 10px;
-
-		background-color: green;
+		padding: var(--panda-padding-m, 10px);
 		box-sizing: border-box;
+		overflow-x: hidden;
+		overflow-y: overlay;
 	}
 
 	.grid-layout {
@@ -22,8 +22,6 @@ export const styles = css`
 		display: grid;
 		width: 100%;
 		height: 100%;
-
-		background-color: #ccc;
 		box-sizing: border-box;
 	}
 
@@ -70,10 +68,10 @@ export const panelStyles = css`
 
 	:host([dragging]) {
 		z-index: 1;
-		box-shadow: var(--panda-elevation-l);
 	}
 
 	:host([temporary-position]) {
+		/* bounce animation */
 		transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
 
@@ -82,16 +80,11 @@ export const panelStyles = css`
 		display: block;
 		width: 100%;
 		height: 100%;
-		padding: 5px;
-
-		border: 1px solid;
-		background-color: hsl(151deg 74% 43%);
-		box-sizing: border-box;
 	}
 
 	slot.drag-handle {
 		user-select: none;
 		cursor: move;
-		background: red;
+		z-index: 1;
 	}
 `;

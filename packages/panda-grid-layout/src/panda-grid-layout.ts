@@ -1,9 +1,10 @@
 // types
-import { GridConfig, PanelMessageType, PanelMetadata } from "../index";
+import { GridConfig, PandaGridLayoutChangeEvent, PanelMessageType, PanelMetadata } from "../index";
 import { PandaGridPanel } from "./panda-grid-panel";
 
 // style
 import { styles } from "./styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "./panda-grid-panel";
@@ -13,6 +14,7 @@ import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, query, queryAssignedElements, state } from "lit/decorators.js";
 import { debounce, isEmpty } from "@panda-wbc/panda-utils";
 import {
+	compactPanelMetadata,
 	getPanelMetadata,
 	isColliding,
 	isIntercepted,
@@ -27,7 +29,7 @@ import {
 export class PandaGridLayout extends LitElement {
 	// css style
 	static get styles() {
-		return styles;
+		return [styles, scrollbar];
 	}
 
 	@property({ type: Object })
@@ -69,9 +71,6 @@ export class PandaGridLayout extends LitElement {
 
 	/** This property is used to ignore initial resize observer invocation */
 	private _initializeResizeObserver: boolean = false;
-
-	/** This property is used to ignore grid resize event while in the middle of dragging panel to new location */
-	private _ignoreGridResize: boolean = false;
 
 	// events =============================================
 
@@ -129,7 +128,7 @@ export class PandaGridLayout extends LitElement {
 	protected render(): TemplateResult {
 		return html`
 			<div
-				class="grid-layout-cont"
+				class="grid-layout-cont scrollbar"
 				part="grid-layout-cont"
 			>
 				<div
@@ -200,11 +199,6 @@ export class PandaGridLayout extends LitElement {
 	private _updateGridLayoutStyles(): void {
 		this._gridEl.style.gridTemplateColumns = `repeat(${this._maxColumns}, ${this._columnWidth}px)`;
 		this._gridEl.style.gridAutoRows = `${this._columnWidth}px`;
-	}
-
-	/** Check if panel is protruding outside the grid available space */
-	private _isProtruding(panelMetadata: PanelMetadata): boolean {
-		return panelMetadata.right > this._maxColumns;
 	}
 
 	/**
@@ -288,7 +282,7 @@ export class PandaGridLayout extends LitElement {
 				// get obstacle metadata
 				const obstacleMetadata = getPanelMetadata(obstacle);
 				// check if obstacle is colliding
-				if (isIntercepted(panelMetadata, obstacleMetadata)) {
+				if (isIntercepted(panelMetadata, [obstacleMetadata])) {
 					console.log("%c 2.1 COLLISION:", "font-size: 16px; color: red;", panelMetadata.index, "with", obstacle.index);
 					if (draggedPanelIndex === null) {
 						// resolve collision
@@ -408,7 +402,7 @@ export class PandaGridLayout extends LitElement {
 					}
 
 					// check if obstacle after updating its position still collides with other panels
-					if (isIntercepted(currentPanelMetadata, obstacleMetadata)) {
+					if (isIntercepted(currentPanelMetadata, [obstacleMetadata])) {
 						// console.log("%c [COLLISION!!!] ⚡ 2.1.a NEW POSITION COLLIDES AGAINST PANEL %s", "font-size: 16px; color: orange;", panel.index);
 						// console.log("%c [COLLISION] PANEL", "font-size: 16px; color: orange;", currentPanelMetadata);
 						// console.log("%c [COLLISION] OBSTACLE", "font-size: 16px; color: orange;", obstacleMetadata);
@@ -482,7 +476,8 @@ export class PandaGridLayout extends LitElement {
 		return this._panelList.find((panel) => panel.index === index);
 	}
 
-	private _showPlaceholder(top: number, left: number, width: number, height: number): void {
+	private _showPlaceholder(panelMetadata: PanelMetadata): void {
+		const { top, left, width, height } = panelMetadata;
 		// update grid area props
 		const _rowStart = top + 1;
 		const _rowEnd = _rowStart + height;
@@ -502,7 +497,7 @@ export class PandaGridLayout extends LitElement {
 
 	/** Notify implementation layer about layout change */
 	private _triggerLayoutChangeEvent(): void {
-		const event = new CustomEvent("on-layout-change", {
+		const event: PandaGridLayoutChangeEvent = new CustomEvent("on-layout-change", {
 			detail: {
 				panelList: serializePanelMetadata(this._panelList)
 			}
@@ -530,29 +525,27 @@ export class PandaGridLayout extends LitElement {
 		// check if panel is on the list
 		if (thisPanel) {
 			let panelMetadata = getPanelMetadata(thisPanel);
-
+			// apply temporary new position
+			panelMetadata = {
+				...panelMetadata,
+				top,
+				left,
+				width,
+				height,
+				right: left + width,
+				bottom: top + height,
+			};
+			// compact indicative position
+			panelMetadata = compactPanelMetadata(panelMetadata, serializePanelMetadata(this._panelList));
 			// check message type
 			switch (type) {
 				case PanelMessageType.DRAG_START:
-					// ignore grid resize events triggered by moving placeholder
-					this._ignoreGridResize = true;
-
-					this._showPlaceholder(top, left, width, height);
-					// apply temporary new position
-					panelMetadata = {
-						...panelMetadata,
-						top,
-						left,
-						width,
-						height,
-						right: left + width,
-						bottom: top + height,
-					};
-
+					this._showPlaceholder(panelMetadata);
+					// reset indicative position for all panels
 					this._panelList.forEach((obstacle) => {
 						obstacle.resetTempPosition();
 					});
-
+					// resolve collisions
 					this._detectCollision(panelMetadata);
 					break;
 
@@ -574,16 +567,9 @@ export class PandaGridLayout extends LitElement {
 
 				case PanelMessageType.SIZE_CHANGE:
 					// console.log("%c ⚡ [GRID] (_onPanelMessage) PANEL SIZE CHANGE !!!", "font-size: 16px; color: blueviolet;");
-					panelMetadata = {
-						...panelMetadata,
-						top,
-						left,
-						width,
-						height,
-						right: left + width,
-						bottom: top + height,
-					};
+					// resolve collisions
 					this._detectCollision(panelMetadata);
+					// apply changes after small delay for animation to end
 					this._sizeChangeTimer = setTimeout(() => {
 						this._applyTemporaryPosition();
 					}, 300);
@@ -594,17 +580,12 @@ export class PandaGridLayout extends LitElement {
 
 	/** Handle grid resize */
 	private _onGridResize() {
+		// console.log("%c ⚡ [GRID] (_onGridResize)", "font-size: 24px; color: gold; background: black;", this._slottedPanels);
 		// ignore initial resize observer invocation
 		if (!this._initializeResizeObserver) {
 			this._initializeResizeObserver = true;
 			return;
 		}
-		// ignore resize event while in the middle of dragging panel to new location
-		if (this._ignoreGridResize) {
-			this._ignoreGridResize = false;
-			return;
-		}
-		// console.log("%c ⚡ [GRID] (_onGridResize) event", "font-size: 16px; color: blueviolet;", this._slottedPanels);
 		// recalculate grid metadata based on new size
 		this._updateGridMetadata();
 		this._updateGridLayoutStyles();

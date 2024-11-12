@@ -49,6 +49,7 @@ export class ContentPage extends ContentPageTemplate {
 		responsive: false,
 	};
 
+	@state()
 	private _panelList = [
 		{ id: "panel-0", top: 0, left: 10, width: 1, height: 1 },
 		{ id: "panel-1", width: 1, height: 1 },
@@ -88,22 +89,6 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
-		let _elementHtml = html``;
-		if (this._addElement) {
-			_elementHtml = html`
-				<panda-grid-panel
-					width="1"
-					height="1"
-					min-width="1"
-					movable
-					resizable
-				>
-					<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
-					New Panel
-				</panda-grid-panel>
-			`;
-		}
-
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
@@ -129,12 +114,10 @@ export class ContentPage extends ContentPageTemplate {
 									<panda-grid-layout
 										.gridConfig="${this._gridConfig}"
 										responsive
-										style="width: 100%;"
+										style="height: 400px;"
 										@on-layout-change="${this._onLayoutChange}"
 									>
 										${this._renderGridPanels()}							
-
-										${_elementHtml}
 									</panda-grid-layout>
 
 								</div>
@@ -156,9 +139,9 @@ export class ContentPage extends ContentPageTemplate {
 				top = undefined,
 				left = undefined,
 				width,
-				minWidth = undefined,
+				minWidth = 1,
 				height,
-				minHeight = undefined,
+				minHeight = 1,
 			} = panel as any;
 			panelsHtml.push(html`
 				<panda-grid-panel
@@ -172,10 +155,16 @@ export class ContentPage extends ContentPageTemplate {
 					movable
 					resizable
 				>
-					<div class="drag-handle" slot="drag-handle">DRAG HANDLE</div>
-					Panel #${index}
+					<div class="drag-handle" slot="drag-handle"></div>
+					<div class="panel-cont">
+						<div class="panel">
+							<div class="header"></div>
+							<div class="body">
+								Panel #${index}
+							</div>
+						</div>
+					</div>
 				</panda-grid-panel>
-				
 			`);
 		});
 
@@ -266,7 +255,9 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddPanel(): void {
-		this._addElement = !this._addElement;
+		const id = `panel-${this._panelList.length - 1}`;
+		this._panelList.push({ id, width: 1, height: 1 });
+		this.requestUpdate();
 	}
 
 	private _onMovePanel(): void {

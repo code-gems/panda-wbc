@@ -1,12 +1,3 @@
-export const enum PanelMessageType {
-	DRAG_START, // used to notify grid about ongoing panel position change
-	DRAG_END, // used to notify grid about final position change
-	DRAG_END_NO_CHANGE, // used to notify grid about drag end with no change in position
-	RESIZE_START,
-	RESIZE_END,
-	SIZE_CHANGE, // used to notify panel size change from outside of the grid (programmatically) 
-}
-
 export interface GridConfig {
 	/**
 	 * Min value for the panel size [px]. 
@@ -60,3 +51,33 @@ export type DragInfo = {
 	dragStart: number;
 	distance: number;
 }
+
+// ====================================================================================================================
+// EVENTS =============================================================================================================
+// ====================================================================================================================
+
+export const enum PanelMessageType {
+	DRAG_START, // used to notify grid about ongoing panel position change
+	DRAG_END, // used to notify grid about final position change
+	DRAG_END_NO_CHANGE, // used to notify grid about drag end with no change in position
+	RESIZE_START,
+	RESIZE_END,
+	SIZE_CHANGE, // used to notify panel size change from outside of the grid (programmatically) 
+}
+
+export type PandaGridLayoutPanelMessageEventDetail = {
+	type: PanelMessageType,
+	width: number | null;
+	height: number | null;
+	top: number | null;
+	left: number | null;
+	index: number | null;
+}
+
+export interface PandaGridLayoutPanelMessageEvent extends CustomEvent<PandaGridLayoutPanelMessageEventDetail> {}
+
+export type PandaGridLayoutChangeEventDetail = {
+	panelList: PanelMetadata[];
+}
+
+export interface PandaGridLayoutChangeEvent extends CustomEvent<PandaGridLayoutChangeEventDetail> {}

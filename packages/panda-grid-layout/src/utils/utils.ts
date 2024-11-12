@@ -60,42 +60,55 @@ export const valueBetween = (value: number, minValue: number, maxValue: number):
  * Check if panel position intercepts obstacle.
  * 
  * @param {PanelMetadata} panelMetadata - panel position metadata.
- * @param {PanelMetadata} obstacleMetadata - existing panel to check interception against.
+ * @param {Array<PanelMetadata>} obstacleMetadataList - existing panel to check interception against.
  * @returns {Boolean} true if there is interception between provided panels.
  */
-export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadata: PanelMetadata): boolean => {
-	// console.log("%c (isIntercepted) OBSTACLE =========================", "font-size: 24px; color: lime;", obstacleMetadata, obstacleMetadata.top, obstacleMetadata.left);
-	// panel is left of obstacle
-	const panelTop = panelMetadata.tempTop ?? panelMetadata.top;
-	const panelLeft = panelMetadata.tempLeft ?? panelMetadata.left;
-	const panelRight = panelLeft + panelMetadata.width;
-	const panelBottom = panelTop + panelMetadata.height;
+export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadataList: PanelMetadata[]): boolean => {
+	let intercepted = false;
 
-	const obstacleTop = obstacleMetadata.tempTop ?? obstacleMetadata.top;
-	const obstacleLeft = obstacleMetadata.tempLeft ?? obstacleMetadata.left;
-	const obstacleRight = obstacleLeft + obstacleMetadata.width;
-	const obstacleBottom = obstacleTop + obstacleMetadata.height;
-
-	if (panelRight <= obstacleLeft) {
-		// console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
-		return false;
+	for (const obstacleMetadata of obstacleMetadataList) {
+		// skip yourself in collision check
+		if (panelMetadata.index === obstacleMetadata.index) {
+			break;
+		}
+		// panel is left of obstacle
+		const panelTop = panelMetadata.tempTop ?? panelMetadata.top;
+		const panelLeft = panelMetadata.tempLeft ?? panelMetadata.left;
+		const panelRight = panelLeft + panelMetadata.width;
+		const panelBottom = panelTop + panelMetadata.height;
+	
+		const obstacleTop = obstacleMetadata.tempTop ?? obstacleMetadata.top;
+		const obstacleLeft = obstacleMetadata.tempLeft ?? obstacleMetadata.left;
+		const obstacleRight = obstacleLeft + obstacleMetadata.width;
+		const obstacleBottom = obstacleTop + obstacleMetadata.height;
+	
+		if (panelRight <= obstacleLeft) {
+			// console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
+			intercepted = false;
+			continue;
+		}
+		// panel is right of obstacle
+		if (panelLeft >= obstacleRight) {
+			// console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
+			intercepted = false;
+			continue;
+		}
+		// panel is above obstacle
+		if (panelBottom <= obstacleTop) {
+			// console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
+			intercepted = false;
+			continue;
+		}
+		// panel is below obstacle
+		if (panelTop >= obstacleBottom) {
+			// console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
+			intercepted = false;
+			continue;
+		}
+		intercepted = true;
+		break;
 	}
-	// panel is right of obstacle
-	if (panelLeft >= obstacleRight) {
-		// console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
-		return false;
-	}
-	// panel is above obstacle
-	if (panelBottom <= obstacleTop) {
-		// console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
-		return false;
-	}
-	// panel is below obstacle
-	if (panelTop >= obstacleBottom) {
-		// console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
-		return false;
-	}
-	return true;
+	return intercepted;
 }
 
 /**
@@ -172,7 +185,7 @@ export const isColliding = (panelMetadata: PanelMetadata, obstacleMetadataList: 
 		for (const obstacleMetadata of obstacleMetadataList) {
 			if (
 				obstacleMetadata.index !== panelMetadata.index && // don't validate interception against itself
-				isIntercepted(panelMetadata, obstacleMetadata) // check for interception
+				isIntercepted(panelMetadata, [obstacleMetadata]) // check for interception
 			) {
 				colliding = true;
 				break;
@@ -224,7 +237,7 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
 		for (const obstacleMetadata of obstacleMetadataList) {
 			if (
 				obstacleMetadata.index !== panel.index &&
-				isIntercepted(panelMetadata, obstacleMetadata)
+				isIntercepted(panelMetadata, [obstacleMetadata])
 			) {
 				collide = true;
 				break;
@@ -239,4 +252,70 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
 		// move left and try again
 		left++;
 	} // end of loop
+}
+
+/**
+ * Find better location for panel. Try to move it up and to the left. 
+ * If after compaction there are no collisions, take that metadata and return it.
+ * 
+ * @param {PanelMetadata} panelMetadata - panel metadata to compact 
+ * @param {Array<PanelMetadata>} obstacleMetadataList - all other panels
+ * @returns {PanelMetadata} panel metadata that is compacted
+ */
+export const compactPanelMetadata = (panelMetadata: PanelMetadata, obstacleMetadataList: PanelMetadata[]): PanelMetadata => {
+	const compact = (panelMetadata: PanelMetadata): PanelMetadata => {
+		let collideX: boolean = false;
+		let collideY: boolean = false;
+		let top = panelMetadata.top;
+		let left = panelMetadata.left;
+
+		const compactedMetadata: PanelMetadata = { ...panelMetadata };
+		// move up
+		compactedMetadata.top--;
+		// check if we reached the top
+		if (top < 0) {
+			collideY = true;
+		} else {
+			// check for collisions after position change
+			if (isIntercepted(compactedMetadata, obstacleMetadataList)) {
+				collideY = true;
+			}
+		}
+		// check if panel collides after position change
+		if (collideY) {
+			//  revert position change
+			compactedMetadata.top++;
+		}
+
+		// move left
+		compactedMetadata.left--;
+		if ( left < 0) {
+			collideX = true;
+		} else {
+			// check for collisions after position change
+			if (isIntercepted(compactedMetadata, obstacleMetadataList)) {
+				collideX = true;
+			}
+		}
+		// check if panel collides after position change
+		if (collideX) {
+			//  revert position change
+			compactedMetadata.left++;
+		}
+
+		// check if we are stuck
+		if (collideX && collideY) {
+			return compactedMetadata;
+		} else {
+			// compact further
+			return compact(compactedMetadata);
+		}
+	}
+	return {
+		...panelMetadata,
+		top: 0,
+		bottom: panelMetadata.height
+	}
+	// compact provided panel metadata
+	return compact(panelMetadata);
 }
