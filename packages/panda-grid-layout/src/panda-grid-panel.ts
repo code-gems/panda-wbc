@@ -34,7 +34,7 @@ export class PandaGridPanel extends LitElement {
 
 	@property({ type: Object })
 	metadata!: GridMetadata;
-
+	
 	@property({ type: Boolean, reflect: true })
 	resizable: boolean = false;
 
@@ -322,6 +322,16 @@ export class PandaGridPanel extends LitElement {
 		};
 	}
 
+	private _showInitialPosition(): void {
+		this._triggerMessageEvent(
+			PanelMessageType.DRAG_INIT,
+			this.top,
+			this.left,
+			this.width,
+			this.height,
+		);
+	}
+
 	/** Convert drag offset to new temporary panel position and inform grid */
 	private _setTemporaryPosition(): void {
 		// cancel if not dragging
@@ -352,39 +362,24 @@ export class PandaGridPanel extends LitElement {
 
 	/** Convert drag offset to final panel position and notify grid */
 	private _setFinalPosition(): void {
-		// get temporary panel position with applied offset
-		const {
-			top,
-			left,
-			width,
-		} = this._getPanelMetadataWithOffset();
-
+		// get final panel position with applied offset
+		const { top, left, width, height } = this._getPanelMetadataWithOffset();
 		// check if position changed
 		if (this.top !== top || this.left !== left || this.width !== width) {
 			// console.log("%c ⚡ (_setFinalPosition) FINAL POSITION t/l:", "font-size: 16px; color: red;", this.top, this.left);
-			// set new position
-			this.top = top;
-			this.left = left;
-			this.width = width;
 			// notify grid about drag position
 			this._triggerMessageEvent(
 				PanelMessageType.DRAG_END,
-				this.top,
-				this.left,
-				this.width,
-				this.height,
+				top,
+				left,
+				width,
+				height
 			);
 			// reset offset
 			this._positionOffsetX = 0;
 			this._positionOffsetY = 0;
 		} else {
-			this._triggerMessageEvent(
-				PanelMessageType.DRAG_END_NO_CHANGE,
-				this.top,
-				this.left,
-				this.width,
-				this.height,
-			);
+			this._triggerMessageEvent(PanelMessageType.DRAG_END_NO_CHANGE);
 		}
 	}
 
@@ -466,6 +461,7 @@ export class PandaGridPanel extends LitElement {
 		// start dragging
 		this.dragging = true;
 		// console.log("%c 🖱️ (_onDragHandleMouseDown) event", "font-size: 16px; color: orange;", this._dragStartPosition.x, this._dragStartPosition.y);
+		this._showInitialPosition();
 	}
 
 	private _onDragHandleMouseMove(event: MouseEvent | TouchEvent): void {

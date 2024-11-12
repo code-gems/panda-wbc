@@ -64,23 +64,30 @@ export const valueBetween = (value: number, minValue: number, maxValue: number):
  * @returns {Boolean} true if there is interception between provided panels.
  */
 export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadataList: PanelMetadata[]): boolean => {
+	// console.log("%c (isIntercepted) (START)", "font-size: 24px; color: lime;", panelMetadata, obstacleMetadataList);
 	let intercepted = false;
-
+	// panel is left of obstacle
+	const panelTop = panelMetadata.tempTop ?? panelMetadata.top;
+	const panelLeft = panelMetadata.tempLeft ?? panelMetadata.left;
+	const panelRight = panelLeft + panelMetadata.width;
+	const panelBottom = panelTop + panelMetadata.height;
+	// console.log("%c (isIntercepted) panel index", "font-size: 24px; color: lime;", panelMetadata.index);
+	// console.log("%c (isIntercepted) panel left", "font-size: 24px; color: lime;", panelLeft);
+	
 	for (const obstacleMetadata of obstacleMetadataList) {
 		// skip yourself in collision check
 		if (panelMetadata.index === obstacleMetadata.index) {
-			break;
+			// console.log("%c (isIntercepted) SKIP", "font-size: 24px; color: lime;", panelMetadata.index, obstacleMetadata.index);
+			intercepted = false;
+			continue;
 		}
-		// panel is left of obstacle
-		const panelTop = panelMetadata.tempTop ?? panelMetadata.top;
-		const panelLeft = panelMetadata.tempLeft ?? panelMetadata.left;
-		const panelRight = panelLeft + panelMetadata.width;
-		const panelBottom = panelTop + panelMetadata.height;
-	
 		const obstacleTop = obstacleMetadata.tempTop ?? obstacleMetadata.top;
 		const obstacleLeft = obstacleMetadata.tempLeft ?? obstacleMetadata.left;
 		const obstacleRight = obstacleLeft + obstacleMetadata.width;
 		const obstacleBottom = obstacleTop + obstacleMetadata.height;
+
+		// console.log("%c (isIntercepted) obstacle index", "font-size: 24px; color: lime;", obstacleMetadata.index);
+		// console.log("%c (isIntercepted) obstacle left", "font-size: 24px; color: lime;", obstacleLeft);
 	
 		if (panelRight <= obstacleLeft) {
 			// console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
@@ -264,59 +271,66 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
  * @returns {PanelMetadata} panel metadata that is compacted
  */
 export const compactPanelMetadata = (panelMetadata: PanelMetadata, obstacleMetadataList: PanelMetadata[]): PanelMetadata => {
-	const compact = (panelMetadata: PanelMetadata): PanelMetadata => {
+	// console.log("%c (START) PANEL INDEX %s TOP:", "font-size: 24px; color: crimson; background: black;", panelMetadata.index, panelMetadata.top);
+	// console.log("%c obstacleMetadataList", "font-size: 24px; color: crimson; background: black;", JSON.parse(JSON.stringify(obstacleMetadataList)));
+
+	const compact = (compactMetadata: PanelMetadata): PanelMetadata => {
 		let collideX: boolean = false;
 		let collideY: boolean = false;
-		let top = panelMetadata.top;
-		let left = panelMetadata.left;
 
-		const compactedMetadata: PanelMetadata = { ...panelMetadata };
+		// console.log("%c (COMPACT START) ======================", "font-size: 24px; color: crimson; background: black;", compactMetadata.top);
+		
 		// move up
-		compactedMetadata.top--;
+		compactMetadata.top--;
+		// console.log("%c (COMPACT) 1. MOVE UP", "font-size: 24px; color: crimson; background: black;", compactMetadata.top);
 		// check if we reached the top
-		if (top < 0) {
+		if (compactMetadata.top < 0) {
+			// console.log("%c (COMPACT) 2.1 REACHED THE TOP", "font-size: 24px; color: crimson; background: black;");
 			collideY = true;
 		} else {
+			// console.log("%c (COMPACT) 2.2 CHECK FOR COLLISION", "font-size: 24px; color: crimson; background: black;");
 			// check for collisions after position change
-			if (isIntercepted(compactedMetadata, obstacleMetadataList)) {
+			if (isIntercepted(compactMetadata, obstacleMetadataList)) {
+				// console.log("%c (COMPACT) 3. COLLIDES!!!", "font-size: 24px; color: crimson; background: black;", compactMetadata.top);
 				collideY = true;
+			} else {
+				// console.log("%c (COMPACT) 3. NO COLLISION TOP: %s", "font-size: 24px; color: crimson; background: black;", compactMetadata.top);
 			}
+			// console.log("%c (COMPACT) 3. obstacleMetadataList", "font-size: 24px; color: crimson; background: black;", JSON.parse(JSON.stringify(obstacleMetadataList)));
 		}
 		// check if panel collides after position change
 		if (collideY) {
-			//  revert position change
-			compactedMetadata.top++;
+			// revert position change
+			compactMetadata.top++;
+			// console.log("%c (COMPACT) 4. REVERT CHANGE", "font-size: 24px; color: crimson; background: black;", compactMetadata.top);
 		}
 
 		// move left
-		compactedMetadata.left--;
-		if ( left < 0) {
+		compactMetadata.left--;
+		if ( compactMetadata.left < 0) {
 			collideX = true;
 		} else {
 			// check for collisions after position change
-			if (isIntercepted(compactedMetadata, obstacleMetadataList)) {
+			if (isIntercepted(compactMetadata, obstacleMetadataList)) {
 				collideX = true;
 			}
 		}
 		// check if panel collides after position change
 		if (collideX) {
-			//  revert position change
-			compactedMetadata.left++;
+			// revert position change
+			compactMetadata.left++;
 		}
 
 		// check if we are stuck
 		if (collideX && collideY) {
-			return compactedMetadata;
+			// console.log("%c (COMPACT) 5. FINAL POSITION %s", "font-size: 24px; color: crimson; background: black;", compactMetadata.top);
+			return compactMetadata;
 		} else {
+			// console.log("%c (COMPACT) 6. TRY AGAIN!!!", "font-size: 24px; color: crimson; background: black;");
 			// compact further
-			return compact(compactedMetadata);
+			return compact(compactMetadata);
 		}
 	}
-	return {
-		...panelMetadata,
-		top: 0,
-		bottom: panelMetadata.height
-	}
 	// compact provided panel metadata
-	return compact(panelMetadata);
+	return compact({ ...panelMetadata });
 }

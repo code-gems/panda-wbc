@@ -215,10 +215,9 @@ export class PandaGridLayout extends LitElement {
 				.forEach((element, index) => {
 					// console.log("%c (parseGridPanels) element", "font-size: 16px; color: red;", element, element.tagName);
 					if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
-						// console.log("%c (parseGridPanels) ADD ELEMENT", "font-size: 16px; color: red;", element);
 						// set panel index property
 						(element as PandaGridPanel).index = index;
-						// set grid metadata onto panel element
+						// set grid metadata
 						(element as PandaGridPanel).metadata = {
 							columnWidth: this._columnWidth,
 							maxColumns: this._maxColumns,
@@ -438,9 +437,9 @@ export class PandaGridLayout extends LitElement {
 			}
 
 			left++;
-			if (collide) {
+			// if (collide) {
 				// console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 16px; color: orange;");
-			}
+			// }
 		} // end of - while
 	}
 
@@ -477,6 +476,8 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	private _showPlaceholder(panelMetadata: PanelMetadata): void {
+		// compact indicative position
+		panelMetadata = compactPanelMetadata(panelMetadata, serializePanelMetadata(this._panelList));
 		const { top, left, width, height } = panelMetadata;
 		// update grid area props
 		const _rowStart = top + 1;
@@ -535,18 +536,21 @@ export class PandaGridLayout extends LitElement {
 				right: left + width,
 				bottom: top + height,
 			};
-			// compact indicative position
-			panelMetadata = compactPanelMetadata(panelMetadata, serializePanelMetadata(this._panelList));
 			// check message type
 			switch (type) {
-				case PanelMessageType.DRAG_START:
+				case PanelMessageType.DRAG_INIT:
 					this._showPlaceholder(panelMetadata);
+					break;
+
+				case PanelMessageType.DRAG_START:
 					// reset indicative position for all panels
 					this._panelList.forEach((obstacle) => {
 						obstacle.resetTempPosition();
 					});
 					// resolve collisions
 					this._detectCollision(panelMetadata);
+					// show placeholder after collision resolution
+					this._showPlaceholder(panelMetadata);
 					break;
 
 				case PanelMessageType.DRAG_END_NO_CHANGE:
@@ -558,8 +562,16 @@ export class PandaGridLayout extends LitElement {
 					break;
 
 				case PanelMessageType.DRAG_END:
-					// console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END !!!", "font-size: 16px; color: blueviolet;");
+					console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END !!! PANEL INDEX %s", "font-size: 16px; color: blueviolet;", thisPanel.index);
+					console.log("%c ⚡ [GRID] (_onPanelMessage) t/l %s %s", "font-size: 16px; color: blueviolet;", top, left);
 					this._hidePlaceholder();
+					// compact indicative position
+					panelMetadata = compactPanelMetadata(panelMetadata, serializePanelMetadata(this._panelList));
+					// apply compacted position to the panel
+					thisPanel.top = panelMetadata.top;
+					thisPanel.left = panelMetadata.left;
+					thisPanel.width = panelMetadata.width;
+					// apply indicative position to all panels
 					this._applyTemporaryPosition();
 					// trigger layout change event
 					this._triggerLayoutChangeEvent();

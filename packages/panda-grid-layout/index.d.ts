@@ -58,7 +58,7 @@ export type DragInfo = {
 // ====================================================================================================================
 
 export const enum PanelMessageType {
-	DRAG_INIT, // used to notify grid about ongoing panel position change
+	DRAG_INIT, // used to notify grid about position change initialization
 	DRAG_START, // used to notify grid about ongoing panel position change
 	DRAG_END, // used to notify grid about final position change
 	DRAG_END_NO_CHANGE, // used to notify grid about drag end with no change in position

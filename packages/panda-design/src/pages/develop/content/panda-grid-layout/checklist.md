@@ -11,3 +11,4 @@
 11. add support for resize of grid/window [DONE]
 12. add auto-rearrange feature for grid resize event 
 12. testing
+🧪 🐛 🐸 🐲 ⚡ 🔥🚀

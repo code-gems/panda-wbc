@@ -1,6 +1,20 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
 
+interface PanelMetadata {
+	panelId?: string;
+	index?: string; // internal
+	top?: number;
+	left?: number;
+	width: number;
+	height: number;
+
+	minWidth?: number;
+	minHeight?: number;
+	maxWidth?: number;
+	maxHeight?: number;
+}
+
 // styles
 import { styles } from "./styles/styles";
 
@@ -41,30 +55,27 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 
-	@state()
-	private _addElement: boolean = false;
-
 	private _gridConfig = {
 		panelSize: 150,
 		responsive: false,
 	};
 
 	@state()
-	private _panelList = [
-		{ id: "panel-0", top: 0, left: 10, width: 1, height: 1 },
-		{ id: "panel-1", width: 1, height: 1 },
-		{ id: "panel-2", top: 2, left: 0, width: 1, height: 1 },
-		{ id: "panel-3", top: 0, left: 2, width: 1, height: 1 },
-		// { id: "panel-4", width: 1, height: 1 },
-		// { id: "panel-5", width: 1, height: 1 },
-		// { id: "panel-6", width: 1, height: 1 },
-		// { id: "panel-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
-		// { id: "panel-8", width: 1, height: 1 },
-		// { id: "panel-9", width: 1, height: 1 },
-		// { id: "panel-10", width: 1, height: 1 },
+	private _panelList: PanelMetadata[] = [
+		{ panelId: "uuid-0", top: 0, left: 0, width: 1, height: 1 },
+		{ panelId: "uuid-1", top: 1, left: 0, width: 1, height: 1 },
+		{ panelId: "uuid-2", top: 2, left: 0, width: 1, height: 1 },
+		{ panelId: "uuid-3", top: 0, left: 2, width: 1, height: 1 },
+		// { panelId: "uuid-4", width: 1, height: 1 },
+		// { panelId: "uuid-5", width: 1, height: 1 },
+		// { panelId: "uuid-6", width: 1, height: 1 },
+		// { panelId: "uuid-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
+		// { panelId: "uuid-8", width: 1, height: 1 },
+		// { panelId: "uuid-9", width: 1, height: 1 },
+		// { panelId: "uuid-10", width: 1, height: 1 },
 	]
 
-	@query("#panel-0")
+	@query("#uuid-0")
 	private _firstPanelEl!: PandaGridPanel;
 
 	// ================================================================================================================
@@ -114,7 +125,7 @@ export class ContentPage extends ContentPageTemplate {
 									<panda-grid-layout
 										.gridConfig="${this._gridConfig}"
 										responsive
-										style="height: 400px;"
+										style="height: 600px;"
 										@on-layout-change="${this._onLayoutChange}"
 									>
 										${this._renderGridPanels()}							
@@ -133,9 +144,10 @@ export class ContentPage extends ContentPageTemplate {
 	private _renderGridPanels(): TemplateResult[] {
 		const panelsHtml: TemplateResult[] = [];
 	
-		this._panelList.forEach((panel, index) => {
+		this._panelList.forEach((panel) => {
 			const {
-				id,
+				panelId,
+				index,
 				top = undefined,
 				left = undefined,
 				width,
@@ -145,7 +157,8 @@ export class ContentPage extends ContentPageTemplate {
 			} = panel as any;
 			panelsHtml.push(html`
 				<panda-grid-panel
-					id="${id}"
+					id="${panelId}"
+					.panelId="${panelId}"
 					.top="${top}"
 					.left="${left}"
 					.width="${width}"
@@ -160,7 +173,8 @@ export class ContentPage extends ContentPageTemplate {
 						<div class="panel">
 							<div class="header"></div>
 							<div class="body">
-								Panel #${index}
+								Panel Id: ${panelId}
+								Index: ${index ?? "NA"}
 							</div>
 						</div>
 					</div>
@@ -255,8 +269,8 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddPanel(): void {
-		const id = `panel-${this._panelList.length - 1}`;
-		this._panelList.push({ id, width: 1, height: 1 });
+		const panelId = `uuid-${this._panelList.length}`;
+		this._panelList.push({ panelId, width: 1, height: 1 });
 		this.requestUpdate();
 	}
 
@@ -267,6 +281,18 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onLayoutChange(event: any): void {
 		console.log("%c [DEMO] (_onLayoutChange) event", "font-size: 24px; color: green;", event.detail);
+		const updatedPanelList = event.detail.panelList as PanelMetadata[];
+		// update indexes
+		updatedPanelList.forEach((updatedPanel) => {
+			const thisPanel = this._panelList.find(({ panelId }) => panelId === updatedPanel.panelId)
+			if (thisPanel) {
+				console.log("%c [DEMO] (_onLayoutChange) updatedPanel %s %s %s ", "font-size: 24px; color: green;", thisPanel.index, " -> ",  updatedPanel.index);
+				thisPanel.index = updatedPanel.index;
+			} else {
+				console.log("%c [DEMO] (_onLayoutChange) CANT FIND PANEL ID %s", "font-size: 24px; color: red;", updatedPanel.index);
+			}
+		});
+		this.requestUpdate();
 	}
 
 	
