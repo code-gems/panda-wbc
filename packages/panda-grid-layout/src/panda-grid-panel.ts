@@ -5,7 +5,7 @@ import {
 	PandaGridLayoutPanelMessageEvent,
 	PanelMessageType,
 	PanelMetadata,
-} from "../index";
+} from "./types";
 
 // style
 import { panelStyles } from "./styles/styles";

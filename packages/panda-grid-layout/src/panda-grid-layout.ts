@@ -1,5 +1,6 @@
 // types
-import { GridConfig, PandaGridLayoutChangeEvent, PanelMessageType, PanelMetadata } from "../index";
+import { GridConfig, PandaGridLayoutChangeEvent } from "../index";
+import { PanelMessageType, PanelMetadata } from "./types";
 import { PandaGridPanel } from "./panda-grid-panel";
 
 // style

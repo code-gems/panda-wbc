@@ -1,5 +1,5 @@
 // types
-import { MousePosition, PanelMetadata } from "../../index";
+import { MousePosition, PanelMetadata } from "../types";
 import { PandaGridPanel } from "../panda-grid-panel";
 
 /**
