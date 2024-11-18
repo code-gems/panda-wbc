@@ -5,7 +5,7 @@ import {
 	PandaGridLayoutPanelMessageEvent,
 	PanelMessageType,
 	PanelMetadata,
-} from "./types";
+} from "panda-grid-layout-types";
 
 // style
 import { panelStyles } from "./styles/styles";
@@ -88,6 +88,9 @@ export class PandaGridPanel extends LitElement {
 	/** Property used to determine if panel is being dragged */
 	@property({ type: Boolean, attribute: "temporary-position", reflect: true })
 	temporaryPosition: boolean = false;
+
+	@property({ type: Boolean, reflect: true })
+	protrudes: boolean = false;
 
 	// state props
 
@@ -318,7 +321,8 @@ export class PandaGridPanel extends LitElement {
 			tempLeft: this.tempLeft,
 			bottom,
 			right,
-			index: this.index
+			index: this.index,
+			protrudes: this.protrudes,
 		};
 	}
 

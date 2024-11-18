@@ -25,10 +25,16 @@ export interface GridConfig {
 }
 
 export type PandaGridPanelMetadata = {
+	/**
+	 * In case we need to identify specific panel by id,
+	 * this property will be returned with each grid layout change for every panel
+	 * [OPTIONAL]
+	 */
+	panelId?: string;
+
 	width: number;
 	minWidth?: number;
-	maxinWidth?: number;
-	
+	maxWidth?: number;
 	height: number;
 	minHeight?: number;
 	maxHeight?: number;
@@ -40,12 +46,20 @@ export type PandaGridPanelMetadata = {
 	movable?: boolean;
 }
 
+export type PandaGridPanelDetails = {
+	panelId?: string;
+	top: number;
+	left: number;
+	width: number;
+	height: number;
+}
+
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
 export type PandaGridLayoutChangeEventDetail = {
-	panelList: PanelMetadata[];
+	panelList: PandaGridPanelDetails[];
 }
 
 export interface PandaGridLayoutChangeEvent extends CustomEvent<PandaGridLayoutChangeEventDetail> {}

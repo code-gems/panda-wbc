@@ -1,6 +1,7 @@
 // types
-import { MousePosition, PanelMetadata } from "../types";
+import { MousePosition, PanelInventory, PanelMetadata } from "panda-grid-layout-types";
 import { PandaGridPanel } from "../panda-grid-panel";
+import { LitElement } from "lit";
 
 /**
  * Validate value against minValue are correct it if needed.  
@@ -161,6 +162,7 @@ export const getPanelMetadata = (panel: PandaGridPanel): PanelMetadata => {
 		tempLeft: panel.tempLeft,
 		tempTop: panel.tempTop,
 		index: panel.index,
+		protrudes: panel.protrudes,
 		// extras
 		right: _right,
 		bottom: _bottom,
@@ -245,6 +247,7 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
 		for (const obstacleMetadata of obstacleMetadataList) {
 			if (
 				obstacleMetadata.index !== panel.index &&
+				!obstacleMetadata.protrudes &&
 				isIntercepted(panelMetadata, [obstacleMetadata])
 			) {
 				collide = true;
@@ -333,4 +336,38 @@ export const compactPanelMetadata = (panelMetadata: PanelMetadata, obstacleMetad
 	}
 	// compact provided panel metadata
 	return compact({ ...panelMetadata });
+}
+
+export const comparePanelLists = (oldPanelList: PandaGridPanel[], newPanelList: PandaGridPanel[]): PanelInventory => {
+	const missingPanels = oldPanelList.filter((panel) => !newPanelList.includes(panel));
+	const newPanels = newPanelList.filter((panel) => !oldPanelList.includes(panel));
+	console.log("%c (verifyInventory) oldPanelList", "font-size: 24px; color: crimson; background: black;", oldPanelList);
+	console.log("%c (verifyInventory) newPanelList", "font-size: 24px; color: crimson; background: black;", newPanelList);
+
+	return {
+		newPanels,
+		missingPanels,
+	};
+}
+
+/**
+ * Iterate through all elements and form a list of panels.
+ * Every element that is not of panel type will be omitted.
+ * 
+ * @param {Array<LitElement>} elements - list of any elements
+ * @returns {Array<PandaGridPanel>} list of panels
+ */
+export const getPanelsFromElements = (elements: LitElement[]): PandaGridPanel[] => {
+	const panels: PandaGridPanel[] = [];
+	if (elements?.length) {
+		// aggregate panels
+		Array
+			.from(elements)
+			.forEach((element) => {
+				if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
+					panels.push(element as PandaGridPanel);
+				}
+			});
+	}
+	return panels;
 }

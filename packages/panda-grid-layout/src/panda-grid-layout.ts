@@ -1,6 +1,6 @@
 // types
+import { PanelMessageType, PanelMetadata } from "panda-grid-layout-types";
 import { GridConfig, PandaGridLayoutChangeEvent } from "../index";
-import { PanelMessageType, PanelMetadata } from "./types";
 import { PandaGridPanel } from "./panda-grid-panel";
 
 // style
@@ -12,11 +12,12 @@ import "./panda-grid-panel";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";
-import { customElement, property, query, queryAssignedElements, state } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { debounce, isEmpty } from "@panda-wbc/panda-utils";
 import {
 	compactPanelMetadata,
 	getPanelMetadata,
+	getPanelsFromElements,
 	isColliding,
 	isIntercepted,
 	isProtruding,
@@ -24,7 +25,9 @@ import {
 	repositionPanel,
 	serializePanelMetadata,
 	valueBetween,
+	comparePanelLists,
 } from "./utils/utils";
+import { Debouncer } from "@panda-wbc/panda-utils/types";
 
 @customElement("panda-grid-layout")
 export class PandaGridLayout extends LitElement {
@@ -75,7 +78,7 @@ export class PandaGridLayout extends LitElement {
 
 	// events =============================================
 
-	private _panelMessageEvent = this._onPanelMessage.bind(this);
+	private readonly _panelMessageEvent = this._onPanelMessage.bind(this);
 
 	// timers =============================================
 
@@ -83,18 +86,15 @@ export class PandaGridLayout extends LitElement {
 
 	// debouncers =========================================
 
-	private _gridResizeDebouncer = debounce(this._onGridResize.bind(this), 500);
+	private readonly _gridResizeDebouncer: Debouncer = debounce(this._onGridResize.bind(this), 500);
 
 	// elements ===========================================
 
 	@query("#grid-layout")
-	private _gridEl!: HTMLDivElement;
+	private readonly _gridEl!: HTMLDivElement;
 
 	@query("#placeholder")
-	private _placeholderEl!: HTMLDivElement;
-
-	@queryAssignedElements()
-	private _slottedPanels!: LitElement[];
+	private readonly _placeholderEl!: HTMLDivElement;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -103,8 +103,8 @@ export class PandaGridLayout extends LitElement {
 	connectedCallback(): void {
 		super.connectedCallback();
 		// register resize observer
-		const resizeObserver = new ResizeObserver(this._gridResizeDebouncer);
-		resizeObserver.observe(this);
+		this._resizeObserver = new ResizeObserver(this._gridResizeDebouncer);
+		this._resizeObserver.observe(this);
 	}
 
 	protected firstUpdated(): void {
@@ -203,46 +203,51 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	/**
-	 * Parse slotted grid elements and return list of grid panels.
-	 * Any other element will be ignored. 
+	 * Parse slotted grid elements and initialize grid panels.
+	 * All grid panels will get their position set. 
+	 * This happens only once at the beginning.
+	 * 
 	 * @param {Array<HTMLElement>} elements - list of all slotted grid elements
-	 * @returns {Array<GridPanel>} list of grid panels
 	 */
-	private _parseGridPanels(elements: LitElement[]): void {
+	private _initializeGridPanels(elements: LitElement[]): void {
 		// console.log("%c [GRID] 🧑🏻‍💻 (_parseGridPanels) elements", "font-size: 16px; color: red;", elements);
-		if (elements?.length) {
-			Array
-				.from(elements)
-				.forEach((element, index) => {
-					// console.log("%c (parseGridPanels) element", "font-size: 16px; color: red;", element, element.tagName);
-					if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
-						// set panel index property
-						(element as PandaGridPanel).index = index;
-						// set grid metadata
-						(element as PandaGridPanel).metadata = {
-							columnWidth: this._columnWidth,
-							maxColumns: this._maxColumns,
-						};
-						// reset temp position
-						(element as PandaGridPanel).resetTempPosition();
-						// find suitable position for all slotted panels
-						this._initializePanelPosition(element as PandaGridPanel);
-						// add events to panel
-						element.addEventListener("on-message", this._panelMessageEvent);
-						// add panels to the list
-						this._panelList.push(element as PandaGridPanel);
-					}
-				});
-			// sort panels
-			this._sortPanels();
-		}
+		const newPanelList = getPanelsFromElements(elements);
+		// initialize and aggregate all panels 
+		newPanelList.forEach((panel, index) => {
+			// set panel index property
+			this._initializePanel(panel, index);
+			// add panels to the list
+			this._panelList.push(panel);
+		});
+		// sort panels
+		this._sortPanels();
+	}
+
+	/**
+	 * Initialize single panel.
+	 * @param {PandaGridPanel} panel - grid panel element 
+	 * @param {Number} index - number representing sequence the panel is added into panel list
+	 */
+	private _initializePanel(panel: PandaGridPanel, index: number): void {
+		panel.index = index;
+		// set grid metadata
+		panel.metadata = {
+			columnWidth: this._columnWidth,
+			maxColumns: this._maxColumns,
+		};
+		// reset temp position
+		panel.resetTempPosition();
+		// find suitable position for panel
+		this._updatePanelPosition(panel);
+		// add events to panel
+		panel.addEventListener("on-message", this._panelMessageEvent);
 	}
 
 	/**
 	 * Find suitable position for panel unless it has top/left attributes already
-	 * @param {PandaGridPanel} panel - grid panel element handle 
+	 * @param {PandaGridPanel} panel - grid panel element 
 	 */
-	private _initializePanelPosition(panel: PandaGridPanel): void {
+	private _updatePanelPosition(panel: PandaGridPanel): void {
 		// console.log("%c 🚀 (_initializePanelPosition)", "font-size: 16px; color: orange;", panel, isEmpty(panel?.top), isEmpty(panel?.left));
 		const serializedPanelList = serializePanelMetadata(this._panelList);
 
@@ -331,6 +336,28 @@ export class PandaGridLayout extends LitElement {
 				this._fixCollision(panelMetadata, obstacle);
 			}
 		});
+	}
+
+	/** Reposition all panels without changing their sequence */
+	private _rearrangePanels(): void {
+		// set "protrudes" flag on all panels so that they will be ignored during collision resolution
+		for (const panel of this._panelList) {
+			panel.protrudes = true;
+		}
+		// reposition all panels
+		for (const panel of this._panelList) {
+			// get panel list metadata, it has to be updated each time we update panel
+			const serializedPanelList = serializePanelMetadata(this._panelList);
+			repositionPanel(panel, serializedPanelList, this._maxColumns);
+			panel.protrudes = false;
+			// update grid metadata for panel
+			panel.metadata = {
+				columnWidth: this._columnWidth,
+				maxColumns: this._maxColumns,
+			};
+		}
+		// sort panels in case they changed position
+		this._sortPanels();
 	}
 
 	/**
@@ -439,13 +466,12 @@ export class PandaGridLayout extends LitElement {
 
 			left++;
 			// if (collide) {
-				// console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 16px; color: orange;");
+			// console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 16px; color: orange;");
 			// }
 		} // end of - while
 	}
 
 	private _sortPanels(): void {
-		// console.log("%c ⚡ (_sortPanels)", "font-size: 16px; color: orange;");
 		this._panelList
 			.sort((panelA, panelB) => {
 				return panelA.left - panelB.left;
@@ -455,7 +481,6 @@ export class PandaGridLayout extends LitElement {
 			});
 		// set correct indexes
 		this._panelList.forEach((panel, index) => panel.index = index);
-		// console.log("%c ⚡ PANEL LIST:", "font-size: 16px; color: orange;", this._panelList);
 	}
 
 	/** Apply all indicative positions to panels and reset their temp positions */
@@ -501,7 +526,17 @@ export class PandaGridLayout extends LitElement {
 	private _triggerLayoutChangeEvent(): void {
 		const event: PandaGridLayoutChangeEvent = new CustomEvent("on-layout-change", {
 			detail: {
-				panelList: serializePanelMetadata(this._panelList)
+				panelList: this._panelList.map(
+					({ panelId, top, left, width, height }) => {
+						return {
+							panelId,
+							top,
+							left,
+							width,
+							height,
+						};
+					}
+				),
 			}
 		});
 		this.dispatchEvent(event);
@@ -515,9 +550,41 @@ export class PandaGridLayout extends LitElement {
 		const slotEl: any = event.target;
 		const assignedElements: LitElement[] = slotEl.assignedElements();
 		// console.log("%c ⚡ [GRID] (_onSlotChange) assignedElements", "font-size: 16px; color: orange;", assignedElements.length, assignedElements);
-		// parse slotted elements and create list of grid panels
-		this._panelList = [];
-		this._parseGridPanels(assignedElements);
+		// check if there are already panels initialized
+		if (this._panelList.length) {
+			// check what happened with panels
+			const newPanelList = getPanelsFromElements(assignedElements);
+			const {
+				newPanels,// panels added
+				missingPanels, // panels removed
+			} = comparePanelLists(this._panelList, newPanelList);
+			// check if panels were removed
+			// remove panels from main list first
+			if (missingPanels.length) {
+				// remove missing panels from the panel list
+				this._panelList = this._panelList.filter((panel) => !missingPanels.includes(panel));
+				// update indexes
+				this._panelList.forEach((panel, index) => panel.index = index);
+			}
+			// check if panels were added
+			if (newPanels.length) {
+				// initialize new panels
+				newPanels.forEach((newPanel) => {
+					this._initializePanel(newPanel, this._panelList.length);
+					this._panelList.push(newPanel);
+				});
+			}
+			// reposition panels to fill up empty gaps
+			this._rearrangePanels();
+			// notify about layout change
+			if (missingPanels.length || newPanels.length) {
+				this._triggerLayoutChangeEvent();
+			}
+		} else {
+			// initialize all slotted panels only once
+			// parse slotted elements and create list of grid panels
+			this._initializeGridPanels(assignedElements);
+		}
 	}
 
 	private _onPanelMessage(event: any): void {
@@ -574,6 +641,8 @@ export class PandaGridLayout extends LitElement {
 					thisPanel.width = panelMetadata.width;
 					// apply indicative position to all panels
 					this._applyTemporaryPosition();
+					// reposition panels
+					this._rearrangePanels();
 					// trigger layout change event
 					this._triggerLayoutChangeEvent();
 					break;
@@ -602,9 +671,8 @@ export class PandaGridLayout extends LitElement {
 		// recalculate grid metadata based on new size
 		this._updateGridMetadata();
 		this._updateGridLayoutStyles();
-		// reinitialize all panels
-		this._panelList = [];
-		this._parseGridPanels(this._slottedPanels);
+		// reposition all panels but preserve their sequence
+		this._rearrangePanels();
 
 		// trigger layout change event
 		this._triggerLayoutChangeEvent();

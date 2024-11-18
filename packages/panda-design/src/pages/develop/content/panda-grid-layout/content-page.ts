@@ -62,10 +62,10 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _panelList: PanelMetadata[] = [
-		{ panelId: "uuid-0", top: 0, left: 0, width: 1, height: 1 },
-		{ panelId: "uuid-1", top: 1, left: 0, width: 1, height: 1 },
-		{ panelId: "uuid-2", top: 2, left: 0, width: 1, height: 1 },
-		{ panelId: "uuid-3", top: 0, left: 2, width: 1, height: 1 },
+		{ panelId: "uuid-0", width: 1, height: 1 },
+		{ panelId: "uuid-1", width: 2, height: 1 },
+		// { panelId: "uuid-2", width: 1, height: 1 },
+		// { panelId: "uuid-3", width: 1, height: 2 },
 		// { panelId: "uuid-4", width: 1, height: 1 },
 		// { panelId: "uuid-5", width: 1, height: 1 },
 		// { panelId: "uuid-6", width: 1, height: 1 },
@@ -73,10 +73,10 @@ export class ContentPage extends ContentPageTemplate {
 		// { panelId: "uuid-8", width: 1, height: 1 },
 		// { panelId: "uuid-9", width: 1, height: 1 },
 		// { panelId: "uuid-10", width: 1, height: 1 },
-	]
+	];
 
 	@query("#uuid-0")
-	private _firstPanelEl!: PandaGridPanel;
+	private readonly _firstPanelEl!: PandaGridPanel;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -119,6 +119,9 @@ export class ContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-3">
 									<button @click="${this._onMovePanel}">RESIZE PANEL</button>
+								</div>
+								<div class="col-3">
+									<button @click="${this._onRemovePanel}">REMOVE PANEL</button>
 								</div>
 								<div class="col-full">
 
@@ -270,7 +273,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onAddPanel(): void {
 		const panelId = `uuid-${this._panelList.length}`;
-		this._panelList.push({ panelId, width: 1, height: 1 });
+		this._panelList.unshift({ panelId, width: 1, height: 1 });
 		this.requestUpdate();
 	}
 
@@ -294,6 +297,9 @@ export class ContentPage extends ContentPageTemplate {
 		});
 		this.requestUpdate();
 	}
-
 	
+	private _onRemovePanel(): void {
+		this._panelList.pop();
+		this.requestUpdate();
+	}
 }
