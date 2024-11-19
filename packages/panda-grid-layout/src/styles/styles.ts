@@ -64,6 +64,7 @@ export const panelStyles = css`
 		width: 100%;
 		height: 100%;
 		border-radius: var(--panda-border-radius-m, 5px);
+		will-change: transform; /* used to enhance performance */
 	}
 
 	:host([dragging]) {
@@ -72,7 +73,7 @@ export const panelStyles = css`
 
 	:host([temporary-position]) {
 		/* bounce animation */
-		transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		transition: transform 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
 
 	.panel {

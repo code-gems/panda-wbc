@@ -411,10 +411,12 @@ export class PandaGridPanel extends LitElement {
 
 	public resetTempPosition(): void {
 		// console.log("%c 🧪 [PANEL] (resetTempPosition) PANEL %s", "font-size: 16px; color: limegreen;", this.index);
-		this.tempTop = null;
-		this.tempLeft = null;
-		this.temporaryPosition = false;
-		this._updatePanelTemporaryPosition();
+		if (!this.dragging) {
+			this.tempTop = null;
+			this.tempLeft = null;
+			this.temporaryPosition = false;
+			this._updatePanelTemporaryPosition();
+		}
 	}
 
 	public applyTempPosition(): void {
@@ -487,8 +489,9 @@ export class PandaGridPanel extends LitElement {
 		// console.log("%c 🖱️ (_onDragHandleMouseMove) offset", "font-size: 16px; color: orange;", this._positionOffsetX + 0, this._positionOffsetY + 0);
 
 		// update panel position
-		this.style.marginTop = `${this._mousePosition.y - this._dragStartPosition!.y}px`;
-		this.style.marginLeft = `${this._mousePosition.x - this._dragStartPosition!.x}px`;
+		const deltaX = this._mousePosition.x - this._dragStartPosition!.x;
+		const deltaY = this._mousePosition.y - this._dragStartPosition!.y;
+		this.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 	}
 
 	private _onDragHandleMouseUp(event: MouseEvent | TouchEvent): void {
@@ -500,14 +503,10 @@ export class PandaGridPanel extends LitElement {
 		}
 		// reset drag start coordinates
 		this._dragStartPosition = null;
-
 		// stop dragging
 		this.dragging = false;
-
 		// clear position offset
-		this.style.marginTop = "0px";
-		this.style.marginLeft = "0px";
-
+		this.style.transform = "translate(0px, 0px)";
 		// set final position and notify grid about drag end
 		this._setFinalPosition();
 	}

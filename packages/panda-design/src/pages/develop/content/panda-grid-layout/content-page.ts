@@ -64,15 +64,15 @@ export class ContentPage extends ContentPageTemplate {
 	private _panelList: PanelMetadata[] = [
 		{ panelId: "uuid-0", width: 1, height: 1 },
 		{ panelId: "uuid-1", width: 2, height: 1 },
-		// { panelId: "uuid-2", width: 1, height: 1 },
-		// { panelId: "uuid-3", width: 1, height: 2 },
-		// { panelId: "uuid-4", width: 1, height: 1 },
-		// { panelId: "uuid-5", width: 1, height: 1 },
-		// { panelId: "uuid-6", width: 1, height: 1 },
-		// { panelId: "uuid-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
-		// { panelId: "uuid-8", width: 1, height: 1 },
-		// { panelId: "uuid-9", width: 1, height: 1 },
-		// { panelId: "uuid-10", width: 1, height: 1 },
+		{ panelId: "uuid-2", width: 1, height: 1 },
+		{ panelId: "uuid-3", width: 1, height: 2 },
+		{ panelId: "uuid-4", width: 1, height: 1 },
+		{ panelId: "uuid-5", width: 1, height: 1 },
+		{ panelId: "uuid-6", width: 1, height: 1 },
+		{ panelId: "uuid-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
+		{ panelId: "uuid-8", width: 1, height: 1 },
+		{ panelId: "uuid-9", width: 1, height: 1 },
+		{ panelId: "uuid-10", width: 1, height: 1 },
 	];
 
 	@query("#uuid-0")
