@@ -59,6 +59,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "dropdownWidth", type: "String", defaultValue: "-", description: "Customize dropdown list width. eg. '250px'" },
 
 		{ name: "autoselect", type: "Boolean", defaultValue: "false", description: "Select component value when given focus." },
+		{ name: "spellcheck", type: "Boolean", defaultValue: "false", description: "Enable spellcheck for element input." },
 		{ name: "allowCustomValue", type: "Boolean", defaultValue: "false", description: "Allow entering values which are not specified on within the preset." },
 		{ name: "pattern", type: "String", defaultValue: "-", description: "A regular expression that the value is checked against. The pattern must match the entire value. If value entered by user do not match the pattern component will be marked as invalid." },
 		{ name: "allowedCharPattern", type: "String", defaultValue: "-", description: "Regular expression that the key strokes are checked against. If the key pressed by user do not match the pattern combo box input will not be updated." },
