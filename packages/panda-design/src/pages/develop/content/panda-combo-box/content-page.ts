@@ -13,16 +13,19 @@ import { styles } from "./styles/styles";
 // components
 import "@panda-wbc/panda-combo-box";
 import "@panda-wbc/panda-time-ago";
+import "@panda-wbc/panda-flag";
 
 // utils
-import { html, TemplateResult } from "lit";
+import { css, html, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 
 // code snippets
 import {
-	installationSnippet, usageSnippet,
+	installationSnippet,
+	rendererFeatureSnippet,
+	usageSnippet,
 } from "./snippets/snippets";
 
 // static demo data
@@ -51,12 +54,16 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "disabled", type: "Boolean", defaultValue: "false", description: "Sets a disabled state for the component." },
 		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Sets busy state for the component." },
 		{ name: "mandatory", type: "Boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
+		{ name: "icon", type: "String", defaultValue: "dropdown", description: "Customize dropdown icon." },
+		{ name: "hideIcon", type: "Boolean", defaultValue: "false", description: "Hide dropdown icon." },
+		{ name: "dropdownWidth", type: "String", defaultValue: "-", description: "Customize dropdown list width. eg. '250px'" },
 
 		{ name: "autoselect", type: "Boolean", defaultValue: "false", description: "Select component value when given focus." },
 		{ name: "allowCustomValue", type: "Boolean", defaultValue: "false", description: "Allow entering values which are not specified on within the preset." },
 		{ name: "pattern", type: "String", defaultValue: "-", description: "A regular expression that the value is checked against. The pattern must match the entire value. If value entered by user do not match the pattern component will be marked as invalid." },
 		{ name: "allowedCharPattern", type: "String", defaultValue: "-", description: "Regular expression that the key strokes are checked against. If the key pressed by user do not match the pattern combo box input will not be updated." },
 		{ name: "filter", type: "Function", defaultValue: "[filters items that contain searched text]", description: "Custom filter logic to be used to filter dropdown items" },
+		{ name: "renderer", type: "Function", defaultValue: "-", description: "Customize dropdown list look and feel." },
 	];
 
 	private _componentEvents: ComponentEventDetails[] = [
@@ -99,21 +106,23 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	@state()
 	private _allowCustomValue: boolean = false;
-	
+
 	@state()
 	private _disableAutoOpen: boolean = false;
 
 	@state()
 	private _selectedValue: string = "";
-	
+
 	@state()
 	private _log: Log[] = [];
 
-	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
-	// ...
+	private readonly _languageList = [
+		{ label: "English (UK)", value: "uk", desc: "123123" },
+		{ label: "English (USA)", value: "us", desc: "123123" },
+		{ label: "Polish", value: "pl", desc: "123123" },
+		{ label: "German", value: "de", desc: "123123" },
+		{ label: "Chinese", value: "cn", desc: "123123" },
+	];
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -173,6 +182,60 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 
 	_renderPageContent(): TemplateResult {
 		return html`
+			${this._renderOverviewSection()}
+			${this._renderInstallationSection()}
+			${this._renderUsageSection()}
+			${this._renderFeaturesSection()}
+		`;
+
+		const customStyle = css`
+			.dropdown .item {
+				padding: 5px !important;
+			}
+
+			.language {
+				display: flex;
+				flex-flow: row nowrap;
+				gap: var(--panda-padding-m);
+				height: 100%;
+			}
+
+			.icon {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: var(--panda-component-size);
+				height: 100%;
+			}
+
+			.label {
+				line-height: var(--panda-component-size-m);
+			}
+		`;
+
+		const customRenderer: (params: any) => any = ({ label, value, active, selected, data }) => {
+			return html`
+				<div class="language">
+					<div class="icon">
+						<panda-flag flag="${value}"></panda-flag>
+					</div>
+					<div class="label">${label}</div>
+				</div>
+			`;
+		};
+
+		return html`
+			<panda-combo-box
+				label="Select Language:"
+				placeholder="Select..."
+				.items="${this._languageList}"
+				.renderer="${customRenderer}"
+				.customStyle="${customStyle}"
+				@change="${this._onChange}"
+			>
+			</panda-combo-box>
+		`;
+		return html`
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
 					<panda-combo-box
@@ -209,7 +272,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 					<panda-combo-box
 						label="Select Destination:"
 						.value="${undefined}"
-						.items="${[1,2,3,4]}"
+						.items="${[1, 2, 3, 4]}"
 						.allowCustomValue="${this._allowCustomValue}"
 						.disableAutoOpen="${this._disableAutoOpen}"
 						@change="${this._onChange}"
@@ -229,9 +292,8 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	private _renderLogs(): TemplateResult {
 		return html`
 			<div class="console-log">
-				${
-					this._log.map(
-						({ message, timestamp }) => html`
+				${this._log.map(
+			({ message, timestamp }) => html`
 							<div class="log">
 								<div class="message">${message}</div>
 								<div class="timestamp">
@@ -239,8 +301,8 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 								</div>
 							</div>
 						`
-					)
-				}
+		)
+			}
 			</div>
 		`;
 	}
@@ -411,6 +473,93 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 				</p>
 				
 				${this._renderComponentEventsTable(this._componentEvents)}
+			</div>
+		`;
+	}
+
+	private _renderFeaturesSection(): TemplateResult {
+		return html`
+			<!-- FEATURES SECTION -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.FEATURES}">
+				<div class="section">
+					<internal-link theme="h2">Features</internal-link>
+					<p>
+						Panda Combo Box component comes with few useful features. 
+					</p>
+					<p>
+						See the list of supported features below:
+					</p>
+				</div>
+
+				${this._renderRendererFeatureSection()}
+			</div>
+		`;
+	}
+
+	private _renderRendererFeatureSection(): TemplateResult {
+		const customStyle = css`
+			.dropdown .item {
+				padding: 5px !important;
+			}
+
+			.language {
+				display: flex;
+				flex-flow: row nowrap;
+				gap: var(--panda-padding-m);
+				height: 100%;
+			}
+
+			.icon {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: var(--panda-component-size);
+				height: 100%;
+			}
+
+			.label {
+				line-height: var(--panda-component-size-m);
+			}
+		`;
+
+		const customRenderer: (params: any) => any = ({ label, value, active, selected, data }) => {
+			return html`
+				<div class="language">
+					<div class="icon">
+						<panda-flag flag="${value}"></panda-flag>
+					</div>
+					<div class="label">${label}</div>
+				</div>
+			`;
+		};
+
+		return html`
+			<!-- FEATURE - RENDERER -->
+			<div class="section">
+				<internal-link theme="h32">Renderer</internal-link>
+				<p>
+					Custom renderers in custom elements provide developers with fine-grained control over how items are displayed in dropdown lists. 
+					By implementing custom rendering functions, developers can tailor the appearance and behavior of dropdown items to match their specific design requirements and enhance the user experience.
+				</p>
+
+				<div class="sample-cont">
+					<div class="sample">
+						<panda-combo-box
+							label="Select Language:"
+							placeholder="Select..."
+							.items="${this._languageList}"
+							.renderer="${customRenderer}"
+							.customStyle="${customStyle}"
+							@change="${this._onChange}"
+						>
+						</panda-combo-box>
+					</div>
+				</div>
+
+				
+				<code-sample header="Custom Renderer Example">
+					${rendererFeatureSnippet}
+				</code-sample>
 			</div>
 		`;
 	}

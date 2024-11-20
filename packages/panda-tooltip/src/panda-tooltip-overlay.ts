@@ -25,14 +25,17 @@ export class PandaTooltipOverlay extends LitElement {
 	@property({ type: String, attribute: true })
 	position: TooltipPosition = TooltipPosition.TOP;
 
+	@property({ type: String })
+	customStyle!: string;
+
 	// view props
 	@query("#tooltip")
-	private _contentEl!: HTMLDivElement;
+	private readonly _contentEl!: HTMLDivElement;
 
 	private _correctedPosition: TooltipPosition | null = null;
 
 	private _positionObserver: any = null;
-	private _positionChangeEvent: any = this._onHideOverlay.bind(this);
+	private readonly _positionChangeEvent: any = this._onHideOverlay.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -51,6 +54,10 @@ export class PandaTooltipOverlay extends LitElement {
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
 		if (_changedProperties.has("template") && this.template) {
 			this._applyContent();
+		}
+		// check if custom style is defined
+		if (_changedProperties.has("customStyle") && this.customStyle !== undefined) {
+			this._applyCustomStyle();
 		}
 	}
 
@@ -225,6 +232,16 @@ export class PandaTooltipOverlay extends LitElement {
 				positionCss = "top"; // set default
 		}
 		return positionCss;
+	}
+
+	/** Apply user defined custom style to this components shadowRoot */
+	private _applyCustomStyle(): void {
+		if (this.customStyle && this.shadowRoot) {
+			const customStyle = document.createElement("style");
+			customStyle.innerHTML = this.customStyle;
+			customStyle.setAttribute("scope", "custom-style");
+			this.shadowRoot.appendChild(customStyle);
+		}
 	}
 
 	// ================================================================================================================

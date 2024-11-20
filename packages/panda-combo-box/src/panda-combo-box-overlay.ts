@@ -1,10 +1,6 @@
 // types
-import {
-	ElementDetails,
-	PandaComboBoxItem,
-	PostMessageAction,
-	SuperComboBoxItem,
-} from "../index";
+import { ElementDetails, PostMessageEvent, PostMessageType, SuperComboBoxItem } from "panda-combo-box-types"
+import { PandaComboBoxItem, PandaComboBoxRenderer } from "../index";
 
 // style
 import { styles } from "./styles/overlay-styles";
@@ -40,10 +36,18 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	@property({ type: String })
 	searchText: string | null = null;
+	
+	@property({ type: String })
+	dropdownWidth!: string;
 
-	parentDetails!: ElementDetails;
+	@property({ type: String })
+	customStyle!: string;
 
 	filter!: (searchText: string | number, items: PandaComboBoxItem[] | any[]) => PandaComboBoxItem[] | any[];
+
+	renderer!: (params: PandaComboBoxRenderer) => TemplateResult | string | number;
+
+	parentDetails!: ElementDetails;
 
 	// state props
 	private _initialized: boolean = false;
@@ -59,15 +63,15 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	// elements
 	@query("#overlay")
-	private _overlayEl!: HTMLDivElement;
+	private readonly _overlayEl!: HTMLDivElement;
 
 	@query("#dropdown-cont")
-	private _dropdownContEl!: HTMLDivElement;
+	private readonly _dropdownContEl!: HTMLDivElement;
 
 	// events
-	private _windowResizeEvent: any = this._onClose.bind(this); // close overlay when window resizes;
-	private _keyDownEvent: any = this._onKeyDown.bind(this);
-	private _scrollEvent: any = this._onOverlayScroll.bind(this);
+	private readonly _windowResizeEvent: any = this._onClose.bind(this); // close overlay when window resizes;
+	private readonly _keyDownEvent: any = this._onKeyDown.bind(this);
+	private readonly _scrollEvent: any = this._onOverlayScroll.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -108,6 +112,10 @@ export class PandaComboBoxOverlay extends LitElement {
 			this._getSelectedItemIndex();
 			this._showOverlayContent();
 		}
+		// check if custom style is defined
+		if (_changedProperties.has("customStyle") && this.customStyle !== undefined) {
+			this._applyCustomStyle();
+		}
 	}
 
 	// ================================================================================================================
@@ -141,7 +149,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	private _renderDropdown(): TemplateResult {
 		const itemsHtml: TemplateResult[] = [];
 
-		this._parsedItems.forEach(({ label, value, selected, active }) => {
+		this._parsedItems.forEach(({ label, value, selected, active, data }) => {
 			const modCss: string[] = [];
 
 			if (selected) {
@@ -151,15 +159,28 @@ export class PandaComboBoxOverlay extends LitElement {
 				modCss.push("active");
 			}
 
-			itemsHtml.push(html`
-				<div
-					class="item ${modCss.join(" ")}"
-					part="item ${modCss.join(" ")}"
-					@click="${() => this._onChange(value)}"
-				>
-					${label}
-				</div>
-			`);
+			if (this.renderer && typeof this.renderer === "function") {
+				const contentHtml = this.renderer({ label, value, selected, active, data });
+				itemsHtml.push(html`
+					<div
+						class="item ${modCss.join(" ")}"
+						part="item ${modCss.join(" ")}"
+						@click="${() => this._onChange(value)}"
+					>
+						${contentHtml}
+					</div>
+				`);
+			} else {
+				itemsHtml.push(html`
+					<div
+						class="item ${modCss.join(" ")}"
+						part="item ${modCss.join(" ")}"
+						@click="${() => this._onChange(value)}"
+					>
+						${label}
+					</div>
+				`);
+			}
 		});
 
 		// check if there is any dropdown item to display
@@ -182,14 +203,15 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	private _showOverlayContent(): void {
 		setTimeout(() => {
-			console.log("%c ⚡ [COMBO-BOX-OVERLAY] _showOverlayContent", "font-size: 24px; color: pink;");
+			// console.log("%c ⚡ [COMBO-BOX-OVERLAY] _showOverlayContent", "font-size: 24px; color: pink;");
 			// reset dropdown height
-			this._dropdownContEl.style.height = `auto`;
+			this._dropdownContEl.style.height = "auto";
 
 			// get overlay size details
 			const overlayRect = this._overlayEl.getBoundingClientRect();
 			let overlayTop = this.parentDetails.bottom - document.documentElement.scrollTop;
 			let overlayLeft = this.parentDetails.left - document.documentElement.scrollLeft;
+			const dropdownWidth = this.dropdownWidth ?? `${this.parentDetails.width}px`;
 			let dropdownHight = overlayRect.height;
 			
 			// set default scroll to view behavior
@@ -213,7 +235,7 @@ export class PandaComboBoxOverlay extends LitElement {
 			}
 
 			// set drop down container's width
-			this._dropdownContEl.style.width = `${this.parentDetails.width}px`;
+			this._dropdownContEl.style.width = dropdownWidth;
 			this._dropdownContEl.style.height = `${dropdownHight}px`;
 
 			// position overlay content
@@ -288,6 +310,7 @@ export class PandaComboBoxOverlay extends LitElement {
 					value: _value,
 					active: index === this._selectedItemIndex,
 					selected: this.value === _value,
+					data: { ...item },
 				});
 				index++;
 			});
@@ -332,7 +355,7 @@ export class PandaComboBoxOverlay extends LitElement {
 		const selectedItem = this._parsedItems.find((item) => item.index === index);
 		this.value = selectedItem?.value;
 
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_selectItemByIndex)", "font-size: 24px; color: pink;", selectedItem?.label, index);
+		// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_selectItemByIndex)", "font-size: 24px; color: pink;", selectedItem?.label, index);
 
 		// update active flag
 		this._parsedItems = this._parsedItems.map((item) => {
@@ -345,7 +368,7 @@ export class PandaComboBoxOverlay extends LitElement {
 		// check if item was selected and update combo-box input field value
 		if (selectedItem) {
 			this._triggerPostMessageEvent(
-				PostMessageAction.UPDATE_INPUT,
+				PostMessageType.UPDATE_INPUT,
 				selectedItem.label,
 			);
 			this._updateAfterClose = true;
@@ -358,23 +381,23 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	/**
 	 * Communicate with combo box component using custom event
-	 * @param {PostMessageAction} action - type of action for combo box to take as a result of this event
+	 * @param {PostMessageType} action - type of action for combo box to take as a result of this event
 	 * @param {Any} value - value to be selected
 	 * @param {String} searchText - search text that user entered
 	 */
 	private _triggerPostMessageEvent(
-		action: PostMessageAction,
+		action: PostMessageType,
 		value: any = null,
 		searchText: string | null = null
 	): void {
-		console.log(
-			"%c ⚡ [COMBO-BOX-OVERLAY] (_triggerPostMessageEvent) action/value/searchText",
-			"font-size: 24px; color: pink;",
-			action,
-			value,
-			searchText,
-		);
-		const event = new CustomEvent("post-message", {
+		// console.log(
+		// 	"%c ⚡ [COMBO-BOX-OVERLAY] (_triggerPostMessageEvent) action/value/searchText",
+		// 	"font-size: 24px; color: pink;",
+		// 	action,
+		// 	value,
+		// 	searchText,
+		// );
+		const event: PostMessageEvent = new CustomEvent("post-message", {
 			detail: {
 				action,
 				value,
@@ -382,6 +405,16 @@ export class PandaComboBoxOverlay extends LitElement {
 			}
 		});
 		this.dispatchEvent(event);
+	}
+
+	/** Apply user defined custom style to this components shadowRoot */
+	private _applyCustomStyle(): void {
+		if (this.customStyle && this.shadowRoot) {
+			const customStyle = document.createElement("style");
+			customStyle.innerHTML = this.customStyle;
+			customStyle.setAttribute("scope", "custom-style");
+			this._overlayEl.appendChild(customStyle);
+		}
 	}
 
 	// ================================================================================================================
@@ -395,13 +428,13 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) key: ", "font-size: 24px; color: pink;", event.key);
+		// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) key: ", "font-size: 24px; color: pink;", event.key);
 		switch (event.key) {
 			case "Enter":
 			case "Tab":
 				event.stopPropagation();
-				console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> value", "font-size: 24px; color: red;", this.value);
-				console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> searchText / is null?", "font-size: 24px; color: red;", this.searchText, this.searchText ===  null);
+				// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> value", "font-size: 24px; color: red;", this.value);
+				// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onKeyDown) -> searchText / is null?", "font-size: 24px; color: red;", this.searchText, this.searchText ===  null);
 				this._onChange(this.value, this.searchText);
 				break;
 			case "ArrowUp":
@@ -421,15 +454,15 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _onOverlayScroll() {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onOverlayScroll)", "font-size: 24px; color: pink;");
+		// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onOverlayScroll)", "font-size: 24px; color: pink;");
 		// update overlay position
 		this._showOverlayContent();
 	}
 
 	private _onChange(value: any, searchText: string | null = null): void {
-		console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onChange) value, searchText", "font-size: 24px; color: pink;", value, searchText);
+		// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onChange) value, searchText", "font-size: 24px; color: pink;", value, searchText);
 		this._triggerPostMessageEvent(
-			PostMessageAction.CHANGE,
+			PostMessageType.CHANGE,
 			value,
 			searchText,
 		);
@@ -444,9 +477,9 @@ export class PandaComboBoxOverlay extends LitElement {
 	}
 
 	private _onClose(): void {
-		const action: PostMessageAction = this._updateAfterClose
-			? PostMessageAction.CLOSE_AND_UPDATE
-			: PostMessageAction.CLOSE_AND_CANCEL;
+		const action: PostMessageType = this._updateAfterClose
+			? PostMessageType.CLOSE_AND_UPDATE
+			: PostMessageType.CLOSE_AND_CANCEL;
 
 		this._triggerPostMessageEvent(action);
 	}
