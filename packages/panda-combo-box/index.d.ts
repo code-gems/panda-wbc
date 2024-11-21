@@ -20,6 +20,7 @@ export type PandaComboBoxRenderer = {
 
 export type PandaComboBoxChangeEventDetails = {
 	value: string | number | null | any;
+	data?: any;
 }
 
 export interface PandaComboBoxChangeEvent extends CustomEvent<PandaComboBoxChangeEventDetails> { }

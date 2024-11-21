@@ -221,6 +221,8 @@ export class PandaGridLayout extends LitElement {
 		});
 		// sort panels
 		this._sortPanels();
+		// update panels position
+		this._rearrangePanels();
 	}
 
 	/**

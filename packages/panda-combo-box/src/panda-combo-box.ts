@@ -412,10 +412,13 @@ export class PandaComboBox extends LitElement {
 
 	private _triggerChangeEvent() {
 		setTimeout(() => {
-			// console.log("%c ⚡ [COMBO-BOX] _triggerChangeEvent", "font-size: 24px; color: orange;", this.value);
+			// get original item object
+			const data = getItemByValue(this.items, this.value, this.itemValuePath ?? "value");
+			// console.log("%c ⚡ [COMBO-BOX] _triggerChangeEvent", "font-size: 24px; color: orange;", this.value, data);
 			const event: PandaComboBoxChangeEvent = new CustomEvent("change", {
 				detail: {
-					value: this.value
+					value: this.value,
+					data,
 				}
 			});
 			this.dispatchEvent(event);
