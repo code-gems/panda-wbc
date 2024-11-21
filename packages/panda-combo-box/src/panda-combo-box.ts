@@ -307,7 +307,6 @@ export class PandaComboBox extends LitElement {
 	private _openOverlay() {
 		if (!this._overlayEl && !this.disabled) {
 			// console.log("%c ⚡ [COMBO-BOX] _openOverlay", "font-size: 24px; color: orange;");
-
 			// create overlay element
 			this._overlayEl = document.createElement("panda-combo-box-overlay");
 			// add event listeners
@@ -320,7 +319,12 @@ export class PandaComboBox extends LitElement {
 			this._overlayEl.itemValuePath = this.itemValuePath;
 			this._overlayEl.parentDetails = this._getElementDetails();
 			this._overlayEl.customStyle = this.customStyle;
-			this._overlayEl.dropdownWidth = this.dropdownWidth;
+			// check for css variables
+			const dropdownWidthCssVar = getComputedStyle(this).getPropertyValue("--panda-combo-box-width");
+			const dropdownMaxHeightCssVar = getComputedStyle(this).getPropertyValue("--panda-combo-box-max-height");
+			this._overlayEl.dropdownWidth = dropdownWidthCssVar || this.dropdownWidth;
+			this._overlayEl.dropdownMaxHeight = dropdownMaxHeightCssVar;
+
 			this._overlayEl.filter = this.filter;
 			this._overlayEl.renderer = this.renderer;
 			// append element to document body

@@ -39,6 +39,9 @@ export class PandaComboBoxOverlay extends LitElement {
 	
 	@property({ type: String })
 	dropdownWidth!: string;
+	
+	@property({ type: String })
+	dropdownMaxHeight!: string;
 
 	@property({ type: String })
 	customStyle!: string;
@@ -211,12 +214,10 @@ export class PandaComboBoxOverlay extends LitElement {
 			const overlayRect = this._overlayEl.getBoundingClientRect();
 			let overlayTop = this.parentDetails.bottom - document.documentElement.scrollTop;
 			let overlayLeft = this.parentDetails.left - document.documentElement.scrollLeft;
+			// check if dropdown width css variable was set
 			const dropdownWidth = this.dropdownWidth ?? `${this.parentDetails.width}px`;
 			let dropdownHight = overlayRect.height;
 			
-			// set default scroll to view behavior
-			let _scrollIntoViewBlock: ScrollLogicalPosition = "start";
-
 			// check if we have enough space at the bottom of the combo-box to display dropdown
 			if (overlayTop - window.scrollY + overlayRect.height > window.innerHeight) {
 				// correct dropdown height if it protrude out the visible space
@@ -225,8 +226,6 @@ export class PandaComboBoxOverlay extends LitElement {
 				if (_hightOffset < 0) {
 					dropdownHight = dropdownHight - 10 + _hightOffset;
 				}
-				// change scroll to view behavior
-				_scrollIntoViewBlock = "end";
 			}
 
 			// check if we have enough space on the right side of the combo-box to display dropdown 
@@ -236,7 +235,12 @@ export class PandaComboBoxOverlay extends LitElement {
 
 			// set drop down container's width
 			this._dropdownContEl.style.width = dropdownWidth;
+			// set drop down container's height
 			this._dropdownContEl.style.height = `${dropdownHight}px`;
+			// check if max height variable was set
+			if (this.dropdownMaxHeight) {
+				this._dropdownContEl.style.maxHeight = this.dropdownMaxHeight;
+			}
 
 			// position overlay content
 			this._overlayEl.style.top = `${overlayTop}px`;

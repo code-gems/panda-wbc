@@ -34,4 +34,9 @@ export const styles = css`
 		color: var(--panda-label-color);
 		font-size: var(--panda-font-size-s);
 	}
+
+	panda-combo-box {
+		--panda-combo-box-width: 100px;
+		--panda-combo-box-max-height: 100px;
+	}
 `;
