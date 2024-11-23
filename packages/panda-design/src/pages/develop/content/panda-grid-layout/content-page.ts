@@ -68,6 +68,7 @@ export class ContentPage extends ContentPageTemplate {
 		{ panelId: "uuid-3", width: 1, height: 2 },
 		{ panelId: "uuid-4", width: 1, height: 1 },
 		{ panelId: "uuid-5", width: 1, height: 1 },
+		{ panelId: "uuid-5", width: 1, height: 1 },
 		{ panelId: "uuid-6", width: 1, height: 1 },
 		{ panelId: "uuid-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
 		{ panelId: "uuid-8", width: 1, height: 1 },
@@ -131,7 +132,15 @@ export class ContentPage extends ContentPageTemplate {
 										style="height: 600px;"
 										@on-layout-change="${this._onLayoutChange}"
 									>
-										${this._renderGridPanels()}							
+
+										<panda-grid-panel-placeholder
+											width="2"
+											height="2"
+										>
+											THIS IS A PLACEHOLDER 1
+										</panda-grid-panel-placeholder>
+										${this._renderGridPanels()}
+
 									</panda-grid-layout>
 
 								</div>
@@ -146,7 +155,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _renderGridPanels(): TemplateResult[] {
 		const panelsHtml: TemplateResult[] = [];
-	
+
 		this._panelList.forEach((panel) => {
 			const {
 				panelId,
@@ -289,7 +298,7 @@ export class ContentPage extends ContentPageTemplate {
 		updatedPanelList.forEach((updatedPanel) => {
 			const thisPanel = this._panelList.find(({ panelId }) => panelId === updatedPanel.panelId)
 			if (thisPanel) {
-				console.log("%c [DEMO] (_onLayoutChange) updatedPanel %s %s %s ", "font-size: 24px; color: green;", thisPanel.index, " -> ",  updatedPanel.index);
+				console.log("%c [DEMO] (_onLayoutChange) updatedPanel %s %s %s ", "font-size: 24px; color: green;", thisPanel.index, " -> ", updatedPanel.index);
 				thisPanel.index = updatedPanel.index;
 			} else {
 				console.log("%c [DEMO] (_onLayoutChange) CANT FIND PANEL ID %s", "font-size: 24px; color: red;", updatedPanel.index);
@@ -297,7 +306,7 @@ export class ContentPage extends ContentPageTemplate {
 		});
 		this.requestUpdate();
 	}
-	
+
 	private _onRemovePanel(): void {
 		this._panelList.pop();
 		this.requestUpdate();

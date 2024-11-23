@@ -2,6 +2,7 @@
 import { PanelMessageType, PanelMetadata } from "panda-grid-layout-types";
 import { GridConfig, PandaGridLayoutChangeEvent } from "../index";
 import { PandaGridPanel } from "./panda-grid-panel";
+import { PandaGridPanelPlaceholder } from "./panda-grid-panel-placeholder";
 
 // style
 import { styles } from "./styles/styles";
@@ -9,6 +10,7 @@ import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "./panda-grid-panel";
+import "./panda-grid-panel-placeholder";
 
 // utils
 import { LitElement, html, TemplateResult } from "lit";
@@ -26,8 +28,8 @@ import {
 	serializePanelMetadata,
 	valueBetween,
 	comparePanelLists,
+	getPlaceholderPanelsFromElements,
 } from "./utils/utils";
-import { Debouncer } from "@panda-wbc/panda-utils/types";
 
 @customElement("panda-grid-layout")
 export class PandaGridLayout extends LitElement {
@@ -56,6 +58,9 @@ export class PandaGridLayout extends LitElement {
 
 	@state()
 	private _panelList: PandaGridPanel[] = [];
+	
+	@state()
+	private _placeholderList: PandaGridPanelPlaceholder[] = [];
 
 	// GRID METADATA ======================================
 
@@ -86,7 +91,7 @@ export class PandaGridLayout extends LitElement {
 
 	// debouncers =========================================
 
-	private readonly _gridResizeDebouncer: Debouncer = debounce(this._onGridResize.bind(this), 500);
+	private readonly _gridResizeDebouncer = debounce(this._onGridResize.bind(this), 500);
 
 	// elements ===========================================
 
@@ -223,6 +228,53 @@ export class PandaGridLayout extends LitElement {
 		this._sortPanels();
 		// update panels position
 		this._rearrangePanels();
+
+		// parse slotted element and aggregate placeholder panels
+		const newPlaceholderList: PandaGridPanelPlaceholder[] = getPlaceholderPanelsFromElements(elements);
+		const serializedPanelList = serializePanelMetadata(this._panelList);
+		newPlaceholderList.forEach((placeholderPanel) => {
+			// set panel metadata
+			placeholderPanel.metadata = {
+				maxColumns: this._maxColumns,
+				columnWidth: this._columnWidth,
+			};
+			// find an empty slot for the placeholder
+			repositionPanel(
+				placeholderPanel as any,
+				serializedPanelList,
+				this._maxColumns
+			);
+			// add placeholder panel to he list
+			this._placeholderList.push(placeholderPanel);
+			// show placeholders
+			this._showPlaceholderPanels();
+		});
+	}
+	
+	/** Show all placeholder panels */
+	private _showPlaceholderPanels(): void {
+		this._placeholderList.forEach((placeholderPanel) => {
+			placeholderPanel.show();
+		});
+	}
+
+	/** Hide all placeholder panels */
+	private _hidePlaceholderPanels(): void {
+		this._placeholderList.forEach((placeholderPanel) => {
+			placeholderPanel.hide();
+		});
+	}
+
+	private _rearrangePanelPlaceholders(): void {
+		this._placeholderList.forEach((placeholderPanel) => {
+			const serializedPanelList = serializePanelMetadata(this._panelList);
+			// find an empty slot for the placeholder
+			repositionPanel(
+				placeholderPanel as any,
+				serializedPanelList,
+				this._maxColumns
+			);
+		});
 	}
 
 	/**
@@ -332,7 +384,7 @@ export class PandaGridLayout extends LitElement {
 		// console.log("%c ⚡ (_detectCollision2) FOR PANEL %s", "font-size: 16px; color: red;", panelMetadata.index);
 		// go through all panels and check for collisions
 		this._panelList.forEach((obstacle) => {
-			// skip panel itself
+			// skip itself and placeholder panels
 			if (panelMetadata.index !== obstacle.index) {
 				// check if panel collides with others
 				this._fixCollision(panelMetadata, obstacle);
@@ -435,8 +487,8 @@ export class PandaGridLayout extends LitElement {
 						// console.log("%c [COLLISION!!!] ⚡ 2.1.a NEW POSITION COLLIDES AGAINST PANEL %s", "font-size: 16px; color: orange;", panel.index);
 						// console.log("%c [COLLISION] PANEL", "font-size: 16px; color: orange;", currentPanelMetadata);
 						// console.log("%c [COLLISION] OBSTACLE", "font-size: 16px; color: orange;", obstacleMetadata);
-						const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
-						const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
+						// const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
+						// const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
 						// console.log("%c PANEL INDEX %s %s %s %s", "font-size: 16px; color: orange;", panel.index, " pos:", _top, _left);
 
 						collide = true;
@@ -445,8 +497,8 @@ export class PandaGridLayout extends LitElement {
 						// console.log("%c ⚡ 2.1.b NEW POSITION IS FINE FOR PANEL %s", "font-size: 16px; color: green;", obstacleMetadata.index);
 						// console.log("%c NEW POSITION FOR PANEL INDEX %s %s %s %s", "font-size: 16px; color: green;", obstacleMetadata.index, "pos:", obstacleMetadata.top, obstacleMetadata.left);
 
-						const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
-						const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
+						// const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
+						// const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
 						// console.log("%c CURRENT PANEL INDEX %s %s %s %s", "font-size: 16px; color: orange;", currentPanelMetadata.index, " pos:", _top, _left);
 					}
 
@@ -511,7 +563,11 @@ export class PandaGridLayout extends LitElement {
 		const _rowStart = top + 1;
 		const _rowEnd = _rowStart + height;
 		const _columnStart = left + 1;
-		const _columnEnd = _columnStart + width;
+		const _columnEnd = valueBetween(
+			_columnStart + width,
+			1,
+			this._maxColumns + 1
+		);
 
 		this._placeholderEl.style.gridRowStart = String(_rowStart);
 		this._placeholderEl.style.gridColumnStart = String(_columnStart);
@@ -613,6 +669,8 @@ export class PandaGridLayout extends LitElement {
 					break;
 
 				case PanelMessageType.DRAG_START:
+					// hide all placeholder panels
+					this._hidePlaceholderPanels();
 					// reset indicative position for all panels
 					this._panelList.forEach((obstacle) => {
 						obstacle.resetTempPosition();
@@ -629,11 +687,13 @@ export class PandaGridLayout extends LitElement {
 						obstacle.resetTempPosition();
 					});
 					this._hidePlaceholder();
+					// show all placeholder panels
+					this._showPlaceholderPanels();
 					break;
 
 				case PanelMessageType.DRAG_END:
-					console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END !!! PANEL INDEX %s", "font-size: 16px; color: blueviolet;", thisPanel.index);
-					console.log("%c ⚡ [GRID] (_onPanelMessage) t/l %s %s", "font-size: 16px; color: blueviolet;", top, left);
+					// console.log("%c ⚡ [GRID] (_onPanelMessage) DRAG END !!! PANEL INDEX %s", "font-size: 16px; color: blueviolet;", thisPanel.index);
+					// console.log("%c ⚡ [GRID] (_onPanelMessage) t/l %s %s", "font-size: 16px; color: blueviolet;", top, left);
 					this._hidePlaceholder();
 					// compact indicative position
 					panelMetadata = compactPanelMetadata(panelMetadata, serializePanelMetadata(this._panelList));
@@ -647,6 +707,10 @@ export class PandaGridLayout extends LitElement {
 					this._rearrangePanels();
 					// trigger layout change event
 					this._triggerLayoutChangeEvent();
+					// move placeholders to new position
+					this._rearrangePanelPlaceholders();
+					// show all placeholder panels
+					this._showPlaceholderPanels();
 					break;
 
 				case PanelMessageType.SIZE_CHANGE:
@@ -656,7 +720,7 @@ export class PandaGridLayout extends LitElement {
 					// apply changes after small delay for animation to end
 					this._sizeChangeTimer = setTimeout(() => {
 						this._applyTemporaryPosition();
-					}, 300);
+					}, 400);
 					break;
 			}
 		}

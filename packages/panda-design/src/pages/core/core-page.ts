@@ -37,9 +37,9 @@ class CorePage extends LitElement {
 	// 	];
 	// }
 
-	private _pageLibrary: PageLibrary = new PageLibrary();;
+	private readonly _pageLibrary: PageLibrary = new PageLibrary();;
 
-	private _debounce = debounce(this._debounceCallback, 2000, 4000);
+	private readonly _debounce: Debouncer = debounce(this._debounceCallback, 2000, 4000);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================

@@ -89,3 +89,26 @@ export const panelStyles = css`
 		z-index: 1;
 	}
 `;
+
+export const placeholderStyles = css`
+	:host {
+		display: block;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	:host([show]) {
+		opacity: 1;
+	}
+
+	.placeholder {
+		display: block;
+		width: 100%;
+		height: 100%;
+
+		border-radius: var(--panda-border-radius-m, 5px);
+		background-color: var(--panda-primary-color-10opc, hsl(209deg 78% 46% / 10%));
+		box-sizing: border-box;
+	}
+`;

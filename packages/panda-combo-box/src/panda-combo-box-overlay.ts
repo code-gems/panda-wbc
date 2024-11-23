@@ -146,6 +146,7 @@ export class PandaComboBoxOverlay extends LitElement {
 						${this._renderDropdown()}
 					</div>
 				</div>
+			</div>
 		`;
 	}
 

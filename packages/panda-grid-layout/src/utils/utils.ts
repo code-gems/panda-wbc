@@ -2,6 +2,7 @@
 import { MousePosition, PanelInventory, PanelMetadata } from "panda-grid-layout-types";
 import { PandaGridPanel } from "../panda-grid-panel";
 import { LitElement } from "lit";
+import { PandaGridPanelPlaceholder } from "../panda-grid-panel-placeholder";
 
 /**
  * Validate value against minValue are correct it if needed.  
@@ -79,7 +80,6 @@ export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadataList
 		// skip yourself in collision check
 		if (panelMetadata.index === obstacleMetadata.index) {
 			// console.log("%c (isIntercepted) SKIP", "font-size: 24px; color: lime;", panelMetadata.index, obstacleMetadata.index);
-			intercepted = false;
 			continue;
 		}
 		const obstacleTop = obstacleMetadata.tempTop ?? obstacleMetadata.top;
@@ -92,25 +92,21 @@ export const isIntercepted = (panelMetadata: PanelMetadata, obstacleMetadataList
 	
 		if (panelRight <= obstacleLeft) {
 			// console.log("%c (isIntercepted) EXIT 1 panel is left of obstacle", "font-size: 24px; color: lime;");
-			intercepted = false;
 			continue;
 		}
 		// panel is right of obstacle
 		if (panelLeft >= obstacleRight) {
 			// console.log("%c (isIntercepted) EXIT 2 panel is right of obstacle", "font-size: 24px; color: lime;");
-			intercepted = false;
 			continue;
 		}
 		// panel is above obstacle
 		if (panelBottom <= obstacleTop) {
 			// console.log("%c (isIntercepted) EXIT 3 panel is above obstacle", "font-size: 24px; color: lime;");
-			intercepted = false;
 			continue;
 		}
 		// panel is below obstacle
 		if (panelTop >= obstacleBottom) {
 			// console.log("%c (isIntercepted) EXIT 4 panel is below obstacle", "font-size: 24px; color: lime;");
-			intercepted = false;
 			continue;
 		}
 		intercepted = true;
@@ -357,17 +353,26 @@ export const comparePanelLists = (oldPanelList: PandaGridPanel[], newPanelList: 
  * @param {Array<LitElement>} elements - list of any elements
  * @returns {Array<PandaGridPanel>} list of panels
  */
-export const getPanelsFromElements = (elements: LitElement[]): PandaGridPanel[] => {
+export const getPanelsFromElements = (elements: LitElement[], tagName: string = "panda-grid-panel"): PandaGridPanel[] => {
 	const panels: PandaGridPanel[] = [];
 	if (elements?.length) {
 		// aggregate panels
 		Array
 			.from(elements)
 			.forEach((element) => {
-				if (element.tagName.toLocaleLowerCase() === "panda-grid-panel") {
+				if (element.tagName.toLocaleLowerCase() === tagName) {
 					panels.push(element as PandaGridPanel);
 				}
 			});
 	}
 	return panels;
+}
+
+/**
+ * Extract all panel placeholder elements from.
+ * @param {Array<LitElement>} elements - list of any elements
+ * @returns {Array<PandaGridPanelPlaceholder>} list of panels
+ */
+export const getPlaceholderPanelsFromElements = (elements: LitElement[]): PandaGridPanelPlaceholder[] => {
+	return getPanelsFromElements(elements, "panda-grid-panel-placeholder") as any[];
 }

@@ -43,7 +43,7 @@ export const styles = css`
 		padding: var(--panda-padding-m, 10px);
 		box-sizing: border-box;
 	}
-	
+
 	panda-grid-panel[dragging] .panel {
 		box-shadow: var(--panda-elevation-l);
 	}
