@@ -282,7 +282,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onAddPanel(): void {
 		const panelId = `uuid-${this._panelList.length}`;
-		this._panelList.unshift({ panelId, width: 1, height: 1 });
+		this._panelList.push({ panelId, width: 1, height: 1 });
 		this.requestUpdate();
 	}
 

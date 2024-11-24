@@ -638,6 +638,8 @@ export class PandaGridLayout extends LitElement {
 			if (missingPanels.length || newPanels.length) {
 				this._triggerLayoutChangeEvent();
 			}
+			// reposition panel placeholder
+			this._rearrangePanelPlaceholders();
 		} else {
 			// initialize all slotted panels only once
 			// parse slotted elements and create list of grid panels
@@ -665,12 +667,12 @@ export class PandaGridLayout extends LitElement {
 			// check message type
 			switch (type) {
 				case PanelMessageType.DRAG_INIT:
+					// hide all placeholder panels
+					this._hidePlaceholderPanels();
 					this._showPlaceholder(panelMetadata);
 					break;
 
 				case PanelMessageType.DRAG_START:
-					// hide all placeholder panels
-					this._hidePlaceholderPanels();
 					// reset indicative position for all panels
 					this._panelList.forEach((obstacle) => {
 						obstacle.resetTempPosition();
@@ -739,6 +741,8 @@ export class PandaGridLayout extends LitElement {
 		this._updateGridLayoutStyles();
 		// reposition all panels but preserve their sequence
 		this._rearrangePanels();
+		// reposition panel placeholder
+		this._rearrangePanelPlaceholders();
 
 		// trigger layout change event
 		this._triggerLayoutChangeEvent();
