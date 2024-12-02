@@ -274,6 +274,11 @@ export class PandaGridLayout extends LitElement {
 				serializedPanelList,
 				this._maxColumns
 			);
+			// update panel placeholder metadata
+			placeholderPanel.metadata = {
+				maxColumns: this._maxColumns,
+				columnWidth: this._columnWidth,
+			};
 		});
 	}
 
