@@ -30,4 +30,27 @@ export const styles = css`
 		height: 100%;	
 		inset: 0px;
 	}
+
+	svg {
+		position: absolute;
+		z-index: -1;
+	}
+
+	.fps {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		padding: 5px 10px;
+
+		color: lime;
+		font-size: 12px;
+		font-family: monospace;
+		text-shadow: 0px 1px 2px #000;
+		user-select: none;
+		
+		border-radius: 5px;
+		background-color: hsl(0deg 0% 0% / 30%);
+		box-shadow: 0px 1px 2px hsl(0deg 0% 0% / 50%);
+		z-index: 1;
+	}
 `;

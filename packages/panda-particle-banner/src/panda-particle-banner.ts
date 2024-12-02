@@ -13,7 +13,7 @@ import { styles } from "./styles/styles";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { getHslColorString, getRandomInt, minMax, validateColorHue, parseColorString, limitCheck } from "./utils/utils";
 import { debounce } from "@panda-wbc/panda-utils";
 
@@ -64,21 +64,24 @@ class PandaParticleBanner extends LitElement {
 
 	private _firstRun: boolean = true;
 
+	@state()
+	private _fps!: number;
+	
 	// events
-	private _documentMouseMoveEvent = this._onMouseMove.bind(this);
+	private readonly _documentMouseMoveEvent = this._onMouseMove.bind(this);
 
 	// timers
 	private _asyncParticleGeneratorTimer!: number;
 
 	// debouncers
-	private _resizeBannerDebouncer = debounce(this._onResize.bind(this), 500);
+	private readonly _resizeBannerDebouncer = debounce(this._onResize.bind(this), 500);
 
 	// resize observer
 	private _resizeObserver!: ResizeObserver;
 
 	// elements
 	@query("#canvas")
-	private _canvasEl!: HTMLCanvasElement;
+	private readonly _canvasEl!: HTMLCanvasElement;
 
 	private _bannerRect!: DOMRect;
 
@@ -149,12 +152,29 @@ class PandaParticleBanner extends LitElement {
 				part="banner"
 				@click="${this._onTogglePause}"
 			>
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+					<defs>
+						<filter id="goo">
+							<feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+							<feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" />
+						</filter>
+					</defs>
+				</svg>
 				<canvas id="canvas" part="canvas"></canvas>
 				<div class="content" part="content">
 					<slot></slot>
 				</div>
+				${this._renderFps()}
 			</div>
 		`;
+	}
+
+	private _renderFps(): TemplateResult | void {
+		if (this._config.showFps) {
+			return html`
+				<div id="fps" class="fps">FPS: ${this._fps}</div>
+			`;
+		}
 	}
 
 	// ================================================================================================================
@@ -525,7 +545,7 @@ class PandaParticleBanner extends LitElement {
 
 							this._ctx.beginPath();
 							// reset blur
-							this._ctx.filter = `blur(0px)`;
+							this._ctx.filter = "blur(0px)";
 
 							// check if blur function is declared
 							if (getConnectionLineBlur !== undefined && typeof getConnectionLineBlur === "function") {
@@ -702,20 +722,13 @@ class PandaParticleBanner extends LitElement {
 		// check show fps feature
 		if (this._config.showFps) {
 			// calculate fps
-			const fps = Math.round(1 / ((performance.now() - this._oldFrameTimestamp) / 1000));
+			this._fps = Math.round(1 / ((performance.now() - this._oldFrameTimestamp) / 1000));
 			this._oldFrameTimestamp = frameTimestamp;
-
-			this._ctx.filter = `blur(0px)`;
-			this._ctx.font = '14px Arial';
-			this._ctx.lineWidth = 5;
-			this._ctx.fillStyle = 'limegreen';
-			this._ctx.setLineDash([]);
-			this._ctx.strokeStyle = "black";
-			this._ctx.strokeText("FPS: " + fps, 15, 30);
-			this._ctx.fillText("FPS: " + fps, 15, 30);
 		}
-
+		
+		this._ctx.filter = `url(#goo)`;
 		this._ctx.closePath();
+		this._ctx.drawImage(this._canvasEl, 0, 0);
 
 		// draw another frame
 		if (!this._stopAnimation) {

@@ -58,14 +58,15 @@ export class PandaCalloutContentPage extends ContentPageTemplate {
 				blurMin: 2,
 				colors: [primaryColor, secondaryColor],
 				colorOpacityVariation: 50,
-				colorSaturationVariation: 10,
+				colorSaturationVariation: 30,
 				maxSpeedX: 0.1,
 				minSpeedX: -0.1,
 				maxSpeedY: -0.5,
 				minSpeedY: -0.1,
 				sizeMax: 80,
 				sizeMin: 40,
-			}]
+			}],
+			showFps: true
 		};
 		return html`
 			<div class="banner small particle-banner">

@@ -1,4 +1,4 @@
-export interface GridConfig {
+export interface PandaGridLayoutConfig {
 	/**
 	 * Min value for the panel size [px]. 
 	 * It will be used to calculate column size 

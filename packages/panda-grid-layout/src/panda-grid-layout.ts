@@ -1,6 +1,6 @@
 // types
 import { PanelMessageType, PanelMetadata } from "panda-grid-layout-types";
-import { GridConfig, PandaGridLayoutChangeEvent } from "../index";
+import { PandaGridLayoutConfig, PandaGridLayoutChangeEvent } from "../index";
 import { PandaGridPanel } from "./panda-grid-panel";
 import { PandaGridPanelPlaceholder } from "./panda-grid-panel-placeholder";
 
@@ -39,7 +39,7 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	@property({ type: Object })
-	gridConfig: GridConfig = {
+	gridConfig: PandaGridLayoutConfig = {
 		panelSize: 300,
 		responsive: false,
 	};
@@ -723,6 +723,8 @@ export class PandaGridLayout extends LitElement {
 					this._sizeChangeTimer = setTimeout(() => {
 						this._applyTemporaryPosition();
 					}, 400);
+					// reposition panel placeholder
+					this._rearrangePanelPlaceholders();
 					break;
 			}
 		}

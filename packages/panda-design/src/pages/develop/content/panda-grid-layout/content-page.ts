@@ -1,5 +1,6 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
+import { PandaGridPanel } from "@panda-wbc/panda-grid-layout/lib/panda-grid-panel";
 
 interface PanelMetadata {
 	panelId?: string;
@@ -33,7 +34,9 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
-import { PandaGridPanel } from "@panda-wbc/panda-grid-layout/lib/panda-grid-panel";
+
+// samples
+import { samples } from "./samples/samples";
 
 @page(pageConfig)
 @customElement("panda-grid-layout-content-page")
@@ -126,22 +129,7 @@ export class ContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-full">
 
-									<panda-grid-layout
-										.gridConfig="${this._gridConfig}"
-										responsive
-										style="height: 600px;"
-										@on-layout-change="${this._onLayoutChange}"
-									>
-
-										<panda-grid-panel-placeholder
-											width="2"
-											height="2"
-										>
-											THIS IS A PLACEHOLDER 1
-										</panda-grid-panel-placeholder>
-										${this._renderGridPanels()}
-
-									</panda-grid-layout>
+									${samples.placeholderSample()}
 
 								</div>
 							</div>
