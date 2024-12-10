@@ -4,6 +4,7 @@ import { PandaComboBoxItem, PandaComboBoxRenderer } from "../index";
 
 // style
 import { styles } from "./styles/overlay-styles";
+import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // utils
 import { LitElement, html, TemplateResult, PropertyValueMap } from "lit";
@@ -19,7 +20,7 @@ import {
 export class PandaComboBoxOverlay extends LitElement {
 	// css style
 	static get styles() {
-		return styles;
+		return [styles, scrollbar];
 	}
 
 	@property({ type: String })
@@ -153,7 +154,7 @@ export class PandaComboBoxOverlay extends LitElement {
 	private _renderDropdown(): TemplateResult {
 		const itemsHtml: TemplateResult[] = [];
 
-		this._parsedItems.forEach(({ label, value, selected, active, data }) => {
+		this._parsedItems.forEach(({ label, value, selected, active, disabled, data }) => {
 			const modCss: string[] = [];
 
 			if (selected) {
@@ -162,36 +163,29 @@ export class PandaComboBoxOverlay extends LitElement {
 			if (active) {
 				modCss.push("active");
 			}
-
-			if (this.renderer && typeof this.renderer === "function") {
-				const contentHtml = this.renderer({ label, value, selected, active, data });
-				itemsHtml.push(html`
-					<div
-						class="item ${modCss.join(" ")}"
-						part="item ${modCss.join(" ")}"
-						@click="${() => this._onChange(value)}"
-					>
-						${contentHtml}
-					</div>
-				`);
-			} else {
-				itemsHtml.push(html`
-					<div
-						class="item ${modCss.join(" ")}"
-						part="item ${modCss.join(" ")}"
-						@click="${() => this._onChange(value)}"
-					>
-						${label}
-					</div>
-				`);
+			if (disabled) {
+				modCss.push("disabled");
 			}
+
+			const contentHtml = this.renderer && typeof this.renderer === "function"
+				? this.renderer({ label, value, selected, active, disabled, data })
+				: label;
+			itemsHtml.push(html`
+				<div
+					class="item ${modCss.join(" ")}"
+					part="item ${modCss.join(" ")}"
+					@click="${() => this._onChange(value, null, disabled)}"
+				>
+					${contentHtml}
+				</div>
+			`);
 		});
 
 		// check if there is any dropdown item to display
 		if (this._parsedItems.length) {
 			return html`
 				<div class="dropdown" part="dropdown">
-					<div class="dropdown-wrap scroll" part="dropdown-wrap">
+					<div class="dropdown-wrap scrollbar" part="dropdown-wrap">
 						${itemsHtml}
 					</div>
 				</div>
@@ -315,6 +309,7 @@ export class PandaComboBoxOverlay extends LitElement {
 					value: _value,
 					active: index === this._selectedItemIndex,
 					selected: this.value === _value,
+					disabled: item.disabled ?? false,
 					data: { ...item },
 				});
 				index++;
@@ -358,20 +353,19 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	private _selectItemByIndex(index: number) {
 		const selectedItem = this._parsedItems.find((item) => item.index === index);
-		this.value = selectedItem?.value;
-
 		// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_selectItemByIndex)", "font-size: 24px; color: pink;", selectedItem?.label, index);
 
 		// update active flag
 		this._parsedItems = this._parsedItems.map((item) => {
 			return {
 				...item,
-				active: item.value === this.value
+				active: item.value === selectedItem?.value
 			};
 		});
-
 		// check if item was selected and update combo-box input field value
-		if (selectedItem) {
+		if (selectedItem && !selectedItem?.disabled) {
+			this.value = selectedItem?.value;
+
 			this._triggerPostMessageEvent(
 				PostMessageType.UPDATE_INPUT,
 				selectedItem.label,
@@ -464,13 +458,15 @@ export class PandaComboBoxOverlay extends LitElement {
 		this._showOverlayContent();
 	}
 
-	private _onChange(value: any, searchText: string | null = null): void {
+	private _onChange(value: any, searchText: string | null = null, disabled: boolean = false): void {
 		// console.log("%c ⚡ [COMBO-BOX-OVERLAY] (_onChange) value, searchText", "font-size: 24px; color: pink;", value, searchText);
-		this._triggerPostMessageEvent(
-			PostMessageType.CHANGE,
-			value,
-			searchText,
-		);
+		if (!disabled) {
+			this._triggerPostMessageEvent(
+				PostMessageType.CHANGE,
+				value,
+				searchText,
+			);
+		}
 	}
 
 	private _onOverlayClick(): void {

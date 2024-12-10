@@ -1,4 +1,4 @@
-export const enum TooltipPosition {
+export const enum PopoverPosition {
 	TOP = "top",
 	BOTTOM = "bottom",
 	LEFT = "left",
@@ -13,4 +13,8 @@ export const enum TooltipPosition {
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export interface PandaTooltipCloseEvent extends CustomEvent {}
+export interface PandaVisibilityChangeEventDetails {
+	visible: boolean;
+}
+
+export interface PandaVisibilityChangeEvent extends CustomEvent<PandaVisibilityChangeEventDetails> {}

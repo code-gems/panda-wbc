@@ -22,6 +22,7 @@ declare module "panda-combo-box-types" {
 		label: string;
 		active: boolean;
 		selected: boolean;
+		disabled: boolean;
 		data: any; /* original item object */
 	}
 

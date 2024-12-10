@@ -73,13 +73,8 @@ export const styles = css`
 		transition: all 200ms ease-in-out;
 
 		border-radius: var(--panda-dropdown-item-border-radius, 5px);
-		border-bottom: 1px dashed var(--panda-dropdown-item-border-color, hsl(0deg 0% 92%));
 		background-color: var(--panda-dropdown-item-background-color, transparent);
 		box-sizing: border-box;
-	}
-
-	.dropdown .item:last-child {
-		border-bottom: none;
 	}
 
 	.dropdown .item:hover {
@@ -92,9 +87,18 @@ export const styles = css`
 		background-color: var(--panda-dropdown-item-background-color-active, hsl(196deg 100% 47%));
 	}
 
-	.scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-	.scroll::-webkit-scrollbar-track { border-radius: 3px; background-color: var(--panda-background-color-100); }
-	.scroll::-webkit-scrollbar-thumb { border-radius: 3px; background-color: var(--panda-background-color-900); }
-	.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-background-color-700); }
-	.scroll::-webkit-scrollbar-corner { background-color: transparent; }
+	.dropdown .item.selected {
+		color: var(--panda-dropdown-item-text-color-selected, hsl(0deg 0% 100%));
+		background-color: var(--panda-dropdown-item-background-color-selected, hsl(196deg 100% 47%));
+	}
+
+	.dropdown .item.disabled {
+		cursor: not-allowed;
+		color: var(--panda-dropdown-item-text-color-disabled, hsl(210deg 5% 35%));
+		background-color: var(--panda-dropdown-item-background-color-disabled, hsl(0deg 0% 95%));
+	}
+
+	.dropdown .item.active.disabled {
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)) inset;
+	}
 `;

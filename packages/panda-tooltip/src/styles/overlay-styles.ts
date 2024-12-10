@@ -19,7 +19,7 @@ export const styles = css`
 		padding: var(--panda-tooltip-padding, 10px);
 
 		color: var(--panda-tooltip-text-color, #fff);
-		transition: all 400ms ease-in-out;
+		transition: opacity 400ms ease-in-out;
 
 		border-radius: var(--panda-tooltip-border-radius, 10px);
 		background-color: var(--panda-tooltip-background-color, #000);
@@ -32,7 +32,7 @@ export const styles = css`
 		width: 0;
 		height: 0;
 		content: " ";
-		bottom: -8px;
+		bottom: -7px;
 		left: 50%;
 		transform: translateX(-50%);
 		pointer-events: none;
@@ -44,7 +44,6 @@ export const styles = css`
 
 	.tooltip.show {
 		opacity: 1;
-		transform: translate(0px, 0px) !important;
 	}
 
 	/* ========================================================================= */
@@ -68,7 +67,7 @@ export const styles = css`
 	.tooltip.bottom:before,
 	.tooltip.bottom-left:before,
 	.tooltip.bottom-right:before {
-		top: -8px;
+		top: -7px;
 		border-top: none;
 		border-bottom: 8px solid var(--panda-tooltip-background-color, #000);
 	}
@@ -96,7 +95,7 @@ export const styles = css`
 	/* RIGHT */
 	.tooltip.right:before {
 		top: 50%;
-		left: -8px;
+		left: -7px;
 		transform: translate(0%, -50%);
 
 		border-top: 8px solid transparent;

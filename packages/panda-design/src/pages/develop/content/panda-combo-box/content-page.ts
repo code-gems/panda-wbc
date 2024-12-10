@@ -82,7 +82,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	private _items: any[] = [
 		{ label: "Item #1", value: "value 1" },
 		{ label: "Item #2", value: "value 2" },
-		{ label: "Item #3", value: "value 3" },
+		{ label: "Item #3", value: "value 3", disabled: true },
 		{ label: "Item #4", value: "value 4" },
 		{ label: "Item #5", value: "value 5" },
 		{ label: "Item #6", value: "value 6" },

@@ -97,20 +97,14 @@ export class PandaSearch extends LitElement {
 	private _overlayEl!: PandaSearchOverlay | null;
 
 	// overlay events
-	private _postMessageEvent: (e: any) => void = this._onPostMessage.bind(this);
+	private readonly _postMessageEvent: any = this._onPostMessage.bind(this);
 
 	// debouncer
-	private _onInputDebouncer: any;
+	private readonly _onInputDebouncer = debounce(this._triggerInputDebouncedEvent.bind(this), this.delayInterval);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-
-	connectedCallback() {
-		super.connectedCallback();
-		// initialize debouncer
-		this._onInputDebouncer = debounce(this._triggerInputDebouncedEvent.bind(this), this.delayInterval);
-	}
 
 	protected updated(_changedProps: PropertyValues): void {
 		if (_changedProps.has("items") && this.items !== undefined) {

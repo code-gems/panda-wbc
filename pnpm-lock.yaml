@@ -306,6 +306,9 @@ importers:
       '@panda-wbc/panda-pips-pager':
         specifier: workspace:*
         version: link:../panda-pips-pager
+      '@panda-wbc/panda-popover':
+        specifier: workspace:*
+        version: link:../panda-popover
       '@panda-wbc/panda-progress-bar':
         specifier: workspace:*
         version: link:../panda-progress-bar
@@ -457,6 +460,9 @@ importers:
 
   packages/panda-grid-layout:
     dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
@@ -603,6 +609,22 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-popover:
+    dependencies:
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
       lit:
         specifier: ^3.0.2
         version: 3.0.2

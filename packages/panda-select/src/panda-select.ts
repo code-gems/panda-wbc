@@ -1,5 +1,6 @@
 // types
-import { ElementDetails, PandaSelectChangeEventDetail, PandaSelectChangeEvent, PandaSelectItem } from "../index";
+import { PandaSelectChangeEventDetail, PandaSelectChangeEvent, PandaSelectItem, PandaSelectRenderer } from "../index";
+import { ElementDetails } from "panda-select-types";
 import { PandaSelectOverlay } from "./panda-select-overlay";
 
 // styles
@@ -57,6 +58,18 @@ export class PandaSelect extends LitElement {
 	@property({ type: String, attribute: "spinner-type" })
 	spinnerType: string = "dots";
 
+	@property({ type: String, attribute: "dropdown-width", reflect: true })
+	dropdownWidth!: string;
+
+	@property({ type: String })
+	customStyle!: string;
+
+	/**
+	 * Custom dropdown item renderer function. When provided,
+	 * it will be used to generate list of items for the dropdown overlay.
+	 */
+	renderer!: (params: PandaSelectRenderer) => TemplateResult | string | number;
+
 	/**
 	 * Status property, indicating if the overlay is shown.
 	 * 
@@ -86,24 +99,24 @@ export class PandaSelect extends LitElement {
 
 	// view props
 	@property({ type: Boolean })
-	_mandatory: boolean = false;
+	private _mandatory: boolean = false;
 
 	@property({ type: String })
 	private _label: string = "";
 
 	// elements
 	@query("#select")
-	private _selectEl!: HTMLDivElement;
+	private readonly _selectEl!: HTMLDivElement;
 
 	@query("#input-field")
-	private _inputFieldEl!: HTMLInputElement;
+	private readonly _inputFieldEl!: HTMLInputElement;
 
 	private _overlayEl!: PandaSelectOverlay | null;
 
 	// overlay events
-	private _selectEvent: (e: any) => void = this._onSelect.bind(this);
-	private _changeEvent: (e: any) => void = this._onChange.bind(this);
-	private _closeOverlayEvent: (e: any) => void = this._closeOverlay.bind(this);
+	private readonly _selectEvent: any = this._onSelect.bind(this);
+	private readonly _changeEvent: any = this._onChange.bind(this);
+	private readonly _closeOverlayEvent: any = this._closeOverlay.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -255,6 +268,14 @@ export class PandaSelect extends LitElement {
 			this._overlayEl.itemLabelPath = this.itemLabelPath;
 			this._overlayEl.itemValuePath = this.itemValuePath;
 			this._overlayEl.parentDetails = this._getElementDetails();
+			this._overlayEl.customStyle = this.customStyle;
+			// check for css variables
+			const dropdownWidthCssVar = getComputedStyle(this).getPropertyValue("--panda-select-width");
+			const dropdownMaxHeightCssVar = getComputedStyle(this).getPropertyValue("--panda-select-max-height");
+			this._overlayEl.dropdownWidth = dropdownWidthCssVar || this.dropdownWidth;
+			this._overlayEl.dropdownMaxHeight = dropdownMaxHeightCssVar;
+
+			this._overlayEl.renderer = this.renderer;
 			// append element to document body
 			document.body.appendChild(this._overlayEl);
 			this.opened = true;
@@ -326,9 +347,9 @@ export class PandaSelect extends LitElement {
 		this.focused = false;
 	}
 
-	private _onSelect(e: PandaSelectChangeEvent) {
+	private _onSelect(event: PandaSelectChangeEvent) {
 		// update value
-		this.value = e.detail.value;
+		this.value = event.detail.value;
 		this._label = getItemLabel(
 			this.items,
 			this.value,
@@ -339,9 +360,9 @@ export class PandaSelect extends LitElement {
 		this._triggerChangeEvent();
 	}
 
-	private _onChange(e: PandaSelectChangeEvent) {
+	private _onChange(event: PandaSelectChangeEvent) {
 		// update value
-		this.value = e.detail.value;
+		this.value = event.detail.value;
 		this._label = getItemLabel(
 			this.items,
 			this.value,
@@ -354,8 +375,8 @@ export class PandaSelect extends LitElement {
 		this._triggerChangeEvent();
 	}
 	
-	private _onKeyDown(e: KeyboardEvent) {
-		switch (e.key) {
+	private _onKeyDown(event: KeyboardEvent) {
+		switch (event.key) {
 			case "Enter":
 			case "Tab":
 				this._closeOverlay();
@@ -364,13 +385,13 @@ export class PandaSelect extends LitElement {
 			case "ArrowDown":
 			default:
 				this._openOverlay();
-				e.preventDefault();
+				event.preventDefault();
 				return false;
 		}
 	}
 
-	private _onKeyPress(e: KeyboardEvent) {
-		e.preventDefault();
+	private _onKeyPress(event: KeyboardEvent) {
+		event.preventDefault();
 		return false;
 	}
 

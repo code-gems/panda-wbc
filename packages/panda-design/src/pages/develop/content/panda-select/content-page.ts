@@ -15,7 +15,7 @@ import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 import "@panda-wbc/panda-select";
 
 // utils
-import { html, TemplateResult } from "lit";
+import { css, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
@@ -86,9 +86,17 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	// static data
 	private _items = [
 		{ label: "Item # 1", value: 1 },
-		{ label: "Item # 2", value: 2 },
+		{ label: "Item # 2", value: 2, disabled: true },
 		{ label: "Item # 3", value: 3 },
 		{ label: "Item # 4", value: 4 },
+	];
+
+	private readonly _languageList = [
+		{ label: "English (UK)", value: "uk", desc: "123123" },
+		{ label: "English (USA)", value: "us", desc: "123123" },
+		{ label: "Polish", value: "pl", desc: "123123" },
+		{ label: "German", value: "de", desc: "123123", disabled: true },
+		{ label: "Chinese", value: "cn", desc: "123123" },
 	];
 
 	private _countryList = getCountryList();
@@ -109,6 +117,9 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
+		`;
+		return html`
+			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
 			${this._renderComponentStatesSection()}
@@ -116,6 +127,42 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
+		const customStyle = css`
+			.dropdown .item {
+				padding: 5px !important;
+			}
+
+			.language {
+				display: flex;
+				flex-flow: row nowrap;
+				gap: var(--panda-padding-m);
+				height: 100%;
+			}
+
+			.icon {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: var(--panda-component-size);
+				height: 100%;
+			}
+
+			.label {
+				line-height: var(--panda-component-size-m);
+			}
+		`;
+
+		const customRenderer: (params: any) => any = ({ label, value, active, selected, data }) => {
+			return html`
+				<div class="language">
+					<div class="icon">
+						<panda-flag flag="${value}"></panda-flag>
+					</div>
+					<div class="label">${label}</div>
+				</div>
+			`;
+		};
+
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="overview">
@@ -134,11 +181,15 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 						<panda-select
 							.label="${`Option:`}"
 							.placeholder="${`Select option...`}"
-							.items="${this._items}"
+							.items="${this._languageList}"
+							.value="${"pl"}"
+							.customStyle="${customStyle}"
+							.renderer="${customRenderer}"
 						>
 						</panda-select>
 						<br />
 						<br />
+						<!--
 						<panda-select
 							.label="${`Option:`}"
 							.placeholder="${`Select option...`}"
@@ -148,6 +199,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 						>
 							<div class="prefix" slot="prefix">AUS</div>
 						</panda-select>
+						-->
 					</div>
 				</div>
 			</div>

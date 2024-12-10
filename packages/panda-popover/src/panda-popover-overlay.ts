@@ -1,41 +1,48 @@
-// types
-import { TooltipPosition } from "../index";
+// style
+import { PopoverPosition } from "../index";
 
-// styles
-import { styles } from "./styles/overlay-styles";
+// style
+import { overlayStyles } from "./styles/styles";
 
 // utils
-import { LitElement, html, PropertyValues } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
-import { positionObserver } from "./utils/utils";
+import { LitElement, html, PropertyValues, TemplateResult } from "lit";
+import { customElement, property, query, state } from "lit/decorators.js";
+import {
+	isContextElementVisible,
+	positionObserver,
+	resetPositionCss,
+} from "./utils/utils";
 
-@customElement("panda-tooltip-overlay")
-export class PandaTooltipOverlay extends LitElement {
+@customElement("panda-popover-overlay")
+export class PandaPopoverOverlay extends LitElement {
 	//css styles
 	static get styles() {
-		return styles;
+		return overlayStyles;
 	}
 
-	@property({ type: Object })
+	@state()
 	contextElement!: Element;
 
 	@property({ type: Element })
-	template!: Element | null;
+	template!: Element;
 
 	@property({ type: String })
-	position!: TooltipPosition;
+	position: PopoverPosition = PopoverPosition.TOP;
 
 	@property({ type: String })
 	customStyle!: string;
 
+	@property({ type: Boolean })
+	show!: boolean;
+
 	// view props
-	@query("#tooltip")
+	@query("#popover")
 	private readonly _contentEl!: HTMLDivElement;
 
-	private _correctedPosition: TooltipPosition | null = null;
+	private _correctedPosition: PopoverPosition | null = null;
 
 	private _positionObserver: any = null;
-	private readonly _positionChangeEvent: any = this._onHideOverlay.bind(this);
+	private readonly _positionChangeEvent: any = this._onPositionChange.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -45,9 +52,9 @@ export class PandaTooltipOverlay extends LitElement {
 		// add position change observer
 		if (this.contextElement) {
 			this._positionObserver = positionObserver(this.contextElement, this._positionChangeEvent);
-		}		
+		}
 	}
-		
+
 	protected updated(_changedProperties: PropertyValues): void {
 		if (_changedProperties.has("template") && this.template) {
 			this._applyContent();
@@ -70,12 +77,12 @@ export class PandaTooltipOverlay extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	render() {
+	render(): TemplateResult {
 		return html`
 			<div
-				id="tooltip"
-				class="tooltip"
-				part="tooltip"
+				id="popover"
+				class="popover"
+				part="popover"
 			>
 			</div>
 		`;
@@ -89,35 +96,42 @@ export class PandaTooltipOverlay extends LitElement {
 	private _applyContent() {
 		setTimeout(() => {
 			const contextElementRect = this.contextElement.getBoundingClientRect();
-			
-			if (this.template !== null && contextElementRect) {
+			console.log(
+				"%c (_applyContent) contextElement:",
+				"font-size: 24px; color: crimson; background: black;",
+				contextElementRect.top,
+				isContextElementVisible(contextElementRect)
+			);
+
+			if (this.template !== null && contextElementRect && isContextElementVisible(contextElementRect)) {
 				this._contentEl.innerHTML = this.template.innerHTML;
 				this._correctedPosition = null;
+
 				// get overlay size details
 				const overlayRect = this._contentEl.getBoundingClientRect();
 
-				// check if we have enough space to display tooltip content and do the position correction
+				// check if we have enough space to display popover content and do the position correction
 				let noSpaceBottom = false;
 				let noSpaceTop = false;
 				let noSpaceLeft = false;
 				let noSpaceRight = false;
-				
+
 				// 1. check if we have enough space at the top
 				if (contextElementRect.top - window.scrollY - overlayRect.height < 0) {
 					noSpaceTop = true;
 				}
 
 				// check if correction is needed
-				if (noSpaceTop && this.position === TooltipPosition.TOP) {
-					this._correctedPosition = TooltipPosition.BOTTOM;
+				if (noSpaceTop && this.position === PopoverPosition.TOP) {
+					this._correctedPosition = PopoverPosition.BOTTOM;
 				}
 
-				if (noSpaceTop && this.position === TooltipPosition.TOP_LEFT) {
-					this._correctedPosition = TooltipPosition.BOTTOM_LEFT;
+				if (noSpaceTop && this.position === PopoverPosition.TOP_LEFT) {
+					this._correctedPosition = PopoverPosition.BOTTOM_LEFT;
 				}
 
-				if (noSpaceTop && this.position === TooltipPosition.TOP_RIGHT) {
-					this._correctedPosition = TooltipPosition.BOTTOM_RIGHT;
+				if (noSpaceTop && this.position === PopoverPosition.TOP_RIGHT) {
+					this._correctedPosition = PopoverPosition.BOTTOM_RIGHT;
 				}
 
 				// 2. check if we have enough space at the bottom
@@ -125,16 +139,16 @@ export class PandaTooltipOverlay extends LitElement {
 					noSpaceBottom = true;
 				}
 				// check if correction is needed
-				if (noSpaceBottom && this.position === TooltipPosition.BOTTOM) {
-					this._correctedPosition = TooltipPosition.TOP;
+				if (noSpaceBottom && this.position === PopoverPosition.BOTTOM) {
+					this._correctedPosition = PopoverPosition.TOP;
 				}
 
-				if (noSpaceBottom && this.position === TooltipPosition.BOTTOM_LEFT) {
-					this._correctedPosition = TooltipPosition.TOP_LEFT;
+				if (noSpaceBottom && this.position === PopoverPosition.BOTTOM_LEFT) {
+					this._correctedPosition = PopoverPosition.TOP_LEFT;
 				}
 
-				if (noSpaceBottom && this.position === TooltipPosition.BOTTOM_RIGHT) {
-					this._correctedPosition = TooltipPosition.TOP_RIGHT;
+				if (noSpaceBottom && this.position === PopoverPosition.BOTTOM_RIGHT) {
+					this._correctedPosition = PopoverPosition.TOP_RIGHT;
 				}
 
 				// 3. check if we have enough space on the right
@@ -142,8 +156,8 @@ export class PandaTooltipOverlay extends LitElement {
 					noSpaceRight = true;
 				}
 
-				if (noSpaceRight && this.position === TooltipPosition.RIGHT) {
-					this._correctedPosition = TooltipPosition.LEFT;
+				if (noSpaceRight && this.position === PopoverPosition.RIGHT) {
+					this._correctedPosition = PopoverPosition.LEFT;
 				}
 
 				// 4. check if we have enough space on the left
@@ -151,11 +165,11 @@ export class PandaTooltipOverlay extends LitElement {
 					noSpaceLeft = true;
 				}
 
-				if (noSpaceLeft && this.position === TooltipPosition.LEFT) {
-					this._correctedPosition = TooltipPosition.RIGHT;
+				if (noSpaceLeft && this.position === PopoverPosition.LEFT) {
+					this._correctedPosition = PopoverPosition.RIGHT;
 				}
 
-				// apply tooltip position
+				// apply popover position
 				const position = this._correctedPosition
 					? this._correctedPosition
 					: this.position;
@@ -165,28 +179,28 @@ export class PandaTooltipOverlay extends LitElement {
 				let overlayLeft = contextElementRect.left + (contextElementRect.width / 2) - (overlayRect.width / 2);
 
 				switch (position) {
-					case (TooltipPosition.TOP_LEFT):
+					case (PopoverPosition.TOP_LEFT):
 						overlayLeft = contextElementRect.left;
 						break;
-					case (TooltipPosition.TOP_RIGHT):
+					case (PopoverPosition.TOP_RIGHT):
 						overlayLeft = contextElementRect.right - overlayRect.width;
 						break;
-					case (TooltipPosition.LEFT):
+					case (PopoverPosition.LEFT):
 						overlayTop = contextElementRect.top + (contextElementRect.height / 2) - (overlayRect.height / 2);
 						overlayLeft = contextElementRect.left - overlayRect.width;
 						break;
-					case (TooltipPosition.RIGHT):
+					case (PopoverPosition.RIGHT):
 						overlayTop = contextElementRect.top + (contextElementRect.height / 2) - (overlayRect.height / 2);
 						overlayLeft = contextElementRect.right;
 						break;
-					case (TooltipPosition.BOTTOM):
+					case (PopoverPosition.BOTTOM):
 						overlayTop = contextElementRect.bottom;
 						break;
-					case (TooltipPosition.BOTTOM_LEFT):
+					case (PopoverPosition.BOTTOM_LEFT):
 						overlayTop = contextElementRect.bottom;
 						overlayLeft = contextElementRect.left;
 						break;
-					case (TooltipPosition.BOTTOM_RIGHT):
+					case (PopoverPosition.BOTTOM_RIGHT):
 						overlayTop = contextElementRect.bottom;
 						overlayLeft = contextElementRect.right - overlayRect.width;
 						break;
@@ -194,8 +208,13 @@ export class PandaTooltipOverlay extends LitElement {
 
 				// position overlay content
 				this._contentEl.style.transform = `translate(${overlayLeft}px, ${overlayTop}px)`;
+				// reset position classes
+				resetPositionCss(this._contentEl);
 				this._contentEl.classList.add(this._getPositionCss()); // add position css class
 				this._contentEl.classList.add("show");
+			} else {
+				this._contentEl.classList.remove("show");
+				this._contentEl.innerHTML = "";
 			}
 		}, 0);
 	}
@@ -207,28 +226,28 @@ export class PandaTooltipOverlay extends LitElement {
 		let positionCss: string = "";
 
 		switch (position) {
-			case TooltipPosition.BOTTOM:
+			case PopoverPosition.BOTTOM:
 				positionCss = "bottom";
 				break;
-			case TooltipPosition.LEFT:
+			case PopoverPosition.LEFT:
 				positionCss = "left";
 				break;
-			case TooltipPosition.RIGHT:
+			case PopoverPosition.RIGHT:
 				positionCss = "right";
 				break;
-			case TooltipPosition.TOP_LEFT:
+			case PopoverPosition.TOP_LEFT:
 				positionCss = "top-left";
 				break;
-			case TooltipPosition.TOP_RIGHT:
+			case PopoverPosition.TOP_RIGHT:
 				positionCss = "top-right";
 				break;
-			case TooltipPosition.BOTTOM_LEFT:
+			case PopoverPosition.BOTTOM_LEFT:
 				positionCss = "bottom-left";
 				break;
-			case TooltipPosition.BOTTOM_RIGHT:
+			case PopoverPosition.BOTTOM_RIGHT:
 				positionCss = "bottom-right";
 				break;
-			case TooltipPosition.TOP:
+			case PopoverPosition.TOP:
 			default:
 				positionCss = "top"; // set default
 		}
@@ -245,18 +264,28 @@ export class PandaTooltipOverlay extends LitElement {
 		}
 	}
 
+	private _hidePopoverOverlay(): void {
+		const event = new CustomEvent("hide", {});
+		this.dispatchEvent(event);
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onHideOverlay() {
-		const event = new CustomEvent("hide", {});
-		this.dispatchEvent(event);
+	private _onPositionChange() {
+		console.log("%c (_onPositionChange)", "font-size: 24px; color: crimson; background: black;");
+		if (this.show) {
+			console.log("%c (_onPositionChange) LOOP BACK TO APPLY CONTENT:", "font-size: 24px; color: crimson; background: black;");
+			this._applyContent();
+		} else {
+			this._hidePopoverOverlay();
+		}
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-tooltip-overlay": PandaTooltipOverlay;
+		"panda-popover-overlay": PandaPopoverOverlay;
 	}
 }

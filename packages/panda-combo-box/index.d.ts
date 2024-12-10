@@ -1,6 +1,7 @@
 export interface PandaComboBoxItem {
 	label?: string;
 	value?: string | number | any;
+	disabled?: boolean;
 
 	group?: string;
 	[propertyName: string]: string | number | any;
@@ -11,6 +12,7 @@ export type PandaComboBoxRenderer = {
 	label: string;
 	active: boolean;
 	selected: boolean;
+	disabled: boolean;
 	data: any;
 }
 

@@ -12,8 +12,6 @@ export const styles = css`
 		height: 100%;
 		inset: 0px;
 		z-index: 9998;
-
-		background-color: rgba(255,0,0, 10%);
 	}
 
 	.overlay {
@@ -79,10 +77,6 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	.dropdown .item:last-child {
-		border-bottom: none;
-	}
-
 	.dropdown .item:hover {
 		color: var(--panda-dropdown-item-text-color-hover, hsl(196deg 100% 47%));
 		background-color: var(--panda-dropdown-item-background-color-hover, hsl(209deg 78% 46% / 10%));
@@ -98,9 +92,13 @@ export const styles = css`
 		background-color: var(--panda-dropdown-item-background-color-selected, hsl(196deg 100% 47%));
 	}
 
-	.scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-	.scroll::-webkit-scrollbar-track { border-radius: 3px; background-color: var(--panda-background-color-100); }
-	.scroll::-webkit-scrollbar-thumb { border-radius: 3px; background-color: var(--panda-background-color-900); }
-	.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-background-color-700); }
-	.scroll::-webkit-scrollbar-corner { background-color: transparent; }
+	.dropdown .item.disabled {
+		cursor: not-allowed;
+		color: var(--panda-dropdown-item-text-color-disabled, hsl(210deg 5% 35%));
+		background-color: var(--panda-dropdown-item-background-color-disabled, hsl(0deg 0% 95%));
+	}
+
+	.dropdown .item.active.disabled {
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)) inset;
+	}
 `;

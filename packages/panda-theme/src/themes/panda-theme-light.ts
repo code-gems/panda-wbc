@@ -389,6 +389,8 @@ export const pandaThemeLight = css`
 		--panda-dropdown-item-background-color-active: var(--panda-primary-color-10opc);
 		--panda-dropdown-item-text-color-selected: var(--panda-primary-text-color);
 		--panda-dropdown-item-background-color-selected: var(--panda-primary-color);
+		--panda-dropdown-item-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-dropdown-item-background-color-disabled: var(--panda-background-color-300);
 
 		/* ========================================================================================================= */
 		/* ICONS =================================================================================================== */

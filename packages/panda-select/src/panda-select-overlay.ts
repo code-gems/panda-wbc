@@ -1,12 +1,6 @@
 // style
-import { ElementDetails, PandaSelectChangeEventDetail, PandaSelectChangeEvent, PandaSelectItem } from "../index";
-
-interface ParsedSelectItem {
-	index: number;
-	value: any;
-	label: string;
-	active: boolean;
-}
+import { PandaSelectChangeEvent, PandaSelectItem, PandaSelectRenderer } from "../index";
+import { ElementDetails, SuperSelectItem } from "panda-select-types";
 
 // style
 import { styles } from "./styles/overlay-styles";
@@ -38,6 +32,18 @@ export class PandaSelectOverlay extends LitElement {
 
 	@property({ type: String, attribute: "item-value-path" })
 	itemValuePath: string | null = null;
+		
+	@property({ type: String })
+	dropdownWidth!: string;
+
+	@property({ type: String })
+	dropdownMaxHeight!: string;
+
+	@property({ type: String })
+	customStyle!: string;
+
+	renderer!: (params: PandaSelectRenderer) => TemplateResult | string | number;
+
 
 	parentDetails!: ElementDetails;
 
@@ -45,8 +51,8 @@ export class PandaSelectOverlay extends LitElement {
 	private _initialized: boolean = false;
 
 	@property({ type: Array })
-	private _parsedItems: ParsedSelectItem[] = [];
-	
+	private _parsedItems: SuperSelectItem[] = [];
+
 	@property({ type: Number })
 	private _selectedItemIndex!: number | null;
 
@@ -56,7 +62,7 @@ export class PandaSelectOverlay extends LitElement {
 
 	@query("#dropdown-cont")
 	private _dropdownContEl!: HTMLDivElement;
-	
+
 	// events
 	private _windowResizeEvent: any = this.close.bind(this); // close overlay when window resizes;
 	private _keyDownEvent: any = this._onKeyDown.bind(this);
@@ -94,9 +100,13 @@ export class PandaSelectOverlay extends LitElement {
 
 	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
 		if (_changedProperties.has("items") && this.items?.length) {
-			this._parseComboBoxItems();
+			this._parseItems();
 			this._getSelectedItemIndex();
 			this._showOverlayContent();
+		}
+		// check if custom style is defined
+		if (_changedProperties.has("customStyle") && this.customStyle !== undefined) {
+			this._applyCustomStyle();
 		}
 	}
 
@@ -104,7 +114,7 @@ export class PandaSelectOverlay extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render(): TemplateResult  {
+	protected render(): TemplateResult {
 		return html`
 			<div
 				class="overlay-cont"
@@ -125,20 +135,37 @@ export class PandaSelectOverlay extends LitElement {
 						${this._renderDropdown()}
 					</div>
 				</div>
+			</div>
 		`;
 	}
 
 	private _renderDropdown(): TemplateResult {
 		const itemsHtml: TemplateResult[] = [];
-			
-		this._parsedItems.forEach(({ label, value, active}) => {
+
+		this._parsedItems.forEach(({ label, value, selected, active, disabled, data }) => {
+			const modCss: string[] = [];
+
+			if (selected) {
+				modCss.push("selected");
+			}
+			if (active) {
+				modCss.push("active");
+			}
+			if (disabled) {
+				modCss.push("disabled");
+			}
+
+			const contentHtml = this.renderer && typeof this.renderer === "function"
+				? this.renderer({ label, value, selected, active, disabled, data })
+				: label;
+
 			itemsHtml.push(html`
 				<div
-					class="item ${active ? "active" : ""}"
-					part="item"
-					@click="${() => this._onChange(value)}"
+					class="item ${modCss.join(" ")}"
+					part="item ${modCss.join(" ")}"
+					@click="${() => this._onChange(value, disabled)}"
 				>
-					${label}
+					${contentHtml}
 				</div>
 			`);
 		});
@@ -182,11 +209,10 @@ export class PandaSelectOverlay extends LitElement {
 			const overlayRect = this._overlayEl.getBoundingClientRect();
 			let overlayTop = this.parentDetails.top - document.documentElement.scrollTop;
 			let overlayLeft = this.parentDetails.left - document.documentElement.scrollLeft;
+			// check if dropdown width css variable was set
+			const dropdownWidth = this.dropdownWidth ?? `${this.parentDetails.width}px`;
 			let dropdownHight = overlayRect.height;
 
-			// set default scroll to view behavior
-			let _scrollIntoViewBlock: ScrollLogicalPosition = "start";
-	
 			// check if we have enough space at the bottom of the combo-box to display dropdown
 			if (overlayTop - window.scrollY + overlayRect.height > window.innerHeight) {
 				// correct dropdown height if it protrude out the visible space
@@ -195,8 +221,6 @@ export class PandaSelectOverlay extends LitElement {
 				if (_hightOffset < 0) {
 					dropdownHight = dropdownHight - 10 + _hightOffset;
 				}
-				// change scroll to view behavior
-				_scrollIntoViewBlock = "end";
 			}
 
 			// check if we have enough space on the right side of the combo-box to display dropdown 
@@ -205,8 +229,13 @@ export class PandaSelectOverlay extends LitElement {
 			}
 
 			// set drop down container's width
-			this._dropdownContEl.style.width = `${this.parentDetails.width}px`;
+			this._dropdownContEl.style.width = dropdownWidth;
+			// set drop down container's height
 			this._dropdownContEl.style.height = `${dropdownHight}px`;
+			// check if max height variable was set
+			if (this.dropdownMaxHeight) {
+				this._dropdownContEl.style.maxHeight = this.dropdownMaxHeight;
+			}
 
 			// position overlay content
 			this._overlayEl.style.top = `${overlayTop}px`;
@@ -215,15 +244,24 @@ export class PandaSelectOverlay extends LitElement {
 			this._initialized = true;
 
 			// scroll active item into view
-			this._showActiveElement(_scrollIntoViewBlock);
+			this._showSelectedElement();
 		}, 0);
 	}
 
-	private _showActiveElement(_scrollIntoViewBlock: ScrollLogicalPosition = "center") {
+	private _showActiveElement(): void {
 		setTimeout(() => {
-			const activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".active");
-			if (activeEl) {
-				activeEl.scrollIntoView({ block: _scrollIntoViewBlock });
+			const _activeEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".active");
+			if (_activeEl) {
+				_activeEl.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+			}
+		}, 0);
+	}
+
+	private _showSelectedElement(): void {
+		setTimeout(() => {
+			const _selectedEl: HTMLDivElement | null | undefined = this.shadowRoot?.querySelector(".selected");
+			if (_selectedEl) {
+				_selectedEl.scrollIntoView({ block: "nearest", inline: "nearest" });
 			}
 		}, 0);
 	}
@@ -237,9 +275,9 @@ export class PandaSelectOverlay extends LitElement {
 	 * Parse provided items for further processing.
 	 * Filter items if user entered searching text.
 	*/
-	private _parseComboBoxItems(): void {
+	private _parseItems(): void {
 		this._parsedItems = [];
-		let index = 0; 
+		let index = 0;
 
 		if (this.items) {
 			this.items.forEach((item) => {
@@ -251,28 +289,20 @@ export class PandaSelectOverlay extends LitElement {
 					this.itemLabelPath
 				);
 
+				console.log("%c item", "font-size: 24px; color: green;", item);
+
 				this._parsedItems.push({
 					index,
-					active: this.value === _value,
 					value: _value,
 					label: _label,
+					active: index === this._selectedItemIndex,
+					selected: this.value === _value,
+					disabled: item.disabled ?? false,
+					data: { ...item },
 				});
 				index++;
 			});
 		}
-	}
-
-	private _updateActiveItem() {
-		this._parsedItems = this._parsedItems.reduce(
-			(itemList, item) => {
-				// update active flag
-				itemList.push({
-					...item,
-					active: item.value === this.value
-				});
-				return itemList;
-			}, [] as ParsedSelectItem[]
-		);
 	}
 
 	private _selectPreviousItem(): void {
@@ -311,17 +341,36 @@ export class PandaSelectOverlay extends LitElement {
 
 	private _selectItemByIndex(index: number) {
 		const selectedItem = this._parsedItems.find((item) => item.index === index);
-		this.value = selectedItem?.value;
-		this._updateActiveItem();
-
-		const event = new CustomEvent<PandaSelectChangeEventDetail>("select", {
-			detail: {
-				value: selectedItem?.value
-			}
+		// update active flag
+		this._parsedItems = this._parsedItems.map((item) => {
+			return {
+				...item,
+				active: item.value === selectedItem?.value
+			};
 		});
-		this.dispatchEvent(event);
+
+		if (selectedItem && !selectedItem.disabled) {
+			this.value = selectedItem?.value;
+	
+			const event: PandaSelectChangeEvent = new CustomEvent("select", {
+				detail: {
+					value: selectedItem?.value
+				}
+			});
+			this.dispatchEvent(event);
+		}
 		// show active element after change
 		this._showActiveElement();
+	}
+
+	/** Apply user defined custom style to this components shadowRoot */
+	private _applyCustomStyle(): void {
+		if (this.customStyle && this.shadowRoot) {
+			const customStyle = document.createElement("style");
+			customStyle.innerHTML = this.customStyle;
+			customStyle.setAttribute("scope", "custom-style");
+			this._overlayEl.appendChild(customStyle);
+		}
 	}
 
 	// ================================================================================================================
@@ -334,23 +383,23 @@ export class PandaSelectOverlay extends LitElement {
 		event.preventDefault();
 	}
 
-	private _onChange(value: any): void {
-		const event = new CustomEvent<PandaSelectChangeEventDetail>("change", {
-			detail: {
-				value
-			}
-		});
-		this.dispatchEvent(event);
+	private _onChange(value: any, disabled: boolean = false): void {
+		if (!disabled) {
+			const event: PandaSelectChangeEvent = new CustomEvent("change", {
+				detail: {
+					value
+				}
+			});
+			this.dispatchEvent(event);
+		}
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
 		switch (event.key) {
 			case "ArrowUp":
-				event.stopPropagation();
 				this._selectPreviousItem();
 				break;
 			case "ArrowDown":
-				event.stopPropagation();
 				this._selectNextItem();
 				break;
 		}
