@@ -31,6 +31,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "controls", 				iconPack: "default", group: ["System"], keywords: ["interface", "settings", "adjust", "panel", "levels", "refine"] },
 		{ name: "controls-2", 				iconPack: "default", group: ["System"], keywords: ["interface", "settings", "adjust", "panel", "levels", "refine"] },
 		{ name: "adjust", 					iconPack: "default", group: ["System"], keywords: ["interface", "settings", "adjust", "panel", "levels", "refine"] },
+		{ name: "logs", 					iconPack: "default", group: ["System"], keywords: ["interface", "logs", "terminal", "console"] },
+		{ name: "terminal",					iconPack: "default", group: ["System"], keywords: ["interface", "logs", "terminal", "console"] },
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
@@ -58,6 +60,12 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "expand-down", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand down", "double arrow"] },
 		{ name: "expand-left", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand left", "double arrow"] },
 		{ name: "expand-right", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "expand right", "double arrow"] },
+		{ name: "resize-handle-v", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["drag", "handle", "resize", "vertical"] },
+		{ name: "resize-handle-h", 			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["drag", "handle", "resize", "horizontal"] },
+		{ name: "resize-handle-es",			iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["drag", "handle", "resize", "corner"] },
+		{ name: "resize-handle-v-dots",		iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["drag", "handle", "resize", "corner", "dots"] },
+		{ name: "resize-handle-h-dots",		iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["drag", "handle", "resize", "corner", "dots"] },
+		{ name: "resize-handle-corner-dots",iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["drag", "handle", "resize", "corner", "dots"] },
 
 		// text editor icons ==================================
 		{ name: "copy", 					iconPack: "default", group: ["Editor"], keywords: ["editor","clipboard", "text", "content"] },
