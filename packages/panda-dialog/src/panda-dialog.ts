@@ -21,8 +21,15 @@ export class PandaDialog extends LitElement {
 	@property({ type: Boolean, attribute: true, reflect: true })
 	opened: boolean = false;
 
+	@property({ type: Boolean, attribute: "no-close-on-outside-click", reflect: true })
+	noCloseOnOutsideClick: boolean = false;
+
+	@property({ type: Boolean, attribute: "no-close-on-esc", reflect: true })
+	noCloseOnEsc: boolean = false;
+
 	// HTML Elements
-	private _template: Element = document.createElement("div");
+	private readonly _template: Element = document.createElement("div");
+
 	private _dialog: PandaDialogOverlay | null = null;
 
 	// ================================================================================================================
@@ -68,6 +75,8 @@ export class PandaDialog extends LitElement {
 			this._dialog = document.createElement("panda-dialog-overlay");
 			// set overlay props
 			this._dialog.template = this._template;
+			this._dialog.noCloseOnEsc = this.noCloseOnEsc;
+			this._dialog.noCloseOnOutsideClick = this.noCloseOnOutsideClick;
 			// add events listeners
 			this._dialog.addEventListener("close", this._onCloseDialogOverlay.bind(this));
 			// append overlay to the document body
