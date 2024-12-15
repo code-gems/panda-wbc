@@ -105,26 +105,26 @@ export const pandaThemeLight = css`
 		--panda-secondary-color-90opc: hsl(160deg 81% 43% / 90%);
 
 		/* TERTIARY */
-		--panda-tertiary-color: hsl(209deg 24% 47%);
+		--panda-tertiary-color: hsl(210deg 15% 30%);
 		--panda-tertiary-text-color: hsl(0deg 0% 100%);
 
-		--panda-tertiary-color-50: hsl(209deg 24% 77%);
-		--panda-tertiary-color-100: hsl(209deg 24% 57%);
-		--panda-tertiary-color-300: hsl(209deg 24% 52%);
-		--panda-tertiary-color-500: hsl(209deg 24% 47%);
-		--panda-tertiary-color-700: hsl(209deg 24% 42%);
-		--panda-tertiary-color-900: hsl(209deg 24% 37%);
+		--panda-tertiary-color-50: hsl(210deg 15% 50%);
+		--panda-tertiary-color-100: hsl(210deg 15% 40%);
+		--panda-tertiary-color-300: hsl(210deg 15% 35%);
+		--panda-tertiary-color-500: hsl(210deg 15% 30%);
+		--panda-tertiary-color-700: hsl(210deg 15% 25%);
+		--panda-tertiary-color-900: hsl(210deg 15% 20%);
 
-		--panda-tertiary-color-0opc: hsl(209deg 24% 47% / 0%);
-		--panda-tertiary-color-10opc: hsl(209deg 24% 47% / 10%);
-		--panda-tertiary-color-20opc: hsl(209deg 24% 47% / 20%);
-		--panda-tertiary-color-30opc: hsl(209deg 24% 47% / 30%);
-		--panda-tertiary-color-40opc: hsl(209deg 24% 47% / 40%);
-		--panda-tertiary-color-50opc: hsl(209deg 24% 47% / 50%);
-		--panda-tertiary-color-60opc: hsl(209deg 24% 47% / 60%);
-		--panda-tertiary-color-70opc: hsl(209deg 24% 47% / 70%);
-		--panda-tertiary-color-80opc: hsl(209deg 24% 47% / 80%);
-		--panda-tertiary-color-90opc: hsl(209deg 24% 47% / 90%);
+		--panda-tertiary-color-0opc: hsl(210deg 15% 30% / 0%);
+		--panda-tertiary-color-10opc: hsl(210deg 15% 30% / 10%);
+		--panda-tertiary-color-20opc: hsl(210deg 15% 30% / 20%);
+		--panda-tertiary-color-30opc: hsl(210deg 15% 30% / 30%);
+		--panda-tertiary-color-40opc: hsl(210deg 15% 30% / 40%);
+		--panda-tertiary-color-50opc: hsl(210deg 15% 30% / 50%);
+		--panda-tertiary-color-60opc: hsl(210deg 15% 30% / 60%);
+		--panda-tertiary-color-70opc: hsl(210deg 15% 30% / 70%);
+		--panda-tertiary-color-80opc: hsl(210deg 15% 30% / 80%);
+		--panda-tertiary-color-90opc: hsl(210deg 15% 30% / 90%);
 
 		/* ========================================================================================================= */
 		/* ACTION COLORS =========================================================================================== */

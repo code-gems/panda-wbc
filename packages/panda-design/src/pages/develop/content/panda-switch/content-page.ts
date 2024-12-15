@@ -50,21 +50,22 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 
 	_renderPageBanner(): TemplateResult {
 		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [{
-				particleCount: 50,
-				blur: true,
-				blurMax: 5,
-				blurMin: 2,
-				colors: [primaryColor],
+				particleCount: 80,
+				// blur: true,
+				// blurMax: 5,
+				// blurMin: 2,
+				colors: [primaryColor, secondaryColor],
 				colorOpacityVariation: 50,
-				colorSaturationVariation: 10,
+				colorSaturationVariation: 30,
 				maxSpeedX: 0.1,
 				minSpeedX: -0.1,
-				maxSpeedY: -0.5,
+				maxSpeedY: -0.4,
 				minSpeedY: -0.1,
-				sizeMax: 80,
-				sizeMin: 40
+				sizeMax: 40,
+				sizeMin: 20
 			}]
 		};
 		return html`

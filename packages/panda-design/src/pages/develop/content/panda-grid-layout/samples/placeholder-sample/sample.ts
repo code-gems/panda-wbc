@@ -6,7 +6,7 @@ import { PandaGridLayoutConfig } from "@panda-wbc/panda-grid-layout";
 
 // components
 import "@panda-wbc/panda-grid-layout";
-import "../../../../../../web-parts/panda-sample/panda-sample";
+import "@panda-wbc/panda-sample";
 
 // utils
 import { html, TemplateResult } from "lit";
@@ -41,8 +41,11 @@ export const placeholderSample = (): TemplateResult => {
 
 	
 	return html`
-		<panda-sample .logs="${_logs}">
-			<div slot="sample">
+		<panda-sample
+			caption="Grid Layout Demo"
+			.logs="${_logs}"
+		>
+			<div slot="preview">
 				<panda-grid-layout
 					.gridConfig="${_gridConfig}"
 					responsive

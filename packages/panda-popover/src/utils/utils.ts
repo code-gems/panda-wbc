@@ -1,8 +1,6 @@
 // types
 import { PopoverPosition } from "../../index";
 
-export const minValue = (value: number, min: number): number => value < min ? min : value;
-
 export const positionObserver = (element: Element, callback: (elementRect: DOMRect) => void) => {
 	let elementRect: DOMRect = element.getBoundingClientRect();
 	const timer = setInterval(() => {

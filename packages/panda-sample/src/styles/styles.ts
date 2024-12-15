@@ -13,6 +13,13 @@ export const styles = css`
 		flex-flow: column;
 		width: 100%;
 		height: 100%;
+		padding: var(--panda-padding-m);
+
+		border-radius: var(--panda-border-radius-m);
+		background-color: var(--panda-background-color-100);
+		box-shadow: var(--panda-elevation-s);
+		box-sizing: border-box;
+
 	}
 
 	.sample .header {
@@ -26,29 +33,66 @@ export const styles = css`
 		flex-flow: row nowrap;
 		flex-shrink: 0;
 		height: var(--panda-component-size-l);
+		gap: var(--panda-padding-m);
 	}
 
 	.sample .header .tab {
 		display: flex;
 		flex-shrink: 0;
+		height: var(--panda-component-size-l);
+
+		text-align: center;
+		transition: all 400ms ease-in-out;
+		cursor: pointer;
+
+		border-radius: var(--panda-border-radius-m);
+		background-color: var(--panda-background-color-500);
+		box-shadow: var(--panda-elevation-s);
+	}
+	
+	.sample .header .tab:hover {
+		box-shadow: var(--panda-elevation-m);
+	}
+
+	.sample .header .tab.active {
+		color: var(--panda-tertiary-text-color);
+		background-color: var(--panda-tertiary-color);
+	}
+
+	.sample .header .tab.active .icon {
+		--panda-icon-color: var(--panda-tertiary-text-color);
+	}
+
+	.sample .header .tab.active .label {
+		color: var(--panda-tertiary-text-color);
+	}
+
+	.sample .header .tab .icon {
+		display: flex;
+		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
+		width: var(--panda-component-size-l);
 		height: var(--panda-component-size-l);
+
+		--panda-icon-color: var(--panda-text-color);
+		--panda-icon-width: var(--panda-icon-size-m);
+		--panda-icon-height: var(--panda-icon-size-m);
+	}
+
+	.sample .header .tab .label {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		padding-right: var(--panda-padding-l);
 
 		color: var(--panda-text-color);
 		font-size: var(--panda-font-size-m);
 		font-family: var(--panda-font-family);
-		text-align: center;
-		transition: border-color 400ms ease-in-out;
+		user-select: none;
 
-		border-bottom: 2px solid transparent;
-		background-color: var(--panda-background-color-300);
 		box-sizing: border-box;
-	}
-	
-	.sample .header .tab .active {
-		border-bottom: 2px solid var(--panda-primary-color);
-		background-color: var(--panda-background-color-100);
 	}
 
 	.sample .spacer {

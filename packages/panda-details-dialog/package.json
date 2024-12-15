@@ -1,12 +1,11 @@
 {
-	"name": "@panda-wbc/panda-button",
-	"version": "0.0.2",
-	"description": "Lit based web component - button",
+	"name": "@panda-wbc/panda-details-dialog",
+	"version": "1.0.0",
+	"description": "Lit based web component. This component allows to create a details dialog with custom content that is shown after interaction with a context element.",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-button.js",
+	"main": "lib/panda-details-dialog.js",
 	"scripts": {
 		"compile": "tsc",
-		"share": "pnpm publish",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
@@ -16,16 +15,16 @@
 		"lit",
 		"lit-element",
 		"web component",
-		"panda-wbc",
 		"ui component",
-		"panda-button",
-		"button"
+		"popup",
+		"dialog",
+		"details"
 	],
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
 		"lit": "^3.0.2",
-		"@panda-wbc/panda-spinner": "workspace:*"
+		"@panda-wbc/panda-theme": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
@@ -33,8 +32,10 @@
 	},
 	"files": [
 		"src",
-		"lib"
+		"lib",
+		"index.d.ts"
 	],
+	"types": "index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	}

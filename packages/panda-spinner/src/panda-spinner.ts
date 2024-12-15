@@ -21,7 +21,7 @@ export class PandaSpinner extends LitElement {
 		return styles;
 	}
 
-	@property({ type: String, attribute: true })
+	@property({ type: String, reflect: true })
 	spinner!: string;
 
 	protected render() {

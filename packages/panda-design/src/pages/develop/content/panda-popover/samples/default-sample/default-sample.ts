@@ -5,7 +5,7 @@
 import { styles, popoverStyle } from "./styles/styles";
 
 // components
-import "../../../../../../web-parts/panda-sample/panda-sample";
+import "@panda-wbc/panda-sample";
 
 // utils
 import { html } from "lit"

@@ -134,6 +134,7 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "trend-down",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
 		{ name: "visibility",				iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show"] },
 		{ name: "visibility-off",			iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show", "hide"] },
+		{ name: "lab",						iconPack: "default", group: ["Miscellaneous"], keywords: ["flask", "sample", "experiment", "bottle"] },
 
 		// Food Icon Pack =======================================
 		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },

@@ -9,6 +9,7 @@ import "./content/panda-click-to-copy/content-page";
 import "./content/panda-combo-box/content-page";
 import "./content/panda-counter/content-page";
 import "./content/panda-date-picker/content-page";
+import "./content/panda-details-dialog/content-page";
 import "./content/panda-dialog/content-page";
 import "./content/panda-flag/content-page";
 import "./content/panda-full-page/content-page";

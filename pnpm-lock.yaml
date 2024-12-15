@@ -270,6 +270,9 @@ importers:
       '@panda-wbc/panda-date-picker':
         specifier: workspace:*
         version: link:../panda-date-picker
+      '@panda-wbc/panda-details-dialog':
+        specifier: workspace:*
+        version: link:../panda-details-dialog
       '@panda-wbc/panda-dialog':
         specifier: workspace:*
         version: link:../panda-dialog
@@ -321,6 +324,9 @@ importers:
       '@panda-wbc/panda-router':
         specifier: workspace:*
         version: link:../panda-router
+      '@panda-wbc/panda-sample':
+        specifier: workspace:*
+        version: link:../panda-sample
       '@panda-wbc/panda-search':
         specifier: workspace:*
         version: link:../panda-search
@@ -415,6 +421,22 @@ importers:
       webpack-dev-server:
         specifier: ^4.7.2
         version: 4.15.0(webpack-cli@5.1.4)(webpack@5.83.1)
+
+  packages/panda-details-dialog:
+    dependencies:
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
 
   packages/panda-dialog:
     dependencies:
@@ -677,6 +699,28 @@ importers:
 
   packages/panda-router:
     dependencies:
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-sample:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
+      '@panda-wbc/panda-time-ago':
+        specifier: workspace:*
+        version: link:../panda-time-ago
       lit:
         specifier: ^3.0.2
         version: 3.0.2

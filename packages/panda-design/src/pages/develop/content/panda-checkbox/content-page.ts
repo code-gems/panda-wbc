@@ -57,22 +57,22 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
-		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
 		const bannerConfig: PandaParticleBannerConfig = {
 			particleGroup: [{
 				particleCount: 50,
 				blur: true,
 				blurMax: 5,
 				blurMin: 2,
-				colors: [primaryColor],
+				// lava lamp
+				colors: ["hsl(17 88% 49%)", "hsl(42 88% 50%)"],
 				colorOpacityVariation: 50,
-				colorSaturationVariation: 10,
+				colorSaturationVariation: 30,
 				maxSpeedX: 0.1,
 				minSpeedX: -0.1,
-				maxSpeedY: -0.5,
+				maxSpeedY: -0.2,
 				minSpeedY: -0.1,
 				sizeMax: 80,
-				sizeMin: 40
+				sizeMin: 20
 			}]
 		};
 		return html`

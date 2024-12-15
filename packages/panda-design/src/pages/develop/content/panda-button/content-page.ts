@@ -130,11 +130,6 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 						Buttons serve as triggers for performing actions within the application. 
 						They can initiate processes like submitting forms, saving data, navigating between pages, or executing specific tasks.
 					</p>
-					<p>
-						One of the key advantages of a combo box is its ability to handle both predefined options and user-generated input. 
-						It offers a convenient way for users to select from a limited set of choices, 
-						while still allowing them the flexibility to enter custom values when necessary.
-					</p>
 				</div>
 			</div>
 		`;
