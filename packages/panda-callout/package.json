@@ -1,11 +1,12 @@
 {
 	"name": "@panda-wbc/panda-callout",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "Lit based web component - callout",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-callout.js",
 	"scripts": {
 		"compile": "tsc",
+		"share": "pnpm publish",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
