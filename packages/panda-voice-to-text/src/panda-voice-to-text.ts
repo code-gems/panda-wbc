@@ -191,7 +191,7 @@ export class PandaVoiceToText extends LitElement {
 	}
 
 	private _triggerNoSpeechEvent(): void {
-		const event = new CustomEvent("on-", {});
+		const event = new CustomEvent("on-no-speech", {});
 		this.dispatchEvent(event);
 	}
 

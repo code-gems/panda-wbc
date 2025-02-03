@@ -29,10 +29,6 @@ export const styles = css`
 		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
 	}
 
-	button:focus-visible {
-		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
-	}
-
 	.content {
 		padding: 0px 15px;
 		overflow: hidden;
@@ -73,17 +69,27 @@ export const styles = css`
 		--panda-spinner-color: var(--panda-primary-color, hsl(0deg 0% 100%));
 	}
 
-	/* HOVER STATE */
+	/* COMPONENT STATE ===================================================== */
 	
+	/* FOCUSED */
+	button:focus-visible {
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
+	}
+
+	/* HOVER */
 	button:hover {
 		color: var(--panda-button-text-color-hover, hsl(0deg 0% 100%));
 		background: var(--panda-button-background-color-hover, hsl(196deg 100% 51%));
 	}
-	
-	/* DISABLED STATE */
 
+	/* ACTIVE */
+	button.active:not(.disabled) {
+		background-color: var(--panda-button-background-color-active);
+	}
+
+	/* DISABLED */
 	:host([disabled]) { pointer-events: none; }
-	
+
 	:host([disabled]) button {
 		color: var(--panda-primary-color-disabled, hsl(0deg 0% 100%));
 		text-shadow: none;
@@ -91,14 +97,13 @@ export const styles = css`
 		box-shadow: none;
 	}
 	
-	/* BUSY STATE */
-
+	/* BUSY */
 	:host([busy]) { pointer-events: none; }
 	:host([busy]) .content,
 	:host([busy]) slot { visibility: hidden; }
 
-	/* === THEMES === */
-	
+	/* THEMES ============================================================== */
+
 	/* PRIMARY - OUTLINE */
 
 	:host([theme~="outline"]) button {

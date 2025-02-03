@@ -272,6 +272,11 @@ export const pandaThemeDark = css`
 		--panda-elevation-m: 0px 2px 4px var(--panda-black-color-20opc);
 		--panda-elevation-l: 0px 5px 10px var(--panda-black-color-20opc);
 		--panda-elevation-hero: 0px 10px 30px var(--panda-black-color-50opc);
+		
+		--panda-depth-s: 0px 1px 2px var(--panda-black-color-20opc) inset;
+		--panda-depth-m: 0px 2px 4px var(--panda-black-color-20opc) inset;
+		--panda-depth-l: 0px 4px 8px var(--panda-black-color-30opc) inset;
+		--panda-depth-hero: 0px 6px 12px var(--panda-black-color-30opc) inset;
 
 		/* ========================================================================================================= */
 		/* HIGHLIGHT COLOR ========================================================================================= */
@@ -341,7 +346,10 @@ export const pandaThemeDark = css`
 		--panda-input-placeholder-font-size: var(--panda-font-size-m);
 		--panda-input-placeholder-font-family: var(--panda-font-family);
 		
-		/* BUTTON */
+		/* ========================================================================================================= */
+		/* BUTTON ================================================================================================== */
+		/* ========================================================================================================= */
+
 		--panda-button-text-shadow: none;
 
 		--panda-button-text-color: var(--panda-text-color);
@@ -355,8 +363,62 @@ export const pandaThemeDark = css`
 		--panda-button-text-color-disabled: var(--panda-text-color-disabled);
 		--panda-button-border-color-disabled: #fff;
 		--panda-button-background-color-disabled: #fff;
+
+		/* ========================================================================================================= */
+		/* BUTTON GROUP ============================================================================================ */
+		/* ========================================================================================================= */
+
+		/* DEFAULT */
+		--panda-button-group-text-color: var(--panda-text-color);
+		--panda-button-group-text-shadow: "none";
+		--panda-button-group-border-color: hsl(0deg 0% 80%);
+		--panda-button-group-background-color: hsl(0deg 0% 90%);
 		
-		/* DROPDOWN */
+		/* ACTIVE */
+		--panda-button-group-text-color-active: var(--panda-text-color);
+		--panda-button-group-text-shadow-active: "none";
+		--panda-button-group-border-color-active: hsl(0deg 0% 85%);
+		--panda-button-group-background-color-active: hsl(0deg 0% 95%);
+		
+		/* SELECTED */
+		--panda-button-group-text-color-selected: var(--panda-text-color);
+		--panda-button-group-text-shadow-selected: "none";
+		--panda-button-group-border-color-selected: hsl(0deg 0% 90%);
+		--panda-button-group-background-color-selected: hsl(0deg 0% 100%);
+		
+		/* HOVER */
+		--panda-button-group-text-color-hover: var(--panda-text-color-hover);
+		--panda-button-group-text-shadow-hover: "none";
+		--panda-button-group-border-color-hover: hsl(0deg 0% 85%);
+		--panda-button-group-background-color-hover: hsl(0deg 0% 95%);
+		
+		/* FOCUSED */
+		--panda-button-group-text-color-focused: var(--panda-text-color-hover);
+		--panda-button-group-text-shadow-focused: "none";
+		--panda-button-group-border-color-focused: hsl(0deg 0% 85%);
+		--panda-button-group-background-color-focused: hsl(0deg 0% 95%);
+		
+		/* DISABLED */
+		--panda-button-group-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-button-group-text-shadow-disabled: "none";
+		--panda-button-group-background-color-disabled: hsl(0deg 0% 85%);
+		
+		/* ========================================================================================================= */
+		/* BADGE =================================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-badge-padding: 2px 5px;
+		--panda-badge-text-color: hsl(0deg 0% 100%);
+		--panda-badge-text-shadow: 0px 1px 1px var(--panda-black-color);
+		--panda-badge-font-size: var(--panda-font-size-s);
+		--panda-badge-font-family: var(--panda-font-family);
+		--panda-badge-border-radius: var(--panda-font-size-s);
+		--panda-badge-background-color: hsl(336deg 64% 53%);
+
+		/* ========================================================================================================= */
+		/* DROPDOWN ================================================================================================ */
+		/* ========================================================================================================= */
+
 		--panda-dropdown-border-radius: 5px;
 		--panda-dropdown-border-color: hsl(0deg 0% 80%);
 		--panda-dropdown-background-color: hsl(0deg 0% 100%);

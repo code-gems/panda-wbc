@@ -1,5 +1,6 @@
 // demo pages
 import "./content/panda-button/content-page";
+import "./content/panda-button-group/content-page";
 import "./content/panda-callout/content-page";
 import "./content/panda-carousel/content-page";
 import "./content/panda-checkbox/content-page";

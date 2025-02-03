@@ -306,6 +306,7 @@ export const pandaThemeLight = css`
 		--panda-component-size-xl: 48px;
 		
 		--panda-border-color: hsl(0deg 0% 85%);
+		--panda-border-color-disabled: hsl(0deg 0% 87%);
 
 		/* OUTLINE & FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);
@@ -345,26 +346,115 @@ export const pandaThemeLight = css`
 		--panda-input-placeholder-font-size: var(--panda-font-size-m);
 		--panda-input-placeholder-font-family: var(--panda-font-family);
 		
-		/* BUTTON */
+		/* ========================================================================================================= */
+		/* BUTTON ================================================================================================== */
+		/* ========================================================================================================= */
 		
+		/* DEFAULT */
 		--panda-button-text-color: var(--panda-text-color);
 		--panda-button-text-shadow: 0px 1px 1px var(--panda-text-shadow);
 		--panda-button-border-color: #fff;
 		--panda-button-background-color: #fff;
 		--panda-button-box-shadow: 0px 2px 4px var(--panda-black-color-20opc);
 		
+		/* HOVERED */
 		--panda-button-text-color-hover: var(--panda-text-color-hover);
 		--panda-button-text-shadow-hover: 0px 1px 1px var(--panda-text-shadow);
 		--panda-button-border-color-hover: #fff;
 		--panda-button-background-color-hover: #fff;
 		--panda-button-box-shadow-hover: 0px 2px 4px var(--panda-black-color-40opc);
 		
+		/* ACTIVE */
+		--panda-button-text-color-active: var(--panda-text-color);
+		--panda-button-text-shadow-active: 0px 1px 1px var(--panda-text-shadow);
+		--panda-button-border-color-active: #fff;
+		--panda-button-background-color-active: #fff;
+		--panda-button-box-shadow-active: 0px 2px 4px var(--panda-black-color-20opc);
+
+		/* FOCUSED */
+		--panda-button-text-color-focused: var(--panda-text-color);
+		--panda-button-text-shadow-focused: 0px 1px 1px var(--panda-text-shadow);
+		--panda-button-border-color-focused: #fff;
+		--panda-button-background-color-focused: #fff;
+		--panda-button-box-shadow-focused: 0px 2px 4px var(--panda-black-color-20opc);
+
+		/* DISABLED */
 		--panda-button-text-color-disabled: var(--panda-text-color-disabled);
 		--panda-button-text-shadow-disabled: none;
 		--panda-button-border-color-disabled: #fff;
 		--panda-button-background-color-disabled: #fff;
 		--panda-button-box-shadow-disabled: none;
 		
+		/* ========================================================================================================= */
+		/* BUTTON GROUP ============================================================================================ */
+		/* ========================================================================================================= */
+
+		/* DEFAULT */
+		--panda-button-group-text-color: var(--panda-text-color);
+		--panda-button-group-text-shadow: "none";
+		--panda-button-group-border-color: hsl(0deg 0% 80%);
+		--panda-button-group-background-color: hsl(0deg 0% 90%);
+		
+		/* ACTIVE */
+		--panda-button-group-text-color-active: var(--panda-text-color);
+		--panda-button-group-text-shadow-active: "none";
+		--panda-button-group-border-color-active: hsl(0deg 0% 85%);
+		--panda-button-group-background-color-active: hsl(0deg 0% 95%);
+		
+		/* SELECTED */
+		--panda-button-group-text-color-selected: var(--panda-text-color);
+		--panda-button-group-text-shadow-selected: "none";
+		--panda-button-group-border-color-selected: hsl(0deg 0% 90%);
+		--panda-button-group-background-color-selected: hsl(0deg 0% 100%);
+		
+		/* HOVER */
+		--panda-button-group-text-color-hover: var(--panda-text-color-hover);
+		--panda-button-group-text-shadow-hover: "none";
+		--panda-button-group-border-color-hover: hsl(0deg 0% 85%);
+		--panda-button-group-background-color-hover: hsl(0deg 0% 95%);
+		
+		/* FOCUSED */
+		--panda-button-group-text-color-focused: var(--panda-text-color-hover);
+		--panda-button-group-text-shadow-focused: "none";
+		--panda-button-group-border-color-focused: hsl(0deg 0% 85%);
+		--panda-button-group-background-color-focused: hsl(0deg 0% 95%);
+		
+		/* DISABLED */
+		--panda-button-group-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-button-group-text-shadow-disabled: "none";
+		--panda-button-group-background-color-disabled: hsl(0deg 0% 85%);
+		
+		/* ========================================================================================================= */
+		/* BADGE =================================================================================================== */
+		/* ========================================================================================================= */
+
+		/* DEFAULT */
+		--panda-badge-padding: 2px 5px;
+		--panda-badge-text-color: hsl(0deg 0% 100%);
+		--panda-badge-text-shadow: 0px 1px 1px var(--panda-black-color);
+		--panda-badge-font-size: var(--panda-font-size-s);
+		--panda-badge-font-family: var(--panda-font-family);
+		--panda-badge-border-radius: var(--panda-font-size-s);
+		--panda-badge-background-color: hsl(336deg 80% 49%);
+		
+		/* INACTIVE */
+		--panda-badge-padding-inactive: 2px 5px;
+		--panda-badge-text-color-inactive: hsl(0deg 0% 100%);
+		--panda-badge-text-shadow-inactive: 0px 1px 1px var(--panda-black-color);
+		--panda-badge-font-size-inactive: var(--panda-font-size-s);
+		--panda-badge-font-family-inactive: var(--panda-font-family);
+		--panda-badge-border-radius-inactive: var(--panda-font-size-s);
+		--panda-badge-background-color-inactive: hsl(336deg 80% 49%);
+
+		/* DISABLED */
+		--panda-badge-padding-disabled: 2px 5px;
+		--panda-badge-text-color-disabled: hsl(0deg 0% 100%);
+		--panda-badge-text-shadow-disabled: 0px 1px 1px var(--panda-black-color);
+		--panda-badge-font-size-disabled: var(--panda-font-size-s);
+		--panda-badge-font-family-disabled: var(--panda-font-family);
+		--panda-badge-border-radius-disabled: var(--panda-font-size-s);
+		--panda-badge-background-color-disabled: hsl(336deg 80% 49%);
+
 		/* ========================================================================================================= */
 		/* DROPDOWN ================================================================================================ */
 		/* ========================================================================================================= */

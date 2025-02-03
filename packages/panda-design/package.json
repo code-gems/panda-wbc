@@ -17,6 +17,7 @@
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
+		"@panda-wbc/panda-button-group": "workspace:*",
 		"@panda-wbc/panda-button": "workspace:*",
 		"@panda-wbc/panda-callout": "workspace:*",
 		"@panda-wbc/panda-carousel": "workspace:*",
@@ -28,8 +29,8 @@
 		"@panda-wbc/panda-countdown-timer": "workspace:*",
 		"@panda-wbc/panda-counter": "workspace:*",
 		"@panda-wbc/panda-date-picker": "workspace:*",
-		"@panda-wbc/panda-dialog": "workspace:*",
 		"@panda-wbc/panda-details-dialog": "workspace:*",
+		"@panda-wbc/panda-dialog": "workspace:*",
 		"@panda-wbc/panda-flag": "workspace:*",
 		"@panda-wbc/panda-full-page": "workspace:*",
 		"@panda-wbc/panda-grid-layout": "workspace:*",

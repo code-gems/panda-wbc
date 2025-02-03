@@ -115,28 +115,7 @@ export class ContentPage extends ContentPageTemplate {
 					</p>
 				</div>
 
-				<div class="sample-cont">
-					<div class="sample">
-						<div class="rows">
-							<div class="row">
-								<div class="col-3">
-									<button @click="${this._onAddPanel}">ADD ELEMENT</button>
-								</div>
-								<div class="col-3">
-									<button @click="${this._onMovePanel}">RESIZE PANEL</button>
-								</div>
-								<div class="col-3">
-									<button @click="${this._onRemovePanel}">REMOVE PANEL</button>
-								</div>
-								<div class="col-full">
-
-									${samples.placeholderSample()}
-
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				${samples.placeholderSample()}
 
 			</div> <!-- END OF CONTENT SECTION -->
 		`;

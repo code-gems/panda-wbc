@@ -3,6 +3,7 @@ import { Tab } from "panda-sample-types";
 
 // styles
 import { styles } from "./styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -16,11 +17,14 @@ import { customElement, query, state, property } from "lit/decorators.js";
 export class PandaSample extends LitElement {
 	// css styles
 	static get styles() {
-		return styles;
+		return [styles, scrollbar];
 	}
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	caption!: string;
+
+	@property({ type: String })
+	code!: string;
 
 	@state()
 	private _selectedTab: Tab = Tab.PREVIEW;
@@ -45,6 +49,10 @@ export class PandaSample extends LitElement {
 	// ================================================================================================================
 
 	render(): TemplateResult {
+		const show = this._selectedTab === Tab.CODE
+			? "show"
+			: "";
+		
 		return html`
 			<div class="sample">
 				<div class="header">
@@ -69,7 +77,7 @@ export class PandaSample extends LitElement {
 						</div>
 					</div>
 					<span class="spacer"></span>
-					${this.caption}
+					<div class="caption">${this.caption}</div>
 				</div>
 				<div class="body">
 					<div
@@ -77,19 +85,26 @@ export class PandaSample extends LitElement {
 						class="tab-body"
 					>
 						<!-- SAMPLE / DEMO EXAMPLE -->
-						<slot name="preview"></slot>
+						<slot></slot>
 					</div>
 					<div
 						id="tab-code"
-						class="tab-body"
+						class="tab-body code scrollbar ${show}"
 					>
 						<!-- CODE EXAMPLE -->
-						<slot name="code"></slot>
+						${this._renderCode()}
 					</div>
-					<div
-						id="logs-cont"
-						class="logs-cont"
-					>
+				</div>
+				<div class="footer">
+					<div class="header">
+						<div
+							class="btn"
+							@click="${this._onToggleLogs}"
+						>
+							<panda-icon icon="terminal"></panda-icon>
+						</div>
+					</div>
+					<div class="logs">
 						${this._renderLogs()}
 					</div>
 				</div>
@@ -97,15 +112,10 @@ export class PandaSample extends LitElement {
 		`;
 	}
 
-	private _renderPreviewTab(): TemplateResult {
+	private _renderCode(): TemplateResult {
 		return html`
-			<div>
-				<div
-					class="btn"
-					@click="${this._onToggleLogs}"
-				>
-					<panda-icon icon="terminal"></panda-icon>
-				</div>
+			<div class="code-wrap">
+				${this.code}
 			</div>
 		`;
 	}

@@ -13,6 +13,7 @@ export const styles = css`
 		flex-flow: column;
 		width: 100%;
 		height: 100%;
+		gap: var(--panda-padding-m);
 		padding: var(--panda-padding-m);
 
 		border-radius: var(--panda-border-radius-m);
@@ -95,8 +96,19 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	.sample .spacer {
+	.sample .header .spacer {
 		flex-grow: 1;
+	}
+
+	.sample .header .caption {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		color: var(--panda-text-color);
+		font-size: var(--panda-font-size-m);
+		font-family: var(--panda-font-family-bold);
+		user-select: none;
 	}
 
 	.sample .btn {
@@ -117,23 +129,52 @@ export const styles = css`
 	}
 
 	.sample .body {
+		position: relative;
 		display: flex;
 		flex-grow: 1;
 		flex-flow: row nowrap;
+
+		border: 1px solid var(--panda-border-color);
+		border-radius: var(--panda-border-radius-m);
 	}
 
 	.sample .body .tab-body {
 		display: flex;
 		flex-grow: 1;
-
+		border-radius: var(--panda-border-radius-m);
 	}
 
-	.sample .body .tab-body .logs-cont {
+	.sample .body .tab-body.code {
+		position: absolute;
+		display: none;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+	}
+
+	.sample .body .tab-body.code.show {
+		display: block;
+	}
+
+	.sample .body .code-wrap {
+		height: 100%;
+		padding: var(--panda-padding-m);
+		background-color: var(--panda-background-color-100);
+		box-sizing: border-box;
+	}
+
+	.sample .footer {
 		display: flex;
 		flex-shrink: 0;
 	}
 
-	.sample .body .tab-body .logs-cont .logs {
+	.sample .footer .header {
 
+	}
+
+	::slotted([slot]) {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 `;

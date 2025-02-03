@@ -49,25 +49,25 @@ export class PandaComboBox extends LitElement {
 	itemValuePath: string | null = null;
 
 	@property({ type: Boolean, attribute: "allow-custom-value", reflect: true })
-	allowCustomValue: boolean = false;
+	allowCustomValue!: boolean;
 
 	@property({ type: Boolean, attribute: "disable-auto-open", reflect: true })
-	disableAutoOpen: boolean = false;
+	disableAutoOpen!: boolean;
 
 	@property({ type: Boolean, reflect: true })
-	autoselect: boolean = false;
+	autoselect!: boolean;
 
 	@property({ type: Boolean, reflect: true })
-	spellcheck: boolean = false;
+	spellcheck!: boolean;
 
 	@property({ type: Boolean, reflect: true })
-	focused: boolean = false;
+	focused!: boolean;
 
 	@property({ type: Boolean, reflect: true })
-	disabled: boolean = false;
+	disabled!: boolean;
 
 	@property({ type: Boolean, reflect: true })
-	working: boolean = false;
+	working!: boolean;
 
 	@property({ type: String, reflect: true })
 	placeholder: string | null = null;
@@ -76,7 +76,7 @@ export class PandaComboBox extends LitElement {
 	spinnerType!: string;
 	
 	@property({ type: Boolean, attribute: "hide-icon", reflect: true })
-	hideIcon: boolean = false;
+	hideIcon!: boolean;
 	
 	@property({ type: String, reflect: true })
 	icon!: string;
@@ -219,34 +219,28 @@ export class PandaComboBox extends LitElement {
 
 		// modifier class aggregation
 		const modCss: string[] = [];
-		if (this._invalid) {
-			modCss.push("invalid");
-		}
-		if (this._mandatory) {
-			modCss.push("mandatory");
-		}
-		if (this.disabled) {
-			modCss.push("disabled");
-		}
+		if (this._invalid) modCss.push("invalid");
+		if (this._mandatory) modCss.push("mandatory");
+		if (this.disabled) modCss.push("disabled");
 
 		return html`
 			${labelHtml}
 			<div
 				id="combo-box"
 				class="combo-box ${modCss.join(" ")}"
-				part="combo-box"
+				part="combo-box ${modCss.join(" ")}"
 			>
 				<slot name="prefix"></slot>
 				<input
 					id="input-field"
 					class="input-field"
-					part="input-field"
+					part="input-field ${modCss.join(" ")}"
 					type="text"
 					autocomplete="off"
 					.placeholder="${this.placeholder ?? ""}"
 					.value="${this._value}"
 					.disabled="${this.disabled}"
-					.spellcheck="${this.spellcheck}"
+					.spellcheck="${this.spellcheck ?? false}"
 					@keydown="${this._onKeyDown}"
 					@keypress="${this._onKeyPress}"
 					@focus="${this._onFocus}"

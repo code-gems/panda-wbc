@@ -58,7 +58,7 @@ export class PandaGridLayout extends LitElement {
 
 	@state()
 	private _panelList: PandaGridPanel[] = [];
-	
+
 	@state()
 	private _placeholderList: PandaGridPanelPlaceholder[] = [];
 
@@ -164,7 +164,6 @@ export class PandaGridLayout extends LitElement {
 		// deconstruct provided grid config first
 		this._parseGridConfig();
 		this._updateGridMetadata();
-		this._updateGridLayoutStyles();
 	}
 
 	/** Map grid config settings and set default values */
@@ -194,15 +193,7 @@ export class PandaGridLayout extends LitElement {
 			// column width can't be less than panel size
 			this._columnWidth = minValue(this._gridWidth / this._maxColumns, this._panelSize);
 		}
-
-		// console.log("%c panel size:", "font-size: 16px; color: blueviolet;", this._panelSize);
-		// console.log("%c grid width:", "font-size: 16px; color: blueviolet;", this._gridWidth);
-		// console.log("%c max columns:", "font-size: 16px; color: blueviolet;", this._maxColumns);
-		// console.log("%c column width:", "font-size: 16px; color: blueviolet;", this._columnWidth);
-	}
-
-	/** Update grid style based on grid metadata */
-	private _updateGridLayoutStyles(): void {
+		// Update grid style based on grid metadata
 		this._gridEl.style.gridTemplateColumns = `repeat(${this._maxColumns}, ${this._columnWidth}px)`;
 		this._gridEl.style.gridAutoRows = `${this._columnWidth}px`;
 	}
@@ -250,7 +241,7 @@ export class PandaGridLayout extends LitElement {
 			this._showPlaceholderPanels();
 		});
 	}
-	
+
 	/** Show all placeholder panels */
 	private _showPlaceholderPanels(): void {
 		this._placeholderList.forEach((placeholderPanel) => {
@@ -399,6 +390,8 @@ export class PandaGridLayout extends LitElement {
 
 	/** Reposition all panels without changing their sequence */
 	private _rearrangePanels(): void {
+		console.log("%c ⚡ (_rearrangePanels)", "font-size: 16px; color: orange;");
+
 		// set "protrudes" flag on all panels so that they will be ignored during collision resolution
 		for (const panel of this._panelList) {
 			panel.protrudes = true;
@@ -407,6 +400,7 @@ export class PandaGridLayout extends LitElement {
 		for (const panel of this._panelList) {
 			// get panel list metadata, it has to be updated each time we update panel
 			const serializedPanelList = serializePanelMetadata(this._panelList);
+			console.log("%c ⚡ (_rearrangePanels) panel", "font-size: 16px; color: orange;", panel);
 			repositionPanel(panel, serializedPanelList, this._maxColumns);
 			panel.protrudes = false;
 			// update grid metadata for panel
@@ -420,7 +414,8 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	/**
-	 * Resolve panel collision
+	 * Resolve panel collision by moving all obstacles away.
+	 * 
 	 * @param panelMetadata - initiator panel, one that bas been moved to the new position by user
 	 * @param obstacle - panel that needs new position in response to user changing layout
 	 */
@@ -498,19 +493,19 @@ export class PandaGridLayout extends LitElement {
 
 						collide = true;
 						break;
-					} else {
-						// console.log("%c ⚡ 2.1.b NEW POSITION IS FINE FOR PANEL %s", "font-size: 16px; color: green;", obstacleMetadata.index);
-						// console.log("%c NEW POSITION FOR PANEL INDEX %s %s %s %s", "font-size: 16px; color: green;", obstacleMetadata.index, "pos:", obstacleMetadata.top, obstacleMetadata.left);
+					// } else {
+					// 	console.log("%c ⚡ 2.1.b NEW POSITION IS FINE FOR PANEL %s", "font-size: 16px; color: green;", obstacleMetadata.index);
+					// 	console.log("%c NEW POSITION FOR PANEL INDEX %s %s %s %s", "font-size: 16px; color: green;", obstacleMetadata.index, "pos:", obstacleMetadata.top, obstacleMetadata.left);
 
 						// const _top = currentPanelMetadata.tempTop ?? currentPanelMetadata.top;
 						// const _left = currentPanelMetadata.tempLeft ?? currentPanelMetadata.left;
 						// console.log("%c CURRENT PANEL INDEX %s %s %s %s", "font-size: 16px; color: orange;", currentPanelMetadata.index, " pos:", _top, _left);
 					}
 
-					// } else {
-					// 	console.log("%c ⚡ 2.2 SKIP PANEL:", "font-size: 16px; color: orange;", panel.index);
-					// 	console.log("%c ⚡ REASON 1 (skip, its not initiator panel):", "font-size: 16px; color: orange;", panel.index !== panelMetadata.index);
-					// 	console.log("%c ⚡ REASON 2 (skip, panel index is higher than obstacle index):", "font-size: 16px; color: orange;", panel.index > obstacle.index);
+				// } else {
+				// 	console.log("%c ⚡ 2.2 SKIP PANEL:", "font-size: 16px; color: orange;", panel.index);
+				// 	console.log("%c ⚡ REASON 1 (skip, its not initiator panel):", "font-size: 16px; color: orange;", panel.index !== panelMetadata.index);
+				// 	console.log("%c ⚡ REASON 2 (skip, panel index is higher than obstacle index):", "font-size: 16px; color: orange;", panel.index > obstacle.index);
 				}
 
 			} // end of - for
@@ -525,7 +520,7 @@ export class PandaGridLayout extends LitElement {
 
 			left++;
 			// if (collide) {
-			// console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 16px; color: orange;");
+			// 	console.log("%c ⚡ 3. MOVE LEFT:", "font-size: 16px; color: orange;");
 			// }
 		} // end of - while
 	}
@@ -606,10 +601,23 @@ export class PandaGridLayout extends LitElement {
 	}
 
 	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	/** Rearrange all panels and placeholders */
+	rearrange(): void {
+		// reposition all panels but preserve their sequence
+		this._rearrangePanels();
+		// reposition panel placeholder
+		this._rearrangePanelPlaceholders();
+	}
+
+	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
 	private _onSlotChange(event: Event): void {
+		console.log("%c ⚡ [GRID] (_onSlotChange)", "font-size: 16px; color: orange;");
 		const slotEl: any = event.target;
 		const assignedElements: LitElement[] = slotEl.assignedElements();
 		// console.log("%c ⚡ [GRID] (_onSlotChange) assignedElements", "font-size: 16px; color: orange;", assignedElements.length, assignedElements);
@@ -737,7 +745,7 @@ export class PandaGridLayout extends LitElement {
 
 	/** Handle grid resize */
 	private _onGridResize() {
-		// console.log("%c ⚡ [GRID] (_onGridResize)", "font-size: 24px; color: gold; background: black;", this._slottedPanels);
+		console.log("%c ⚡ [GRID] (_onGridResize)", "font-size: 24px; color: gold; background: black;");
 		// ignore initial resize observer invocation
 		if (!this._initializeResizeObserver) {
 			this._initializeResizeObserver = true;
@@ -745,12 +753,10 @@ export class PandaGridLayout extends LitElement {
 		}
 		// recalculate grid metadata based on new size
 		this._updateGridMetadata();
-		this._updateGridLayoutStyles();
 		// reposition all panels but preserve their sequence
 		this._rearrangePanels();
 		// reposition panel placeholder
 		this._rearrangePanelPlaceholders();
-
 		// trigger layout change event
 		this._triggerLayoutChangeEvent();
 	}

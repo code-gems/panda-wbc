@@ -1,39 +1,51 @@
-// style
-import { styles } from "./styles/styles";
+// types
 
-// components
-import "@panda-wbc/panda-spinner";
+
+// style
+import { itemStyles } from "./styles/styles";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
-import { customElement, property, queryAssignedElements } from "lit/decorators.js";
+import { html, LitElement, PropertyValues, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
-@customElement("panda-button")
-export class PandaButton extends LitElement {
+@customElement("panda-button-group-item")
+export class PandaButtonGroupItem extends LitElement {
 	// css style
 	static get styles() {
-		return styles;
+		return itemStyles;
 	}
 
 	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
-	@property({ type: Boolean, reflect: true })
-	disabled: boolean = false;
+	@property({ type: String })
+	id!: string;
+
+	@property({ type: String, reflect: true })
+	theme!: string;
+
+	@property({ type: String })
+	label!: string;
+
+	@property({ type: String })
+	value!: any;
+
+	@property({ type: String, reflect: true })
+	icon!: string;
 
 	@property({ type: Boolean, reflect: true })
-	busy: boolean = false;
+	selected!: boolean;
 
+	@property({ type: Boolean, reflect: true })
+	disabled!: boolean;
+
+	@property({ type: Boolean, reflect: true })
+	working!: boolean;
+	
 	@property({ type: String, attribute: "spinner-type", reflect: true })
 	spinnerType!: string;
 
-	@property({ type: String })
-	theme!: string;
-	
 	@property({ type: Boolean, attribute: "active", reflect: true })
 	private _active!: boolean;
-
-	@queryAssignedElements({ slot: "prefix" })
-	_prefixSlot: any;
 
 	// events
 	private readonly _mouseUpEvent = this._onMouseUp.bind(this);
@@ -48,8 +60,8 @@ export class PandaButton extends LitElement {
 		document.addEventListener("mouseup", this._mouseUpEvent);
 	}
 
-	protected firstUpdated(): void {
-		console.log("%c _prefixSlot", "font-size: 24px; color: red;", this._prefixSlot);
+	updated(_changedProps: PropertyValues): void {
+		// console.log("%c PANDA BUTTON GROUP ITEM (updated)", "font-size: 24px; color: green;", this.disabled);
 	}
 
 	disconnectedCallback(): void {
@@ -62,10 +74,10 @@ export class PandaButton extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	protected render(): TemplateResult {
 		const spinnerHtml: TemplateResult[] = [];
 
-		if (this.busy) {
+		if (this.working) {
 			spinnerHtml.push(html`
 				<div
 					class="spinner-cont"
@@ -79,57 +91,56 @@ export class PandaButton extends LitElement {
 				</div>
 			`);
 		}
-		
+
 		const modCss: string[] = [];
 		if (this._active) modCss.push("active");
+		if (!this.working && this.selected) modCss.push("selected");
 		if (this.disabled) modCss.push("disabled");
-		if (this.busy) modCss.push("busy");
+		if (this.working) modCss.push("working");
 
 		return html`
-			<button
-				class="${modCss.join(" ")}"
-				part="button ${modCss.join(" ")}"
-				.disabled="${this.disabled}"
-				tabindex="${this.busy || this.disabled ? "-1" : "0"}"
+			<div
+				class="item ${modCss.join(" ")}"
+				part="item ${modCss.join(" ")}"
+				tabindex="${this.working || this.disabled ? "-1" : "0"}"
 				@mousedown="${this._onMouseDown}"
 			>
-				<slot
-					name="prefix"
-					part="prefix"
-					@slotchange="${this._onPrefixSlotChange}"
+				<slot name="prefix-icon"></slot>
+				<slot name="prefix-badge"></slot>
+				<slot name="prefix"></slot>
+				<div
+					class="label ${modCss.join(" ")}"
+					part="label ${modCss.join(" ")}"
 				>
-				</slot>
-				<div class="content" part="content">
 					<slot></slot>
+					${this.label}
 				</div>
-				<slot name="suffix" part="suffix"></slot>
+				<slot name="suffix"></slot>
+				<slot name="suffix-icon"></slot>
+				<slot name="suffix-badge"></slot>
 				${spinnerHtml}
-			</button>
+			</div>	
 		`;
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
-	
-	private _onMouseDown(event: any) {
-		console.log("%c ⚡ (mouse down)", "font-size: 24px; color: red;", event);
+
+	private _onMouseDown(event: MouseEvent) {
+		// console.log("%c ⚡ (mouse down)", "font-size: 24px; color: red;", event);
 		this._active = true;
 	}
 	
 	private _onMouseUp(event: MouseEvent) {
 		event.stopPropagation();
-		console.log("%c ⚡ (mouse up)", "font-size: 24px; color: red;", event);
+		// console.log("%c ⚡ (mouse up)", "font-size: 24px; color: red;", event);
 		this._active = false;
-	}
-
-	private _onPrefixSlotChange(event: any) {
-		console.log("%c _onPrefixSlotChange", "font-size: 48px; color: red;", event);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-button": PandaButton;
+		"panda-button-group-item": PandaButtonGroupItem;
 	}
 }

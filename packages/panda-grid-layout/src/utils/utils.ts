@@ -216,6 +216,7 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
 
 	// fine empty space for panel to fit in
 	while (!found) {
+		console.log("%c ⚡ (repositionPanel) panel", "font-size: 16px; color: orange;", panel, top, left);
 		let right = left + panel.width;
 		// check if panel is too long and protrudes outside of the available space
 		if (right > maxColumns) {
@@ -237,6 +238,8 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
 			left,
 			right,
 			bottom,
+			// tempLeft: null,
+			// tempTop: null,
 		};
 
 		let collide = false;
@@ -246,9 +249,15 @@ export const repositionPanel = (panel: PandaGridPanel, obstacleMetadataList: Pan
 				!obstacleMetadata.protrudes &&
 				isIntercepted(panelMetadata, [obstacleMetadata])
 			) {
+				console.log("%c ⚡ COLLIDE", "font-size: 16px; color: orange;", panelMetadata, obstacleMetadata, isIntercepted(panelMetadata, [obstacleMetadata]));
 				collide = true;
 				break;
 			}
+		}
+
+		if (top > 5000) {
+			collide = false;
+			console.log("%c ⚡ EMERGENCY EXIT", "font-size: 16px; color: crimson; background: black;");
 		}
 
 		if (!collide) {

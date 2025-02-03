@@ -1,5 +1,6 @@
 // types
 import { PandaGridLayoutConfig } from "@panda-wbc/panda-grid-layout";
+import { LogEvent, SampleLink } from "@panda-wbc/panda-sample";
 
 // styles
 // ...
@@ -15,7 +16,9 @@ import { html, TemplateResult } from "lit";
 
 // demo props
 
-const _logs: any[] = [];
+const _logs: LogEvent[] = [];
+
+const _links: SampleLink[] = [];
 
 const _gridConfig: PandaGridLayoutConfig = {
 	panelSize: 150,
@@ -23,53 +26,139 @@ const _gridConfig: PandaGridLayoutConfig = {
 };
 
 const _panelList = [
-	{ panelId: "uuid-0", width: 1, height: 1 },
+	{ panelId: "uuid-0", width: 1, height: 2 },
 	{ panelId: "uuid-1", width: 2, height: 1 },
-	{ panelId: "uuid-2", width: 1, height: 1 },
-	{ panelId: "uuid-3", width: 1, height: 2 },
-	{ panelId: "uuid-4", width: 1, height: 1 },
-	{ panelId: "uuid-5", width: 1, height: 1 },
-	{ panelId: "uuid-5", width: 1, height: 1 },
-	{ panelId: "uuid-6", width: 1, height: 1 },
-	{ panelId: "uuid-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
-	{ panelId: "uuid-8", width: 1, height: 1 },
-	{ panelId: "uuid-9", width: 1, height: 1 },
-	{ panelId: "uuid-10", width: 1, height: 1 },
+	// { panelId: "uuid-2", width: 1, height: 1 },
+	// { panelId: "uuid-3", width: 1, height: 2 },
+	// { panelId: "uuid-4", width: 1, height: 1 },
+	// { panelId: "uuid-5", width: 1, height: 1 },
+	// { panelId: "uuid-5", width: 1, height: 1 },
+	// { panelId: "uuid-6", width: 1, height: 1 },
+	// { panelId: "uuid-7", width: 10, height: 1, minWidth: 3, minHeight: 2 },
+	// { panelId: "uuid-8", width: 1, height: 1 },
+	// { panelId: "uuid-9", width: 1, height: 1 },
+	// { panelId: "uuid-10", width: 1, height: 1 },
 ];
 
-export const placeholderSample = (): TemplateResult => {
+const _codeSample = `
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+	CODE SAMPLER HERE
+`;
 
-	
+export const placeholderSample = (): TemplateResult => {
 	return html`
 		<panda-sample
 			caption="Grid Layout Demo"
 			.logs="${_logs}"
+			.links="${_links}"
+			.code="${_codeSample}"
 		>
-			<div slot="preview">
-				<panda-grid-layout
-					.gridConfig="${_gridConfig}"
-					responsive
-					style="height: 600px;"
-					@on-layout-change="${_onLayoutChange}"
-				>
+			<panda-grid-layout
+				
+				.gridConfig="${_gridConfig}"
+				responsive
+				@on-layout-change="${_onLayoutChange}"
+			>
+				${_renderGridPanels()}
 
-					<panda-grid-panel-placeholder
-						width="2"
-						height="2"
-					>
-						THIS IS A PLACEHOLDER 1
-					</panda-grid-panel-placeholder>
-					${_renderGridPanels()}
-
-				</panda-grid-layout>
-			</div>
-
-			<div slot="code">
-				CODE
-			</div>
+			</panda-grid-layout>
 		</panda-sample>
 	`;
 }
+
+// <panda-grid-panel-placeholder
+// width="2"
+// height="2"
+// >
+// THIS IS A PLACEHOLDER 1
+// </panda-grid-panel-placeholder>
 
 const _renderGridPanels = (): TemplateResult[] => {
 	const panelsHtml: TemplateResult[] = [];

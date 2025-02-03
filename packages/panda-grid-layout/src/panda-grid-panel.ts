@@ -249,7 +249,6 @@ export class PandaGridPanel extends LitElement {
 	/** Update panel styling to reflect temporary position */
 	private _updatePanelTemporaryPosition(): void {
 		if (this.temporaryPosition) {
-
 			const _tempTop = this.tempTop ?? 0;
 			const _tempLeft = this.tempLeft ?? 0;
 			// update panel indicative position
