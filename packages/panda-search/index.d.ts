@@ -3,32 +3,31 @@ export const enum PandaSearchIconPosition {
 	RIGHT = "right",
 }
 
-export const enum PostMessageAction {
-	CLOSE = "CLOSE",
-	CLOSE_AND_CANCEL = "CLOSE_AND_CANCEL",
-	CHANGE = "CHANGE",
-}
-
-export type ElementDetails = {
-	width: number;
-	height: number;
-	top: number;
-	left: number;
-	bottom: number;
-	right: number;
-}
-
-export type PandaSearchOnInputEventDetails = {
-	value: string;
-}
-
 export type PandaSearchItem = {
 	label: string;
 	value: string;
+	payload?: any; /* can be used to store more data for custom rendering */
+}
+
+export type PandaSearchRendererParams = {
+	value: any;
+	label: string;
+	active: boolean;
+	payload?: any;
 }
 
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
+type PandaSearchOnInputEventDetails = {
+	value: string;
+}
+
+type PandaSearchOnSelectEventDetails = {
+	selectedItem: PandaSearchItem;
+}
+
 export interface PandaSearchOnInputEvent extends CustomEvent<PandaSearchOnInputEventDetails> {}
+
+export interface PandaSearchOnSelectEvent extends CustomEvent<PandaSearchOnSelectEventDetails> {}

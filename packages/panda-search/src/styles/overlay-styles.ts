@@ -93,10 +93,4 @@ export const styles = css`
 		color: var(--panda-dropdown-item-text-color-active, hsl(0deg 0% 100%));
 		background-color: var(--panda-dropdown-item-background-color-active, hsl(196deg 100% 47%));
 	}
-
-	.scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-	.scroll::-webkit-scrollbar-track { border-radius: 3px; background-color: var(--panda-background-color-100); }
-	.scroll::-webkit-scrollbar-thumb { border-radius: 3px; background-color: var(--panda-background-color-900); }
-	.scroll::-webkit-scrollbar-thumb:hover { background-color: var(--panda-background-color-700); }
-	.scroll::-webkit-scrollbar-corner { background-color: transparent; }
 `;

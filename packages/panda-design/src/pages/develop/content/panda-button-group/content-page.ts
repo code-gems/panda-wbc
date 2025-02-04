@@ -56,7 +56,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private readonly _items: PandaButtonGroupItem[] = [
-		{ label: "ALL (selected)", value: "all", selected: true },
+		{ label: "ALL (selected)", value: "all", selected: true, suffixBadge: "8" },
 		{ label: "BUTTON 1", value: "option 1" },
 		{ label: "BUTTON 2", value: "option 2" },
 		{ label: "BUTTON 3 (disabled)", value: "option 3", disabled: true },
@@ -108,8 +108,9 @@ export class ContentPage extends ContentPageTemplate {
 										.items="${this._items}"
 										@change="${this._onSelectionChange}"
 										multiselect
-										.working="${true}"
+										.working="${false}"
 										.disabled="${false}"
+										.selected="${["option 2"]}"
 									>
 									</panda-button-group>
 
@@ -122,7 +123,7 @@ export class ContentPage extends ContentPageTemplate {
 										label="Select:"
 										@change="${this._onSelectionChange}"
 										.working="${false}"
-										.disabled="${false}"
+										.disabled="${true}"
 									>
 
 										<panda-button-group-item

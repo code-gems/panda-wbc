@@ -1,5 +1,5 @@
 // types
-import { PandaSearchItem, PandaSearchOnInputEvent } from "@panda-wbc/panda-search";
+import { PandaSearchItem, PandaSearchOnInputEvent, PandaSearchOnSelectEvent } from "@panda-wbc/panda-search";
 
 // components
 import "@panda-wbc/panda-search";
@@ -20,12 +20,13 @@ class Sample extends SampleTemplate {
 
 	@state()
 	private _searchText: string = "";
-
-	@state()
-	private _searchResults: PandaSearchItem[] = [];
-	
-	@state()
-	private _searchInProgress: boolean = false;
+		
+	/**
+	 * Internationalization - Custom messages / language
+	 */
+	private _i18n = {
+		noSearchResults: "没有结果。尝试更改您的搜索条件并重试",
+	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -39,13 +40,12 @@ class Sample extends SampleTemplate {
 						<panda-search
 							label="Search:"
 							.value="${this._searchText}"
-							.items="${this._searchResults}"
+							.i18n="${this._i18n}"
 							icon-position="left"
-							@on-input="${this._onSearch}"
-							@on-input-debounced="${this._onSearchDebounced}"
-							@focus="${this._onFocus}"
-							@blur="${this._onBlur}"
-							?searching="${this._searchInProgress}"
+							@on-input="${this._onInput}"
+							@on-input-debounced="${this._onInputDebounced}"
+							@on-select="${this._onSelect}"
+							.search="${this._searchCallback.bind(this)}"
 						>
 						</panda-search>
 					</div>
@@ -58,12 +58,11 @@ class Sample extends SampleTemplate {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private async _search(): Promise<void> {
-		this._searchInProgress = true
+	private async _searchCallback(): Promise<PandaSearchItem[]> {
 		// simulate API response latency
-		await new Promise((r) => setTimeout(r, 2000));
+		await new Promise((resolve) => setTimeout(resolve, 500));
 		// search through static data
-		this._searchResults = this._countryList.reduce(
+		const searchResults = this._countryList.reduce(
 			(results, { name, code }) => {
 				// find matches
 				if (name.toLocaleLowerCase().includes(this._searchText.toLocaleLowerCase())) {
@@ -75,36 +74,25 @@ class Sample extends SampleTemplate {
 				return results;
 			}, [] as PandaSearchItem[]
 		);
-		this.log(`(_search) search results: ${this._searchResults.length}`);
+		this.log(`(_searchCallback) search results: ${searchResults.length}`);
 
-		this._searchInProgress = false;
+		return searchResults;
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onFocus(): void {
-		this.log("(_onFocus)");
+	private _onInput(): void {
+		// this.log("(_onInput)");
 	}
 
-	private _onBlur(): void {
-		this.log("(_onBlur)");
-	}
-
-	private _onSearch(): void {
-		this._searchResults = [];
-		this.warn("(_onSearch) clear search results");
-	}
-
-	private _onSearchDebounced(event: PandaSearchOnInputEvent): void {
+	private _onInputDebounced(event: PandaSearchOnInputEvent): void {
 		this._searchText = event.detail.value;
-		if (this._searchText) {
-			this.log(`(_onSearchDebounced) search: ${this._searchText}`);
-			this._search();
-		} else {
-			this.error(`(_onSearchDebounced) skip search`);
+		// this.log(`(_onInputDebounced) search: ${this._searchText}`);
+	}
 
-		}
+	private _onSelect(event: PandaSearchOnSelectEvent): void {
+		this.log(`(_onSelect) selectedItem: ${event.detail.selectedItem.label} / ${event.detail.selectedItem.value}`);
 	}
 }

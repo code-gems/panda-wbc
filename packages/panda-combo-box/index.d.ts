@@ -7,7 +7,7 @@ export interface PandaComboBoxItem {
 	[propertyName: string]: string | number | any;
 }
 
-export type PandaComboBoxRenderer = {
+export type PandaComboBoxRendererParams = {
 	value: any;
 	label: string;
 	active: boolean;

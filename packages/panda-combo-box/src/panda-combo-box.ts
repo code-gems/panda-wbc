@@ -1,6 +1,6 @@
 // type
 import { ElementDetails, PostMessageEvent, PostMessageType } from "panda-combo-box-types"
-import { PandaComboBoxItem, PandaComboBoxChangeEvent, PandaComboBoxRenderer } from "../index";
+import { PandaComboBoxItem, PandaComboBoxChangeEvent, PandaComboBoxRendererParams } from "../index";
 import { PandaComboBoxOverlay } from "./panda-combo-box-overlay";
 
 // style
@@ -91,7 +91,7 @@ export class PandaComboBox extends LitElement {
 	 * Custom dropdown item renderer function. When provided,
 	 * it will be used to generate list of items for the dropdown overlay.
 	 */
-	renderer!: (params: PandaComboBoxRenderer) => TemplateResult | string | number;
+	renderer!: (params: PandaComboBoxRendererParams) => TemplateResult | string | number;
 
 	/**
 	 * Custom filtering method. When provided, drop down items will be filtered against
@@ -219,9 +219,15 @@ export class PandaComboBox extends LitElement {
 
 		// modifier class aggregation
 		const modCss: string[] = [];
-		if (this._invalid) modCss.push("invalid");
-		if (this._mandatory) modCss.push("mandatory");
-		if (this.disabled) modCss.push("disabled");
+		if (this._invalid) {
+			modCss.push("invalid");
+		}
+		if (this._mandatory) {
+			modCss.push("mandatory");
+		}
+		if (this.disabled) {
+			modCss.push("disabled");
+		}
 
 		return html`
 			${labelHtml}
@@ -247,7 +253,7 @@ export class PandaComboBox extends LitElement {
 					@blur="${this._onBlur}"
 					@input="${(event: InputEvent) => this._onInput((event.target as HTMLInputElement).value)}"
 					@click="${this._onClick}"
-					tabindex="0"
+					tabindex="${this.disabled ? "-1" : "0"}"
 				/>
 				${this._renderIcon()}
 				${spinnerHtml}

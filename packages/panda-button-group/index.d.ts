@@ -5,6 +5,10 @@ export type PandaButtonGroupItem = {
 	selected?: boolean;
 	disabled?: boolean;
 	working?: boolean;
+	prefixIcon?: string;
+	suffixIcon?: string;
+	prefixBadge?: string;
+	suffixBadge?: string;
 }
 
 // ====================================================================================================================

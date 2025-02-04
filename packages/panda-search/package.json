@@ -29,6 +29,7 @@
 		"@panda-wbc/panda-button": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
+		"@panda-wbc/panda-theme": "workspace:*",
 		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"devDependencies": {

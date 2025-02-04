@@ -768,6 +768,9 @@ importers:
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
       '@panda-wbc/panda-utils':
         specifier: workspace:*
         version: link:../panda-utils

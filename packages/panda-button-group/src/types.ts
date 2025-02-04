@@ -6,5 +6,9 @@ declare module "panda-button-group-types" {
 		selected: boolean;
 		disabled: boolean;
 		working: boolean;
+		prefixIcon?: string;
+		suffixIcon?: string;
+		prefixBadge?: string;
+		suffixBadge?: string;
 	}
 }

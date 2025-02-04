@@ -23,6 +23,8 @@ export class PandaButtonGroup extends LitElement {
 		return styles;
 	}
 
+	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
 	@property({ type: String, reflect: true })
 	label!: string;
 
@@ -84,7 +86,7 @@ export class PandaButtonGroup extends LitElement {
 		// check if slotted items are present
 		if (this._parsedSlottedItemList.length) {
 			// remove events
-			for (let item of this._parsedSlottedItemList) {
+			for (const item of this._parsedSlottedItemList) {
 				item.removeEventListener("click", this._selectSlottedItem);
 			}
 		}
@@ -116,7 +118,7 @@ export class PandaButtonGroup extends LitElement {
 			${labelHtml}
 			<div class="group ${this.working ? "working" : ""}">
 				<slot name="prefix"></slot>
-				<slot id="items" @slotchange="${this._onSlotChange}"></slot>
+				<slot id="items" @slotchange="${this._parseSlottedItems}"></slot>
 				${this._renderItems()}
 				<slot name="suffix"></slot>
 				${spinnerHtml}
@@ -134,14 +136,80 @@ export class PandaButtonGroup extends LitElement {
 				selected,
 				disabled,
 				working,
+				prefixIcon,
+				suffixIcon,
+				prefixBadge,
+				suffixBadge,
 			} = item;
-
+			let prefixIconHtml = html``;
+			let suffixIconHtml = html``;
+			let prefixBadgeHtml = html``;
+			let suffixBadgeHtml = html``;
 			const modCss: string[] = [];
-			if (index === 0) modCss.push("first-item");
-			if (index === this._parsedItemList.length - 1) modCss.push("last-item");
-			if (selected) modCss.push("selected");
-			if (disabled) modCss.push("disabled");
-			if (working) modCss.push("working");
+
+			if (index === 0) {
+				modCss.push("first-item");
+			}
+			if (index === this._parsedItemList.length - 1) {
+				modCss.push("last-item");
+			}
+			if (selected) {
+				modCss.push("selected");
+			}
+			if (disabled) {
+				modCss.push("disabled");
+			}
+			if (working) {
+				modCss.push("working");
+			}
+			// check for prefix icon
+			if (prefixIcon) {
+				prefixIconHtml = html`
+					<div
+						slot="prefix-icon"
+						part="prefix-icon ${modCss.join(" ")}"
+						class="icon ${modCss.join(" ")}"
+					>
+						<panda-icon .icon="${prefixIcon}"></panda-icon>
+					</div>
+				`;
+			}
+			// check for suffix icon
+			if (suffixIcon) {
+				suffixIconHtml = html`
+					<div
+						slot="suffix-icon"
+						part="suffix-icon ${modCss.join(" ")}"
+						class="icon ${modCss.join(" ")}"
+					>
+						<panda-icon .icon="${suffixIcon}"></panda-icon>
+					</div>
+				`;
+			}
+			// check for prefix badge
+			if (prefixBadge) {
+				prefixBadgeHtml = html`
+					<div
+						slot="prefix-badge"
+						part="prefix-badge ${modCss.join(" ")}"
+						class="badge ${modCss.join(" ")}"
+					>
+						${prefixBadge}
+					</div>
+				`;
+			}
+			// check for suffix badge
+			if (suffixBadge) {
+				suffixBadgeHtml = html`
+					<div
+						slot="suffix-badge"
+						part="suffix-badge ${modCss.join(" ")}"
+						class="badge ${modCss.join(" ")}"
+					>
+						${suffixBadge}
+					</div>
+				`;
+			}
 
 			itemsHtml.push(html`
 				<panda-button-group-item
@@ -154,6 +222,10 @@ export class PandaButtonGroup extends LitElement {
 					.working="${this.working || working}"
 					@click="${() => this._onSelectItem(item)}"
 				>
+					${prefixIconHtml}
+					${prefixBadgeHtml}
+					${suffixBadgeHtml}
+					${suffixIconHtml}
 				</panda-button-group-item>
 			`);
 		});
@@ -166,22 +238,23 @@ export class PandaButtonGroup extends LitElement {
 	// ================================================================================================================
 
 	private _parsedItems(): void {
-		console.log("%c ⚡ (_parsedItems)", "font-size: 24px; color: crimson; background: black;", this.items);
-
 		if (Array.isArray(this.items)) {
 			this._parsedItemList = this.items.map((item) => {
 				const disabled = this.disabled || item.disabled;
+				const selected = this.selected?.includes(item.value) ?? item.selected ?? false;
 				return {
 					id: generateUuid(),
 					label: item.label ?? "",
 					value: item.value ?? null,
 					disabled: disabled ?? false,
 					working: item.working ?? false,
-					selected: item.selected ?? false,
+					selected,
+					prefixIcon: item.prefixIcon,
+					suffixIcon: item.suffixIcon,
+					prefixBadge: item.prefixBadge,
+					suffixBadge: item.suffixBadge,
 				};
 			});
-
-
 		} else {
 			console.warn("%c 🔥 (PANDA BUTTON GROUP) Invalid items! Items must be of type array!", "font-size: 16px;");
 		}
@@ -208,8 +281,12 @@ export class PandaButtonGroup extends LitElement {
 			// parse items based on provided options + add themes
 			this._parsedSlottedItemList.forEach((item, index) => {
 				// check if global disabled flag is set
-				if (this.disabled) {
-					item.disabled = true;
+				item.disabled = this.disabled
+					? true
+					: item.disabled;
+				// check for selected values
+				if (this.selected?.length) {
+					item.selected = this.selected?.includes(item.value);
 				}
 				// add themes
 				const themes = item.theme ?? "";
@@ -271,12 +348,6 @@ export class PandaButtonGroup extends LitElement {
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
-
-	private _onSlotChange(event: any): void {
-		console.log("%c ⚡ (_onSlotChange)", "font-size: 24px; color: green;", event);
-		console.log("%c ⚡ (_onSlotChange) assignedNodes", "font-size: 24px; color: green;", this._slotEl.assignedNodes({ flatten: true }));
-		this._parseSlottedItems();
-	}
 
 	private _onSelectItem(item: SuperItem): void {
 		if (!item.disabled && !item.working) {

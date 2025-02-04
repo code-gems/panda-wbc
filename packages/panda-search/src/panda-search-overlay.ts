@@ -1,68 +1,60 @@
 // types
-
-interface ParsedComboBoxItem {
-	index: number;
-	value: any;
-	label: string;
-	active: boolean;
-}
+import { PostMessageEvent, PostMessageType, SearchItem } from "panda-search-types";
+import { PandaSearchItem, PandaSearchRendererParams } from "../index";
 
 // style
 import { styles } from "./styles/overlay-styles";
+import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // utils
-import { LitElement, html, PropertyValues, TemplateResult, PropertyValueMap } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { LitElement, html, PropertyValues, TemplateResult } from "lit";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { minValue } from "./utils/utils";
 
 @customElement("panda-search-overlay")
 export class PandaSearchOverlay extends LitElement {
 	// css style
 	static get styles() {
-		return [
-			styles,
-		];
+		return [styles, scrollbar];
 	}
 
-	@property({ type: String })
-	value: string | number | null = null;
-	
 	@property({ type: Array })
-	items: any[] | null | undefined = [];
-
-	@property({ type: String, attribute: "item-label-path" })
-	itemLabelPath: string | null = null;
-
-	@property({ type: String, attribute: "item-value-path" })
-	itemValuePath: string | null = null;
+	searchResults: PandaSearchItem[] | null | undefined = [];
 
 	@property({ type: String })
-	searchText!: string | null;
+	customStyle!: string;
 
 	parentDetails!: any;
 
-	// view props
+	// callbacks
+	renderer!: (params: PandaSearchRendererParams) => TemplateResult | string | number;
+
+	// state props
 	private _initialized: boolean = false;
 
-	@property({ type: Array })
-	private _parsedItems: ParsedComboBoxItem[] = [];
+	@state()
+	private _selectedItem: PandaSearchItem | null = null;
+
+	@state()
+	private _parsedSearchResults: SearchItem[] = [];
 	
-	@property({ type: Number })
+	@state()
 	private _selectedItemIndex!: number | null;
 
 	// elements
 	@query("#overlay")
-	private _overlayEl!: HTMLDivElement;
+	private readonly _overlayEl!: HTMLDivElement;
 
 	@query("#overlay-cont")
-	private _overlayContEl!: HTMLDivElement;
+	private readonly _overlayContEl!: HTMLDivElement;
 
 	@query("#dropdown-cont")
-	private _dropdownContEl!: HTMLDivElement;
+	private readonly _dropdownContEl!: HTMLDivElement;
 
 	// events
-	private _windowResizeEvent: any = this.close.bind(this); // close overlay when window resizes;
-	private _keyDownEvent: any = this._onKeyDown.bind(this);
+	private readonly _windowResizeEvent: any = this._onClose.bind(this); // close overlay when window resizes;
+	private readonly _keyDownEvent: any = this._onKeyDown.bind(this);
+	private readonly _scrollEvent: any = this._onOverlayScroll.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -80,6 +72,7 @@ export class PandaSearchOverlay extends LitElement {
 		// add events
 		window.addEventListener("resize", this._windowResizeEvent);
 		window.addEventListener("keydown", this._keyDownEvent);
+		window.addEventListener("scroll", this._scrollEvent);
 	}
 
 	public disconnectedCallback(): void {
@@ -91,16 +84,20 @@ export class PandaSearchOverlay extends LitElement {
 		if (this._keyDownEvent) {
 			window.removeEventListener("keydown", this._keyDownEvent);
 		}
+		if (this._scrollEvent) {
+			window.removeEventListener("scroll", this._scrollEvent);
+		}
 	}
 
-	protected updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-		if (
-			(_changedProperties.has("items") && this.items?.length) ||
-			(_changedProperties.has("searchText") && this.searchText !== null)
-		) {
-			this._parseComboBoxItems();
+	protected updated(_changedProperties: PropertyValues): void {
+		if (_changedProperties.has("searchResults") && this.searchResults) {
+			this._parseSearchResults();
 			this._getSelectedItemIndex();
 			this._showOverlayContent();
+		}
+		// check if custom style is defined
+		if (_changedProperties.has("customStyle") && this.customStyle !== undefined) {
+			this._applyCustomStyle();
 		}
 	}
 
@@ -114,7 +111,7 @@ export class PandaSearchOverlay extends LitElement {
 				id="overlay-cont"
 				class="overlay-cont"
 				part="overlay-cont"
-				@click="${this.close}"
+				@click="${this._onClose}"
 			>
 				<div
 					id="overlay"
@@ -135,39 +132,47 @@ export class PandaSearchOverlay extends LitElement {
 
 	private _renderDropdown(): TemplateResult {
 		const itemsHtml: TemplateResult[] = [];
-			
-		this._parsedItems.forEach(({ label, value, active}) => {
+
+		this._parsedSearchResults.forEach((item) => {
+			const { label, value, active, payload } = item;
+			const activeCss = active ? "active" : "";
+
+			// check if custom item renderer was provided
+			const contentHtml = this.renderer && typeof this.renderer === "function"
+				? this.renderer({ label, value, active, payload })
+				: label;
+			// convert item
+			const searchItem: PandaSearchItem = {
+				label: item.label,
+				value: item.value,
+				payload: { ...item.payload },
+			};
+
 			itemsHtml.push(html`
 				<div
-					class="item ${active ? "active" : ""}"
-					part="item"
-					@click="${() => this._onChange(value)}"
+					class="item ${activeCss}"
+					part="item ${activeCss}"
+					@click="${() => this._onSelect(searchItem)}"
 				>
-					${label}
+					${contentHtml}
 				</div>
 			`);
 		});
 
 		// check if there is any dropdown item to display
-		if (this._parsedItems.length) {
+		if (this._parsedSearchResults.length) {
 			return html`
 				<div class="dropdown" part="dropdown">
-					<div class="dropdown-wrap scroll" part="dropdown-wrap">
+					<div class="dropdown-wrap scrollbar" part="dropdown-wrap">
 						${itemsHtml}
 					</div>
 				</div>
 			`;
 		} else {
-			return html``;
+			return html`
+				NO RESULTS
+			`;
 		}
-	}
-
-	// ================================================================================================================
-	// API ============================================================================================================
-	// ================================================================================================================
-
-	public close() {
-		this.dispatchEvent(new CustomEvent("close", {}));
 	}
 
 	// ================================================================================================================
@@ -231,59 +236,47 @@ export class PandaSearchOverlay extends LitElement {
 
 	/** Find selected item index */
 	private _getSelectedItemIndex(): void {
-		this._selectedItemIndex = this._parsedItems.find((item) => item.value === this.value)?.index ?? null;
+		this._selectedItemIndex = this._parsedSearchResults.find(
+			(item) => item.value === this._selectedItem?.value
+		)?.index ?? null;
 	}
 	
-	/**
-	 * Parse provided items for further processing.
-	 * Filter items if user entered searching text.
-	*/
-	private _parseComboBoxItems(): void {
-		this._parsedItems = [];
-		let index = 0; 
-
-		if (this.items) {
-			this.items.forEach((item) => {
-				// const _value = getItemValue(item, this.itemValuePath);
-				// const _label = getItemLabel(
-				// 	this.items,
-				// 	_value,
-				// 	this.itemValuePath,
-				// 	this.itemLabelPath
-				// );
-
-				// // check if user is searching and if we have matches
-				// if (!this.searchText || _label.toLocaleLowerCase().includes(this.searchText.toLocaleLowerCase())) {
-				// 	this._parsedItems.push({
-				// 		index,
-				// 		active: this.value === _value,
-				// 		value: _value,
-				// 		label: _label,
-				// 	});
-				// 	index++;
-				// }
-			});
-		}
+	private _updateActiveItem() {
+		// TODO: refactor this to use forEach() loop
+		this._parsedSearchResults = this._parsedSearchResults.map((item) => {
+			// update active flag
+			return {
+				...item,
+				active: item.value === this._selectedItem?.value,
+			};
+		});
 	}
 
-	private _updateActiveItem() {
-		this._parsedItems = this._parsedItems.reduce(
-			(itemList, item) => {
-				// update active flag
-				itemList.push({
-					...item,
-					active: item.value === this.value
+	/** Parse provided search results for further processing. */
+	private _parseSearchResults(): void {
+		this._parsedSearchResults = [];
+
+		// check if search results were provided
+		if (this.searchResults?.length) {
+			// parse items
+			this.searchResults.forEach((item, index) => {
+				const { label, value, payload } = item;
+
+				this._parsedSearchResults.push({
+					index,
+					label,
+					value,
+					active: index === this._selectedItemIndex,
+					payload: { ...payload },
 				});
-				return itemList;
-			}, [] as ParsedComboBoxItem[]
-		);
+			});
+		}
 	}
 
 	private _selectPreviousItem(): void {
 		console.log("%c _selectPreviousItem", "font-size: 24px; color: green;");
 		console.log("%c _initialized", "font-size: 24px; color: green;", this._initialized);
-		console.log("%c items", "font-size: 24px; color: green;", this.items);
-		console.log("%c value", "font-size: 24px; color: green;", this.value);
+		console.log("%c _selectedItem", "font-size: 24px; color: green;", this._selectedItem);
 		console.log("%c selectedItemIndex", "font-size: 24px; color: green;", this._selectedItemIndex);
 
 		if (!this._initialized) {
@@ -294,7 +287,7 @@ export class PandaSearchOverlay extends LitElement {
 		if (this._selectedItemIndex === null) {
 			this._selectedItemIndex = 0;
 		} else if (this._selectedItemIndex === 0) {
-			this._selectedItemIndex = this._parsedItems.length - 1;
+			this._selectedItemIndex = this._parsedSearchResults.length - 1;
 		} else {
 			this._selectedItemIndex -= 1;
 		}
@@ -305,8 +298,7 @@ export class PandaSearchOverlay extends LitElement {
 	private _selectNextItem(): void {
 		console.log("%c _selectNextItem", "font-size: 24px; color: green;");
 		console.log("%c _initialized", "font-size: 24px; color: green;", this._initialized);
-		console.log("%c items", "font-size: 24px; color: green;", this.items);
-		console.log("%c value", "font-size: 24px; color: green;", this.value);
+		console.log("%c _selectedItem", "font-size: 24px; color: green;", this._selectedItem);
 		console.log("%c selectedItemIndex", "font-size: 24px; color: green;", this._selectedItemIndex);
 
 		if (!this._initialized) {
@@ -315,7 +307,7 @@ export class PandaSearchOverlay extends LitElement {
 		}
 
 		if (this._selectedItemIndex === null ||
-			this._selectedItemIndex === this._parsedItems.length - 1
+			this._selectedItemIndex === this._parsedSearchResults.length - 1
 		) {
 			this._selectedItemIndex = 0;
 		} else {
@@ -326,19 +318,49 @@ export class PandaSearchOverlay extends LitElement {
 	}
 
 	private _selectItemByIndex(index: number) {
-		const selectedItem = this._parsedItems.find((item) => item.index === index);
-		this.value = selectedItem?.value;
+		const selectedItem = this._parsedSearchResults.find((item) => item.index === index) ?? null;
+		if (selectedItem) {
+			this._selectedItem = {
+				label: selectedItem.label,
+				value: selectedItem.value,
+				payload: { ...selectedItem.payload },
+			};
+		} else {
+			this._selectedItem = null;
+		}
 		this._updateActiveItem();
-		console.log("%c [overlay] _selectItemByIndex", "font-size: 24px; color: red;", selectedItem?.value);
-		const event = new CustomEvent("select", {
+		console.log("%c ⚡ [SEARCH OVERLAY] (_selectItemByIndex)", "font-size: 16px; color: crimson; background: black;", this._selectedItem);
+		// show active element after change
+		this._showActiveElement();
+	}
+	
+	/**
+	 * Communicate with combo box component using custom event
+	 * @param {PostMessageType} action - type of action for combo box to take as a result of this event
+	 * @param {PandaSearchItem} selectedItem - item to be selected
+	 */
+	private _triggerPostMessageEvent(
+		action: PostMessageType,
+		selectedItem: PandaSearchItem | null = null
+	): void {
+		console.log("%c ⚡ [SEARCH OVERLAY] (_triggerPostMessageEvent)", "font-size: 16px; color: crimson; background: black;", action, selectedItem);
+		const event: PostMessageEvent = new CustomEvent("post-message", {
 			detail: {
-				value: selectedItem?.value
+				action,
+				selectedItem,
 			}
 		});
 		this.dispatchEvent(event);
+	}
 
-		// show active element after change
-		this._showActiveElement();
+	/** Apply user defined custom style to this components shadowRoot */
+	private _applyCustomStyle(): void {
+		if (this.customStyle && this.shadowRoot) {
+			const customStyle = document.createElement("style");
+			customStyle.innerHTML = this.customStyle;
+			customStyle.setAttribute("scope", "custom-style");
+			this._overlayEl.appendChild(customStyle);
+		}
 	}
 	
 	// ================================================================================================================
@@ -351,26 +373,49 @@ export class PandaSearchOverlay extends LitElement {
 		e.preventDefault();
 	}
 
-	private _onChange(value: any): void {
-		console.log("%c [overlay] _onChange", "font-size: 24px; color: red;", value);
-		const event = new CustomEvent("change", {
-			detail: {
-				value
-			}
-		});
-		this.dispatchEvent(event);
-	}
-
-	private _onKeyDown(e: KeyboardEvent) {
-		console.log("%c [overlay] _onKeyDown", "font-size: 24px; color: blue;", e);
-		switch (e.key) {
+	private _onKeyDown(event: KeyboardEvent) {
+		console.log("%c ⚡ [SEARCH OVERLAY] (_onKeyDown)", "font-size: 16px; color: crimson; background: black;", event);
+		switch (event.key) {
+			case "Enter":
+			case "Tab":
+				event.stopPropagation();
+				this._onSelect(this._selectedItem);
+				break;
 			case "ArrowUp":
+				event.stopPropagation();
 				this._selectPreviousItem();
 				break;
 			case "ArrowDown":
+				event.stopPropagation();
 				this._selectNextItem();
 				break;
+			case "Escape":
+				event.stopPropagation();
+				this._onClose();
+				break;
+			}
+	}
+
+	private _onOverlayScroll() {
+		// update overlay position
+		this._showOverlayContent();
+	}
+
+	private _onSelect(searchItem: PandaSearchItem | null): void {
+		if (searchItem) {
+			console.log("%c ⚡ [SEARCH OVERLAY] (_onSelect) searchItem", "font-size: 16px; color: crimson; background: black;", searchItem);
+			this._triggerPostMessageEvent(
+				PostMessageType.SELECT,
+				searchItem,
+			);
+		} else {
+			console.log("%c ⚡ [SEARCH OVERLAY] (_onSelect) CLOSE", "font-size: 16px; color: crimson; background: black;", searchItem);
+			this._triggerPostMessageEvent(PostMessageType.CLOSE);
 		}
+	}
+	
+	private _onClose(): void {
+		this._triggerPostMessageEvent(PostMessageType.CLOSE);
 	}
 }
 

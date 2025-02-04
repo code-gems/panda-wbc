@@ -1,6 +1,6 @@
 // types
 import { ElementDetails, PostMessageEvent, PostMessageType, SuperComboBoxItem } from "panda-combo-box-types"
-import { PandaComboBoxItem, PandaComboBoxRenderer } from "../index";
+import { PandaComboBoxItem, PandaComboBoxRendererParams } from "../index";
 
 // style
 import { styles } from "./styles/overlay-styles";
@@ -49,7 +49,7 @@ export class PandaComboBoxOverlay extends LitElement {
 
 	filter!: (searchText: string | number, items: PandaComboBoxItem[] | any[]) => PandaComboBoxItem[] | any[];
 
-	renderer!: (params: PandaComboBoxRenderer) => TemplateResult | string | number;
+	renderer!: (params: PandaComboBoxRendererParams) => TemplateResult | string | number;
 
 	parentDetails!: ElementDetails;
 

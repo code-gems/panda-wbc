@@ -223,25 +223,39 @@ export const itemStyles = css`
 	::slotted([slot~="prefix-badge"]),
 	::slotted([slot~="suffix-badge"]) {
 		min-width: var(--panda-component-size-s);
-		padding: var(--panda-badge-padding, 2px 5px);
+		padding: var(--panda-button-group-badge-padding, 3px 5px);
 		
-		color: var(--panda-badge-text-color, hsl(0deg 0% 100%));
-		font-size: var(--panda-badge-font-size, var(--panda-font-size-s));
-		font-family: var(--panda-badge-font-family, var(--panda-font-family));
-		text-shadow: var(--panda-badge-text-shadow, 0px 1px 1px var(--panda-black-color));
+		color: var(--panda-button-group-badge-text-color, hsl(0deg 0% 100%));
+		font-size: var(--panda-button-group-badge-font-size, var(--panda-font-size-s));
+		font-family: var(--panda-button-group-badge-font-family, var(--panda-font-family));
+		text-shadow: var(--panda-button-group-badge-text-shadow, 0px 1px 1px hsl(0deg 0% 0%));
 		text-align: center;
 
-		border-radius: var(--panda-badge-border-radius, 12px);
-		background-color: var(--panda-badge-background-color, hsl(336deg 80% 49%));
+		border-radius: var(--panda-button-group-badge-border-radius, 12px);
+		background-color: var(--panda-button-group-badge-background-color, hsl(336deg 80% 49%));
 		box-sizing: border-box;
 	}
 
 	::slotted([slot~="prefix-badge"]) {
-		margin-left: var(--panda-padding-m);
+		margin-left: var(--panda-padding-m, 10px);
 	}
 
 	::slotted([slot~="suffix-badge"]) {
-		margin-right: var(--panda-padding-m);
+		margin-right: var(--panda-padding-m, 10px);
+	}
+
+	::slotted([slot~="prefix-badge"].selected),
+	::slotted([slot~="suffix-badge"].selected) {
+		color: var(--panda-button-group-badge-text-color-selected, hsl(0deg 0% 60%));
+		text-shadow: var(--panda-button-group-badge-text-shadow-selected, 0px 1px 1px hsl(0deg 0% 0%));
+		background-color: var(--panda-button-group-badge-background-color-selected, hsl(0deg 0% 92%));
+	}
+
+	::slotted([slot~="prefix-badge"].disabled),
+	::slotted([slot~="suffix-badge"].disabled) {
+		color: var(--panda-button-group-badge-text-color-disabled, hsl(0deg 0% 60%));
+		text-shadow: var(--panda-button-group-badge-text-shadow-disabled, "none");
+		background-color: var(--panda-button-group-badge-background-color-disabled, hsl(0deg 0% 92%));
 	}
 
 	/* THEMES ============================================================== */

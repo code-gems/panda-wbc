@@ -80,9 +80,15 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 		width: var(--panda-input-height, 30px);
-		height: var(--panda-input-height, 30px);
+		height: 100%;
+		outline: none;
 		
 		transition: all 200ms ease-in-out;
+		border-radius: var(--panda-border-radius-m, 5px);
+	}
+
+	.input-cont .icon:focus-visible {
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
 	}
 
 	.input-cont:not(.disabled) .icon { cursor: pointer; }
@@ -108,7 +114,7 @@ export const styles = css`
 
 	/* FOCUSED */
 	:host([focused]) .input-cont  {
-		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60%));
+		box-shadow: var(--panda-component-outline, 0px 0px 0px 2px hsl(216deg 88% 60% / 40%));
 	}
 
 	/* MANDATORY */

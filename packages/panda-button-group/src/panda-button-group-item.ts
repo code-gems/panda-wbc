@@ -93,10 +93,18 @@ export class PandaButtonGroupItem extends LitElement {
 		}
 
 		const modCss: string[] = [];
-		if (this._active) modCss.push("active");
-		if (!this.working && this.selected) modCss.push("selected");
-		if (this.disabled) modCss.push("disabled");
-		if (this.working) modCss.push("working");
+		if (this._active) {
+			modCss.push("active");
+		}
+		if (!this.working && this.selected) {
+			modCss.push("selected");
+		}
+		if (this.disabled) {
+			modCss.push("disabled");
+		}
+		if (this.working) {
+			modCss.push("working");
+		}
 
 		return html`
 			<div
