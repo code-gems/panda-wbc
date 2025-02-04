@@ -1,6 +1,6 @@
 // types
 import { PostMessageEvent, PostMessageType, SearchItem } from "panda-search-types";
-import { PandaSearchItem, PandaSearchRendererParams } from "../index";
+import { PandaSearchI18NConfig, PandaSearchItem, PandaSearchRendererParams } from "../index";
 
 // style
 import { styles } from "./styles/overlay-styles";
@@ -9,7 +9,7 @@ import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 // utils
 import { LitElement, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { minValue } from "./utils/utils";
+import { minValue } from "@panda-wbc/panda-utils";
 
 @customElement("panda-search-overlay")
 export class PandaSearchOverlay extends LitElement {
@@ -18,8 +18,14 @@ export class PandaSearchOverlay extends LitElement {
 		return [styles, scrollbar];
 	}
 
+	@property({ type: String })
+	searchText: string = "";
+
 	@property({ type: Array })
 	searchResults: PandaSearchItem[] | null | undefined = [];
+
+	@property({ type: Object })
+	i18n!: PandaSearchI18NConfig;
 
 	@property({ type: String })
 	customStyle!: string;
@@ -28,6 +34,12 @@ export class PandaSearchOverlay extends LitElement {
 
 	// callbacks
 	renderer!: (params: PandaSearchRendererParams) => TemplateResult | string | number;
+
+	headerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult;
+	
+	footerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult;
+	
+	noResultsRenderer!: (searchText: string) => TemplateResult;
 
 	// state props
 	private _initialized: boolean = false;
@@ -160,19 +172,36 @@ export class PandaSearchOverlay extends LitElement {
 		});
 
 		// check if there is any dropdown item to display
-		if (this._parsedSearchResults.length) {
-			return html`
-				<div class="dropdown" part="dropdown">
-					<div class="dropdown-wrap scrollbar" part="dropdown-wrap">
-						${itemsHtml}
-					</div>
+		if (!this._parsedSearchResults.length) {
+			// check if no results renderer was provided
+			const contentHtml = this.noResultsRenderer && typeof this.noResultsRenderer === "function"
+				? this.noResultsRenderer(this.searchText)
+				: this.i18n?.noResults ?? "No results found";
+
+			itemsHtml.push(html`
+				<div class="item inactive" part="item no-results">
+					${contentHtml}
 				</div>
-			`;
-		} else {
-			return html`
-				NO RESULTS
-			`;
+			`);
 		}
+
+		
+		const headerContentHtml = this.headerRenderer && typeof this.headerRenderer === "function"
+			? this.headerRenderer(this.searchText, this.searchResults)
+			: html``;
+		const footerContentHtml = this.footerRenderer && typeof this.footerRenderer === "function"
+			? this.headerRenderer(this.searchText, this.searchResults)
+			: html``;
+
+		return html`
+			<div class="dropdown" part="dropdown">
+				${headerContentHtml}
+				<div class="dropdown-wrap scrollbar" part="dropdown-wrap">
+					${itemsHtml}
+				</div>
+				${footerContentHtml}
+			</div>
+		`;
 	}
 
 	// ================================================================================================================
@@ -274,11 +303,6 @@ export class PandaSearchOverlay extends LitElement {
 	}
 
 	private _selectPreviousItem(): void {
-		console.log("%c _selectPreviousItem", "font-size: 24px; color: green;");
-		console.log("%c _initialized", "font-size: 24px; color: green;", this._initialized);
-		console.log("%c _selectedItem", "font-size: 24px; color: green;", this._selectedItem);
-		console.log("%c selectedItemIndex", "font-size: 24px; color: green;", this._selectedItemIndex);
-
 		if (!this._initialized) {
 			this._initialized = true;
 			return;
@@ -296,11 +320,6 @@ export class PandaSearchOverlay extends LitElement {
 	}
 
 	private _selectNextItem(): void {
-		console.log("%c _selectNextItem", "font-size: 24px; color: green;");
-		console.log("%c _initialized", "font-size: 24px; color: green;", this._initialized);
-		console.log("%c _selectedItem", "font-size: 24px; color: green;", this._selectedItem);
-		console.log("%c selectedItemIndex", "font-size: 24px; color: green;", this._selectedItemIndex);
-
 		if (!this._initialized) {
 			this._initialized = true;
 			return;

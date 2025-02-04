@@ -84,12 +84,12 @@ export const styles = css`
 		border-bottom: none;
 	}
 
-	.dropdown .item:hover {
+	.dropdown .item:not(.inactive):hover {
 		color: var(--panda-dropdown-item-text-color-hover, hsl(196deg 100% 47%));
 		background-color: var(--panda-dropdown-item-background-color-hover, hsl(0deg 0% 97%));
 	}
 
-	.dropdown .item.active {
+	.dropdown .item:not(.inactive).active {
 		color: var(--panda-dropdown-item-text-color-active, hsl(0deg 0% 100%));
 		background-color: var(--panda-dropdown-item-background-color-active, hsl(196deg 100% 47%));
 	}

@@ -1,11 +1,13 @@
 // type
 import {
+	PandaSearchI18NConfig,
 	PandaSearchIconPosition,
 	PandaSearchItem,
 	PandaSearchOnInputEvent,
 	PandaSearchOnSelectEvent,
 	PandaSearchRendererParams,
 } from "../index";
+import { ElementDetails, PostMessageEvent, PostMessageType } from "panda-search-types";
 import { PandaSearchOverlay } from "./panda-search-overlay";
 
 // style
@@ -20,8 +22,7 @@ import "./panda-search-overlay";
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { debounce } from "@panda-wbc/panda-utils";
-import { isEmpty, minValue } from "./utils/utils";
-import { ElementDetails, PostMessageEvent, PostMessageType } from "panda-search-types";
+import { isEmpty, minValue } from "@panda-wbc/panda-utils";
 
 @customElement("panda-search")
 export class PandaSearch extends LitElement {
@@ -74,6 +75,9 @@ export class PandaSearch extends LitElement {
 	@property({ type: String })
 	customStyle!: string;
 
+	@property({ type: Object })
+	i18n!: PandaSearchI18NConfig;
+
 	@property({ type: Boolean, reflect: true })
 	opened: boolean = false;
 
@@ -81,6 +85,12 @@ export class PandaSearch extends LitElement {
 	search!: (searchText: string) => Promise<PandaSearchItem[]>;
 
 	renderer!: (params: PandaSearchRendererParams) => TemplateResult | string | number;
+
+	headerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult;
+	
+	footerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult;
+	
+	noResultsRenderer!: (searchText: string) => TemplateResult;
 
 	// state props
 	@state()
@@ -217,7 +227,7 @@ export class PandaSearch extends LitElement {
 					autocomplete="off"
 					.spellcheck="${this.spellcheck}"
 					.placeholder="${this.placeholder ?? ""}"
-					.value="${this.value}"
+					.value="${this.value ?? ""}"
 					.disabled="${this.disabled}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
@@ -262,10 +272,15 @@ export class PandaSearch extends LitElement {
 			// add event listeners
 			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
 			// overlay props
+			this._overlayEl.searchText = this.value;
 			this._overlayEl.searchResults = this._searchResults;
 			this._overlayEl.customStyle = this.customStyle;
+			this._overlayEl.i18n = this.i18n;
 			this._overlayEl.parentDetails = this._getElementDetails();
 			this._overlayEl.renderer = this.renderer;
+			this._overlayEl.headerRenderer = this.headerRenderer;
+			this._overlayEl.footerRenderer = this.footerRenderer;
+			this._overlayEl.noResultsRenderer = this.noResultsRenderer;
 			// append element to document body
 			document.body.appendChild(this._overlayEl);
 			this.opened = true;

@@ -136,3 +136,11 @@ export const isEmpty = (value: any): boolean => {
 		value === null ||
 		value === undefined;
 }
+
+/**
+ * Utility function that enforces a minimum value constraint.
+ * @param {Number} value - input number to be checked
+ * @param {Number} min - minimum allowed value
+ * @returns number that is guaranteed to be at least as large as the specified minimum.
+ */
+export const minValue = (value: number, min: number): number => value < min ? min : value;

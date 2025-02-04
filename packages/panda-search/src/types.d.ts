@@ -1,5 +1,6 @@
 /** These types are for internal use only! */
 declare module "panda-search-types" {
+	import { PandaSearchItem } from "../index";
 	export const enum PostMessageType {
 		CLOSE = "CLOSE",
 		SELECT = "SELECT",

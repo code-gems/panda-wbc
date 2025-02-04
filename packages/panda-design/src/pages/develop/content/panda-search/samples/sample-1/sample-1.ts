@@ -25,7 +25,7 @@ class Sample extends SampleTemplate {
 	 * Internationalization - Custom messages / language
 	 */
 	private _i18n = {
-		noSearchResults: "没有结果。尝试更改您的搜索条件并重试",
+		noResults: "没有结果。尝试更改您的搜索条件并重试",
 	}
 
 	// ================================================================================================================
@@ -46,11 +46,19 @@ class Sample extends SampleTemplate {
 							@on-input-debounced="${this._onInputDebounced}"
 							@on-select="${this._onSelect}"
 							.search="${this._searchCallback.bind(this)}"
+							.headerRenderer="${this._renderSearchResultsHeader}"
+							.footerRenderer="${this._renderSearchResultsHeader}"
 						>
 						</panda-search>
 					</div>
 				</div>
 			</div>
+		`;
+	}
+
+	private _renderSearchResultsHeader(searchText: string, searchResults: PandaSearchItem[]): TemplateResult {
+		return html`
+			Found: ${searchResults?.length ?? 0} results for: "${searchText}"
 		`;
 	}
 
