@@ -10,8 +10,8 @@ export const styles = css`
 
 	.notifications-cont {
 		position: fixed;
-		right: 0%;
-		bottom: 0%;
+		display: flex;
+		flex-flow: column;
 		z-index: 9999;
 	}
 
@@ -20,54 +20,125 @@ export const styles = css`
 	}
 
 	.notifications {
-		position: absolute;
 		display: flex;
 		flex-flow: column;
-		gap: var(--panda-padding-m, 10px);
-		right: 0%;
-		bottom: 0%;
 		padding: var(--panda-padding-m, 10px);
+	}
+	
+	.common-actions {
+		display: none;
+		flex-flow: row nowrap;
+		justify-content: flex-end;
+		gap: var(--panda-padding-m, 10px);
+		width: fit-content;
+		padding: var(--panda-padding-m, 10px);
+		padding-bottom: 0px;
+	}
+
+	.common-actions.show {
+		display: flex;
+	}
+
+	/* NOTIFICATION POSITION */
+	.notification-cont.top-center {
+		transform: translateX(-50%);
+	}
+	.notification-cont.top-center,
+	.notification-cont.top-center .notifications {
+		align-items: center;
+		top: 0%;
+		left: 50%;
+	}
+
+	.notifications-cont.top-left,
+	.notifications-cont.top-left .notifications {
+		top: 0%;
+		left: 0%;
+	}
+
+	.notifications-cont.top-right,
+	.notifications-cont.top-right .notifications {
+		align-items: flex-end;
+		top: 0%;
+		right: 0%;
+	}
+
+	.notifications-cont.bottom-right,
+	.notifications-cont.bottom-right .notifications {
+		flex-flow: column-reverse;
+		align-items: flex-end;
+		bottom: 0%;
+		right: 0%;
+	}
+	
+	.notifications-cont.bottom-left,
+	.notifications-cont.bottom-left .notifications {
+		flex-flow: column-reverse;
+		bottom: 0%;
+		left: 0%;
+		padding-bottom: 0px;
+	}
+
+	.notification-cont.bottom-center {
+		transform: translateX(-50%);
+	}
+	.notification-cont.bottom-center,
+	.notification-cont.bottom-center .notifications {
+		flex-flow: column-reverse;
+		align-items: center;
+		bottom: 0%;
+		left: 50%;
+		padding-bottom: 0px;
+	}
+	
+	.notifications-cont.bottom-left .common-actions,
+	.notifications-cont.bottom-right .common-actions {
+		padding-top: 0px;
+		padding-bottom: var(--dragon-padding-m, 8px);
+	}
+
+	.notifications-cont.top-left .common-actions,
+	.notifications-cont.bottom-right .common-actions {
+		justify-content: start;
 	}
 `;
 
 export const notificationStyles = css`
 	:host {
 		display: block;
-		min-width: 20vw;
+		min-width: 20dvw;
 		user-select: none;
 	}
 
 	.notification-cont {
-		display: grid;
-		grid-template-rows: 1fr;
-		opacity: 1;
-		transition: all 1s ease;
-	}
-
-	.notification-cont.closing {
-		grid-template-rows: 0fr;
-		opacity: 0;
+		transition: all 400ms ease;
 	}
 
 	.notification-wrap {
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 	
 	.notification {
 		position: relative;
 		display: flex;
 		flex-flow: column;
-		padding: var(--panda-padding-l, 15px);
+		padding: var(--panda-padding-m, 10px);
+		margin-bottom: var(--panda-padding-m, 10px);
+		overflow: hidden;
 
-		animation: show;
+		animation-name: show;
 		animation-duration: 400ms;
-		animation-fill-mode: forwards;
-		transition: all 400ms ease-in-out;
+		animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
 		border-radius: var(--panda-border-radius-m, 5px);
 		border: 1px solid var(--panda-notification-border-color, hsl(210deg 25% 35%));
 		background-color: var(--panda-notification-background-color, hsl(209deg 26% 20%));
 		box-shadow: 0px 1px 2px var(--panda-black-color-20opc, hsl(0deg 0% 0% / 20%));
+	}
+
+	.notification-cont.closing .notification {
+		animation-name: hide;
+		animation-fill-mode: forwards;
 	}
 
 	.notification.no-icon {
@@ -227,11 +298,34 @@ export const notificationStyles = css`
 	@keyframes show {
 		from {
 			opacity: 0;
-			margin-top: 10px;
+			right: -50px;
 		}
 		to {
 			opacity: 1;
-			margin-top: 0px;
+			right: 0px;
 		}
+	}
+
+	@keyframes hide {
+		from {
+			opacity: 1;
+			right: 0px;
+		}
+		to {
+			opacity: 0;
+			right: -50px;
+		}
+	}
+
+	@media all and (max-width: 1280px) {
+		:host { width: 30dvw; }
+	}
+
+	@media all and (max-width: 1024px) {
+		:host { width: 50dvw; }
+	}
+
+	@media all and (max-width: 768px) {
+		:host { width: 100dvw; }
 	}
 `;

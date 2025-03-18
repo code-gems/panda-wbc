@@ -1,5 +1,5 @@
 // types
-import { PandaNotification } from "../index";
+import { PandaNotification, PandaNotificationsI18nConfig, PandaNotificationsPosition } from "../index";
 
 // styles
 import { styles } from "./styles/styles";
@@ -13,9 +13,12 @@ import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { pandaNotificationCenter } from "./panda-notification-center";
 
-const DEFAULT_MAX_NOTIFICATIONS: number = 100;
-const DEFAULT_NOTIFICATION_DELAY_TIME: number = 400; // [ms]
-const DEFAULT_AUTO_CLOSE_INTERVAL: number = 3000; // [ms]
+// constants
+import {
+	DEFAULT_AUTO_CLOSE_INTERVAL,
+	DEFAULT_MAX_NOTIFICATIONS,
+	DEFAULT_NOTIFICATION_DELAY_TIME,
+} from "./constants";
 
 @customElement("panda-notifications")
 export class PandaNotifications extends LitElement {
@@ -23,36 +26,51 @@ export class PandaNotifications extends LitElement {
 		return styles;
 	}
 
-	@property({ type: String, attribute: true })
+	@property({ type: String })
 	scope: string[] = [];
 
-	@property({ type: Number, attribute: "max-notifications" })
-	maxNotifications: number | null = null;
+	@property({ type: String, reflect: true })
+	position!: PandaNotificationsPosition;
 
-	@property({ type: Number, attribute: "notification-delay" })
-	notificationDelay: number = DEFAULT_NOTIFICATION_DELAY_TIME;
+	@property({ type: Number, attribute: "max-notifications", reflect: true })
+	maxNotifications!: number;
 
-	@property({ type: Boolean, attribute: "local-container" })
+	@property({ type: Number, attribute: "notification-delay", reflect: true })
+	notificationDelay!: number;
+
+	@property({ type: Boolean, attribute: "local-container", reflect: true })
 	localContainer: boolean = false;
 
-	@property({ type: Boolean, attribute: "auto-close" })
+	@property({ type: Boolean, attribute: "auto-close", reflect: true })
 	autoClose: boolean = false;
-	
-	@property({ type: Number, attribute: "auto-close-interval" })
-	autoCloseInterval: number = DEFAULT_AUTO_CLOSE_INTERVAL;
+
+	@property({ type: Number, attribute: "auto-close-interval", reflect: true })
+	autoCloseInterval!: number;
+
+	@property({ type: Boolean, attribute: "show-dismiss-all-button", reflect: true })
+	showDismissAllButton!: boolean;
+
+	@property({ type: Object })
+	i18n!: PandaNotificationsI18nConfig;
+
+	@property({ type: String })
+	customStyle!: string;
 
 	// state props
 	@state()
 	private _subscriptionId!: string;
 
 	@state()
-	private _scheduleTimer!: number | null;
+	private _scheduleTimer!: ReturnType<typeof setTimeout> | null;
 
 	@state()
 	private _notificationQueue: PandaNotification[] = [];
-	
+
 	@state()
 	private _activeNotifications: PandaNotification[] = [];
+
+	@state()
+	private _hasCommonActions = false;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -84,7 +102,7 @@ export class PandaNotifications extends LitElement {
 		// case 1: notification is scoped but notification board has no scope defined
 		// case 2: notification has no scope but notification board has scope
 		if (
-			notification?.scope?.length && !this.scope?.length || 
+			notification?.scope?.length && !this.scope?.length ||
 			!notification?.scope?.length && this.scope?.length
 		) {
 			return;
@@ -102,11 +120,11 @@ export class PandaNotifications extends LitElement {
 				return;
 			}
 		}
-		
+
 		// check if notification id exists on both lists
 		const isQueued = this._notificationQueue.find((note) => note.id === notification.id);
 		const isActive = this._activeNotifications.find((note) => note.id === notification.id);
-		
+
 		// check if notification is active/shown
 		if (isActive) {
 			// update active/shown notifications
@@ -137,7 +155,7 @@ export class PandaNotifications extends LitElement {
 					return allNotes;
 				}, [] as PandaNotification[]
 			);
-			
+
 		} else {
 			// add notification to the queue
 			this._notificationQueue.push(notification);
@@ -158,9 +176,30 @@ export class PandaNotifications extends LitElement {
 	// ================================================================================================================
 
 	render(): TemplateResult {
+		let commonActionsHtml: TemplateResult = html``;
+		let position = this.position ?? PandaNotificationsPosition.TOP_RIGHT;
+		let showCommonActions = (this.showDismissAllButton || this._hasCommonActions) && this._activeNotifications.length;
+
+		// check if dismiss all button is enabled
+		if (this.showDismissAllButton && this._activeNotifications.length) {
+			commonActionsHtml = html`
+				<panda-button
+					part="btn dismiss-all"
+					@click="${this._onDismissAll}"
+				>
+					${this.i18n?.dismissAll ?? "Dismiss All"}
+				</panda-button>
+			`;
+		}
+
 		return html`
 			<slot></slot>
-			<div class="notifications-cont ${this.localContainer ? "local": ""}">
+			<div class="notifications-cont ${position} ${this.localContainer ? "local" : ""}">
+				<div class="common-actions ${showCommonActions ? "show" : ""}">
+					<slot name="prefix" @slotchange="${this._commonActionsSlotChange}"></slot>
+					${commonActionsHtml}
+					<slot name="suffix" @slotchange="${this._commonActionsSlotChange}"></slot>
+				</div>
 				<div class="notifications">
 					${this._renderNotifications()}
 				</div>
@@ -176,6 +215,7 @@ export class PandaNotifications extends LitElement {
 				const {
 					id,
 					theme,
+					icon,
 					hideIcon = false,
 					header = null,
 					headerPrefix = null,
@@ -183,6 +223,7 @@ export class PandaNotifications extends LitElement {
 					footer = null,
 					autoClose = false,
 					autoCloseInterval = DEFAULT_AUTO_CLOSE_INTERVAL,
+					customStyle,
 				} = notification;
 				// generate header slot
 				let headerPrefixHtml: TemplateResult = html``;
@@ -203,9 +244,11 @@ export class PandaNotifications extends LitElement {
 				return html`
 					<panda-notification
 						.theme="${theme}"
+						.icon="${icon}"
 						.hideIcon="${hideIcon}"
 						.autoClose="${autoClose}"
-						.autoCloseInterval="${autoCloseInterval}"
+						.autoCloseInterval="${this.autoCloseInterval ?? autoCloseInterval}"
+						.customStyle="${customStyle ?? this.customStyle}"
 						@on-close="${() => this._onCloseNotification(id as string)}"
 						closable
 					>
@@ -249,12 +292,20 @@ export class PandaNotifications extends LitElement {
 	}
 
 	// ================================================================================================================
-	// HELPERS ========================================================================================================
+	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _commonActionsSlotChange(): void {
+		this._hasCommonActions = true;
+	}
 
 	private _onCloseNotification(notificationId: string): void {
 		// remove notification from the queue
 		this._activeNotifications = this._activeNotifications.filter((notification) => notification.id !== notificationId);
+	}
+
+	private _onDismissAll(): void {
+		this._activeNotifications = [];
 	}
 }
 

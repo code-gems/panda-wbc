@@ -8,8 +8,9 @@ import { notificationStyles } from "./styles/styles";
 import "@panda-wbc/panda-icon";
 
 // utils
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, queryAssignedElements, state } from "lit/decorators.js";
+import { DEFAULT_AUTO_CLOSE_INTERVAL } from "./constants";
 
 @customElement("panda-notification")
 export class PandaNotification extends LitElement {
@@ -18,32 +19,35 @@ export class PandaNotification extends LitElement {
 		return notificationStyles;
 	}
 
-	@property({ type: String, attribute: true, reflect: true })
-	theme: string = "";
+	@property({ type: String, reflect: true })
+	theme!: string;
 
-	@property({ type: String })
-	icon: string = "";
+	@property({ type: String, reflect: true })
+	icon!: string;
 
-	@property({ type: Boolean, attribute: "hide-icon" })
+	@property({ type: Boolean, attribute: "hide-icon", reflect: true })
 	hideIcon: boolean = false;
 
 	@property({ type: Boolean, reflect: true })
 	closable: boolean = false;
 
-	@property({ type: Boolean, attribute: "auto-close" })
+	@property({ type: Boolean, attribute: "auto-close", reflect: true })
 	autoClose: boolean = false;
 	
-	@property({ type: Number, attribute: "auto-close-interval" })
-	autoCloseInterval: number = 3000;
+	@property({ type: Number, attribute: "auto-close-interval", reflect: true })
+	autoCloseInterval!: number;
+
+	@property({ type: String })
+	customStyle!: string;
 	
 	@queryAssignedElements({ slot: "header", flatten: false })
-	private _headerNodes!: HTMLElement[];
+	private readonly _headerNodes!: HTMLElement[];
 
 	@state()
 	private _hasHeader: boolean = false;
 
 	@queryAssignedElements({ slot: "footer", flatten: false })
-	private _footerNodes!: HTMLElement[];
+	private readonly _footerNodes!: HTMLElement[];
 
 	@state()
 	private _hasFooter: boolean = false;
@@ -65,7 +69,7 @@ export class PandaNotification extends LitElement {
 	protected firstUpdated(): void {
 		if (this.autoClose) {
 			// validate autoCloseInterval to be at least 1 second
-			let autoCloseInterval = this.autoCloseInterval <= 1000
+			let autoCloseInterval = (this.autoCloseInterval ?? DEFAULT_AUTO_CLOSE_INTERVAL) <= 1000
 				? 1400
 				: Number(this.autoCloseInterval) + 400; // add 400ms for the show animation
 			// check if provided autoCloseInterval is a number
@@ -82,6 +86,13 @@ export class PandaNotification extends LitElement {
 		console.log("%c [PANDA NOTIFICATION] firstUpdated()", "font-size: 16px; color: red;", this.getBoundingClientRect());
 		const notificationDOMRect = this.getBoundingClientRect();
 		this._containerHeight = notificationDOMRect.height - 10;
+	}
+
+	updated(_changedProps: PropertyValues): void {
+		// check if custom style is defined
+		if (_changedProps.has("customStyle") && this.customStyle !== undefined) {
+			this._applyCustomStyle();
+		}
 	}
 
 	disconnectedCallback(): void {
@@ -190,6 +201,20 @@ export class PandaNotification extends LitElement {
 	}
 	
 	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+	
+	/** Apply user defined custom style to overlay container */
+	private _applyCustomStyle(): void {
+		if (this.customStyle) {
+			const customStyle = document.createElement("style");
+			customStyle.innerHTML = this.customStyle;
+			customStyle.setAttribute("scope", "custom-style");
+			this.appendChild(customStyle);
+		}
+	}
+
+	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
@@ -203,7 +228,7 @@ export class PandaNotification extends LitElement {
 		this._closing = true;
 		this._closeAnimationTimer = setTimeout(() => {
 			this._triggerCloseEvent();
-		}, 1000);
+		}, 400);
 	}
 
 	private _onHeaderSlotChange(): void {

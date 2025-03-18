@@ -145,8 +145,9 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-full">
 									<panda-notifications
-										
+										.scope="${["local"]}"
 										local-container
+										show-dismiss-all-button
 									>
 									</panda-notifications>
 								</div>
@@ -285,34 +286,35 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 
 	private _onAddNotification() {
 		pandaNotificationCenter.addNotification({
+			scope: ["local"],
 			body: html`Notification #1`,
-			autoClose: true,
+			// autoClose: true,
 		});
 
-		const noteId1 = pandaNotificationCenter.addNotification({
-			theme: "warn",
-			header: html`WARNING`,
-			body: html`
-				In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate 
-				the visual form of a document or a typeface without relying on meaningful content. 
-				Lorem ipsum may be used as a placeholder before final copy is available.
-			`,
-			footer: html`
-				<panda-button
-					@click="${() => this._onCloseNotification(noteId1)}"
-				>
-					Close
-				</panda-button>
-			`,
-			autoClose: true,
-			autoCloseInterval: 10000,
-		});
+		// const noteId1 = pandaNotificationCenter.addNotification({
+		// 	theme: "warn",
+		// 	header: html`WARNING`,
+		// 	body: html`
+		// 		In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate 
+		// 		the visual form of a document or a typeface without relying on meaningful content. 
+		// 		Lorem ipsum may be used as a placeholder before final copy is available.
+		// 	`,
+		// 	footer: html`
+		// 		<panda-button
+		// 			@click="${() => this._onCloseNotification(noteId1)}"
+		// 		>
+		// 			Close
+		// 		</panda-button>
+		// 	`,
+		// 	autoClose: true,
+		// 	autoCloseInterval: 10000,
+		// });
 
-		pandaNotificationCenter.addNotification({
-			theme: "alert",
-			body: html`Notification #2`,
-			autoClose: true,
-		});
+		// pandaNotificationCenter.addNotification({
+		// 	theme: "alert",
+		// 	body: html`Notification #2`,
+		// 	autoClose: true,
+		// });
 
 		// const noteId2 = pandaNotificationCenter.addNotification({
 		// 	theme: "done",
