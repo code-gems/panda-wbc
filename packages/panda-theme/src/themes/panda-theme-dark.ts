@@ -502,11 +502,13 @@ export const pandaThemeDark = css`
 		/* ========================================================================================================= */
 		/* PANDA PROGRESS BAR ====================================================================================== */
 		/* ========================================================================================================= */
-
+		
 		--panda-progress-bar-size: 10px;
-		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
+		--panda-progress-bar-border-width: 1px;
+		--panda-progress-bar-border-style: solid;
 		--panda-progress-bar-border-color: var(--panda-border-color);
-		--panda-progress-bar-background-color: var(--panda-background-color-500);
+		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
+		--panda-progress-bar-background-color: hsl(274deg 30% 10%);
 
 		/* ========================================================================================================= */
 		/* PANDA COUNTDOWN TIMER =================================================================================== */

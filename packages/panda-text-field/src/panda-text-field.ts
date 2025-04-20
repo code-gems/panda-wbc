@@ -26,8 +26,8 @@ export class PandaTextField extends LitElement {
 	@property({ type: String })
 	value!: string | null;
 
-	@property({ type: String })
-	label: string | null = null;
+	@property({ type: String, reflect: true })
+	label!: string;
 
 	@property({ type: String })
 	placeholder: string | null = null;
@@ -53,8 +53,8 @@ export class PandaTextField extends LitElement {
 	@property({ type: Boolean })
 	mandatory: boolean = false;
 
-	@property({ type: String, attribute: "spinner-type" })
-	spinnerType: string = "dots";
+	@property({ type: String, attribute: "spinner-type", reflect: true })
+	spinnerType!: string;
 
 	// view props
 	@property({ type: Boolean, reflect: true })
@@ -62,7 +62,7 @@ export class PandaTextField extends LitElement {
 
 	// elements
 	@query("#input")
-	private _inputEl!: HTMLInputElement;
+	private readonly _inputEl!: HTMLInputElement;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -88,7 +88,7 @@ export class PandaTextField extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	protected render(): TemplateResult {
 		const modCss: string[] = [];
 		let labelHtml: TemplateResult = html``;
 		let spinnerHtml: TemplateResult = html``;
@@ -108,7 +108,7 @@ export class PandaTextField extends LitElement {
 				<div class="spinner-cont" part="spinner-cont">
 					<panda-spinner
 						part="spinner"
-						spinner="${this.spinnerType}"
+						spinner="${this.spinnerType ?? "dots"}"
 					>
 					</panda-spinner>
 				</div>

@@ -1,10 +1,10 @@
 // types
-import { PandaNotification, PandaSubscription } from "../index";
+import { PandaNotification, PandaNotificationsSubscription } from "../index";
 
 // utils
 import { generateUuid } from "@panda-wbc/panda-utils";
 
-const subscriptionList: Map<string, PandaSubscription> = new Map();
+const subscriptionList: Map<string, PandaNotificationsSubscription> = new Map();
 
 export class PandaNotificationCenter {
 	static instance: any;
@@ -20,7 +20,7 @@ export class PandaNotificationCenter {
 	// API ============================================================================================================
 	// ================================================================================================================
 
-	public subscribe(subscription: PandaSubscription): string {
+	public subscribe(subscription: PandaNotificationsSubscription): string {
 		const subscriptionId = generateUuid();
 		subscriptionList.set(
 			subscriptionId,
@@ -36,7 +36,7 @@ export class PandaNotificationCenter {
 		subscriptionList.delete(subscriptionId);
 	}
 
-	public addNotification(notification: PandaNotification): string {
+	public createNotification(notification: PandaNotification): string {
 		// generate notification id if not provided
 		const notificationId = notification.id ?? generateUuid();
 		// notify subscribers

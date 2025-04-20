@@ -40,7 +40,7 @@ export class PandaTooltip extends LitElement {
 	private _contextEl!: Element;
 
 	// HTML Elements
-	private _templateEl: Element = document.createElement("div");
+	private readonly _templateEl: Element = document.createElement("div");
 	private _overlayEl: PandaTooltipOverlay | null = null;
 
 	// events
@@ -119,6 +119,9 @@ export class PandaTooltip extends LitElement {
 			} else {
 				console.warn("%c [PANDA TOOLTIP] Context element not found for:", "font-size: 16px;", this.for);
 			}
+		} else {
+			// if no id is provided, use the parent element as context
+			this._contextEl = this.parentNode as Element;
 		}
 	}
 

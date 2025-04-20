@@ -1,0 +1,37 @@
+{
+	"name": "@panda-wbc/panda-badge",
+	"version": "0.0.1",
+	"description": "Native web component - badge",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-badge.js",
+	"scripts": {
+		"compile": "tsc",
+		"share": "pnpm publish",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"panda-wbc",
+		"custom element",
+		"web component",
+		"ui component",
+		"ui",
+		"badge"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {
+		"rimraf": "^6.0.0",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib"
+	],
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -24,7 +24,7 @@ export interface PandaNotification {
 	customStyle?: string;
 }
 
-export interface PandaSubscription {
+export interface PandaNotificationsSubscription {
 	onNotify: (notification: PandaNotification) => void;
 	onClose: (notificationId: string) => void;
 	scope?: string[];

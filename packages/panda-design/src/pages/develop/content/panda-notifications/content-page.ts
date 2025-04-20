@@ -285,7 +285,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onAddNotification() {
-		pandaNotificationCenter.addNotification({
+		pandaNotificationCenter.createNotification({
 			scope: ["local"],
 			body: html`Notification #1`,
 			// autoClose: true,
@@ -368,7 +368,7 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 	}
 
 	private _onUpdateNotification() {
-		pandaNotificationCenter.addNotification({
+		pandaNotificationCenter.createNotification({
 			id: "1234",
 			scope: ["local"],
 			hideIcon: true,

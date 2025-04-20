@@ -437,33 +437,15 @@ export const uiComponents = {
 		}
 	`,
 
-	// sample: css`
-	// 	.sample-cont {
-	// 		display: flex;
-	// 		flex-flow: row;
-	// 		justify-content: center;
-	// 		align-items: center;
-	// 		padding: 40px;
-	// 	}
-
-	// 	.sample-cont .sample {
-	// 		display: flex;
-	// 		justify-content: center;
-	// 		width: 100%;
-	// 		padding: 40px;
-
-	// 		border-radius: 10px;
-	// 		border: 1px solid var(--panda-background-color-900);
-	// 		background: radial-gradient(
-	// 			circle at 1px 1px,
-	// 			var(--panda-border-color) 1px,
-	// 			transparent 0px
-	// 		)
-	// 		0px 0px / 16px 16px;
-	// 	}
-	// `,
-
 	sample: css`
+		.sample-cont {
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			align-items: center;
+			padding: 40px;
+		}
+		
 		.sample {
 			display: flex;
 			flex-flow: column;
@@ -482,18 +464,6 @@ export const uiComponents = {
 			display: flex;
 			flex-flow: row nowrap;
 			height: var(--panda-component-size-m);
-		}
-
-		.sample .tabs .tab {
-
-		}
-
-		.sample .content {
-
-		}
-
-		.sample .content .tab-cont {
-
 		}
 	`,
 
@@ -571,13 +541,17 @@ export const uiComponents = {
 		.rows {
 			display: flex;
 			flex-flow: column;
-			/* gap: var(--panda-padding-m);	*/
+			gap: var(--panda-padding-m);
 		}
 
 		.row {
 			display: grid;
 			grid-template-columns: repeat(12, minmax(0, 1fr));
 			column-gap: var(--panda-padding-m);
+		}
+
+		.row.underline {
+			border-bottom: 1px dashed var(--panda-border-color);
 		}
 
 		[class*=" col-"],

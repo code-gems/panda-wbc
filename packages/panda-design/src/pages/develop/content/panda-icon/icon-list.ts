@@ -118,6 +118,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "close", 					iconPack: "default", group: ["Miscellaneous"], keywords: ["delete", "remove"] },
 		{ name: "menu",						iconPack: "default", group: ["Miscellaneous"], keywords: ["hamburger", "options"] },
 		{ name: "menu-add",					iconPack: "default", group: ["Miscellaneous"], keywords: ["hamburger", "options", "playlist", "add", "menu"] },
+		{ name: "details",					iconPack: "default", group: ["Miscellaneous"], keywords: ["details", "more"] },
+		{ name: "details-less",				iconPack: "default", group: ["Miscellaneous"], keywords: ["details", "less"] },
 		{ name: "exclamation",				iconPack: "default", group: ["Miscellaneous"], keywords: ["important", "priority"] },
 		{ name: "unlink",					iconPack: "default", group: ["Miscellaneous"], keywords: ["link", "anchor"] },
 		{ name: "pin",						iconPack: "default", group: ["Miscellaneous"], keywords: ["push-pin", "on top"] },
@@ -129,12 +131,15 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "sync",						iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange"] },
 		{ name: "sync-error",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "problem", "warning"] },
 		{ name: "sync-disabled",			iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "off"] },
-		{ name: "ai",						iconPack: "default", group: ["Miscellaneous"], keywords: ["artificial", "intelligence", "stars", "magic"] },
 		{ name: "trend-up",					iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
 		{ name: "trend-down",				iconPack: "default", group: ["Miscellaneous"], keywords: ["exchange", "trading", "trend"] },
 		{ name: "visibility",				iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show"] },
 		{ name: "visibility-off",			iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show", "hide"] },
 		{ name: "lab",						iconPack: "default", group: ["Miscellaneous"], keywords: ["flask", "sample", "experiment", "bottle"] },
+		{ name: "qrcode",					iconPack: "default", group: ["Miscellaneous"], keywords: ["qr code", "payment", "code"] },
+		{ name: "code-sample",				iconPack: "default", group: ["Miscellaneous"], keywords: ["code", "slash", "coding"] },
+		{ name: "code-slash",				iconPack: "default", group: ["Miscellaneous"], keywords: ["code", "slash", "coding"] },
+		{ name: "browser",					iconPack: "default", group: ["Miscellaneous"], keywords: ["browser", "app"] },
 
 		// Food Icon Pack =======================================
 		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },
@@ -149,9 +154,25 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "mic-off-outline",			iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["mic", "outline", "audio", "voice", "speech", "sound", "record", "off", "disabled", "mute"] },
 		{ name: "voice",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "record"] },
 		{ name: "voice-mute",				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "record", "off", "disabled", "mute"] },
-
+		{ name: "voice-mail",				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs"] },
+		{ name: "voice-mail-box",			iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs", "box"] },
+		{ name: "voice-mail-circle",		iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs", "circle", "round"] },
+		{ name: "microbit",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["device", "microbit"] },
+		
 		// Map Icon Pack ========================================
-
+		{ name: "briefcase",				iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "briefcase", "work", "workplace", "job"] },
+		{ name: "briefcase-outline",		iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "briefcase", "work", "workplace", "job", "outline"] },
+		{ name: "terrain",					iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "terrain", "mountain"] },
+		
 		// Mobile Icon Pack =====================================
+
+		// AI Icon Pack =========================================
+		{ name: "bot",						iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "robot", "agent", "bot", "automation"] },
+		{ name: "robot",					iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "robot", "agent", "bot", "automation"] },
+		{ name: "robot-outline",			iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "robot", "agent", "bot", "automation", "outline"] },
+		{ name: "spark", 					iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "sparks", "stars", "magic"] },
+		{ name: "sparks", 					iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "sparks", "stars", "magic"] },
+		{ name: "sparks-more", 				iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "sparks", "stars", "magic", "more"] },
+		
 	];
 }

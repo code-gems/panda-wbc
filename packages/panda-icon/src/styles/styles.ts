@@ -18,4 +18,8 @@ export const styles = css`
 	svg {
 		fill: var(--panda-icon-color, hsl(210deg 5% 30%));
 	}
+
+	.color-alt {
+		fill: var(--panda-icon-color-alt, hsl(210deg 5% 30% / 50%));
+	}
 `;

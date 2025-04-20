@@ -38,6 +38,7 @@ class CodeSample extends LitElement {
 
 	protected render(): TemplateResult {
 		const expanded = this.expanded ? "expanded" : "";
+		const label = this.expanded ? "Collapse" : "Expand";
 
 		return html`
 			<div class="code-sample">
@@ -52,7 +53,7 @@ class CodeSample extends LitElement {
 						class="btn"
 						@click="${this._onToggleExpand}"
 					>
-						Expand
+						${label}
 					</div>
 				</div>
 			</div>

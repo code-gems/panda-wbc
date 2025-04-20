@@ -7,6 +7,7 @@ import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 // components
 import "@panda-wbc/panda-click-to-copy";
 import "@panda-wbc/panda-icon";
+import "@panda-wbc/panda-button";
 import "@panda-wbc/panda-icon/lib/av-icon-pack";
 import "@panda-wbc/panda-icon/lib/food-icon-pack";
 import "@panda-wbc/panda-icon/lib/map-icon-pack";
@@ -61,6 +62,7 @@ export class IconDetailsDialog extends LitElement {
 	// ================================================================================================================
 
 	render(): TemplateResult {
+		const icon = this._selectedIconDetails?.name;
 		return html`
 			<div class="dialog">
 				<div class="header">
@@ -74,7 +76,38 @@ export class IconDetailsDialog extends LitElement {
 				</div>
 				<div class="body scrollbar">
 					<div class="body-wrap">
-						${this._renderIconDetails()}
+						<div class="layout">
+							<div class="body">
+								<div class="icon">
+									<panda-icon icon="${icon}"></panda-icon>
+								</div>
+								<div class="details">
+									<panda-button
+										theme="primary flat"
+									>
+										<panda-icon
+											slot="prefix"
+											class="prefix-icon"
+											icon="${icon}"
+										></panda-icon>
+										My Button
+									</panda-button>
+									<panda-button
+										theme="secondary flat"
+									>
+										<panda-icon
+											slot="prefix"
+											class="prefix-icon"
+											icon="${icon}"
+										></panda-icon>
+										My Button
+									</panda-button>
+								</div>
+							</div>
+							<div class="footer">
+								${this._renderTags()}
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="footer">
@@ -84,25 +117,6 @@ export class IconDetailsDialog extends LitElement {
 					>
 						CLOSE
 					</panda-button>
-				</div>
-			</div>
-		`;
-	}
-
-	private _renderIconDetails(): TemplateResult {
-		const icon = this._selectedIconDetails?.name;
-		return html`
-			<div class="layout">
-				<div class="body">
-					<div class="icon">
-						<panda-icon icon="${icon}"></panda-icon>
-					</div>
-					<div class="details">
-
-					</div>
-				</div>
-				<div class="footer">
-					${this._renderTags()}
 				</div>
 			</div>
 		`;

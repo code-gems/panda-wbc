@@ -126,11 +126,20 @@ export class PandaNotification extends LitElement {
 		}
 
 		return html`
-			<div class="notification-cont ${this._closing ? "closing" : ""}" part="notification-cont">
-				<div class="notification-wrap" part="notification-wrap">
+			<div
+				class="notification-cont ${this._closing ? "closing" : ""}"
+				part="notification-cont  ${cssMods.join(" ")} ${this._closing ? "closing" : ""}"
+			>
+				<div class="notification-wrap" part="notification-wrap ${cssMods.join(" ")}">
 
-					<div class="notification ${cssMods.join(" ")}" part="notification">
-						<div class="body" part="body">
+					<div
+						class="notification ${cssMods.join(" ")}"
+						part="notification ${cssMods.join(" ")}"
+					>
+						<div
+							class="body"
+							part="body ${cssMods.join(" ")}"
+						>
 							<!-- icon -->
 							${this._renderIcon()}
 

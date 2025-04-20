@@ -52,8 +52,8 @@ export class PandaSlider extends LitElement {
 
 		return html`
 			${labelHtml}
-			<div class="progress-bar-cont" part="progress-bar-cont">
-				<div class="progress-bar" part="progress-bar"></div>
+			<div class="slider-cont" part="slider-cont">
+				<div class="slider" part="slider"></div>
 			</div>
 		`;
 	}

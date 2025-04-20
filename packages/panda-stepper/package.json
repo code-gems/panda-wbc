@@ -1,0 +1,48 @@
+{
+	"name": "@panda-wbc/panda-stepper",
+	"version": "1.0.0",
+	"description": "Lit based web component - stepper",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-stepper.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"ui component",
+		"stepper",
+		"steps",
+		"progress",
+		"actions",
+		"navigation"
+	],
+	"author": "code-gems",
+	"license": "MIT",
+	"dependencies": {
+		"@panda-wbc/panda-icon": "workspace:*",
+		"@panda-wbc/panda-spinner": "workspace:*",
+		"@panda-wbc/panda-tooltip": "workspace:*",
+		"@panda-wbc/panda-utils": "workspace:*",
+		"@panda-wbc/panda-progress-bar": "workspace:*",
+		"lit": "^3.0.2"
+	},
+	"devDependencies": {
+		"rimraf": "^6.0.0",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

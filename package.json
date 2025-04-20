@@ -14,7 +14,8 @@
 		"version": "pnpm version",
 		"demo": "demo-cli skog",
 		"compile": "pnpm recursive run compile",
-		"clean": "pnpm recursive run clean"
+		"clean": "pnpm recursive run clean",
+		"test:button": "pnpm --filter \"@panda-wbc/panda-button\" test"
 	},
 	"devDependencies": {
 		"pnpm": "^8.5.1",

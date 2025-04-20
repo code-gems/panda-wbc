@@ -10,6 +10,7 @@ import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-icon/lib/food-icon-pack";
 import "@panda-wbc/panda-icon/lib/av-icon-pack";
 import "@panda-wbc/panda-icon/lib/map-icon-pack";
+import "@panda-wbc/panda-icon/lib/ai-icon-pack";
 import "@panda-wbc/panda-text-field";
 import "@panda-wbc/panda-dialog";
 import "./components/icon-details-dialog/icon-details-dialog";

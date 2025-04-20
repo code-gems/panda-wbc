@@ -17,16 +17,16 @@ export const pandaThemeLight = css`
 		--panda-background-color-700: hsl(0deg 0% 89%);
 		--panda-background-color-900: hsl(0deg 0% 86%);
 
-		--panda-background-color-0opc: hsl(0deg 0% 94% / 0%);
-		--panda-background-color-10opc: hsl(0deg 0% 94% / 10%);
-		--panda-background-color-20opc: hsl(0deg 0% 94% / 20%);
-		--panda-background-color-30opc: hsl(0deg 0% 94% / 30%);
-		--panda-background-color-40opc: hsl(0deg 0% 94% / 40%);
-		--panda-background-color-50opc: hsl(0deg 0% 94% / 50%);
-		--panda-background-color-60opc: hsl(0deg 0% 94% / 60%);
-		--panda-background-color-70opc: hsl(0deg 0% 94% / 70%);
-		--panda-background-color-80opc: hsl(0deg 0% 94% / 80%);
-		--panda-background-color-90opc: hsl(0deg 0% 94% / 90%);
+		--panda-background-color-0opc: hsl(0deg 0% 92% / 0%);
+		--panda-background-color-10opc: hsl(0deg 0% 92% / 10%);
+		--panda-background-color-20opc: hsl(0deg 0% 92% / 20%);
+		--panda-background-color-30opc: hsl(0deg 0% 92% / 30%);
+		--panda-background-color-40opc: hsl(0deg 0% 92% / 40%);
+		--panda-background-color-50opc: hsl(0deg 0% 92% / 50%);
+		--panda-background-color-60opc: hsl(0deg 0% 92% / 60%);
+		--panda-background-color-70opc: hsl(0deg 0% 92% / 70%);
+		--panda-background-color-80opc: hsl(0deg 0% 92% / 80%);
+		--panda-background-color-90opc: hsl(0deg 0% 92% / 90%);
 
 		/* BLACK COLOR */
 		--panda-black-color: hsl(0deg 0% 0%);
@@ -487,6 +487,7 @@ export const pandaThemeLight = css`
 		/* ========================================================================================================= */
 
 		--panda-icon-color: hsl(210deg 5% 35%);
+		--panda-icon-color-alt: hsl(210deg 5% 35% / 50%);
 		--panda-icon-color-disabled: hsl(210deg 5% 55%);
 
 		--panda-icon-size-xxs: 12px;
@@ -547,10 +548,12 @@ export const pandaThemeLight = css`
 		/* PROGRESS BAR ============================================================================================ */
 		/* ========================================================================================================= */
 
-		--panda-progress-bar-size: 10px;
+		--panda-progress-bar-size: 7px;
+		--panda-progress-bar-border-width: 0px;
+		--panda-progress-bar-border-style: solid;
+		--panda-progress-bar-border-color: hsl(0deg 0% 66%);
 		--panda-progress-bar-border-radius: var(--panda-border-radius-m);
-		--panda-progress-bar-border-color: var(--panda-border-color);
-		--panda-progress-bar-background-color: var(--panda-background-color-500);
+		--panda-progress-bar-background-color: hsl(0deg 0% 80%);
 
 		/* ========================================================================================================= */
 		/* COUNTDOWN TIMER ========================================================================================= */

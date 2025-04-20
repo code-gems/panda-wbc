@@ -1,9 +1,11 @@
 // demo pages
-import "./content/panda-button/content-page";
+import "./content/panda-badge/content-page";
 import "./content/panda-button-group/content-page";
+import "./content/panda-button/content-page";
 import "./content/panda-callout/content-page";
 import "./content/panda-carousel/content-page";
 import "./content/panda-checkbox/content-page";
+import "./content/panda-chips/content-page";
 import "./content/panda-circular-countdown-timer/content-page";
 import "./content/panda-circular-progress-bar/content-page";
 import "./content/panda-click-to-copy/content-page";
@@ -34,6 +36,7 @@ import "./content/panda-slider/content-page";
 import "./content/panda-slideshow/content-page";
 import "./content/panda-sortable-list/content-page";
 import "./content/panda-spinner/content-page";
+import "./content/panda-stepper/content-page";
 import "./content/panda-switch/content-page";
 import "./content/panda-tetris/content-page";
 import "./content/panda-text-editor/content-page";

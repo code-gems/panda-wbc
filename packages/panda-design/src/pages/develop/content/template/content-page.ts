@@ -22,7 +22,7 @@ import {
 
 @page(pageConfig)
 @customElement("panda-template-content-page")
-export class PandaSliderContentPage extends ContentPageTemplate {
+export class ContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;
 	public customStyles = styles;

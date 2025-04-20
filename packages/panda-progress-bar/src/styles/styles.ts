@@ -21,7 +21,7 @@ export const styles = css`
 		flex-flow: column;
 		align-items: center;
 		justify-content: center;
-		height: var(--panda-component-size-m, 30px);
+		flex-basis: 100%;
 	}
 
 	.progress-bar-cont .progress-value {
@@ -35,15 +35,15 @@ export const styles = css`
 		position: relative;
 		display: block;
 		width: 100%;
-		height: var(--panda-progress-bar-size, 10px);
+		height: var(--panda-progress-bar-size, 7px);
 		overflow: hidden;
 
-		border-width: 1px;
+		border-width: var(--panda-progress-bar-border-width, 1px);
 		border-color: var(--panda-progress-bar-border-color, hsl(0deg 0% 66%));
 		border-style: var(--panda-progress-bar-border-style, solid);
 		border-radius: var(--panda-progress-bar-border-radius, 5px);
 
-		background-color: var(--panda-progress-bar-background-color, hsl(0deg 0% 92%));
+		background-color: var(--panda-progress-bar-background-color, hsl(0deg 0% 70%));
 		box-sizing: border-box;
 	}
 
