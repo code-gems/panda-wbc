@@ -486,8 +486,7 @@ export const pandaThemeLight = css`
 		/* ICONS =================================================================================================== */
 		/* ========================================================================================================= */
 
-		--panda-icon-color: hsl(210deg 5% 35%);
-		--panda-icon-color-alt: hsl(210deg 5% 35% / 50%);
+		--panda-icon-color: hsl(210deg 5% 30%);
 		--panda-icon-color-disabled: hsl(210deg 5% 55%);
 
 		--panda-icon-size-xxs: 12px;

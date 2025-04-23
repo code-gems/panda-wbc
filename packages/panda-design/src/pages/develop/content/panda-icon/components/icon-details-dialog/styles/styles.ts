@@ -6,6 +6,8 @@ export const styles = css`
 		display: block;
 		width: 720px;
 		height: 400px;
+		--panda-icon-color-secondary: dodgerblue;
+		--panda-icon-color-tertiary: coral;
 	}
 
 	.layout {

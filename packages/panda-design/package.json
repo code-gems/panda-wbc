@@ -52,6 +52,7 @@
 		"@panda-wbc/panda-sample": "workspace:*",
 		"@panda-wbc/panda-search": "workspace:*",
 		"@panda-wbc/panda-select": "workspace:*",
+		"@panda-wbc/panda-shimmer": "workspace:*",
 		"@panda-wbc/panda-slider": "workspace:*",
 		"@panda-wbc/panda-slideshow": "workspace:*",
 		"@panda-wbc/panda-sortable-list": "workspace:*",

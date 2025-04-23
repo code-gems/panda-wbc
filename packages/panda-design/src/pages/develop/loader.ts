@@ -32,6 +32,7 @@ import "./content/panda-qr-code/content-page";
 import "./content/panda-radio-group/content-page";
 import "./content/panda-search/content-page";
 import "./content/panda-select/content-page";
+import "./content/panda-shimmer/content-page";
 import "./content/panda-slider/content-page";
 import "./content/panda-slideshow/content-page";
 import "./content/panda-sortable-list/content-page";

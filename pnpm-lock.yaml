@@ -398,6 +398,9 @@ importers:
       '@panda-wbc/panda-select':
         specifier: workspace:*
         version: link:../panda-select
+      '@panda-wbc/panda-shimmer':
+        specifier: workspace:*
+        version: link:../panda-shimmer
       '@panda-wbc/panda-slider':
         specifier: workspace:*
         version: link:../panda-slider
@@ -845,6 +848,15 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-shimmer:
     devDependencies:
       rimraf:
         specifier: ^6.0.0

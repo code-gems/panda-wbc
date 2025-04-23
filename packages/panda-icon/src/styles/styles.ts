@@ -19,7 +19,11 @@ export const styles = css`
 		fill: var(--panda-icon-color, hsl(210deg 5% 30%));
 	}
 
-	.color-alt {
-		fill: var(--panda-icon-color-alt, hsl(210deg 5% 30% / 50%));
+	.color-secondary {
+		fill: var(--panda-icon-color-secondary, hsl(210deg 5% 30%));
+	}
+
+	.color-tertiary {
+		fill: var(--panda-icon-color-tertiary, hsl(210deg 5% 30%));
 	}
 `;
