@@ -73,12 +73,15 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-half">
 									<div class="shimmer-template">
 										<div class="icon">
-											<panda-shimmer theme="circle"></panda-shimmer>
+											<panda-shimmer theme="circle" width="40px">
+
+												<panda-icon icon="user"></panda-icon>
+											</panda-shimmer>
 										</div>
 										<div class="body">
 											<panda-shimmer theme="header"></panda-shimmer>
-											<panda-shimmer theme="label"></panda-shimmer>
-											<panda-shimmer width="120px" theme="label"></panda-shimmer>
+											<panda-shimmer theme="text" width="80%"></panda-shimmer>
+											<panda-shimmer theme="label" width="50%"></panda-shimmer>
 										</div>
 									</div>
 								</div>

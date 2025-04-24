@@ -11,7 +11,6 @@ export default class PandaShimmer extends HTMLElement {
 	private _theme!: string;
 	private _width!: string;
 	private _height!: string;
-	private _computedStyle!: string;
 
 	get theme(): string {
 		return this._theme;
@@ -24,23 +23,28 @@ export default class PandaShimmer extends HTMLElement {
 		}
 	}
 
-	set width(value: string) {
-		console.log("%c (set width)", "font-size: 24px; color: green;", value);
+	get width(): string {
+		return this._width;
+	}
 
+	set width(value: string) {
 		if (this._width !== value) {
 			this._width = value;
 			this.setAttribute("width", this._width); // reflect to attribute
-			
-			this._computedStyle = this._getComputedStyle(); // update computed style
+			this._updateStyle(); // update computed style
 			this.render(); // re-render the component
 		}
+	}
+
+	get height(): string {
+		return this._height;
 	}
 
 	set height(value: string) {
 		if (this._height !== value) {
 			this._height = value;
 			this.setAttribute("height", this._height); // reflect to attribute
-			this._computedStyle = this._getComputedStyle(); // update computed style
+			this._updateStyle(); // update computed style
 			this.render(); // re-render the component
 		}
 	}
@@ -56,6 +60,7 @@ export default class PandaShimmer extends HTMLElement {
 	}
 
 	connectedCallback() {
+		console.log("%c (connectedCallback)", "font-size: 24px; color: crimson; background: black;");
 		// Check if the theme attribute is set and update the theme property accordingly
 		if (this.hasAttribute("theme")) {
 			this._theme = this.getAttribute("theme") ?? "";
@@ -64,11 +69,19 @@ export default class PandaShimmer extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		console.log("%c (attributeChangedCallback)", "font-size: 24px; color: crimson; background: black;", _name, _oldValue, _newValue);
 		if (_name === "theme") {
 			this._theme = _newValue;
 		}
-		if (_name === "width" || _name === "height") {
-			this._computedStyle = this._getComputedStyle();
+		if (_name === "width") {
+			console.log("%c (attributeChangedCallback) -> width", "font-size: 24px; color: crimson; background: black;", _name, _oldValue, _newValue);
+			this._width = _newValue;
+			this._updateStyle();
+		}
+		if (_name === "height") {
+			console.log("%c (attributeChangedCallback) -> height", "font-size: 24px; color: crimson; background: black;", _name, _oldValue, _newValue);
+			this._height = _newValue;
+			this._updateStyle();
 		}
 		this.render();
 	}
@@ -79,14 +92,13 @@ export default class PandaShimmer extends HTMLElement {
 
 	/** Renders the shimmer effect */
 	render() {
-		console.log("%c (render)", "font-size: 24px; color: green;");
+		console.log("%c (render)", "font-size: 24px; color: crimson; background: black;");
 		if (this.shadowRoot) {
 			this.shadowRoot.innerHTML = `
 				<style>${styles}</style>
 				<div
 					class="shimmer ${this._theme}"
 					part="shimmer ${this._theme}"
-					style="${this._computedStyle};"
 				>
 					<slot></slot>
 				</div>
@@ -98,19 +110,16 @@ export default class PandaShimmer extends HTMLElement {
 	// UTILS =========================================================================================================
 	// ================================================================================================================
 
-	/** Returns the computed style for the element */
-	private _getComputedStyle(): string {
-		let style = "";
+	/** Updates the style of the component based on the width and height properties */
+	private _updateStyle(): void {
+		console.log("%c (_updateStyle) style", "font-size: 24px; color: crimson; background: black;");
 		if (this._width) {
-			style += `width: ${this._width};`;
+			this.style.width = this._width;
 		}
 		if (this._height) {
-			style += `height: ${this._height};`;
+			this.style.height = this._height;
 		}
-		console.log("%c (_getComputedStyle) style", "font-size: 24px; color: green;", style);
-		return style;
 	}
-
 }
 
 // Register the custom element

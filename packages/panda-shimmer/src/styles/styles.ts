@@ -1,9 +1,5 @@
 export const styles = `
-	:host {
-		display: inline;
-		width: 100%;
-		height: 100%;
-	}
+
 
 	.shimmer {
 		display: block;
@@ -30,7 +26,12 @@ export const styles = `
 	/* ===================================================================== */
 
 	.shimmer.circle {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		border-radius: 50%;
+
+		--panda-icon-color: var(--panda-background-color-100, hsl(0deg 0% 97%));
 	}
 
 	.shimmer.header {
