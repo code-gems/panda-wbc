@@ -443,6 +443,8 @@ export const pandaThemeDark = css`
 		/* ========================================================================================================= */
 
 		--panda-icon-color: var(--panda-text-color);
+		--panda-icon-color-secondary: var(--panda-primary-color);
+		--panda-icon-color-tertiary: var(--panda-secondary-color);
 		--panda-icon-color-disabled: var(--panda-text-color-disabled);
 
 		--panda-icon-size-xxs: 12px;

@@ -33,6 +33,10 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "adjust", 					iconPack: "default", group: ["System"], keywords: ["interface", "settings", "adjust", "panel", "levels", "refine"] },
 		{ name: "logs", 					iconPack: "default", group: ["System"], keywords: ["interface", "logs", "terminal", "console"] },
 		{ name: "terminal",					iconPack: "default", group: ["System"], keywords: ["interface", "logs", "terminal", "console"] },
+		{ name: "login",					iconPack: "default", group: ["System"], keywords: ["access", "login", "door"] },
+		{ name: "logout",					iconPack: "default", group: ["System"], keywords: ["access", "logout", "door", "exit"] },
+		{ name: "login-2",					iconPack: "default", group: ["System"], keywords: ["access", "login", "door"] },
+		{ name: "logout-2",					iconPack: "default", group: ["System"], keywords: ["access", "logout", "door", "exit"] },
 
 		// Files ==============================================
 		{ name: "folder", 					iconPack: "default", group: ["Files"], keywords: ["file", "directory", "system", "i/o"] },
