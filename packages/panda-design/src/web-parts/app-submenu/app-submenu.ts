@@ -1,6 +1,7 @@
 // types
 import { Store, PageCategory } from "panda-design-typings";
 import { SearchParams } from "@panda-wbc/panda-router";
+import { PandaSearchOnInputEvent } from "@panda-wbc/panda-search";
 
 // styles
 import { styles } from "./styles/styles";
@@ -9,7 +10,7 @@ import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components
 import "@panda-wbc/panda-icon";
-import "@panda-wbc/panda-text-field";
+import "@panda-wbc/panda-search";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";
@@ -17,7 +18,6 @@ import { customElement, property } from "lit/decorators.js";
 import PageLibrary from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
-import { PandaTextFieldOnInputEvent } from "@panda-wbc/panda-text-field";
 
 @customElement("app-submenu")
 @reduxify()
@@ -68,20 +68,13 @@ class AppSubmenu extends LitElement {
 			<div class="submenu">
 				<div class="header">
 					<div class="search">
-						<panda-text-field
-							@on-input="${(event: PandaTextFieldOnInputEvent) => this._onContentSearch(event.detail.value)}"
-						>
-							<div class="suffix-icon" slot="suffix">
-								<panda-icon icon="search"></panda-icon>
-							</div>
-						</panda-text-field>
+						<panda-search @on-input="${this._onContentSearch}"></panda-search>
 					</div>
 				</div>
 				<div class="body scrollbar">
 					${this._renderPageList()}
 				</div>
 				<div class="footer">
-					FOOTER
 				</div>
 			</div>
 		`;
@@ -148,7 +141,8 @@ class AppSubmenu extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onContentSearch(searchText: string): void {
+	private _onContentSearch(event: PandaSearchOnInputEvent): void {
+		const searchText = event.detail.value;
 		this._searchText = searchText;
 	}
 }

@@ -67,7 +67,6 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
-		return html``;
 		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
 		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
 		const bannerConfig: PandaParticleBannerConfig = {
@@ -369,8 +368,8 @@ export class PandaNotificationsContentPage extends ContentPageTemplate {
 
 	private _onUpdateNotification() {
 		pandaNotificationCenter.createNotification({
-			id: "1234",
-			scope: ["local"],
+			// id: "1234",
+			// scope: ["local"],
 			hideIcon: true,
 			headerPrefix: html`OLD`,
 			header: html`Cookie Usage`,

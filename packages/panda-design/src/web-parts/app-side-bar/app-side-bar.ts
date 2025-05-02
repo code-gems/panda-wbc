@@ -5,6 +5,7 @@ import { PandaThemeSwitcherToggleEvent, PandaThemeSwitcherTheme } from "@panda-w
 // styles
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/styles";
+import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
 
 // components & web parts
 import "@panda-wbc/panda-theme-switcher";
@@ -27,6 +28,7 @@ class AppSideBar extends LitElement {
 	static get styles() {
 		return [
 			styles,
+			scrollbar,
 			uiComponents.modifiers,
 		];
 	}
@@ -69,7 +71,7 @@ class AppSideBar extends LitElement {
 						</dragon-logo>
 					</div>
 				</div>
-				<div class="body scroll">
+				<div class="body scrollbar">
 					${this._renderSideMenu()}
 				</div>
 				<div class="footer">

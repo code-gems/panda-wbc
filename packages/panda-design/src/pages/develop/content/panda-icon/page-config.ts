@@ -9,7 +9,7 @@ export const pageConfig: Page = {
 	pageId: "panda-icon",
 	pageUri: "/develop?page=panda-icon",
 	category: PageCategory.DEVELOP,
-	keywords: ["icon"],
+	keywords: ["icon", "icons", "native"],
 	description: ["Showcase of a panda-icon element."],
 	
 	contextMenu: [		

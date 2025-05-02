@@ -5,13 +5,13 @@ import { Page, PageCategory, ContentSectionName } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
-	pageName: "Menu Bar",
-	pageId: "panda-menu-bar",
-	pageUri: `/develop?page=panda-menu-bar`,
+	pageName: "Menu",
+	pageId: "panda-menu",
+	pageUri: `/develop?page=panda-menu`,
 
 	category: PageCategory.DEVELOP,
-	keywords: ["menu-bar"],
-	description: ["Showcase of a panda-menu-bar component."],
+	keywords: ["menu"],
+	description: ["Showcase of a panda-menu component."],
 	
 	contextMenu: [
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
@@ -22,5 +22,5 @@ export const pageConfig: Page = {
 		// { name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
 	],
 
-	template: html`<panda-menu-bar-content-page></panda-menu-bar-content-page>`,
+	template: html`<panda-menu-content-page></panda-menu-content-page>`,
 };

@@ -1,53 +1,48 @@
 // types
 import { PandaThemeGroup } from "../index";
 
-// themes
-import { pandaThemeLight } from "./themes/panda-theme-light";
-import { pandaThemeDark } from "./themes/panda-theme-dark";
-
 // utils
-import { LitElement, PropertyValues } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import pandaThemeController from "./panda-theme-controller";
 
-@customElement("panda-theme")
-export class PandaTheme extends LitElement {
+export class PandaTheme extends HTMLElement {
+	// ================================================================================================================
+	// PROPERTIES =====================================================================================================
+	// ================================================================================================================
 
-	@property({ type: String, attribute: true })
-	theme!: string;
+	static readonly observedAttributes = ["theme"];
 
-	// theme element
-	private _themeEl!: CSSStyleSheet;
+	private _theme!: string;
 
-	private readonly _themeList: PandaThemeGroup[] = [
-		{
-			groupName: "Panda Theme",
-			options: [
-				{
-					id: "panda-theme-light",
-					name: "Light",
-					theme: pandaThemeLight
-				},
-				{
-					id: "panda-theme-dark",
-					name: "Dark",
-					theme: pandaThemeDark
-				},
-			]
+	get theme(): string {
+		return this._theme;
+	}
+
+	set theme(value: string) {
+		if (this._theme !== value) {
+			this._theme = value;
+			this.setAttribute("theme", this._theme); // reflect to attribute
+			pandaThemeController.applyTheme(this._theme);
 		}
-	];
+	}
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	protected firstUpdated(): void {
-		// init theme
-		this._applyTheme();
+	constructor() {
+		super();
+		this.attachShadow({ mode: "open" });
 	}
 
-	protected updated(_changedProperties: PropertyValues): void {
-		if (_changedProperties.has("theme") && this.theme) {
-			this._applyTheme();
+	connectedCallback() {
+		// init theme
+		pandaThemeController.initialize(this.theme);
+	}
+
+	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		if (_name === "theme") {
+			this._theme = _newValue;
+			pandaThemeController.applyTheme(this._theme);
 		}
 	}
 
@@ -56,49 +51,20 @@ export class PandaTheme extends LitElement {
 	// ================================================================================================================
 
 	public getThemeList(): PandaThemeGroup[] {
-		return this._themeList;
-	}
-
-	public registerTheme(themeGroup: PandaThemeGroup): void {
-		this._themeList.push(themeGroup);
-	}
-
-	// ================================================================================================================
-	// HELPERS ========================================================================================================
-	// ================================================================================================================
-
-	private _getThemeString(themeOptionId: string): string {
-		let themeString: string = "";
-
-		if (themeOptionId) {
-			this._themeList.forEach((themeGroup) => {
-				themeGroup.options.forEach((themeOption) => {
-					if (themeOption.id === themeOptionId) {
-						themeString = themeOption.theme.toString();
-					}
-				});
-			});
-		}
-		return themeString;
-	}
-
-	private _applyTheme() {
-		// check if theme element exists
-		if (this._themeEl) {
-			this._themeEl.replaceSync(this._getThemeString(this.theme));
-		} else {
-			this._themeEl = new CSSStyleSheet();
-			this._themeEl.replaceSync(this._getThemeString(this.theme));
-			document.adoptedStyleSheets = [this._themeEl];
-		}
+		return pandaThemeController.getThemeList();
 	}
 }
-
-// Export mixins
-export * from "./mixins";
 
 declare global {
 	interface HTMLElementTagNameMap {
 		"panda-theme": PandaTheme;
 	}
 }
+
+// Register the custom element
+if (!customElements.get("panda-theme")) {
+	customElements.define("panda-theme", PandaTheme);
+}
+
+// Export mixins
+export * from "./mixins";

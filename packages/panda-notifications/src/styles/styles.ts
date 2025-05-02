@@ -5,18 +5,18 @@ export const styles = css`
 		position: relative;
 		display: block;
 		width: 100%;
-		height: 100%;
 	}
-
+	
 	.notifications-cont {
 		position: fixed;
 		display: flex;
 		flex-flow: column;
 		z-index: 9999;
 	}
-
+	
 	.notifications-cont.local {
 		position: absolute;
+		height: 100%;
 	}
 
 	.notifications {
@@ -122,6 +122,7 @@ export const notificationStyles = css`
 		position: relative;
 		display: flex;
 		flex-flow: column;
+		max-width: 20dvw;
 		padding: var(--panda-padding-m, 10px);
 		margin-bottom: var(--panda-padding-m, 10px);
 		overflow: hidden;
@@ -245,7 +246,9 @@ export const notificationStyles = css`
 		gap: var(--panda-padding-m, 10px);
 	}
 
+	/* =========================================================== */
 	/* THEMES ==================================================== */
+	/* =========================================================== */
 	
 	/* PRIMARY */
 	:host([theme~="primary"]) .notification::before {
@@ -318,14 +321,14 @@ export const notificationStyles = css`
 	}
 
 	@media all and (max-width: 1280px) {
-		:host { width: 30dvw; }
+		.notification { max-width: 30dvw; }
 	}
 
 	@media all and (max-width: 1024px) {
-		:host { width: 50dvw; }
+		.notification { max-width: 50dvw; }
 	}
 
 	@media all and (max-width: 768px) {
-		:host { width: 100dvw; }
+		.notification { max-width: 100dvw; }
 	}
 `;

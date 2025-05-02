@@ -353,9 +353,9 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
-      '@panda-wbc/panda-menu-bar':
+      '@panda-wbc/panda-menu':
         specifier: workspace:*
-        version: link:../panda-menu-bar
+        version: link:../panda-menu
       '@panda-wbc/panda-multi-input':
         specifier: workspace:*
         version: link:../panda-multi-input
@@ -586,7 +586,7 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
-  packages/panda-menu-bar:
+  packages/panda-menu:
     dependencies:
       '@panda-wbc/panda-icon':
         specifier: workspace:*

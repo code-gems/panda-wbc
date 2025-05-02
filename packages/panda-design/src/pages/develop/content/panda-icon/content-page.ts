@@ -84,6 +84,7 @@ export class ContentPage extends ContentPageTemplate {
 		return html`
 			<div class="banner small">
 				<h1>ICONS</h1>
+				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
 	}
@@ -107,8 +108,8 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-						Panda icon pack is a collections of pre-designed, scalable icons that are used in web applications to enhance visual communication, 
-						improve user experience, and provide intuitive visual cues. By incorporating icons from packs, web applications can enhance visual communication, 
+						Panda icon component is a collection of pre-designed, scalable icons that are used in web applications to enhance visual communication, 
+						improve user experience, and provide intuitive visual cues. This component can enhance visual communication, 
 						making it easier for users to understand and navigate through different sections, features, and functionalities.
 					</p>
 				</div>

@@ -53,7 +53,6 @@ export default class PandaBadge extends HTMLElement {
 
 	/** Renders the badge */
 	render() {
-		
 		if (this.shadowRoot) {
 			this.shadowRoot.innerHTML = `
 				<style>${styles}</style>

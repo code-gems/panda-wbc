@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-menu-bar",
+	"name": "@panda-wbc/panda-menu",
 	"version": "1.0.0",
-	"description": "Lit based web component - menu bar",
+	"description": "Lit based web component - menu",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-menu-bar.js",
+	"main": "lib/panda-menu.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -17,6 +17,7 @@
 		"web component",
 		"panda-wbc",
 		"ui component",
+		"menu",
 		"menu bar"
 	],
 	"author": "code-gems",

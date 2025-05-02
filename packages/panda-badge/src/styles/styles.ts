@@ -6,7 +6,7 @@ export const styles = `
 	.badge {
 		display: block;
 		padding: 0px var(--panda-padding-m, 10px);
-		min-height: var(--panda-component-size-m, 32px);
+		height: var(--panda-component-size-m, 32px);
 		line-height: var(--panda-component-size-m, 32px);
 		overflow: hidden;
 
@@ -30,6 +30,7 @@ export const styles = `
 		justify-content: center;
 		align-items: center;
 		padding: var(--panda-padding-s, 5px) var(--panda-padding-m, 10px);
+		height: unset;
 		min-height: var(--panda-component-size-m, 32px);
 		line-height: unset;
 		overflow: unset;
@@ -190,7 +191,7 @@ export const styles = `
 
 	.badge.size-s {
 		padding: 0px var(--panda-padding-s, 5px);
-		min-height: var(--panda-component-size-s, 24px);
+		height: var(--panda-component-size-s, 24px);
 		line-height: var(--panda-component-size-s, 24px);
 		font-size: var(--panda-font-size-s, 12px);
 	}
@@ -205,7 +206,7 @@ export const styles = `
 
 	.badge.size-l {
 		padding: 0px var(--panda-padding-l, 15px);
-		min-height: var(--panda-component-size-l, 40px);
+		height: var(--panda-component-size-l, 40px);
 		line-height: var(--panda-component-size-l, 40px);
 		font-size: var(--panda-font-size-l, 16px);
 	}

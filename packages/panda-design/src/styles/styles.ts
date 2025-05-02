@@ -450,12 +450,16 @@ export const uiComponents = {
 			display: flex;
 			flex-flow: column;
 			width: 100%;
-			padding: var(--panda-padding-m);
+			padding: var(--panda-form-padding);
 
-			border: 1px solid var(--panda-border-color);
-			border-radius: var(--panda-border-radius-m);
-			background-color: var(--panda-background-color-500);
-			box-shadow: var(--panda-elevation-m);
+			color: var(--panda-form-text-color);
+
+			border-width: var(--panda-form-border-width);
+			border-style: var(--panda-form-border-style);
+			border-color: var(--panda-form-border-color);
+			border-radius: var(--panda-form-border-radius);
+			background-color: var(--panda-form-background-color);
+			box-shadow: var(--panda-form-elevation);
 			box-sizing: border-box;
 
 		}

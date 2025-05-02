@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-icon",
 	"version": "1.0.0",
-	"description": "Lit based web component - icons",
+	"description": "Native web component - icons",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-icon.js",
 	"scripts": {
@@ -20,9 +20,7 @@
 	],
 	"author": "code-gems",
 	"license": "MIT",
-	"dependencies": {
-		"lit": "^3.0.2"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
 		"typescript": "^4.5.4"

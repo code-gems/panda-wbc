@@ -1,6 +1,4 @@
-import { css } from "lit";
-
-export const pandaThemeDark = css`
+export const pandaThemeDark = `
 	:root {
 		/* DARK THEME */
 		/* ========================================================================================================= */
@@ -298,6 +296,16 @@ export const pandaThemeDark = css`
 		/* ========================================================================================================= */
 		/* FORMS & COMPONENTS ====================================================================================== */
 		/* ========================================================================================================= */
+
+		/* FORMS */
+		--panda-form-text-color: var(--panda-text-color);
+		--panda-form-border-width: 1px;
+		--panda-form-border-style: solid;
+		--panda-form-border-color: var(--panda-border-color);
+		--panda-form-background-color: hsl(274deg 30% 35%);
+		--panda-form-elevation: var(--panda-elevation-s);
+		--panda-form-padding: var(--panda-padding-m);
+		--panda-form-border-radius: var(--panda-border-radius-m);
 
 		/* COMPONENT SIZE */
 		--panda-component-size-xs: 18px;

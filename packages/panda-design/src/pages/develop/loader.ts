@@ -19,7 +19,7 @@ import "./content/panda-full-page/content-page";
 import "./content/panda-grid-layout/content-page";
 import "./content/panda-icon/content-page";
 import "./content/panda-line-chart/content-page";
-import "./content/panda-menu-bar/content-page";
+import "./content/panda-menu/content-page";
 import "./content/panda-multi-input/content-page";
 import "./content/panda-notifications/content-page";
 import "./content/panda-pagination/content-page";

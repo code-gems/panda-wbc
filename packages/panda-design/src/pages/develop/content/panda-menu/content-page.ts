@@ -5,7 +5,7 @@ import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } f
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-menu-bar";
+import "@panda-wbc/panda-menu";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -20,7 +20,7 @@ import {
 	installationSnippet,
 } from "./snippets/snippets";
 
-@customElement("panda-menu-bar-content-page")
+@customElement("panda-menu-content-page")
 @page(pageConfig)
 class ContentPage extends ContentPageTemplate {
 	// page details
@@ -41,6 +41,8 @@ class ContentPage extends ContentPageTemplate {
 		{ name: "@change", returnType: "Event", description: "Triggered when user changed selected value." }
 	];
 
+	private _items: any[] = [];
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -48,7 +50,7 @@ class ContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
-				<h1>MENU BAR</h1>
+				<h1>MENU</h1>
 	
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
@@ -80,13 +82,10 @@ class ContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-full">
 	
-									<panda-slider
-										label="Loading..."
-										.min="${0}"
-										.max="${50}"
-										.value="${25}"
+									<panda-menu
+										.items="${this._items}"
 									>
-									</panda-slider>
+									</panda-menu>
 	
 								</div>
 							</div>

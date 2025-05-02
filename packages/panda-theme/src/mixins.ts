@@ -49,7 +49,3 @@ export const scrollbar = css`
 		background-color: transparent;
 	}
 `;
-
-export const callout = css`
-	
-`;
