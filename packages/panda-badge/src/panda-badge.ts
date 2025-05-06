@@ -18,7 +18,7 @@ export default class PandaBadge extends HTMLElement {
 		if (this._theme !== value) {
 			this._theme = value;
 			this.setAttribute("theme", this._theme); // reflect to attribute
-			this.render();
+			this._render();
 		}
 	}
 	
@@ -33,18 +33,15 @@ export default class PandaBadge extends HTMLElement {
 	}
 
 	connectedCallback() {
-		// Check if the theme attribute is set and update the theme property accordingly
-		if (this.hasAttribute("theme")) {
-			this._theme = this.getAttribute("theme") ?? "";
-		}
-		this.render();
+		this._applyStyles();
+		this._render();
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
 		if (_name === "theme") {
 			this._theme = _newValue;
 		}
-		this.render();
+		this._render();
 	}
 
 	// ================================================================================================================
@@ -52,10 +49,9 @@ export default class PandaBadge extends HTMLElement {
 	// ================================================================================================================
 
 	/** Renders the badge */
-	render() {
+	private _render() {
 		if (this.shadowRoot) {
 			this.shadowRoot.innerHTML = `
-				<style>${styles}</style>
 				<div
 					class="badge ${this._theme}"
 					part="badge ${this._theme}"
@@ -63,6 +59,18 @@ export default class PandaBadge extends HTMLElement {
 					<slot></slot>
 				</div>
 			`;
+		}
+	}
+
+	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+
+	private _applyStyles() {
+		const css = new CSSStyleSheet();
+		css.replaceSync(styles);
+		if (this.shadowRoot) {
+			this.shadowRoot.adoptedStyleSheets = [css];
 		}
 	}
 

@@ -42,7 +42,7 @@ export class PandaDialogOverlay extends LitElement {
 
 	protected firstUpdated(): void {
 		// add events
-		document.addEventListener("dragon-dialog-close", this._closeDialogEvent);
+		document.addEventListener("panda-dialog-close", this._closeDialogEvent);
 		document.addEventListener("keydown", this._keyPressEvent);
 	}
 
@@ -55,7 +55,7 @@ export class PandaDialogOverlay extends LitElement {
 	disconnectedCallback(): void {
 		super.disconnectedCallback();
 		// remove events
-		document.removeEventListener("dragon-dialog-close", this._closeDialogEvent);
+		document.removeEventListener("panda-dialog-close", this._closeDialogEvent);
 		document.removeEventListener("keydown", this._keyPressEvent);
 	}
 

@@ -94,7 +94,7 @@ export const styles = css`
 	.notifications-cont.bottom-left .common-actions,
 	.notifications-cont.bottom-right .common-actions {
 		padding-top: 0px;
-		padding-bottom: var(--dragon-padding-m, 8px);
+		padding-bottom: var(--panda-padding-m, 10px);
 	}
 
 	.notifications-cont.top-left .common-actions,

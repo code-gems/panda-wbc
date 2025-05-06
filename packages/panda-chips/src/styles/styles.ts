@@ -25,8 +25,8 @@ export const styles = css`
 	.chip button {
 		background: none;
 		border: none;
-		margin-left: var(--);
-		font-size: var(--dragon-font-size-m, 14px);
+		margin-left: var(--panda-padding-m, 10px);
+		font-size: var(--panda-font-size-m, 14px);
 		cursor: pointer;
 	}
 

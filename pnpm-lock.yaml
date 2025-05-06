@@ -443,6 +443,9 @@ importers:
       '@panda-wbc/panda-time-ago':
         specifier: workspace:*
         version: link:../panda-time-ago
+      '@panda-wbc/panda-time-picker':
+        specifier: workspace:*
+        version: link:../panda-time-picker
       '@panda-wbc/panda-toast':
         specifier: workspace:*
         version: link:../panda-toast
