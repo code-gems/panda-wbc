@@ -4,12 +4,12 @@ import { PandaToastElement } from "./panda-toast";
 
 export class PandaToastCenter {
 
-	private _toastQueue: PandaToast[] = [];
+	private readonly _toastQueue: PandaToast[] = [];
 
 	private _toastEl: PandaToastElement | null = null;
 
 	// events
-	private _closeToastEvent = this._onCloseToast.bind(this);
+	private readonly _closeToastEvent = this._onCloseToast.bind(this);
 
 	// ================================================================================================================
 	// API ============================================================================================================

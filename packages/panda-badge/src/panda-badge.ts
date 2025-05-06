@@ -67,10 +67,10 @@ export default class PandaBadge extends HTMLElement {
 	// ================================================================================================================
 
 	private _applyStyles() {
-		const css = new CSSStyleSheet();
-		css.replaceSync(styles);
+		const cssStyleSheet = new CSSStyleSheet();
+		cssStyleSheet.replaceSync(styles);
 		if (this.shadowRoot) {
-			this.shadowRoot.adoptedStyleSheets = [css];
+			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
 		}
 	}
 
