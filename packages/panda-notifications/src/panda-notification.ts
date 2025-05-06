@@ -11,6 +11,7 @@ import "@panda-wbc/panda-icon";
 import { LitElement, html, TemplateResult, PropertyValues } from "lit";
 import { customElement, property, queryAssignedElements, state } from "lit/decorators.js";
 import { DEFAULT_AUTO_CLOSE_INTERVAL } from "./constants";
+import { PandaNotificationsPosition } from "..";
 
 @customElement("panda-notification")
 export class PandaNotification extends LitElement {
@@ -39,6 +40,9 @@ export class PandaNotification extends LitElement {
 
 	@property({ type: String })
 	customStyle!: string;
+	
+	@property({ type: String, reflect: true })
+	position!: PandaNotificationsPosition;
 	
 	@queryAssignedElements({ slot: "header", flatten: false })
 	private readonly _headerNodes!: HTMLElement[];
@@ -127,7 +131,7 @@ export class PandaNotification extends LitElement {
 
 		return html`
 			<div
-				class="notification-cont ${this._closing ? "closing" : ""}"
+				class="notification-cont ${this._closing ? "closing" : ""} ${this.position ?? ""}"
 				part="notification-cont  ${cssMods.join(" ")} ${this._closing ? "closing" : ""}"
 			>
 				<div class="notification-wrap" part="notification-wrap ${cssMods.join(" ")}">

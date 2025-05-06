@@ -49,7 +49,7 @@ export class PandaButton extends LitElement {
 	}
 
 	protected firstUpdated(): void {
-		console.log("%c _prefixSlot", "font-size: 24px; color: red;", this._prefixSlot);
+		// console.log("%c _prefixSlot", "font-size: 24px; color: red;", this._prefixSlot);
 	}
 
 	disconnectedCallback(): void {
@@ -113,18 +113,18 @@ export class PandaButton extends LitElement {
 	// ================================================================================================================
 	
 	private _onMouseDown(event: any) {
-		console.log("%c ⚡ (mouse down)", "font-size: 24px; color: red;", event);
+		// console.log("%c ⚡ (mouse down)", "font-size: 24px; color: red;", event);
 		this._active = true;
 	}
 	
 	private _onMouseUp(event: MouseEvent) {
 		event.stopPropagation();
-		console.log("%c ⚡ (mouse up)", "font-size: 24px; color: red;", event);
+		// console.log("%c ⚡ (mouse up)", "font-size: 24px; color: red;", event);
 		this._active = false;
 	}
 
 	private _onPrefixSlotChange(event: any) {
-		console.log("%c _onPrefixSlotChange", "font-size: 48px; color: red;", event);
+		// console.log("%c _onPrefixSlotChange", "font-size: 48px; color: red;", event);
 	}
 }
 

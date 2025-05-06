@@ -40,11 +40,11 @@ export const styles = css`
 	}
 
 	/* NOTIFICATION POSITION */
-	.notification-cont.top-center {
+	.notifications-cont.top-center {
 		transform: translateX(-50%);
 	}
-	.notification-cont.top-center,
-	.notification-cont.top-center .notifications {
+	.notifications-cont.top-center,
+	.notifications-cont.top-center .notifications {
 		align-items: center;
 		top: 0%;
 		left: 50%;
@@ -79,11 +79,11 @@ export const styles = css`
 		padding-bottom: 0px;
 	}
 
-	.notification-cont.bottom-center {
+	.notifications-cont.bottom-center {
 		transform: translateX(-50%);
 	}
-	.notification-cont.bottom-center,
-	.notification-cont.bottom-center .notifications {
+	.notifications-cont.bottom-center,
+	.notifications-cont.bottom-center .notifications {
 		flex-flow: column-reverse;
 		align-items: center;
 		bottom: 0%;
@@ -127,7 +127,7 @@ export const notificationStyles = css`
 		margin-bottom: var(--panda-padding-m, 10px);
 		overflow: hidden;
 
-		animation-name: show;
+		animation-name: show-right;
 		animation-duration: 400ms;
 		animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
@@ -138,8 +138,34 @@ export const notificationStyles = css`
 	}
 
 	.notification-cont.closing .notification {
-		animation-name: hide;
+		animation-name: hide-right;
 		animation-fill-mode: forwards;
+	}
+
+	.notification-cont.top-left .notification,
+	.notification-cont.bottom-left .notification {
+		animation-name: show-left;
+	}
+	
+	.notification-cont.top-left.closing .notification,
+	.notification-cont.bottom-left.closing .notification {
+		animation-name: hide-left;
+	}
+
+	.notification-cont.top-center .notification {
+		animation-name: show-top;
+	}
+	
+	.notification-cont.top-center.closing .notification {
+		animation-name: hide-top;
+	}
+
+	.notification-cont.bottom-center .notification {
+		animation-name: show-bottom;
+	}
+	
+	.notification-cont.bottom-center.closing .notification {
+		animation-name: hide-bottom;
 	}
 
 	.notification.no-icon {
@@ -298,26 +324,44 @@ export const notificationStyles = css`
 		height: auto;
 	}
 
-	@keyframes show {
-		from {
-			opacity: 0;
-			right: -50px;
-		}
-		to {
-			opacity: 1;
-			right: 0px;
-		}
+	@keyframes show-top {
+		from { opacity: 0; top: -50px; }
+		to { opacity: 1; top: 0px; }
 	}
 
-	@keyframes hide {
-		from {
-			opacity: 1;
-			right: 0px;
-		}
-		to {
-			opacity: 0;
-			right: -50px;
-		}
+	@keyframes hide-top {
+		from { opacity: 1; top: 0px; }
+		to { opacity: 0; top: -50px; }
+	}
+
+	@keyframes show-bottom {
+		from { opacity: 0; bottom: -50px; }
+		to { opacity: 1; bottom: 0px; }
+	}
+
+	@keyframes hide-bottom {
+		from { opacity: 1; bottom: 0px; }
+		to { opacity: 0; bottom: -50px; }
+	}
+
+	@keyframes show-right {
+		from { opacity: 0; right: -50px; }
+		to { opacity: 1; right: 0px; }
+	}
+
+	@keyframes hide-right {
+		from { opacity: 1; right: 0px; }
+		to { opacity: 0; right: -50px; }
+	}
+
+	@keyframes show-left {
+		from { opacity: 0; left: -50px; }
+		to { opacity: 1; left: 0px; }
+	}
+
+	@keyframes hide-left {
+		from { opacity: 1; left: 0px; }
+		to { opacity: 0; left: -50px; }
 	}
 
 	@media all and (max-width: 1280px) {

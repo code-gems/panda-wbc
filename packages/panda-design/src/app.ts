@@ -82,7 +82,10 @@ class PandaApp extends LitElement {
 	protected render() {
 		return html`
 			<panda-theme theme="${this.selectedTheme}"></panda-theme>
-			<panda-notifications></panda-notifications>
+			<panda-notifications
+				position="top-center"
+				show-dismiss-all-button
+			></panda-notifications>
 			<panda-router
 				.routerConfig="${this._routerConfig}"
 				@on-navigate="${(e: CustomEvent) => this._onNavigate(e.detail)}"

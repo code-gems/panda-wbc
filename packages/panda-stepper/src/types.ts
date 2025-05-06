@@ -11,7 +11,7 @@ declare module "panda-stepper-types" {
 		disabled: boolean;
 		working: boolean;
 		// sub-steps
-		steps: SuperStep[];
+		steps: Omit<SuperStep, "steps">[];
 
 		origin: any; // origin of the step
 	}

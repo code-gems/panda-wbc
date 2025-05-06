@@ -83,15 +83,37 @@ class PandaStepper extends LitElement {
 		const stepsHtml: TemplateResult[] = [];
 
 		
-		this._parsedSteps.forEach((step) => {
-			console.log("%c step", "font-size: 24px; color: crimson; background: black;", step);
+		this._parsedSteps.forEach((step, index) => {
 			const {
 				title,
+				done,
 				icon, // added icon to destructure
 				description, // added description to destructure
 				tooltip, // added tooltip to destructure
 				steps,
 			} = step;
+			
+			let progress = 0;
+			// check if step has sub-steps
+			if (steps.length) {
+				// count the number of done steps
+				const doneSteps = steps.filter((step) => step.done).length;
+				console.log("%c 1.1", "font-size: 24px; color: crimson; background: black;", doneSteps, steps);
+				// calculate the progress
+				progress = (doneSteps / steps.length) * 100;
+				console.log("%c 1.2", "font-size: 24px; color: crimson; background: black;", progress, doneSteps, steps.length);
+			} else {
+				// check if step is done
+				progress = step.done ? 100 : 0;
+				console.log("%c 2.", "font-size: 24px; color: crimson; background: black;", progress);
+			}
+			// check if step is the first one and not done
+			if (index === 0 && !done) {
+				// set progress to 5% if step is not done
+				progress = 5;
+				console.log("%c 2.", "font-size: 24px; color: crimson; background: black;", progress);
+			}
+			
 			// check if step has icon
 			const iconHtml: TemplateResult = icon
 				? html`
@@ -109,10 +131,12 @@ class PandaStepper extends LitElement {
 					</panda-tooltip>
 				`
 				: html``;
-
+				
+			console.log("%c final", "font-size: 24px; color: crimson; background: black;", step, index, done, progress);
 			stepsHtml.push(html`
 				<div
-					id=""
+					id="${step.id}"
+					title="${step.id}"
 					class="step-cont"
 					part="step-cont"
 				>
@@ -137,7 +161,7 @@ class PandaStepper extends LitElement {
 							theme="${this.theme ?? ""}"
 							class="progress-bar"
 							part="progress-bar"
-							value="5"
+							.value="${progress}"
 						>
 						</panda-progress-bar>
 					</div>
@@ -154,11 +178,82 @@ class PandaStepper extends LitElement {
 	// ================================================================================================================
 
 	public next(): void {
-
+		const currentStep = this._parsedSteps.find((step) => !step.done);
+		console.log("%c (next)", "font-size: 24px; color: crimson; background: black;", currentStep);
+		if (currentStep) {
+			// check if step has sub-steps
+			if (currentStep.steps.length) {
+				for (const step of currentStep.steps) {
+					if (!step.done) {
+						step.done = true; // mark each sub-step as done
+						// exit for loop after first sub-step is done
+						this.dispatchEvent(new CustomEvent("on-step-change", {
+							detail: {
+								step: step.origin,
+								done: step.done,
+							}
+						}));
+						break;
+					}
+				}
+			} else {
+				// check if step is done
+				currentStep.done = true;
+			}
+			// check if all steps are done
+			const allStepsDone = currentStep.steps.every((step) => step.done);
+			if (allStepsDone) {
+				console.log("%c All steps are done", "font-size: 24px; color: green; background: black;");
+				currentStep.done = true; // mark current step as done
+				this.dispatchEvent(new CustomEvent("on-step-change", {
+					detail: {
+						step: currentStep.origin,
+						done: currentStep.done,
+					}
+				}));
+			} else {
+				console.log("%c Not all steps are done", "font-size: 24px; color: orange; background: black;");
+			}
+		}
+		this.requestUpdate();
 	}
 
 	public previous(): void {
-
+		console.log("%c (previous)", "font-size: 24px; color: crimson; background: black;");
+		const currentStep = this._parsedSteps.find((step) => step.done);
+		if (currentStep) {
+			// check if step has sub-steps
+			if (currentStep.steps.length) {
+				for (const step of currentStep.steps) {
+					if (step.done) {
+						step.done = false; // mark each sub-step as not done
+						this.dispatchEvent(new CustomEvent("on-step-change", {
+							detail: {
+								step: step.origin,
+								done: step.done,
+							}
+						}));
+						break;
+					}
+				}
+			} else {
+				// check if step is done
+				currentStep.done = false;
+			}
+			// check if all steps are not done
+			const allStepsNotDone = this._parsedSteps.every((step) => !step.done);
+			if (allStepsNotDone) {
+				console.log("%c All steps are not done", "font-size: 24px; color: orange; background: black;");
+				currentStep.done = false; // mark current step as not done
+				this.dispatchEvent(new CustomEvent("on-step-change", {
+					detail: {
+						step: currentStep.origin,
+						done: currentStep.done,
+					}
+				}));
+			}
+			this.requestUpdate();
+		}
 	}
 
 	// ================================================================================================================

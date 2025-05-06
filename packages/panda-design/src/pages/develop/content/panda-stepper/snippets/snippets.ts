@@ -1,15 +1,15 @@
-export const installationSnippet = `npm install @panda-wbc/panda-tooltip -S`;
+export const installationSnippet = `npm install @panda-wbc/panda-stepper -S`;
 
 export const implementationSnippet = `
-import "@panda-wbc/panda-tooltip";
+import "@panda-wbc/panda-stepper";
 
-<panda-tooltip
+<panda-stepper
   theme="primary"
   .position="end"
 >
   <template>
-	My tooltip<br />
+	My stepper<br />
 	content here...
   </template>
-</panda-tooltip>
+</panda-stepper>
 `;

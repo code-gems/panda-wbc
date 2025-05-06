@@ -248,6 +248,7 @@ export class PandaNotifications extends LitElement {
 						.hideIcon="${hideIcon}"
 						.autoClose="${autoClose}"
 						.autoCloseInterval="${this.autoCloseInterval ?? autoCloseInterval}"
+						.position="${this.position}"
 						.customStyle="${customStyle ?? this.customStyle}"
 						@on-close="${() => this._onCloseNotification(id as string)}"
 						closable

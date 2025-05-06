@@ -46,18 +46,12 @@ export class ContentPage extends ContentPageTemplate {
 		{
 			title: "Step 1",
 			description: "This is the first step.",
-			icon: "coffee",
-			steps: [
-				{
-					title: "Substep 1.1",
-				},
-				{
-					title: "Substep 1.2",
-				}
-			]
+			icon: "cake"
 		},
 		{
 			title: "Step 2",
+			icon: "qrcode",
+			description: "This is the second step.",
 			steps: [
 				{
 					title: "Substep 2.1",
@@ -71,7 +65,8 @@ export class ContentPage extends ContentPageTemplate {
 			title: "Step 3",
 			steps: [
 				{ title: "Substep 3.1" },
-				{ title: "Substep 3.2" }
+				{ title: "Substep 3.2" },
+				{ title: "Substep 3.3" }
 			]
 		},
 	];
