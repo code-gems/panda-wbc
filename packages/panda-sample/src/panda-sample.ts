@@ -3,7 +3,7 @@ import { Tab } from "panda-sample-types";
 
 // styles
 import { styles } from "./styles/styles";
-import { scrollbar } from "@panda-wbc/panda-theme";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components
 import "@panda-wbc/panda-icon";

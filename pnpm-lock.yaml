@@ -223,12 +223,12 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-mixins':
+        specifier: workspace:*
+        version: link:../panda-mixins
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      '@panda-wbc/panda-theme':
-        specifier: workspace:*
-        version: link:../panda-theme
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -356,6 +356,9 @@ importers:
       '@panda-wbc/panda-menu':
         specifier: workspace:*
         version: link:../panda-menu
+      '@panda-wbc/panda-mixins':
+        specifier: workspace:*
+        version: link:../panda-mixins
       '@panda-wbc/panda-multi-input':
         specifier: workspace:*
         version: link:../panda-multi-input
@@ -495,9 +498,9 @@ importers:
 
   packages/panda-details-dialog:
     dependencies:
-      '@panda-wbc/panda-theme':
+      '@panda-wbc/panda-mixins':
         specifier: workspace:*
-        version: link:../panda-theme
+        version: link:../panda-mixins
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -511,9 +514,9 @@ importers:
 
   packages/panda-dialog:
     dependencies:
-      '@panda-wbc/panda-theme':
+      '@panda-wbc/panda-mixins':
         specifier: workspace:*
-        version: link:../panda-theme
+        version: link:../panda-mixins
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -556,9 +559,9 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
-      '@panda-wbc/panda-theme':
+      '@panda-wbc/panda-mixins':
         specifier: workspace:*
-        version: link:../panda-theme
+        version: link:../panda-mixins
       '@panda-wbc/panda-utils':
         specifier: workspace:*
         version: link:../panda-utils
@@ -574,10 +577,6 @@ importers:
         version: 4.9.5
 
   packages/panda-icon:
-    dependencies:
-      lit:
-        specifier: ^3.0.2
-        version: 3.0.2
     devDependencies:
       rimraf:
         specifier: ^6.0.0
@@ -591,6 +590,19 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-mixins:
+    dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -718,9 +730,9 @@ importers:
 
   packages/panda-popover:
     dependencies:
-      '@panda-wbc/panda-theme':
+      '@panda-wbc/panda-mixins':
         specifier: workspace:*
-        version: link:../panda-theme
+        version: link:../panda-mixins
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -789,9 +801,9 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
-      '@panda-wbc/panda-theme':
+      '@panda-wbc/panda-mixins':
         specifier: workspace:*
-        version: link:../panda-theme
+        version: link:../panda-mixins
       '@panda-wbc/panda-time-ago':
         specifier: workspace:*
         version: link:../panda-time-ago
@@ -814,12 +826,12 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-mixins':
+        specifier: workspace:*
+        version: link:../panda-mixins
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      '@panda-wbc/panda-theme':
-        specifier: workspace:*
-        version: link:../panda-theme
       '@panda-wbc/panda-utils':
         specifier: workspace:*
         version: link:../panda-utils
@@ -839,12 +851,12 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-mixins':
+        specifier: workspace:*
+        version: link:../panda-mixins
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      '@panda-wbc/panda-theme':
-        specifier: workspace:*
-        version: link:../panda-theme
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -1006,12 +1018,12 @@ importers:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-mixins':
+        specifier: workspace:*
+        version: link:../panda-mixins
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      '@panda-wbc/panda-theme':
-        specifier: workspace:*
-        version: link:../panda-theme
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -1041,12 +1053,12 @@ importers:
 
   packages/panda-textarea:
     dependencies:
+      '@panda-wbc/panda-mixins':
+        specifier: workspace:*
+        version: link:../panda-mixins
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      '@panda-wbc/panda-theme':
-        specifier: workspace:*
-        version: link:../panda-theme
       lit:
         specifier: ^3.0.2
         version: 3.0.2
@@ -1059,10 +1071,6 @@ importers:
         version: 4.9.5
 
   packages/panda-theme:
-    dependencies:
-      lit:
-        specifier: ^3.0.2
-        version: 3.0.2
     devDependencies:
       rimraf:
         specifier: ^6.0.0
@@ -1088,6 +1096,19 @@ importers:
         version: 4.9.5
 
   packages/panda-time-ago:
+    dependencies:
+      lit:
+        specifier: ^3.0.2
+        version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
+  packages/panda-time-picker:
     dependencies:
       lit:
         specifier: ^3.0.2

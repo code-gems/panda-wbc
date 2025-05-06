@@ -1,9 +1,11 @@
 {
-	"name": "@panda-wbc/panda-popover",
+	"name": "@panda-wbc/panda-mixins",
 	"version": "1.0.0",
-	"description": "Lit based web component - popover",
+	"description": "UI mixins for panda-wbc",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-popover.js",
+	"main": "lib/panda-mixins.js",
+	"type": "module",
+	"module": "src/panda-mixins.ts",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,17 +14,12 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
-		"web component",
-		"ui component",
-		"popover"
+		"mixins"
 	],
 	"author": "code-gems",
 	"license": "MIT",
 	"dependencies": {
-		"lit": "^3.0.2",
-		"@panda-wbc/panda-mixins": "workspace:*"
+		"lit": "^3.0.2"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
@@ -30,8 +27,6 @@
 	},
 	"files": [
 		"src",
-		"lib",
-		"index.d.ts"
-	],
-	"types": "index.d.ts"
+		"lib"
+	]
 }

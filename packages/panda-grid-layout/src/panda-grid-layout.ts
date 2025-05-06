@@ -6,7 +6,7 @@ import { PandaGridPanelPlaceholder } from "./panda-grid-panel-placeholder";
 
 // style
 import { styles } from "./styles/styles";
-import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components
 import "./panda-grid-panel";

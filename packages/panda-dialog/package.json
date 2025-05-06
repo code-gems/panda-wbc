@@ -23,7 +23,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"lit": "^3.0.2",
-		"@panda-wbc/panda-theme": "workspace:*"
+		"@panda-wbc/panda-mixins": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",

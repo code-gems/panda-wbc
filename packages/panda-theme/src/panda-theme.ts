@@ -65,6 +65,3 @@ declare global {
 if (!customElements.get("panda-theme")) {
 	customElements.define("panda-theme", PandaTheme);
 }
-
-// Export mixins
-export * from "./mixins";

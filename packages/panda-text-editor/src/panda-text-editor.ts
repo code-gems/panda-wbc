@@ -5,7 +5,7 @@ import { PandaTextEditorOptions, EmlFileConfig, EDITOR_COMMAND } from "../index"
 import { styles } from "./styles/styles";
 
 // mixins
-import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components
 import "@panda-wbc/panda-icon";

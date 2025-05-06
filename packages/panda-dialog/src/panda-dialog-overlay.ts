@@ -3,7 +3,7 @@
 
 // styles
 import { styles } from "./styles/overlay-styles";
-import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // utils
 import { LitElement, html, PropertyValues } from "lit";
