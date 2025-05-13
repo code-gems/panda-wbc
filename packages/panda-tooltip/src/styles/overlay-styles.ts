@@ -19,6 +19,8 @@ export const styles = css`
 		padding: var(--panda-tooltip-padding, 10px);
 
 		color: var(--panda-tooltip-text-color, #fff);
+		font-size: var(--panda-font-size-m, 14px);
+		font-family: var(--panda-font-family, "Poppins");
 		transition: opacity 400ms ease-in-out;
 
 		border-radius: var(--panda-tooltip-border-radius, 10px);

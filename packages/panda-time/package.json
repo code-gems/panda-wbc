@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-popover",
+	"name": "@panda-wbc/panda-time-picker",
 	"version": "1.0.0",
-	"description": "Native web component - popover",
+	"description": "Lit based web component - time picker",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-popover.js",
+	"main": "lib/panda-time-picker.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,15 +12,19 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
+		"lit",
+		"lit-element",
 		"web component",
-		"native component",
+		"panda-wbc",
 		"ui component",
-		"popover",
-		"popper"
+		"time",
+		"time picker"
 	],
 	"author": "code-gems",
-	"license": "MIT",
-	"dependencies": {},
+	"license": "Apache-2.0",
+	"dependencies": {
+		"lit": "^3.0.2"
+	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
 		"typescript": "^4.5.4"
@@ -30,5 +34,7 @@
 		"lib",
 		"index.d.ts"
 	],
-	"types": "index.d.ts"
+	"publishConfig": {
+		"access": "public"
+	}
 }

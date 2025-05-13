@@ -5,7 +5,7 @@ import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } f
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-popover";
+// import "@panda-wbc/panda-time-picker/lib/panda-time-picker-clock-view";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -19,11 +19,10 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
-import { samples } from "./samples/samples";
 
 @page(pageConfig)
-@customElement("panda-popover-content-page")
-export class PandaSliderContentPage extends ContentPageTemplate {
+@customElement("panda-time-picker-content-page")
+export class ContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;
 	public customStyles = styles;
@@ -48,7 +47,7 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
-				<h1>POPOVER</h1>
+				<h1>TIME PICKER</h1>
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -58,11 +57,6 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 		return html`
 			${this._renderOverviewSection()}
 		`;
-		// return html`
-		// 	${this._renderOverviewSection()}
-		// 	${this._renderInstallationSection()}
-		// 	${this._renderUsageSection()}
-		// `;
 	}
 
 	private _renderOverviewSection(): TemplateResult {
@@ -72,10 +66,7 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-						The Popover component is a versatile and customizable element that displays content in a floating box.
-						It can be used to show additional information, tooltips, or any other content that needs to be presented in a non-intrusive way.
-						The Popover can be triggered by various events, such as clicks or hovers, and can be positioned relative to its target element.
-						With its flexible design, the Popover component is ideal for enhancing user experience by providing contextual information without cluttering the interface.
+
 					</p>
 				</div>
 
@@ -83,25 +74,10 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
-								<div class="col-half">
+								<div class="col-full">
 
-									<panda-button id="anchor">
-										Show popover
-									</panda-button>
-
-									<panda-popover
-										for="anchor"
-										theme="done"
-										position-vertical="top"
-										position-horizontal="right"
-									>
-										<template>
-											<div class="popover-content">
-												<p>Popover content goes here.</p>
-												<p>It can contain any HTML elements.</p>
-											</div>
-										</template>
-									</panda-popover>
+									<panda-time-picker-clock-view>
+									</panda-time-picker-clock-view>
 
 								</div>
 							</div>
@@ -151,8 +127,6 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 				</div>
 				${this._renderComponentPropertiesSection()}
 				${this._renderComponentEventsSection()}
-
-				${samples.default()}
 			</div>
 		`;
 	}

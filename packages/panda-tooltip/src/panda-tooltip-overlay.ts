@@ -156,9 +156,7 @@ export class PandaTooltipOverlay extends LitElement {
 				}
 
 				// apply tooltip position
-				const position = this._correctedPosition
-					? this._correctedPosition
-					: this.position;
+				const position = this._correctedPosition ?? this.position;
 
 				// set default position to top
 				let overlayTop = contextElementRect.top - overlayRect.height;

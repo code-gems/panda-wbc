@@ -5,110 +5,262 @@ import { PopoverPosition } from "../index";
 import { overlayStyles } from "./styles/styles";
 
 // utils
-import { LitElement, html, PropertyValues, TemplateResult } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
 import {
 	isContextElementVisible,
 	positionObserver,
 	resetPositionCss,
 } from "./utils/utils";
 
-@customElement("panda-popover-overlay")
-export class PandaPopoverOverlay extends LitElement {
-	//css styles
-	static get styles() {
-		return overlayStyles;
+export class PandaPopoverOverlay extends HTMLElement {
+	// ================================================================================================================
+	// PROPERTIES =====================================================================================================
+	// ================================================================================================================
+
+	static readonly observedAttributes = [
+		"for",
+		"position-vertical",
+		"position-horizontal",
+		"align-vertical",
+		"align-horizontal",
+		"customStyle",
+		"show"
+	];
+
+	// show ===========================================================================================================
+	private _show!: boolean;
+
+	get show(): boolean {
+		return this._show;
 	}
 
-	@state()
-	contextElement!: Element;
+	set show(value: boolean) {
+		if (this._show !== value) {
+			this._show = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("show", "");
+			} else {
+				this.removeAttribute("show");
+			}
+		}
+	}
 
-	@property({ type: Element })
-	template!: Element;
+	// anchor element =================================================================================================
+	private _anchorEl!: Element;
 
-	@property({ type: String })
-	position: PopoverPosition = PopoverPosition.TOP;
+	get anchorEl(): Element {
+		return this._anchorEl;
+	}
 
-	@property({ type: String })
-	customStyle!: string;
+	set anchorEl(value: Element) {
+		if (this._anchorEl !== value) {
+			this._anchorEl = value;
+		}
+	}
 
-	@property({ type: Boolean })
-	show!: boolean;
+	// template =======================================================================================================
+	private _templateEl!: Element;
+
+	get templateEl(): Element {
+		return this._templateEl;
+	}
+
+	set templateEl(value: Element) {
+		if (this._templateEl !== value) {
+			this._templateEl = value;
+		}
+	}
+
+	// position vertical ==============================================================================================
+	private _positionVertical!: PopoverPosition;
+
+	get positionVertical(): PopoverPosition {
+		return this._positionVertical;
+	}
+
+	set positionVertical(value: PopoverPosition) {
+		if (this._positionVertical !== value) {
+			this._positionVertical = value;
+			this.setAttribute("position-vertical", this._positionVertical); // reflect to attribute
+		}
+	}
+
+	// position horizontal ============================================================================================
+	private _positionHorizontal!: PopoverPosition;
+
+	get positionHorizontal(): PopoverPosition {
+		return this._positionHorizontal;
+	}
+
+	set positionHorizontal(value: PopoverPosition) {
+		if (this._positionHorizontal !== value) {
+			this._positionHorizontal = value;
+			this.setAttribute("position-horizontal", this._positionHorizontal); // reflect to attribute
+		}
+	}
+
+	// align-vertical =================================================================================================
+	private _alignVertical!: PopoverPosition;
+
+	get alignVertical(): PopoverPosition {
+		return this._alignVertical;
+	}
+
+	set alignVertical(value: PopoverPosition) {
+		if (this._alignVertical !== value) {
+			this._alignVertical = value;
+			this.setAttribute("align-vertical", this._alignVertical); // reflect to attribute
+		}
+	}
+
+	// align-horizontal ===============================================================================================
+	private _alignHorizontal!: PopoverPosition;
+
+	get alignHorizontal(): PopoverPosition {
+		return this._alignHorizontal;
+	}
+
+	set alignHorizontal(value: PopoverPosition) {
+		if (this._alignHorizontal !== value) {
+			this._alignHorizontal = value;
+			this.setAttribute("align-horizontal", this._alignHorizontal); // reflect to attribute
+		}
+	}
+
+	// custom style ===================================================================================================
+	private _customStyle!: string;
+
+	get customStyle(): string {
+		return this._customStyle;
+	}
+
+	set customStyle(value: string) {
+		if (this._customStyle !== value) {
+			this._customStyle = value;
+		}
+	}
 
 	// view props
-	@query("#popover")
-	private readonly _contentEl!: HTMLDivElement;
-
-	private _correctedPosition: PopoverPosition | null = null;
-
-	private _positionObserver: any = null;
-	private readonly _positionChangeEvent: any = this._onPositionChange.bind(this);
+	private _preventClose!: boolean;
+	private _correctedPositionVertical!: PopoverPosition | null;
+	private _correctedPositionHorizontal!: PopoverPosition | null;
+	private _positionObserver!: any;
+	
+	// events
+	private readonly _positionChangeEvent!: any;
+	
+	// elements
+	private _popoverEl!: HTMLDivElement;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	protected firstUpdated(): void {
-		// add position change observer
-		if (this.contextElement) {
-			this._positionObserver = positionObserver(this.contextElement, this._positionChangeEvent);
-		}
+	constructor() {
+		super();
+		this.attachShadow({ mode: "open", delegatesFocus: true });
+		console.log("%c 🧪 (constructor)", "font-size: 24px; color: limegreen; background: black;");
+		// initialize properties
+		this._positionVertical = PopoverPosition.TOP;
+		this._positionHorizontal = PopoverPosition.LEFT;
+		this._preventClose = false;
+		this._correctedPositionVertical = null;
+		this._correctedPositionHorizontal = null;
+		this._positionObserver = null;
+		// initialize events
+		this._positionChangeEvent = this._onPositionChange.bind(this);
 	}
 
-	protected updated(_changedProperties: PropertyValues): void {
-		if (_changedProperties.has("template") && this.template) {
-			this._applyContent();
-		}
-		// check if custom style is defined
-		if (_changedProperties.has("customStyle") && this.customStyle !== undefined) {
-			this._applyCustomStyle();
-		}
+	connectedCallback(): void {
+		console.log("%c 🧪 (connectedCallback)", "font-size: 24px; color: limegreen; background: black;");
+		this._render();
+		this._applyStyles();
+		// add position change observer
+		// if (this._anchorEl) {
+			// this._positionObserver = positionObserver(this._anchorEl, this._positionChangeEvent);
+		// }
+		// initialize elements
+		this._popoverEl = this.shadowRoot?.querySelector("#popover") as HTMLDivElement;
+		// initialize events
+		this.addEventListener("click", this._onCloseOverlay.bind(this));
+		this._popoverEl.addEventListener("click", this._onPreventClose.bind(this));
+		console.log("%c 🧪 (connectedCallback) _popoverEl", "font-size: 24px; color: limegreen; background: black;", this._popoverEl);
+		// apply content
+		this._applyContent();
 	}
 
 	disconnectedCallback(): void {
-		super.disconnectedCallback();
+		console.log("%c 🧪 (disconnectedCallback)", "font-size: 24px; color: limegreen; background: black;");
 		// cancel position observer
 		if (this._positionObserver !== null) {
 			this._positionObserver.cancel();
 		}
 	}
 
+	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		console.log("%c 🧪 (attributeChangedCallback)", "font-size: 24px; color: limegreen; background: black;", _name, _oldValue, _newValue);
+		if (_name === "template") {
+			this._applyContent();
+		}
+		// check if custom style is defined
+		if (_name === "customStyle") {
+			this._applyCustomStyle();
+		}
+		this._render();
+	}
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	render(): TemplateResult {
-		return html`
-			<div
-				id="popover"
-				class="popover"
-				part="popover"
-			>
-			</div>
-		`;
+	private _render() {
+		console.log("%c 🧪 (_render)", "font-size: 24px; color: limegreen; background: black;", this.shadowRoot);
+		if (this.shadowRoot) {
+			this.shadowRoot.innerHTML = `
+				<div
+					id="popover"
+					class="popover"
+					part="popover"
+				>
+				</div>
+			`;
+		}
 	}
 
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
+	/** Apply styles to this components shadowRoot */
+	private _applyStyles() {
+		console.log("%c 🧪 (_applyStyles)", "font-size: 24px; color: limegreen; background: black;", this.shadowRoot);
+		const cssStyleSheet = new CSSStyleSheet();
+		cssStyleSheet.replaceSync(overlayStyles);
+		if (this.shadowRoot) {
+			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
+		}
+	}
+
 	/** Apply template content to overlay */
 	private _applyContent() {
 		setTimeout(() => {
-			const contextElementRect = this.contextElement.getBoundingClientRect();
+			const anchorElRect = this._anchorEl.getBoundingClientRect();
+			console.log("%c 🧪 (_applyContent)", "font-size: 24px; color: limegreen; background: black;", anchorElRect);
+			console.log("%c 🧪 (_applyContent) pos V", "font-size: 24px; color: limegreen; background: black;", this._positionVertical);
+			console.log("%c 🧪 (_applyContent) pos H", "font-size: 24px; color: limegreen; background: black;", this._positionHorizontal);
 			console.log(
-				"%c (_applyContent) contextElement:",
+				"%c (_applyContent) anchorElRect:",
 				"font-size: 24px; color: crimson; background: black;",
-				contextElementRect.top,
-				isContextElementVisible(contextElementRect)
+				anchorElRect.top,
+				isContextElementVisible(anchorElRect)
 			);
 
-			if (this.template !== null && contextElementRect && isContextElementVisible(contextElementRect)) {
-				this._contentEl.innerHTML = this.template.innerHTML;
-				this._correctedPosition = null;
+			if (this.templateEl !== null && anchorElRect && isContextElementVisible(anchorElRect)) {
+				this._popoverEl.innerHTML = this.templateEl.innerHTML;
+				this._correctedPositionVertical = null;
 
 				// get overlay size details
-				const overlayRect = this._contentEl.getBoundingClientRect();
+				const overlayRect = this._popoverEl.getBoundingClientRect();
 
 				// check if we have enough space to display popover content and do the position correction
 				let noSpaceBottom = false;
@@ -116,151 +268,94 @@ export class PandaPopoverOverlay extends LitElement {
 				let noSpaceLeft = false;
 				let noSpaceRight = false;
 
-				// 1. check if we have enough space at the top
-				if (contextElementRect.top - window.scrollY - overlayRect.height < 0) {
+				// 1. check if we have enough space at the top ========================================================
+				if (anchorElRect.top - window.scrollY - overlayRect.height < 0) {
 					noSpaceTop = true;
 				}
-
 				// check if correction is needed
-				if (noSpaceTop && this.position === PopoverPosition.TOP) {
-					this._correctedPosition = PopoverPosition.BOTTOM;
+				if (noSpaceTop && this.positionVertical === PopoverPosition.TOP) {
+					this._correctedPositionVertical = PopoverPosition.BOTTOM;
 				}
 
-				if (noSpaceTop && this.position === PopoverPosition.TOP_LEFT) {
-					this._correctedPosition = PopoverPosition.BOTTOM_LEFT;
-				}
-
-				if (noSpaceTop && this.position === PopoverPosition.TOP_RIGHT) {
-					this._correctedPosition = PopoverPosition.BOTTOM_RIGHT;
-				}
-
-				// 2. check if we have enough space at the bottom
-				if (contextElementRect.bottom + overlayRect.height - window.scrollY > window.innerHeight) {
+				// 2. check if we have enough space at the bottom =====================================================
+				if (anchorElRect.bottom + overlayRect.height - window.scrollY > window.innerHeight) {
 					noSpaceBottom = true;
 				}
 				// check if correction is needed
-				if (noSpaceBottom && this.position === PopoverPosition.BOTTOM) {
-					this._correctedPosition = PopoverPosition.TOP;
+				if (noSpaceBottom && this.positionVertical === PopoverPosition.BOTTOM) {
+					this._correctedPositionVertical = PopoverPosition.TOP;
 				}
 
-				if (noSpaceBottom && this.position === PopoverPosition.BOTTOM_LEFT) {
-					this._correctedPosition = PopoverPosition.TOP_LEFT;
-				}
-
-				if (noSpaceBottom && this.position === PopoverPosition.BOTTOM_RIGHT) {
-					this._correctedPosition = PopoverPosition.TOP_RIGHT;
-				}
-
-				// 3. check if we have enough space on the right
-				if (contextElementRect.right + overlayRect.width - window.scrollX > window.innerWidth) {
+				// 3. check if we have enough space on the right ======================================================
+				if (anchorElRect.right + overlayRect.width - window.scrollX > window.innerWidth) {
 					noSpaceRight = true;
 				}
-
-				if (noSpaceRight && this.position === PopoverPosition.RIGHT) {
-					this._correctedPosition = PopoverPosition.LEFT;
+				// check if correction is needed
+				if (noSpaceRight && this.positionHorizontal === PopoverPosition.RIGHT) {
+					this._correctedPositionHorizontal = PopoverPosition.LEFT;
 				}
 
-				// 4. check if we have enough space on the left
-				if (contextElementRect.left - overlayRect.width - window.scrollX < 0) {
+				// 4. check if we have enough space on the left =======================================================
+				if (anchorElRect.left - overlayRect.width - window.scrollX < 0) {
 					noSpaceLeft = true;
 				}
-
-				if (noSpaceLeft && this.position === PopoverPosition.LEFT) {
-					this._correctedPosition = PopoverPosition.RIGHT;
+				// check if correction is needed
+				if (noSpaceLeft && this.positionHorizontal === PopoverPosition.LEFT) {
+					this._correctedPositionHorizontal = PopoverPosition.RIGHT;
 				}
 
-				// apply popover position
-				const position = this._correctedPosition
-					? this._correctedPosition
-					: this.position;
+				// apply popover corrected position ===================================================================
+				const positionVertical = this._correctedPositionVertical ?? this.positionVertical;
+				const positionHorizontal = this._correctedPositionHorizontal ?? this.positionHorizontal;
 
 				// set default position to top
-				let overlayTop = contextElementRect.top - overlayRect.height;
-				let overlayLeft = contextElementRect.left + (contextElementRect.width / 2) - (overlayRect.width / 2);
+				let overlayTop = anchorElRect.top - overlayRect.height;
+				let overlayLeft = anchorElRect.left + (anchorElRect.width / 2) - (overlayRect.width / 2);
 
-				switch (position) {
-					case (PopoverPosition.TOP_LEFT):
-						overlayLeft = contextElementRect.left;
-						break;
-					case (PopoverPosition.TOP_RIGHT):
-						overlayLeft = contextElementRect.right - overlayRect.width;
-						break;
+				switch (positionHorizontal) {
 					case (PopoverPosition.LEFT):
-						overlayTop = contextElementRect.top + (contextElementRect.height / 2) - (overlayRect.height / 2);
-						overlayLeft = contextElementRect.left - overlayRect.width;
+						overlayLeft = anchorElRect.left;
+						break;
+					case (PopoverPosition.CENTER):
+						overlayLeft = anchorElRect.left + (anchorElRect.width / 2) - (overlayRect.width / 2);
 						break;
 					case (PopoverPosition.RIGHT):
-						overlayTop = contextElementRect.top + (contextElementRect.height / 2) - (overlayRect.height / 2);
-						overlayLeft = contextElementRect.right;
+						overlayLeft = anchorElRect.right - overlayRect.width;
+						break;
+				}
+
+				switch (positionVertical) {
+					case (PopoverPosition.TOP):
+						overlayTop = anchorElRect.top - overlayRect.height;
+						break;
+					case (PopoverPosition.CENTER):
+						overlayTop = anchorElRect.top + (anchorElRect.height / 2) - (overlayRect.height / 2);
 						break;
 					case (PopoverPosition.BOTTOM):
-						overlayTop = contextElementRect.bottom;
-						break;
-					case (PopoverPosition.BOTTOM_LEFT):
-						overlayTop = contextElementRect.bottom;
-						overlayLeft = contextElementRect.left;
-						break;
-					case (PopoverPosition.BOTTOM_RIGHT):
-						overlayTop = contextElementRect.bottom;
-						overlayLeft = contextElementRect.right - overlayRect.width;
+						overlayTop = anchorElRect.bottom;
 						break;
 				}
 
 				// position overlay content
-				this._contentEl.style.transform = `translate(${overlayLeft}px, ${overlayTop}px)`;
+				// this._popoverEl.style.transform = `translate(${overlayLeft}px, ${overlayTop}px)`;
+				this._popoverEl.style.top = `${overlayTop}px`;
+				this._popoverEl.style.left = `${overlayLeft}px`;
 				// reset position classes
-				resetPositionCss(this._contentEl);
-				this._contentEl.classList.add(this._getPositionCss()); // add position css class
-				this._contentEl.classList.add("show");
+				resetPositionCss(this._popoverEl);
+				this._popoverEl.classList.add("show");
 			} else {
-				this._contentEl.classList.remove("show");
-				this._contentEl.innerHTML = "";
+				this._popoverEl.classList.remove("show");
+				this._popoverEl.innerHTML = "";
 			}
 		}, 0);
-	}
-
-	private _getPositionCss(): string {
-		const position = this._correctedPosition
-			? this._correctedPosition
-			: this.position;
-		let positionCss: string = "";
-
-		switch (position) {
-			case PopoverPosition.BOTTOM:
-				positionCss = "bottom";
-				break;
-			case PopoverPosition.LEFT:
-				positionCss = "left";
-				break;
-			case PopoverPosition.RIGHT:
-				positionCss = "right";
-				break;
-			case PopoverPosition.TOP_LEFT:
-				positionCss = "top-left";
-				break;
-			case PopoverPosition.TOP_RIGHT:
-				positionCss = "top-right";
-				break;
-			case PopoverPosition.BOTTOM_LEFT:
-				positionCss = "bottom-left";
-				break;
-			case PopoverPosition.BOTTOM_RIGHT:
-				positionCss = "bottom-right";
-				break;
-			case PopoverPosition.TOP:
-			default:
-				positionCss = "top"; // set default
-		}
-		return positionCss;
 	}
 
 	/** Apply user defined custom style to this components shadowRoot */
 	private _applyCustomStyle(): void {
 		if (this.customStyle && this.shadowRoot) {
-			const customStyle = document.createElement("style");
-			customStyle.innerHTML = this.customStyle;
-			customStyle.setAttribute("scope", "custom-style");
-			this.shadowRoot.appendChild(customStyle);
+			const customStyle = new CSSStyleSheet();
+			customStyle.replaceSync(this.customStyle);
+			this.shadowRoot.adoptedStyleSheets.push(customStyle);
 		}
 	}
 
@@ -269,9 +364,26 @@ export class PandaPopoverOverlay extends LitElement {
 		this.dispatchEvent(event);
 	}
 
+	private _triggerCloseEvent(): void {
+		const event = new CustomEvent("close", {});
+		this.dispatchEvent(event);
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _onPreventClose(): void {
+		this._preventClose = true;
+	}
+
+	private _onCloseOverlay(): void {
+		if (this._preventClose) {
+			this._preventClose = false;
+		} else {
+			this._triggerCloseEvent();
+		}
+	}
 
 	private _onPositionChange() {
 		console.log("%c (_onPositionChange)", "font-size: 24px; color: crimson; background: black;");
@@ -282,6 +394,11 @@ export class PandaPopoverOverlay extends LitElement {
 			this._hidePopoverOverlay();
 		}
 	}
+}
+
+// Register the custom element
+if (!customElements.get("panda-popover-overlay")) {
+	customElements.define("panda-popover-overlay", PandaPopoverOverlay);
 }
 
 declare global {

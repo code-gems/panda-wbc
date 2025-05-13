@@ -1,109 +1,61 @@
-import { css } from "lit";
-
-export const styles = css`
+export const styles = /* css */`
 	:host {
 		display: none;
 	}
 `;
 
-export const overlayStyles = css`
+export const overlayStyles = /* css */`
 	:host {
-		position: absolute;
+		position: fixed;
+		display: block;
+		width: 100dvw;
+		height: 100dvh;
+		inset: 0;
 		pointer-events: auto;
-		width: 1px;
-		height: 1px;
-		top: 0px;
-		left: 0px;
-		z-index: 9999;
+
+		background: var(--panda-popover-overlay-background, transparent);
+		z-index: 100;
 	}
 
 	.popover {
 		position: fixed;
 		display: flex;
 		flex-flow: column;
+		padding: var(--panda-tooltip-padding, 10px);
 		opacity: 0;
-		padding: var(--panda-popover-padding, 10px);
 
-		color: var(--panda-popover-text-color, hsl(210deg 5% 25%));
+		color: var(--panda-text-color, hsl(210deg 5% 25%));
+		font-size: var(--panda-font-size-m, 14px);
+		font-family: var(--panda-font-family, "Poppins");
+		transition: opacity 400ms ease-in-out;
 
-		border-radius: var(--panda-popover-border-radius, 10px);
-		background-color: var(--panda-popover-background-color, #fff);
-		box-shadow: var(--panda-popover-box-shadow, 0px 5px 10px hsl(0deg 0% 0% / 20%));
+		border: var(--panda-dialog-border, 1px solid hsl(0deg 0% 85%));
+		border-radius: var(--panda-dialog-border-radius, 5px);
+		background-color: var(--panda-dialog-background-color, hsl(0deg 0% 100%));
+		box-shadow: var(--panda-dialog-box-shadow, 0px 2px 4px hsl(0deg 0% 0% / 20%));
+		box-sizing: border-box;
 	}
 
-	.popover:before {
-		position: absolute;
-		display: block;
-		width: 0;
-		height: 0;
-		content: " ";
-		bottom: -7px;
-		left: 50%;
-		transform: translateX(-50%);
-		pointer-events: none;
-
-		border-left: 8px solid transparent;
-		border-right: 8px solid transparent;
-		border-top: 8px solid var(--panda-popover-background-color, #fff);
+	.popover.show {
+		animation-name: showAnimation;
+		animation-duration: 200ms;
+		animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+		animation-fill-mode: forwards;
 	}
 
-	.popover.show { opacity: 1; }
+	/* ===================================================================== */
+	/* POSITION ============================================================ */
+	/* ===================================================================== */
 
-	/* ========================================================================= */
-	/* POSITION ================================================================ */
-	/* ========================================================================= */
-
-	/* TOP */
-	/* TOP-LEFT */
-	/* TOP-RIGHT */
-	.popover.top-left:before {
-		left: calc(var(--panda-popover-border-radius, 10px) + var(--panda-popover-padding, 10px));
-	}
-
-	.popover.top-right:before {
-		left: calc(100% - var(--panda-popover-border-radius, 10px) - var(--panda-popover-padding, 10px));
-	}
-
-	/* BOTTOM */
-	/* BOTTOM-LEFT */
-	/* BOTTOM-RIGHT */
-	.popover.bottom:before,
-	.popover.bottom-left:before,
-	.popover.bottom-right:before {
-		top: -7px;
-		border-top: none;
-		border-bottom: 8px solid var(--panda-popover-background-color, #fff);
-	}
-
-	.popover.bottom-left:before {
-		left: calc(var(--panda-popover-border-radius, 10px) + var(--panda-popover-padding, 10px));
-	}
-
-	.popover.bottom-right:before {
-		left: calc(100% - var(--panda-popover-border-radius, 10px) - var(--panda-popover-padding, 10px));
-	}
-
-	/* LEFT */
-	.popover.left:before {
-		top: 50%;
-		left: 100%;
-		transform: translateY(-50%);
-
-		border-top: 8px solid transparent;
-		border-bottom: 8px solid transparent;
-		border-left: 8px solid var(--panda-popover-background-color, #fff);
-		border-right: none;
-	}
-
-	/* RIGHT */
-	.popover.right:before {
-		top: 50%;
-		left: -7px;
-		transform: translate(0%, -50%);
-
-		border-top: 8px solid transparent;
-		border-bottom: 8px solid transparent;
-		border-right: 8px solid var(--panda-popover-background-color, #fff);
-		border-left: none;
+	/* scale animation frames */
+	@keyframes showAnimation {
+		0% {
+			opacity: 0;
+			transform: scale(0.7);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
 	}
 `;

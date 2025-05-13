@@ -3,7 +3,7 @@ import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails, Compo
 
 // styles
 import { uiComponents } from "../styles/styles";
-import { scrollbar } from "@panda-wbc/panda-theme";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components & web-parts
 import "@panda-wbc/panda-particle-banner";

@@ -38,10 +38,6 @@ export const resetPositionCss = (element: Element): void => {
 		PopoverPosition.BOTTOM,
 		PopoverPosition.LEFT,
 		PopoverPosition.RIGHT,
-		PopoverPosition.TOP_LEFT,
-		PopoverPosition.TOP_RIGHT,
-		PopoverPosition.BOTTOM_LEFT,
-		PopoverPosition.BOTTOM_RIGHT,
 	].forEach((positionCss) => element.classList.remove(positionCss));
 }
 

@@ -7,7 +7,7 @@ const enum SampleTab {
 }
 
 // styles
-import { scrollbar } from "@panda-wbc/panda-theme";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 import { uiComponents } from "../styles/styles";
 
 // components

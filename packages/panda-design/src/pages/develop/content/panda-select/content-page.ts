@@ -9,7 +9,7 @@ import {
 // styles
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../../../styles/styles";
-import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components
 import "@panda-wbc/panda-select";

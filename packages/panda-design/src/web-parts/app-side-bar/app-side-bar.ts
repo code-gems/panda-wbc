@@ -5,7 +5,7 @@ import { PandaThemeSwitcherToggleEvent, PandaThemeSwitcherTheme } from "@panda-w
 // styles
 import { styles } from "./styles/styles";
 import { uiComponents } from "../../styles/styles";
-import { scrollbar } from "@panda-wbc/panda-theme/lib/mixins";
+import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components & web parts
 import "@panda-wbc/panda-theme-switcher";

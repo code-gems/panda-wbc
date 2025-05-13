@@ -29,6 +29,9 @@ export class PandaTooltip extends LitElement {
 	position!: TooltipPosition;
 
 	@property({ type: Boolean, reflect: true })
+	show: boolean = false;
+
+	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 
 	@property({ type: String, reflect: true })
@@ -73,6 +76,9 @@ export class PandaTooltip extends LitElement {
 	protected updated(_changedProperties: PropertyValues): void {
 		if (_changedProperties.has("disabled") && this.disabled) {
 			this._hideTooltip();
+		}
+		if (_changedProperties.has("show") && this.show && !this.disabled) {
+			this._showTooltip();
 		}
 	}
 

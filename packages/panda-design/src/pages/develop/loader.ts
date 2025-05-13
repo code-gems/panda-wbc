@@ -43,6 +43,7 @@ import "./content/panda-tetris/content-page";
 import "./content/panda-text-editor/content-page";
 import "./content/panda-text-field/content-page";
 import "./content/panda-textarea/content-page";
+import "./content/panda-time-picker/content-page";
 import "./content/panda-toast/content-page";
 import "./content/panda-toggle/content-page";
 import "./content/panda-tooltip/content-page";
