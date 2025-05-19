@@ -246,7 +246,7 @@ export const pandaThemeTurquoise = css`
 
 		--panda-text-color: hsl(183deg 66% 31%);
 		--panda-text-color-hover: hsl(183deg 66% 36%);
-		--panda-text-color-disabled: hsl(330deg 1% 43%);
+		--panda-text-color-disabled: hsl(185deg 47% 65%);
 		--panda-text-shadow: none;
 		--panda-text-line-height: 1.6em;
 
@@ -290,7 +290,7 @@ export const pandaThemeTurquoise = css`
 		/* ELEVATION / DEPTH ======================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-elevation-s: 0px 1px 2px var(--panda-black-color-20opc);
+		--panda-elevation-s: 0px 1px 2px var(--panda-black-color-10opc);
 		--panda-elevation-m: 0px 2px 4px var(--panda-black-color-20opc);
 		--panda-elevation-l: 0px 4px 8px var(--panda-black-color-30opc);
 		--panda-elevation-hero: 0px 6px 12px var(--panda-black-color-30opc);
@@ -337,8 +337,8 @@ export const pandaThemeTurquoise = css`
 		--panda-component-size-l: 40px;
 		--panda-component-size-xl: 48px;
 		
-		--panda-border-color: hsl(0deg 0% 85%);
-		--panda-border-color-disabled: hsl(0deg 0% 87%);
+		--panda-border-color: hsl(183deg 67% 79%);
+		--panda-border-color-disabled: hsl(183deg 67% 86%);
 
 		/* OUTLINE & FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);
@@ -351,7 +351,7 @@ export const pandaThemeTurquoise = css`
 		--panda-form-validation-invalid: var(--panda-action-color-alert);
 
 		/* LABEL */
-		--panda-label-color: hsl(0deg 0% 50%);
+		--panda-label-color: hsl(183deg 66% 38%);
 		--panda-label-text-shadow: none;
 		--panda-label-font-size: var(--panda-font-size-s);
 		--panda-label-font-family: var(--panda-font-family);
@@ -367,9 +367,9 @@ export const pandaThemeTurquoise = css`
 		--panda-input-font-size: var(--panda-font-size-m);
 		--panda-input-font-family: var(--panda-font-family);
 
-		--panda-input-border-color: hsl(0deg 0% 80%);
-		--panda-input-border-color-disabled: hsl(0deg 0% 80%);
-		--panda-input-border-color-hover: hsl(0deg 0% 65%);
+		--panda-input-border-color: hsl(183deg 67% 79%);
+		--panda-input-border-color-disabled: hsl(183deg 67% 86%);
+		--panda-input-border-color-hover: hsl(183deg 67% 81%);
 		--panda-input-border-radius: 5px;
 		--panda-input-icon-color: var(--panda-icon-color);
 		--panda-input-icon-background-color: hsl(0deg 0% 92%);
@@ -492,8 +492,8 @@ export const pandaThemeTurquoise = css`
 		/* ========================================================================================================= */
 
 		--panda-dropdown-border-radius: 5px;
-		--panda-dropdown-border-color: hsl(0deg 0% 80%);
-		--panda-dropdown-background-color: hsl(0deg 0% 100%);
+		--panda-dropdown-border-color: var(--panda-border-color);
+		--panda-dropdown-background-color: var(--panda-background-color-300);
 		
 		--panda-dropdown-item-padding: 10px 5px;
 		--panda-dropdown-item-border-radius: 5px;
@@ -504,15 +504,16 @@ export const pandaThemeTurquoise = css`
 		--panda-dropdown-item-text-shadow: none;
 		
 		--panda-dropdown-item-text-color: var(--panda-text-color);
-		--panda-dropdown-item-background-color: transparent;
-		--panda-dropdown-item-text-color-hover: var(--panda-primary-color);
-		--panda-dropdown-item-background-color-hover: var(--panda-primary-color-10opc);
+		--panda-dropdown-item-text-color-hover: var(--panda-text-color);
 		--panda-dropdown-item-text-color-active: var(--panda-primary-color);
-		--panda-dropdown-item-background-color-active: var(--panda-primary-color-10opc);
 		--panda-dropdown-item-text-color-selected: var(--panda-primary-text-color);
-		--panda-dropdown-item-background-color-selected: var(--panda-primary-color);
 		--panda-dropdown-item-text-color-disabled: var(--panda-text-color-disabled);
-		--panda-dropdown-item-background-color-disabled: var(--panda-background-color-300);
+
+		--panda-dropdown-item-background-color: transparent;
+		--panda-dropdown-item-background-color-hover: var(--panda-background-color-100);
+		--panda-dropdown-item-background-color-active: var(--panda-background-color-100);
+		--panda-dropdown-item-background-color-selected: var(--panda-primary-color);
+		--panda-dropdown-item-background-color-disabled: var(--panda-background-color-500);
 
 		/* ========================================================================================================= */
 		/* ICONS =================================================================================================== */

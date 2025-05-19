@@ -8,11 +8,6 @@ import "./panda-popover-overlay";
 // styles
 import { styles } from "./styles/styles";
 
-// constants
-const DEFAULT_DELAY = 500;
-
-// utils
-
 export class PandaPopover extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
@@ -23,8 +18,6 @@ export class PandaPopover extends HTMLElement {
 		"position-vertical",
 		"position-horizontal",
 		"disabled",
-		"show",
-		"delay",
 		"customStyle",
 	];
 
@@ -112,34 +105,6 @@ export class PandaPopover extends HTMLElement {
 		}
 	}
 
-	// show ===========================================================================================================
-	private _show: boolean = false;
-
-	get show(): boolean {
-		return this._show;
-	}
-
-	set show(value: boolean) {
-		if (this._show !== value) {
-			this._show = value;
-			this.setAttribute("show", String(this._show)); // reflect to attribute
-		}
-	}
-
-	// delay ==========================================================================================================
-	private _delay!: number;
-
-	get delay(): number {
-		return this._delay;
-	}
-
-	set delay(value: number) {
-		if (this._delay !== value) {
-			this._delay = value;
-			this.setAttribute("delay", String(this._delay)); // reflect to attribute
-		}
-	}
-
 	// custom style ===================================================================================================
 	private _customStyle!: string;
 
@@ -162,10 +127,6 @@ export class PandaPopover extends HTMLElement {
 	private readonly _showPopoverEvent!: any;
 	private readonly _hidePopoverEvent!: any;
 
-	// timers
-	private _showTimer!: ReturnType<typeof setTimeout> | null;
-	private _hideTimer!: ReturnType<typeof setTimeout> | null;
-
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -182,17 +143,12 @@ export class PandaPopover extends HTMLElement {
 		this._alignVertical = PopoverPosition.BOTTOM;
 		this._alignHorizontal = PopoverPosition.LEFT;
 		this._disabled = false;
-		this._show = false;
-		this._delay = DEFAULT_DELAY;
 		this._customStyle = "";
 		// elements
 		this._overlayEl = null;
 		// add event listeners
 		this._showPopoverEvent = this._showPopover.bind(this);
 		this._hidePopoverEvent = this._hidePopover.bind(this);
-		// init timers
-		this._showTimer = null;
-		this._hideTimer = null;
 	}
 
 	connectedCallback(): void {
@@ -228,11 +184,6 @@ export class PandaPopover extends HTMLElement {
 			this._disabled = _newValue;
 			this._hidePopover();
 		}
-		// show popover if show attribute is set and not disabled
-		if (_name === "show" && _newValue && !this._disabled) {
-			this._show = _newValue;
-			this._showPopover();
-		}
 		// set vertical position from attribute
 		if (_name === "position-vertical") {
 			this._positionVertical = _newValue;
@@ -244,11 +195,6 @@ export class PandaPopover extends HTMLElement {
 	}
 
 	disconnectedCallback(): void {
-		// clear timers
-		clearTimeout(this._showTimer as ReturnType<typeof setTimeout>);
-		this._showTimer = null;
-		clearTimeout(this._hideTimer as ReturnType<typeof setTimeout>);
-		this._hideTimer = null;
 		// clean up
 		if (this._anchorEl !== null) {
 			// remove anchor element events
@@ -313,7 +259,6 @@ export class PandaPopover extends HTMLElement {
 			this._overlayEl.positionHorizontal = this._positionHorizontal ?? PopoverPosition.LEFT;
 			this._overlayEl.anchorEl = this._anchorEl;
 			this._overlayEl.customStyle = this._customStyle;
-			this._overlayEl.show = this._show;
 			// add events
 			this._overlayEl.addEventListener("close", this._hidePopoverEvent);
 			// append overlay to the document body
@@ -325,10 +270,9 @@ export class PandaPopover extends HTMLElement {
 
 	/** Hide the popover and clean up */
 	private _hidePopover(): void {
-		if (this._overlayEl !== null && !this._show) {
+		if (this._overlayEl !== null) {
 			document.body.removeChild(this._overlayEl);
 			this._overlayEl = null;
-			this.show = false;
 		}
 		// notify visibility change
 		this._triggerVisibilityChangeEvent(false);

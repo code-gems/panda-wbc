@@ -3,6 +3,7 @@ declare module "panda-stepper-types" {
 		title: string;
 		// extra props
 		id: string;
+		index: number;
 		icon: string;
 		description: string;
 		tooltip: string;
@@ -10,6 +11,7 @@ declare module "panda-stepper-types" {
 		done: boolean;
 		disabled: boolean;
 		working: boolean;
+		active: boolean;
 		// sub-steps
 		steps: Omit<SuperStep, "steps">[];
 

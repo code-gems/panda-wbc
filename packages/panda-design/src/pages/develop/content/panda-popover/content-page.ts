@@ -79,7 +79,7 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 					</p>
 				</div>
 
-				<div class="sample-cont">
+				<div class="sample-cont" style="height: 2000px;">
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
@@ -97,8 +97,8 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 									>
 										<template>
 											<div class="popover-content">
-												<p>Popover content goes here.</p>
-												<p>It can contain any HTML elements.</p>
+												Popover content goes here.
+												It can contain any HTML elements.
 											</div>
 										</template>
 									</panda-popover>

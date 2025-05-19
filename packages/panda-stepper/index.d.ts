@@ -1,5 +1,6 @@
 export type PandaStep = {
 	title: string;
+	id?: any;
 	// extra props
 	icon?: string; // optional icon property
 	description?: string; // optional description property

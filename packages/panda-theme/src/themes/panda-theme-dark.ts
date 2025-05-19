@@ -1,4 +1,4 @@
-export const pandaThemeDark = `
+export const pandaThemeDark = /*css*/`
 	:root {
 		/* DARK THEME */
 		/* ========================================================================================================= */
@@ -428,8 +428,8 @@ export const pandaThemeDark = `
 		/* ========================================================================================================= */
 
 		--panda-dropdown-border-radius: 5px;
-		--panda-dropdown-border-color: hsl(0deg 0% 80%);
-		--panda-dropdown-background-color: hsl(0deg 0% 100%);
+		--panda-dropdown-border-color: var(--panda-border-color);
+		--panda-dropdown-background-color: var(--panda-background-color-300);
 		
 		--panda-dropdown-item-padding: 10px 5px;
 		--panda-dropdown-item-border-radius: 5px;
@@ -440,11 +440,16 @@ export const pandaThemeDark = `
 		--panda-dropdown-item-text-shadow: none;
 		
 		--panda-dropdown-item-text-color: var(--panda-text-color);
+		--panda-dropdown-item-text-color-hover: var(--panda-text-color);
+		--panda-dropdown-item-text-color-active: var(--panda-primary-color);
+		--panda-dropdown-item-text-color-selected: var(--panda-primary-text-color);
+		--panda-dropdown-item-text-color-disabled: var(--panda-text-color-disabled);
+
 		--panda-dropdown-item-background-color: transparent;
-		--panda-dropdown-item-text-color-hover: var(--panda-primary-color);
 		--panda-dropdown-item-background-color-hover: var(--panda-background-color-100);
-		--panda-dropdown-item-text-color-active: var(--panda-primary-text-color);
-		--panda-dropdown-item-background-color-active: var(--panda-primary-color);
+		--panda-dropdown-item-background-color-active: var(--panda-background-color-100);
+		--panda-dropdown-item-background-color-selected: var(--panda-primary-color);
+		--panda-dropdown-item-background-color-disabled: var(--panda-background-color-500);
 
 		/* ========================================================================================================= */
 		/* ICONS =================================================================================================== */
@@ -584,6 +589,12 @@ export const pandaThemeDark = `
 		--panda-dialog-background-color: var(--panda-background-color-900);
 		--panda-dialog-box-shadow: 0px 5px 10px var(--panda-black-color-50opc);
 		--panda-dialog-overlay-background-color: var(--panda-background-color-50opc);
+
+		/* ========================================================================================================= */
+		/* POPOVER ================================================================================================= */
+		/* ========================================================================================================= */
+
+		--panda-popover-background-color: var(--panda-background-color-300);
 
 		/* ========================================================================================================= */
 		/* PIPS PAGER ============================================================================================== */

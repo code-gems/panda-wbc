@@ -12,8 +12,6 @@ export const overlayStyles = /* css */`
 		height: 100dvh;
 		inset: 0;
 		pointer-events: auto;
-
-		background: var(--panda-popover-overlay-background, transparent);
 		z-index: 100;
 	}
 
@@ -21,6 +19,7 @@ export const overlayStyles = /* css */`
 		position: fixed;
 		display: flex;
 		flex-flow: column;
+		max-width: var(--panda-popover-max-width, 250px);
 		padding: var(--panda-tooltip-padding, 10px);
 		opacity: 0;
 
@@ -31,8 +30,8 @@ export const overlayStyles = /* css */`
 
 		border: var(--panda-dialog-border, 1px solid hsl(0deg 0% 85%));
 		border-radius: var(--panda-dialog-border-radius, 5px);
-		background-color: var(--panda-dialog-background-color, hsl(0deg 0% 100%));
-		box-shadow: var(--panda-dialog-box-shadow, 0px 2px 4px hsl(0deg 0% 0% / 20%));
+		background-color: var(--panda-popover-background-color, hsl(0deg 0% 100%));
+		box-shadow: var(--panda-elevation-m, 0px 2px 4px hsl(0deg 0% 0% / 20%));
 		box-sizing: border-box;
 	}
 

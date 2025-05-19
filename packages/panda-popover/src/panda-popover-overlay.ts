@@ -4,13 +4,6 @@ import { PopoverPosition } from "../index";
 // style
 import { overlayStyles } from "./styles/styles";
 
-// utils
-import {
-	isContextElementVisible,
-	positionObserver,
-	resetPositionCss,
-} from "./utils/utils";
-
 export class PandaPopoverOverlay extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
@@ -22,28 +15,8 @@ export class PandaPopoverOverlay extends HTMLElement {
 		"position-horizontal",
 		"align-vertical",
 		"align-horizontal",
-		"customStyle",
-		"show"
+		"customStyle"
 	];
-
-	// show ===========================================================================================================
-	private _show!: boolean;
-
-	get show(): boolean {
-		return this._show;
-	}
-
-	set show(value: boolean) {
-		if (this._show !== value) {
-			this._show = value;
-			// reflect to attribute
-			if (value) {
-				this.setAttribute("show", "");
-			} else {
-				this.removeAttribute("show");
-			}
-		}
-	}
 
 	// anchor element =================================================================================================
 	private _anchorEl!: Element;
@@ -53,9 +26,7 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set anchorEl(value: Element) {
-		if (this._anchorEl !== value) {
-			this._anchorEl = value;
-		}
+		this._anchorEl = value;
 	}
 
 	// template =======================================================================================================
@@ -66,9 +37,7 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set templateEl(value: Element) {
-		if (this._templateEl !== value) {
-			this._templateEl = value;
-		}
+		this._templateEl = value;
 	}
 
 	// position vertical ==============================================================================================
@@ -79,10 +48,7 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set positionVertical(value: PopoverPosition) {
-		if (this._positionVertical !== value) {
-			this._positionVertical = value;
-			this.setAttribute("position-vertical", this._positionVertical); // reflect to attribute
-		}
+		this._positionVertical = value;
 	}
 
 	// position horizontal ============================================================================================
@@ -93,10 +59,7 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set positionHorizontal(value: PopoverPosition) {
-		if (this._positionHorizontal !== value) {
-			this._positionHorizontal = value;
-			this.setAttribute("position-horizontal", this._positionHorizontal); // reflect to attribute
-		}
+		this._positionHorizontal = value;
 	}
 
 	// align-vertical =================================================================================================
@@ -107,10 +70,7 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set alignVertical(value: PopoverPosition) {
-		if (this._alignVertical !== value) {
-			this._alignVertical = value;
-			this.setAttribute("align-vertical", this._alignVertical); // reflect to attribute
-		}
+		this._alignVertical = value;
 	}
 
 	// align-horizontal ===============================================================================================
@@ -121,10 +81,7 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set alignHorizontal(value: PopoverPosition) {
-		if (this._alignHorizontal !== value) {
-			this._alignHorizontal = value;
-			this.setAttribute("align-horizontal", this._alignHorizontal); // reflect to attribute
-		}
+		this._alignHorizontal = value;
 	}
 
 	// custom style ===================================================================================================
@@ -135,19 +92,13 @@ export class PandaPopoverOverlay extends HTMLElement {
 	}
 
 	set customStyle(value: string) {
-		if (this._customStyle !== value) {
-			this._customStyle = value;
-		}
+		this._customStyle = value;
 	}
 
 	// view props
 	private _preventClose!: boolean;
 	private _correctedPositionVertical!: PopoverPosition | null;
 	private _correctedPositionHorizontal!: PopoverPosition | null;
-	private _positionObserver!: any;
-	
-	// events
-	private readonly _positionChangeEvent!: any;
 	
 	// elements
 	private _popoverEl!: HTMLDivElement;
@@ -166,9 +117,6 @@ export class PandaPopoverOverlay extends HTMLElement {
 		this._preventClose = false;
 		this._correctedPositionVertical = null;
 		this._correctedPositionHorizontal = null;
-		this._positionObserver = null;
-		// initialize events
-		this._positionChangeEvent = this._onPositionChange.bind(this);
 	}
 
 	connectedCallback(): void {
@@ -184,17 +132,10 @@ export class PandaPopoverOverlay extends HTMLElement {
 		// initialize events
 		this.addEventListener("click", this._onCloseOverlay.bind(this));
 		this._popoverEl.addEventListener("click", this._onPreventClose.bind(this));
+		this._popoverEl.innerHTML = this.templateEl.innerHTML;
 		console.log("%c 🧪 (connectedCallback) _popoverEl", "font-size: 24px; color: limegreen; background: black;", this._popoverEl);
 		// apply content
 		this._applyContent();
-	}
-
-	disconnectedCallback(): void {
-		console.log("%c 🧪 (disconnectedCallback)", "font-size: 24px; color: limegreen; background: black;");
-		// cancel position observer
-		if (this._positionObserver !== null) {
-			this._positionObserver.cancel();
-		}
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -248,15 +189,8 @@ export class PandaPopoverOverlay extends HTMLElement {
 			console.log("%c 🧪 (_applyContent)", "font-size: 24px; color: limegreen; background: black;", anchorElRect);
 			console.log("%c 🧪 (_applyContent) pos V", "font-size: 24px; color: limegreen; background: black;", this._positionVertical);
 			console.log("%c 🧪 (_applyContent) pos H", "font-size: 24px; color: limegreen; background: black;", this._positionHorizontal);
-			console.log(
-				"%c (_applyContent) anchorElRect:",
-				"font-size: 24px; color: crimson; background: black;",
-				anchorElRect.top,
-				isContextElementVisible(anchorElRect)
-			);
 
-			if (this.templateEl !== null && anchorElRect && isContextElementVisible(anchorElRect)) {
-				this._popoverEl.innerHTML = this.templateEl.innerHTML;
+			if (this.templateEl !== null && anchorElRect) {
 				this._correctedPositionVertical = null;
 
 				// get overlay size details
@@ -341,7 +275,6 @@ export class PandaPopoverOverlay extends HTMLElement {
 				this._popoverEl.style.top = `${overlayTop}px`;
 				this._popoverEl.style.left = `${overlayLeft}px`;
 				// reset position classes
-				resetPositionCss(this._popoverEl);
 				this._popoverEl.classList.add("show");
 			} else {
 				this._popoverEl.classList.remove("show");
@@ -357,11 +290,6 @@ export class PandaPopoverOverlay extends HTMLElement {
 			customStyle.replaceSync(this.customStyle);
 			this.shadowRoot.adoptedStyleSheets.push(customStyle);
 		}
-	}
-
-	private _hidePopoverOverlay(): void {
-		const event = new CustomEvent("hide", {});
-		this.dispatchEvent(event);
 	}
 
 	private _triggerCloseEvent(): void {
@@ -382,16 +310,6 @@ export class PandaPopoverOverlay extends HTMLElement {
 			this._preventClose = false;
 		} else {
 			this._triggerCloseEvent();
-		}
-	}
-
-	private _onPositionChange() {
-		console.log("%c (_onPositionChange)", "font-size: 24px; color: crimson; background: black;");
-		if (this.show) {
-			console.log("%c (_onPositionChange) LOOP BACK TO APPLY CONTENT:", "font-size: 24px; color: crimson; background: black;");
-			this._applyContent();
-		} else {
-			this._hidePopoverOverlay();
 		}
 	}
 }

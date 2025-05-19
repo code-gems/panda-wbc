@@ -10,13 +10,21 @@ import { generateUuid } from "@panda-wbc/panda-utils";
  * @param {Array<PandaStep>} steps - The steps to parse.
  * @returns {Array<SuperStep>} An array of SuperStep objects.
  */
-export const parseSteps = (steps: PandaStep[]): SuperStep[] => {
-	return steps.map((step): SuperStep => {
-		const steps = step.steps ?? [];
-		return {
+export const parseSteps = (steps: PandaStep[], activeStepId: string | null = null): SuperStep[] => {
+	const superSteps: SuperStep[] = [];
+	let index = 0;
+	
+	
+	for (const step of steps) {
+		let active = activeStepId !== null
+			? activeStepId === step.id
+			: index === 0;
+		
+		const superStep: SuperStep = {
+			id: step.id ?? generateUuid(),
 			title: step.title,
 			// extra props
-			id: generateUuid(),
+			index,
 			icon: step.icon ?? "",
 			description: step.description ?? "",
 			tooltip: step.tooltip ?? "",
@@ -24,22 +32,22 @@ export const parseSteps = (steps: PandaStep[]): SuperStep[] => {
 			done: step.done ?? false,
 			disabled: step.disabled ?? false,
 			working: step.working ?? false,
-			// sub-steps
-			steps: steps.map((subStep): SuperStep => ({
-				title: subStep.title,
-				// extra props
-				id: generateUuid(),
-				icon: subStep.icon ?? "",
-				description: subStep.description ?? "",
-				tooltip: subStep.tooltip ?? "",
-				// state props
-				done: subStep.done ?? false,
-				disabled: subStep.disabled ?? false,
-				working: subStep.working ?? false,
-				steps: [],
-				origin: subStep // origin of the step
-			})),
+			active,
+			steps: [],
+			// origin
 			origin: step // origin of the step
 		};
-	});
+
+		if (step.steps) {
+			for (const subStep of step.steps) {
+				index++;
+				
+
+			}
+		} else {
+			index++;
+			// add to the list
+			superSteps.push(superStep);
+		}
+	}
 }
