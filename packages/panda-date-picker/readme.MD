@@ -3,7 +3,7 @@ Panda Date Picker is a Lit based web component that allows you to enhance your U
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-date-picker -S```
+```npm install @panda-wbc/panda-date-picker```
 
 or 
 

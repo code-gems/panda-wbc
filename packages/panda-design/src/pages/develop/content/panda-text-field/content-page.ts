@@ -36,7 +36,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	public pageId: string = pageConfig.pageId;
 	public customStyles: CSSResultGroup = styles;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "value", type: "String", defaultValue: "-", description: "Component input value." },
 		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component." },
 		{ name: "placeholder", type: "String", defaultValue: "-", description: "Placeholder text shown in case no initial value is provided." },
@@ -50,7 +50,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-input", returnType: "PandaTextFieldOnInputEvent", description: "Triggered every time user inputs a new value." },
 		{ name: "@change", returnType: "PandaTextFieldOnInputEvent", description: "Triggered every time component's value changes." },
 	];

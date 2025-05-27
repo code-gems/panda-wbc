@@ -2,7 +2,7 @@
 
 
 ### Installation
-```npm install @panda-wbc/panda-particle-banner -S```
+```npm install @panda-wbc/panda-particle-banner```
 
 or 
 

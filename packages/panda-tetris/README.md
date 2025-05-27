@@ -1,7 +1,7 @@
 # Welcome to Panda Components
 
 ### Installation
-```npm install @panda-wbc/panda-tetris -S```
+```npm install @panda-wbc/panda-tetris```
 
 or 
 

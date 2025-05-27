@@ -32,16 +32,11 @@ export const styles = css`
 	}
 
 	.dropdown {
-		position: relative;
-		display: block;
-	}
-
-	.dropdown {
 		display: flex;
 		flex-flow: column;
 		height: 100%;
 		max-height: 60vh;
-		padding: 5px;
+		padding: var(--panda-padding-s, 5px);
 		transition: opacity 200ms ease-in-out;
 
 		border: 1px solid var(--panda-dropdown-border-color, hsl(0deg 0% 80%));

@@ -2,7 +2,7 @@
 Panda Full Page
 
 ### Installation
-```npm install @panda-wbc/panda-full-page -S```
+```npm install @panda-wbc/panda-full-page```
 
 or 
 

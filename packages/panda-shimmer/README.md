@@ -3,7 +3,7 @@ Panda Shimmer is a native web component that adds shimmer loading effect to your
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-shimmer -S```
+```npm install @panda-wbc/panda-shimmer```
 
 or 
 

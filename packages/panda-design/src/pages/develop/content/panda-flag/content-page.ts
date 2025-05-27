@@ -29,7 +29,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// component props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "flag", type: "String", defaultValue: "-", description: "Country code or other country id compliant with ISO 3166 international standard." },
 		{ name: "square", type: "Boolean", defaultValue: "false", description: "Show flag as a square box." },
 	];

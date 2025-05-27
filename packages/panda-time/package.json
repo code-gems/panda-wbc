@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-time-picker",
+	"name": "@panda-wbc/panda-time",
 	"version": "1.0.0",
 	"description": "Lit based web component - time picker",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-time-picker.js",
+	"main": "lib/panda-time.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",

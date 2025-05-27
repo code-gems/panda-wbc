@@ -2,7 +2,7 @@
 Panda Dialog is a Lit based web component. Allows you to create popup dialogs with custom content.
 
 ### Installation
-```npm install @panda-wbc/panda-dialog -S```
+```npm install @panda-wbc/panda-dialog```
 
 or 
 

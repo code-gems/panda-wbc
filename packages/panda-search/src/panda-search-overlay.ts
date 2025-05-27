@@ -33,13 +33,13 @@ export class PandaSearchOverlay extends LitElement {
 	parentDetails!: any;
 
 	// callbacks
-	renderer!: (params: PandaSearchRendererParams) => TemplateResult | string | number;
+	renderer!: (params: PandaSearchRendererParams) => TemplateResult | string | number | null | undefined;
 
-	headerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult;
+	headerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult | null | undefined;
 	
-	footerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult;
+	footerRenderer!: (searchText: string, searchResults: PandaSearchItem[] | null | undefined) => TemplateResult | null | undefined;
 	
-	noResultsRenderer!: (searchText: string) => TemplateResult;
+	noResultsRenderer!: (searchText: string) => TemplateResult | null | undefined;
 
 	// state props
 	private _initialized: boolean = false;
@@ -185,13 +185,38 @@ export class PandaSearchOverlay extends LitElement {
 			`);
 		}
 
-		
-		const headerContentHtml = this.headerRenderer && typeof this.headerRenderer === "function"
-			? this.headerRenderer(this.searchText, this.searchResults)
-			: html``;
-		const footerContentHtml = this.footerRenderer && typeof this.footerRenderer === "function"
-			? this.headerRenderer(this.searchText, this.searchResults)
-			: html``;
+		// check if header renderer is defined
+		let headerContentHtml: TemplateResult = html``;
+		if (this.headerRenderer && typeof this.headerRenderer === "function") {
+			const contentHtml = this.headerRenderer(this.searchText, this.searchResults);
+			if (contentHtml) {
+				headerContentHtml = html`
+					<div
+						class="dropdown-header"
+						part="dropdown-header"
+						@click="${this._onClose}"
+					>
+						${contentHtml}
+					</div>
+				`;
+			}
+		}
+		// check if footer renderer is defined
+		let footerContentHtml = html``;
+		if (this.footerRenderer && typeof this.footerRenderer === "function") {
+			const contentHtml = this.footerRenderer(this.searchText, this.searchResults);
+			if (contentHtml) {
+				footerContentHtml = html`
+					<div
+						class="dropdown-footer"
+						part="dropdown-footer"
+						@click="${this._onClose}"
+					>
+						${contentHtml}
+					</div>
+				`;
+			}
+		}
 
 		return html`
 			<div class="dropdown" part="dropdown">
@@ -348,7 +373,6 @@ export class PandaSearchOverlay extends LitElement {
 			this._selectedItem = null;
 		}
 		this._updateActiveItem();
-		console.log("%c ⚡ [SEARCH OVERLAY] (_selectItemByIndex)", "font-size: 16px; color: crimson; background: black;", this._selectedItem);
 		// show active element after change
 		this._showActiveElement();
 	}
@@ -362,7 +386,6 @@ export class PandaSearchOverlay extends LitElement {
 		action: PostMessageType,
 		selectedItem: PandaSearchItem | null = null
 	): void {
-		console.log("%c ⚡ [SEARCH OVERLAY] (_triggerPostMessageEvent)", "font-size: 16px; color: crimson; background: black;", action, selectedItem);
 		const event: PostMessageEvent = new CustomEvent("post-message", {
 			detail: {
 				action,
@@ -393,7 +416,6 @@ export class PandaSearchOverlay extends LitElement {
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
-		console.log("%c ⚡ [SEARCH OVERLAY] (_onKeyDown)", "font-size: 16px; color: crimson; background: black;", event);
 		switch (event.key) {
 			case "Enter":
 			case "Tab":
@@ -422,13 +444,11 @@ export class PandaSearchOverlay extends LitElement {
 
 	private _onSelect(searchItem: PandaSearchItem | null): void {
 		if (searchItem) {
-			console.log("%c ⚡ [SEARCH OVERLAY] (_onSelect) searchItem", "font-size: 16px; color: crimson; background: black;", searchItem);
 			this._triggerPostMessageEvent(
 				PostMessageType.SELECT,
 				searchItem,
 			);
 		} else {
-			console.log("%c ⚡ [SEARCH OVERLAY] (_onSelect) CLOSE", "font-size: 16px; color: crimson; background: black;", searchItem);
 			this._triggerPostMessageEvent(PostMessageType.CLOSE);
 		}
 	}

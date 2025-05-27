@@ -3,7 +3,7 @@ Panda Pagination is a Lit based web component that adds pagination to your UI. E
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-pagination -S```
+```npm install @panda-wbc/panda-pagination```
 
 or 
 

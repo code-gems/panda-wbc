@@ -36,7 +36,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	public pageId: string = pageConfig.pageId;
 	public customStyles: CSSResultGroup = styles;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "value", type: "String", defaultValue: "-", description: "Component input value." },
 		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component." },
 		{ name: "showPasswordButton", type: "Boolean", defaultValue: "false", description: "Show button that allows user to reveal password." },
@@ -51,7 +51,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-input", returnType: "PandaPasswordFieldOnInputEvent", description: "Triggered every time user inputs a new value." },
 		{ name: "@on-enter", returnType: "PandaPasswordFieldOnEnterEvent", description: "Triggered when user press ENTER after entering value." },
 	];

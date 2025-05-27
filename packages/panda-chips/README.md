@@ -3,7 +3,7 @@ Panda Chips component is a compact UI element that represents discrete informati
 It is commonly used in forms or interfaces to allow users to input, select, or manage items dynamically, enhancing interactivity and organization.
 
 ### Installation
-```npm install @panda-wbc/panda-chips -S```
+```npm install @panda-wbc/panda-chips```
 
 or 
 

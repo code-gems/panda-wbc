@@ -1,0 +1,30 @@
+{
+	"name": "@panda-wbc/panda-speech-synthesis",
+	"version": "1.0.0",
+	"description": "Speech synthesis library for Panda Web Components",
+	"main": "lib/panda-speech-synthesis.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"panda-wbc",
+		"speech synthesis",
+		"text to audio",
+		"text to speech"
+	],
+	"author": "code-gems",
+	"license": "Apache-2.0",
+	"dependencies": {},
+	"devDependencies": {
+		"rimraf": "^6.0.0",
+		"typescript": "^4.5.4"
+	},
+	"files": [
+		"src",
+		"lib"
+	]
+}

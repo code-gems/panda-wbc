@@ -1,7 +1,7 @@
 # Welcome to Panda Components
 
 ### Installation
-```npm install @panda-wbc/panda-theme-switcher -S```
+```npm install @panda-wbc/panda-theme-switcher```
 
 or 
 

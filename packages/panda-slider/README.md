@@ -3,7 +3,7 @@ Panda Slider is a Lit based web component. Extremely lightweight and easy to use
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-slider -S```
+```npm install @panda-wbc/panda-slider```
 
 or 
 

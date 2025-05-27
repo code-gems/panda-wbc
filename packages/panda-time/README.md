@@ -2,7 +2,7 @@
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-time-picker -S```
+```npm install @panda-wbc/panda-time-picker```
 
 or 
 

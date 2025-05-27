@@ -2,7 +2,7 @@
 
 
 ### Installation
-```npm install @panda-wbc/panda-notification -S```
+```npm install @panda-wbc/panda-notification```
 
 or 
 

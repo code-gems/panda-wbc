@@ -2,7 +2,7 @@
 Panda Tooltip is a Lit based web component. Allows you to create tooltips with custom content.
 
 ### Installation
-```npm install @panda-wbc/panda-tooltip -S```
+```npm install @panda-wbc/panda-tooltip```
 
 or 
 

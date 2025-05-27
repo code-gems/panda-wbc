@@ -2,7 +2,7 @@
 Panda Full Page
 
 ### Installation
-```npm install @panda-wbc/panda-slideshow -S```
+```npm install @panda-wbc/panda-slideshow```
 
 or 
 

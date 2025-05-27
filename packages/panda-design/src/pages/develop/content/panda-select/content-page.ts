@@ -62,7 +62,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 	// page details
 	pageId: string = pageId;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
 		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
 		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
@@ -79,7 +79,7 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 		{ name: "mandatory", type: "boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "change", returnType: "PandaButtonChangeEvent", description: "" }
 	];
 

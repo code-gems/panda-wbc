@@ -34,16 +34,10 @@ export const styles = css`
 	}
 
 	.dropdown {
-		position: relative;
-		display: block;
-	}
-
-	.dropdown {
 		display: flex;
 		flex-flow: column;
 		height: 100%;
 		max-height: 60vh;
-		padding: 5px;
 		transition: opacity 200ms ease-in-out;
 
 		border: 1px solid var(--panda-dropdown-border-color, hsl(0deg 0% 80%));
@@ -57,6 +51,8 @@ export const styles = css`
 		display: flex;
 		flex-flow: column;
 		overflow: auto;
+		padding: var(--panda-padding-s, 5px);
+		box-sizing: border-box;
 	}
 
 	.dropdown .item {
@@ -92,5 +88,11 @@ export const styles = css`
 	.dropdown .item:not(.inactive).active {
 		color: var(--panda-dropdown-item-text-color-active, hsl(0deg 0% 100%));
 		background-color: var(--panda-dropdown-item-background-color-active, hsl(196deg 100% 47%));
+	}
+
+	.dropdown > .dropdown-header,
+	.dropdown > .dropdown-footer {
+		padding: var(--panda-padding-s, 5px);
+		box-sizing: border-box;
 	}
 `;

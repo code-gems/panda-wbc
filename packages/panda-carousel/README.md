@@ -2,7 +2,7 @@
 Panda Carousel
 
 ### Installation
-```npm install @panda-wbc/panda-carousel -S```
+```npm install @panda-wbc/panda-carousel```
 
 or 
 

@@ -28,10 +28,10 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 	];
 
 	// ================================================================================================================

@@ -2,7 +2,7 @@
 Panda Text Area
 
 ### Installation
-```npm install @panda-wbc/panda-time-ago -S```
+```npm install @panda-wbc/panda-time-ago```
 
 or 
 

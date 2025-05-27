@@ -2,7 +2,7 @@
 
 
 ### Installation
-```npm install @panda-wbc/panda-button-group -S```
+```npm install @panda-wbc/panda-button-group```
 
 or 
 

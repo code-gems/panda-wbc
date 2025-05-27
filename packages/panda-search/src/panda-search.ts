@@ -229,6 +229,7 @@ export class PandaSearch extends LitElement {
 					.placeholder="${this.placeholder ?? ""}"
 					.value="${this.value ?? ""}"
 					.disabled="${this.disabled}"
+					@keydown="${this._onKeyDown}"
 					@focus="${this._onFocus}"
 					@blur="${this._onBlur}"
 					@input="${this._onInput}"
@@ -265,8 +266,6 @@ export class PandaSearch extends LitElement {
 	/** Open overlay and attach it to document body. */
 	private _openOverlay() {
 		if (!this._overlayEl && !this.disabled) {
-			console.log("%c ⚡ [PANDA SEARCH] (_openOverlay)", "font-size: 16px; color: crimson; background: black;");
-
 			// create overlay element
 			this._overlayEl = document.createElement("panda-search-overlay");
 			// add event listeners
@@ -386,9 +385,22 @@ export class PandaSearch extends LitElement {
 		this._searchResults = null;
 	}
 
+	private _onKeyDown(event: KeyboardEvent): void {
+		switch (event.key) {
+			case "ArrowUp":
+			case "ArrowDown":
+				if (this._searchResults) {
+					this._openOverlay();
+				}
+				break;
+			case "Escape":
+				this._onClose();
+				break;
+		}
+	}
+
 	private _onClose(): void {
 		if (this._overlayEl) {
-			console.log("%c ⚡ [PANDA SEARCH] (_onClose)", "font-size: 16px; color: crimson; background: black;");
 			// remove event listeners
 			this._overlayEl.removeEventListener("post-message", this._postMessageEvent);
 			// clean up
@@ -400,7 +412,6 @@ export class PandaSearch extends LitElement {
 
 	private _onPostMessage(event: PostMessageEvent): void {
 		const { action, selectedItem } = event.detail;
-		console.log("%c ⚡ [PANDA SEARCH] (_onPostMessage)", "font-size: 16px; color: crimson; background: black;", event.detail);
 
 		switch (action) {
 			case PostMessageType.SELECT:
@@ -413,7 +424,6 @@ export class PandaSearch extends LitElement {
 	}
 
 	private _onSelect(selectedItem: PandaSearchItem): void {
-		console.log("%c ⚡ [PANDA SEARCH] (_onSelect) selectedItem", "font-size: 16px; color: crimson; background: black;", selectedItem);
 		this._selectedItem = selectedItem;
 		this._inputFieldEl.value = selectedItem?.label;
 		this._triggerOnSelectEvent();

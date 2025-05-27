@@ -2,7 +2,7 @@
 Panda pips pager
 
 ### Installation
-```npm install @panda-wbc/panda-pips-pager -S```
+```npm install @panda-wbc/panda-pips-pager```
 
 or 
 

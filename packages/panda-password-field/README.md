@@ -2,7 +2,7 @@
 
 
 ### Installation
-```npm install @panda-wbc/panda-password-field -S```
+```npm install @panda-wbc/panda-password-field```
 
 or 
 

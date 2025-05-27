@@ -36,11 +36,11 @@ export class PandaSwitchContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 	public pageId = pageConfig.pageId;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "checked", type: "Boolean", defaultValue: "-", description: "Initial component value." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@change", returnType: "PandaSwitchChangeEvent", description: "Triggered every time component checked value is changed." }
 	];
 

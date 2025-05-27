@@ -30,7 +30,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 	public pageId = pageConfig.pageId;
 	public customStyles = styles;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "name", type: "String", defaultValue: "-", description: "Name used to identify component. Used to assign value when used with checkbox group." },
 		{ name: "checked", type: "Boolean", defaultValue: "false", description: "Initial component value." },
@@ -40,7 +40,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 		{ name: "alignRight", type: "boolean", defaultValue: "false", description: "Aligns checkbox to the right side." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@change", returnType: "PandaSwitchChangeEvent", description: "Triggered every time component checked value is changed." }
 	];
 

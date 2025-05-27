@@ -41,7 +41,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	pageId: string = pageConfig.pageId;
 	public customStyles = styles;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
 		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
 		{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component." },
@@ -67,7 +67,7 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		{ name: "renderer", type: "Function", defaultValue: "-", description: "Customize dropdown list look and feel." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@change", returnType: "PandaComboBoxChangeEvent", description: "Triggered when user changes component selected value." }
 	];
 

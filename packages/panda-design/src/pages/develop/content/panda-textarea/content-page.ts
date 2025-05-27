@@ -30,7 +30,7 @@ public pageId: string = pageConfig.pageId;
 public customStyles = styles;
 
 // component props
-private _componentProperties: ComponentPropertyDetails[] = [
+private readonly _componentProperties: ComponentPropertyDetails[] = [
 	{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 	{ name: "value", type: "String", defaultValue: "-", description: "Component input value." },
 	{ name: "label", type: "String", defaultValue: "-", description: "Component label that appears above the component." },
@@ -49,7 +49,7 @@ private _componentProperties: ComponentPropertyDetails[] = [
 	{ name: "hardLimit", type: "Boolean", defaultValue: "false", description: "Prevent from entering more characters than defined as maxLength." },
 ];
 
-private _componentEvents: ComponentEventDetails[] = [
+private readonly _componentEvents: ComponentEventDetails[] = [
 	{ name: "@on-input", returnType: "PandaTextFieldOnInputEvent", description: "Triggered every time user inputs a new value." },
 	{ name: "@change", returnType: "Event", description: "Triggered when component content changed." }
 ];

@@ -3,7 +3,7 @@ Panda Icon is a Lit based web component that adds cool icons to your UI. Extreme
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-icon -S```
+```npm install @panda-wbc/panda-icon```
 
 or 
 

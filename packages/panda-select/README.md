@@ -3,7 +3,7 @@ Panda Select is a Lit based web component. Extremely lightweight and easy to use
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-select -S```
+```npm install @panda-wbc/panda-select```
 
 or 
 

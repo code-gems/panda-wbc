@@ -469,7 +469,7 @@ export const pandaThemeLight = /*css*/ `
 
 		--panda-dropdown-border-radius: 5px;
 		--panda-dropdown-border-color: var(--panda-border-color);
-		--panda-dropdown-background-color: var(--panda-background-color-300);
+		--panda-dropdown-background-color: hsl(0deg 0% 100%);
 		
 		--panda-dropdown-item-padding: 10px 5px;
 		--panda-dropdown-item-border-radius: 5px;

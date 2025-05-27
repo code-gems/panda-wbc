@@ -28,12 +28,12 @@ public pageId: string = pageConfig.pageId;
 public customStyles = styles;
 
 // demo props
-private _componentProperties: ComponentPropertyDetails[] = [
+private readonly _componentProperties: ComponentPropertyDetails[] = [
 	{ name: "content", type: "String", defaultValue: "-", description: "Content to be copied to clipboard instead of slotted content." },
 	{ name: "copyAsHtml", type: "String", defaultValue: "-", description: "Copy content as HTML and preserves new line and tab characters." },
 ];
 
-private _componentEvents: ComponentEventDetails[] = [
+private readonly _componentEvents: ComponentEventDetails[] = [
 	{ name: "@on-copy", returnType: "PandaClickToCopyEvent", description: "Triggered after user copied component content." }
 ];
 

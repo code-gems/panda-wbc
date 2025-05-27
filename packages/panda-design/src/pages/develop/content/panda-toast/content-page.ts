@@ -31,7 +31,7 @@ export class ContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "title", type: "String", defaultValue: "-", description: "Toast title/header text." },
 		{ name: "icon", type: "String", defaultValue: "-", description: "Toast icon from panda icon collection." },
@@ -39,7 +39,7 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 

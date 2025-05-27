@@ -38,7 +38,7 @@ export class ContentPage extends ContentPageTemplate {
 	public pageId = pageConfig.pageId;
 	public customStyles = styles;
 
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "icon", type: "String", defaultValue: "-", description: "Icon name to display." },
 	];
 

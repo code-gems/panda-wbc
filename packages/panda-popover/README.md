@@ -3,7 +3,7 @@ Panda Popover is a Lit based web component. Extremely lightweight and easy to us
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-popover -S```
+```npm install @panda-wbc/panda-popover```
 
 or 
 

@@ -40,7 +40,7 @@ export class ContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "autostart", type: "Boolean", defaultValue: "false", description: "Starts countdown timer immediately when time is set." },
 		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Sets busy state for the component and displays loading animation." },
 		{ name: "backward", type: "Boolean", defaultValue: "false", description: "Changes default countdown style to backward." },
@@ -53,7 +53,7 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "time", type: "Number", defaultValue: "-", description: "Sets countdown time. [seconds]" },
 	];	
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "countdown-tick", returnType: "Event", description: "Triggered every seconds during countdown." },
 		{ name: "countdown-over", returnType: "Event", description: "Triggered when countdown is over." },
 	];

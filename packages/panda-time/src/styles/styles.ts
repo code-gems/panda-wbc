@@ -17,3 +17,7 @@ export const styles = css`
     fill: black;
   }
 `;
+
+export const overlayStyles = /*css*/`
+
+`;

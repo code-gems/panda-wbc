@@ -2,7 +2,7 @@
 Panda Click to Copy
 
 ### Installation
-```npm install @panda-wbc/panda-click-to-copy -S```
+```npm install @panda-wbc/panda-click-to-copy```
 
 or 
 

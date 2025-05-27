@@ -2,7 +2,7 @@
 
 
 ### Installation
-```npm install @panda-wbc/panda-text-field -S```
+```npm install @panda-wbc/panda-text-field```
 
 or 
 

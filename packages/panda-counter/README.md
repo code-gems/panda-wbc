@@ -2,7 +2,7 @@
 
 
 ### Installation
-```npm install @panda-wbc/panda-counter -S```
+```npm install @panda-wbc/panda-counter```
 
 or 
 

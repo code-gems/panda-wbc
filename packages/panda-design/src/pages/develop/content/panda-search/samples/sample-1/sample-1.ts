@@ -24,7 +24,7 @@ class Sample extends SampleTemplate {
 	/**
 	 * Internationalization - Custom messages / language
 	 */
-	private _i18n = {
+	private readonly _i18n = {
 		noResults: "没有结果。尝试更改您的搜索条件并重试",
 	}
 
@@ -39,15 +39,15 @@ class Sample extends SampleTemplate {
 					<div class="col-full">
 						<panda-search
 							label="Search:"
+							icon-position="left"
 							.value="${this._searchText}"
 							.i18n="${this._i18n}"
-							icon-position="left"
-							@on-input="${this._onInput}"
-							@on-input-debounced="${this._onInputDebounced}"
-							@on-select="${this._onSelect}"
 							.search="${this._searchCallback.bind(this)}"
 							.headerRenderer="${this._renderSearchResultsHeader}"
 							.footerRenderer="${this._renderSearchResultsHeader}"
+							@on-input="${this._onInput}"
+							@on-input-debounced="${this._onInputDebounced}"
+							@on-select="${this._onSelect}"
 						>
 						</panda-search>
 					</div>
@@ -56,10 +56,14 @@ class Sample extends SampleTemplate {
 		`;
 	}
 
-	private _renderSearchResultsHeader(searchText: string, searchResults: PandaSearchItem[]): TemplateResult {
-		return html`
-			Found: ${searchResults?.length ?? 0} results for: "${searchText}"
-		`;
+	private _renderSearchResultsHeader(searchText: string, searchResults: PandaSearchItem[]): TemplateResult | null {
+		if (searchResults.length) {
+			return html`
+				Found: ${searchResults?.length ?? 0} results for: "${searchText}"
+			`;
+		} else {
+			return null;
+		}
 	}
 
 	// ================================================================================================================
@@ -91,13 +95,13 @@ class Sample extends SampleTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onInput(): void {
-		// this.log("(_onInput)");
+	private _onInput(event: PandaSearchOnInputEvent): void {
+		this.log(`(_onInput) search: ${event.detail.value}`);
 	}
 
 	private _onInputDebounced(event: PandaSearchOnInputEvent): void {
 		this._searchText = event.detail.value;
-		// this.log(`(_onInputDebounced) search: ${this._searchText}`);
+		this.log(`(_onInputDebounced) search: ${this._searchText}`);
 	}
 
 	private _onSelect(event: PandaSearchOnSelectEvent): void {

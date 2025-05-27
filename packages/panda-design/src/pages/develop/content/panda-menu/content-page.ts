@@ -28,7 +28,7 @@ class ContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "value", type: "Number", defaultValue: "-", description: "Currently selected value." },
 		{ name: "min", type: "Number", defaultValue: "0", description: "The lowest selectable value." },
@@ -37,7 +37,7 @@ class ContentPage extends ContentPageTemplate {
 		{ name: "busy", type: "Boolean", defaultValue: "false", description: "Working / busy state indicator." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@change", returnType: "Event", description: "Triggered when user changed selected value." }
 	];
 

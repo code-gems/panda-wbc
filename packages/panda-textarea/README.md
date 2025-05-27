@@ -2,7 +2,7 @@
 Panda Text Area
 
 ### Installation
-```npm install @panda-wbc/panda-textarea -S```
+```npm install @panda-wbc/panda-textarea```
 
 or 
 

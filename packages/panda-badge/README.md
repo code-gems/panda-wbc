@@ -3,7 +3,7 @@ Panda Button is a native web component that adds badges to your UI. Extremely li
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-badge -S```
+```npm install @panda-wbc/panda-badge```
 
 or 
 

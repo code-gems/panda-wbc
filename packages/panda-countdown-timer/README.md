@@ -3,7 +3,7 @@ Panda Circular Countdown Timer is a Lit based web component that adds stylish ci
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-circular-countdown-timer -S```
+```npm install @panda-wbc/panda-circular-countdown-timer```
 
 or 
 

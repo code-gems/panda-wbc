@@ -3,7 +3,7 @@ Panda Multi Input is a Lit based web component that adds multi input component t
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-multi-input -S```
+```npm install @panda-wbc/panda-multi-input```
 
 or 
 

@@ -3,7 +3,7 @@ Panda Upload is a Lit based web component that allows you to handle file uploadi
 Enjoy!
 
 ## Installation
-```npm install @panda/panda-upload -S```
+```npm install @panda/panda-upload```
 
 or 
 

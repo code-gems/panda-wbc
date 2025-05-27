@@ -2,7 +2,7 @@
 Panda utility library.
 
 ### Installation
-```npm install @panda-wbc/panda-utils -S```
+```npm install @panda-wbc/panda-utils```
 
 or 
 

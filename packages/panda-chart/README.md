@@ -3,7 +3,7 @@ Panda Chart is a Lit based web component for data visualization. Extremely light
 Enjoy!
 
 ### Installation
-```npm install @panda/panda-chart -S```
+```npm install @panda/panda-chart```
 
 or 
 

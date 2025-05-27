@@ -29,7 +29,7 @@ class ContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 		{ name: "value", type: "Number", defaultValue: "-", description: "Currently progress value." },
 		{ name: "bufferValue", type: "Number", defaultValue: "0", description: "Currently buffered progress value." },

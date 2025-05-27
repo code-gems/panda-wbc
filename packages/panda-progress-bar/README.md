@@ -3,7 +3,7 @@ Panda Progress Bar is a Lit based web component. Extremely lightweight and easy 
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-progress-bar -S```
+```npm install @panda-wbc/panda-progress-bar```
 
 or 
 

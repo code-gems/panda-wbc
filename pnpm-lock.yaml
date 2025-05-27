@@ -413,6 +413,9 @@ importers:
       '@panda-wbc/panda-sortable-list':
         specifier: workspace:*
         version: link:../panda-sortable-list
+      '@panda-wbc/panda-speech-synthesis':
+        specifier: workspace:*
+        version: link:../panda-speech-synthesis
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
@@ -440,12 +443,12 @@ importers:
       '@panda-wbc/panda-theme-switcher':
         specifier: workspace:*
         version: link:../panda-theme-switcher
+      '@panda-wbc/panda-time':
+        specifier: workspace:*
+        version: link:../panda-time
       '@panda-wbc/panda-time-ago':
         specifier: workspace:*
         version: link:../panda-time-ago
-      '@panda-wbc/panda-time-picker':
-        specifier: workspace:*
-        version: link:../panda-time-picker
       '@panda-wbc/panda-toast':
         specifier: workspace:*
         version: link:../panda-toast
@@ -732,13 +735,6 @@ importers:
         version: 4.9.5
 
   packages/panda-popover:
-    dependencies:
-      '@panda-wbc/panda-mixins':
-        specifier: workspace:*
-        version: link:../panda-mixins
-      lit:
-        specifier: ^3.0.2
-        version: 3.0.2
     devDependencies:
       rimraf:
         specifier: ^6.0.0
@@ -934,6 +930,15 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
+  packages/panda-speech-synthesis:
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^4.5.4
+        version: 4.9.5
+
   packages/panda-spinner:
     dependencies:
       lit:
@@ -1098,7 +1103,7 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
-  packages/panda-time-ago:
+  packages/panda-time:
     dependencies:
       lit:
         specifier: ^3.0.2
@@ -1111,7 +1116,7 @@ importers:
         specifier: ^4.5.4
         version: 4.9.5
 
-  packages/panda-time-picker:
+  packages/panda-time-ago:
     dependencies:
       lit:
         specifier: ^3.0.2

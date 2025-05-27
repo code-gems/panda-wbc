@@ -53,7 +53,7 @@ class PandaStepper extends LitElement {
 
 	updated(_changedProps: PropertyValues): void {
 		if (_changedProps.has("steps") && this.steps) {
-			this._parsedSteps = parseSteps(this.steps);
+			// this._parsedSteps = parseSteps(this.steps);
 		}
 	}
 

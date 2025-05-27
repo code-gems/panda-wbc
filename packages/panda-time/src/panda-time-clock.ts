@@ -1,5 +1,5 @@
 // styles
-import { styles } from "./styles/overlay-styles";
+import { overlayStyles } from "./styles/styles";
 
 export default class PandaTimePickerClockView extends HTMLElement {
 	// ================================================================================================================
@@ -80,7 +80,7 @@ export default class PandaTimePickerClockView extends HTMLElement {
 
 	private _applyStyles() {
 		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(styles);
+		cssStyleSheet.replaceSync(overlayStyles);
 		if (this.shadowRoot) {
 			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
 		}

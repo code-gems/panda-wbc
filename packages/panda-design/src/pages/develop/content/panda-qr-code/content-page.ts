@@ -28,11 +28,11 @@ export class ContentPage extends ContentPageTemplate {
 	public customStyles = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 

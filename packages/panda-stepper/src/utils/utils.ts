@@ -10,7 +10,7 @@ import { generateUuid } from "@panda-wbc/panda-utils";
  * @param {Array<PandaStep>} steps - The steps to parse.
  * @returns {Array<SuperStep>} An array of SuperStep objects.
  */
-export const parseSteps = (steps: PandaStep[], activeStepId: string | null = null): SuperStep[] => {
+export const parseSteps = (steps: PandaStep[], activeStepId: string | null = null) => {
 	const superSteps: SuperStep[] = [];
 	let index = 0;
 	
@@ -41,7 +41,7 @@ export const parseSteps = (steps: PandaStep[], activeStepId: string | null = nul
 		if (step.steps) {
 			for (const subStep of step.steps) {
 				index++;
-				
+
 
 			}
 		} else {

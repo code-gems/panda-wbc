@@ -2,7 +2,7 @@
 Panda Text Editor is a Lit based rich text editor.
 
 ## Installation
-```npm install @panda/panda-text-editor -S```
+```npm install @panda/panda-text-editor```
 
 or 
 

@@ -37,12 +37,12 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	public customStyles: CSSResultGroup = styles;
 
 	// demo props
-	private _componentProperties: ComponentPropertyDetails[] = [
+	private readonly _componentProperties: ComponentPropertyDetails[] = [
 		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled state for the component." },
 		{ name: "busy", type: "boolean", defaultValue: "false", description: "Sets busy state for the component." },
 	];
 
-	private _componentEvents: ComponentEventDetails[] = [
+	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "click", returnType: "Event", description: "" }
 	];
 

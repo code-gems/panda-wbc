@@ -2,7 +2,7 @@
 Panda Grid Layout is a Lit based web component
 
 ## Installation
-```npm install @panda-wbc/panda-grid-layout -S```
+```npm install @panda-wbc/panda-grid-layout```
 
 or 
 
