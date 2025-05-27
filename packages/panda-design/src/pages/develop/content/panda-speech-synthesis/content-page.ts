@@ -258,7 +258,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onSpeak(): void {
 		const text = this._textAreaEl.value;
-		this._pandaSpeechSynthesis.rate = 2; // Set speech rate
+		this._pandaSpeechSynthesis.rate = 1; // Set speech rate
 		this._pandaSpeechSynthesis.pitch = 0.8; // Set speech pitch
 		this._pandaSpeechSynthesis.speak(text);
 	}
