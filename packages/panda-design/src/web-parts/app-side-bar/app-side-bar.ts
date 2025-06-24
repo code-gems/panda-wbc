@@ -90,7 +90,7 @@ class AppSideBar extends LitElement {
 		const allPages = new PageLibrary().getParentPages();
 
 		allPages.forEach((page) => {
-			console.log("%c page", "font-size: 24px; color: green;", page);
+			// console.log("%c page", "font-size: 24px; color: green;", page);
 			const active = page.pageUri === this.pathname
 				? "active"
 				: "";

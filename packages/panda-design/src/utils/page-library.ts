@@ -19,7 +19,7 @@ export class PageLibrary {
 	 */
 	public register(page: Page) {
 		this._pageIds.push(page);
-		console.log("%c register::page", "font-size: 24px; color: red;", page, this._pageIds);
+		// console.log("%c register::page", "font-size: 24px; color: red;", page, this._pageIds);
 	}
 
 	public getAllPages(): Page[] {

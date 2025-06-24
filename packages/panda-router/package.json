@@ -5,7 +5,6 @@
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-router.js",
 	"scripts": {
-		"start": "webpack-dev-server --mode development",
 		"compile": "tsc",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",

@@ -1,6 +1,4 @@
-import { css } from "lit";
-
-export const pandaThemeTurquoise = css`
+export const pandaThemeTurquoise = /*css*/`
 	:root {
 		/* LIGHT THEME */
 		/* ========================================================================================================= */

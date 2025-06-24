@@ -91,9 +91,9 @@ export class PandaRouterElement extends LitElement {
 
 	private _handleLocation(): void {
 		const pathname = window.location.pathname;
-		console.log("%c [ROUTER] _handleLocation", "font-size: 24px; color: orange;", pathname);
-		console.log("%c [ROUTER] window.location", "font-size: 24px; color: orange;", window.location);
-		console.log("%c [ROUTER] _pageMap", "font-size: 24px; color: orange;", this._pageMap?.has(pathname), this._pageMap);
+		// console.log("%c [ROUTER] _handleLocation", "font-size: 24px; color: orange;", pathname);
+		// console.log("%c [ROUTER] window.location", "font-size: 24px; color: orange;", window.location);
+		// console.log("%c [ROUTER] _pageMap", "font-size: 24px; color: orange;", this._pageMap?.has(pathname), this._pageMap);
 
 		if (this._pageMap?.has(pathname)) {
 			this._pageTemplate = this._pageMap.get(pathname);
@@ -150,7 +150,7 @@ export const navigate = (pathname: string, event: MouseEvent | null = null) => {
 		event.stopPropagation();
 		event.preventDefault();
 	}
-	console.log("%c navigate (event)", "font-size: 24px; color: red;", pathname);
+	// console.log("%c navigate (event)", "font-size: 24px; color: red;", pathname);
 
 	window.history.pushState(
 		{},
@@ -185,12 +185,12 @@ export const routerify = () => {
 				window.addEventListener("popstate", this.__navigateEventBinding);
 
 				// subscribe to app store
-				console.log("%c CONNECT ", "font-size: 24px; color: blueviolet;");
+				// console.log("%c CONNECT ", "font-size: 24px; color: blueviolet;");
 			}
 
 			disconnectedCallback() {
 				if (this.__navigateEventBinding) {
-					console.log("%c DISCONNECT", "font-size: 24px; color: blueviolet;");
+					// console.log("%c DISCONNECT", "font-size: 24px; color: blueviolet;");
 					document.removeEventListener("panda-router-navigate", this.__navigateEventBinding);
 					window.removeEventListener("popstate", this.__navigateEventBinding);
 				}

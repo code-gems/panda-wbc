@@ -17,8 +17,8 @@ const app = (state: any, action: any): any => {
 };
 
 const tryCatchMiddleware = (stateApi: any) => (next: any) => async (action: any) => {
-	console.log("%c [appMiddleware] state API", "font-size: 24px; color: green;", stateApi);
-	console.log("%c [appMiddleware] action", "font-size: 24px; color: green;", action);
+	// console.log("%c [appMiddleware] state API", "font-size: 24px; color: green;", stateApi);
+	// console.log("%c [appMiddleware] action", "font-size: 24px; color: green;", action);
 	try {
 		const actionResult = next(action);
 		if (actionResult instanceof Promise) {
@@ -66,13 +66,13 @@ export const reduxify = () => {
 					this.__safeInvoke(super.stateChanged, state);
 				}
 				// subscribe to app store
-				console.log("%c SUBSCRIBE", "font-size: 24px; color: blue;", target);
+				// console.log("%c SUBSCRIBE", "font-size: 24px; color: blue;", target);
 				this.__storeUnsubscribe = appStore.subscribe(onStateChange);
 				onStateChange();
 			}
 
 			disconnectedCallback() {
-				console.log("%c UNSUBSCRIBE", "font-size: 24px; color: blue;");
+				// console.log("%c UNSUBSCRIBE", "font-size: 24px; color: blue;");
 				this.__safeInvoke(this.__storeUnsubscribe);
 				this.__safeInvoke(super.disconnectedCallback);
 			}

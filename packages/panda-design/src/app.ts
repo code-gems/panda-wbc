@@ -55,7 +55,7 @@ class PandaApp extends LitElement {
 				{
 					id: "panda-theme-turquoise",
 					name: "Turquoise",
-					theme: pandaThemeTurquoise.cssText
+					theme: pandaThemeTurquoise
 				},
 			]
 		});

@@ -1,5 +1,6 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
+import { PandaSpeechSynthesisConfig } from "@panda-wbc/panda-speech-synthesis";
 
 // styles
 import { styles } from "./styles/styles";
@@ -17,7 +18,8 @@ import { customElement, query, state } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
-import { PandaSpeechSynthesis } from "@panda-wbc/panda-speech-synthesis";
+
+import PandaSpeechSynthesis from "@panda-wbc/panda-speech-synthesis/lib/panda-speech-synthesis";
 
 // code snippets
 import {
@@ -50,39 +52,35 @@ export class ContentPage extends ContentPageTemplate {
 	private _disabled: boolean = true;
 	
 	@state()
-	private _initialized: boolean = false;
+	private _voiceList: PandaComboBoxItem[] = [];
 
 	@state()
-	private _items: PandaComboBoxItem[] = [];
+	private _selectedVoice!: string;
 
 	@query("#textarea")
 	private readonly _textAreaEl!: any;
 
-	private readonly _pandaSpeechSynthesis: PandaSpeechSynthesis = new PandaSpeechSynthesis();
+	private readonly _pandaSpeechSynthesisConfig: PandaSpeechSynthesisConfig = {
+		voice: "Google UK English Male", // Default voice
+		rate: 1, // Default speech rate
+		pitch: 1.5, // Default pitch
 
+		// callbacks
+		onReady: this._onReady.bind(this),
+		onStart: this._onStart.bind(this),
+		onEnd: this._onEnd.bind(this),
+		onPause: this._onPause.bind(this),
+		onError: this._onError.bind(this),
+		onResume: this._onResume.bind(this), // Uncomment if you want to handle resume event
+	};
 
+	private readonly _pandaSpeechSynthesis: PandaSpeechSynthesis = new PandaSpeechSynthesis(this._pandaSpeechSynthesisConfig);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	firstUpdated() {
-		super.firstUpdated();
-		this._init();
-	}
-
-	private async _init(): Promise<void> {
-		console.log("%c 🚀 (init)", "font-size: 24px; color: blueviolet; background: black;");
-		const voices: SpeechSynthesisVoice[] = await this._pandaSpeechSynthesis.getVoices();
-		console.log("%c 🚀 (init) voices:", "font-size: 24px; color: blueviolet; background: black;", voices);
-		this._items = voices.map((voice) => {
-			return {
-				label: `${voice.name} (${voice.lang})`,
-				value: voice.name,
-			};
-		});
-		this._disabled = !this._items.length;
-	}
+	// ...
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -107,7 +105,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _renderOverviewSection(): TemplateResult {
 
-
+		console.log("%c 🚀 (_renderOverviewSection) _selectedVoice:", "font-size: 24px; color: red; background: black;", this._selectedVoice);
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
@@ -128,7 +126,8 @@ export class ContentPage extends ContentPageTemplate {
 										id="voice-select"
 										label="Select Voice"
 										placeholder="Choose a voice"
-										.items="${this._items}"
+										.items="${this._voiceList}"
+										.value="${this._selectedVoice}"
 										?disabled="${this._disabled}"
 										@change="${this._onVoiceChange}"
 									>										
@@ -264,8 +263,39 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onVoiceChange(event: PandaComboBoxChangeEvent): void {
-		const selectedVoice = event.detail.value;
-		console.log("%c 🚀 (_onVoiceChange)", "font-size: 24px; color: blueviolet; background: black;", selectedVoice);
-		this._pandaSpeechSynthesis.voice = selectedVoice;
+		this._selectedVoice = event.detail.value as string;
+		console.log("%c 🚀 (_onVoiceChange)", "font-size: 24px; color: blueviolet; background: black;", this._selectedVoice);
+		this._pandaSpeechSynthesis.voice = this._selectedVoice;
+	}
+
+	private _onReady( voices: SpeechSynthesisVoice[]): void {
+		console.log("%c 🚀 (_onReady callback)", "font-size: 24px; color: blueviolet; background: black;");
+		// Populate the combo box with available voices
+		this._voiceList = voices.map((voice) => ({
+			label: `${voice.name} (${voice.lang})`,
+			value: voice.name,
+		}));
+		// check if there are any voices available
+		this._disabled = !this._voiceList.length;
+	}
+
+	private _onStart(): void {
+		console.log("%c 🚀 (_onStart callback)", "font-size: 24px; color: blueviolet; background: black;");
+	}
+
+	private _onEnd(): void {
+		console.log("%c 🚀 (_onEnd callback)", "font-size: 24px; color: blueviolet; background: black;");
+	}
+
+	private _onPause(): void {
+		console.log("%c 🚀 (_onPause callback)", "font-size: 24px; color: blueviolet; background: black;");
+	}
+
+	private _onResume(): void {
+		console.log("%c 🚀 (_onResume callback)", "font-size: 24px; color: blueviolet; background: black;");
+	}
+
+	private _onError(error: Error): void {
+		console.error("%c 🚀 (_onError callback)", "font-size: 24px; color: blueviolet; background: black;", error);
 	}
 }
