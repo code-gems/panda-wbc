@@ -145,6 +145,7 @@ export class ContentPage extends ContentPageTemplate {
 										cols="50"
 										label="Text to speak"
 										theme="primary"
+										.value="Beads paused on the leaves of grass, Began to scatter fully in sleep."
 										@keydown="${this._onKeyDown}"
 									>
 									</panda-textarea>
@@ -264,12 +265,12 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onVoiceChange(event: PandaComboBoxChangeEvent): void {
 		this._selectedVoice = event.detail.value as string;
-		console.log("%c 🚀 (_onVoiceChange)", "font-size: 24px; color: blueviolet; background: black;", this._selectedVoice);
+		console.log("%c 🚀 [DEMO PAGE] (_onVoiceChange)", "font-size: 24px; color: blueviolet; background: black;", this._selectedVoice);
 		this._pandaSpeechSynthesis.voice = this._selectedVoice;
 	}
 
 	private _onReady( voices: SpeechSynthesisVoice[]): void {
-		console.log("%c 🚀 (_onReady callback)", "font-size: 24px; color: blueviolet; background: black;");
+		console.log(`%c 🚀 [DEMO PAGE] (_onReady callback) voice: ${this._pandaSpeechSynthesis.voice}`, "font-size: 24px; color: blueviolet; background: black;");
 		// Populate the combo box with available voices
 		this._voiceList = voices.map((voice) => ({
 			label: `${voice.name} (${voice.lang})`,
@@ -277,25 +278,26 @@ export class ContentPage extends ContentPageTemplate {
 		}));
 		// check if there are any voices available
 		this._disabled = !this._voiceList.length;
+		this._selectedVoice = this._pandaSpeechSynthesis.voice;
 	}
 
 	private _onStart(): void {
-		console.log("%c 🚀 (_onStart callback)", "font-size: 24px; color: blueviolet; background: black;");
+		console.log("%c 🚀 [DEMO PAGE] (_onStart callback)", "font-size: 24px; color: blueviolet; background: black;");
 	}
 
 	private _onEnd(): void {
-		console.log("%c 🚀 (_onEnd callback)", "font-size: 24px; color: blueviolet; background: black;");
+		console.log("%c 🚀 [DEMO PAGE] (_onEnd callback)", "font-size: 24px; color: blueviolet; background: black;");
 	}
 
 	private _onPause(): void {
-		console.log("%c 🚀 (_onPause callback)", "font-size: 24px; color: blueviolet; background: black;");
+		console.log("%c 🚀 [DEMO PAGE] (_onPause callback)", "font-size: 24px; color: blueviolet; background: black;");
 	}
 
 	private _onResume(): void {
-		console.log("%c 🚀 (_onResume callback)", "font-size: 24px; color: blueviolet; background: black;");
+		console.log("%c 🚀 [DEMO PAGE] (_onResume callback)", "font-size: 24px; color: blueviolet; background: black;");
 	}
 
 	private _onError(error: Error): void {
-		console.error("%c 🚀 (_onError callback)", "font-size: 24px; color: blueviolet; background: black;", error);
+		console.error("%c 🚀 [DEMO PAGE] (_onError callback)", "font-size: 24px; color: blueviolet; background: black;", error);
 	}
 }

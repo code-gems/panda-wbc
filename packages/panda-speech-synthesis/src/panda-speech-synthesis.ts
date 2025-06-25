@@ -2,7 +2,8 @@
 import { PandaSpeechSynthesisConfig, PandaSpeechSynthesisReadyEvent } from "./types";
 
 // constants
-const LOG_STYLE = "font-size: 16px; color: orange; background: black;";
+const LOG_STYLE = "font-size: 16px; color: limegreen; background: black;";
+const LOG_STYLE_WARN = "font-size: 16px; color: orange; background: black;";
 
 export default class PandaSpeechSynthesis {
 	// ================================================================================================================
@@ -18,7 +19,7 @@ export default class PandaSpeechSynthesis {
 		if (value && typeof value === "string") {
 			this._defaultConfig.language = value;
 		} else {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid language code provided. Using default language.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid language code provided. Using default language.`, LOG_STYLE_WARN);
 			this._defaultConfig.language = this._defaultLanguage;
 		}
 	}
@@ -42,6 +43,7 @@ export default class PandaSpeechSynthesis {
 	private _voice!: SpeechSynthesisVoice | null;
 
 	public get voice(): string {
+		console.log(`%c 🧪 [PANDA SPEECH SYNTHESIS] (get voice): ${this._voice?.name}.`, LOG_STYLE);
 		return this._voice?.name ?? "";
 	}
 
@@ -49,7 +51,7 @@ export default class PandaSpeechSynthesis {
 		if (typeof value === "string" && value.trim() !== "") {
 			this._voice = this._getVoiceByName(value) ?? this.getDefaultVoice();
 		} else {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid voice provided. Using default voice.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid voice provided. Using default voice.`, LOG_STYLE_WARN);
 			this._voice = this.getDefaultVoice();
 		}
 	}
@@ -63,7 +65,7 @@ export default class PandaSpeechSynthesis {
 		if (typeof value === "number" && value >= 0.1 && value <= 10) {
 			this._defaultConfig.rate = value;
 		} else {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid rate provided. Using default rate.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid rate provided. Using default rate.`, LOG_STYLE_WARN);
 			this._defaultConfig.rate = this._defaultRate;
 		}
 	}
@@ -77,7 +79,7 @@ export default class PandaSpeechSynthesis {
 		if (typeof value === "number" && value >= 0 && value <= 2) {
 			this._defaultConfig.pitch = value;
 		} else {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid pitch provided. Using default pitch.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid pitch provided. Using default pitch.`, LOG_STYLE_WARN);
 			this._defaultConfig.pitch = this._defaultPitch;
 		}
 	}
@@ -122,7 +124,7 @@ export default class PandaSpeechSynthesis {
 	constructor(_config: PandaSpeechSynthesisConfig = {}) {
 		// Check if Speech Synthesis API is supported
 		if (!window.speechSynthesis) {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Speech Synthesis API is not supported in this browser.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Speech Synthesis API is not supported in this browser.`, LOG_STYLE_WARN);
 		} else {
 			// initialize class properties
 			this._synth = window.speechSynthesis;
@@ -158,11 +160,8 @@ export default class PandaSpeechSynthesis {
 	 * @returns Singleton instance of PandaSpeechSynthesis
 	 */
 	public static getInstance(): PandaSpeechSynthesis {
-		console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] (getInstance) New Instance`, LOG_STYLE);
 		if (!PandaSpeechSynthesis.instance) {
 			PandaSpeechSynthesis.instance = new PandaSpeechSynthesis();
-		} else {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] (getInstance) Instance already exists`, LOG_STYLE, PandaSpeechSynthesis.instance);
 		}
 		return PandaSpeechSynthesis.instance;
 	}
@@ -178,11 +177,11 @@ export default class PandaSpeechSynthesis {
 	 */
 	private _validateText(text: string): boolean {
 		if (!text || typeof text !== "string") {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid text provided. Please provide a valid string.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid text provided. Please provide a valid string.`, LOG_STYLE_WARN);
 			return false;
 		}
 		if (text.trim() === "") {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] No text provided to speak.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] No text provided to speak.`, LOG_STYLE_WARN);
 			return false;
 		}
 		return true;
@@ -195,12 +194,12 @@ export default class PandaSpeechSynthesis {
 	 */
 	private _getVoiceByName(name: string): SpeechSynthesisVoice | undefined {
 		if (!name || typeof name !== "string") {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid voice name provided.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Invalid voice name provided.`, LOG_STYLE_WARN);
 			return undefined;
 		}
 		const voice = this._voices.find((voice) => voice.name === name);
 		if (!voice) {
-			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] No voice found with name: ${name}.`, LOG_STYLE);
+			console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] No voice found with name: ${name}.`, LOG_STYLE_WARN);
 			return undefined;
 		}
 		return voice;
@@ -216,7 +215,7 @@ export default class PandaSpeechSynthesis {
 			if (this._voices.length === 0) {
 				this._synth.onvoiceschanged = () => {
 						this._voices = this._synth.getVoices();
-						console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] (onvoiceschanged) getVoices`, LOG_STYLE, this._voices);
+						console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] (onvoiceschanged) getVoices:`, LOG_STYLE_WARN, this._voices);
 						resolve(this._voices);
 					};
 				} else {
@@ -233,6 +232,18 @@ export default class PandaSpeechSynthesis {
 	private readonly _onReady = (): void => {
 		console.log(`%c 🗣️ [PANDA SPEECH SYNTHESIS] Ready to speak.`, LOG_STYLE);
 		this._voices = this._synth.getVoices();
+
+		// check if voice is set in the config and if it exists in the available voices
+		if (this._defaultConfig.voice && typeof this._defaultConfig.voice === "string") {
+			const voice = this._getVoiceByName(this._defaultConfig.voice);
+			if (!voice) {
+				console.log(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Voice ${this._defaultConfig.voice} not found. Using default voice.`, LOG_STYLE_WARN);
+				this._voice = this.getDefaultVoice();
+			} else {
+				console.log(`%c 🗣️ [PANDA SPEECH SYNTHESIS] Using voice: ${voice.name}.`, LOG_STYLE);
+				this._voice = voice;
+			}
+		}
 		
 		// dispatch ready event
 		const customEvent: PandaSpeechSynthesisReadyEvent = new CustomEvent("on-ready", {
@@ -260,7 +271,7 @@ export default class PandaSpeechSynthesis {
 	}
 
 	private readonly _onError = (event: SpeechSynthesisErrorEvent): void => {
-		console.error(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Error occurred:`, LOG_STYLE, event);
+		console.error(`%c ⚠️ [PANDA SPEECH SYNTHESIS] Error occurred:`, LOG_STYLE_WARN, event);
 	}
 
 	private readonly _onPause = (event: SpeechSynthesisEvent): void => {
