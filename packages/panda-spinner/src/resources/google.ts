@@ -1,12 +1,11 @@
-import { html } from "lit"
-
-export const google = html`
+export const google = /*html*/`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		x="0px"
-		y="0px"
 		viewBox="0 0 50 50"
+		preserveAspectRatio="xMidYMid meet"
+		x="0"
+		y="0"
 	>
 		<circle
 			class="stroke-only"
@@ -41,6 +40,6 @@ export const google = html`
 				repeatCount="indefinite"
 			>
 			</animateTransform>
-			</circle>
+		</circle>
 	</svg>
 `;

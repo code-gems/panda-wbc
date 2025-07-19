@@ -20,7 +20,6 @@
 	],
 	"author": "code-gems",
 	"license": "MIT",
-	"dependencies": {},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
 		"typescript": "^4.5.4"

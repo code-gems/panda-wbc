@@ -1,12 +1,11 @@
-import { html } from "lit";
-
-export const video = html`
+export const video = /*html*/`
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
-		x="0px"
-		y="0px"
 		viewBox="0 0 64 64"
+		preserveAspectRatio="xMidYMid meet"
+		x="0"
+		y="0"
 	>
 		<g stroke-width="4" stroke-linecap="round">
 			<line

@@ -1,10 +1,8 @@
-import { css } from "lit";
-
-export const styles = css`
+export const styles = /*css*/`
 	:host {
 		display: inline-block;
-		width: var(--panda-spinner-width, 20px);
-		height: var(--panda-spinner-height, 20px);
+		width: var(--panda-spinner-size, 20px);
+		height: var(--panda-spinner-size, 20px);
 	}
 
 	.panda-spinner {

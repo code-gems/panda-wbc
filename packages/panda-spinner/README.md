@@ -1,5 +1,5 @@
 # Welcome to Panda Spinner
-Panda Spinner is a Lit based web component that adds spinners, loading animations to your UI. Extremely lightweight and easy to use.
+Panda Spinner is a native web component that adds spinners, loading animations to your UI. Extremely lightweight and easy to use.
 Enjoy!
 
 ## Installation
@@ -45,8 +45,4 @@ or
 
 ## Change Log
 
-1.0.0
-- 
-
-0.0.2
-- Added new spinner type [google]
+TBD

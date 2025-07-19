@@ -145,7 +145,7 @@ export class ContentPage extends ContentPageTemplate {
 										cols="50"
 										label="Text to speak"
 										theme="primary"
-										.value="Beads paused on the leaves of grass, Began to scatter fully in sleep."
+										value="Beads paused on the leaves of grass, Began to scatter fully in sleep."
 										@keydown="${this._onKeyDown}"
 									>
 									</panda-textarea>

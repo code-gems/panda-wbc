@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-spinner",
 	"version": "1.0.0",
-	"description": "Lit based web component - Adding spinner animations to your UI",
+	"description": "Native web component - Adding spinner animations to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-spinner.js",
 	"scripts": {
@@ -12,9 +12,8 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
-		"web component",
+		"native web component",
+		"custom element",
 		"ui component",
 		"spinner",
 		"loading",
@@ -23,9 +22,6 @@
 	],
 	"author": "code-gems",
 	"license": "MIT",
-	"dependencies": {
-		"lit": "^3.0.2"
-	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
 		"typescript": "^4.5.4"

@@ -2,13 +2,20 @@
 import { PandaIconTemplate } from "../index";
 
 export class PandaIconLibrary {
-	static instance: any;
+	static instance: PandaIconLibrary | undefined;
 	private _icons!: PandaIconTemplate[];
 
 	constructor() {
-		if (!PandaIconLibrary.instance) {
-			PandaIconLibrary.instance = this;
+		if (PandaIconLibrary.instance) {
+			return;
 		}
+		// Initialize class properties
+		this._icons = [];
+		PandaIconLibrary.instance = this;
+	}
+
+	static getInstance() {
+		PandaIconLibrary.instance ??= new PandaIconLibrary();
 		return PandaIconLibrary.instance;
 	}
 
