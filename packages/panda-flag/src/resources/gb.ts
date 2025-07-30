@@ -1,5 +1,4 @@
-
-// United Kingdom / Great Britain
+// United Kingdom
 export const flagGb = (square: boolean): string => {
 	return square
 		? /*svg*/`

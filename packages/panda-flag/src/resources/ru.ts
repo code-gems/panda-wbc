@@ -1,4 +1,4 @@
-// Russia
+// Russian Federation
 
 export const flagRu = (square: boolean): string => {
 	return square

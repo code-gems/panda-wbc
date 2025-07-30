@@ -49,7 +49,7 @@ export const styles = css`
 	}
 
 	.flag-list .list-item .name {
-
+		text-align: center;
 	}
 
 	.flag-list .list-item .keywords {

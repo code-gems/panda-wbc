@@ -1,4 +1,4 @@
-// Macau
+// Macao
 
 export const flagMo = (square: boolean): string => {
 	return square

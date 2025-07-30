@@ -169,12 +169,12 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 					>
 						<div class="flag">
 							<panda-flag
-								.flag="${name}"
+								.flag="${flagDetail.name.toLocaleLowerCase()}"
 								?square="${this._square}"
 							></panda-flag>
 						</div>
 						<div class="name">${flagDetail.fullName}</div>
-						<div class="keywords">${name}, ${flagDetail.keywords.join(", ")}</div>
+						<div class="keywords">${flagDetail.keywords.join(", ")}</div>
 					</div>
 				`);
 			}

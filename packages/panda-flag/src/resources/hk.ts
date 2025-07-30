@@ -1,4 +1,4 @@
-
+// Hong Kong
 export const flagHk = (square: boolean): string => {
 	return square
 		? /*svg*/`

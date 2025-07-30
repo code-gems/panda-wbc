@@ -1,4 +1,4 @@
-// United States
+// United States of America
 
 export const flagUs = (square: boolean): string => {
 	return square
