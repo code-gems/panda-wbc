@@ -1,9 +1,8 @@
 // Panama
-import { html, TemplateResult } from "lit";
 
-export const flagPa = (square: boolean): TemplateResult => {
+export const flagPa = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -15,7 +14,7 @@ export const flagPa = (square: boolean): TemplateResult => {
 				<polygon fill="#e31837" points="173.46 221.06 192 207.54 210.54 221.06 203.41 199.25 222 185.8 199.05 185.84 192 164 184.95 185.84 162 185.8 180.59 199.25 173.46 221.06"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

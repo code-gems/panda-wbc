@@ -1,9 +1,8 @@
 // Ireland
-import { html, TemplateResult } from "lit";
 
-export const flagIe = (square: boolean): TemplateResult => {
+export const flagIe = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -13,7 +12,7 @@ export const flagIe = (square: boolean): TemplateResult => {
 				<rect fill="#f7843c" width="86" height="256" x="171" />
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

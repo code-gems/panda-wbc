@@ -1,9 +1,8 @@
 // Sweden
-import { html, TemplateResult } from "lit";
 
-export const flagSe = (square: boolean): TemplateResult => {
+export const flagSe = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -13,7 +12,7 @@ export const flagSe = (square: boolean): TemplateResult => {
 				<rect y="104" fill="#fad01f" width="256" height="48"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

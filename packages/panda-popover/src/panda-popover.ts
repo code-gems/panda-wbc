@@ -101,7 +101,13 @@ export class PandaPopover extends HTMLElement {
 	set disabled(value: boolean) {
 		if (this._disabled !== value) {
 			this._disabled = value;
-			this.setAttribute("disabled", String(this._disabled)); // reflect to attribute
+			// reflect to attribute
+			if (this._disabled) {
+				this.setAttribute("disabled", "");
+				this._hidePopover();
+			} else {
+				this.removeAttribute("disabled");
+			}
 		}
 	}
 
@@ -182,7 +188,6 @@ export class PandaPopover extends HTMLElement {
 		// hide popover if disabled attribute is set
 		if (_name === "disabled" && _newValue) {
 			this._disabled = _newValue;
-			this._hidePopover();
 		}
 		// set vertical position from attribute
 		if (_name === "position-vertical") {

@@ -1,8 +1,7 @@
-import { html, TemplateResult } from "lit";
 
-export const flagHk = (square: boolean): TemplateResult => {
+export const flagHk = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -28,7 +27,7 @@ export const flagHk = (square: boolean): TemplateResult => {
 				</g>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

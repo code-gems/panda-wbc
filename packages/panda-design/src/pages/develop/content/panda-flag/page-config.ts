@@ -11,16 +11,15 @@ export const pageConfig: Page = {
 	category: PageCategory.DEVELOP,
 	keywords: ["flags", "country"],
 	description: ["Flag description"],
+
+	native: true,
+	updatedTimestamp: 1753769022292,
 	
 	contextMenu: [
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },
 		{ name: "Installation", contextId: ContentSectionName.INSTALLATION },
 		{ name: "Usage", contextId: ContentSectionName.USAGE },
-		{ name: "Component States", contextId: ContentSectionName.COMPONENT_STATES },
-		{ name: "Features", contextId: ContentSectionName.FEATURES },
-		{ name: "Validation", contextId: ContentSectionName.VALIDATION },
-		{ name: "Theming", contextId: ContentSectionName.THEMING },
-		{ name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
+		{ name: "Flag List", contextId: ContentSectionName.LIST },
 	],
 
 	template: html`<panda-flag-content-page></panda-flag-content-page>`

@@ -1,9 +1,8 @@
 // United States
-import { html, TemplateResult } from "lit";
 
-export const flagUs = (square: boolean): TemplateResult => {
+export const flagUs = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -68,7 +67,7 @@ export const flagUs = (square: boolean): TemplateResult => {
 				<polygon fill="#FFF" points="156.41 7.26 158.18 11.62 162.13 12.32 159.27 15.71 159.94 20.51 156.41 18.24 152.87 20.51 153.55 15.71 150.69 12.32 154.64 11.62 156.41 7.26"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

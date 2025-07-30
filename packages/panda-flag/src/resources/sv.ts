@@ -1,9 +1,8 @@
 // El Salvador
-import { html, TemplateResult } from "lit";
 
-export const flagSv = (square: boolean): TemplateResult => {
+export const flagSv = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -45,7 +44,7 @@ export const flagSv = (square: boolean): TemplateResult => {
 				<path class="d" d="M142.17,135.38c-7.83-6.09-18.85-10.86-32.5.85C120.8,136.21,139,133.64,142.17,135.38Z"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

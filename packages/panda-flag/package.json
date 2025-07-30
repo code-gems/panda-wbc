@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-flag",
-	"version": "1.0.1",
-	"description": "Lit based web component adding flags to your UI",
+	"version": "1.0.0",
+	"description": "Native web component adding flags to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-flag.js",
 	"scripts": {
@@ -11,18 +11,14 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
-		"web component",
+		"native web component",
 		"ui component",
 		"flags",
 		"country"
 	],
 	"author": "code-gems",
-	"license": "MIT",
-	"dependencies": {
-		"lit": "^3.0.2"
-	},
+	"license": "Apache-2.0",
+	"dependencies": {},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
 		"typescript": "^4.5.4"

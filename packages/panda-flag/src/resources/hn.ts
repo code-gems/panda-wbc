@@ -1,9 +1,8 @@
 // Honduras
-import { html, TemplateResult } from "lit";
 
-export const flagHn = (square: boolean): TemplateResult => {
+export const flagHn = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -17,7 +16,7 @@ export const flagHn = (square: boolean): TemplateResult => {
 				<polygon fill="#0d3b99" points="193.84 144.21 191.01 135.5 188.19 144.21 179.03 144.21 186.44 149.59 183.61 158.3 191.01 152.92 198.42 158.3 195.59 149.59 203 144.21 193.84 144.21"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

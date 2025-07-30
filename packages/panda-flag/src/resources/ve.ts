@@ -1,9 +1,8 @@
 // Venezuela
-import { html, TemplateResult } from "lit";
 
-export const flagVe = (square: boolean): TemplateResult => {
+export const flagVe = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -21,7 +20,7 @@ export const flagVe = (square: boolean): TemplateResult => {
 				<polygon fill="#fff" points="117.6 103.23 114.33 97.07 113.35 103.98 106.48 105.19 112.75 108.25 111.78 115.16 116.63 110.14 122.9 113.2 119.63 107.04 124.47 102.02 117.6 103.23"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

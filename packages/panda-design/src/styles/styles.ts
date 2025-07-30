@@ -385,16 +385,31 @@ export const uiComponents = {
 	`,
 
 	form: css`
+		.form-cont {
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			align-items: center;
+			padding: 40px;
+
+			background-image: radial-gradient(
+				var(--panda-form-border-color) 1px,
+				transparent 0
+			);
+			background-size: 20px 20px;
+		}
+
 		.form {
 			display: flex;
 			flex-flow: column;
-			width: 20vw;
+			width: 20dvw;
 			max-width: 400px;
+			padding: var(--panda-padding-m);
 
-			border-radius: 5px;
-			border: 1px solid var(--panda-border-color);
-			background-color: var(--panda-background-color-500);
-			box-shadow: 0px 2px 4px var(--panda-black-color-20px);
+			border-radius: var(--panda-form-border-radius);
+			border: 1px solid var(--panda-form-border-color);
+			background-color: var(--panda-form-background-color);
+			box-shadow: var(--panda-elevation-m);
 		}
 	
 		.form .form-section {
@@ -584,6 +599,8 @@ export const uiComponents = {
 			justify-content: center;
 			align-items: center;
 		}
+
+		.justify-center { justify-content: center; }
 	`,
 	
 	modifiers: css`

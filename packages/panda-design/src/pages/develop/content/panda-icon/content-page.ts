@@ -46,7 +46,7 @@ export class ContentPage extends ContentPageTemplate {
 	private _searchText: string = ""; 
 	
 	@state()
-	private _iconList: IconDetails[] = getIconListDetails();
+	private readonly _iconList: IconDetails[] = getIconListDetails();
 
 	@state()
 	private _iconPackMap: Map<string, IconDetails[]> = new Map();
@@ -143,7 +143,8 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Usage</internal-link>
 					<p>
-						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
+						Please refer below for instructions on utilizing our component. 
+						Experiment with the provided sample code to explore all the features of the component.
 					</p>
 	
 					<code-sample header="Implementation">

@@ -65,7 +65,7 @@ export class PandaIcon extends HTMLElement {
 
 	private _render(): string | void {
 		if (this.shadowRoot) {
-			this.shadowRoot.innerHTML = `
+			this.shadowRoot.innerHTML = /*html*/`
 				<div class="icon" part="icon">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

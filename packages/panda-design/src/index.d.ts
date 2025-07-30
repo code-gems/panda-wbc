@@ -10,7 +10,7 @@ declare module "panda-design-typings" {
 		CORE = "CORE",
 		ABOUT = "ABOUT",
 	}
-	
+
 	export const enum ContentSectionName {
 		OVERVIEW = "overview",
 		INSTALLATION = "installation",
@@ -42,8 +42,11 @@ declare module "panda-design-typings" {
 		template: TemplateResult;
 		keywords?: string[];
 		description?: string[];
+		native?: boolean;
+		createdTimestamp?: number;
+		updatedTimestamp?: number;
 		contextMenu?: ContextMenuItem[];
-		order?:number;
+		order?: number;
 
 		subpageList?: Page[];
 	}
@@ -75,7 +78,7 @@ declare module "panda-design-typings" {
 		currentPageDetails: {
 			pathname: string;
 			search: string;
-			searchParams: SearchParams;	
+			searchParams: SearchParams;
 		};
 	}
 
@@ -115,7 +118,7 @@ declare module "panda-design-typings" {
 	export interface GotoPageAction extends Action {
 		pathname: string;
 		search: string;
-		searchParams: SearchParams;	
+		searchParams: SearchParams;
 	}
 
 	export interface ChangeThemeAction extends Action {

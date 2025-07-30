@@ -8,6 +8,7 @@ import { styles } from "./styles/styles";
 // components
 import "@panda-wbc/panda-flag";
 import "@panda-wbc/panda-search";
+import "@panda-wbc/panda-toggle";
 
 // utils & config
 import { html, TemplateResult } from "lit";
@@ -20,6 +21,8 @@ import { flagList } from "./flag-list";
 
 // page config
 import { pageConfig } from "./page-config";
+import { PandaToggleChangeEvent } from "@panda-wbc/panda-toggle";
+import { getCountryList } from "../../static-data";
 
 @customElement("panda-flag-content-page")
 @page(pageConfig)
@@ -36,7 +39,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 
 	// view props
 	@state()
-	private _searchText: string = "";
+	private _searchText = "";
 
 	@state()
 	private _flagList: FlagDetails[] = flagList();
@@ -45,13 +48,13 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 	private _selectedFlagName: string | null = null;
 
 	@state()
-	private _showFlagDetailsDialog: boolean = false;
+	private _showFlagDetailsDialog = false;
 
-	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
+	@state()
+	private _square = false;
 
-	// ...
+	@state()
+	private readonly _countryList: Array<{ name: string; code: string; }> = getCountryList();
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -87,7 +90,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 						Component offers an aesthetically pleasing display of flags based on specified country codes compliant with ISO 3166 international standard. 
 						With a focus on simplicity and flexibility, this component offers two size formats to fit your preference. 
 					</p>
-					<panda-flag flag="ps" square></panda-flag>
+					<panda-flag flag="pl"></panda-flag>
 				</div>
 			</div>
 			${this._renderComponentPropertiesSection()}
@@ -122,15 +125,26 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 						...TBD	
 					</p>
 					<div class="row">
-						<div class="col-full">
+						<div class="col-4">
 							<panda-search
 								placeholder="Find..."
 								@on-input="${this._onFlagSearch}"
 							>
 							</panda-search>
 						</div>
+						<div class="col-4 justify-center">
+							<div class="control">
+								<panda-toggle
+									theme="size-s"
+									?selected="${this._square}"
+									@change="${this._onToggleSquareFlag}"
+								>
+								</panda-toggle>
+								Square
+							</div>
+						</div>
 					</div>
-					<div class="row">
+					<div class="row push-m">
 						<div class="col-full">
 							${this._renderFlagList()}
 						</div>
@@ -143,8 +157,9 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 	private _renderFlagList(): TemplateResult {
 		const listHtml: TemplateResult[] = [];
 
-		this._flagList.forEach((flagDetail) => {
-			const { fullName, name, keywords } = flagDetail;
+		for (const country of this._countryList) {
+			const { name, code } = country;
+			const flagDetail = this._flagList.find((flag) => flag.name === code) ?? { fullName: name, name: code, keywords: [] };
 
 			if (this._searchText === "" || this._flagMatch(flagDetail)) {
 				listHtml.push(html`
@@ -153,15 +168,17 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 						@click="${() => this._onShowIconDetailsDialog(name)}"
 					>
 						<div class="flag">
-							<panda-flag flag="${name}"></panda-flag>
+							<panda-flag
+								.flag="${name}"
+								?square="${this._square}"
+							></panda-flag>
 						</div>
-						<div class="name">${fullName}</div>
-						<div class="keywords">${name}, ${keywords.join(", ")}</div>
+						<div class="name">${flagDetail.fullName}</div>
+						<div class="keywords">${name}, ${flagDetail.keywords.join(", ")}</div>
 					</div>
 				`);
 			}
-		});
-
+		}
 		return html`
 			<div class="flag-list scrollbar">
 				${listHtml}
@@ -182,16 +199,16 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 		} else {
 			const { fullName, name, keywords } = flagDetails;
 			// check if search text matches the icon name
-			if (fullName.match(this._searchText.toLowerCase())) {
+			if (fullName.toLowerCase().match(this._searchText.toLowerCase())) {
 				found = true;
 			}
 			// check if search text matches the icon name
-			if (name.match(this._searchText.toLowerCase())) {
+			if (name.toLowerCase().match(this._searchText.toLowerCase())) {
 				found = true;
 			}
 			// check if search text matches the icon keywords
 			keywords.forEach((keyword) => {
-				if (keyword.match(this._searchText.toLowerCase())) {
+				if (keyword.toLowerCase().match(this._searchText.toLowerCase())) {
 					found = true;
 				}
 			});
@@ -210,5 +227,9 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 	private _onShowIconDetailsDialog(iconName: string) {
 		this._selectedFlagName = iconName;
 		this._showFlagDetailsDialog = true;
+	}
+
+	private _onToggleSquareFlag(event: PandaToggleChangeEvent) {
+		this._square = event.detail.selected;
 	}
 }

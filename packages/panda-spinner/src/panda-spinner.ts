@@ -29,7 +29,7 @@ export class PandaSpinner extends HTMLElement {
 			this._spinner = value;
 			// reflect to attribute
 			this.setAttribute("spinner", this._spinner);
-			this._renderSpinner();
+			this._render();
 		}
 	}
 

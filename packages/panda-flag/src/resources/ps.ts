@@ -1,9 +1,8 @@
 // Palestine
-import { html, TemplateResult } from "lit";
 
-export const flagPs = (square: boolean): TemplateResult => {
+export const flagPs = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -14,7 +13,7 @@ export const flagPs = (square: boolean): TemplateResult => {
 				<polygon fill="#e52d36" points="128,128 0,256 0,0 "/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

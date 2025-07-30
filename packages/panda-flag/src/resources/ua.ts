@@ -1,9 +1,8 @@
 // Ukraine
-import { html, TemplateResult } from "lit";
 
-export const flagUa = (square: boolean): TemplateResult => {
+export const flagUa = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -12,7 +11,7 @@ export const flagUa = (square: boolean): TemplateResult => {
 				<rect fill="#fad01f" y="128" width="256" height="128" />
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

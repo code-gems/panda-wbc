@@ -1,9 +1,8 @@
 // Japan
-import { html, TemplateResult } from "lit";
 
-export const flagJp = (square: boolean): TemplateResult => {
+export const flagJp = (square: boolean): string => {
 	return square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"
@@ -12,7 +11,7 @@ export const flagJp = (square: boolean): TemplateResult => {
 				<circle fill="#f43737" cx="128" cy="128" r="50"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"

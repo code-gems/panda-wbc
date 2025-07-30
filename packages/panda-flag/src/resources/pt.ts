@@ -1,9 +1,8 @@
 // Portugal
-import { html, TemplateResult } from "lit";
 
-export const flagPt = (square: boolean): TemplateResult => {
+export const flagPt = (square: boolean): string => {
 	return !square
-		? html`
+		? /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 192"
@@ -197,7 +196,7 @@ export const flagPt = (square: boolean): TemplateResult => {
 				<circle class="cls-10" cx="94.22" cy="108.29" r="0.64" transform="translate(-14.36 202.17) rotate(-89.82)"/>
 			</svg>
 		`
-		: html`
+		: /*svg*/`
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 256 256"

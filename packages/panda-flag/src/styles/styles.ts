@@ -1,6 +1,4 @@
-import { css } from "lit";
-
-export const styles = css`
+export const styles = /*css*/`
 	:host {
 		display: inline-block;
 		width: var(--panda-flag-width, 30px);
@@ -8,8 +6,8 @@ export const styles = css`
 	}
 
 	:host([square]) {
-		width: var(--panda-flag-height, 24px);
-		height: var(--panda-flag-height, 24px);
+		width: var(--panda-flag-width, 30px);
+		height: var(--panda-flag-width, 30px);
 	}
 
 	.flag {
@@ -17,6 +15,5 @@ export const styles = css`
 		justify-content: center;
 		align-items: center;
 		overflow: hidden;
-		border-radius: 4px;
 	}
 `;
