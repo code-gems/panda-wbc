@@ -2,6 +2,8 @@
 import { flagAm } from "../resources/am"; // Armenia
 import { flagAt } from "../resources/at"; // Austria
 import { flagBe } from "../resources/be"; // Belgium
+import { flagBg } from "../resources/bg"; // Bulgaria
+import { flagBo } from "../resources/bo"; // Bolivia
 import { flagBr } from "../resources/br"; // Brazil
 import { flagCh } from "../resources/ch"; // Switzerland
 import { flagCn } from "../resources/cn"; // China
@@ -31,11 +33,13 @@ import { flagPl } from "../resources/pl"; // Poland
 import { flagPs } from "../resources/ps"; // Palestine
 import { flagPt } from "../resources/pt"; // Portugal
 import { flagQa } from "../resources/qa"; // Qatar
+import { flagRo } from "../resources/ro"; // Romania
 import { flagRu } from "../resources/ru"; // Russia
 import { flagSa } from "../resources/sa"; // Saudi Arabia
 import { flagSe } from "../resources/se"; // Sweden
 import { flagSg } from "../resources/sg"; // Singapore
 import { flagSv } from "../resources/sv"; // El Salvador
+import { flagTg } from "../resources/tg"; // Togo
 import { flagTw } from "../resources/tw"; // Taiwan
 import { flagUa } from "../resources/ua"; // Ukraine
 import { flagUs } from "../resources/us"; // Unites States
@@ -43,7 +47,6 @@ import { flagVe } from "../resources/ve"; // Venezuela
 import { flagVn } from "../resources/vn"; // Vietnam
 // default template
 import { defaultFlag } from "../resources/default";
-import { flagTg } from "../resources/tg";
 
 /**
  * Get the flag template for a specific country.
@@ -58,6 +61,7 @@ export const getFlagTemplate = (flag: string, square: boolean) => {
 		am: flagAm,
 		at: flagAt,
 		be: flagBe,
+		bo: flagBo,
 		br: flagBr,
 		ch: flagCh,
 		cn: flagCn,
@@ -67,6 +71,7 @@ export const getFlagTemplate = (flag: string, square: boolean) => {
 		fi: flagFi,
 		fr: flagFr,
 		gb: flagGb,
+		bg: flagBg,
 		gr: flagGr,
 		hk: flagHk,
 		hn: flagHn,
@@ -76,17 +81,18 @@ export const getFlagTemplate = (flag: string, square: boolean) => {
 		it: flagIt,
 		jp: flagJp,
 		lu: flagLu,
-		mo: flagMo,
 		mc: flagMc,
-		no: flagNo,
+		mo: flagMo,
 		ng: flagNg,
 		nl: flagNl,
+		no: flagNo,
 		pa: flagPa,
 		pe: flagPe,
 		pl: flagPl,
 		ps: flagPs,
 		pt: flagPt,
 		qa: flagQa,
+		ro: flagRo,
 		ru: flagRu,
 		sa: flagSa,
 		se: flagSe,
