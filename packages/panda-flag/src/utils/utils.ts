@@ -6,23 +6,30 @@ import { flagBg } from "../resources/bg"; // Bulgaria
 import { flagBo } from "../resources/bo"; // Bolivia
 import { flagBr } from "../resources/br"; // Brazil
 import { flagCh } from "../resources/ch"; // Switzerland
+import { flagCi } from "../resources/ci"; // Ivory Coast
 import { flagCn } from "../resources/cn"; // China
+import { flagCz } from "../resources/cz"; // Czechia / Czech Republic
 import { flagDe } from "../resources/de"; // Germany
+import { flagDj } from "../resources/dj"; // Djibouti
 import { flagDk } from "../resources/dk"; // Denmark
+import { flagDo } from "../resources/do"; // Dominican Republic
 import { flagEg } from "../resources/eg"; // Egypt
 import { flagFi } from "../resources/fi"; // Finland
 import { flagFr } from "../resources/fr"; // France
 import { flagGb } from "../resources/gb"; // Great Britain
 import { flagGr } from "../resources/gr"; // Greece
+import { flagGt } from "../resources/gt"; // Guatemala
 import { flagHk } from "../resources/hk"; // Hong Kong
 import { flagHn } from "../resources/hn"; // Honduras
 import { flagHu } from "../resources/hu"; // Hungary
 import { flagId } from "../resources/id"; // Indonesia
 import { flagIe } from "../resources/ie"; // Ireland
+import { flagIl } from "../resources/il"; // Israel
 import { flagIt } from "../resources/it"; // Italy
 import { flagJp } from "../resources/jp"; // Japan
 import { flagLu } from "../resources/lu"; // Luxembourg
 import { flagMc } from "../resources/mc"; // Monaco
+import { flagMl } from "../resources/ml"; // Mali
 import { flagMo } from "../resources/mo"; // Macao
 import { flagNg } from "../resources/ng"; // Nigeria
 import { flagNl } from "../resources/nl"; // Netherlands
@@ -36,10 +43,15 @@ import { flagQa } from "../resources/qa"; // Qatar
 import { flagRo } from "../resources/ro"; // Romania
 import { flagRu } from "../resources/ru"; // Russia
 import { flagSa } from "../resources/sa"; // Saudi Arabia
+import { flagSc } from "../resources/sc"; // Seychelles
 import { flagSe } from "../resources/se"; // Sweden
 import { flagSg } from "../resources/sg"; // Singapore
+import { flagSl } from "../resources/sl"; // Sierra Leone
 import { flagSv } from "../resources/sv"; // El Salvador
+import { flagTd } from "../resources/td"; // Chad
 import { flagTg } from "../resources/tg"; // Togo
+import { flagTn } from "../resources/tn"; // Tunisia
+import { flagTr } from "../resources/tr"; // Turkey
 import { flagTw } from "../resources/tw"; // Taiwan
 import { flagUa } from "../resources/ua"; // Ukraine
 import { flagUs } from "../resources/us"; // Unites States
@@ -47,47 +59,57 @@ import { flagVe } from "../resources/ve"; // Venezuela
 import { flagVn } from "../resources/vn"; // Vietnam
 // default template
 import { defaultFlag } from "../resources/default";
+import { flagPh } from "../resources/ph";
 
 /**
  * Get the flag template for a specific country.
- * @param flag country code or name, e.g. "am", "armenia", "Armenia", "AM"
- * @param square whether to use a square flag template
- * @returns SVG string of the flag template
+ * @param {String} flag country code or name, e.g. "am", "armenia", "Armenia", "AM"
+ * @param {Boolean} square whether to use a square flag template
+ * @param {Boolean} round whether to use a square flag template for round flag style
+ * @returns {String} SVG string of the flag template
  */
-export const getFlagTemplate = (flag: string, square: boolean) => {
+export const getFlagTemplate = (flag: string, square: boolean, round: boolean) => {
 	// map of country codes to flag templates
 	// the keys are the country codes, and the values are functions that return the SVG string
 	const flagTemplateMap: { [countryCode: string]: (square: boolean) => string } = {
 		am: flagAm,
 		at: flagAt,
 		be: flagBe,
+		bg: flagBg,
 		bo: flagBo,
 		br: flagBr,
 		ch: flagCh,
+		ci: flagCi,
 		cn: flagCn,
+		cz: flagCz,
 		de: flagDe,
+		dj: flagDj,
 		dk: flagDk,
+		do: flagDo,
 		eg: flagEg,
 		fi: flagFi,
 		fr: flagFr,
 		gb: flagGb,
-		bg: flagBg,
 		gr: flagGr,
+		gt: flagGt,
 		hk: flagHk,
 		hn: flagHn,
 		hu: flagHu,
 		id: flagId,
 		ie: flagIe,
+		il: flagIl,
 		it: flagIt,
 		jp: flagJp,
 		lu: flagLu,
 		mc: flagMc,
+		ml: flagMl,
 		mo: flagMo,
 		ng: flagNg,
 		nl: flagNl,
 		no: flagNo,
 		pa: flagPa,
 		pe: flagPe,
+		ph: flagPh,
 		pl: flagPl,
 		ps: flagPs,
 		pt: flagPt,
@@ -95,10 +117,15 @@ export const getFlagTemplate = (flag: string, square: boolean) => {
 		ro: flagRo,
 		ru: flagRu,
 		sa: flagSa,
+		sc: flagSc,
 		se: flagSe,
 		sg: flagSg,
+		sl: flagSl,
 		sv: flagSv,
+		td: flagTd,
 		tg: flagTg,
+		tn: flagTn,
+		tr: flagTr,
 		tw: flagTw,
 		ua: flagUa,
 		uk: flagGb,
@@ -107,7 +134,7 @@ export const getFlagTemplate = (flag: string, square: boolean) => {
 		vn: flagVn,
 		default: defaultFlag, // default flag template for unknown country codes
 	};
-	const viewBox = square
+	const viewBox = square || round
 		? "0 0 256 256"
 		: "0 0 256 192";
 	const flagTemplate = flagTemplateMap[getCountryCode(flag)] || flagTemplateMap.default;
@@ -120,7 +147,7 @@ export const getFlagTemplate = (flag: string, square: boolean) => {
 			x="0"
 			y="0"
 		>
-			${flagTemplate(square)}
+			${flagTemplate(square || round)}
 		</svg>
 	`;
 }

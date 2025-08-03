@@ -3,7 +3,7 @@
 export const flagEg = (square: boolean): string => {
 	return square
 		? /*svg*/`
-			<rect fill="#F1F0F0" width="256" height="256"/>
+			<rect fill="#F0F0F0" width="256" height="256"/>
 			<rect fill="#D8202A" width="256" height="85"/>
 			<rect fill="#000000" x="0" y="171" width="256" height="85"/>
 			<path fill="#F8981E" d="M175.001,116.25H139.75c0-6.477-5.244-11.75-11.75-11.75c-6.477,0-11.75,5.272-11.75,11.75H81
@@ -12,7 +12,7 @@ export const flagEg = (square: boolean): string => {
 			/>
 		`
 		: /*svg*/`
-			<rect fill="#F1F0F0" width="256" height="192"/>
+			<rect fill="#F0F0F0" width="256" height="192"/>
 			<rect fill="#D81F2A" width="256" height="64"/>
 			<rect fill="#000000" y="128" width="256" height="64"/>
 			<path fill="#F8981E" d="M162.499,87.679h-25.876c0-4.756-3.853-8.625-8.625-8.625c-4.756,0-8.625,3.869-8.625,8.625H93.498

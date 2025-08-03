@@ -81,14 +81,14 @@ class PandaApp extends LitElement {
 
 	protected render() {
 		return html`
-			<panda-theme theme="${this.selectedTheme}"></panda-theme>
+			<panda-theme .theme="${this.selectedTheme ?? ""}"></panda-theme>
 			<panda-notifications
 				position="top-center"
 				show-dismiss-all-button
 			></panda-notifications>
 			<panda-router
 				.routerConfig="${this._routerConfig}"
-				@on-navigate="${(e: CustomEvent) => this._onNavigate(e.detail)}"
+				@on-navigate="${this._onNavigate}"
 			></panda-router>
 		`;
 	}
@@ -97,13 +97,13 @@ class PandaApp extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onNavigate(navigateEvent: PandaRouterNavigateEvent): void {
-		console.log("%c [APP] _onNavigate", "font-size: 24px; color: green;", navigateEvent);
+	private _onNavigate(event: PandaRouterNavigateEvent): void {
+		console.log("%c [APP] _onNavigate", "font-size: 24px; color: green;", event);
 		const {
 			pathname,
 			search,
 			searchParams
-		} = navigateEvent;
+		} = event.detail;
 
 		appStore.dispatch(
 			gotoPage({

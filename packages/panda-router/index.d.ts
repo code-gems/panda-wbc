@@ -4,7 +4,7 @@ export type SearchParams = {
 	[paramName: string]: any;
 }
 
-export interface PandaRouterNavigateEvent {
+export interface PandaRouterNavigateEventDetail {
 	pathname: string;
 	search: string;
 	searchParams: SearchParam;
@@ -15,3 +15,5 @@ export interface RouterConfig {
 		[patchName: string | number]: TemplateResult;
 	};
 }
+
+export interface PandaRouterNavigateEvent extends CustomEvent<PandaRouterNavigateEventDetail> {}

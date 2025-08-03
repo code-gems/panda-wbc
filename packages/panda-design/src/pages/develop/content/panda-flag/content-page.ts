@@ -54,6 +54,9 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 	private _square = false;
 
 	@state()
+	private _round = false;
+
+	@state()
 	private readonly _countryList: Array<{ name: string; code: string; }> = getCountryList();
 
 	// ================================================================================================================
@@ -142,6 +145,15 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 								</panda-toggle>
 								Square
 							</div>
+							<div class="control">
+								<panda-toggle
+									theme="size-s"
+									?selected="${this._round}"
+									@change="${this._onToggleRoundFlag}"
+								>
+								</panda-toggle>
+								Round
+							</div>
 						</div>
 					</div>
 					<div class="row push-m">
@@ -159,9 +171,20 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 
 		for (const country of this._countryList) {
 			const { name, code } = country;
-			const flagDetail = this._flagList.find((flag) => flag.name === code) ?? { fullName: name, name: code, keywords: [] };
+			const flagDetail = this._flagList.find(
+				(flag) => flag.name.toLocaleLowerCase() === code.toLocaleLowerCase()
+			) ?? {
+				fullName: name,
+				name: code.toLocaleLowerCase(),
+				keywords: [],
+			};
 
 			if (this._searchText === "" || this._flagMatch(flagDetail)) {
+				// get keywords string
+				const  keywords = flagDetail.keywords?.length
+					? `, ${flagDetail.keywords.join(", ")}`
+					: ``;
+
 				listHtml.push(html`
 					<div
 						class="list-item"
@@ -171,10 +194,11 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 							<panda-flag
 								.flag="${flagDetail.name.toLocaleLowerCase()}"
 								?square="${this._square}"
+								?round="${this._round}"
 							></panda-flag>
 						</div>
 						<div class="name">${flagDetail.fullName}</div>
-						<div class="keywords">${flagDetail.keywords.join(", ")}</div>
+						<div class="keywords">${flagDetail.name.toLocaleLowerCase()}${keywords}</div>
 					</div>
 				`);
 			}
@@ -191,7 +215,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _flagMatch(flagDetails: FlagDetails): boolean {
-		let found: boolean = false;
+		let found = false;
 
 		// do not filter if search text is empty
 		if (this._searchText === "") {
@@ -208,7 +232,8 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 			}
 			// check if search text matches the icon keywords
 			keywords.forEach((keyword) => {
-				if (keyword.toLowerCase().match(this._searchText.toLowerCase())) {
+				console.log(`%c ${keyword.toLowerCase()} == ${this._searchText.toLowerCase()}`, "font-size: 24px; color: crimson; background: black;", typeof keyword, typeof this._searchText);
+				if (keyword.toLowerCase().includes(this._searchText.toLowerCase())) {
 					found = true;
 				}
 			});
@@ -231,5 +256,9 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 
 	private _onToggleSquareFlag(event: PandaToggleChangeEvent) {
 		this._square = event.detail.selected;
+	}
+
+	private _onToggleRoundFlag(event: PandaToggleChangeEvent) {
+		this._round = event.detail.selected;
 	}
 }

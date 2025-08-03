@@ -3,7 +3,7 @@
 export const defaultFlag = (square: boolean): string => {
 	return square
 		? /*svg*/`
-			<rect fill="#F1F0F0" width="256" height="256"/>
+			<rect fill="#F0F0F0" width="256" height="256"/>
 			<path 
 				fill="#808080" 
 				fill-rule="evenodd" 
@@ -20,7 +20,7 @@ export const defaultFlag = (square: boolean): string => {
 			/>
 		`
 		: /*svg*/`
-			<rect fill="#F1F0F0" width="256" height="192"/>
+			<rect fill="#F0F0F0" width="256" height="192"/>
 			<path
 				fill="#808080" 
 				fill-rule="evenodd" 

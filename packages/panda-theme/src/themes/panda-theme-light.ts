@@ -308,10 +308,11 @@ export const pandaThemeLight = /*css*/ `
 		--panda-form-border-radius: var(--panda-border-radius-m);
 
 		/* COMPONENT SIZE */
-		--panda-component-size-s: 24px;
-		--panda-component-size-m: 32px;
-		--panda-component-size-l: 40px;
-		--panda-component-size-xl: 48px;
+		--panda-component-size-xs: 24px;
+		--panda-component-size-s: 32px;
+		--panda-component-size-m: 40px;
+		--panda-component-size-l: 48px;
+		--panda-component-size-xl: 56px;
 		
 		--panda-border-color: hsl(0deg 0% 85%);
 		--panda-border-color-disabled: hsl(0deg 0% 87%);
@@ -359,40 +360,139 @@ export const pandaThemeLight = /*css*/ `
 		/* ========================================================================================================= */
 		
 		/* DEFAULT */
-		--panda-button-text-color: var(--panda-text-color);
-		--panda-button-text-shadow: 0px 1px 1px var(--panda-text-shadow);
-		--panda-button-border-color: #fff;
-		--panda-button-background-color: #fff;
-		--panda-button-box-shadow: 0px 2px 4px var(--panda-black-color-20opc);
-		
+		--panda-button-padding: 0px 16px;
+		--panda-button-padding-prefix: 8px;
+		--panda-button-padding-suffix: 8px;
+		--panda-button-gap: 8px;
+		--panda-button-text-color: hsl(191deg 19% 23%);
+		--panda-button-text-shadow: none;
+		--panda-button-font-size: 16px;
+		--panda-button-font-family: "Poppins";
+		--panda-button-font-weight: 500;
+
+		--panda-button-border-width: 1px;
+		--panda-button-border-style: solid;
+		--panda-button-border-color: hsl(207deg 1% 85%);
+		--panda-button-border-radius: 10px;
+		--panda-button-background-color: hsl(0deg 0% 100%);
+		--panda-button-elevation: none;
+		--panda-button-outline: 0px 0px 2px 2px hsl(160deg 81% 43%);
+		/* SPINNER STYLE */
+		--panda-button-icon-color: hsl(191deg 19% 23%);
+		--panda-button-icon-size: 24px;
+		/* SPINNER STYLE */
+		--panda-button-spinner-color: hsl(191deg 19% 23%);
+		--panda-button-spinner-size: 24px;
 		/* HOVERED */
-		--panda-button-text-color-hover: var(--panda-text-color-hover);
-		--panda-button-text-shadow-hover: 0px 1px 1px var(--panda-text-shadow);
-		--panda-button-border-color-hover: #fff;
-		--panda-button-background-color-hover: #fff;
-		--panda-button-box-shadow-hover: 0px 2px 4px var(--panda-black-color-40opc);
-		
+		--panda-button-text-color-hover: hsl(191deg 19% 23%);
+		--panda-button-text-shadow-hover: none;
+		--panda-button-border-color-hover: hsl(207deg 1% 85%);
+		--panda-button-background-color-hover: hsl(0deg 0% 100%);
+		--panda-button-elevation-hover: 0px 0px 5px hsl(0deg 0% 0% / 10%);
 		/* ACTIVE */
-		--panda-button-text-color-active: var(--panda-text-color);
-		--panda-button-text-shadow-active: 0px 1px 1px var(--panda-text-shadow);
-		--panda-button-border-color-active: #fff;
-		--panda-button-background-color-active: #fff;
-		--panda-button-box-shadow-active: 0px 2px 4px var(--panda-black-color-20opc);
-
+		--panda-button-text-color-active: hsl(191deg 19% 23%);
+		--panda-button-text-shadow-active: none;
+		--panda-button-border-color-active: hsl(207deg 1% 85%);
+		--panda-button-background-color-active: hsl(201deg 1% 97%);
+		--panda-button-elevation-active: 0px 0px 5px hsl(0deg 0% 0% / 10%);
 		/* FOCUSED */
-		--panda-button-text-color-focused: var(--panda-text-color);
-		--panda-button-text-shadow-focused: 0px 1px 1px var(--panda-text-shadow);
-		--panda-button-border-color-focused: #fff;
-		--panda-button-background-color-focused: #fff;
-		--panda-button-box-shadow-focused: 0px 2px 4px var(--panda-black-color-20opc);
-
+		--panda-button-text-color-focused: hsl(191deg 19% 23%);
+		--panda-button-text-shadow-focused: none;
+		--panda-button-border-color-focused: hsl(207deg 1% 85%);
+		--panda-button-background-color-focused: hsl(0deg 0% 100%);
+		/* WORKING */
+		--panda-button-border-color-working: hsl(212deg 1% 95%);
+		--panda-button-background-color-working: hsl(0deg 0% 100%);
+		--panda-button-elevation-working: none;
 		/* DISABLED */
-		--panda-button-text-color-disabled: var(--panda-text-color-disabled);
+		--panda-button-text-color-disabled: hsl(188deg 5% 75%);
 		--panda-button-text-shadow-disabled: none;
-		--panda-button-border-color-disabled: #fff;
-		--panda-button-background-color-disabled: #fff;
-		--panda-button-box-shadow-disabled: none;
+		--panda-button-border-color-disabled: hsl(189deg 3% 96%);
+		--panda-button-background-color-disabled: hsl(189deg 3% 96%);
+		--panda-button-elevation-disabled: none;
 		
+		/* BUTTON - PRIMARY ======================================================================================== */
+		--panda-button-primary-text-color: hsl(0deg 0% 100%);
+		--panda-button-primary-text-shadow: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-primary-font-size: 14px;
+		--panda-button-primary-font-family: "Poppins";
+		--panda-button-primary-font-weight: 500;
+
+		--panda-button-primary-border-color: hsl(209deg 78% 42%);
+		--panda-button-primary-background-color: hsl(209deg 78% 46%);
+		--panda-button-primary-elevation: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		--panda-button-primary-outline: var(--panda-button-outline);
+		/* PRIMARY - SPINNER STYLE */
+		--panda-button-primary-spinner-size: 30px;
+		--panda-button-primary-spinner-color: hsl(0deg 0% 100%);
+		/* PRIMARY - FOCUSED */
+		--panda-button-primary-text-color-focused: hsl(0deg 0% 100%);
+		--panda-button-primary-text-shadow-focused: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-primary-border-color-focused: hsl(209deg 78% 42%);
+		--panda-button-primary-background-color-focused: hsl(209deg 78% 46%);
+		/* PRIMARY - HOVER */
+		--panda-button-primary-text-color-hover: hsl(0deg 0% 100%);
+		--panda-button-primary-text-shadow-hover: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-primary-border-color-hover: hsl(209deg 78% 42%);
+		--panda-button-primary-background-color-hover: hsl(209deg 78% 41%);
+		--panda-button-primary-elevation-hover: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		/* PRIMARY - ACTIVE */
+		--panda-button-primary-text-color-active: hsl(0deg 0% 100%);
+		--panda-button-primary-text-shadow-active: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-primary-border-color-active: hsl(209deg 78% 42%);
+		--panda-button-primary-background-color-active: hsl(209deg 78% 36%);
+		--panda-button-primary-elevation-active: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		/* PRIMARY - DISABLED */
+		--panda-button-primary-text-color-disabled: hsl(188deg 5% 75%);
+		--panda-button-primary-text-shadow-disabled: none;
+		--panda-button-primary-border-color-disabled: hsl(189deg 3% 96%);
+		--panda-button-primary-background-color-disabled: hsl(189deg 3% 96%);
+		--panda-button-primary-elevation-disabled: none;
+
+		/* BUTTON - SECONDARY ====================================================================================== */
+		--panda-button-secondary-text-color: hsl(0deg 0% 100%);
+		--panda-button-secondary-text-shadow: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-secondary-font-size: 14px;
+		--panda-button-secondary-font-family: "Poppins";
+		--panda-button-secondary-font-weight: 500;
+
+		--panda-button-secondary-border-color: hsl(209deg 22% 50%);
+		--panda-button-secondary-background-color: hsl(209deg 28% 56%);
+		--panda-button-secondary-elevation: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		--panda-button-secondary-outline: var(--panda-button-outline);
+		/* SECONDARY - SPINNER STYLE */
+		--panda-button-secondary-spinner-size: 30px;
+		--panda-button-secondary-spinner-color: hsl(0deg 0% 100%);
+		/* SECONDARY - FOCUSED */
+		--panda-button-secondary-text-color-focused: hsl(0deg 0% 100%);
+		--panda-button-secondary-text-shadow-focused: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-secondary-border-color-focused: hsl(209deg 22% 50%);
+		--panda-button-secondary-background-color-focused: hsl(209deg 28% 56%);
+		/* SECONDARY - HOVER */
+		--panda-button-secondary-text-color-hover: hsl(0deg 0% 100%);
+		--panda-button-secondary-text-shadow-hover: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-secondary-border-color-hover: hsl(209deg 22% 50%);
+		--panda-button-secondary-background-color-hover: hsl(209deg 28% 52%);
+		--panda-button-secondary-elevation-hover: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		/* SECONDARY - ACTIVE */
+		--panda-button-secondary-text-color-active: hsl(0deg 0% 100%);
+		--panda-button-secondary-text-shadow-active: 0px 1px 2px hsl(0deg 0% 0% / 80%);
+		--panda-button-secondary-border-color-active: hsl(209deg 22% 50%);
+		--panda-button-secondary-background-color-active: hsl(209deg 28% 46%);
+		--panda-button-secondary-elevation-active: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		/* SECONDARY - DISABLED */
+		--panda-button-secondary-text-color-disabled: hsl(188deg 5% 75%);
+		--panda-button-secondary-text-shadow-disabled: none;
+		--panda-button-secondary-border-color-disabled: hsl(189deg 3% 96%);
+		--panda-button-secondary-background-color-disabled: hsl(189deg 3% 96%);
+		--panda-button-secondary-elevation-disabled: none;
+
+
+		
+		/* BUTTON - TERTIARY ======================================================================================= */
+
+
+
 		/* ========================================================================================================= */
 		/* BUTTON GROUP ============================================================================================ */
 		/* ========================================================================================================= */
@@ -510,9 +610,14 @@ export const pandaThemeLight = /*css*/ `
 		/* SPINNER ================================================================================================= */
 		/* ========================================================================================================= */
 
-		--panda-spinner-width: var(--panda-icon-size-m);
-		--panda-spinner-height: var(--panda-icon-size-m);
 		--panda-spinner-color: var(--panda-text-color);
+
+		--panda-spinner-size-xs: 16px;
+		--panda-spinner-size-s: 18px;
+		--panda-spinner-size-m: 20px;
+		--panda-spinner-size-l: 24px;
+		--panda-spinner-size-xl: 30px;
+
 
 		/* ========================================================================================================= */
 		/* TOGGLE ================================================================================================== */

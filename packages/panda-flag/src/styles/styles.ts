@@ -16,4 +16,8 @@ export const styles = /*css*/`
 		align-items: center;
 		overflow: hidden;
 	}
+
+	.flag.round {
+		border-radius: 50%;
+	}
 `;

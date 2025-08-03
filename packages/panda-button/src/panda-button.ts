@@ -4,128 +4,142 @@ import { styles } from "./styles/styles";
 // components
 import "@panda-wbc/panda-spinner";
 
-// utils
-import { LitElement, html, TemplateResult } from "lit";
-import { customElement, property, queryAssignedElements } from "lit/decorators.js";
-
-@customElement("panda-button")
-export class PandaButton extends LitElement {
-	// css style
-	static get styles() {
-		return styles;
-	}
-
-	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
-
-	@property({ type: Boolean, reflect: true })
-	disabled: boolean = false;
-
-	@property({ type: Boolean, reflect: true })
-	busy: boolean = false;
-
-	@property({ type: String, attribute: "spinner-type", reflect: true })
-	spinnerType!: string;
-
-	@property({ type: String })
-	theme!: string;
+export class PandaButton extends HTMLElement {
+	// ================================================================================================================
+	// PROPERTIES =====================================================================================================
+	// ================================================================================================================
 	
-	@property({ type: Boolean, attribute: "active", reflect: true })
-	private _active!: boolean;
-
-	@queryAssignedElements({ slot: "prefix" })
-	_prefixSlot: any;
-
-	// events
-	private readonly _mouseUpEvent = this._onMouseUp.bind(this);
-
+	static readonly observedAttributes = [
+		"theme",
+		"disabled",
+		"working",
+		"spinner-type",
+	];
+	
+	// theme ==========================================================================================================
+	private _theme!: string;
+	
+	// theme ==========================================================================================================
+	private _disabled!: boolean;
+	
+	// working ==========================================================================================================
+	private _working!: boolean;
+	
+	// spinnerType ==========================================================================================================
+	private _spinnerType!: string;
+	
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
 
-	connectedCallback(): void {
-		super.connectedCallback();
-		// add events
-		document.addEventListener("mouseup", this._mouseUpEvent);
+	constructor() {
+		super();
+		this.attachShadow({ mode: "open", delegatesFocus: true });
+		// apply component styles
+		this._applyStyles();
+		// initialize class properties
+		this._theme = "";
+		this._disabled = false;
+		this._working = false;
+		this._spinnerType = "dots";
+		// render component
+		this._render();
 	}
 
-	protected firstUpdated(): void {
-		// console.log("%c _prefixSlot", "font-size: 24px; color: red;", this._prefixSlot);
-	}
-
-	disconnectedCallback(): void {
-		super.disconnectedCallback();
-		// remove events
-		document.removeEventListener("mouseup", this._mouseUpEvent);
+	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		if (_name === "theme") {
+			this._theme = _newValue;
+		}
+		if (_name === "disabled") {
+			this._disabled = this._parseBooleanAttribute(_newValue);
+		}
+		if (_name === "working") {
+			this._working = this._parseBooleanAttribute(_newValue);
+		}
+		this._render();
 	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
-		const spinnerHtml: TemplateResult[] = [];
+	private _render() {
+		if (this.shadowRoot) {
+			// check for working state
+			const spinnerHtml = this._working
+				? /*html*/`
+					<div class="spinner-cont" part="spinner-cont">
+						<panda-spinner
+							theme="${this._theme ?? ""}"
+							part="spinner"
+							spinner="${this._spinnerType ?? "dots"}"
+						>
+						</panda-spinner>
+					</div>
+				`
+				: "";
+			
+			// get tab index based on the component state
+			const tabIndex = this._disabled ? "-1" : "0"
 
-		if (this.busy) {
-			spinnerHtml.push(html`
-				<div
-					class="spinner-cont"
-					part="spinner-cont"
-				>
-					<panda-spinner
-						part="spinner"
-						spinner="${this.spinnerType ?? "dots"}"
-					>
-					</panda-spinner>
-				</div>
-			`);
-		}
-		
-		const modCss: string[] = [];
-		if (this._active) modCss.push("active");
-		if (this.disabled) modCss.push("disabled");
-		if (this.busy) modCss.push("busy");
+			// get css classes based on component state
+			const cssClasses: string[] = [];
+			if (this._disabled) {
+				cssClasses.push("disabled");
+			}
+			if (this._working) {
+				cssClasses.push("working");
+			}
 
-		return html`
-			<button
-				class="${modCss.join(" ")}"
-				part="button ${modCss.join(" ")}"
-				.disabled="${this.disabled}"
-				tabindex="${this.busy || this.disabled ? "-1" : "0"}"
-				@mousedown="${this._onMouseDown}"
-			>
-				<slot
-					name="prefix"
-					part="prefix"
-					@slotchange="${this._onPrefixSlotChange}"
+			// render component template
+			this.shadowRoot.innerHTML = /*html*/`
+				<button
+					class="button ${cssClasses.join(" ")}"
+					part="button ${cssClasses.join(" ")}"
+					${this._disabled || this._working? "disabled" : ""}
+					tabindex="${tabIndex}"
 				>
-				</slot>
-				<div class="content" part="content">
+					<slot name="prefix"></slot>
 					<slot></slot>
-				</div>
-				<slot name="suffix" part="suffix"></slot>
-				${spinnerHtml}
-			</button>
-		`;
+					<slot name="suffix"></slot>
+					${spinnerHtml}
+				</button>
+			`;
+		}
+	}
+
+	// ================================================================================================================
+	// HELPERS ========================================================================================================
+	// ================================================================================================================
+
+	private _applyStyles(): void {
+		const cssStyleSheet = new CSSStyleSheet();
+		cssStyleSheet.replaceSync(styles);
+		if (this.shadowRoot) {
+			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
+		}
+	}
+
+	/**
+	 * Parses an attribute value to boolean.
+	 * @param value value to parse
+	 * @description Parses a value to boolean. If the value is "true" or true, it returns true, otherwise false.
+	 * @returns {Boolean}
+	 */
+	private _parseBooleanAttribute(value: any): boolean {
+		return value === "true" || value === true || value === "";
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 	
-	private _onMouseDown(event: any) {
-		// console.log("%c ⚡ (mouse down)", "font-size: 24px; color: red;", event);
-		this._active = true;
-	}
-	
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		// console.log("%c ⚡ (mouse up)", "font-size: 24px; color: red;", event);
-		this._active = false;
-	}
 
-	private _onPrefixSlotChange(event: any) {
-		// console.log("%c _onPrefixSlotChange", "font-size: 48px; color: red;", event);
-	}
+}
+
+// Register the custom element
+if (!customElements.get("panda-button")) {
+	customElements.define("panda-button", PandaButton);
 }
 
 declare global {

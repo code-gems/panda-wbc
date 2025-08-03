@@ -28,6 +28,7 @@ import {
 	primaryThemeSnippet,
 	warnThemeSnippet,
 } from "./snippets/snippets";
+import { toastCenter } from "../../../../utils/toast-center";
 
 @page(pageConfig)
 @customElement("panda-button-content-page")
@@ -112,6 +113,9 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
+		`;
+		return html`
+			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
 			${this._renderComponentStatesSection()}
@@ -131,7 +135,325 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 						They can initiate processes like submitting forms, saving data, navigating between pages, or executing specific tasks.
 					</p>
 				</div>
+
+				<div class="sample-cont">
+					<div class="sample">
+						<div class="rows">
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										@click="${this._onClick}"
+									>
+										Default
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										@click="${this._onClick}"
+										working
+									>
+										Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										disabled
+										@click="${this._onClick}"
+									>
+										Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="primary"
+										@click="${this._onClick}"
+									>
+										Primary
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="primary"
+										@click="${this._onClick}"
+										working
+									>
+										Primary Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="primary"
+										@click="${this._onClick}"
+										disabled
+									>
+										Primary Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="secondary"
+										@click="${this._onClick}"
+									>
+										Secondary
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="secondary"
+										@click="${this._onClick}"
+										working
+									>
+										Secondary Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="secondary"
+										@click="${this._onClick}"
+										disabled
+									>
+										Secondary Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="info"
+										@click="${this._onClick}"
+									>
+										Info
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="info"
+										@click="${this._onClick}"
+										working
+									>
+										Info Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="info"
+										@click="${this._onClick}"
+										disabled
+									>
+										Info Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row" style="background: url(./transparent.png);">
+								<div class="col-2">
+									<panda-button
+										theme="plain size-xl"
+										@click="${this._onClick}"
+									>
+										Plain
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="plain size-xl"
+										@click="${this._onClick}"
+										working
+									>
+										Plain Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="plain size-xl"
+										@click="${this._onClick}"
+										disabled
+									>
+										Plain Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="size-s"
+										@click="${this._onClick}"
+									>
+										Size-S
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="size-s"
+										@click="${this._onClick}"
+										working
+									>
+										Size-S Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="size-s"
+										@click="${this._onClick}"
+										disabled
+									>
+										Size-S Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="size-l"
+										@click="${this._onClick}"
+									>
+										Size-L
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="size-l"
+										@click="${this._onClick}"
+										working
+									>
+										Size-L Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="size-l"
+										@click="${this._onClick}"
+										disabled
+									>
+										Size-L Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="size-xl"
+										@click="${this._onClick}"
+									>
+										Size-XL
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="size-xl"
+										@click="${this._onClick}"
+										working
+									>
+										Size-XL Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="size-xl"
+										@click="${this._onClick}"
+										disabled
+									>
+										Size-XL Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="icon size-xl"
+										@click="${this._onClick}"
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="icon size-xl"
+										@click="${this._onClick}"
+										working
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="icon size-xl"
+										@click="${this._onClick}"
+										disabled
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme=""
+										@click="${this._onClick}"
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme=""
+										@click="${this._onClick}"
+										working
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme=""
+										@click="${this._onClick}"
+										disabled
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+								</div>
+							</div><!-- row -->
+						</div>
+					</div>
+				</div>
 			</div>
+			<hr />
+			<panda-button
+				style="width: 70px;"
+				@click="${this._onClick}"
+			>
+				Primary Disabled
+			</panda-button>
 		`;
 	}
 
@@ -809,7 +1131,13 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 
 	private _onClick(): void {
 		console.log("%c ⚡ [BUTTON DEMO PAGE] click", "font-size: 24px; color: orange;");
-
+		toastCenter.createToast({
+			message: "Button Clicked",
+			theme: "info",
+			closable: true,
+			interval: 1000,
+		});
 	}
+
 
 }

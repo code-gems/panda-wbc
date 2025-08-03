@@ -9,8 +9,10 @@ export const pageConfig: Page = {
 	pageId: "panda-button",
 	pageUri: "/develop?page=panda-button",
 	category: PageCategory.DEVELOP,
-	keywords: ["button", "cta", "action", "interface", "form"],
+	keywords: ["native", "button", "cta", "action", "interface", "form"],
 	description: ["Showcase of a panda-button element."],
+	native: true,
+	createdTimestamp: 1754202647857,
 	
 	contextMenu: [		
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },

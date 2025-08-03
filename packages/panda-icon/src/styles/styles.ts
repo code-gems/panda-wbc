@@ -1,8 +1,8 @@
-export const styles = `
+export const styles = /*css*/`
 	:host {
 		display: inline-block;
-		width: var(--panda-icon-width, 20px);
-		height: var(--panda-icon-height, 20px);
+		width: var(--panda-icon-size, var(--panda-icon-size-m, 20px));
+		height: var(--panda-icon-size, var(--panda-icon-size-m, 20px));
 	}
 
 	.icon {

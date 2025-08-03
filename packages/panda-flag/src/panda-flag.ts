@@ -9,7 +9,7 @@ export class PandaFlag extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	static readonly observedAttributes = ["flag", "square"];
+	static readonly observedAttributes = ["flag", "square", "round"];
 
 	// flag ============================================================================================================
 	private _flag!: string;
@@ -27,7 +27,7 @@ export class PandaFlag extends HTMLElement {
 		}
 	}
 
-	// square ==========================================================================================================
+	// square =========================================================================================================
 	private _square!: boolean;
 
 	get square(): boolean {
@@ -47,6 +47,26 @@ export class PandaFlag extends HTMLElement {
 		}
 	}
 
+	// round ==========================================================================================================
+	private _round!: boolean;
+
+	get round(): boolean {
+		return this._round;
+	}
+
+	set round(value: boolean) {
+		if (this._round !== value) {
+			this._round = value;
+			// reflect to attribute
+			if (this._round) {
+				this.setAttribute("round", "");
+			} else {
+				this.removeAttribute("round");
+			}
+			this._render();
+		}
+	}
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -57,6 +77,7 @@ export class PandaFlag extends HTMLElement {
 		// initialize class properties
 		this._flag = "";
 		this._square = false;
+		this._round = false;
 	}
 
 	connectedCallback(): void {
@@ -68,13 +89,16 @@ export class PandaFlag extends HTMLElement {
 		// set flag from attribute
 		if (_name === "flag") {
 			this._flag = _newValue;
-			this._render();
 		}
 		// set square from attribute
 		if (_name === "square") {
 			this._square = this._parseBooleanAttribute(_newValue);
-			this._render();
 		}
+		// set square from attribute
+		if (_name === "round") {
+			this._round = this._parseBooleanAttribute(_newValue);
+		}
+		this._render();
 	}
 
 	// ================================================================================================================
@@ -83,9 +107,20 @@ export class PandaFlag extends HTMLElement {
 
 	private _render() {
 		if (this.shadowRoot) {
+			let cssClasses: string[] = [];
+			if (this._round) {
+				cssClasses.push("round");
+			}
+			if (this._square) {
+				cssClasses.push("square");
+			}
+
 			this.shadowRoot.innerHTML = /*html*/`
-				<div class="flag" part="flag">
-					${getFlagTemplate(this._flag, this._square)}
+				<div
+					class="flag ${cssClasses.join(" ")}"
+					part="flag ${cssClasses.join(" ")}"
+				>
+					${getFlagTemplate(this._flag, this._square, this._round)}
 				</div>
 			`;
 		}

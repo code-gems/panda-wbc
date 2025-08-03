@@ -7,7 +7,8 @@ export default class PandaBadge extends HTMLElement {
 	// ================================================================================================================
 	
 	static readonly observedAttributes = ["theme"];
-
+	
+	// theme ==========================================================================================================
 	private _theme!: string;
 
 	get theme(): string {
@@ -66,7 +67,7 @@ export default class PandaBadge extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _applyStyles() {
+	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
 		cssStyleSheet.replaceSync(styles);
 		if (this.shadowRoot) {
