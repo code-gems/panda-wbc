@@ -121,8 +121,8 @@ export class PandaButton extends HTMLElement {
 	connectedCallback() {
 		if (this.shadowRoot) {
 			// find slot elements
-			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"`) as HTMLSlotElement;
-			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"`) as HTMLSlotElement;
+			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
+			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 			// add event listeners to component template
 			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
@@ -232,16 +232,12 @@ export class PandaButton extends HTMLElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 	
-	private _onPrefixSlotChanged(event: any): void {
-		let assignedNodes = event.target.assignedNodes();
-		console.log('Assigned nodes:', assignedNodes);
+	private _onPrefixSlotChanged(): void {
 		this._withPrefix = true;
 		this._render();
 	}
 	
-	private _onSuffixSlotChanged(event: any): void {
-		let assignedNodes = event.target.assignedNodes();
-		console.log('Assigned nodes:', assignedNodes);
+	private _onSuffixSlotChanged(): void {
 		this._withSuffix = true;
 		this._render();
 	}
