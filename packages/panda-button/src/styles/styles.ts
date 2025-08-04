@@ -38,8 +38,8 @@ export const styles = /*css*/`
 
 		color: var(--panda-button-text-color, hsl(191deg 19% 23%));
 		font-size: var(--panda-button-font-size-m, 16px);
-		font-family: var(--panda-button-font-family, "Poppins");
-		font-weight: var(--panda-button-font-weight, 500);
+		font-family: var(--panda-button-font-family-size-m, "Poppins");
+		font-weight: var(--panda-button-font-weight-size-m, 500);
 		text-shadow: var(--panda-button-text-shadow, "none");
 		text-overflow: ellipsis;
 		text-align: center;
@@ -206,7 +206,7 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-primary-border-color-disabled, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-primary-background-color-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-primary-elevation-disabled, none);
-		--panda-icon-color: hsl(188deg 5% 75%);
+		--panda-icon-color: var(--panda-button-primary-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
 	/* SECONDARY THEME ============================================================================================= */
@@ -263,7 +263,7 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-secondary-border-color-disabled, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-secondary-background-color-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-disabled, none);
-		--panda-icon-color: hsl(188deg 5% 75%);
+		--panda-icon-color: var(--panda-button-secondary-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
 	/* PLAIN THEME ================================================================================================= */
@@ -321,7 +321,7 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-plain-border-color-disabled, transparent);
 		background-color: var(--panda-button-plain-background-color-disabled, transparent);
 		box-shadow: var(--panda-button-plain-elevation-disabled, none);
-		--panda-icon-color: hsl(188deg 5% 75%);
+		--panda-icon-color: var(--panda-button-plain-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
 	/* ACTION COLOR THEMES ========================================================================================= */
@@ -380,7 +380,7 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-action-info-border-color-disabled, hsl(189deg 3% 96%));
 		background-color: var(--panda-button-action-info-background-color-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-info-elevation-disabled, none);
-		--panda-icon-color: hsl(188deg 5% 75%);
+		--panda-icon-color: var(--panda-button-action-info-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
 	/* ACTION - DONE */

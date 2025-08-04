@@ -367,8 +367,16 @@ export const pandaThemeLight = /*css*/ `
 		/* TEXT & FONT STYLES */
 		--panda-button-text-color: hsl(191deg 19% 23%);
 		--panda-button-text-shadow: none;
-		--panda-button-font-family: "Poppins";
-		--panda-button-font-weight: 500;
+		/* FONT FAMILY */
+		--panda-button-font-family-size-xl: "Poppins";
+		--panda-button-font-family-size-l: "Poppins";
+		--panda-button-font-family-size-m: "Poppins";
+		--panda-button-font-family-size-s: "Poppins";
+		/* FONT WEIGHT */
+		--panda-button-font-weight-size-xl: 500;
+		--panda-button-font-weight-size-l: 500;
+		--panda-button-font-weight-size-m: 500;
+		--panda-button-font-weight-size-s: 500;
 		/* FONT SIZE */
 		--panda-button-font-size-s: 14px;
 		--panda-button-font-size-m: 16px;
@@ -471,6 +479,7 @@ export const pandaThemeLight = /*css*/ `
 		--panda-button-primary-border-color-disabled: hsl(189deg 3% 96%);
 		--panda-button-primary-background-color-disabled: hsl(189deg 3% 96%);
 		--panda-button-primary-elevation-disabled: none;
+		--panda-button-primary-icon-color-disabled: hsl(188deg 5% 75%);
 
 		/* BUTTON - SECONDARY ====================================================================================== */
 		--panda-button-secondary-text-color: hsl(0deg 0% 100%);
@@ -505,6 +514,8 @@ export const pandaThemeLight = /*css*/ `
 		--panda-button-secondary-border-color-disabled: hsl(189deg 3% 96%);
 		--panda-button-secondary-background-color-disabled: hsl(189deg 3% 96%);
 		--panda-button-secondary-elevation-disabled: none;
+		--panda-button-secondary-icon-color-disabled: hsl(188deg 5% 75%);
+
 		/* BUTTON - TERTIARY ======================================================================================= */
 
 
