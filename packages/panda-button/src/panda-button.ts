@@ -31,16 +31,60 @@ export class PandaButton extends HTMLElement {
 		}
 	}
 
-	// theme ==========================================================================================================
+	// disabled =======================================================================================================
 	private _disabled!: boolean;
 	
-	// working ==========================================================================================================
+	get disabled(): boolean {
+		return this._disabled;
+	}
+
+	set disabled(value: boolean) {
+		if (this._disabled !== value) {
+			this._disabled = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("disabled", "");
+			} else {
+				this.removeAttribute("disabled");
+			}
+		}
+	}
+
+	// working ========================================================================================================
 	private _working!: boolean;
 	
-	// spinnerType ==========================================================================================================
+	get working(): boolean {
+		return this._working;
+	}
+
+	set working(value: boolean) {
+		if (this._working !== value) {
+			this._working = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("working", "");
+			} else {
+				this.removeAttribute("working");
+			}
+		}
+	}
+
+	// spinnerType ====================================================================================================
 	private _spinnerType!: string;
-	
-	// view properties
+		
+	get spinnerType(): string {
+		return this._spinnerType;
+	}
+
+	set spinnerType(value: string) {
+		if (this._spinnerType !== value) {
+			this._spinnerType = value;
+			// reflect to attribute
+			this.setAttribute("spinner-type", this._spinnerType);
+		}
+	}
+
+	// view properties ================================================================================================
 	private _withPrefix!: boolean;
 
 	private _withSuffix!: boolean;
@@ -101,6 +145,9 @@ export class PandaButton extends HTMLElement {
 		if (_name === "working") {
 			this._working = this._parseBooleanAttribute(_newValue);
 		}
+		if (_name === "spinner-type") {
+			this._spinnerType = _newValue;
+		}
 		this._render();
 	}
 
@@ -145,14 +192,14 @@ export class PandaButton extends HTMLElement {
 			// render component template
 			this.shadowRoot.innerHTML = /*html*/`
 				<button
-					class="button ${cssClasses.join(" ")}"
-					part="button ${cssClasses.join(" ")}"
+					class="button ${cssClasses.join(" ")} ${this._theme}"
+					part="button ${cssClasses.join(" ")} ${this._theme}"
 					${this._disabled || this._working? "disabled" : ""}
 					tabindex="${tabIndex}"
 				>
-					<slot name="prefix"></slot>
-					<slot></slot>
-					<slot name="suffix"></slot>
+					<slot name="prefix" part="prefix"></slot>
+					<slot part="slot"></slot>
+					<slot name="suffix" part="suffix"></slot>
 					${spinnerHtml}
 				</button>
 			`;
