@@ -1,7 +1,7 @@
 export const styles = /*css*/`
 	:host {
 		display: inline-block;
-		height: var(--panda-button-height, 40px);
+		height: var(--panda-button-height-size-m, 40px);
 		user-select: none;
 		outline: none;
 	}
@@ -16,7 +16,7 @@ export const styles = /*css*/`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: var(--panda-button-border-radius, 10px);
+		border-radius: var(--panda-button-border-radius-size-m, 10px);
 		background-color: var(--panda-button-background-color-working, hsl(0deg 0% 100%));
 		/* SPINNER STYLE */
 		--panda-spinner-color: var(--panda-button-spinner-color, hsl(0deg 0% 100%));
@@ -27,18 +27,17 @@ export const styles = /*css*/`
 		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
-		gap: var(--panda-button-gap, 8px);
 		height: 100%;
 		width: 100%;
 		cursor: pointer;
 		outline: none;
 		overflow: hidden;
-		padding: var(--panda-button-padding, 0px 16px);
+		padding: var(--panda-button-padding-size-m, 0px 16px);
 
 		color: var(--panda-button-text-color, hsl(191deg 19% 23%));
-		font-size: var(--panda-button-font-size, 16px);
+		font-size: var(--panda-button-font-size-m, 16px);
 		font-family: var(--panda-button-font-family, "Poppins");
 		font-weight: var(--panda-button-font-weight, 500);
 		text-shadow: var(--panda-button-text-shadow, "none");
@@ -47,7 +46,7 @@ export const styles = /*css*/`
 		white-space: nowrap;
 		transition: all 300ms ease-in-out;
 
-		border-radius: var(--panda-button-border-radius, 10px);
+		border-radius: var(--panda-button-border-radius-size-m, 10px);
 		border-width: var(--panda-button-border-width, 1px);
 		border-style: var(--panda-button-border-style, solid);
 		border-color: var(--panda-button-border-color, hsl(207deg 1% 85%));
@@ -56,23 +55,36 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-icon-color, hsl(191deg 19% 23%));
-		--panda-icon-size: var(--panda-button-icon-size, 24px);
+		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
 	}
 
-	.button.has-prefix {
-		padding-left: var(--panda-button-padding-prefix, 8px);
+	.button.with-prefix {
+		padding-left: var(--panda-button-slot-padding-size-m, 8px);
+	}
+	
+	.button.with-prefix slot[name="prefix"] {
+		margin-right: var(--panda-button-gap, 8px);
 	}
 
-	.button.has-suffix {
-		padding-right: var(--panda-button-padding-suffix, 8px);
+	.button.with-suffix {
+		padding-right: var(--panda-button-slot-padding-size-m, 8px);
+	}
+
+	.button.with-prefix slot[name="suffix"] {
+		margin-left: var(--panda-button-gap, 8px);
 	}
 
 	slot {
 		display: block;
 		height: 100%;
 		overflow: hidden;
-		line-height: var(--panda-button-height, 40px);
+		line-height: var(--panda-button-height-size-m, 40px);
 		text-overflow: ellipsis;
+	}
+
+	slot[name="prefix"],
+	slot[name="suffix"] {
+		flex-shrink: 0;
 	}
 
 	::slotted([slot="prefix"]),
@@ -82,6 +94,8 @@ export const styles = /*css*/`
 		align-items: center;
 		height: 100%;
 		user-select: none;
+		/* ICON STYLES */
+		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
 	}
 	
 	/* COMPONENT STATE */
@@ -141,9 +155,6 @@ export const styles = /*css*/`
 	/* PRIMARY THEME =============================================================================================== */
 	:host([theme~="primary"]) .button:not(.disabled) {
 		color: var(--panda-button-primary-text-color, hsl(0deg 0% 100%));
-		font-size: var(--panda-button-primary-font-size, 16px);
-		font-family: var(--panda-button-primary-font-family, "Poppins");
-		font-weight: var(--panda-button-primary-font-weight, 500);
 		text-shadow: var(--panda-button-primary-text-shadow, none);
 		border-color: var(--panda-button-primary-border-color, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-primary-background-color, hsl(209deg 78% 46%));
@@ -192,7 +203,6 @@ export const styles = /*css*/`
 	:host([theme~="primary"]) .button.disabled {
 		color: var(--panda-button-primary-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-primary-text-shadow-disabled, none);
-		font-size: var(--panda-button-primary-font-size, 16px);
 		border-color: var(--panda-button-primary-border-color-disabled, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-primary-background-color-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-primary-elevation-disabled, none);
@@ -202,9 +212,6 @@ export const styles = /*css*/`
 	/* SECONDARY THEME ============================================================================================= */
 	:host([theme~="secondary"]) .button:not(.disabled) {
 		color: var(--panda-button-secondary-text-color, hsl(0deg 0% 100%));
-		font-size: var(--panda-button-secondary-font-size, 16px);
-		font-family: var(--panda-button-secondary-font-family, "Poppins");
-		font-weight: var(--panda-button-secondary-font-weight, 500);
 		text-shadow: var(--panda-button-secondary-text-shadow, none);
 		border-color: var(--panda-button-secondary-border-color, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-secondary-background-color, hsl(209deg 78% 46%));
@@ -253,7 +260,6 @@ export const styles = /*css*/`
 	:host([theme~="secondary"]) .button.disabled {
 		color: var(--panda-button-secondary-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-secondary-text-shadow-disabled, none);
-		font-size: var(--panda-button-secondary-font-size, 16px);
 		border-color: var(--panda-button-secondary-border-color-disabled, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-secondary-background-color-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-disabled, none);
@@ -263,9 +269,6 @@ export const styles = /*css*/`
 	/* PLAIN THEME ================================================================================================= */
 	:host([theme~="plain"]) .button:not(.disabled) {
 		color: var(--panda-button-plain-text-color, hsl(191deg 19% 23%));
-		font-size: var(--panda-button-plain-font-size, 16px);
-		font-family: var(--panda-button-plain-font-family, "Poppins");
-		font-weight: var(--panda-button-plain-font-weight, 500);
 		text-shadow: var(--panda-button-plain-text-shadow, none);
 		border-width: var(--panda-button-plain-border-width, 1px);
 		border-style: var(--panda-button-plain-border-style, solid);
@@ -315,7 +318,6 @@ export const styles = /*css*/`
 	:host([theme~="plain"]) .button.disabled {
 		color: var(--panda-button-plain-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-plain-text-shadow-disabled, none);
-		font-size: var(--panda-button-plain-font-size, 16px);
 		border-color: var(--panda-button-plain-border-color-disabled, transparent);
 		background-color: var(--panda-button-plain-background-color-disabled, transparent);
 		box-shadow: var(--panda-button-plain-elevation-disabled, none);
@@ -327,9 +329,6 @@ export const styles = /*css*/`
 	/* ACTION - INFO */
 	:host([theme~="info"]) .button:not(.disabled) {
 		color: var(--panda-button-action-info-text-color, hsl(0deg 0% 100%));
-		font-size: var(--panda-button-action-info-font-size, 16px);
-		font-family: var(--panda-button-action-info-font-family, "Poppins");
-		font-weight: var(--panda-button-action-info-font-weight, 500);
 		text-shadow: var(--panda-button-action-info-text-shadow, none);
 		border-color: var(--panda-button-action-info-border-color, hsl(261deg 66% 63%));
 		background-color: var(--panda-button-action-info-background-color, hsl(261deg 66% 58%));
@@ -378,7 +377,6 @@ export const styles = /*css*/`
 	:host([theme~="info"]) .button.disabled {
 		color: var(--panda-button-action-info-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-action-info-text-shadow-disabled, none);
-		font-size: var(--panda-button-action-info-font-size, 16px);
 		border-color: var(--panda-button-action-info-border-color-disabled, hsl(189deg 3% 96%));
 		background-color: var(--panda-button-action-info-background-color-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-info-elevation-disabled, none);
@@ -387,12 +385,12 @@ export const styles = /*css*/`
 
 	/* ACTION - DONE */
 	/* ACTION - WARN */
-	/* ACTION - ERROR */
+	/* ACTION - ALERT */
 
 	/* ICON THEMES ================================================================================================= */
 
 	:host([theme~="icon"]) {
-		width: var(--panda-button-height, 40px);
+		width: var(--panda-button-height-size-m, 40px);
 	}
 
 	:host([theme~="icon"]) .button {
@@ -400,19 +398,23 @@ export const styles = /*css*/`
 		justify-content: center;
 		align-items: center;
 		padding: 0px;
-		--panda-icon-size: 20px;
+		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
 	}
-
+	
 	:host([theme~="icon"]) slot {
 		display: flex;
+		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
 		line-height: unset;
+		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
 	}
 
+	/* ============================================================================================================= */
 	/* SIZE THEMES ================================================================================================= */
+	/* ============================================================================================================= */
 
-	/* SIZE-S */
+	/* SIZE-S ====================================================================================================== */
 	:host([theme~="size-s"]) {
 		height: var(--panda-button-height-size-s, 24px);
 	}
@@ -423,21 +425,37 @@ export const styles = /*css*/`
 
 	:host([theme~="size-s"]) slot {
 		line-height: var(--panda-button-height-size-s, 24px);
+		--panda-icon-size: var(--panda-button-icon-size-s, 16px);
+	}
+
+	:host([theme~="size-s"]) ::slotted([slot="prefix"]),
+	:host([theme~="size-s"]) ::slotted([slot="suffix"]) {
+		--panda-icon-size: var(--panda-button-icon-size-s, 16px);
 	}
 
 	:host([theme~="size-s"]) .button {
+		padding: var(--panda-button-padding-size-s, 0px 8px);
 		font-size: var(--panda-button-font-size-s, 14px);
 		font-family: var(--panda-button-font-family-size-s, "Poppins");
 		font-weight: var(--panda-button-font-weight-size-s, 500);
 		border-radius: var(--panda-button-border-radius-size-s, 5px);
-		--panda-icon-size: var(--panda-button-icon-size-xl, 16px);
+		--panda-icon-size: var(--panda-button-icon-size-s, 16px);
+	}
+
+	:host([theme~="size-s"]) .button.with-prefix {
+		padding-left: var(--panda-button-slot-padding-size-s, 6px);
+	}
+
+	:host([theme~="size-s"]) .button.with-suffix {
+		padding-right: var(--panda-button-slot-padding-size-s, 6px);
 	}
 
 	:host([theme~="size-s"]) .spinner-cont {
+		border-radius: var(--panda-button-border-radius-size-s, 5px);
 		--panda-spinner-size: var(--panda-button-spinner-size-s, 16px);
 	}
 
-	/* SIZE-L */
+	/* SIZE-L ====================================================================================================== */
 	:host([theme~="size-l"]) {
 		height: var(--panda-button-height-size-l, 48px);
 	}
@@ -448,9 +466,16 @@ export const styles = /*css*/`
 
 	:host([theme~="size-l"]) slot {
 		line-height: var(--panda-button-height-size-l, 48px);
+		--panda-icon-size: var(--panda-button-icon-size-l, 24px);
+	}
+
+	:host([theme~="size-l"]) ::slotted([slot="prefix"]),
+	:host([theme~="size-l"]) ::slotted([slot="suffix"]) {
+		--panda-icon-size: var(--panda-button-icon-size-l, 24px);
 	}
 
 	:host([theme~="size-l"]) .button {
+		padding: var(--panda-button-padding-size-l, 0px 16px);
 		font-size: var(--panda-button-font-size-l, 16px);
 		font-family: var(--panda-button-font-family-size-l, "Poppins");
 		font-weight: var(--panda-button-font-weight-size-l, 500);
@@ -458,11 +483,20 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-button-icon-size-l, 24px);
 	}
 
+	:host([theme~="size-l"]) .button.with-prefix {
+		padding-left: var(--panda-button-slot-padding-size-l, 12px);
+	}
+
+	:host([theme~="size-l"]) .button.with-suffix {
+		padding-right: var(--panda-button-padding-suffix-size-l, 12px);
+	}
+
 	:host([theme~="size-l"]) .spinner-cont {
+		border-radius: var(--panda-button-border-radius-size-l, 10px);
 		--panda-spinner-size: var(--panda-button-spinner-size-l, 24px);
 	}
 
-	/* SIZE-XL */
+	/* SIZE-XL ===================================================================================================== */
 	:host([theme~="size-xl"]) {
 		height: var(--panda-button-height-size-xl, 56px);
 	}
@@ -473,9 +507,16 @@ export const styles = /*css*/`
 
 	:host([theme~="size-xl"]) slot {
 		line-height: var(--panda-button-height-size-xl, 56px);
+		--panda-icon-size: var(--panda-button-icon-size-xl, 28px);
+	}
+
+	:host([theme~="size-xl"]) ::slotted([slot="prefix"]),
+	:host([theme~="size-xl"]) ::slotted([slot="suffix"]) {
+		--panda-icon-size: var(--panda-button-icon-size-xl, 32px);
 	}
 
 	:host([theme~="size-xl"]) .button {
+		padding: var(--panda-button-padding-size-xl, 0px 16px);
 		font-size: var(--panda-button-font-size-xl, 18px);
 		font-family: var(--panda-button-font-family-size-xl, "Poppins");
 		font-weight: var(--panda-button-font-weight-size-xl, 500);
@@ -483,7 +524,16 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-button-icon-size-xl, 32px);
 	}
 
-	:host([theme~="size-xl"]) .spinner-cont {
+	:host([theme~="size-xl"]) .button.with-prefix {
+		padding-left: var(--panda-button-slot-padding-size-xl, 16px);
+	}
+
+	:host([theme~="size-xl"]) .button.with-suffix {
+		padding-right: var(--panda-button-padding-suffix-size-xl, 16px);
+	}
+
+	:host([theme~="size-xl"]) .spinner-cont { 
+		border-radius: var(--panda-button-border-radius-size-xl, 15px);
 		--panda-spinner-size: var(--panda-button-spinner-size-xl, 32px);
 	}
 `;

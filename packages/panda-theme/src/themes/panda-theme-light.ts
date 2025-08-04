@@ -359,30 +359,57 @@ export const pandaThemeLight = /*css*/ `
 		/* BUTTON ================================================================================================== */
 		/* ========================================================================================================= */
 		
-		/* DEFAULT */
-		--panda-button-padding: 0px 16px;
-		--panda-button-padding-prefix: 8px;
-		--panda-button-padding-suffix: 8px;
-		--panda-button-gap: 8px;
+		/* HEIGHT */
+		--panda-button-height-size-s: 32px;
+		--panda-button-height-size-m: 40px;
+		--panda-button-height-size-l: 48px;
+		--panda-button-height-size-xl: 56px;
+		/* TEXT & FONT STYLES */
 		--panda-button-text-color: hsl(191deg 19% 23%);
 		--panda-button-text-shadow: none;
-		--panda-button-font-size: 16px;
 		--panda-button-font-family: "Poppins";
 		--panda-button-font-weight: 500;
-
+		/* FONT SIZE */
+		--panda-button-font-size-s: 14px;
+		--panda-button-font-size-m: 16px;
+		--panda-button-font-size-l: 16px;
+		--panda-button-font-size-xl: 18px;
+		/* PADDING */
+		--panda-button-padding-size-s: 0px 8px;
+		--panda-button-padding-size-m: 0px 16px;
+		--panda-button-padding-size-l: 0px 16px;
+		--panda-button-padding-size-xl: 0px 16px;
+		/* SLOT PADDING & GAP */
+		--panda-button-gap: 8px;
+		--panda-button-slot-padding-size-s: 6px;
+		--panda-button-slot-padding-size-m: 8px;
+		--panda-button-slot-padding-size-l: 12px;
+		--panda-button-slot-padding-size-xl: 16px;
+		/* BORDER STYLES */
 		--panda-button-border-width: 1px;
 		--panda-button-border-style: solid;
 		--panda-button-border-color: hsl(207deg 1% 85%);
-		--panda-button-border-radius: 10px;
+		/* BORDER RADIUS */
+		--panda-button-border-radius-size-s: 5px;
+		--panda-button-border-radius-size-m: 10px;
+		--panda-button-border-radius-size-l: 10px;
+		--panda-button-border-radius-size-xl: 15px;
+
 		--panda-button-background-color: hsl(0deg 0% 100%);
 		--panda-button-elevation: none;
 		--panda-button-outline: 0px 0px 2px 2px hsl(160deg 81% 43%);
-		/* SPINNER STYLE */
+		/* ICON STYLES */
 		--panda-button-icon-color: hsl(191deg 19% 23%);
-		--panda-button-icon-size: 24px;
-		/* SPINNER STYLE */
+		--panda-button-icon-size-s: 16px;
+		--panda-button-icon-size-m: 20px;
+		--panda-button-icon-size-l: 24px;
+		--panda-button-icon-size-xl: 28px;
+		/* SPINNER STYLES */
 		--panda-button-spinner-color: hsl(191deg 19% 23%);
-		--panda-button-spinner-size: 24px;
+		--panda-button-spinner-size-s: 16px;
+		--panda-button-spinner-size-m: 20px;
+		--panda-button-spinner-size-l: 24px;
+		--panda-button-spinner-size-xl: 28px;
 		/* HOVERED */
 		--panda-button-text-color-hover: hsl(191deg 19% 23%);
 		--panda-button-text-shadow-hover: none;
@@ -414,10 +441,6 @@ export const pandaThemeLight = /*css*/ `
 		/* BUTTON - PRIMARY ======================================================================================== */
 		--panda-button-primary-text-color: hsl(0deg 0% 100%);
 		--panda-button-primary-text-shadow: 0px 1px 2px hsl(0deg 0% 0% / 80%);
-		--panda-button-primary-font-size: 14px;
-		--panda-button-primary-font-family: "Poppins";
-		--panda-button-primary-font-weight: 500;
-
 		--panda-button-primary-border-color: hsl(209deg 78% 42%);
 		--panda-button-primary-background-color: hsl(209deg 78% 46%);
 		--panda-button-primary-elevation: 0px 0px 5px hsl(0deg 0% 0% / 10%);
@@ -452,10 +475,6 @@ export const pandaThemeLight = /*css*/ `
 		/* BUTTON - SECONDARY ====================================================================================== */
 		--panda-button-secondary-text-color: hsl(0deg 0% 100%);
 		--panda-button-secondary-text-shadow: 0px 1px 2px hsl(0deg 0% 0% / 80%);
-		--panda-button-secondary-font-size: 14px;
-		--panda-button-secondary-font-family: "Poppins";
-		--panda-button-secondary-font-weight: 500;
-
 		--panda-button-secondary-border-color: hsl(209deg 22% 50%);
 		--panda-button-secondary-background-color: hsl(209deg 28% 56%);
 		--panda-button-secondary-elevation: 0px 0px 5px hsl(0deg 0% 0% / 10%);
@@ -486,9 +505,6 @@ export const pandaThemeLight = /*css*/ `
 		--panda-button-secondary-border-color-disabled: hsl(189deg 3% 96%);
 		--panda-button-secondary-background-color-disabled: hsl(189deg 3% 96%);
 		--panda-button-secondary-elevation-disabled: none;
-
-
-		
 		/* BUTTON - TERTIARY ======================================================================================= */
 
 

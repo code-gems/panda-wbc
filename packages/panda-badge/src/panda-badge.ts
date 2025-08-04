@@ -18,8 +18,8 @@ export default class PandaBadge extends HTMLElement {
 	set theme(value: string) {
 		if (this._theme !== value) {
 			this._theme = value;
-			this.setAttribute("theme", this._theme); // reflect to attribute
-			this._render();
+			// reflect to attribute
+			this.setAttribute("theme", this._theme);
 		}
 	}
 	
@@ -30,11 +30,11 @@ export default class PandaBadge extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open", delegatesFocus: true });
-		this._theme = "";
-	}
-
-	connectedCallback() {
+		// apply component styles
 		this._applyStyles();
+		// initialize class properties
+		this._theme = "";
+		// render component
 		this._render();
 	}
 

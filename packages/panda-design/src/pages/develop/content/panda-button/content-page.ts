@@ -284,7 +284,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-2">
 									<panda-button
-										theme="size-s"
+										theme="primary size-s"
 										@click="${this._onClick}"
 									>
 										Size-S
@@ -292,7 +292,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="size-s"
+										theme="primary size-s"
 										@click="${this._onClick}"
 										working
 									>
@@ -301,7 +301,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="size-s"
+										theme="primary size-s"
 										@click="${this._onClick}"
 										disabled
 									>
@@ -313,7 +313,36 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-2">
 									<panda-button
-										theme="size-l"
+										theme="primary "
+										@click="${this._onClick}"
+									>
+										Default
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="primary "
+										@click="${this._onClick}"
+										working
+									>
+										Working
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button
+										theme="primary "
+										@click="${this._onClick}"
+										disabled
+									>
+										Disabled
+									</panda-button>
+								</div>
+							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-2">
+									<panda-button
+										theme="primary size-l"
 										@click="${this._onClick}"
 									>
 										Size-L
@@ -321,7 +350,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="size-l"
+										theme="primary size-l"
 										@click="${this._onClick}"
 										working
 									>
@@ -330,7 +359,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="size-l"
+										theme="primary size-l"
 										@click="${this._onClick}"
 										disabled
 									>
@@ -342,7 +371,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-2">
 									<panda-button
-										theme="size-xl"
+										theme="primary size-xl"
 										@click="${this._onClick}"
 									>
 										Size-XL
@@ -350,7 +379,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="size-xl"
+										theme="primary size-xl"
 										@click="${this._onClick}"
 										working
 									>
@@ -359,7 +388,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="size-xl"
+										theme="primary size-xl"
 										@click="${this._onClick}"
 										disabled
 									>
@@ -371,7 +400,25 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-2">
 									<panda-button
-										theme="icon size-xl"
+										theme="primary icon size-xl"
+										@click="${this._onClick}"
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon size-l"
+										@click="${this._onClick}"
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon"
+										@click="${this._onClick}"
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon size-s"
 										@click="${this._onClick}"
 									>
 										<panda-icon icon="settings"></panda-icon>
@@ -379,7 +426,28 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="icon size-xl"
+										theme="primary icon size-xl"
+										@click="${this._onClick}"
+										working
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon size-l"
+										@click="${this._onClick}"
+										working
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon"
+										@click="${this._onClick}"
+										working
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon size-s"
 										@click="${this._onClick}"
 										working
 									>
@@ -388,7 +456,28 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme="icon size-xl"
+										theme="primary icon size-xl"
+										@click="${this._onClick}"
+										disabled
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon size-l"
+										@click="${this._onClick}"
+										disabled
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon"
+										@click="${this._onClick}"
+										disabled
+									>
+										<panda-icon icon="settings"></panda-icon>
+									</panda-button>
+									<panda-button
+										theme="primary icon size-s"
 										@click="${this._onClick}"
 										disabled
 									>
@@ -400,7 +489,43 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-2">
 									<panda-button
-										theme=""
+										theme="primary size-xl"
+										@click="${this._onClick}"
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary size-l"
+										@click="${this._onClick}"
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary "
+										@click="${this._onClick}"
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary size-s"
 										@click="${this._onClick}"
 									>
 										<div slot="prefix">
@@ -414,7 +539,46 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme=""
+										theme="primary size-xl"
+										@click="${this._onClick}"
+										working
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary size-l"
+										@click="${this._onClick}"
+										working
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary "
+										@click="${this._onClick}"
+										working
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary size-s"
 										@click="${this._onClick}"
 										working
 									>
@@ -429,7 +593,46 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 								</div>
 								<div class="col-2">
 									<panda-button
-										theme=""
+										theme="primary size-xl"
+										@click="${this._onClick}"
+										disabled
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary size-l"
+										@click="${this._onClick}"
+										disabled
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary "
+										@click="${this._onClick}"
+										disabled
+									>
+										<div slot="prefix">
+											<panda-icon icon="settings"></panda-icon>
+										</div>
+										Button Label
+										<div slot="suffix">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-button>
+									<panda-button
+										theme="primary size-s"
 										@click="${this._onClick}"
 										disabled
 									>

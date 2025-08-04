@@ -15,7 +15,7 @@ export class PandaSpinner extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	static readonly observedAttributes = ["icon"];
+	static readonly observedAttributes = ["spinner"];
 
 	// spinner ========================================================================================================
 	private _spinner!: string;
@@ -29,7 +29,6 @@ export class PandaSpinner extends HTMLElement {
 			this._spinner = value;
 			// reflect to attribute
 			this.setAttribute("spinner", this._spinner);
-			this._render();
 		}
 	}
 
@@ -40,20 +39,19 @@ export class PandaSpinner extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open", delegatesFocus: true });
+		// apply component styles
+		this._applyStyles();
 		// initialize class properties
 		this._spinner = "";
-	}
-
-	connectedCallback(): void {
-		this._applyStyles();
+		// render component
 		this._render();
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
 		if (_name === "spinner") {
 			this._spinner = _newValue;
-			this._render();
 		}
+		this._render();
 	}
 
 	// ================================================================================================================

@@ -1,6 +1,3 @@
-// types
-// ...
-
 // styles
 import { styles } from "./styles/styles";
 
@@ -32,7 +29,6 @@ export class PandaIcon extends HTMLElement {
 		if (this._icon !== value) {
 			this._icon = value;
 			this.setAttribute("icon", this._icon); // reflect to attribute
-			this._renderIcon();
 		}
 	}
 
@@ -43,20 +39,19 @@ export class PandaIcon extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open", delegatesFocus: true });
+		// apply component styles
+		this._applyStyles();
 		// initialize class properties
 		this._icon = "";
-	}
-
-	connectedCallback(): void {
-		this._applyStyles();
+		// render component
 		this._render();
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
 		if (_name === "icon") {
 			this._icon = _newValue;
-			this._render();
 		}
+		this._render();
 	}
 
 	// ================================================================================================================
@@ -82,16 +77,17 @@ export class PandaIcon extends HTMLElement {
 	}
 
 	private _renderIcon(): string | void {
-		const iconTemplate = pandaIconLibrary.getIcon(this.icon);
-		if (iconTemplate) {
-			// Set the inner HTML of the SVG element to the icon template
-			return iconTemplate;
-		} else {
-			console.log(
-				"%c [PANDA ICON] Icon not found",
-				"font-size: 16px; color: orange; background: black;",
-				this.icon
-			);
+		if (this._icon) {
+			const iconTemplate = pandaIconLibrary.getIcon(this._icon);
+			if (iconTemplate) {
+				// Set the inner HTML of the SVG element to the icon template
+				return iconTemplate;
+			} else {
+				console.log(
+					`%c ⚠️ [PANDA ICON] Icon not found: '${this._icon}'`,
+					"font-size: 16px; color: orange; background: black;"
+				);
+			}
 		}
 	}
 	

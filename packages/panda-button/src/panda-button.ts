@@ -19,6 +19,18 @@ export class PandaButton extends HTMLElement {
 	// theme ==========================================================================================================
 	private _theme!: string;
 	
+	get theme(): string {
+		return this._theme;
+	}
+
+	set theme(value: string) {
+		if (this._theme !== value) {
+			this._theme = value;
+			// reflect to attribute
+			this.setAttribute("theme", this._theme);
+		}
+	}
+
 	// theme ==========================================================================================================
 	private _disabled!: boolean;
 	
@@ -28,6 +40,19 @@ export class PandaButton extends HTMLElement {
 	// spinnerType ==========================================================================================================
 	private _spinnerType!: string;
 	
+	// view properties
+	private _withPrefix!: boolean;
+
+	private _withSuffix!: boolean;
+
+	// template elements
+	private _prefixSlotEl!: HTMLSlotElement;
+	private _suffixSlotEl!: HTMLSlotElement;
+
+	// events
+	private readonly _prefixSlotChangeEvent!: any;
+	private readonly _suffixSlotChangeEvent!: any;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -42,8 +67,28 @@ export class PandaButton extends HTMLElement {
 		this._disabled = false;
 		this._working = false;
 		this._spinnerType = "dots";
+		// init events
+		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
+		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 		// render component
 		this._render();
+	}
+
+	connectedCallback() {
+		if (this.shadowRoot) {
+			// find slot elements
+			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"`) as HTMLSlotElement;
+			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"`) as HTMLSlotElement;
+			// add event listeners to component template
+			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
+		}
+	}
+
+	disconnectedCallback() {
+		// remove event listeners
+		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
+		this._suffixSlotEl.removeEventListener("slotchange", this._suffixSlotChangeEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -90,6 +135,12 @@ export class PandaButton extends HTMLElement {
 			if (this._working) {
 				cssClasses.push("working");
 			}
+			if (this._withPrefix) {
+				cssClasses.push("with-prefix");
+			}
+			if (this._withSuffix) {
+				cssClasses.push("with-suffix");
+			}
 
 			// render component template
 			this.shadowRoot.innerHTML = /*html*/`
@@ -134,7 +185,19 @@ export class PandaButton extends HTMLElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 	
-
+	private _onPrefixSlotChanged(event: any): void {
+		let assignedNodes = event.target.assignedNodes();
+		console.log('Assigned nodes:', assignedNodes);
+		this._withPrefix = true;
+		this._render();
+	}
+	
+	private _onSuffixSlotChanged(event: any): void {
+		let assignedNodes = event.target.assignedNodes();
+		console.log('Assigned nodes:', assignedNodes);
+		this._withSuffix = true;
+		this._render();
+	}
 }
 
 // Register the custom element
