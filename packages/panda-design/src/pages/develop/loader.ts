@@ -35,6 +35,7 @@ import "./content/panda-select/content-page";
 import "./content/panda-shimmer/content-page";
 import "./content/panda-slider/content-page";
 import "./content/panda-slideshow/content-page";
+import "./content/panda-sliding-placeholder/content-page";
 import "./content/panda-sortable-list/content-page";
 import "./content/panda-speech-synthesis/content-page";
 import "./content/panda-spinner/content-page";

@@ -16,6 +16,7 @@ import { styles } from "./styles/styles";
 // components
 import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-icon";
+import "@panda-wbc/panda-sliding-placeholder";
 import "./panda-search-overlay";
 
 // utils
@@ -44,6 +45,12 @@ export class PandaSearch extends LitElement {
 
 	@property({ type: String, reflect: true })
 	placeholder: string | null = null;
+	
+	@property({ type: Array })
+	placeholders: string[] | null = null;
+	
+	@property({ type: Number, reflect: true })
+	placeholderSlideInterval: number | null = null;
 
 	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
@@ -138,6 +145,7 @@ export class PandaSearch extends LitElement {
 		let labelHtml: TemplateResult = html``;
 		let iconLeftHtml: TemplateResult = html``;
 		let iconRightHtml: TemplateResult = html``;
+		let slidingPlaceholderHtml: TemplateResult = html``;
 
 		// modifier class aggregation
 		const modCss: string[] = [];
@@ -206,6 +214,19 @@ export class PandaSearch extends LitElement {
 			}
 		}
 
+		if (!this.placeholder && this.placeholders) {
+			slidingPlaceholderHtml = html`
+				<panda-sliding-placeholder
+					class="placeholder ${modCss.join(" ")}"
+					part="placeholder ${modCss.join(" ")}"
+					.hide="${this.value}"
+					.placeholders="${this.placeholders}"
+					.slideInterval="${this.placeholderSlideInterval}"
+				>
+				</panda-sliding-placeholder>
+			`;
+		}
+
 		const position = iconPosition === PandaSearchIconPosition.LEFT && !this.hideIcon
 			? "no-padding-left"
 			: "";
@@ -219,23 +240,26 @@ export class PandaSearch extends LitElement {
 			>
 				<slot name="prefix"></slot>
 				${iconLeftHtml}
-				<input
-					id="input-field"
-					class="input-field ${position}"
-					part="input-field ${modCss.join(" ")}"
-					type="text"
-					autocomplete="off"
-					.spellcheck="${this.spellcheck}"
-					.placeholder="${this.placeholder ?? ""}"
-					.value="${this.value ?? ""}"
-					.disabled="${this.disabled}"
-					@keydown="${this._onKeyDown}"
-					@focus="${this._onFocus}"
-					@blur="${this._onBlur}"
-					@input="${this._onInput}"
-					@click="${this._onClick}"
-					tabindex="${this.disabled ? "-1" : "0"}"
-				/>
+				<div class="input-wrap">
+					${slidingPlaceholderHtml}
+					<input
+						id="input-field"
+						class="input-field ${position}"
+						part="input-field ${modCss.join(" ")}"
+						type="text"
+						autocomplete="off"
+						.spellcheck="${this.spellcheck}"
+						.placeholder="${this.placeholder ?? ""}"
+						.value="${this.value ?? ""}"
+						.disabled="${this.disabled}"
+						@keydown="${this._onKeyDown}"
+						@focus="${this._onFocus}"
+						@blur="${this._onBlur}"
+						@input="${this._onInput}"
+						@click="${this._onClick}"
+						tabindex="${this.disabled ? "-1" : "0"}"
+					/>
+				</div>
 				${iconRightHtml}
 				<slot name="suffix"></slot>
 			</div>

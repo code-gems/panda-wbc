@@ -827,6 +827,9 @@ importers:
       '@panda-wbc/panda-mixins':
         specifier: workspace:*
         version: link:../panda-mixins
+      '@panda-wbc/panda-sliding-placeholder':
+        specifier: workspace:*
+        version: link:../panda-sliding-placeholder
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner

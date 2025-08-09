@@ -9,7 +9,7 @@ import "@panda-wbc/panda-sliding-placeholder";
 
 // utils & config
 import { TemplateResult, html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
@@ -39,6 +39,11 @@ export class ContentPage extends ContentPageTemplate {
 	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
+
+	private _placeholders: string[] = [];
+
+	@state()
+	private _hide = false;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -76,14 +81,29 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
-								<div class="col-2">
+								<div class="col-6">
+								
+									<div style="height: 40px;">
 
-									<panda-sliding-placeholder
-										.placeholders="${["Search...", "Your ass..."]}"
-										slideInterval="1000"
-									>
-									</panda-sliding-placeholder>
+										<panda-sliding-placeholder
+											.hide="${this._hide}"
+											.placeholders="${this._placeholders}"
+										>
+										</panda-sliding-placeholder>
 
+									</div>
+
+								</div>
+
+								<div class="col-3">
+									<panda-button @click="${this._onToggleHide}">
+										Toggle Hide
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onSetPlaceholders}">
+										Set Placeholders
+									</panda-button>
 								</div>
 							</div>
 						</div>
@@ -177,5 +197,23 @@ export class ContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _onSetPlaceholders(): void {
+		this._placeholders = [
+			"Why do cats purr?",
+			"What's the smallest country in the world?",
+			"How many bones are in a human hand?",
+			"What happens to your brain when you dream?",
+			"Why is the ocean salty?",
+			"How do magnets work?",
+			"What's the difference between weather and climate?",
+			"Why do we get hiccups?",
+			"How fast does light travel?",
+			"What causes the Northern Lights?",
+		];
+		this.requestUpdate();
+	}
+
+	private _onToggleHide(): void {
+		this._hide = !this._hide;
+	}
 }

@@ -139,6 +139,7 @@ export class PandaSearchOverlay extends LitElement {
 						${this._renderDropdown()}
 					</div>
 				</div>
+			</div>
 		`;
 	}
 

@@ -1,15 +1,11 @@
-export const installationSnippet = `npm install @panda-wbc/panda-tooltip -S`;
+export const installationSnippet = `npm install @panda-wbc/panda-sliding-placeholder -S`;
 
 export const implementationSnippet = `
-import "@panda-wbc/panda-tooltip";
+import "@panda-wbc/panda-sliding-placeholder";
 
-<panda-tooltip
-  theme="primary"
-  .position="end"
+<panda-sliding-placeholder
+  .placeholders="\${["Find flag...", "eg. Poland"]}"
+  
 >
-  <template>
-	My tooltip<br />
-	content here...
-  </template>
-</panda-tooltip>
+</panda-sliding-placeholder>
 `;

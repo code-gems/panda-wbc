@@ -48,12 +48,17 @@ export const styles = css`
 		border: 1px solid var(--panda-input-border-color-hover, hsl(0deg 0% 65%));
 	}
 
+	.input-cont .input-wrap {
+		position: relative;
+		flex-grow: 1;
+	}
+
 	.input-cont .input-field {
+		position: relative;
 		width: 100%;
 		height: 100%;
 		padding: var(--panda-input-padding, 0px 10px);
 		outline: none;
-		flex-grow: 1;
 		
 		color: var(--panda-text-color, hsl(210deg 5% 25%));
 		font-family: var(--panda-font-family, "Poppins");
@@ -64,10 +69,21 @@ export const styles = css`
 		border: none;
 		background-color: transparent;
 		box-sizing: border-box;
+		z-index: 1;
 	}
 
+	/* PLACEHOLDER STYLES */
+	panda-sliding-placeholder {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+	}
+	
+	panda-sliding-placeholder,
 	.input-cont .input-field::placeholder {
 		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
+		font-family: var(--panda-font-family, "Poppins");
+		font-size: var(--panda-font-size-m, 14px);
 	}
 
 	.input-cont .input-field.no-padding-left {

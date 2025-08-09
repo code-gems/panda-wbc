@@ -27,9 +27,10 @@
 	"dependencies": {
 		"lit": "^3.0.2",
 		"@panda-wbc/panda-button": "workspace:*",
-		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-mixins": "workspace:*",
+		"@panda-wbc/panda-sliding-placeholder": "workspace:*",
+		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"devDependencies": {

@@ -16,7 +16,7 @@ import { getCountryList } from "../../../../static-data";
 @customElement("panda-search-sample-1")
 class Sample extends SampleTemplate {
 	@state()
-	private _countryList: Array<{ code: string; name: string }> = getCountryList();
+	private readonly _countryList: Array<{ code: string; name: string }> = getCountryList();
 
 	@state()
 	private _searchText: string = "";
@@ -39,7 +39,7 @@ class Sample extends SampleTemplate {
 					<div class="col-full">
 						<panda-search
 							label="Search:"
-							icon-position="left"
+							.placeholders="${["Find country...", "eg. Poland"]}"
 							.value="${this._searchText}"
 							.i18n="${this._i18n}"
 							.search="${this._searchCallback.bind(this)}"
@@ -48,6 +48,14 @@ class Sample extends SampleTemplate {
 							@on-input="${this._onInput}"
 							@on-input-debounced="${this._onInputDebounced}"
 							@on-select="${this._onSelect}"
+						>
+						</panda-search>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-full">
+						<panda-search
+							placeholder="Find country..."
 						>
 						</panda-search>
 					</div>
