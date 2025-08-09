@@ -23,7 +23,7 @@
 		"article"
 	],
 	"author": "code-gems",
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"dependencies": {
 		"lit": "^3.0.2",
 		"@panda-wbc/panda-spinner": "workspace:*",
@@ -31,7 +31,7 @@
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
-		"typescript": "^4.5.4"
+		"typescript": "^5.9.2"
 	},
 	"files": [
 		"src",

@@ -7,26 +7,19 @@ import "@panda-wbc/panda-icon";
 import { styles } from "./styles/styles";
 
 // utils
-import { LitElement, PropertyValues, TemplateResult, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
 
-@customElement("panda-chip")
-export class PandaChips extends LitElement {
+export class PandaChip extends HTMLElement {
 	// css styles
 	static get styles() {
 		return styles;
 	}
 
-	@property({ type: String })
 	label: string = "";
 	
-	@property({ type: String, reflect: true })
 	icon!: string;
 	
-	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 	
-	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
 
 	// state props
@@ -41,13 +34,13 @@ export class PandaChips extends LitElement {
 	// ================================================================================================================
 
 	render() {
-		let iconHtml: TemplateResult = html``;
+		let iconHtml = ``;
 
 		if (this.icon) {
-			iconHtml = html`<panda-icon .icon="${this.icon}"></panda-icon>`;
+			iconHtml = `<panda-icon .icon="${this.icon}"></panda-icon>`;
 		}
 
-		return html`
+		return `
 			<div
 				class="chip"
 				part="chip"

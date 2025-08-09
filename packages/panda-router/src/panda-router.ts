@@ -1,5 +1,5 @@
 // types
-import { SearchParams, PandaRouterNavigateEvent, RouterConfig } from "../index";
+import { SearchParams, PandaRouterNavigateEvent, RouterConfig, PandaRouterNavigateEventDetail } from "../index";
 
 // utils
 import { LitElement, TemplateResult, html, css } from "lit";
@@ -124,14 +124,13 @@ export class PandaRouterElement extends LitElement {
 		return searchParams;
 	}
 
-	private _triggerNavigateEvent(pathname: string) {
-		const navigateEventDetail: PandaRouterNavigateEvent = {
-			pathname,
-			search: window.location.search,
-			searchParams: this._parseSearchParams(window.location.search)
-		};
-		const event = new CustomEvent("on-navigate", {
-			detail: navigateEventDetail
+	private _triggerNavigateEvent(pathname: string): void {
+		const event = new CustomEvent<PandaRouterNavigateEventDetail>("on-navigate", {
+			detail: {
+				pathname,
+				search: window.location.search,
+				searchParams: this._parseSearchParams(window.location.search)
+			}
 		});
 		this.dispatchEvent(event);
 	}
@@ -140,7 +139,7 @@ export class PandaRouterElement extends LitElement {
 	// API ============================================================================================================
 	// ================================================================================================================
 
-	public reload() {
+	public reload(): void {
 		this.requestUpdate();
 	}
 }

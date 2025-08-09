@@ -21,7 +21,7 @@
 		"message"
 	],
 	"author": "code-gems",
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"dependencies": {
 		"@panda-wbc/panda-button": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
@@ -30,7 +30,7 @@
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
-		"typescript": "^4.5.4"
+		"typescript": "^5.9.2"
 	},
 	"files": [
 		"src",

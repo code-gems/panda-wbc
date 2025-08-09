@@ -753,7 +753,70 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 						<li>Disabled</li>
 						<li>Busy</li>
 					</ul>
-				</div>
+
+					<!-- SAMPLE -->
+					<div class="sample-cont">
+						<div class="sample">
+							<div class="rows">
+
+								<div class="row">
+									<div class="col-4">
+										<panda-button
+											@click="${this._onClick}"
+										>
+											Click Me!
+										</panda-button>
+									</div>
+									<div class="col-4">
+										<panda-button
+											theme="primary"
+											@click="${this._onClick}"
+										>
+											Click Me!
+										</panda-button>
+									</div>
+									<div class="col-4">
+										<panda-button
+											theme="secondary"
+											@click="${this._onClick}"
+										>
+											Click Me!
+										</panda-button>
+									</div>
+								</div><!-- row -->
+
+								<div class="row">
+									<div class="col-4">
+										<panda-button
+											@click="${this._onClick}"
+										>
+											Primary
+										</panda-button>
+									</div>
+									<div class="col-4">
+										<label>Disabled</label>
+										<panda-button
+											theme="primary"
+											@click="${this._onClick}"
+										>
+											Primary
+										</panda-button>
+									</div>
+									<div class="col-4">
+										<label>Disabled</label>
+										<panda-button
+											theme="secondary"
+											@click="${this._onClick}"
+										>
+											Primary
+										</panda-button>
+									</div>
+								</div><!-- row -->
+
+							</div><!-- rows -->
+						</div><!-- sample -->
+					</div><!-- sample-cont -->
+				</div><!-- section -->
 
 				${this._renderDefaultComponentStateSection()}
 				${this._renderDisabledComponentStateSection()}
@@ -771,38 +834,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 					It reflects the component's default settings and may display placeholder content or default styling.
 				</p>
 
-				<!-- SAMPLE -->
-				<div class="sample-cont">
-					<div class="sample">
-						<div class="rows">
-							<div class="row">
-								<div class="col-4">
-									<panda-button
-										@click="${this._onClick}"
-									>
-										Click Me!
-									</panda-button>
-								</div>
-								<div class="col-4">
-									<panda-button
-										theme="primary"
-										@click="${this._onClick}"
-									>
-										Click Me!
-									</panda-button>
-								</div>
-								<div class="col-4">
-									<panda-button
-										theme="secondary"
-										@click="${this._onClick}"
-									>
-										Click Me!
-									</panda-button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 
 				<code-sample header="Default State Example">
 					${defaultStateSnippet}

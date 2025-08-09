@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-chips",
 	"version": "1.0.0",
-	"description": "Lit based web component - chips",
+	"description": "Native web component - chips",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-chips.js",
 	"scripts": {
@@ -12,8 +12,7 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
+		"native",
 		"web component",
 		"ui component",
 		"chips",
@@ -22,14 +21,14 @@
 		"actions"
 	],
 	"author": "code-gems",
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"dependencies": {
 		"@panda-wbc/panda-icon": "workspace:*",
-		"lit": "^3.0.2"
+		"@panda-wbc/panda-spinner": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
-		"typescript": "^4.5.4"
+		"typescript": "^5.9.2"
 	},
 	"files": [
 		"src",

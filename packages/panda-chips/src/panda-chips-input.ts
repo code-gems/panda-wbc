@@ -8,60 +8,42 @@ import "./panda-chip";
 import "./panda-chips";
 
 // utils
-import { LitElement, TemplateResult, html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
 
-@customElement("panda-chips-input")
-export class PandaChipsInput extends LitElement {
+export class PandaChipsInput extends HTMLElement {
 	// css styles
 	static get styles() {
 		return styles;
 	}
 
-	static readonly shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
-	@property({ type: String, reflect: true })
 	theme!: string;
 
-	@property({ type: String, reflect: true })
 	label!: string;
 
-	@property({ type: Array })
 	chips!: any[];
 	
-	@property({ type: String })
 	placeholder: string | null = null;
 
-	@property({ type: Boolean, reflect: true })
 	disabled: boolean = false;
 	
-	@property({ type: Boolean, reflect: true })
 	busy: boolean = false;
 
-	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
 
-	@property({ type: Boolean, reflect: true })
 	autofocus: boolean = false;
 
-	@property({ type: Boolean, reflect: true })
 	autoselect: boolean = false;
 
-	@property({ type: Boolean, reflect: true })
 	spellcheck: boolean = false;
 
-	@property({ type: Boolean })
 	mandatory: boolean = false;
 
-	@property({ type: String, attribute: "spinner-type", reflect: true })
 	spinnerType!: string;
 
 	// state props
-	@state()
 	private _inputText!: string;
 
 	// elements
-	@query("#input")
 	private readonly _inputEl!: HTMLInputElement;
 	
 	// ================================================================================================================
@@ -72,14 +54,14 @@ export class PandaChipsInput extends LitElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render(): TemplateResult {
+	render() {
 		const modCss: string[] = [];
-		let labelHtml: TemplateResult = html``;
-		let spinnerHtml: TemplateResult = html``;
+		let labelHtml = ``;
+		let spinnerHtml = ``;
 
 		// generate label if defined
 		if (this.label) {
-			labelHtml = html`
+			labelHtml = `
 				<div class="label" part="label">
 					${this.label}
 				</div>
@@ -88,7 +70,7 @@ export class PandaChipsInput extends LitElement {
 
 		// check if component is in busy state
 		if (this.busy) {
-			spinnerHtml = html`
+			spinnerHtml = `
 				<div class="spinner-cont" part="spinner-cont">
 					<panda-spinner
 						part="spinner"
@@ -106,7 +88,7 @@ export class PandaChipsInput extends LitElement {
 			modCss.push("mandatory");
 		}
 
-		return html`
+		return `
 			${labelHtml}
 			<div
 				class="chips-cont"
