@@ -59,7 +59,7 @@ export const styles = /*css*/`
 		animation-name: slideOut;
 	}
 
-
+	/* ANIMATIONS */
 	@keyframes slideIn {
 		0% {
 			opacity: 0;

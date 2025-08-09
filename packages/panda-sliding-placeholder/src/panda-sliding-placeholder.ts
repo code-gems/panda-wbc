@@ -56,7 +56,6 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 
 	set hide(value: boolean) {
 		if (this._hide !== value) {
-			console.log(`%c (property changed) hide: `, "font-size: 24px; color: crimson; background: black;", value);
 			this._hide = value;
 			// reflect to attribute
 			if (value) {
@@ -79,7 +78,6 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 	}
 
 	set slideInterval(value: number) {
-		console.log(`%c ⚡ set slideInterval`, "font-size: 24px; color: orange; background: black;", value);
 		if (this._slideInterval !== value) {
 			this._slideInterval = this._parseNumberAttribute(value, DEFAULT_SLIDE_INTERVAL) as number;
 			// reflect to attribute
@@ -127,7 +125,6 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 			this._placeholders = _newValue;
 		}
 		if (_name === "hide") {
-			console.log(`%c (attr changed) hide: `, "font-size: 24px; color: crimson; background: black;", this._parseBooleanAttribute(_newValue));
 			this._hide = this._parseBooleanAttribute(_newValue);
 		}
 		if (_name === "slide-interval") {
@@ -245,7 +242,6 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 
 	private _startTimer(): void {
 		this._sliderTimer = setInterval(() => {
-			console.log(`%c start timer: ${this._currentIndex}`, "font-size: 24px; color: green; background: black;");
 			// set "slide-out" status on old placeholder
 			this._updatePlaceholderStatus(this._currentIndex, PlaceholderState.SLIDE_OUT);
 			this._currentIndex++;

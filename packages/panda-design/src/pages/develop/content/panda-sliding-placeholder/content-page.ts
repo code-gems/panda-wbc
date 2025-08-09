@@ -52,7 +52,7 @@ export class ContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
-				<h1>TEMPLATE</h1>
+				<h1>SLIDING PLACEHOLDER</h1>
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -73,7 +73,12 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-
+						A dynamic input placeholder that cycles through multiple descriptive text strings with smooth sliding transitions. 
+						Instead of displaying static placeholder text, this component rotates between different examples or hints, 
+						providing users with more comprehensive guidance about expected input formats or options. 
+						The sliding animation creates an engaging visual experience while maximizing the informational value of 
+						the placeholder space, helping users better understand the input's purpose and acceptable values 
+						without cluttering the interface.
 					</p>
 				</div>
 
