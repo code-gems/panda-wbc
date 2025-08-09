@@ -66,8 +66,7 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 	
-		--panda-icon-width: var(--panda-component-size-m);
-		--panda-icon-height: var(--panda-component-size-m);
+		--panda-icon-size: var(--panda-icon-size-l);
 	}
 
 	.side-bar .btn label {

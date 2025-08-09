@@ -34,8 +34,7 @@ export const styles = css`
 		background: url(/transparent.png);
 		box-shadow: var(--panda-elevation-m);
 
-		--panda-icon-width: var(--panda-icon-size-hero);
-		--panda-icon-height: var(--panda-icon-size-hero);
+		--panda-icon-size: var(--panda-icon-size-xl);
 	}
 
 	.layout .icon .label {}

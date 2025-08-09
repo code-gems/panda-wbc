@@ -290,7 +290,7 @@ export const uiComponents = {
 			display: flex;
 			flex-flow: row wrap;
 			gap: var(--panda-padding-l);
-			padding: var(--panda-padding-hero);
+			padding: var(--panda-padding-xl);
 		}
 
 		.cards .card {

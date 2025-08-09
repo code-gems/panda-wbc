@@ -258,7 +258,6 @@ export const pandaThemeTurquoise = /*css*/`
 		--panda-font-size-m: 14px;
 		--panda-font-size-l: 16px;
 		--panda-font-size-xl: 18px;
-		--panda-font-size-hero: 24px;
 
 		--panda-font-family: "Poppins";
 		--panda-font-family-light: "Poppins-Light";
@@ -275,14 +274,12 @@ export const pandaThemeTurquoise = /*css*/`
 		--panda-padding-m: 10px;
 		--panda-padding-l: 15px;
 		--panda-padding-xl: 30px;
-		--panda-padding-hero: 60px;
 
 		--panda-border-radius-xs: 2px;
 		--panda-border-radius-s: 3px;
 		--panda-border-radius-m: 5px;
 		--panda-border-radius-l: 10px;
 		--panda-border-radius-xl: 15px;
-		--panda-border-radius-hero: 30px;
 
 		/* ========================================================================================================= */
 		/* ELEVATION / DEPTH ======================================================================================= */
@@ -291,12 +288,12 @@ export const pandaThemeTurquoise = /*css*/`
 		--panda-elevation-s: 0px 1px 2px var(--panda-black-color-10opc);
 		--panda-elevation-m: 0px 2px 4px var(--panda-black-color-20opc);
 		--panda-elevation-l: 0px 4px 8px var(--panda-black-color-30opc);
-		--panda-elevation-hero: 0px 6px 12px var(--panda-black-color-30opc);
+		--panda-elevation-xl: 0px 6px 12px var(--panda-black-color-30opc);
 
 		--panda-depth-s: 0px 1px 2px var(--panda-black-color-20opc) inset;
 		--panda-depth-m: 0px 2px 4px var(--panda-black-color-20opc) inset;
 		--panda-depth-l: 0px 4px 8px var(--panda-black-color-30opc) inset;
-		--panda-depth-hero: 0px 6px 12px var(--panda-black-color-30opc) inset;
+		--panda-depth-xl: 0px 6px 12px var(--panda-black-color-30opc) inset;
 
 		/* ========================================================================================================= */
 		/* HIGHLIGHT COLOR ========================================================================================= */
@@ -526,7 +523,6 @@ export const pandaThemeTurquoise = /*css*/`
 		--panda-icon-size-m: 20px;
 		--panda-icon-size-l: 24px;
 		--panda-icon-size-xl: 30px;
-		--panda-icon-size-hero: 46px;
 
 		/* ========================================================================================================= */
 		/* SPINNER ================================================================================================= */
