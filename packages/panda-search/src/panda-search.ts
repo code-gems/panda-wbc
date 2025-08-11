@@ -16,7 +16,7 @@ import { styles } from "./styles/styles";
 // components
 import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-icon";
-import "@panda-wbc/panda-sliding-placeholder";
+import "@panda-wbc/panda-text-slider";
 import "./panda-search-overlay";
 
 // utils
@@ -46,8 +46,8 @@ export class PandaSearch extends LitElement {
 	@property({ type: String, reflect: true })
 	placeholder!: string[] | string | undefined;
 	
-	@property({ type: Number, reflect: true })
-	placeholderSlideInterval: number | null = null;
+	@property({ type: Number, attribute: "placeholder-interval", reflect: true })
+	placeholderInterval: number | null = null;
 
 	@property({ type: Boolean, reflect: true })
 	focused: boolean = false;
@@ -142,7 +142,7 @@ export class PandaSearch extends LitElement {
 		let labelHtml: TemplateResult = html``;
 		let iconLeftHtml: TemplateResult = html``;
 		let iconRightHtml: TemplateResult = html``;
-		let slidingPlaceholderHtml: TemplateResult = html``;
+		let placeholderHtml: TemplateResult = html``;
 
 		// modifier class aggregation
 		const modCss: string[] = [];
@@ -215,15 +215,15 @@ export class PandaSearch extends LitElement {
 			const placeholders = Array.isArray(this.placeholder)
 				? this.placeholder
 				: [this.placeholder];
-			slidingPlaceholderHtml = html`
-				<panda-sliding-placeholder
+			placeholderHtml = html`
+				<panda-text-slider
 					class="placeholder ${modCss.join(" ")}"
 					part="placeholder ${modCss.join(" ")}"
 					.hide="${this.value}"
-					.placeholders="${placeholders}"
-					.slideInterval="${this.placeholderSlideInterval}"
+					.slides="${placeholders}"
+					.sliderInterval="${this.placeholderInterval}"
 				>
-				</panda-sliding-placeholder>
+				</panda-text-slider>
 			`;
 		}
 
@@ -241,7 +241,7 @@ export class PandaSearch extends LitElement {
 				<slot name="prefix"></slot>
 				${iconLeftHtml}
 				<div class="input-wrap">
-					${slidingPlaceholderHtml}
+					${placeholderHtml}
 					<input
 						id="input-field"
 						class="input-field ${position}"

@@ -1,45 +1,45 @@
 // types
 
-const enum PlaceholderState {
+const enum SlideState {
 	HIDE = "hide",
 	SHOW = "show",
 	SLIDE_IN = "slide-in",
 	SLIDE_OUT = "slide-out",
 }
 
-type PlaceholderMetadata = {
+type SlideMetadata = {
 	index: number;
 	status: string;
-	placeholder: string;
+	text: string;
 }
 
 // style
 import { styles } from "./styles/styles";
 
 // constants
-const DEFAULT_SLIDE_INTERVAL = 4000;
+const DEFAULT_SLIDER_INTERVAL = 4000;
 
-export class PandaSlidingPlaceholder extends HTMLElement {
+export class PandaTextSlider extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 	
 	static readonly observedAttributes = [
-		"placeholders",
+		"slides",
 		"hide",
-		"slide-interval",
+		"slider-interval",
 	];
 	
-	// placeholders ===================================================================================================
-	private _placeholders!: string[];
+	// slides =========================================================================================================
+	private _slides!: string[];
 	
-	get placeholders(): string[] {
-		return this._placeholders;
+	get slides(): string[] {
+		return this._slides;
 	}
 
-	set placeholders(value: string[]) {
-		if (this._placeholders !== value) {
-			this._placeholders = value;
+	set slides(value: string[]) {
+		if (this._slides !== value) {
+			this._slides = value;
 			// reset component and animation
 			this._reset();
 			// rerender template
@@ -70,24 +70,24 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 		}
 	}
 
-	// slideInterval ==================================================================================================
-	private _slideInterval!: number;
+	// sliderInterval =================================================================================================
+	private _sliderInterval!: number;
 		
-	get slideInterval(): number {
-		return this._slideInterval;
+	get sliderInterval(): number {
+		return this._sliderInterval;
 	}
 
-	set slideInterval(value: number) {
-		if (this._slideInterval !== value) {
-			this._slideInterval = this._parseNumberAttribute(value, DEFAULT_SLIDE_INTERVAL) as number;
+	set sliderInterval(value: number) {
+		if (this._sliderInterval !== value) {
+			this._sliderInterval = this._parseNumberAttribute(value, DEFAULT_SLIDER_INTERVAL) as number;
 			// reflect to attribute
-			this.setAttribute("slide-interval", this._slideInterval + "");
+			this.setAttribute("slider-interval", this._sliderInterval + "");
 		}
 	}
 
 	// view properties ================================================================================================
 
-	private _placeholderMetadataList!: PlaceholderMetadata[];
+	private _slideMetadataList!: SlideMetadata[];
 
 	private _currentIndex!: number;
 
@@ -104,10 +104,10 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 		// apply component styles
 		this._applyStyles();
 		// initialize class properties
-		this._placeholders = [];
-		this._placeholderMetadataList = [];
+		this._slides = [];
+		this._slideMetadataList = [];
 		this._currentIndex = 0;
-		this._slideInterval = DEFAULT_SLIDE_INTERVAL;
+		this._sliderInterval = DEFAULT_SLIDER_INTERVAL;
 		this._hide = false;
 		// start animation timer
 		this._reset();
@@ -121,14 +121,14 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
-		if (_name === "placeholders") {
-			this._placeholders = _newValue;
+		if (_name === "slides") {
+			this._slides = _newValue;
 		}
 		if (_name === "hide") {
 			this._hide = this._parseBooleanAttribute(_newValue);
 		}
-		if (_name === "slide-interval") {
-			this._slideInterval = this._parseNumberAttribute(_newValue, DEFAULT_SLIDE_INTERVAL) as number;
+		if (_name === "slider-interval") {
+			this._sliderInterval = this._parseNumberAttribute(_newValue, DEFAULT_SLIDER_INTERVAL) as number;
 		}
 		this._render();
 	}
@@ -141,30 +141,30 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 		if (this.shadowRoot) {
 			// render component template
 			this.shadowRoot.innerHTML = /*html*/`
-				<div class="placeholder-cont" part="placeholder-cont">
-					${this._renderPlaceholders()}
+				<div class="slider-cont" part="slide-cont">
+					${this._renderSlides()}
 				</div>
 			`;
 		}
 	}
 
-	private _renderPlaceholders(): string {
+	private _renderSlides(): string {
 		if (this._hide) {
 			return "";
 		} else {
-			const placeholderList: string[] = [];
+			const slideList: string[] = [];
 
-			this._placeholderMetadataList.forEach((metadata) => {
-				placeholderList.push(`
+			this._slideMetadataList.forEach((metadata) => {
+				slideList.push(`
 					<div
-						class="placeholder ${metadata.status}"
-						part="placeholder ${metadata.status}"
+						class="slide ${metadata.status}"
+						part="slide ${metadata.status}"
 					>
-						${metadata.placeholder}
+						${metadata.text}
 					</div>
 				`);
 			});
-			return placeholderList.join("");
+			return slideList.join("");
 		}
 	}
 
@@ -215,44 +215,44 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 			: parsedValue;
 	}
 
-	private _initPlaceholderMetadata(): void {
+	private _initSlideMetadata(): void {
 		this._currentIndex = 0;
-		this._placeholderMetadataList = [];
-		this._placeholders.forEach((placeholder, index) => {
-			this._placeholderMetadataList.push({
+		this._slideMetadataList = [];
+		this._slides.forEach((text, index) => {
+			this._slideMetadataList.push({
 				index,
-				status: index !== 0 ? PlaceholderState.HIDE : PlaceholderState.SHOW,
-				placeholder,
+				status: index !== 0 ? SlideState.HIDE : SlideState.SHOW,
+				text,
 			});
 		});
 	}
 
-	private _updatePlaceholderStatus(index: number, state: PlaceholderState): void {
+	private _updateSlideStatus(index: number, state: SlideState): void {
 		// update old "slide-out" statuses tp "hide"
 		// there only can be one "slide-out" status"
-		if (state === PlaceholderState.SLIDE_OUT) {
-			this._placeholderMetadataList.forEach((metadata) => {
-				if (metadata.status === PlaceholderState.SLIDE_OUT) {
-					metadata.status = PlaceholderState.HIDE;
+		if (state === SlideState.SLIDE_OUT) {
+			this._slideMetadataList.forEach((metadata) => {
+				if (metadata.status === SlideState.SLIDE_OUT) {
+					metadata.status = SlideState.HIDE;
 				}
 			});
 		}
-		this._placeholderMetadataList[index].status = state;
+		this._slideMetadataList[index].status = state;
 	}
 
 	private _startTimer(): void {
 		this._sliderTimer = setInterval(() => {
 			// set "slide-out" status on old placeholder
-			this._updatePlaceholderStatus(this._currentIndex, PlaceholderState.SLIDE_OUT);
+			this._updateSlideStatus(this._currentIndex, SlideState.SLIDE_OUT);
 			this._currentIndex++;
-			if (this._currentIndex >= this._placeholders.length) {
+			if (this._currentIndex >= this._slides.length) {
 				this._currentIndex = 0;
 			}
 			// set "slide-in" status on new placeholder
-			this._updatePlaceholderStatus(this._currentIndex, PlaceholderState.SLIDE_IN);
+			this._updateSlideStatus(this._currentIndex, SlideState.SLIDE_IN);
 			// render component
 			this._render();
-		}, this._slideInterval);
+		}, this._sliderInterval);
 	}
 
 	private _clearTimer(): void {
@@ -261,15 +261,15 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 	}
 
 	private _reset(): void {
-		if (this._placeholders.length >= 1) {
+		if (this._slides.length >= 1) {
 			// re-initialize placeholder metadata list
-			this._initPlaceholderMetadata();
+			this._initSlideMetadata();
 			// rerender component with new placeholder metadata after reset
 			this._render();
 			// clear timer
 			this._clearTimer();
 			// check if there are more than 1 placeholders to slide through
-			if (this._placeholders.length > 1) {
+			if (this._slides.length > 1) {
 				// start timer
 				this._startTimer();
 			}
@@ -278,12 +278,12 @@ export class PandaSlidingPlaceholder extends HTMLElement {
 }
 
 // Register the custom element
-if (!customElements.get("panda-sliding-placeholder")) {
-	customElements.define("panda-sliding-placeholder", PandaSlidingPlaceholder);
+if (!customElements.get("panda-text-slider")) {
+	customElements.define("panda-text-slider", PandaTextSlider);
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-sliding-placeholder": PandaSlidingPlaceholder;
+		"panda-text-slider": PandaTextSlider;
 	}
 }

@@ -5,7 +5,7 @@ import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } f
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-sliding-placeholder";
+import "@panda-wbc/panda-text-slider";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -21,7 +21,7 @@ import {
 } from "./snippets/snippets";
 
 @page(pageConfig)
-@customElement("panda-sliding-placeholder-content-page")
+@customElement("panda-text-slider-content-page")
 export class ContentPage extends ContentPageTemplate {
 	// page details
 	public pageId: string = pageConfig.pageId;
@@ -40,7 +40,8 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 
-	private _placeholders: string[] = [];
+	@state()
+	private _slides: string[] = [];
 
 	@state()
 	private _hide = false;
@@ -52,7 +53,7 @@ export class ContentPage extends ContentPageTemplate {
 	_renderPageBanner(): TemplateResult {
 		return html`
 			<div class="banner small">
-				<h1>SLIDING PLACEHOLDER</h1>
+				<h1>TEXT SLIDER</h1>
 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
 			</div>
 		`;
@@ -73,12 +74,9 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-						A dynamic input placeholder that cycles through multiple descriptive text strings with smooth sliding transitions. 
-						Instead of displaying static placeholder text, this component rotates between different examples or hints, 
-						providing users with more comprehensive guidance about expected input formats or options. 
-						The sliding animation creates an engaging visual experience while maximizing the informational value of 
-						the placeholder space, helping users better understand the input's purpose and acceptable values 
-						without cluttering the interface.
+						The Panda Text Slider takes an array of text values provided by the developer and cycles through them with elegant animation effects, 
+						creating an engaging way to showcase multiple messages, features, or information snippets in a single compact space. 
+						This component enhances user interfaces by delivering varied content while maintaining a clean layout and drawing attention through its fluid text transitions.
 					</p>
 				</div>
 
@@ -90,11 +88,11 @@ export class ContentPage extends ContentPageTemplate {
 								
 									<div style="height: 40px;">
 
-										<panda-sliding-placeholder
+										<panda-text-slider
 											.hide="${this._hide}"
-											.placeholders="${this._placeholders}"
+											.slides="${this._slides}"
 										>
-										</panda-sliding-placeholder>
+										</panda-text-slider>
 
 									</div>
 
@@ -203,7 +201,7 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onSetPlaceholders(): void {
-		this._placeholders = [
+		this._slides = [
 			"Why do cats purr?",
 			"What's the smallest country in the world?",
 			"How many bones are in a human hand?",

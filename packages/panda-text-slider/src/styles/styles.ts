@@ -2,12 +2,12 @@ export const styles = /*css*/`
 	:host {
 		display: block;
 		width: 100%;
-		height: var(--panda-sliding-placeholder-height, 100%);
+		height: var(--panda-text-slider-height, 100%);
 		user-select: none;
 		outline: none;
 	}
 
-	.placeholder-cont {
+	.slider-cont {
 		position: relative;
 		display: flex;
 		align-items: center;
@@ -15,15 +15,15 @@ export const styles = /*css*/`
 		overflow: hidden;
 	}
 
-	.placeholder-cont.hide {
+	.slider-cont.hide {
 		display: none;
 	}
 
-	.placeholder {
+	.slide {
 		position: absolute;
 		display: block;
 		width: 100%;
-		padding: var(--panda-sliding-placeholder-padding, 10px);
+		padding: var(--panda-text-slider-padding, 10px);
 		overflow: hidden;
 		
 		color: inherit;
@@ -33,29 +33,29 @@ export const styles = /*css*/`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 
-		animation-duration: var(--panda-sliding-placeholder-animation-duration, 400ms);
+		animation-duration: var(--panda-text-slider-animation-duration, 400ms);
 		animation-iteration-count: 1;
-		animation-timing-function: var(--panda-sliding-placeholder-animation-timing-function, ease-in-out);
+		animation-timing-function: var(--panda-text-slider-animation-timing-function, ease-in-out);
 		animation-fill-mode: forwards;
 
 		box-sizing: border-box;
 	}
 
-	.placeholder.show {
+	.slide.show {
 		opacity: 1;
 		transform: translateY(0%);
 	}
 
-	.placeholder.hide {
+	.slide.hide {
 		opacity: 0;
 		transform: translateY(100%);
 	}
 
-	.placeholder.slide-in {
+	.slide.slide-in {
 		animation-name: slideIn;
 	}
 
-	.placeholder.slide-out {
+	.slide.slide-out {
 		animation-name: slideOut;
 	}
 

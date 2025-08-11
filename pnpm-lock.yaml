@@ -410,9 +410,6 @@ importers:
       '@panda-wbc/panda-slideshow':
         specifier: workspace:*
         version: link:../panda-slideshow
-      '@panda-wbc/panda-sliding-placeholder':
-        specifier: workspace:*
-        version: link:../panda-sliding-placeholder
       '@panda-wbc/panda-sortable-list':
         specifier: workspace:*
         version: link:../panda-sortable-list
@@ -437,6 +434,9 @@ importers:
       '@panda-wbc/panda-text-field':
         specifier: workspace:*
         version: link:../panda-text-field
+      '@panda-wbc/panda-text-slider':
+        specifier: workspace:*
+        version: link:../panda-text-slider
       '@panda-wbc/panda-textarea':
         specifier: workspace:*
         version: link:../panda-textarea
@@ -827,12 +827,12 @@ importers:
       '@panda-wbc/panda-mixins':
         specifier: workspace:*
         version: link:../panda-mixins
-      '@panda-wbc/panda-sliding-placeholder':
-        specifier: workspace:*
-        version: link:../panda-sliding-placeholder
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      '@panda-wbc/panda-text-slider':
+        specifier: workspace:*
+        version: link:../panda-text-slider
       '@panda-wbc/panda-utils':
         specifier: workspace:*
         version: link:../panda-utils
@@ -905,15 +905,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
-
-  packages/panda-sliding-placeholder:
     devDependencies:
       rimraf:
         specifier: ^6.0.0
@@ -1058,6 +1049,15 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
+
+  packages/panda-text-slider:
     devDependencies:
       rimraf:
         specifier: ^6.0.0

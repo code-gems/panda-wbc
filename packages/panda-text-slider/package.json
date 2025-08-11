@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-sliding-placeholder",
+	"name": "@panda-wbc/panda-text-slider",
 	"version": "1.0.0",
-	"description": "Native based web component - sliding placeholder",
+	"description": "Native based web component - text slider",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-sliding-placeholder.js",
+	"main": "lib/panda-text-slider.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -16,7 +16,7 @@
 		"panda-wbc",
 		"ui component",
 		"ui",
-		"sliding placeholder",
+		"text slider",
 		"effect"
 	],
 	"author": "code-gems",
