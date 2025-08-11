@@ -418,9 +418,10 @@ export const styles = /*css*/`
 	:host([theme~="size-s"]) {
 		height: var(--panda-button-height-size-s, 24px);
 	}
-
+	
 	:host([theme~="size-s"][theme~="icon"]) {
 		width: var(--panda-button-height-size-s, 24px);
+		height: var(--panda-button-height-size-s, 24px);
 	}
 
 	:host([theme~="size-s"]) slot {
@@ -459,9 +460,10 @@ export const styles = /*css*/`
 	:host([theme~="size-l"]) {
 		height: var(--panda-button-height-size-l, 48px);
 	}
-
+	
 	:host([theme~="size-l"][theme~="icon"]) {
 		width: var(--panda-button-height-size-l, 48px);
+		height: var(--panda-button-height-size-l, 48px);
 	}
 
 	:host([theme~="size-l"]) slot {
@@ -500,9 +502,10 @@ export const styles = /*css*/`
 	:host([theme~="size-xl"]) {
 		height: var(--panda-button-height-size-xl, 56px);
 	}
-
+	
 	:host([theme~="size-xl"][theme~="icon"]) {
 		width: var(--panda-button-height-size-xl, 56px);
+		height: var(--panda-button-height-size-xl, 56px);
 	}
 
 	:host([theme~="size-xl"]) slot {
