@@ -39,7 +39,7 @@ class Sample extends SampleTemplate {
 					<div class="col-full">
 						<panda-search
 							label="Search:"
-							.placeholders="${["Find country...", "eg. Poland"]}"
+							.placeholder="${["Find country...", "eg. Poland", "or country code eg. PL"]}"
 							.value="${this._searchText}"
 							.i18n="${this._i18n}"
 							.search="${this._searchCallback.bind(this)}"

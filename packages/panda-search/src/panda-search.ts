@@ -44,10 +44,7 @@ export class PandaSearch extends LitElement {
 	value!: string;
 
 	@property({ type: String, reflect: true })
-	placeholder: string | null = null;
-	
-	@property({ type: Array })
-	placeholders: string[] | null = null;
+	placeholder!: string[] | string | undefined;
 	
 	@property({ type: Number, reflect: true })
 	placeholderSlideInterval: number | null = null;
@@ -214,13 +211,16 @@ export class PandaSearch extends LitElement {
 			}
 		}
 
-		if (!this.placeholder && this.placeholders) {
+		if (this.placeholder) {
+			const placeholders = Array.isArray(this.placeholder)
+				? this.placeholder
+				: [this.placeholder];
 			slidingPlaceholderHtml = html`
 				<panda-sliding-placeholder
 					class="placeholder ${modCss.join(" ")}"
 					part="placeholder ${modCss.join(" ")}"
 					.hide="${this.value}"
-					.placeholders="${this.placeholders}"
+					.placeholders="${placeholders}"
 					.slideInterval="${this.placeholderSlideInterval}"
 				>
 				</panda-sliding-placeholder>
@@ -249,7 +249,6 @@ export class PandaSearch extends LitElement {
 						type="text"
 						autocomplete="off"
 						.spellcheck="${this.spellcheck}"
-						.placeholder="${this.placeholder ?? ""}"
 						.value="${this.value ?? ""}"
 						.disabled="${this.disabled}"
 						@keydown="${this._onKeyDown}"
