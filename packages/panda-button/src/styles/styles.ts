@@ -85,6 +85,7 @@ export const styles = /*css*/`
 	slot[name="prefix"],
 	slot[name="suffix"] {
 		flex-shrink: 0;
+		flex-grow: 0;
 	}
 
 	::slotted([slot="prefix"]),
@@ -324,9 +325,7 @@ export const styles = /*css*/`
 		--panda-icon-color: var(--panda-button-plain-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
-	/* ACTION COLOR THEMES ========================================================================================= */
-	
-	/* ACTION - INFO */
+	/* ACTION - INFO =============================================================================================== */
 	:host([theme~="info"]) .button:not(.disabled) {
 		color: var(--panda-button-action-info-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-info-text-shadow, none);
@@ -383,9 +382,176 @@ export const styles = /*css*/`
 		--panda-icon-color: var(--panda-button-action-info-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
-	/* ACTION - DONE */
-	/* ACTION - WARN */
-	/* ACTION - ALERT */
+	/* ACTION - DONE =============================================================================================== */
+	:host([theme~="done"]) .button:not(.disabled) {
+		color: var(--panda-button-action-done-text-color, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-done-text-shadow, none);
+		border-color: var(--panda-button-action-done-border-color, hsl(160deg 81% 43%));
+		background-color: var(--panda-button-action-done-background-color, hsl(160deg 81% 43%));
+		box-shadow: var(--panda-button-action-done-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-button-action-done-icon-color, hsl(0deg 0% 100%));
+		--panda-icon-size: var(--panda-button-action-done-icon-size, 24px);
+	}
+
+	:host([theme~="done"]) .spinner-cont {
+		background-color: var(--panda-button-action-done-background-color, hsl(160deg 81% 43%));
+		/* SPINNER STYLE */
+		--panda-spinner-size: var(--panda-button-action-done-spinner-size, 24px);
+		--panda-spinner-color: var(--panda-button-action-done-spinner-color, hsl(0deg 0% 100%));
+	}
+
+	/* ACTION - DONE - HOVER */
+	:host([theme~="done"]) .button:not(.disabled):hover {
+		color: var(--panda-button-action-done-text-color-hover, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-done-text-shadow-hover, none);
+		border-color: var(--panda-button-action-done-border-color-hover, hsl(160deg 81% 43%));
+		background-color: var(--panda-button-action-done-background-color-hover, hsl(160deg 81% 40%));
+		box-shadow: var(--panda-button-action-done-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+
+	/* ACTION - DONE - FOCUSED */
+	:host([theme~="done"]) .button:focus-visible,
+	:host([theme~="done"]) .button:focus-visible:hover {
+		color: var(--panda-button-action-done-text-color-focused, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-done-text-shadow-focused, none);
+		border-color: var(--panda-button-action-done-border-color-focused, hsl(160deg 81% 43%));
+		background-color: var(--panda-button-action-done-background-color-focused, hsl(160deg 81% 43%));
+		box-shadow: var(--panda-button-action-done-outline, 0px 0px 2px 2px hsl(0deg 0% 0% / 10%));
+	}
+	
+	/* ACTION - DONE - ACTIVE */
+	:host([theme~="done"]) .button:not(.disabled):active {
+		color: var(--panda-button-action-done-text-color-active, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-done-text-shadow-active, none);
+		border-color: var(--panda-button-action-done-border-color-active, hsl(160deg 81% 43%));
+		background-color: var(--panda-button-action-done-background-color-active, hsl(160deg 81% 35%));
+		box-shadow: var(--panda-button-action-done-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+	
+	/* ACTION - DONE - DISABLED */
+	:host([theme~="done"]) .button.disabled {
+		color: var(--panda-button-action-done-text-color-disabled, hsl(188deg 5% 75%));
+		text-shadow: var(--panda-button-action-done-text-shadow-disabled, none);
+		border-color: var(--panda-button-action-done-border-color-disabled, hsl(189deg 3% 96%));
+		background-color: var(--panda-button-action-done-background-color-disabled, hsl(189deg 3% 96%));
+		box-shadow: var(--panda-button-action-done-elevation-disabled, none);
+		--panda-icon-color: var(--panda-button-action-done-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+	
+	/* ACTION - WARN =============================================================================================== */
+	:host([theme~="warn"]) .button:not(.disabled) {
+		color: var(--panda-button-action-warn-text-color, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-warn-text-shadow, none);
+		border-color: var(--panda-button-action-warn-border-color, hsl(35deg 91% 62%));
+		background-color: var(--panda-button-action-warn-background-color, hsl(35deg 91% 62%));
+		box-shadow: var(--panda-button-action-warn-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-button-action-warn-icon-color, hsl(0deg 0% 100%));
+		--panda-icon-size: var(--panda-button-action-warn-icon-size, 24px);
+	}
+
+	:host([theme~="warn"]) .spinner-cont {
+		background-color: var(--panda-button-action-warn-background-color, hsl(35deg 91% 62%));
+		/* SPINNER STYLE */
+		--panda-spinner-size: var(--panda-button-action-warn-spinner-size, 24px);
+		--panda-spinner-color: var(--panda-button-action-warn-spinner-color, hsl(0deg 0% 100%));
+	}
+
+	/* ACTION - WARN - HOVER */
+	:host([theme~="warn"]) .button:not(.disabled):hover {
+		color: var(--panda-button-action-warn-text-color-hover, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-warn-text-shadow-hover, none);
+		border-color: var(--panda-button-action-warn-border-color-hover, hsl(35deg 91% 62%));
+		background-color: var(--panda-button-action-warn-background-color-hover, hsl(35deg 91% 57%));
+		box-shadow: var(--panda-button-action-warn-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+
+	/* ACTION - WARN - FOCUSED */
+	:host([theme~="warn"]) .button:focus-visible,
+	:host([theme~="warn"]) .button:focus-visible:hover {
+		color: var(--panda-button-action-warn-text-color-focused, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-warn-text-shadow-focused, none);
+		border-color: var(--panda-button-action-warn-border-color-focused, hsl(35deg 91% 62%));
+		background-color: var(--panda-button-action-warn-background-color-focused, hsl(35deg 91% 62%));
+		box-shadow: var(--panda-button-action-warn-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
+	}
+	
+	/* ACTION - WARN - ACTIVE */
+	:host([theme~="warn"]) .button:not(.disabled):active {
+		color: var(--panda-button-action-warn-text-color-active, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-warn-text-shadow-active, none);
+		border-color: var(--panda-button-action-warn-border-color-active, hsl(35deg 91% 62%));
+		background-color: var(--panda-button-action-warn-background-color-active, hsl(35deg 91% 52%));
+		box-shadow: var(--panda-button-action-warn-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+	
+	/* ACTION - WARN - DISABLED */
+	:host([theme~="warn"]) .button.disabled {
+		color: var(--panda-button-action-warn-text-color-disabled, hsl(188deg 5% 75%));
+		text-shadow: var(--panda-button-action-warn-text-shadow-disabled, none);
+		border-color: var(--panda-button-action-warn-border-color-disabled, hsl(189deg 3% 96%));
+		background-color: var(--panda-button-action-warn-background-color-disabled, hsl(189deg 3% 96%));
+		box-shadow: var(--panda-button-action-warn-elevation-disabled, none);
+		--panda-icon-color: var(--panda-button-action-warn-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+
+	/* ACTION - ALERT ============================================================================================== */
+	:host([theme~="alert"]) .button:not(.disabled) {
+		color: var(--panda-button-action-alert-text-color, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-alert-text-shadow, none);
+		border-color: var(--panda-button-action-alert-border-color, hsl(14deg 77% 62%));
+		background-color: var(--panda-button-action-alert-background-color, hsl(14deg 77% 62%));
+		box-shadow: var(--panda-button-action-alert-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-button-action-alert-icon-color, hsl(0deg 0% 100%));
+		--panda-icon-size: var(--panda-button-action-alert-icon-size, 24px);
+	}
+
+	:host([theme~="alert"]) .spinner-cont {
+		background-color: var(--panda-button-action-alert-background-color, hsl(14deg 77% 62%));
+		/* SPINNER STYLE */
+		--panda-spinner-size: var(--panda-button-action-alert-spinner-size, 24px);
+		--panda-spinner-color: var(--panda-button-action-alert-spinner-color, hsl(0deg 0% 100%));
+	}
+
+	/* ACTION - ALERT - HOVER */
+	:host([theme~="alert"]) .button:not(.disabled):hover {
+		color: var(--panda-button-action-alert-text-color-hover, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-alert-text-shadow-hover, none);
+		border-color: var(--panda-button-action-alert-border-color-hover, hsl(14deg 77% 62%));
+		background-color: var(--panda-button-action-alert-background-color-hover, hsl(14deg 77% 57%));
+		box-shadow: var(--panda-button-action-alert-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+
+	/* ACTION - ALERT - FOCUSED */
+	:host([theme~="alert"]) .button:focus-visible,
+	:host([theme~="alert"]) .button:focus-visible:hover {
+		color: var(--panda-button-action-alert-text-color-focused, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-alert-text-shadow-focused, none);
+		border-color: var(--panda-button-action-alert-border-color-focused, hsl(14deg 77% 62%));
+		background-color: var(--panda-button-action-alert-background-color-focused, hsl(14deg 77% 62%));
+		box-shadow: var(--panda-button-action-alert-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
+	}
+	
+	/* ACTION - ALERT - ACTIVE */
+	:host([theme~="alert"]) .button:not(.disabled):active {
+		color: var(--panda-button-action-alert-text-color-active, hsl(0deg 0% 100%));
+		text-shadow: var(--panda-button-action-alert-text-shadow-active, none);
+		border-color: var(--panda-button-action-alert-border-color-active, hsl(14deg 77% 62%));
+		background-color: var(--panda-button-action-alert-background-color-active, hsl(14deg 77% 52%));
+		box-shadow: var(--panda-button-action-alert-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+	
+	/* ACTION - ALERT - DISABLED */
+	:host([theme~="alert"]) .button.disabled {
+		color: var(--panda-button-action-alert-text-color-disabled, hsl(188deg 5% 75%));
+		text-shadow: var(--panda-button-action-alert-text-shadow-disabled, none);
+		border-color: var(--panda-button-action-alert-border-color-disabled, hsl(189deg 3% 96%));
+		background-color: var(--panda-button-action-alert-background-color-disabled, hsl(189deg 3% 96%));
+		box-shadow: var(--panda-button-action-alert-elevation-disabled, none);
+		--panda-icon-color: var(--panda-button-action-alert-icon-color-disabled, hsl(188deg 5% 75%));
+	}
 
 	/* ICON THEMES ================================================================================================= */
 
@@ -408,6 +574,18 @@ export const styles = /*css*/`
 		align-items: center;
 		line-height: unset;
 		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
+	}
+
+	/* ALIGN-LEFT ================================================================================================== */
+	:host([theme~="align-left"]) slot[part="slot"] {
+		flex-grow: 1;
+		text-align: left;
+	}
+
+	/* ALIGN-RIGHT ================================================================================================= */
+	:host([theme~="align-right"]) slot[part="slot"] {
+		flex-grow: 1;
+		text-align: right;
 	}
 
 	/* ============================================================================================================= */

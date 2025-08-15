@@ -434,6 +434,9 @@ importers:
       '@panda-wbc/panda-text-field':
         specifier: workspace:*
         version: link:../panda-text-field
+      '@panda-wbc/panda-text-scroller':
+        specifier: workspace:*
+        version: link:../panda-text-scroller
       '@panda-wbc/panda-text-slider':
         specifier: workspace:*
         version: link:../panda-text-slider
@@ -1049,6 +1052,15 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
+
+  packages/panda-text-scroller:
     devDependencies:
       rimraf:
         specifier: ^6.0.0

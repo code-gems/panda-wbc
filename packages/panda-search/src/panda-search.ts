@@ -219,9 +219,9 @@ export class PandaSearch extends LitElement {
 				<panda-text-slider
 					class="placeholder ${modCss.join(" ")}"
 					part="placeholder ${modCss.join(" ")}"
-					.hide="${this.value}"
+					.hide="${!!this.value}"
 					.slides="${placeholders}"
-					.sliderInterval="${this.placeholderInterval}"
+					.sliderInterval="${this.placeholderInterval as number}"
 				>
 				</panda-text-slider>
 			`;

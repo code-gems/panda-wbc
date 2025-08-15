@@ -35,13 +35,14 @@ declare module "panda-design-typings" {
 	export interface Page {
 		pageId: string;
 		pageName: string;
-		icon?: string;
 		pageUri: string;
-		parent?: boolean;
+		description: string[];
 		category: string;
 		template: TemplateResult;
+		
+		icon?: string;
+		parent?: boolean;
 		keywords?: string[];
-		description?: string[];
 		native?: boolean;
 		createdTimestamp?: number;
 		updatedTimestamp?: number;

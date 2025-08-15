@@ -64,6 +64,7 @@
 		"@panda-wbc/panda-tetris": "workspace:*",
 		"@panda-wbc/panda-text-editor": "workspace:*",
 		"@panda-wbc/panda-text-field": "workspace:*",
+		"@panda-wbc/panda-text-scroller": "workspace:*",
 		"@panda-wbc/panda-text-slider": "workspace:*",
 		"@panda-wbc/panda-textarea": "workspace:*",
 		"@panda-wbc/panda-theme-switcher": "workspace:*",

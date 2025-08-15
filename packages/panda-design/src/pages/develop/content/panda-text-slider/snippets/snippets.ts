@@ -1,11 +1,11 @@
-export const installationSnippet = `npm install @panda-wbc/panda-sliding-placeholder -S`;
+export const installationSnippet = `npm install @panda-wbc/panda-text-slider`;
 
 export const implementationSnippet = `
-import "@panda-wbc/panda-sliding-placeholder";
+import "@panda-wbc/panda-text-slider";
 
-<panda-sliding-placeholder
-  .placeholders="\${["Find flag...", "eg. Poland"]}"
-  
+<panda-text-slider
+  .slides="\${["Find flag...", "eg. Poland"]}"
+  .sliderInterval="\${5000}"
 >
-</panda-sliding-placeholder>
+</panda-text-slider>
 `;
