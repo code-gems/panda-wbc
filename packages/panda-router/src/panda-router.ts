@@ -1,5 +1,9 @@
 // types
-import { SearchParams, PandaRouterNavigateEvent, RouterConfig, PandaRouterNavigateEventDetail } from "../index";
+import {
+	PandaRouterNavigateEventDetail,
+	RouterConfig,
+	SearchParams,
+} from "../index";
 
 // utils
 import { LitElement, TemplateResult, html, css } from "lit";

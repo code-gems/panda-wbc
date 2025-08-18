@@ -1,6 +1,6 @@
 // types
 import { ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
-import { ScrollSpeed } from "@panda-wbc/panda-text-scroller/types";
+import { ScrollSpeed } from "@panda-wbc/panda-text-scroller";
 import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
 
 // styles
@@ -136,10 +136,10 @@ export class ContentPage extends ContentPageTemplate {
 									!this._hide,
 									() => html`
 										<div class="row">
-											<div class="col-2">
+											<div class="col-1">
 												<panda-text-scroller>Short text</panda-text-scroller>
 											</div>
-											<div class="col-2">
+											<div class="col-1">
 												<panda-text-scroller
 													.speed="${this._speed}"
 												>

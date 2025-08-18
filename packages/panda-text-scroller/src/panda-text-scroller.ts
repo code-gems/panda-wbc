@@ -1,5 +1,11 @@
 // types
-import { ScrollSpeed } from "../types";
+export const enum ScrollSpeed {
+	SLOWER = 0.25,
+	SLOW = 0.5,
+	MEDIUM = 1,
+	FAST = 1.5,
+	FASTER = 2,
+}
 
 // style
 import { styles } from "./styles/styles";
@@ -53,7 +59,6 @@ export class PandaTextScroller extends HTMLElement {
 	/** Indicates if scroll animation is ongoing */
 	private _animating!: boolean;
 	private _animationFrameId!: number;
-
 	private _componentWidth!: number;
 	private _textWidth!: number;
 	
@@ -75,13 +80,14 @@ export class PandaTextScroller extends HTMLElement {
 		this._applyStyles();
 		// initialize class properties
 		this._animating = false;
+		this._animationFrameId = -1;
 		this._componentWidth = 0;
 		this._textWidth = 0;
 		this._speed = ScrollSpeed.MEDIUM;
 		this._scrollerDelay = DEFAULT_SCROLLER_DELAY;
 		// render component
 		this._render();
-		// get elements
+		// get element handle
 		this._trackEl = this.shadowRoot!.querySelector(".track") as HTMLDivElement;
 	}
 
@@ -187,7 +193,7 @@ export class PandaTextScroller extends HTMLElement {
 					// Reached right edge?
 					if (positionX <= left && direction === -1) {
 						direction = 1; // turn around
-						positionX = left;
+						positionX = left; // correct position
 						this._animationTimer = setTimeout(go, this._scrollerDelay); // 2 s pause
 						console.log(`%c 🔥 Reached right edge!`, "font-size: 16px; color: crimson; background: black;");
 						console.log(`%c distance:`, "font-size: 14px; color: crimson; background: black;", distance);
@@ -198,7 +204,7 @@ export class PandaTextScroller extends HTMLElement {
 					// Reached left edge?
 					if (positionX >= 0 && direction === 1) {
 						direction = -1;
-						positionX = 0;
+						positionX = 0; // correct position
 						this._animationTimer = setTimeout(go, this._scrollerDelay); // 2 s pause
 						console.log(`%c 🔥 Reached left edge!`, "font-size: 16px; color: crimson; background: black;");
 						console.log(`%c distance:`, "font-size: 14px; color: crimson; background: black;", distance);

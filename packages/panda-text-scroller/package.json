@@ -31,8 +31,7 @@
 	},
 	"files": [
 		"src",
-		"lib",
-		"types.ts"
+		"lib"
 	],
 	"publishConfig": {
 		"access": "public"
