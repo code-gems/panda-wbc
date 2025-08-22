@@ -76,14 +76,12 @@ export const styles = css`
 	panda-text-slider {
 		position: absolute;
 		inset: 0;
-		z-index: 0;
-	}
-	
-	panda-text-slider,
-	.input-cont .input-field::placeholder {
+
 		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
 		font-family: var(--panda-font-family, "Poppins");
 		font-size: var(--panda-font-size-m, 14px);
+
+		z-index: 0;
 	}
 
 	.input-cont .input-field.no-padding-left {

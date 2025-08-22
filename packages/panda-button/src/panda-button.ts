@@ -86,7 +86,6 @@ export class PandaButton extends HTMLElement {
 
 	// view properties ================================================================================================
 	private _withPrefix!: boolean;
-
 	private _withSuffix!: boolean;
 
 	// template elements
@@ -224,7 +223,7 @@ export class PandaButton extends HTMLElement {
 	 * @description Parses a value to boolean. If the value is "true" or true, it returns true, otherwise false.
 	 * @returns {Boolean}
 	 */
-	private _parseBooleanAttribute(value: any): boolean {
+	private _parseBooleanAttribute(value: unknown): boolean {
 		return value === "true" || value === true || value === "";
 	}
 

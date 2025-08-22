@@ -1,7 +1,7 @@
 // types
 import { PandaIconTemplate } from "../index";
 
-export class PandaIconLibrary {
+class PandaIconLibrary {
 	static instance: PandaIconLibrary | undefined;
 	private _icons!: PandaIconTemplate[];
 
@@ -38,4 +38,4 @@ export class PandaIconLibrary {
 	}
 };
 
-export default new PandaIconLibrary();
+export const pandaIconLibrary = new PandaIconLibrary();

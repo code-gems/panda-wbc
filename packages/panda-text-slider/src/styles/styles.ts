@@ -23,7 +23,8 @@ export const styles = /*css*/`
 		position: absolute;
 		display: block;
 		width: 100%;
-		padding: var(--panda-text-slider-padding, 10px);
+		padding-left: var(--panda-text-slider-padding-left, 10px);
+		padding-right: var(--panda-text-slider-padding-right, 10px);
 		overflow: hidden;
 		
 		color: inherit;

@@ -57,6 +57,7 @@ export const styles = css`
 		flex-flow: row;
 		align-items: center;
 		padding: var(--panda-dropdown-item-padding, 10px 5px);
+		min-height: var(--panda-dropdown-height-size-m, 40px);
 		
 		color: var(--panda-dropdown-item-text-color, hsl(0deg 0% 10%));
 		font-size: var(--panda-dropdown-item-font-size, 14px);

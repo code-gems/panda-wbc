@@ -24,6 +24,4 @@ export const mapIcons: PandaIconTemplate[] = [
 			<path d="M10.5286 10.7543L13.5 6L21 18H15.0572L10.5286 10.7543Z"/>
 		`
 	},
-
-
 ];

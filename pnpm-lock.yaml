@@ -1049,9 +1049,9 @@ importers:
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      lit:
-        specifier: ^3.0.2
-        version: 3.0.2
+      '@panda-wbc/panda-text-slider':
+        specifier: workspace:*
+        version: link:../panda-text-slider
     devDependencies:
       rimraf:
         specifier: ^6.0.0

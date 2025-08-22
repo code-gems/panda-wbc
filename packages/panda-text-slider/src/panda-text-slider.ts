@@ -1,5 +1,4 @@
 // types
-
 const enum SlideState {
 	HIDE = "hide",
 	SHOW = "show",
@@ -19,7 +18,7 @@ import { styles } from "./styles/styles";
 // constants
 const DEFAULT_SLIDER_INTERVAL = 4000;
 
-export class PandaTextSlider extends HTMLElement {
+class PandaTextSlider extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
@@ -38,10 +37,21 @@ export class PandaTextSlider extends HTMLElement {
 	}
 
 	set slides(value: string[]) {
-		if (this._slides !== value) {
+		console.log(
+			`%c ⚡ [PANDA-TEXT-SLIDER] 1. set slides`,
+			"font-size: 24px; color: crimson; background: black;",
+			this._slides,
+			value,
+		);
+
+		if (this._slidesChanged(value, this._slides)) {
 			this._slides = value;
+			console.log(
+				`%c ⚡ [PANDA-TEXT-SLIDER] 2. set slides (changed)`,
+				"font-size: 24px; color: crimson; background: black;",
+			);
 			// reset component and animation
-			this._reset();
+			this.reset();
 			// rerender template
 			this._render();
 		}
@@ -56,32 +66,42 @@ export class PandaTextSlider extends HTMLElement {
 
 	set hide(value: boolean) {
 		if (this._hide !== value) {
-			this._hide = value;
+			this._hide = this._parseBooleanAttribute(value);
 			// reflect to attribute
 			if (value) {
 				this.setAttribute("hide", "");
 				// clear animation timer
+				console.log(
+					`%c ⚠️ [PANDA-TEXT-SLIDER] (set hide => _clearTimer)`,
+					"font-size: 24px; color: red; background: black;",
+					this._slides,
+				);
+
 				this._clearTimer();
 			} else {
 				this.removeAttribute("hide");
 				// start animation timer
-				this._reset();
+				this.reset();
 			}
 		}
 	}
 
 	// sliderInterval =================================================================================================
-	private _sliderInterval!: number;
+	private _sliderInterval!: number | null;
 		
-	get sliderInterval(): number {
+	get sliderInterval(): number | null {
 		return this._sliderInterval;
 	}
 
-	set sliderInterval(value: number) {
+	set sliderInterval(value: number | null) {
 		if (this._sliderInterval !== value) {
 			this._sliderInterval = this._parseNumberAttribute(value, DEFAULT_SLIDER_INTERVAL) as number;
 			// reflect to attribute
-			this.setAttribute("slider-interval", this._sliderInterval + "");
+			if (this._sliderInterval) {
+				this.setAttribute("slider-interval", this._sliderInterval + "");
+			} else {
+				this.removeAttribute("slider-interval");
+			}
 		}
 	}
 
@@ -110,12 +130,16 @@ export class PandaTextSlider extends HTMLElement {
 		this._sliderInterval = DEFAULT_SLIDER_INTERVAL;
 		this._hide = false;
 		// start animation timer
-		this._reset();
+		this.reset();
 		// render component
 		this._render();
 	}
 
 	disconnectedCallback() {
+		console.log(
+			`%c ⚡ [PANDA-TEXT-SLIDER] (disconnectedCallback)`,
+			"font-size: 24px; color: red; background: black;",
+		);
 		// clear timer
 		this._clearTimer();
 	}
@@ -123,14 +147,16 @@ export class PandaTextSlider extends HTMLElement {
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
 		if (_name === "slides") {
 			this._slides = _newValue;
+			this._render();
 		}
 		if (_name === "hide") {
 			this._hide = this._parseBooleanAttribute(_newValue);
+			this._render();
 		}
 		if (_name === "slider-interval") {
 			this._sliderInterval = this._parseNumberAttribute(_newValue, DEFAULT_SLIDER_INTERVAL) as number;
+			this._render();
 		}
-		this._render();
 	}
 
 	// ================================================================================================================
@@ -141,7 +167,7 @@ export class PandaTextSlider extends HTMLElement {
 		if (this.shadowRoot) {
 			// render component template
 			this.shadowRoot.innerHTML = /*html*/`
-				<div class="slider-cont" part="slide-cont">
+				<div class="slider-cont" part="slider-cont">
 					${this._renderSlides()}
 				</div>
 			`;
@@ -241,7 +267,13 @@ export class PandaTextSlider extends HTMLElement {
 	}
 
 	private _startTimer(): void {
+		console.log(
+			`%c ⚠️ [PANDA-TEXT-SLIDER] (_startTimer)`,
+			"font-size: 24px; color: pink; background: black;",
+			this._slides
+		);
 		this._sliderTimer = setInterval(() => {
+			console.log(`%c ⚠️ [PANDA-TEXT-SLIDER] (tick)`, "font-size: 24px; color: green; background: black;");
 			// set "slide-out" status on old placeholder
 			this._updateSlideStatus(this._currentIndex, SlideState.SLIDE_OUT);
 			this._currentIndex++;
@@ -252,16 +284,49 @@ export class PandaTextSlider extends HTMLElement {
 			this._updateSlideStatus(this._currentIndex, SlideState.SLIDE_IN);
 			// render component
 			this._render();
-		}, this._sliderInterval);
+		}, this._sliderInterval ?? DEFAULT_SLIDER_INTERVAL);
 	}
 
 	private _clearTimer(): void {
 		// clear timer
+		console.log(
+			`%c ⚠️ [PANDA-TEXT-SLIDER] (_clearTimer)`,
+			"font-size: 24px; color: red; background: black;",
+		);
 		clearInterval(this._sliderTimer);
 	}
 
-	private _reset(): void {
+	/**
+	 * Check if slides have changed by comparing old and new array of slides.
+	 * This is to reduce the amount of slider resets when slides are provided inside loops.
+	 * @param {Array} newSlides new slides
+	 * @param {Array} oldSlides old slides
+	 * @returns {Boolean} true if slides have changes
+	 */
+	private _slidesChanged(newSlides: string[] = [], oldSlides: string[] = []): boolean {
+		if (newSlides.length !== oldSlides.length) {
+			return true;
+		}
+		for (let i = 0; i < newSlides.length; i++) {
+			if (newSlides[i] !== oldSlides[i]) {
+				return true;
+			}
+		}
+		return false; 
+	}
+
+	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	/** Reset component state and re-initialize slides */
+	public reset(): void {
 		if (this._slides.length >= 1) {
+			console.log(
+				`%c ⚠️ [PANDA-TEXT-SLIDER] (reset)`,
+				"font-size: 24px; color: crimson; background: black;",
+				this._slides
+			);
 			// re-initialize placeholder metadata list
 			this._initSlideMetadata();
 			// rerender component with new placeholder metadata after reset
@@ -273,7 +338,25 @@ export class PandaTextSlider extends HTMLElement {
 				// start timer
 				this._startTimer();
 			}
+		} else {
+			console.log(
+				`%c ⚠️ [PANDA-TEXT-SLIDER] No animation! Not enough slides!`,
+				"font-size: 24px; color: crimson; background: black;",
+				this._slides,
+				typeof this._slides
+			);
 		}
+	}
+
+	/** stop slider animation and reset to first slide */
+	public stop(): void {
+		console.log(`%c ⚠️ [PANDA-TEXT-SLIDER] (stop)`, "font-size: 24px; color: crimson; background: black;");
+		// re-initialize placeholder metadata list
+		this._initSlideMetadata();
+		// rerender component with new placeholder metadata after reset
+		this._render();
+		// clear timer
+		this._clearTimer();
 	}
 }
 
@@ -287,3 +370,6 @@ declare global {
 		"panda-text-slider": PandaTextSlider;
 	}
 }
+
+// export type
+export { type PandaTextSlider };

@@ -4,6 +4,7 @@ export const styles = /*css*/`
 		height: var(--panda-button-height-size-m, 40px);
 		user-select: none;
 		outline: none;
+		-webkit-font-smoothing: antialiased;
 	}
 
 	.spinner-cont {
@@ -11,8 +12,7 @@ export const styles = /*css*/`
 		display: flex;
 		width: 100%;
 		height: 100%;
-		top: 0px;
-		left: 0px;
+		inset: 0px;
 		justify-content: center;
 		align-items: center;
 
@@ -20,7 +20,7 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-background-color-working, hsl(0deg 0% 100%));
 		/* SPINNER STYLE */
 		--panda-spinner-color: var(--panda-button-spinner-color, hsl(0deg 0% 100%));
-		--panda-spinner-size: var(--panda-button-spinner-size, 20px);
+		--panda-spinner-size: var(--panda-button-spinner-size-m, 20px);
 	}
 
 	.button {
@@ -40,7 +40,7 @@ export const styles = /*css*/`
 		font-size: var(--panda-button-font-size-m, 16px);
 		font-family: var(--panda-button-font-family-size-m, "Poppins");
 		font-weight: var(--panda-button-font-weight-size-m, 500);
-		text-shadow: var(--panda-button-text-shadow, "none");
+		text-shadow: var(--panda-button-text-shadow, none);
 		text-overflow: ellipsis;
 		text-align: center;
 		white-space: nowrap;
@@ -146,7 +146,7 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-border-color-disabled, hsl(189deg 3% 96%));
 		background-color: var(--panda-button-background-color-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-elevation-disabled, none);
-		--panda-icon-color: hsl(188deg 5% 75%);
+		--panda-icon-color: var(--panda-button-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
 	/* ============================================================================================================= */

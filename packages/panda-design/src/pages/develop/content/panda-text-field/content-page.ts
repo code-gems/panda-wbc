@@ -11,11 +11,12 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-text-field";
-import "@panda-wbc/panda-particle-banner";
+import "@panda-wbc/panda-icon";
+// import "@panda-wbc/panda-particle-banner";
 
 // utils
 import { CSSResultGroup, html, TemplateResult } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
@@ -28,6 +29,7 @@ import {
 	installationSnippet,
 } from "./snippets/snippets";
 import { PandaTextFieldOnInputEvent } from "@panda-wbc/panda-text-field";
+import { PandaComboBoxChangeEvent } from "@panda-wbc/panda-combo-box";
 
 @page(pageConfig)
 @customElement("panda-text-field-content-page")
@@ -60,11 +62,70 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		{ name: "clear()", returnType: "void", description: "Clears input value and triggers @on-input event." },
 	];
 
+	// demo props
+	@state()
+	private _selectedDemoTheme = "";
+
+	private readonly _themeList = [
+		"[default]",
+		"size-s",
+		"size-l",
+		"size-xl",
+		"valid",
+		"invalid",
+		"mandatory",
+	];
+
+	@state()
+	private _value: any = "Adrian";
+
+	@state()
+	private _label: any = "Test label:";
+
+	@state()
+	private _description: any = null;
+	
+	@state()
+	private _placeholder: string | string[] = ["Enter...", "your name", "and last name"];
+
+	@state()
+	private _working = false;
+
+	@state()
+	private _readonly = false;
+
+	@state()
+	private _disabled = false;
+
+	@state()
+	private _mandatory = false;
+
+	@state()
+	private _spellcheck = false;
+
+	@state()
+	private _autoselect = false;
+
+	@state()
+	private _autocomplete = false;
+
+	@state()
+	private _maxLength: number | null = null;
+	
+	@state()
+	private _showCharacterCounter = false;
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
 	_renderPageBanner(): TemplateResult {
+		return html`
+			<div class="banner small">
+				<h1>TEXT FIELD</h1>
+				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
+			</div>
+		`;
 		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
 		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
 		const tertiaryColor = getComputedStyle(this).getPropertyValue("--panda-tertiary-color");
@@ -93,10 +154,13 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
-			${this._renderInstallationSection()}
-			${this._renderUsageSection()}
-			${this._renderComponentStatesSection()}
 		`;
+		// return html`
+		// 	${this._renderOverviewSection()}
+		// 	${this._renderInstallationSection()}
+		// 	${this._renderUsageSection()}
+		// 	${this._renderComponentStatesSection()}
+		// `;
 	}
 
 	private _renderOverviewSection(): TemplateResult {
@@ -119,47 +183,187 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 				<!-- SAMPLE -->
 				<div class="sample-cont">
 					<div class="sample">
-						<div class="form">
-							<div class="form-section">
-								<div class="row">
-									<div class="col-full">
-										<panda-text-field
-											label="First Name:"
-											placeholder="Enter..."
-											tabindex="1"
-											autofocus
-											autoselect
-											.value="${"John"}"
-											@on-input="${this._onInput}"
-										>
-										</panda-text-field>
-									</div>
-									<div class="col-full">
-										<panda-text-field
-											label="Last Name:"
-											placeholder="Enter..."
-											tabindex="2"
-											disabled
-											.value="${"Doe"}"
-											@on-input="${this._onInput}"
-										>
-										</panda-text-field>
-									</div>
-									<div class="col-full">
-										<panda-text-field
-											label="Address:"
-											placeholder="Enter..."
-											tabindex="3"
-											.value="${"Wall St."}"
-											@on-input="${this._onInput}"
-										>
-										</panda-text-field>
-									</div>
+						<div class="rows">
+
+							<div class="row">
+								<div class="col-3">
+									<panda-combo-box
+										.value="${this._selectedDemoTheme}"
+										.items="${this._themeList}"
+										@change="${this._onThemeChange}"
+									>
+									</panda-combo-box>
 								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+							</div><!-- row -->
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onSetValue}">
+										Set Value
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onSetValueAsync}">
+										Set Value (Async)
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onChangeValue}">
+										Change Value
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onRemoveValue}">
+										Remove Value
+									</panda-button>
+								</div>
+							</div><!-- row -->
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onChangeLabel}">
+										Change Label
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onRemoveLabel}">
+										Remove Label
+									</panda-button>
+								</div>
+								<div class="col-6">
+									<panda-button @click="${this._onToggleReadonlyAsync}">
+										Toggle Readonly Async (${this._readonly ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div><!-- row -->
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleReadonly}">
+										Toggle Readonly (${this._readonly ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleWorking}">
+										Toggle Working (${this._working ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDisable}">
+										Toggle Disable (${this._disabled ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleMandatory}">
+										Toggle Mandatory (${this._mandatory ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div><!-- row -->
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleSpellcheck}">
+										Toggle Spellcheck (${this._spellcheck ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleAutoselect}">
+										Toggle Autoselect (${this._autoselect ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleAutocomplete}">
+										Toggle Autocomplete (${this._autocomplete ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+
+							</div><!-- row -->
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDescription}">
+										Toggle description (${this._description != null ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleMaxLength}">
+										Toggle Max Length (${this._maxLength ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleCharacterCounter}">
+										Toggle Char Counter (${this._showCharacterCounter ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div><!-- row -->
+
+							<div class="row">
+
+								<div class="col-3">
+									<panda-text-field
+										.theme="${this._selectedDemoTheme}"
+										.label="${this._label}"
+										.placeholder="${["Enter...", "your name", "and last name"]}"
+										.description="${this._description}"
+										.value="${this._value}"
+										.maxLength="${this._maxLength}"
+										.working="${this._working}"
+										.readonly="${this._readonly}"
+										.disabled="${this._disabled}"
+										.mandatory="${this._mandatory}"
+										.spellcheck="${this._spellcheck}"
+										.autoselect="${this._autoselect}"
+										.autocomplete="${this._autocomplete ? "username email" : "off"}"
+										.showCharacterCounter="${this._showCharacterCounter}"
+										@on-input="${this._onInput}"
+									>
+										<div slot="prefix" class="icon">
+											<panda-icon icon="user"></panda-icon>
+										</div>
+										<div slot="suffix">
+											.com
+										</div>
+									</panda-text-field>
+								</div>
+<!--
+								<div class="col-3">
+									<panda-text-field
+										label="Working"
+										placeholder="Enter..."
+										working
+										.value="${"Doe"}"
+										@on-input="${this._onInput}"
+									>
+									</panda-text-field>
+								</div>
+
+								<div class="col-3">
+									<panda-text-field
+										label="Readonly"
+										placeholder="Enter..."
+										readonly
+										.value="${"Wall St."}"
+										@on-input="${this._onInput}"
+									>
+									</panda-text-field>
+								</div>
+
+								<div class="col-3">
+									<panda-text-field
+										label="Disabled"
+										placeholder="Enter..."
+										disabled
+										.value="${"Wall St."}"
+										@on-input="${this._onInput}"
+									>
+									</panda-text-field>
+								</div>
+-->
+						</div><!-- row -->
+
+						</div><!-- rows -->
+					</div><!-- sample -->
+				</div><!-- sample cont -->
 			</div>
 		`;
 	}
@@ -392,13 +596,90 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		`;
 	}
 
-
-
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
 	private _onInput(event: PandaTextFieldOnInputEvent) {
 		console.log("%c 🔥 [TEXT FIELD DEMO PAGE] _onInput::value", "font-size: 24px; color: orange;", event.detail.value);
+		this._value = event.detail.value;
+	}
+	
+	private _onThemeChange(event: PandaComboBoxChangeEvent): void {
+		this._selectedDemoTheme = event.detail.value;
+	}
+	
+	private _onSetValue(): void {
+		this._value = "Big Body Niggas!";
+	}
+	
+	private _onChangeValue(): void {
+		this._value = "Value: " + new Date().getTime();
+	}
+	
+	private _onRemoveValue(): void {
+		this._value = null;
+	}
+	
+	private _onChangeLabel(): void {
+		this._label = "Label: " + new Date().getTime();
+	}
+	
+	private _onRemoveLabel(): void {
+		this._label = null;
+	}
+	
+	private async _onSetValueAsync(): Promise<void> {
+		await new Promise((r) => setTimeout(r, 2000));
+		this._value = "Big Body Niggas! (Async)";
+	}
+
+	private _onToggleReadonly(): void {
+		this._readonly = !this._readonly;
+	}
+
+	private async _onToggleReadonlyAsync(): Promise<void> {
+		await new Promise((r) => setTimeout(r, 2000));
+		this._readonly = !this._readonly;
+	}
+
+	private _onToggleWorking(): void {
+		this._working = !this._working;
+	}
+
+	private _onToggleDisable(): void {
+		this._disabled = !this._disabled;
+	}
+
+	private _onToggleMandatory(): void {
+		this._mandatory = !this._mandatory;
+	}
+
+	private _onToggleAutoselect(): void {
+		this._autoselect = !this._autoselect;
+	}
+
+	private _onToggleAutocomplete(): void {
+		this._autocomplete = !this._autocomplete;
+	}
+
+	private _onToggleSpellcheck(): void {
+		this._spellcheck = !this._spellcheck;
+	}
+
+	private _onToggleDescription(): void {
+		this._description = this._description == null
+			? "Apply the received code as a voucher code at the payment page."
+			: null;
+	}
+
+	private _onToggleMaxLength(): void {
+		this._maxLength = this._maxLength
+			? null
+			: 30;
+	}
+
+	private _onToggleCharacterCounter(): void {
+		this._showCharacterCounter = !this._showCharacterCounter;
 	}
 }

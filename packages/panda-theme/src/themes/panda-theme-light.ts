@@ -330,28 +330,105 @@ export const pandaThemeLight = /*css*/ `
 		--panda-label-font-size: var(--panda-font-size-s);
 		--panda-label-font-family: var(--panda-font-family);
 		
-		/* INPUT */
-		--panda-input-height: var(--panda-component-size-m);
-		--panda-input-padding: 0px 10px;
-		--panda-input-outline-color: var(--panda-outline-color);
-		--panda-input-text-color: var(--panda-text-color);
-		--panda-input-text-color-disabled: var(--panda-text-color-disabled);
-		--panda-input-background-color: hsl(0deg 0% 100%);
-		--panda-input-background-color-disabled: hsl(0deg 0% 92%);
-		--panda-input-font-size: var(--panda-font-size-m);
-		--panda-input-font-family: var(--panda-font-family);
+		/* ========================================================================================================= */
+		/* INPUT FIELD ============================================================================================= */
+		/* ========================================================================================================= */
 
-		--panda-input-border-color: hsl(0deg 0% 80%);
-		--panda-input-border-color-disabled: hsl(0deg 0% 80%);
-		--panda-input-border-color-hover: hsl(0deg 0% 65%);
-		--panda-input-border-radius: 5px;
-		--panda-input-icon-color: var(--panda-icon-color);
-		--panda-input-icon-background-color: hsl(0deg 0% 92%);
-		
-		--panda-input-placeholder-color: hsl(0deg 0% 80%);
-		--panda-input-placeholder-font-size: var(--panda-font-size-m);
-		--panda-input-placeholder-font-family: var(--panda-font-family);
-		
+		/* HEIGHT */
+		--panda-input-height-size-s: var(--panda-component-size-s);
+		--panda-input-height-size-m: var(--panda-component-size-m);
+		--panda-input-height-size-l: var(--panda-component-size-l);
+		--panda-input-height-size-xl: var(--panda-component-size-xl);
+		/* FONT FAMILY */
+		--panda-input-font-family-size-s: "Poppins";
+		--panda-input-font-family-size-m: "Poppins";
+		--panda-input-font-family-size-l: "Poppins";
+		--panda-input-font-family-size-xl: "Poppins";
+		/* FONT WEIGHT */
+		--panda-input-font-weight-size-s: 500;
+		--panda-input-font-weight-size-m: 500;
+		--panda-input-font-weight-size-l: 500;
+		--panda-input-font-weight-size-xl: 500;
+		/* FONT SIZE */
+		--panda-input-font-size-s: var(--panda-font-size-s);
+		--panda-input-font-size-m: var(--panda-font-size-m);
+		--panda-input-font-size-l: var(--panda-font-size-l);
+		--panda-input-font-size-xl: var(--panda-font-size-xl);
+		/* PLACEHOLDER STYLES */
+		--panda-input-placeholder-color: hsl(188deg 5% 75%);
+		--panda-input-placeholder-font-size-s: var(--panda-font-size-s);
+		--panda-input-placeholder-font-size-m: var(--panda-font-size-m);
+		--panda-input-placeholder-font-size-l: var(--panda-font-size-l);
+		--panda-input-placeholder-font-size-xl: var(--panda-font-size-xl);
+		--panda-input-placeholder-font-family-s: var(--panda-font-family);
+		--panda-input-placeholder-font-family-m: var(--panda-font-family);
+		--panda-input-placeholder-font-family-l: var(--panda-font-family);
+		--panda-input-placeholder-font-family-xl: var(--panda-font-family);
+		/* PADDING */
+		--panda-input-padding-size-s: 0px 5px;
+		--panda-input-padding-size-m: 0px 10px;
+		--panda-input-padding-size-l: 0px 10px;
+		--panda-input-padding-size-xl: 0px 15px;
+		/* BORDER RADIUS */
+		--panda-input-border-radius-size-s: 5px;
+		--panda-input-border-radius-size-m: 10px;
+		--panda-input-border-radius-size-l: 10px;
+		--panda-input-border-radius-size-xl: 15px;
+		/* ICON STYLES */
+		--panda-input-icon-color: hsl(191deg 19% 23%);
+		--panda-input-icon-size-s: 16px;
+		--panda-input-icon-size-m: 20px;
+		--panda-input-icon-size-l: 24px;
+		--panda-input-icon-size-xl: 28px;
+		/* SPINNER STYLES */
+		--panda-input-spinner-color: hsl(191deg 19% 23%);
+		--panda-input-spinner-size-s: 16px;
+		--panda-input-spinner-size-m: 20px;
+		--panda-input-spinner-size-l: 24px;
+		--panda-input-spinner-size-xl: 28px;
+		/* STATE - DEFAULT */
+		--panda-input-text-color: var(--panda-text-color);
+		--panda-input-text-shadow: none;
+		--panda-input-border-width: 1px;
+		--panda-input-border-style: solid;
+		--panda-input-border-color: hsl(207deg 1% 85%);
+		--panda-input-background-color: hsl(0deg 0% 100%);
+		--panda-input-elevation: 0px 0px 5px hsl(0deg 0% 0% / 10%);
+		/* STATE - HOVERED */
+		--panda-input-text-color-hover: hsl(191deg 19% 23%);
+		--panda-input-text-shadow-hover: none;
+		--panda-input-border-color-hover: hsl(207deg 1% 80%);
+		--panda-input-background-color-hover: hsl(0deg 0% 100%);
+		--panda-input-elevation-hover: 0px 0px 5px hsl(0deg 0% 0% / 20%);
+		--panda-input-icon-color-hover: hsl(191deg 19% 23%);
+		/* STATE - FOCUSED */
+		--panda-input-text-color-focused: hsl(191deg 19% 23%);
+		--panda-input-text-shadow-focused: none;
+		--panda-input-border-color-focused: hsl(207deg 1% 85%);
+		--panda-input-background-color-focused: hsl(0deg 0% 100%);
+		--panda-input-outline: 0px 0px 2px 2px hsl(160deg 81% 43%);
+		--panda-input-icon-color-focused: hsl(191deg 19% 23%);
+		/* STATE - WORKING */
+		--panda-input-border-color-working: hsl(212deg 1% 95%);
+		--panda-input-background-color-working: hsl(0deg 0% 100%);
+		--panda-input-elevation-working: none;
+		/* STATE - READONLY */
+		--panda-input-text-color-readonly: hsl(191deg 19% 23%);
+		--panda-input-text-shadow-readonly: none;
+		--panda-input-border-width-readonly: 1px;
+		--panda-input-border-style-readonly: dashed;
+		--panda-input-border-color-readonly: hsl(207deg 1% 85%);
+		--panda-input-background-color-readonly: hsl(0deg 0% 100%);
+		--panda-input-elevation-readonly: none;
+		--panda-input-icon-color-readonly: hsl(191deg 19% 23%);
+		/* STATE - DISABLED */
+		--panda-input-text-color-disabled: hsl(188deg 5% 75%);
+		--panda-input-text-shadow-disabled: none;
+		--panda-input-border-color-disabled: hsl(189deg 3% 96%);
+		--panda-input-background-color-disabled: hsl(189deg 3% 96%);
+		--panda-input-elevation-disabled: none;
+		--panda-input-icon-color-disabled: hsl(188deg 5% 75%);
+
 		/* ========================================================================================================= */
 		/* BUTTON ================================================================================================== */
 		/* ========================================================================================================= */
@@ -365,15 +442,15 @@ export const pandaThemeLight = /*css*/ `
 		--panda-button-text-color: hsl(191deg 19% 23%);
 		--panda-button-text-shadow: none;
 		/* FONT FAMILY */
-		--panda-button-font-family-size-xl: "Poppins";
-		--panda-button-font-family-size-l: "Poppins";
-		--panda-button-font-family-size-m: "Poppins";
 		--panda-button-font-family-size-s: "Poppins";
+		--panda-button-font-family-size-m: "Poppins";
+		--panda-button-font-family-size-l: "Poppins";
+		--panda-button-font-family-size-xl: "Poppins";
 		/* FONT WEIGHT */
-		--panda-button-font-weight-size-xl: 500;
-		--panda-button-font-weight-size-l: 500;
-		--panda-button-font-weight-size-m: 500;
 		--panda-button-font-weight-size-s: 500;
+		--panda-button-font-weight-size-m: 500;
+		--panda-button-font-weight-size-l: 500;
+		--panda-button-font-weight-size-xl: 500;
 		/* FONT SIZE */
 		--panda-button-font-size-s: 14px;
 		--panda-button-font-size-m: 16px;
@@ -590,6 +667,12 @@ export const pandaThemeLight = /*css*/ `
 		/* ========================================================================================================= */
 		/* DROPDOWN ================================================================================================ */
 		/* ========================================================================================================= */
+
+		/* HEIGHT */
+		--panda-dropdown-height-size-s: var(--panda-component-size-s);
+		--panda-dropdown-height-size-m: var(--panda-component-size-m);
+		--panda-dropdown-height-size-l: var(--panda-component-size-l);
+		--panda-dropdown-height-size-xl: var(--panda-component-size-xl);
 
 		--panda-dropdown-border-radius: 5px;
 		--panda-dropdown-border-color: var(--panda-border-color);

@@ -2,13 +2,12 @@
 import { styles } from "./styles/styles";
 
 // utils
-import { PandaIconLibrary } from "./panda-icon-library";
+import { pandaIconLibrary } from "./panda-icon-library";
 
 // icons
 import { defaultIcons } from "./resources/default-icons";
 
 // register default icon pack
-const pandaIconLibrary = new PandaIconLibrary();
 pandaIconLibrary.registerIcons(defaultIcons);
 
 export class PandaIcon extends HTMLElement {
@@ -58,7 +57,7 @@ export class PandaIcon extends HTMLElement {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	private _render(): string | void {
+	private _render(): void {
 		if (this.shadowRoot) {
 			this.shadowRoot.innerHTML = /*html*/`
 				<div class="icon" part="icon">

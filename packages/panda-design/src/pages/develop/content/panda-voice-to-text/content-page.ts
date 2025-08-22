@@ -7,6 +7,7 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-voice-to-text";
+import "@panda-wbc/panda-icon/lib/av-icon-pack";
 
 // utils & config
 import { TemplateResult, html } from "lit";

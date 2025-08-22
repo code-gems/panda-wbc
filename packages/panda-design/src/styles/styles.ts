@@ -474,9 +474,14 @@ export const uiComponents = {
 			border-color: var(--panda-form-border-color);
 			border-radius: var(--panda-form-border-radius);
 			background-color: var(--panda-form-background-color);
+			background-image: radial-gradient(
+				circle at center,
+				var(--panda-border-color) 1px,
+				transparent 1px
+			);
+			background-size: 16px 16px;
 			box-shadow: var(--panda-form-elevation);
 			box-sizing: border-box;
-
 		}
 
 		.sample .tabs {
