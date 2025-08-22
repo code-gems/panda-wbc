@@ -1,6 +1,7 @@
 // types
 import { PandaTextFieldOnInputEvent } from "../index";
 import { PandaTextSlider } from "@panda-wbc/panda-text-slider";
+import { PandaSpinner } from "@panda-wbc/panda-spinner";
 
 // style
 import { styles } from "./styles/styles";
@@ -57,7 +58,6 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	set value(value: any) {
-		console.log(`%c 🔥 (set value)`, "font-size: 16px; color: crimson; background: black;", value);
 		if (this._value !== value) {
 			this._value = value;
 			this._updateComponent();
@@ -72,12 +72,10 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	set label(value: string) {
-		console.log(`%c 🔥 (set label)`, "font-size: 16px; color: crimson; background: black;", value, typeof value);
 		if (this._label !== value) {
+			this._label = value ?? "";
 			// reflect to attribute
 			this.setAttribute("label", value + "");
-			this._label = value;
-			this._updateComponent();
 		}
 	}
 
@@ -90,8 +88,6 @@ export class PandaTextField extends HTMLElement {
 
 	set placeholder(value: string | string[]) {
 		if (this._placeholder !== value) {
-			// reflect to attribute
-			// this.setAttribute("placeholder", this._placeholder);
 			this._placeholder = value;
 			// convert placeholder to an array
 			const placeholders = Array.isArray(this.placeholder)
@@ -112,10 +108,8 @@ export class PandaTextField extends HTMLElement {
 	set placeholderInterval(value: number | null) {
 		if (this._placeholderInterval !== value) {
 			// reflect to attribute
-			this.setAttribute("placeholder-interval", this._placeholderInterval + "");
 			this._placeholderInterval = this._parseNumberAttribute(value);
-			this._placeholderEl.sliderInterval = this._placeholderInterval as number;
-			this._updateComponent();
+			this.setAttribute("placeholder-interval", this._placeholderInterval + "");
 		}
 	}
 
@@ -129,9 +123,8 @@ export class PandaTextField extends HTMLElement {
 	set description(value: string) {
 		if (this._description !== value) {
 			// reflect to attribute
+			this._description = value ?? "";
 			this.setAttribute("description", this._description);
-			this._description = value;
-			this._updateComponent();
 		}
 	}
 
@@ -350,6 +343,7 @@ export class PandaTextField extends HTMLElement {
 	private readonly _labelEl!: HTMLDivElement;
 	private readonly _placeholderEl!: PandaTextSlider;
 	private readonly _prefixSlotEl!: HTMLSlotElement;
+	private readonly _pandaSpinnerEl!: PandaSpinner;
 	private readonly _spinnerEl!: HTMLDivElement;
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 	private readonly _textFieldEl!: HTMLDivElement;
@@ -367,7 +361,6 @@ export class PandaTextField extends HTMLElement {
 	// ================================================================================================================
 
 	constructor() {
-		console.log(`%c ⚡ (constructor)`, "font-size: 16px; color: orange; background: black;");
 		super();
 		// create shadow root
 		this.attachShadow({ mode: "open", delegatesFocus: true });
@@ -424,17 +417,17 @@ export class PandaTextField extends HTMLElement {
 		this._placeholderEl.part = "placeholder";
 		this._placeholderEl.hide = true;
 
+		// create panda-spinner element
+		this._pandaSpinnerEl = document.createElement("panda-spinner");
+		this._pandaSpinnerEl.spinner = this._spinnerType ?? "dots";
+
 		// create spinner element
 		this._spinnerEl = document.createElement("div");
 		this._spinnerEl.className = "spinner-cont";
 		this._spinnerEl.part = "spinner-cont";
-		this._spinnerEl.innerHTML = /*html*/`
-			<panda-spinner
-				part="spinner"
-				spinner="${this._spinnerType ?? "dots"}"
-			>
-			</panda-spinner>
-		`;
+		// append panda-spinner inside
+		this._spinnerEl.appendChild(this._pandaSpinnerEl);
+
 		// create label element
 		this._labelEl = document.createElement("div");
 		this._labelEl.className = "label";
@@ -518,6 +511,7 @@ export class PandaTextField extends HTMLElement {
 
 			case "placeholder-interval":
 				this._placeholderInterval = this._parseNumberAttribute(_newValue);
+				this._placeholderEl.sliderInterval = this._placeholderInterval as number;
 				break;
 
 			case "description":
@@ -526,6 +520,7 @@ export class PandaTextField extends HTMLElement {
 
 			case "spinner-type":
 				this._spinnerType = _newValue;
+				this._pandaSpinnerEl.spinner = this._spinnerType;
 				break;
 
 			case "max-length":

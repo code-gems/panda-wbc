@@ -77,7 +77,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	];
 
 	@state()
-	private _value: any = "Adrian";
+	private _value: any = "";
 
 	@state()
 	private _label: any = "Test label:";
@@ -303,7 +303,8 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 									<panda-text-field
 										.theme="${this._selectedDemoTheme}"
 										.label="${this._label}"
-										.placeholder="${["Enter...", "your name", "and last name"]}"
+										.placeholder="${this._placeholder}"
+										.placeholderInterval="${500}"
 										.description="${this._description}"
 										.value="${this._value}"
 										.maxLength="${this._maxLength}"
@@ -316,6 +317,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.autocomplete="${this._autocomplete ? "username email" : "off"}"
 										.showCharacterCounter="${this._showCharacterCounter}"
 										@on-input="${this._onInput}"
+										spinner-type="google"
 									>
 										<div slot="prefix" class="icon">
 											<panda-icon icon="user"></panda-icon>
