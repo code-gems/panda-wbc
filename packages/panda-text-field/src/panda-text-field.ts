@@ -22,6 +22,7 @@ export class PandaTextField extends HTMLElement {
 		"placeholder",
 		"placeholder-interval",
 		"description",
+		"min-length",
 		"max-length",
 		"show-character-counter",
 		"disabled",
@@ -125,6 +126,21 @@ export class PandaTextField extends HTMLElement {
 			// reflect to attribute
 			this._description = value ?? "";
 			this.setAttribute("description", this._description);
+		}
+	}
+
+	// minLength ======================================================================================================
+	private _minLength!: number | null;
+
+	get minLength(): number | null {
+		return this._minLength;
+	}
+
+	set minLength(value: number | null) {
+		if (this._minLength !== value) {
+			this._minLength = this._parseNumberAttribute(value);
+			// reflect to attribute
+			this.setAttribute("min-length", this._minLength + "");
 		}
 	}
 
@@ -299,10 +315,8 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	set mandatory(value: boolean) {
-		console.log(`%c 🔥 1. (set mandatory)`, "font-size: 16px; color: crimson; background: black;", value);
 		if (this._mandatory !== value) {
 			this._mandatory = this._parseBooleanAttribute(value);
-			console.log(`%c 🔥 2. (set mandatory)`, "font-size: 16px; color: crimson; background: black;", this._mandatory);
 			// reflect to attribute
 			if (this._mandatory) {
 				this.setAttribute("mandatory", "");
@@ -449,6 +463,8 @@ export class PandaTextField extends HTMLElement {
 			this._textFieldEl = this.shadowRoot.querySelector(`.text-field`) as HTMLDivElement;
 			this._inputWrapEl = this.shadowRoot.querySelector(`.input-wrap`) as HTMLDivElement;
 			this._inputEl = this.shadowRoot.querySelector(`input[type="text"]`) as HTMLInputElement;
+			this._inputEl.autocomplete = "off";
+			this._inputEl.spellcheck = false;
 			this._inputEl.tabIndex = 0; // update tab index
 			this._inputWrapEl.insertBefore(this._placeholderEl, this._inputEl);
 			this._footerEl = this.shadowRoot.querySelector(`.footer`) as HTMLInputElement;
@@ -458,7 +474,6 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	connectedCallback() {
-		console.log(`%c ⚡ (connectedCallback)`, "font-size: 16px; color: orange; background: black;", this.shadowRoot);
 		// add event listeners to component template
 		this._inputEl.addEventListener("input", this._inputEvent);
 		this._inputEl.addEventListener("focus", this._focusInputEvent);
@@ -489,7 +504,6 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
-		console.log(`%c ⚡ (updated) ${_name}`, "font-size: 16px; color: orange; background: black;", _newValue);
 		switch (_name) {
 			case "value":
 				this._value = _newValue;
@@ -521,6 +535,11 @@ export class PandaTextField extends HTMLElement {
 			case "spinner-type":
 				this._spinnerType = _newValue;
 				this._pandaSpinnerEl.spinner = this._spinnerType;
+				break;
+				
+			case "min-length":
+				this._minLength = this._parseNumberAttribute(_newValue, 0);
+				this._inputEl.minLength = this._minLength as number;
 				break;
 
 			case "max-length":
@@ -586,6 +605,7 @@ export class PandaTextField extends HTMLElement {
 
 			case "mandatory":
 				this._mandatory = this._parseBooleanAttribute(_newValue);
+				this._inputEl.required = this._mandatory;
 				break;
 
 			case "autocomplete":
@@ -634,7 +654,6 @@ export class PandaTextField extends HTMLElement {
 
 	private _updateComponent() {
 		if (this._ready) {
-			console.log(`%c ⚡ (_updateComponent)`, "font-size: 16px; color: orange; background: black;", this.shadowRoot);
 			// update input value
 			this._inputEl.value = this._value ?? "";
 		
@@ -708,7 +727,6 @@ export class PandaTextField extends HTMLElement {
 	// ================================================================================================================
 
 	private _applyStyles(): void {
-		console.log(`%c ⚡ (_applyStyles)`, "font-size: 16px; color: orange; background: black;", this.shadowRoot);
 		const cssStyleSheet = new CSSStyleSheet();
 		cssStyleSheet.replaceSync(styles);
 		if (this.shadowRoot) {
@@ -837,7 +855,6 @@ export class PandaTextField extends HTMLElement {
 		this._textLength = this._value?.length || 0;
 		// shake counter if limit reached
 		if (this._maxLength != null && this._textLength === this._maxLength) {
-			console.log(`%c ⚡ (_onInput) text length / max `, "font-size: 16px; color: orange; background: black;", this._textLength, this._maxLength);
 			this._counterEl.classList.add("shake");
 		} else {
 			this._counterEl.classList.remove("shake");
@@ -848,7 +865,6 @@ export class PandaTextField extends HTMLElement {
 
 	private _onFocus(event: FocusEvent): void {
 		this._focused = true;
-		console.log(`%c ⚡ (_onFocus) _focused: ${this._focused}`, "font-size: 16px; color: orange; background: black;");
 		// check autoselect feature
 		if (this._autoselect) {
 			this._inputEl.select();
@@ -864,7 +880,6 @@ export class PandaTextField extends HTMLElement {
 
 	private _onBlur(): void {
 		this._focused = false;
-		console.log(`%c ⚡ (_onBlur) _focused: ${this._focused}`, "font-size: 16px; color: orange; background: black;");
 		this._updateComponent();
 	}
 }

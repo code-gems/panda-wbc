@@ -37,19 +37,8 @@ class PandaTextSlider extends HTMLElement {
 	}
 
 	set slides(value: string[]) {
-		console.log(
-			`%c ⚡ [PANDA-TEXT-SLIDER] 1. set slides`,
-			"font-size: 24px; color: crimson; background: black;",
-			this._slides,
-			value,
-		);
-
 		if (this._slidesChanged(value, this._slides)) {
 			this._slides = value;
-			console.log(
-				`%c ⚡ [PANDA-TEXT-SLIDER] 2. set slides (changed)`,
-				"font-size: 24px; color: crimson; background: black;",
-			);
 			// reset component and animation
 			this.reset();
 			// rerender template
@@ -68,20 +57,10 @@ class PandaTextSlider extends HTMLElement {
 		if (this._hide !== value) {
 			this._hide = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._hide) {
 				this.setAttribute("hide", "");
-				// clear animation timer
-				console.log(
-					`%c ⚠️ [PANDA-TEXT-SLIDER] (set hide => _clearTimer)`,
-					"font-size: 24px; color: red; background: black;",
-					this._slides,
-				);
-
-				this._clearTimer();
 			} else {
 				this.removeAttribute("hide");
-				// start animation timer
-				this.reset();
 			}
 		}
 	}
@@ -136,26 +115,34 @@ class PandaTextSlider extends HTMLElement {
 	}
 
 	disconnectedCallback() {
-		console.log(
-			`%c ⚡ [PANDA-TEXT-SLIDER] (disconnectedCallback)`,
-			"font-size: 24px; color: red; background: black;",
-		);
 		// clear timer
 		this._clearTimer();
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
-		if (_name === "slides") {
-			this._slides = _newValue;
-			this._render();
-		}
-		if (_name === "hide") {
-			this._hide = this._parseBooleanAttribute(_newValue);
-			this._render();
-		}
-		if (_name === "slider-interval") {
-			this._sliderInterval = this._parseNumberAttribute(_newValue, DEFAULT_SLIDER_INTERVAL) as number;
-			this._render();
+		switch (_name) {
+			case "slides":
+				this._slides = _newValue;
+				this._render();
+				break;
+
+			case "hide":
+				this._hide = this._parseBooleanAttribute(_newValue);
+				if (this._hide) {
+					// stop animation timer
+					this.stop();
+				} else {
+					// start animation timer
+					this.reset();
+				}
+				this._render();
+				break;
+
+			case "slider-interval":
+				this._sliderInterval = this._parseNumberAttribute(_newValue, DEFAULT_SLIDER_INTERVAL) as number;
+				this.reset();
+				this._render();
+				break;
 		}
 	}
 
@@ -267,13 +254,7 @@ class PandaTextSlider extends HTMLElement {
 	}
 
 	private _startTimer(): void {
-		console.log(
-			`%c ⚠️ [PANDA-TEXT-SLIDER] (_startTimer)`,
-			"font-size: 24px; color: pink; background: black;",
-			this._slides
-		);
 		this._sliderTimer = setInterval(() => {
-			console.log(`%c ⚠️ [PANDA-TEXT-SLIDER] (tick)`, "font-size: 24px; color: green; background: black;");
 			// set "slide-out" status on old placeholder
 			this._updateSlideStatus(this._currentIndex, SlideState.SLIDE_OUT);
 			this._currentIndex++;
@@ -289,10 +270,6 @@ class PandaTextSlider extends HTMLElement {
 
 	private _clearTimer(): void {
 		// clear timer
-		console.log(
-			`%c ⚠️ [PANDA-TEXT-SLIDER] (_clearTimer)`,
-			"font-size: 24px; color: red; background: black;",
-		);
 		clearInterval(this._sliderTimer);
 	}
 
@@ -322,11 +299,6 @@ class PandaTextSlider extends HTMLElement {
 	/** Reset component state and re-initialize slides */
 	public reset(): void {
 		if (this._slides.length >= 1) {
-			console.log(
-				`%c ⚠️ [PANDA-TEXT-SLIDER] (reset)`,
-				"font-size: 24px; color: crimson; background: black;",
-				this._slides
-			);
 			// re-initialize placeholder metadata list
 			this._initSlideMetadata();
 			// rerender component with new placeholder metadata after reset
@@ -338,19 +310,11 @@ class PandaTextSlider extends HTMLElement {
 				// start timer
 				this._startTimer();
 			}
-		} else {
-			console.log(
-				`%c ⚠️ [PANDA-TEXT-SLIDER] No animation! Not enough slides!`,
-				"font-size: 24px; color: crimson; background: black;",
-				this._slides,
-				typeof this._slides
-			);
 		}
 	}
 
 	/** stop slider animation and reset to first slide */
 	public stop(): void {
-		console.log(`%c ⚠️ [PANDA-TEXT-SLIDER] (stop)`, "font-size: 24px; color: crimson; background: black;");
 		// re-initialize placeholder metadata list
 		this._initSlideMetadata();
 		// rerender component with new placeholder metadata after reset

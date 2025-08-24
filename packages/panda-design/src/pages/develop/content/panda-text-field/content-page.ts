@@ -170,13 +170,15 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-						Text fields are often used to collect user information, such as names, addresses, email addresses, and other personal details.
-						They provide a straightforward and familiar interface for users to input data, facilitating the registration or account creation process. 
+						The text field component provides users with a standard input for entering single-line text 
+						content such as names, email addresses, or search queries. 
+						It supports various states including default, focused, readonly, and disabled, 
+						with built-in validation styling and accessibility features. 
 					</p>
 					<p>
-						Text fields play a crucial role in form submissions, where users provide specific information or answer questions.
-						For example, they can be used to gather feedback, complete surveys, submit contents, or enter search queries.
-						Text fields allow users to communicate their thoughts or provide specific input to the application.
+						The component accepts customizable placeholder text, labels, and helper messages to guide user input. 
+						Text field can be configured with different sizes as well as prefix/suffix icons for enhanced functionality. 
+						Use text fields when you need to collect short, structured text input from users in forms or data entry workflows.
 					</p>
 				</div>
 
@@ -307,6 +309,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.placeholderInterval="${500}"
 										.description="${this._description}"
 										.value="${this._value}"
+										.minLength="${3}"
 										.maxLength="${this._maxLength}"
 										.working="${this._working}"
 										.readonly="${this._readonly}"
