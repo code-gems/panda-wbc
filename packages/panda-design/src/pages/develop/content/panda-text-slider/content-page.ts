@@ -19,6 +19,7 @@ import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
+import { PandaComboBoxChangeEvent } from "@panda-wbc/panda-combo-box";
 
 @page(pageConfig)
 @customElement("panda-text-slider-content-page")
@@ -39,6 +40,18 @@ export class ContentPage extends ContentPageTemplate {
 	private readonly _componentEvents: ComponentEventDetails[] = [
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
+
+
+	private readonly _slideIntervalList: { label: string, value: number }[] = [
+		{ label: "1000 ms", value: 1000 },
+		{ label: "2000 ms", value: 2000 },
+		{ label: "3000 ms", value: 3000 },
+		{ label: "4000 ms [default]", value: 4000 },
+		{ label: "5000 ms", value: 5000 }
+	];
+
+	@state()
+	private _slideInterval: number = 4000;
 
 	@state()
 	private _slides: string[] = [];
@@ -91,6 +104,7 @@ export class ContentPage extends ContentPageTemplate {
 										<panda-text-slider
 											.hide="${this._hide}"
 											.slides="${this._slides}"
+											.sliderInterval="${this._slideInterval}"
 										>
 										</panda-text-slider>
 
@@ -107,6 +121,16 @@ export class ContentPage extends ContentPageTemplate {
 									<panda-button @click="${this._onSetPlaceholders}">
 										Set Placeholders
 									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-combo-box
+										label="Slider Interval"
+										.value="${this._slideInterval}"
+										.items="${this._slideIntervalList}"
+										@change="${this._onSliderIntervalChange}"
+									>
+										Change Slider Interval
+									</panda-combo-box>
 								</div>
 							</div>
 						</div>
@@ -202,21 +226,25 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onSetPlaceholders(): void {
 		this._slides = [
-			"Why do cats purr?",
-			"What's the smallest country in the world?",
-			"How many bones are in a human hand?",
-			"What happens to your brain when you dream?",
-			"Why is the ocean salty?",
-			"How do magnets work?",
-			"What's the difference between weather and climate?",
-			"Why do we get hiccups?",
-			"How fast does light travel?",
-			"What causes the Northern Lights?",
+			"1. Why do cats purr?",
+			"2. What's the smallest country in the world?",
+			"3. How many bones are in a human hand?",
+			"4. What happens to your brain when you dream?",
+			"5. Why is the ocean salty?",
+			"6. How do magnets work?",
+			"7. What's the difference between weather and climate?",
+			"8. Why do we get hiccups?",
+			"9. How fast does light travel?",
+			"10. What causes the Northern Lights?",
 		];
 		this.requestUpdate();
 	}
 
 	private _onToggleHide(): void {
 		this._hide = !this._hide;
+	}
+
+	private _onSliderIntervalChange(event: PandaComboBoxChangeEvent): void {
+		this._slideInterval = event.detail.value;
 	}
 }
