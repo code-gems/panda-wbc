@@ -7,8 +7,10 @@ import { styles } from "./styles/styles";
 // spinners
 import { circle } from "./resources/circle";
 import { dots } from "./resources/dots";
-import { video } from "./resources/video";
+import { dotsBounce } from "./resources/dots-bounce";
+import { gooeyBalls } from "./resources/gooey-balls";
 import { google } from "./resources/google";
+import { video } from "./resources/video";
 
 export class PandaSpinner extends HTMLElement {
 	// ================================================================================================================
@@ -72,10 +74,14 @@ export class PandaSpinner extends HTMLElement {
 		switch (this._spinner) {
 			case "circle":
 				return circle;
+			case "gooey-balls":
+				return gooeyBalls;
 			case "google":
 				return google;
 			case "video":
 				return video;
+			case "dots-bounce":
+				return dotsBounce;
 			case "dots":
 			default:
 				return dots;

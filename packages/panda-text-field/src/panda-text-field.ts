@@ -170,7 +170,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._showCharacterCounter !== value) {
 			this._showCharacterCounter = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._showCharacterCounter) {
 				this.setAttribute("show-character-counter", "");
 			} else {
 				this.removeAttribute("show-character-counter");
@@ -189,7 +189,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._disabled !== value) {
 			this._disabled = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._disabled) {
 				this.setAttribute("disabled", "");
 			} else {
 				this.removeAttribute("disabled");
@@ -208,7 +208,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._working !== value) {
 			this._working = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._working) {
 				this.setAttribute("working", "");
 			} else {
 				this.removeAttribute("working");
@@ -227,7 +227,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._readonly !== value) {
 			this._readonly = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._readonly) {
 				this.setAttribute("readonly", "");
 			} else {
 				this.removeAttribute("readonly");
@@ -246,7 +246,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._autofocus !== value) {
 			this._autofocus = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._autofocus) {
 				this.setAttribute("autofocus", "");
 			} else {
 				this.removeAttribute("autofocus");
@@ -265,7 +265,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._autoselect !== value) {
 			this._autoselect = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._autoselect) {
 				this.setAttribute("autoselect", "");
 			} else {
 				this.removeAttribute("autoselect");
@@ -299,7 +299,7 @@ export class PandaTextField extends HTMLElement {
 		if (this._spellcheck !== value) {
 			this._spellcheck = this._parseBooleanAttribute(value);
 			// reflect to attribute
-			if (value) {
+			if (this._spellcheck) {
 				this.setAttribute("spellcheck", "");
 			} else {
 				this.removeAttribute("spellcheck");
@@ -357,8 +357,8 @@ export class PandaTextField extends HTMLElement {
 	private readonly _labelEl!: HTMLDivElement;
 	private readonly _placeholderEl!: PandaTextSlider;
 	private readonly _prefixSlotEl!: HTMLSlotElement;
-	private readonly _pandaSpinnerEl!: PandaSpinner;
-	private readonly _spinnerEl!: HTMLDivElement;
+	private readonly _spinnerEl!: PandaSpinner;
+	private readonly _spinnerContEl!: HTMLDivElement;
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 	private readonly _textFieldEl!: HTMLDivElement;
 	private readonly _inputWrapEl!: HTMLDivElement;
@@ -388,7 +388,7 @@ export class PandaTextField extends HTMLElement {
 			<div class="text-field" part="text-field">
 				<slot name="prefix"></slot>
 				<div class="input-wrap" part="input-wrap">
-					<input type="text" class="input" part="input" />
+					<input id="input" type="text" class="input" part="input" />
 				</div>
 				<slot name="suffix"></slot>
 			</div>
@@ -432,15 +432,16 @@ export class PandaTextField extends HTMLElement {
 		this._placeholderEl.hide = true;
 
 		// create panda-spinner element
-		this._pandaSpinnerEl = document.createElement("panda-spinner");
-		this._pandaSpinnerEl.spinner = this._spinnerType ?? "dots";
+		this._spinnerEl = document.createElement("panda-spinner");
+		this._spinnerEl.part = "spinner";
+		this._spinnerEl.spinner = this._spinnerType;
 
 		// create spinner element
-		this._spinnerEl = document.createElement("div");
-		this._spinnerEl.className = "spinner-cont";
-		this._spinnerEl.part = "spinner-cont";
+		this._spinnerContEl = document.createElement("div");
+		this._spinnerContEl.className = "spinner-cont";
+		this._spinnerContEl.part = "spinner-cont";
 		// append panda-spinner inside
-		this._spinnerEl.appendChild(this._pandaSpinnerEl);
+		this._spinnerContEl.appendChild(this._spinnerEl);
 
 		// create label element
 		this._labelEl = document.createElement("div");
@@ -460,14 +461,14 @@ export class PandaTextField extends HTMLElement {
 		// get template element handles
 		if (this.shadowRoot) {
 			// assign template elements
-			this._textFieldEl = this.shadowRoot.querySelector(`.text-field`) as HTMLDivElement;
-			this._inputWrapEl = this.shadowRoot.querySelector(`.input-wrap`) as HTMLDivElement;
-			this._inputEl = this.shadowRoot.querySelector(`input[type="text"]`) as HTMLInputElement;
+			this._textFieldEl = this.shadowRoot.querySelector(".text-field") as HTMLDivElement;
+			this._inputWrapEl = this.shadowRoot.querySelector(".input-wrap") as HTMLDivElement;
+			this._inputEl = this.shadowRoot.getElementById("input") as HTMLInputElement;
 			this._inputEl.autocomplete = "off";
 			this._inputEl.spellcheck = false;
 			this._inputEl.tabIndex = 0; // update tab index
 			this._inputWrapEl.insertBefore(this._placeholderEl, this._inputEl);
-			this._footerEl = this.shadowRoot.querySelector(`.footer`) as HTMLInputElement;
+			this._footerEl = this.shadowRoot.querySelector(".footer") as HTMLInputElement;
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 		}
@@ -534,7 +535,7 @@ export class PandaTextField extends HTMLElement {
 
 			case "spinner-type":
 				this._spinnerType = _newValue;
-				this._pandaSpinnerEl.spinner = this._spinnerType;
+				this._spinnerEl.spinner = this._spinnerType;
 				break;
 				
 			case "min-length":
@@ -668,10 +669,10 @@ export class PandaTextField extends HTMLElement {
 			// update working state
 			if (this._working && !this._disabled) {
 				// add spinner element
-				this._textFieldEl.appendChild(this._spinnerEl);
+				this._textFieldEl.appendChild(this._spinnerContEl);
 			} else {
 				// remove spinner element
-				this._spinnerEl.remove();
+				this._spinnerContEl.remove();
 			}
 			
 			// check if description is defined

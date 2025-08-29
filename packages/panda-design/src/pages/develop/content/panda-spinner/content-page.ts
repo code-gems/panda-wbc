@@ -39,6 +39,8 @@ export class PandaSpinnerContentPage extends ContentPageTemplate {
 
 	private readonly _spinnerTypeList: PandaComboBoxItem[] = [
 		{ label: "dots (default)", value: "dots" },
+		{ label: "dots bounce", value: "dots-bounce" },
+		{ label: "gooey balls", value: "gooey-balls" },
 		{ label: "circle", value: "circle" },
 		{ label: "google", value: "google" },
 		{ label: "video", value: "video" },

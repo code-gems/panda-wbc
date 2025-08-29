@@ -306,7 +306,6 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.theme="${this._selectedDemoTheme}"
 										.label="${this._label}"
 										.placeholder="${this._placeholder}"
-										.placeholderInterval="${500}"
 										.description="${this._description}"
 										.value="${this._value}"
 										.minLength="${3}"
@@ -320,7 +319,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.autocomplete="${this._autocomplete ? "username email" : "off"}"
 										.showCharacterCounter="${this._showCharacterCounter}"
 										@on-input="${this._onInput}"
-										spinner-type="google"
+										spinner-type="gooey-balls"
 									>
 										<div slot="prefix" class="icon">
 											<panda-icon icon="user"></panda-icon>
@@ -330,6 +329,50 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										</div>
 									</panda-text-field>
 								</div>
+
+								<div class="col-3" style="width: 24px;">
+									<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+										<circle cx="4" cy="12" r="3" fill="currentColor">
+											<animate
+												id="first"
+												attributeName="cy"
+												begin="0s;last.end + 2s"
+												calcMode="spline"
+												dur="0.6s"
+												keySplines=".33,.66,.66,1;.33,0,.66,.33"
+												values="12;6;12"
+												repeatCount="3"
+												fill="freeze"
+											/>
+										</circle>
+										<circle cx="12" cy="12" r="3" fill="currentColor">
+											<animate
+												attributeName="cy"
+												begin="first.begin + 0.1s"
+												calcMode="spline"
+												dur="0.6s"
+												keySplines=".33,.66,.66,1;.33,0,.66,.33"
+												values="12;6;12"
+												repeatCount="3"
+												fill="freeze"
+											/>
+										</circle>
+										<circle cx="20" cy="12" r="3" fill="currentColor">
+											<animate
+												id="last"
+												attributeName="cy"
+												begin="first.begin + 0.2s"
+												calcMode="spline"
+												dur="0.6s"
+												keySplines=".33,.66,.66,1;.33,0,.66,.33"
+												values="12;6;12"
+												repeatCount="3"
+												fill="freeze"
+											/>
+										</circle>
+									</svg>
+								</div>
+
 <!--
 								<div class="col-3">
 									<panda-text-field
