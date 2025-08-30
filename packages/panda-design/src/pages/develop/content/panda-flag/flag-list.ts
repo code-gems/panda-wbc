@@ -128,6 +128,7 @@ export const flagList = (): FlagDetails[] => {
 		{ fullName: "Poland", 							name: "pl", keywords: ["616", "pol"] },
 		{ fullName: "Portugal", 						name: "pt", keywords: ["620", "prt"] },
 		{ fullName: "Portugal", 						name: "pt", keywords: ["620", "prt"] },
+		{ fullName: "Puerto Rico", 						name: "pr", keywords: ["630", "pri"] },
 		{ fullName: "Qatar", 							name: "qa", keywords: ["634", "qat"] },
 		{ fullName: "Qatar", 							name: "qa", keywords: ["634", "qat"] },
 		{ fullName: "Romania", 							name: "ro", keywords: ["642", "rou"] },
@@ -162,6 +163,7 @@ export const flagList = (): FlagDetails[] => {
 		{ fullName: "Tajikistan", 						name: "tj", keywords: ["762", "tjk"] },
 		{ fullName: "Tanzania", 						name: "tz", keywords: ["834", "tza"] },
 		{ fullName: "Thailand", 						name: "th", keywords: ["764", "tha"] },
+		{ fullName: "Timor-Leste",  					name: "tl", keywords: ["626", "tls", "East Timor"] },
 		{ fullName: "Togo", 							name: "tg", keywords: ["768", "tgo"] },
 		{ fullName: "Tonga", 							name: "to", keywords: ["776", "ton"] },
 		{ fullName: "Trinidad and Tobago", 				name: "tt", keywords: ["780", "tto"] },
@@ -182,5 +184,8 @@ export const flagList = (): FlagDetails[] => {
 		{ fullName: "Vatican City", 					name: "va", keywords: ["336", "vat"] },
 		{ fullName: "Venezuela", 						name: "ve", keywords: ["862", "ven"] },
 		{ fullName: "Vietnam", 							name: "vn", keywords: ["704", "vnm"] },
+		{ fullName: "Yemen", 							name: "ye", keywords: ["887", "yem"] },
+		{ fullName: "Zambia", 							name: "zm", keywords: ["894", "zmb"] },
+		{ fullName: "Zimbabwe", 						name: "zw", keywords: ["716", "zwe"] },
 	];
 }

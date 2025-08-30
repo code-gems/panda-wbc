@@ -70,6 +70,13 @@ import { flagSk } from "../resources/sk";
 import { flagSi } from "../resources/si";
 import { flagLt } from "../resources/lt";
 import { flagEe } from "../resources/ee";
+import { flagIn } from "../resources/in";
+import { flagIs } from "../resources/is";
+import { flagBt } from "../resources/bt";
+import { flagTl } from "../resources/tl";
+import { flagTo } from "../resources/to";
+import { flagPr } from "../resources/pr";
+import { flagPw } from "../resources/pw";
 
 
 /**
@@ -96,6 +103,7 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 		si: flagSi,
 		lt: flagLt,
 		ee: flagEe,
+		in: flagIn,
 		ca: flagCa,
 		ch: flagCh,
 		ci: flagCi,
@@ -114,6 +122,7 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 		hk: flagHk,
 		hn: flagHn,
 		hu: flagHu,
+		tl: flagTl,
 		id: flagId,
 		ie: flagIe,
 		il: flagIl,
@@ -128,6 +137,8 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 		ng: flagNg,
 		nl: flagNl,
 		no: flagNo,
+		is: flagIs,
+		bt: flagBt,
 		pa: flagPa,
 		pe: flagPe,
 		ph: flagPh,
@@ -153,6 +164,9 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 		us: flagUs,
 		ve: flagVe,
 		vn: flagVn,
+		to: flagTo,
+		pr: flagPr,
+		pw: flagPw,
 		default: defaultFlag, // default flag template for unknown country codes
 	};
 	const viewBox = square || round
@@ -163,6 +177,8 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 	return /*html*/`
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink" 
+			version="1.1"
 			viewBox="${viewBox}"
 			preserveAspectRatio="xMidYMid meet"
 			x="0"

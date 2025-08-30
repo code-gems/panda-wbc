@@ -1,5 +1,4 @@
 // Norway
-
 export const flagNo = (square: boolean): string => {
 	return square
 		? /*svg*/`
