@@ -190,7 +190,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 						class="list-item"
 						@click="${() => this._onShowIconDetailsDialog(name)}"
 					>
-						<div class="flag">
+						<div class="flag ${this._round ? "round" : ""}">
 							<panda-flag
 								.flag="${flagDetail.name.toLocaleLowerCase()}"
 								?square="${this._square}"

@@ -77,6 +77,8 @@ import { flagTl } from "../resources/tl";
 import { flagTo } from "../resources/to";
 import { flagPr } from "../resources/pr";
 import { flagPw } from "../resources/pw";
+import { flagAu } from "../resources/au";
+import { flagCy } from "../resources/cy";
 
 
 /**
@@ -167,6 +169,8 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 		to: flagTo,
 		pr: flagPr,
 		pw: flagPw,
+		au: flagAu,
+		cy: flagCy,
 		default: defaultFlag, // default flag template for unknown country codes
 	};
 	const viewBox = square || round

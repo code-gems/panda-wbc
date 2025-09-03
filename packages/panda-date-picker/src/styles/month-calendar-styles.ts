@@ -168,7 +168,6 @@ export const styles = css`
 		height: 6px;
 		top: 2px;
 		right: 2px;
-		right: 2px;
 
 		border-radius: 50%;
 		background-color: var(--panda-notification-background);

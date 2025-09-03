@@ -2,7 +2,9 @@ import { css } from "lit";
 
 export const styles = css`
 	:host {
-		
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 	
 	.control {
@@ -43,9 +45,15 @@ export const styles = css`
 
 		background: url(./transparent.png);
 		background-position: center;
-		
-		--panda-flag-width: 40px;
-		--panda-flag-height: 40px;
+		--panda-flag-size: 40px;
+	}
+
+	.flag-list .list-item .flag panda-flag {
+		box-shadow: var(--panda-elevation-m);
+	}
+
+	.flag-list .list-item .flag.round panda-flag {
+		border-radius: 50%;
 	}
 
 	.flag-list .list-item .name {
