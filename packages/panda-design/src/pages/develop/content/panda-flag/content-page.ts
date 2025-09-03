@@ -170,6 +170,7 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 		const listHtml: TemplateResult[] = [];
 		const allFlags = [
 			...this._countryList,
+			{ name: "European Union", code: "eu" },
 			{ name: "Pirate Flag", code: "pirate" },
 		];
 		for (const country of allFlags) {
