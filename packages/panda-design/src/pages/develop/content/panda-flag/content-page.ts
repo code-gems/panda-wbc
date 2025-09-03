@@ -168,8 +168,11 @@ export class PandaFlagContentPage extends ContentPageTemplate {
 
 	private _renderFlagList(): TemplateResult {
 		const listHtml: TemplateResult[] = [];
-
-		for (const country of this._countryList) {
+		const allFlags = [
+			...this._countryList,
+			{ name: "Pirate Flag", code: "pirate" },
+		];
+		for (const country of allFlags) {
 			const { name, code } = country;
 			const flagDetail = this._flagList.find(
 				(flag) => flag.name.toLocaleLowerCase() === code.toLocaleLowerCase()

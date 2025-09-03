@@ -79,6 +79,13 @@ import { flagPr } from "../resources/pr";
 import { flagPw } from "../resources/pw";
 import { flagAu } from "../resources/au";
 import { flagCy } from "../resources/cy";
+import { flagAd } from "../resources/ad";
+import { flagAs } from "../resources/as";
+import { flagDz } from "../resources/dz";
+import { flagAl } from "../resources/al";
+import { flagAx } from "../resources/ax";
+import { flagPirate } from "../resources/pirate";
+import { flagEu } from "../resources/eu";
 
 
 /**
@@ -92,86 +99,94 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 	// map of country codes to flag templates
 	// the keys are the country codes, and the values are functions that return the SVG string
 	const flagTemplateMap: { [countryCode: string]: (square: boolean) => string } = {
-		am: flagAm,
-		ar: flagAr,
-		at: flagAt,
-		be: flagBe,
-		bg: flagBg,
-		bo: flagBo,
-		br: flagBr,
-		bs: flagBs,
-		es: flagEs,
-		sk: flagSk,
-		si: flagSi,
-		lt: flagLt,
-		ee: flagEe,
-		in: flagIn,
-		ca: flagCa,
-		ch: flagCh,
-		ci: flagCi,
-		cn: flagCn,
-		cz: flagCz,
-		de: flagDe,
-		dj: flagDj,
-		dk: flagDk,
-		do: flagDo,
-		eg: flagEg,
-		fi: flagFi,
-		fr: flagFr,
-		gb: flagGb,
-		gr: flagGr,
-		gt: flagGt,
-		hk: flagHk,
-		hn: flagHn,
-		hu: flagHu,
-		tl: flagTl,
-		id: flagId,
-		ie: flagIe,
-		il: flagIl,
-		it: flagIt,
-		jp: flagJp,
-		kz: flagKz,
-		lu: flagLu,
-		mc: flagMc,
-		ml: flagMl,
-		mo: flagMo,
-		mu: flagMu,
-		ng: flagNg,
-		nl: flagNl,
-		no: flagNo,
-		is: flagIs,
-		bt: flagBt,
-		pa: flagPa,
-		pe: flagPe,
-		ph: flagPh,
-		pl: flagPl,
-		ps: flagPs,
-		pt: flagPt,
-		qa: flagQa,
-		ro: flagRo,
-		ru: flagRu,
-		sa: flagSa,
-		sc: flagSc,
-		se: flagSe,
-		sg: flagSg,
-		sl: flagSl,
-		sv: flagSv,
-		td: flagTd,
-		tg: flagTg,
-		tn: flagTn,
-		tr: flagTr,
-		tw: flagTw,
-		ua: flagUa,
-		uk: flagGb,
-		us: flagUs,
-		ve: flagVe,
-		vn: flagVn,
-		to: flagTo,
-		pr: flagPr,
-		pw: flagPw,
-		au: flagAu,
-		cy: flagCy,
+		ad: flagAd, // Andorra
+		al: flagAl, // Albania
+		am: flagAm, // Armenia
+		ar: flagAr, // Argentina
+		as: flagAs, // American Samoa
+		at: flagAt, // Austria
+		au: flagAu, // Australia
+		ax: flagAx, // Aland Islands
+		be: flagBe, // Belgium
+		bg: flagBg, // Bulgaria
+		bo: flagBo, // Bolivia
+		br: flagBr, // Brazil
+		bs: flagBs, // Bahamas
+		bt: flagBt, // Bhutan
+		ca: flagCa, // Canada
+		ch: flagCh, // Switzerland
+		ci: flagCi, // Ivory Coast
+		cn: flagCn, // China
+		cy: flagCy, // Cyprus
+		cz: flagCz, // Czech Republic
+		de: flagDe, // Germany
+		dj: flagDj, // Djibouti
+		dk: flagDk, // Denmark
+		do: flagDo, // Dominican Republic
+		dz: flagDz, // Algeria
+		ee: flagEe, // Estonia
+		eg: flagEg, // Egypt
+		es: flagEs, // Spain
+		fi: flagFi, // Finland
+		fr: flagFr, // France
+		gb: flagGb, // United Kingdom
+		gr: flagGr, // Greece
+		gt: flagGt, // Guatemala
+		hk: flagHk, // Hong Kong
+		hn: flagHn, // Honduras
+		hu: flagHu, // Hungary
+		id: flagId, // Indonesia
+		ie: flagIe, // Ireland
+		il: flagIl, // Israel
+		in: flagIn, // India
+		is: flagIs, // Iceland
+		it: flagIt, // Italy
+		jp: flagJp, // Japan
+		kz: flagKz, // Kazakhstan
+		lt: flagLt, // Lithuania
+		lu: flagLu, // Luxembourg
+		mc: flagMc, // Monaco
+		ml: flagMl, // Mali
+		mo: flagMo, // Macau
+		mu: flagMu, // Mauritius
+		ng: flagNg, // Nigeria
+		nl: flagNl, // Netherlands
+		no: flagNo, // Norway
+		pa: flagPa, // Panama
+		pe: flagPe, // Peru
+		ph: flagPh, // Philippines
+		pl: flagPl, // Poland
+		pr: flagPr, // Puerto Rico
+		ps: flagPs, // Palestine
+		pt: flagPt, // Portugal
+		pw: flagPw, // Palau
+		qa: flagQa, // Qatar
+		ro: flagRo, // Romania
+		ru: flagRu, // Russia
+		sa: flagSa, // Saudi Arabia
+		sc: flagSc, // Seychelles
+		se: flagSe, // Sweden
+		sg: flagSg, // Singapore
+		si: flagSi, // Slovenia
+		sk: flagSk, // Slovakia
+		sl: flagSl, // Slovenia
+		sv: flagSv, // El Salvador
+		td: flagTd, // Chad
+		tg: flagTg, // Togo
+		tl: flagTl, // Timor-Leste
+		tn: flagTn, // Tunisia
+		to: flagTo, // Tonga
+		tr: flagTr, // Turkey
+		tw: flagTw, // Taiwan
+		ua: flagUa, // Ukraine
+		uk: flagGb, // United Kingdom
+		us: flagUs, // United States
+		ve: flagVe, // Venezuela
+		vn: flagVn, // Vietnam
 		default: defaultFlag, // default flag template for unknown country codes
+		// extras
+		eu: flagEu, // European Union
+		pirate: flagPirate, // Pirate Flag
 	};
 	const viewBox = square || round
 		? "0 0 256 256"

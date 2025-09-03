@@ -187,5 +187,6 @@ export const flagList = (): FlagDetails[] => {
 		{ fullName: "Yemen", 							name: "ye", keywords: ["887", "yem"] },
 		{ fullName: "Zambia", 							name: "zm", keywords: ["894", "zmb"] },
 		{ fullName: "Zimbabwe", 						name: "zw", keywords: ["716", "zwe"] },
+		{ fullName: "Pirate Flag", 						name: "pirate", keywords: ["pirate"] },
 	];
 }
