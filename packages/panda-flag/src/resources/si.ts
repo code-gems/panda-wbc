@@ -1,5 +1,4 @@
 // Slovenia
-
 export const flagSi = (square: boolean): string => {
 	return square
 		? /*svg*/`

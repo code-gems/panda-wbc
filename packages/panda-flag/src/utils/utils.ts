@@ -1,21 +1,34 @@
 // resources
+import { flagAd } from "../resources/ad"; // Andorra
+import { flagAi } from "../resources/ai";
+import { flagAl } from "../resources/al";
 import { flagAm } from "../resources/am"; // Armenia
+import { flagAo } from "../resources/ao";
+import { flagAr } from "../resources/ar";
+import { flagAs } from "../resources/as";
 import { flagAt } from "../resources/at"; // Austria
+import { flagAu } from "../resources/au";
+import { flagAx } from "../resources/ax";
 import { flagBe } from "../resources/be"; // Belgium
 import { flagBg } from "../resources/bg"; // Bulgaria
 import { flagBo } from "../resources/bo"; // Bolivia
 import { flagBr } from "../resources/br"; // Brazil
 import { flagBs } from "../resources/bs"; // Bahamas
+import { flagBt } from "../resources/bt";
 import { flagCa } from "../resources/ca"; // Canada
 import { flagCh } from "../resources/ch"; // Switzerland
 import { flagCi } from "../resources/ci"; // Ivory Coast
 import { flagCn } from "../resources/cn"; // China
+import { flagCy } from "../resources/cy";
 import { flagCz } from "../resources/cz"; // Czechia / Czech Republic
 import { flagDe } from "../resources/de"; // Germany
 import { flagDj } from "../resources/dj"; // Djibouti
 import { flagDk } from "../resources/dk"; // Denmark
 import { flagDo } from "../resources/do"; // Dominican Republic
+import { flagDz } from "../resources/dz";
+import { flagEe } from "../resources/ee";
 import { flagEg } from "../resources/eg"; // Egypt
+import { flagEs } from "../resources/es";
 import { flagFi } from "../resources/fi"; // Finland
 import { flagFr } from "../resources/fr"; // France
 import { flagGb } from "../resources/gb"; // Great Britain
@@ -27,8 +40,13 @@ import { flagHu } from "../resources/hu"; // Hungary
 import { flagId } from "../resources/id"; // Indonesia
 import { flagIe } from "../resources/ie"; // Ireland
 import { flagIl } from "../resources/il"; // Israel
+import { flagIn } from "../resources/in";
+import { flagIs } from "../resources/is";
 import { flagIt } from "../resources/it"; // Italy
 import { flagJp } from "../resources/jp"; // Japan
+import { flagKz } from "../resources/kz";
+import { flagLi } from "../resources/li";
+import { flagLt } from "../resources/lt";
 import { flagLu } from "../resources/lu"; // Luxembourg
 import { flagMc } from "../resources/mc"; // Monaco
 import { flagMl } from "../resources/ml"; // Mali
@@ -41,8 +59,10 @@ import { flagPa } from "../resources/pa"; // Panama
 import { flagPe } from "../resources/pe"; // Peru
 import { flagPh } from "../resources/ph"; // Philippines
 import { flagPl } from "../resources/pl"; // Poland
+import { flagPr } from "../resources/pr";
 import { flagPs } from "../resources/ps"; // Palestine
 import { flagPt } from "../resources/pt"; // Portugal
+import { flagPw } from "../resources/pw";
 import { flagQa } from "../resources/qa"; // Qatar
 import { flagRo } from "../resources/ro"; // Romania
 import { flagRu } from "../resources/ru"; // Russia
@@ -50,11 +70,15 @@ import { flagSa } from "../resources/sa"; // Saudi Arabia
 import { flagSc } from "../resources/sc"; // Seychelles
 import { flagSe } from "../resources/se"; // Sweden
 import { flagSg } from "../resources/sg"; // Singapore
+import { flagSi } from "../resources/si"; // Slovenia
+import { flagSk } from "../resources/sk";
 import { flagSl } from "../resources/sl"; // Sierra Leone
 import { flagSv } from "../resources/sv"; // El Salvador
 import { flagTd } from "../resources/td"; // Chad
 import { flagTg } from "../resources/tg"; // Togo
+import { flagTl } from "../resources/tl"; // Timor-Leste
 import { flagTn } from "../resources/tn"; // Tunisia
+import { flagTo } from "../resources/to"; // Tonga
 import { flagTr } from "../resources/tr"; // Turkey
 import { flagTw } from "../resources/tw"; // Taiwan
 import { flagUa } from "../resources/ua"; // Ukraine
@@ -63,27 +87,7 @@ import { flagVe } from "../resources/ve"; // Venezuela
 import { flagVn } from "../resources/vn"; // Vietnam
 // default template
 import { defaultFlag } from "../resources/default";
-import { flagKz } from "../resources/kz";
-import { flagAr } from "../resources/ar";
-import { flagEs } from "../resources/es";
-import { flagSk } from "../resources/sk";
-import { flagSi } from "../resources/si";
-import { flagLt } from "../resources/lt";
-import { flagEe } from "../resources/ee";
-import { flagIn } from "../resources/in";
-import { flagIs } from "../resources/is";
-import { flagBt } from "../resources/bt";
-import { flagTl } from "../resources/tl";
-import { flagTo } from "../resources/to";
-import { flagPr } from "../resources/pr";
-import { flagPw } from "../resources/pw";
-import { flagAu } from "../resources/au";
-import { flagCy } from "../resources/cy";
-import { flagAd } from "../resources/ad";
-import { flagAs } from "../resources/as";
-import { flagDz } from "../resources/dz";
-import { flagAl } from "../resources/al";
-import { flagAx } from "../resources/ax";
+// extras
 import { flagPirate } from "../resources/pirate";
 import { flagEu } from "../resources/eu";
 
@@ -100,8 +104,10 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 	// the keys are the country codes, and the values are functions that return the SVG string
 	const flagTemplateMap: { [countryCode: string]: (square: boolean) => string } = {
 		ad: flagAd, // Andorra
+		ai: flagAi, // Anguilla
 		al: flagAl, // Albania
 		am: flagAm, // Armenia
+		ao: flagAo, // Angola
 		ar: flagAr, // Argentina
 		as: flagAs, // American Samoa
 		at: flagAt, // Austria
@@ -143,6 +149,7 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 		it: flagIt, // Italy
 		jp: flagJp, // Japan
 		kz: flagKz, // Kazakhstan
+		li: flagLi, // Liechtenstein
 		lt: flagLt, // Lithuania
 		lu: flagLu, // Luxembourg
 		mc: flagMc, // Monaco
