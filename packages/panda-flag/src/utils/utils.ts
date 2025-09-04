@@ -1,5 +1,6 @@
 // resources
 import { flagAf } from "../resources/af"; // Afghanistan
+import { flagAg } from "../resources/ag"; // Antigua and Barbuda
 import { flagAq } from "../resources/aq"; // Antarctica
 import { flagAd } from "../resources/ad"; // Andorra
 import { flagAi } from "../resources/ai"; // Anguilla
@@ -106,6 +107,7 @@ export const getFlagTemplate = (flag: string, square: boolean, round: boolean) =
 	// the keys are the country codes, and the values are functions that return the SVG string
 	const flagTemplateMap: { [countryCode: string]: (square: boolean) => string } = {
 		af: flagAf, // Afghanistan
+		ag: flagAg, // Antigua and Barbuda
 		aq: flagAq, // Antarctica
 		ad: flagAd, // Andorra
 		ai: flagAi, // Anguilla
