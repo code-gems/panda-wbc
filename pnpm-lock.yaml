@@ -446,6 +446,9 @@ importers:
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
+      '@panda-wbc/panda-theme-select':
+        specifier: workspace:*
+        version: link:../panda-theme-select
       '@panda-wbc/panda-theme-switcher':
         specifier: workspace:*
         version: link:../panda-theme-switcher
@@ -1098,6 +1101,19 @@ importers:
         version: 5.9.2
 
   packages/panda-theme:
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
+
+  packages/panda-theme-select:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
     devDependencies:
       rimraf:
         specifier: ^6.0.0

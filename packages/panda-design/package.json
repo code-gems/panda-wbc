@@ -67,6 +67,7 @@
 		"@panda-wbc/panda-text-scroller": "workspace:*",
 		"@panda-wbc/panda-text-slider": "workspace:*",
 		"@panda-wbc/panda-textarea": "workspace:*",
+		"@panda-wbc/panda-theme-select": "workspace:*",
 		"@panda-wbc/panda-theme-switcher": "workspace:*",
 		"@panda-wbc/panda-theme": "workspace:*",
 		"@panda-wbc/panda-time-ago": "workspace:*",

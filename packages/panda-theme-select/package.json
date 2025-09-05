@@ -1,0 +1,40 @@
+{
+	"name": "@panda-wbc/panda-theme-select",
+	"version": "1.0.0",
+	"description": "Native based web component - theme select",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-theme-select.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"native web component",
+		"panda-wbc",
+		"ui component",
+		"ui",
+		"theme selector",
+		"theme preview"
+	],
+	"author": "code-gems",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@panda-wbc/panda-icon": "workspace:*"
+	},
+	"devDependencies": {
+		"rimraf": "^6.0.0",
+		"typescript": "^5.9.2"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}
