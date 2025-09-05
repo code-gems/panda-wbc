@@ -1,5 +1,5 @@
 // types
-import { PandaThemeSelectChangeEventDetails } from "../index";
+import { PandaThemeSelectChangeEventDetails, PandaThemeSelectI18nConfig } from "../index";
 import { PandaThemePreview } from "./panda-theme-preview";
 
 // style
@@ -31,12 +31,31 @@ export class PandaThemeSelect extends HTMLElement {
 		}
 	}
 
+	// i18n ===========================================================================================================
+	private _i18n!: PandaThemeSelectI18nConfig;
+
+	get i18n(): PandaThemeSelectI18nConfig {
+		return this._i18n;
+	}
+
+	set i18n(value: PandaThemeSelectI18nConfig) {
+		this._i18n = {
+			...this._getDefaultI18nConfig(),
+			...value,
+		};
+		this._updateThemeLabel();
+	}
+
 	// view properties ================================================================================================
 
 	// template elements
-	private readonly _themePreviewSystem!: PandaThemePreview;
-	private readonly _themePreviewLight!: PandaThemePreview;
-	private readonly _themePreviewDark!: PandaThemePreview;
+	private readonly _themePreviewSystemEl!: PandaThemePreview;
+	private readonly _themePreviewLightEl!: PandaThemePreview;
+	private readonly _themePreviewDarkEl!: PandaThemePreview;
+
+	private readonly _themeLabelSystemEl!: HTMLDivElement;
+	private readonly _themeLabelLightEl!: HTMLDivElement;
+	private readonly _themeLabelDarkEl!: HTMLDivElement;
 
 	// events
 	private readonly _themeChangeEvent!: any;
@@ -66,7 +85,7 @@ export class PandaThemeSelect extends HTMLElement {
 						<panda-theme-preview theme="system"></panda-theme-preview>
 					</div>
 					<div class="footer" part="footer system">
-						<div class="label" part="label system">System</div>
+						<div class="label" part="label system">System Preference</div>
 						<div class="icon" part="icon system">
 							<panda-icon icon="check-circle"></panda-icon>
 						</div>
@@ -109,32 +128,42 @@ export class PandaThemeSelect extends HTMLElement {
 
 		// initialize class properties
 		this._value = "";
+		this._i18n = this._getDefaultI18nConfig();
 
 		// init events
 		this._themeChangeEvent = this._onThemeChange.bind(this);
 
 		// get template element handles
 		if (this.shadowRoot) {
-			this._themePreviewSystem = this.shadowRoot.querySelector("#system") as PandaThemePreview;
-			this._themePreviewLight = this.shadowRoot.querySelector("#light") as PandaThemePreview;
-			this._themePreviewDark = this.shadowRoot.querySelector("#dark") as PandaThemePreview;
+			this._themePreviewSystemEl = this.shadowRoot.querySelector("#system") as PandaThemePreview;
+			this._themePreviewLightEl = this.shadowRoot.querySelector("#light") as PandaThemePreview;
+			this._themePreviewDarkEl = this.shadowRoot.querySelector("#dark") as PandaThemePreview;
+			this._themeLabelSystemEl = this.shadowRoot.querySelector("#system .label") as HTMLDivElement;
+			this._themeLabelLightEl = this.shadowRoot.querySelector("#light .label") as HTMLDivElement;
+			this._themeLabelDarkEl = this.shadowRoot.querySelector("#dark .label") as HTMLDivElement;
 		}
 	}
 
 	connectedCallback() {
 		// add event listeners to component template
-		this._themePreviewSystem.addEventListener("click", () => this._themeChangeEvent("system"));
-		this._themePreviewLight.addEventListener("click", () => this._themeChangeEvent("light"));
-		this._themePreviewDark.addEventListener("click", () => this._themeChangeEvent("dark"));
+		this._themePreviewSystemEl.addEventListener("click", () => this._themeChangeEvent("system"));
+		this._themePreviewLightEl.addEventListener("click", () => this._themeChangeEvent("light"));
+		this._themePreviewDarkEl.addEventListener("click", () => this._themeChangeEvent("dark"));
 	}
 
 	disconnectedCallback() {
 		// remove event listeners
-		this._themePreviewSystem.removeEventListener("click", this._themeChangeEvent);
-		this._themePreviewLight.removeEventListener("click", this._themeChangeEvent);
-		this._themePreviewDark.removeEventListener("click", this._themeChangeEvent);
+		this._themePreviewSystemEl.removeEventListener("click", this._themeChangeEvent);
+		this._themePreviewLightEl.removeEventListener("click", this._themeChangeEvent);
+		this._themePreviewDarkEl.removeEventListener("click", this._themeChangeEvent);
 	}
 
+	/**
+	 * Handle attribute changes.
+	 * @param _name The name of the attribute that changed.
+	 * @param _oldValue The old value of the attribute.
+	 * @param _newValue The new value of the attribute.
+	 */
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
 		if (_name === "value") {
 			this._value = _newValue;
@@ -146,6 +175,7 @@ export class PandaThemeSelect extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
+	/** Apply component styles. */
 	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
 		cssStyleSheet.replaceSync(styles);
@@ -154,31 +184,54 @@ export class PandaThemeSelect extends HTMLElement {
 		}
 	}
 
+	/** Update the component state based on the current value. */
 	private _updateState(): void {
-		// update template elements based on new value
 		switch (this._value) {
 			case "system":
-				this._themePreviewSystem.classList.add("selected");
-				this._themePreviewLight.classList.remove("selected");
-				this._themePreviewDark.classList.remove("selected");
+				this._themePreviewSystemEl.classList.add("selected");
+				this._themePreviewLightEl.classList.remove("selected");
+				this._themePreviewDarkEl.classList.remove("selected");
 				break;
 			case "light":
-				this._themePreviewLight.classList.add("selected");
-				this._themePreviewSystem.classList.remove("selected");
-				this._themePreviewDark.classList.remove("selected");
+				this._themePreviewLightEl.classList.add("selected");
+				this._themePreviewSystemEl.classList.remove("selected");
+				this._themePreviewDarkEl.classList.remove("selected");
 				break;
 			case "dark":
-				this._themePreviewDark.classList.add("selected");
-				this._themePreviewSystem.classList.remove("selected");
-				this._themePreviewLight.classList.remove("selected");
+				this._themePreviewDarkEl.classList.add("selected");
+				this._themePreviewSystemEl.classList.remove("selected");
+				this._themePreviewLightEl.classList.remove("selected");
 				break;
 		}
+	}
+
+	/** Update the theme labels based on the current i18n configuration. */
+	private _updateThemeLabel(): void {
+		this._themeLabelSystemEl.textContent = this._i18n.system;
+		this._themeLabelLightEl.textContent = this._i18n.light;
+		this._themeLabelDarkEl.textContent = this._i18n.dark;
+	}
+
+	/**
+	 * Get the default internationalization (i18n) configuration.
+	 * @returns {PandaThemeSelectI18nConfig} The default i18n configuration.
+	 */
+	private _getDefaultI18nConfig(): PandaThemeSelectI18nConfig {
+		return {
+			light: "Light",
+			dark: "Dark",
+			system: "System Preference"
+		};
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
+	/**
+	 * Handle theme change events.
+	 * @param theme The new theme value.
+	 */
 	private _onThemeChange(theme: string): void {
 		this._value = theme;
 		this._updateState();

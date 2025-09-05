@@ -14,6 +14,7 @@ export const styles = /*css*/`
 	.theme-select > .theme-item {
 		display: flex;
 		flex-flow: column;
+		width: var(--panda-theme-select-item-width, 200px);
 		padding: var(--panda-theme-select-item-padding, 10px);
 		gap: var(--panda-theme-select-item-gap, 10px);
 		
@@ -45,19 +46,21 @@ export const styles = /*css*/`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-theme-select-item-preview-width, 175px);
+		width: 100%;
 		overflow: hidden;
 
 		border-width: var(--panda-theme-select-item-preview-border-width, 1px);
 		border-style: var(--panda-theme-select-item-preview-border-style, solid);
 		border-color: var(--panda-theme-select-item-preview-border-color, var(--panda-border-color, hsl(209deg 78% 46%)));
 		border-radius: var(--panda-theme-select-item-preview-border-radius, 5px);
+		box-sizing: border-box;
 	}
 
 	.theme-select > .theme-item > .footer {
 		display: flex;
 		flex-flow: row nowrap;
 		gap: var(--panda-theme-select-footer-gap, 10px);
+		align-items: start;
 	}
 
 	.theme-select > .theme-item > .footer > .label {
@@ -78,7 +81,6 @@ export const styles = /*css*/`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 100%;
 		opacity: 0;
 		transition: var(--panda-theme-item-transition, all 400ms ease-in-out);
 

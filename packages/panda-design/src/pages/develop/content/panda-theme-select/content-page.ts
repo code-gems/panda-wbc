@@ -1,6 +1,6 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
-import { PandaThemeSelectChangeEvent } from "@panda-wbc/panda-theme-select";
+import { PandaThemeSelectChangeEvent, PandaThemeSelectI18nConfig } from "@panda-wbc/panda-theme-select";
 
 // styles
 import { styles } from "./styles/styles";
@@ -40,6 +40,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _selectedTheme: string = "";
+
+	@state()
+	private _i18n: PandaThemeSelectI18nConfig | null = null;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -81,9 +84,31 @@ export class ContentPage extends ContentPageTemplate {
 
 									<panda-theme-select
 										.value="${this._selectedTheme}"
+										.i18n="${this._i18n}"
 										@change="${this._onThemeChange}"
 									>
 									</panda-theme-select>
+
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+
+									<panda-button
+										@click="${this._onChangeI18nConfigToChinese}"
+									>
+										Change i18n to Chinese
+									</panda-button>
+
+								</div>
+								<div class="col-3">
+
+									<panda-button
+										@click="${this._onChangeI18nConfigToEnglish}"
+									>
+										Change i18n to English
+									</panda-button>
 
 								</div>
 							</div>
@@ -186,5 +211,21 @@ export class ContentPage extends ContentPageTemplate {
 			theme: "done",
 			icon: "check-circle",
 		});
+	}
+
+	private _onChangeI18nConfigToChinese(): void {
+		this._i18n = {
+			light: "亮色",
+			dark: "暗色",
+			system: "系统偏好设置",
+		};
+	}
+
+	private _onChangeI18nConfigToEnglish(): void {
+		this._i18n = {
+			light: "Light",
+			dark: "Dark",
+			system: "System Preference",
+		};
 	}
 }
