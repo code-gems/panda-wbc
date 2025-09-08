@@ -311,8 +311,9 @@ export const pandaThemeLight = /*css*/ `
 		--panda-component-size-l: 48px;
 		--panda-component-size-xl: 56px;
 		
-		--panda-border-color: hsl(0deg 0% 85%);
-		--panda-border-color-disabled: hsl(0deg 0% 87%);
+		--panda-border-color: hsl(207deg 1% 85%);
+		--panda-border-color-hover: hsl(207deg 1% 80%);
+		--panda-border-color-disabled: hsl(207deg 1% 87%);
 
 		/* OUTLINE & FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);

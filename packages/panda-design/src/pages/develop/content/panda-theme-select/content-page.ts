@@ -239,9 +239,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onChangeI18nConfigToChinese(): void {
 		this._i18n = {
-			light: "亮色",
-			dark: "暗色",
-			system: "系统偏好设置",
+			lightHeaderText: "亮色",
+			darkHeaderText: "暗色",
+			systemHeaderText: "系统偏好设置",
 		};
 
 		pandaThemeController.changeAccentColor("panda-theme-accent-green");
@@ -249,9 +249,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onChangeI18nConfigToEnglish(): void {
 		this._i18n = {
-			light: "Light",
-			dark: "Dark",
-			system: "System Preference",
+			lightHeaderText: "Light Theme",
+			darkHeaderText: "Dark Theme",
+			systemHeaderText: "System Theme",
 		};
 		pandaThemeController.changeAccentColor("panda-theme-accent-blue");
 	}

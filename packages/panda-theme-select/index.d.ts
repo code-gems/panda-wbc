@@ -5,9 +5,20 @@ export const enum Theme {
 }
 
 export interface PandaThemeSelectI18nConfig {
-	light: string;
-	dark: string;
-	system: string;
+	lightHeaderText: string;
+	lightHeaderIcon?: string;
+	lightFooterText?: string;
+	lightFooterDescription?: string;
+
+	darkHeaderText: string;
+	darkHeaderIcon?: string;
+	darkFooterText?: string;
+	darkFooterDescription?: string;
+
+	systemHeaderText: string;
+	systemHeaderIcon?: string;
+	systemFooterText?: string;
+	systemFooterDescription?: string;
 }
 
 // ====================================================================================================================

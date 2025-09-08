@@ -315,6 +315,8 @@ export const pandaThemeDark = /*css*/`
 		--panda-component-size-xl: 42px;
 
 		--panda-border-color: hsl(278deg 25% 35%);
+		--panda-border-color-hover: hsl(278deg 25% 30%);
+		--panda-border-color-disabled: hsl(278deg 25% 25%);
 
 		/* OUTLINE / FOCUS */
 		--panda-outline-color: var(--panda-primary-color-40opc);

@@ -53,9 +53,20 @@ export class PandaThemeSelect extends HTMLElement {
 	private readonly _themePreviewLightEl!: PandaThemePreview;
 	private readonly _themePreviewDarkEl!: PandaThemePreview;
 
-	private readonly _themeLabelSystemEl!: HTMLDivElement;
-	private readonly _themeLabelLightEl!: HTMLDivElement;
-	private readonly _themeLabelDarkEl!: HTMLDivElement;
+	private readonly _headerTextSystemEl!: HTMLDivElement;
+	private readonly _headerIconSystemEl!: HTMLDivElement;
+	private readonly _footerTextSystemEl!: HTMLDivElement;
+	private readonly _footerDescriptionSystemEl!: HTMLDivElement;
+	
+	private readonly _headerTextLightEl!: HTMLDivElement;
+	private readonly _headerIconLightEl!: HTMLDivElement;
+	private readonly _footerTextLightEl!: HTMLDivElement;
+	private readonly _footerDescriptionLightEl!: HTMLDivElement;
+	
+	private readonly _headerTextDarkEl!: HTMLDivElement;
+	private readonly _headerIconDarkEl!: HTMLDivElement;
+	private readonly _footerTextDarkEl!: HTMLDivElement;
+	private readonly _footerDescriptionDarkEl!: HTMLDivElement;
 
 	// events
 	private readonly _themeChangeEvent!: any;
@@ -81,14 +92,25 @@ export class PandaThemeSelect extends HTMLElement {
 					class="theme-item system"
 					part="theme-item system"
 				>
-					<div class="preview">
-						<panda-theme-preview theme="system"></panda-theme-preview>
+					<div class="header" part="header system">
+						<div class="icon">
+							<panda-icon icon="monitor"></panda-icon>
+						</div>
+						<div class="title" part="title system"></div>
+					</div>
+					<div class="body" part="body system">
+						<div class="preview" part="preview system">
+							<panda-theme-preview theme="system"></panda-theme-preview>
+						</div>
 					</div>
 					<div class="footer" part="footer system">
-						<div class="label" part="label system">System Preference</div>
-						<div class="icon" part="icon system">
-							<panda-icon icon="check-circle"></panda-icon>
+						<div class="header" part="header system">
+							<div class="title" part="title system"></div>
+							<div class="icon" part="icon system">
+								<panda-icon icon="check-circle"></panda-icon>
+							</div>
 						</div>
+						<div class="description"></div>
 					</div>
 				</div>
 				<div
@@ -96,14 +118,25 @@ export class PandaThemeSelect extends HTMLElement {
 					class="theme-item light"
 					part="theme-item light"
 				>
-					<div class="preview">
-						<panda-theme-preview theme="light"></panda-theme-preview>
+					<div class="header" part="header light">
+						<div class="icon">
+							<panda-icon icon="sun"></panda-icon>
+						</div>
+						<div class="title" part="title light"></div>
+					</div>
+					<div class="body" part="body light">
+						<div class="preview" part="preview light">
+							<panda-theme-preview theme="light"></panda-theme-preview>
+						</div>
 					</div>
 					<div class="footer" part="footer light">
-						<div class="label" part="label light">Light</div>
-						<div class="icon" part="icon light">
-							<panda-icon icon="check-circle"></panda-icon>
+						<div class="header" part="header light">
+							<div class="title" part="title light"></div>
+							<div class="icon" part="icon light">
+								<panda-icon icon="check-circle"></panda-icon>
+							</div>
 						</div>
+						<div class="description"></div>
 					</div>
 				</div>
 				<div
@@ -111,14 +144,25 @@ export class PandaThemeSelect extends HTMLElement {
 					class="theme-item dark"
 					part="theme-item dark"
 				>
-					<div class="preview">
-						<panda-theme-preview theme="dark"></panda-theme-preview>
+					<div class="header" part="header dark">
+						<div class="icon">
+							<panda-icon icon="moon"></panda-icon>
+						</div>
+						<div class="title" part="title dark"></div>
+					</div>
+					<div class="body" part="body dark">
+						<div class="preview" part="preview dark">
+							<panda-theme-preview theme="dark"></panda-theme-preview>
+						</div>
 					</div>
 					<div class="footer" part="footer dark">
-						<div class="label" part="label dark">Dark</div>
-						<div class="icon" part="icon dark">
-							<panda-icon icon="check-circle"></panda-icon>
+						<div class="header" part="header dark">
+							<div class="title" part="title dark"></div>
+							<div class="icon" part="icon dark">
+								<panda-icon icon="check-circle"></panda-icon>
+							</div>
 						</div>
+						<div class="description"></div>
 					</div>
 				</div>
 			</div>
@@ -136,11 +180,22 @@ export class PandaThemeSelect extends HTMLElement {
 		// get template element handles
 		if (this.shadowRoot) {
 			this._themePreviewSystemEl = this.shadowRoot.querySelector("#system") as PandaThemePreview;
+			this._headerTextSystemEl = this.shadowRoot.querySelector("#system .header .title") as HTMLDivElement;
+			this._headerIconSystemEl = this.shadowRoot.querySelector("#system .header .icon") as HTMLDivElement;
+			this._footerTextSystemEl = this.shadowRoot.querySelector("#system .footer .title") as HTMLDivElement;
+			this._footerDescriptionSystemEl = this.shadowRoot.querySelector("#system .footer .description") as HTMLDivElement;
+			
 			this._themePreviewLightEl = this.shadowRoot.querySelector("#light") as PandaThemePreview;
+			this._headerTextLightEl = this.shadowRoot.querySelector("#light .header .title") as HTMLDivElement;
+			this._headerIconLightEl = this.shadowRoot.querySelector("#light .header .icon") as HTMLDivElement;
+			this._footerTextLightEl = this.shadowRoot.querySelector("#light .footer .title") as HTMLDivElement;
+			this._footerDescriptionLightEl = this.shadowRoot.querySelector("#light .footer .description") as HTMLDivElement;
+			
 			this._themePreviewDarkEl = this.shadowRoot.querySelector("#dark") as PandaThemePreview;
-			this._themeLabelSystemEl = this.shadowRoot.querySelector("#system .label") as HTMLDivElement;
-			this._themeLabelLightEl = this.shadowRoot.querySelector("#light .label") as HTMLDivElement;
-			this._themeLabelDarkEl = this.shadowRoot.querySelector("#dark .label") as HTMLDivElement;
+			this._headerTextDarkEl = this.shadowRoot.querySelector("#dark .header .title") as HTMLDivElement;
+			this._headerIconDarkEl = this.shadowRoot.querySelector("#dark .header .icon") as HTMLDivElement;
+			this._footerTextDarkEl = this.shadowRoot.querySelector("#dark .footer .title") as HTMLDivElement;
+			this._footerDescriptionDarkEl = this.shadowRoot.querySelector("#dark .footer .description") as HTMLDivElement;
 		}
 	}
 
@@ -207,9 +262,20 @@ export class PandaThemeSelect extends HTMLElement {
 
 	/** Update the theme labels based on the current i18n configuration. */
 	private _updateThemeLabel(): void {
-		this._themeLabelSystemEl.textContent = this._i18n.system;
-		this._themeLabelLightEl.textContent = this._i18n.light;
-		this._themeLabelDarkEl.textContent = this._i18n.dark;
+		this._headerTextSystemEl.textContent = this._i18n.systemHeaderText;
+		this._headerIconSystemEl.setAttribute("icon", this._i18n.systemHeaderIcon as string);
+		this._footerTextSystemEl.textContent = this._i18n.systemFooterText as string;
+		this._footerDescriptionSystemEl.textContent = this._i18n.systemFooterDescription as string;
+
+		this._headerTextLightEl.textContent = this._i18n.lightHeaderText;
+		this._headerIconLightEl.setAttribute("icon", this._i18n.lightHeaderIcon as string);
+		this._footerTextLightEl.textContent = this._i18n.lightFooterText as string;
+		this._footerDescriptionLightEl.textContent = this._i18n.lightFooterDescription as string;
+
+		this._headerTextDarkEl.textContent = this._i18n.darkHeaderText;
+		this._headerIconDarkEl.setAttribute("icon", this._i18n.darkHeaderIcon as string);
+		this._footerTextDarkEl.textContent = this._i18n.darkFooterText as string;
+		this._footerDescriptionDarkEl.textContent = this._i18n.darkFooterDescription as string;
 	}
 
 	/**
@@ -218,9 +284,20 @@ export class PandaThemeSelect extends HTMLElement {
 	 */
 	private _getDefaultI18nConfig(): PandaThemeSelectI18nConfig {
 		return {
-			light: "Light",
-			dark: "Dark",
-			system: "System Preference"
+			lightHeaderText: "Light Theme",
+			lightHeaderIcon: "sun",
+			lightFooterText: "Light Mode",
+			lightFooterDescription: "Bright and clear light color scheme for well-lit environments",
+
+			darkHeaderText: "Dark Theme",
+			darkHeaderIcon: "moon",
+			darkFooterText: "Dark Mode",
+			darkFooterDescription: "Eyes friendly dark color scheme for low light environments",
+
+			systemHeaderText: "System Theme",
+			systemHeaderIcon: "monitor",
+			systemFooterText: "System Preference",
+			systemFooterDescription: "This theme will fallback to your system settings.",
 		};
 	}
 
