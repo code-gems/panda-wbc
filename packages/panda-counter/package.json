@@ -29,10 +29,6 @@
 		"lit": "^3.0.2",
 		"@panda-wbc/panda-utils": "workspace:*"
 	},
-	"devDependencies": {
-		"rimraf": "^6.0.0",
-		"typescript": "^5.9.2"
-	},
 	"files": [
 		"src",
 		"lib",

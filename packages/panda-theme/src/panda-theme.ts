@@ -1,6 +1,3 @@
-// types
-import { PandaThemeGroup } from "../index";
-
 // utils
 import pandaThemeController from "./panda-theme-controller";
 
@@ -21,7 +18,6 @@ export class PandaTheme extends HTMLElement {
 		if (this._theme !== value) {
 			this._theme = value;
 			this.setAttribute("theme", this._theme); // reflect to attribute
-			pandaThemeController.applyTheme(this._theme);
 		}
 	}
 
@@ -34,34 +30,20 @@ export class PandaTheme extends HTMLElement {
 		this.attachShadow({ mode: "open" });
 	}
 
-	connectedCallback() {
-		// init theme
-		pandaThemeController.initialize(this.theme);
-	}
-
-	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+	attributeChangedCallback(_name: string, _oldValue: string, _newValue: string): void {
 		if (_name === "theme") {
 			this._theme = _newValue;
 			pandaThemeController.applyTheme(this._theme);
 		}
-	}
-
-	// ================================================================================================================
-	// API ============================================================================================================
-	// ================================================================================================================
-
-	public getThemeList(): PandaThemeGroup[] {
-		return pandaThemeController.getThemeList();
-	}
-}
-
-declare global {
-	interface HTMLElementTagNameMap {
-		"panda-theme": PandaTheme;
 	}
 }
 
 // Register the custom element
 if (!customElements.get("panda-theme")) {
 	customElements.define("panda-theme", PandaTheme);
+}
+declare global {
+	interface HTMLElementTagNameMap {
+		"panda-theme": PandaTheme;
+	}
 }

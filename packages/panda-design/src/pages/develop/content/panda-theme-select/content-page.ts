@@ -7,6 +7,7 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-theme-select";
+import "@panda-wbc/panda-theme-select/lib/panda-theme-accent-color-item";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -21,6 +22,7 @@ import {
 	installationSnippet,
 } from "./snippets/snippets";
 import { toastCenter } from "../../../../utils/toast-center";
+import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 @page(pageConfig)
 @customElement("panda-theme-select-content-page")
@@ -110,6 +112,28 @@ export class ContentPage extends ContentPageTemplate {
 										Change i18n to English
 									</panda-button>
 
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-theme-accent-color-item
+										primary-color="hsl(209deg 78% 46%)"
+									></panda-theme-accent-color-item>
+								</div>
+								<div class="col-3">
+									<panda-theme-accent-color-item
+										primary-color="hsl(209deg 78% 46%)"
+										secondary-color="hsl(209deg 28% 16%)"
+									></panda-theme-accent-color-item>
+								</div>
+								<div class="col-3">
+									<panda-theme-accent-color-item
+										primary-color="hsl(209deg 78% 46%)"
+										primary-text-color="hsl(0deg 0% 100%)"
+										secondary-color="hsl(160deg 81% 43%)"
+										selected
+									></panda-theme-accent-color-item>
 								</div>
 							</div>
 						</div>
@@ -219,6 +243,8 @@ export class ContentPage extends ContentPageTemplate {
 			dark: "暗色",
 			system: "系统偏好设置",
 		};
+
+		pandaThemeController.changeAccentColor("panda-theme-accent-green");
 	}
 
 	private _onChangeI18nConfigToEnglish(): void {
@@ -227,5 +253,6 @@ export class ContentPage extends ContentPageTemplate {
 			dark: "Dark",
 			system: "System Preference",
 		};
+		pandaThemeController.changeAccentColor("panda-theme-accent-blue");
 	}
 }

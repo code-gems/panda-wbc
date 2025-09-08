@@ -1,12 +1,24 @@
-export interface PandaThemeOption {
+export type PandaThemeAccentColor = {
+	id: string; // unique value eg. panda-theme-accent-red
+	name: string; // accent color name eg.: "Crimson Red"
+	theme: string; // css string
+	// accent color metadata
+	primaryColor?: string | null; // primary color value eg.: "#ff0000"
+	primaryTextColor?: string | null; // primary text color value eg.: "#ff0000"
+	secondaryColor?: string | null; // secondary color value eg.: "#00ff00"
+};
+
+export interface PandaThemeDetails {
 	id: string; // unique value eg. panda-theme-dark
 	name: string; // theme option name eg.: "Dark"
 	theme: string; // css string
+	accentColors: PandaThemeAccentColor[];
 }
 
 export interface PandaThemeGroup {
 	groupName: string; // theme group name eg.: "Panda Theme"
-	options: PandaThemeOption[];
+	light: PandaThemeDetails;
+	dark: PandaThemeDetails;
 }
 
 // ====================================================================================================================

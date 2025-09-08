@@ -29,10 +29,6 @@
 		"@panda-wbc/panda-checkbox": "workspace:*",
 		"@panda-wbc/panda-select": "workspace:*"
 	},
-	"devDependencies": {
-		"rimraf": "^6.0.0",
-		"typescript": "^5.9.2"
-	},
 	"files": [
 		"src",
 		"lib",

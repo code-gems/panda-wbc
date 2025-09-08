@@ -49,16 +49,16 @@ class PandaApp extends LitElement {
 
 	protected firstUpdated(): void {
 		// register custom themes
-		pandaThemeController.registerThemeGroup({
-			groupName: "Panda Design",
-			options: [
-				{
-					id: "panda-theme-turquoise",
-					name: "Turquoise",
-					theme: pandaThemeTurquoise
-				},
-			]
-		});
+		// pandaThemeController.registerThemeGroup({
+		// 	groupName: "Panda Design",
+		// 	options: [
+		// 		{
+		// 			id: "panda-theme-turquoise",
+		// 			name: "Turquoise",
+		// 			theme: pandaThemeTurquoise
+		// 		},
+		// 	]
+		// });
 		// get selected theme or select default one
 		const selectedTheme = localStorage.getItem("theme") ?? "panda-theme-turquoise";
 		appStore.dispatch(

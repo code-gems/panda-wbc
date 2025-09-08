@@ -20,6 +20,12 @@ importers:
       pnpm:
         specifier: ^8.5.1
         version: 8.6.6
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.0.0
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
 
   packages/panda-accordion:
     dependencies:
@@ -29,22 +35,8 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-badge:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-badge: {}
 
   packages/panda-button:
     dependencies:
@@ -85,13 +77,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-callout:
     dependencies:
@@ -104,13 +89,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-carousel:
     dependencies:
@@ -123,26 +101,12 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-chart:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-checkbox:
     dependencies:
@@ -152,13 +116,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-chips:
     dependencies:
@@ -168,26 +125,12 @@ importers:
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-circular-progress-bar:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-click-to-copy:
     dependencies:
@@ -197,26 +140,12 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-color-picker:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-combo-box:
     dependencies:
@@ -232,26 +161,12 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-countdown-timer:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-counter:
     dependencies:
@@ -261,13 +176,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-date-picker:
     dependencies:
@@ -283,13 +191,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-design:
     dependencies:
@@ -492,15 +393,9 @@ importers:
       html-webpack-plugin:
         specifier: ^5.5.0
         version: 5.5.1(webpack@5.83.1)
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
       ts-loader:
         specifier: ^9.2.6
         version: 9.4.2(typescript@5.9.2)(webpack@5.83.1)
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
       webpack:
         specifier: ^5.65.0
         version: 5.83.1(webpack-cli@5.1.4)
@@ -519,13 +414,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-dialog:
     dependencies:
@@ -535,35 +423,14 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-flag:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-flag: {}
 
   packages/panda-full-page:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-grid-layout:
     dependencies:
@@ -579,22 +446,8 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-icon:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-icon: {}
 
   packages/panda-menu:
     dependencies:
@@ -604,26 +457,12 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-mixins:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-multi-input:
     dependencies:
@@ -658,13 +497,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-pagination:
     dependencies:
@@ -680,13 +512,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-particle-banner:
     dependencies:
@@ -696,13 +521,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-password-field:
     dependencies:
@@ -715,13 +533,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-pips-pager:
     dependencies:
@@ -731,74 +542,32 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-popover:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-popover: {}
 
   packages/panda-progress-bar:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-qr-code:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-radio-group:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-router:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-sample:
     dependencies:
@@ -814,13 +583,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-search:
     dependencies:
@@ -845,13 +607,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-select:
     dependencies:
@@ -867,35 +622,14 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-shimmer:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-shimmer: {}
 
   packages/panda-slider:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-slideshow:
     dependencies:
@@ -911,13 +645,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-sortable-list:
     dependencies:
@@ -930,31 +657,10 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-speech-synthesis:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-speech-synthesis: {}
 
-  packages/panda-spinner:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-spinner: {}
 
   packages/panda-stepper:
     dependencies:
@@ -976,13 +682,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-switch:
     dependencies:
@@ -995,13 +694,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-tetris:
     dependencies:
@@ -1017,13 +709,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-text-editor:
     dependencies:
@@ -1039,13 +724,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-text-field:
     dependencies:
@@ -1055,31 +733,10 @@ importers:
       '@panda-wbc/panda-text-slider':
         specifier: workspace:*
         version: link:../panda-text-slider
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-text-scroller:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-text-scroller: {}
 
-  packages/panda-text-slider:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-text-slider: {}
 
   packages/panda-textarea:
     dependencies:
@@ -1092,35 +749,18 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-theme:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+    dependencies:
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
 
   packages/panda-theme-select:
     dependencies:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-theme-switcher:
     dependencies:
@@ -1130,52 +770,24 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-time:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-time-ago:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-toast:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-toggle:
     dependencies:
@@ -1188,26 +800,12 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-tooltip:
     dependencies:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
   packages/panda-upload:
     dependencies:
@@ -1217,22 +815,8 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
-  packages/panda-utils:
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
+  packages/panda-utils: {}
 
   packages/panda-voice-to-text:
     dependencies:
@@ -1242,13 +826,6 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.0.2
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.0.0
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
 packages:
 

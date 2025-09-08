@@ -31,10 +31,6 @@
 		"@panda-wbc/panda-icon": "workspace:^1.0.0",
 		"@panda-wbc/panda-utils": "workspace:^1.0.0"
 	},
-	"devDependencies": {
-		"rimraf": "^6.0.0",
-		"typescript": "^5.9.2"
-	},
 	"files": [
 		"src",
 		"lib",

@@ -132,9 +132,7 @@ export const generateUuid = (): string => {
  * @returns boolean value (true or false) indicating whether the input is considered empty or not.
  */
 export const isEmpty = (value: any): boolean => {
-	return value === "" ||
-		value === null ||
-		value === undefined;
+	return value === "" || value != null;
 }
 
 /**
@@ -144,3 +142,17 @@ export const isEmpty = (value: any): boolean => {
  * @returns number that is guaranteed to be at least as large as the specified minimum.
  */
 export const minValue = (value: number, min: number): number => value < min ? min : value;
+
+/**
+ * Singleton utility function.
+ * @param {String} name - The name of the singleton instance.
+ * @param creator - A function that creates the singleton instance.
+ * @returns The singleton instance.
+ */
+export const singleton = <S>(name: string, creator: () => S): S => {
+	const singletons = (window as any).__singletons__ || {};
+	(window as any).__singletons__ = singletons;
+	const instance: S = singletons[name] || creator();
+	singletons[name] = instance;
+	return instance;
+}

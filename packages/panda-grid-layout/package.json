@@ -28,10 +28,6 @@
 		"@panda-wbc/panda-mixins": "workspace:*",
 		"@panda-wbc/panda-utils": "workspace:*"
 	},
-	"devDependencies": {
-		"rimraf": "^6.0.0",
-		"typescript": "^5.9.2"
-	},
 	"files": [
 		"src",
 		"lib",
