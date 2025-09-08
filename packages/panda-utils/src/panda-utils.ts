@@ -132,7 +132,7 @@ export const generateUuid = (): string => {
  * @returns boolean value (true or false) indicating whether the input is considered empty or not.
  */
 export const isEmpty = (value: any): boolean => {
-	return value === "" || value != null;
+	return value === "" || value == null;
 }
 
 /**

@@ -68,7 +68,10 @@ class AppSubmenu extends LitElement {
 			<div class="submenu">
 				<div class="header">
 					<div class="search">
-						<panda-search @on-input="${this._onContentSearch}"></panda-search>
+						<panda-search
+							.placeholder="${["Find component...", "eg. button"]}"
+							@on-input="${this._onContentSearch}"
+						></panda-search>
 					</div>
 				</div>
 				<div class="body scrollbar">
