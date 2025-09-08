@@ -77,6 +77,8 @@ export const styles = /*css*/`
 		font-family: var(--panda-theme-select-item-header-font-family, var(--panda-font-family, "Poppins"));
 		font-style: var(--panda-theme-select-item-header-font-style, normal);
 		font-size: var(--panda-theme-select-item-header-font-size, var(--panda-font-size-m, 16px));
+		line-height: var(--panda-theme-select-item-header-line-height, 1.2em);
+		user-select: none;
 	}
 
 	.theme-select > .theme-item > .body {

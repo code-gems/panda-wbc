@@ -240,8 +240,14 @@ export class ContentPage extends ContentPageTemplate {
 	private _onChangeI18nConfigToChinese(): void {
 		this._i18n = {
 			lightHeaderText: "亮色",
+			lightFooterText: "使用亮色主题",
+			lightFooterDescription: "界面将以亮色主题呈现",
 			darkHeaderText: "暗色",
+			darkFooterText: "使用暗色主题",
+			darkFooterDescription: "界面将以暗色主题呈现",
 			systemHeaderText: "系统偏好设置",
+			systemFooterText: "跟随系统主题",
+			systemFooterDescription: "界面主题将根据系统偏好设置自动切换",
 		};
 
 		pandaThemeController.changeAccentColor("panda-theme-accent-green");
@@ -250,8 +256,16 @@ export class ContentPage extends ContentPageTemplate {
 	private _onChangeI18nConfigToEnglish(): void {
 		this._i18n = {
 			lightHeaderText: "Light Theme",
+			lightFooterText: "Light Mode",
+			lightFooterDescription: "The interface will be presented in light theme.",
+
 			darkHeaderText: "Dark Theme",
+			darkFooterText: "Dark Mode",
+			darkFooterDescription: "The interface will be presented in dark theme.",
+			
 			systemHeaderText: "System Theme",
+			systemFooterText: "System Default",
+			systemFooterDescription: "The interface theme will automatically switch based on system preferences.",
 		};
 		pandaThemeController.changeAccentColor("panda-theme-accent-blue");
 	}
