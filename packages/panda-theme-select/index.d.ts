@@ -1,7 +1,14 @@
-export const enum Theme {
+export const enum PandaThemeMode {
 	SYSTEM = "system",
 	DARK = "dark",
 	LIGHT = "light"
+}
+
+export type PandaThemeAccentColor = {
+	id: string;
+	primaryColor: string;
+	primaryTextColor: string;
+	secondaryColor?: string;
 }
 
 export interface PandaThemeSelectI18nConfig {
@@ -30,3 +37,9 @@ export type PandaThemeSelectChangeEventDetails = {
 }
 
 export interface PandaThemeSelectChangeEvent extends CustomEvent<PandaThemeSelectChangeEventDetails> {}
+
+export type PandaThemeAccentColorListChangeEventDetails = {
+	selected: string;
+}
+
+export interface PandaThemeAccentColorListChangeEvent extends CustomEvent<PandaThemeAccentColorListChangeEventDetails> {}

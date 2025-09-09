@@ -240,6 +240,14 @@ export const previewStyles = /*css*/`
 	:host([theme="system"]) .system { display: block; }
 `;
 
+export const accentColorListStyles = /*css*/`
+	.accent-color-list {
+		display: flex;
+		flex-flow: row wrap;
+		gap: var(--panda-theme-accent-color-list-gap, var(--panda-padding-m, 10px));
+	}
+`;
+
 export const accentColorItemStyles = /*css*/`
 	:host {
 		display: flex;

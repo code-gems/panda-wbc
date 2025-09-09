@@ -7,6 +7,7 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-theme-select";
+import "@panda-wbc/panda-theme-select/lib/panda-theme-accent-color-list";
 import "@panda-wbc/panda-theme-select/lib/panda-theme-accent-color-item";
 
 // utils & config
@@ -45,6 +46,21 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _i18n: PandaThemeSelectI18nConfig | null = null;
+	
+	private readonly _accentColorList = [
+		{
+			id: "panda-theme-accent-blue",
+			primaryColor: "hsl(209deg 78% 46%)",
+			primaryTextColor: "hsl(0deg 0% 100%)",
+			secondaryColor: "hsl(207deg 64% 35%)",
+		},
+		{
+			id: "panda-theme-accent-green",
+			primaryColor: "hsl(160deg 81% 43%)",
+			primaryTextColor: "hsl(0deg 0% 100%)",
+			secondaryColor: "hsl(174deg 100% 29%)",
+		},	
+	];
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -136,6 +152,15 @@ export class ContentPage extends ContentPageTemplate {
 									></panda-theme-accent-color-item>
 								</div>
 							</div>
+
+							<div class="row">
+								<div class="col-half">
+									<panda-theme-accent-color-list
+										.list="${this._accentColorList}"
+									></panda-theme-accent-color-list>
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</div>

@@ -230,7 +230,7 @@ export class PandaThemeSelect extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	/** Apply component styles. */
+	/** Apply component styles to shadow root. */
 	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
 		cssStyleSheet.replaceSync(styles);

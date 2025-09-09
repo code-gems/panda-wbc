@@ -9,7 +9,12 @@ export class PandaThemeAccentColorItem extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	static readonly observedAttributes = ["selected", "primary-color", "primary-text-color", "secondary-color"];
+	static readonly observedAttributes = [
+		"selected",
+		"primary-color",
+		"primary-text-color",
+		"secondary-color",
+	];
 
 	// selected =======================================================================================================
 	private _selected!: boolean;

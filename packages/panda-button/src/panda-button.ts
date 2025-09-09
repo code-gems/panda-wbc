@@ -135,17 +135,19 @@ export class PandaButton extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
-		if (_name === "theme") {
-			this._theme = _newValue;
-		}
-		if (_name === "disabled") {
-			this._disabled = this._parseBooleanAttribute(_newValue);
-		}
-		if (_name === "working") {
-			this._working = this._parseBooleanAttribute(_newValue);
-		}
-		if (_name === "spinner-type") {
-			this._spinnerType = _newValue;
+		switch (_name) {
+			case "theme":
+				this._theme = _newValue;
+				break;
+			case "disabled":
+				this._disabled = this._parseBooleanAttribute(_newValue);
+				break;
+			case "working":
+				this._working = this._parseBooleanAttribute(_newValue);
+				break;
+			case "spinner-type":
+				this._spinnerType = _newValue;
+				break;
 		}
 		this._render();
 	}
@@ -209,6 +211,7 @@ export class PandaButton extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
+	/** Apply component styles to shadow root. */
 	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
 		cssStyleSheet.replaceSync(styles);

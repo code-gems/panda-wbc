@@ -1,6 +1,8 @@
 // types
+import { PandaThemeAccentColor, PandaThemeAccentColorListChangeEvent } from "../index";
+
 // style
-import { styles } from "./styles/styles";
+import { accentColorListStyles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -10,40 +12,44 @@ export class PandaThemeAccentColorList extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	static readonly observedAttributes = ["value"];
+	static readonly observedAttributes = ["selected"];
 
-	// value ==========================================================================================================
-	private _value!: string;
-	
-	get value(): string {
-		return this._value;
+	// selected =======================================================================================================
+	private _selected!: string | null;
+
+	get selected(): string | null {
+		return this._selected;
 	}
 
-	set value(value: string) {
-		if (this._value !== value) {
-			this._value = value;
+	set selected(value: string | null) {
+		if (this._selected !== value) {
+			this._selected = value;
 			// reflect to attribute
-			this.setAttribute("value", this._value);
+			if (this._selected != null) {
+				this.setAttribute("selected", this._selected);
+			} else {
+				this.removeAttribute("selected");
+			}
 		}
 	}
 
-	// accentColorList ================================================================================================
+	// list ===========================================================================================================
+	private _list!: PandaThemeAccentColor[];
 
-	private _accentColorList!: string[];
-
-	get accentColorList(): string[] {
-		return this._accentColorList;
+	get list(): PandaThemeAccentColor[] {
+		return this._list;
 	}
 
-	set accentColorList(value: string[]) {
-		this._accentColorList = value;
+	set list(value: PandaThemeAccentColor[]) {
+		this._list = value;
+		this._render();
 	}
 
 	// view properties ================================================================================================
 
-	// template elements
-	private readonly _accentColorListEl!: HTMLDivElement;
-	
+	// events
+	private readonly _selectAccentColorEvent!: any;
+
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
@@ -52,29 +58,73 @@ export class PandaThemeAccentColorList extends HTMLElement {
 		super();
 		// create shadow root
 		this.attachShadow({ mode: "open", delegatesFocus: true });
-
-		// create component template
-		const template = document.createElement("template");
-		template.innerHTML = `
-			<div class="accent-color-list" part="accent-color-list"></div>
-		`;
-
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
-
+		// apply component styles
+		this._applyStyles();
 		// initialize class properties
-		this._value = "";
+		this._selected = "";
+		this._list = [];
+		// init events
+		this._selectAccentColorEvent = this._onAccentColorSelect.bind(this);
+		// render component template
+		this._render();
+	}
 
-		// get template element handles
+	connectedCallback() {
 		if (this.shadowRoot) {
-			this._accentColorListEl = this.shadowRoot.querySelector(".accent-color-list") as HTMLDivElement;
+			// add event listeners to component template
+			this.shadowRoot.addEventListener("click", this._selectAccentColorEvent);
+		}
+	}
+
+	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		if (_name === "selected") {
+			this._selected = _newValue;
+		}
+		this._render();
+	}
+
+	// ================================================================================================================
+	// RENDERERS ======================================================================================================
+	// ================================================================================================================
+
+	private _render(): void	{
+		if (this.shadowRoot) {
+			const listHtml: string[] = [];
+			// generate list items
+			if (this._list?.length) {
+				this._list.forEach((item) => {
+					listHtml.push(/*html*/`
+						<panda-theme-accent-color-item
+							data-id="${item.id}"
+							${item.primaryTextColor ? `primary-color="${item.primaryColor}"` : ""}
+							${item.primaryTextColor ? `primary-text-color="${item.primaryTextColor}"` : ""}
+							${item.secondaryColor ? `secondary-color="${item.secondaryColor}"` : ""}
+							${this._selected === item.id ? "selected" : ""}
+						></panda-theme-accent-color-item>
+					`);
+				});
+			}
+			// render component template
+			this.shadowRoot.innerHTML = /*html*/`
+				<div class="accent-color-list" part="accent-color-list">
+					${listHtml.join("\n")}
+				</div>
+			`;
 		}
 	}
 
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
-
+	
+	/** Apply component styles to shadow root. */
+	private _applyStyles(): void {
+		const cssStyleSheet = new CSSStyleSheet();
+		cssStyleSheet.replaceSync(accentColorListStyles);
+		if (this.shadowRoot) {
+			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
+		}
+	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
@@ -84,14 +134,20 @@ export class PandaThemeAccentColorList extends HTMLElement {
 	 * Handle accent color change events.
 	 * @param color The new accent color value.
 	 */
-	private _onAccentColorChange(color: string): void {
-		this._value = color;
-		// this._updateState();
-		// this.dispatchEvent(new CustomEvent<PandaThemeSelectChangeEventDetails>("change", {
-		// 	detail: {
-		// 		accentColor: this._value
-		// 	}
-		// }));
+	private _onAccentColorSelect(event: MouseEvent): void {
+		const clickedItem = (event.target as HTMLElement).closest("panda-theme-accent-color-item");
+		if (clickedItem != null) {
+			this._selected = clickedItem.dataset.id || "";
+			this._render();
+			const changeEvent: PandaThemeAccentColorListChangeEvent = new CustomEvent("change", {
+				detail: {
+					selected: this._selected,
+				},
+				bubbles: true,
+				composed: true,
+			});
+			this.dispatchEvent(changeEvent);
+		}
 	}
 }
 
