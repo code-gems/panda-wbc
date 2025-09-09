@@ -1,6 +1,6 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
-import { PandaThemeSelectChangeEvent, PandaThemeSelectI18nConfig } from "@panda-wbc/panda-theme-select";
+import { PandaThemeAccentColorListChangeEvent, PandaThemeSelectChangeEvent, PandaThemeSelectI18nConfig } from "@panda-wbc/panda-theme-select";
 
 // styles
 import { styles } from "./styles/styles";
@@ -132,31 +132,10 @@ export class ContentPage extends ContentPageTemplate {
 							</div>
 
 							<div class="row">
-								<div class="col-3">
-									<panda-theme-accent-color-item
-										primary-color="hsl(209deg 78% 46%)"
-									></panda-theme-accent-color-item>
-								</div>
-								<div class="col-3">
-									<panda-theme-accent-color-item
-										primary-color="hsl(209deg 78% 46%)"
-										secondary-color="hsl(209deg 28% 16%)"
-									></panda-theme-accent-color-item>
-								</div>
-								<div class="col-3">
-									<panda-theme-accent-color-item
-										primary-color="hsl(209deg 78% 46%)"
-										primary-text-color="hsl(0deg 0% 100%)"
-										secondary-color="hsl(160deg 81% 43%)"
-										selected
-									></panda-theme-accent-color-item>
-								</div>
-							</div>
-
-							<div class="row">
 								<div class="col-half">
 									<panda-theme-accent-color-list
 										.list="${this._accentColorList}"
+										@change="${this._onAccentColorChange}"
 									></panda-theme-accent-color-list>
 								</div>
 							</div>
@@ -292,6 +271,13 @@ export class ContentPage extends ContentPageTemplate {
 			systemFooterText: "System Default",
 			systemFooterDescription: "The interface theme will automatically switch based on system preferences.",
 		};
-		pandaThemeController.changeAccentColor("panda-theme-accent-blue");
+	}
+
+	private _onAccentColorChange(event: PandaThemeAccentColorListChangeEvent): void {
+		const accentColorId = event.detail.selected;
+		
+		if (accentColorId) {
+			pandaThemeController.changeAccentColor(accentColorId);
+		}
 	}
 }
