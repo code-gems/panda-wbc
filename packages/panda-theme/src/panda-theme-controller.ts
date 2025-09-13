@@ -1,5 +1,11 @@
 // types
-import { PandaThemeChangeEvent, PandaThemeGroup, PandaThemeDetails, PandaThemeAccentColor } from "../index";
+import {
+	PandaThemeAccentColor,
+	PandaThemeChangeEvent,
+	PandaThemeDetails,
+	PandaThemeGroup,
+	PandaThemeMode,
+} from "../index";
 
 // themes
 import { pandaThemeLight } from "./themes/panda-theme-light";
@@ -13,10 +19,17 @@ class PandaThemeController {
 	static instance: PandaThemeController | undefined;
 
 	private readonly _defaultTheme!: string;
+	private readonly _defaultThemeMode!: PandaThemeMode;
 	private readonly _defaultAccentColor!: string;
 	private _themeGroups!: PandaThemeGroup[];
 	private _selectedTheme!: string;
+	private _selectedThemeMode!: PandaThemeMode;
 	private _selectedAccentColor!: string;
+	private _darkModeMediaQuery!: MediaQueryList;
+	private _selectedBrowserThemeMode!: PandaThemeMode;
+
+	// events
+	private _deviceThemeChangeEvent!: any;
 
 	// elements
 	private _themeEl!: HTMLStyleElement | null;
@@ -31,14 +44,6 @@ class PandaThemeController {
 		}
 		PandaThemeController.instance = this;
 		// initialize properties
-		this._defaultTheme = defaultThemeId ?? "panda-theme-light";
-		this._defaultAccentColor = "panda-accent-color-blue";
-		this._selectedTheme = this._defaultTheme;
-		this._selectedAccentColor = this._defaultAccentColor;
-
-		// get theme element handle
-		this._themeEl = document.querySelector("[panda-theme]");
-
 		this._themeGroups = [{
 			groupName: "Panda Theme",
 			light: {
@@ -54,8 +59,27 @@ class PandaThemeController {
 				accentColors: pandaAccentColors,
 			}
 		}];
+		this._defaultTheme = defaultThemeId ?? "panda-theme-light";
+		this._defaultThemeMode = PandaThemeMode.LIGHT;
+		this._defaultAccentColor = "panda-accent-color-blue";
+		this._selectedTheme = this._defaultTheme;
+		this._selectedThemeMode = this._defaultThemeMode;
+		this._selectedAccentColor = this._defaultAccentColor;
+		this._darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+		this._selectedBrowserThemeMode = this.getBrowserThemeMode();
+
+		// initialize events
+		this._deviceThemeChangeEvent = this._onDeviceThemeChange.bind(this);
+
+		// add event listeners
+		this._darkModeMediaQuery.addEventListener("change", this._deviceThemeChangeEvent);
+		
 		// update accent color metadata
 		this._updateAccentColorMetadata();
+
+		// get theme element handle
+		this._themeEl = document.querySelector("[panda-theme]");
+
 		// apply default theme
 		this.applyTheme(this._defaultTheme);
 	}
@@ -79,22 +103,29 @@ class PandaThemeController {
 		if (selectedThemeOption) {
 			// update selected option id
 			this._selectedTheme = optionId;
-					
+			// aggregate all styles
+			const allStyles: string[] = [];
+			// get accent color styles
+			const accentColorsStyles = selectedThemeOption.accentColors.find((color) => color.id === this._selectedAccentColor)?.theme.toString() ?? "";
+			// add main stylesheet
+			allStyles.push(selectedThemeOption.theme.toString());
+			// add accent colors
+			allStyles.push(accentColorsStyles);
+
 			// check support for StyleSheets
 			if (document.adoptedStyleSheets) {
 				// modern browsers
 				const themeStyles = new CSSStyleSheet();
-				const accentColorsStyles = selectedThemeOption.accentColors.find((color) => color.id === this._selectedAccentColor)?.theme.toString() ?? "";
-				const allStyles = selectedThemeOption.theme.toString() + accentColorsStyles;
-				themeStyles.replaceSync(allStyles);
+				// apply stylesheet
+				themeStyles.replaceSync(allStyles.join(" "));
 				document.adoptedStyleSheets = [themeStyles];
 			} 
 			else if (this._themeEl) { // check if theme element exists
-				this._themeEl.innerHTML = selectedThemeOption.theme.toString();
+				this._themeEl.innerHTML = allStyles.join(" ");
 				this._themeEl.setAttribute("data-theme", optionId);
 			} else {
 				this._themeEl = document.createElement("style");
-				this._themeEl.innerHTML = selectedThemeOption.theme.toString();
+				this._themeEl.innerHTML = allStyles.join(" ");
 				this._themeEl.setAttribute("panda-theme", "");
 				this._themeEl.setAttribute("data-theme", optionId);
 				document.head.appendChild(this._themeEl);
@@ -148,11 +179,15 @@ class PandaThemeController {
 		}
 	}
 
+	public getAccentColor(): string {
+		return this._selectedAccentColor;
+	}
+
 	/**
 	 * Change the accent color of the current theme.
 	 * @param accentColorId The id of the accent color to change to.
 	 */
-	public changeAccentColor(accentColorId: string): void {
+	public setAccentColor(accentColorId: string): void {
 		// check if accent color exists
 		const selectedThemeGroup = this._getThemeById(this._selectedTheme);
 		const thisAccentColor = selectedThemeGroup?.accentColors.find((color) => color.id === accentColorId);
@@ -174,6 +209,19 @@ class PandaThemeController {
 		return selectedThemeGroup?.accentColors ?? [];
 	}
 
+	public getBrowserThemeMode(): PandaThemeMode {
+		const isLightMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)");
+		const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+
+		if (isLightMode.matches) {
+			return PandaThemeMode.LIGHT;
+		}
+		if (isDarkMode.matches) {
+			return PandaThemeMode.DARK;
+		}
+		return PandaThemeMode.SYSTEM;
+	}
+
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
@@ -190,6 +238,18 @@ class PandaThemeController {
 			});
 		}
 		return selectedThemeOption;
+	}
+
+	private _getThemeGroupById(themeId: string): PandaThemeGroup | null {
+		let themeGroup: PandaThemeGroup | null = null;
+		if (themeId) {
+			this._themeGroups.forEach((group) => {
+				if (group.light.id === themeId || group.dark.id === themeId) {
+					themeGroup = group;
+				}
+			});
+		}
+		return themeGroup;
 	}
 
 	private _triggerThemeChangeEvent(): void {
@@ -235,6 +295,51 @@ class PandaThemeController {
 				accentColor.secondaryColor = this._findTokenValue(accentColor.theme.toString(), "--panda-secondary-color");
 			});
 		});
+	}
+
+	private _changeSelectedThemeOption(themeMode: PandaThemeMode): void {
+		const thisThemeGroup = this._getThemeGroupById(this._selectedTheme);
+		// update browser theme mode
+		this._selectedBrowserThemeMode = this.getBrowserThemeMode();
+		// check if theme group exist
+		if (thisThemeGroup) {
+			switch (themeMode) {
+				case PandaThemeMode.LIGHT:
+				case PandaThemeMode.DARK:
+					this._selectedTheme = thisThemeGroup[themeMode]?.id;
+					break;
+				case PandaThemeMode.SYSTEM: {
+					const systemThemeMode = this._selectedBrowserThemeMode === PandaThemeMode.LIGHT
+						? PandaThemeMode.LIGHT
+						: PandaThemeMode.DARK;
+					this._selectedTheme = thisThemeGroup[systemThemeMode]?.id;
+					break;
+				}
+			}
+			this.applyTheme(this._selectedTheme);
+		} else {
+			console.warn(
+				`%c ⚠️ [PANDA THEME CONTROLLER] Theme group not found ${themeMode}`,
+				"font-size: 16px;"
+			);
+		}
+
+	}
+
+	// ================================================================================================================
+	// EVENTS =========================================================================================================
+	// ================================================================================================================
+
+	private _onDeviceThemeChange(event: MediaQueryListEvent): void {
+		// check if theme mode is SYSTEM and handle the change
+		if (this._selectedThemeMode !== PandaThemeMode.SYSTEM) {
+			return;
+		}
+		if (event.matches) {
+			this._changeSelectedThemeOption(PandaThemeMode.DARK);
+		} else {
+			this._changeSelectedThemeOption(PandaThemeMode.LIGHT);
+		}
 	}
 }
 

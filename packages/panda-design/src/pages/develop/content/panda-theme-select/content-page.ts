@@ -254,7 +254,7 @@ export class ContentPage extends ContentPageTemplate {
 			systemFooterDescription: "界面主题将根据系统偏好设置自动切换",
 		};
 
-		pandaThemeController.changeAccentColor("panda-theme-accent-green");
+		pandaThemeController.setAccentColor("panda-theme-accent-green");
 	}
 
 	private _onChangeI18nConfigToEnglish(): void {
@@ -277,7 +277,7 @@ export class ContentPage extends ContentPageTemplate {
 		const accentColorId = event.detail.selected;
 		
 		if (accentColorId) {
-			pandaThemeController.changeAccentColor(accentColorId);
+			pandaThemeController.setAccentColor(accentColorId);
 		}
 	}
 }

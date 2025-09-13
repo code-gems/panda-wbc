@@ -1,3 +1,9 @@
+export const enum PandaThemeMode {
+	DARK = "dark",
+	LIGHT = "light",
+	SYSTEM = "system",
+}
+
 export type PandaThemeAccentColor = {
 	id: string; // unique value eg. panda-theme-accent-red
 	name: string; // accent color name eg.: "Crimson Red"
