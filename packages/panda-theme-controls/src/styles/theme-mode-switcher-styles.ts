@@ -1,51 +1,48 @@
 export const styles = /*css*/`
-	.theme-switcher {
+	:host {
 		display: flex;
 		width: var(--panda-theme-mode-switcher-size, var(--panda-component-size-m, 40px));
 		height: var(--panda-theme-mode-switcher-size, var(--panda-component-size-m, 40px));
-		padding: 25px;
-
 		box-sizing: border-box;
 	}
 
-	.theme-switcher .switcher-cont {
+	.switcher-cont {
 		position: relative;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 100%;
-		height: 100%;
+		width: var(--panda-theme-mode-switcher-size, var(--panda-component-size-m, 40px));
+		height: var(--panda-theme-mode-switcher-size, var(--panda-component-size-m, 40px));
 		overflow: hidden;
 
 		transition: all 400ms ease-in-out;
 
-		border-radius: 50%;
-		background-color: var(--panda-background-color-500);
-		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
+		border-radius: var(--panda-theme-mode-switcher-border-radius, var(--panda-border-radius-m, 5px));
+		background-color: var(--panda-theme-mode-switcher-background-color, transparent);
+		box-shadow: var(--panda-theme-mode-switcher-elevation, none);
 		box-sizing: border-box;
 	}
 
-	.theme-switcher .switcher-cont:hover {
-		background-color: var(--panda-background-color-300);
-		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
+	.switcher-cont:hover {
+		background-color: var(--panda-theme-mode-switcher-background-color-hover, transparent);
+		box-shadow: var(--panda-theme-mode-switcher-elevation-hover, none);
 	}
 
-	.theme-switcher .switcher-cont .switcher {
+	.switcher-cont > .switcher {
 		position: absolute;
-		top: 0px;
-		left: 0px;
+		inset: 0px;
 
 		transition: top 400ms ease-in-out;
 	}
 
-	.theme-switcher .switcher-cont.flip .switcher {
-		top: -50px;
+	.switcher-cont.flip > .switcher {
+		top: -100%;
 	}
 
-	.theme-switcher .switcher-cont .switcher .btn {
+	.switcher-cont > .switcher > .btn {
 		display: flex;
-		width: 50px;
-		height: 50px;
+		width: var(--panda-theme-mode-switcher-size, var(--panda-component-size-m, 40px));
+		height: var(--panda-theme-mode-switcher-size, var(--panda-component-size-m, 40px));
 		justify-content: center;
 		align-items: center;
 

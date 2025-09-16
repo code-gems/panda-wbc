@@ -8,6 +8,7 @@ export type PandaThemeState = {
 	themeGroupId: string;
 	themeId: string;
 	themeMode: PandaThemeMode;
+	finalThemeMode: PandaThemeMode;
 	accentColorId: string;
 }
 

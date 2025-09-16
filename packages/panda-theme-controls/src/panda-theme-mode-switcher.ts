@@ -1,22 +1,23 @@
 // types
-import { PandaThemeMode } from "@panda-wbc/panda-theme";
-import { PandaThemeModeChangeEventDetails } from "..";
+import { PandaThemeMode, PandaThemeState } from "@panda-wbc/panda-theme";
+import { PandaThemeModeChangeEventDetails } from "../index";
 
 // style
 import { styles } from "./styles/theme-mode-switcher-styles";
 
 // theme service
-import { pandaThemeController } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
+import { pandaThemeController, themeWatch } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 // components
 import "@panda-wbc/panda-icon";
 
+@themeWatch()
 export class PandaThemeModeSwitcher extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	static readonly observedAttributes = ["light-icon", "dark-icon"];
+	static readonly observedAttributes = ["light-icon", "dark-icon", "disabled"];
 
 	// light icon =====================================================================================================
 	private _lightIcon!: string;
@@ -48,6 +49,25 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 		}
 	}
 
+	// disabled =======================================================================================================
+	private _disabled!: boolean;
+	
+	get disabled(): boolean {
+		return this._disabled;
+	}
+
+	set disabled(value: boolean) {
+		if (this._disabled !== value) {
+			this._disabled = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("disabled", "");
+			} else {
+				this.removeAttribute("disabled");
+			}
+		}
+	}
+
 	// view properties ================================================================================================
 
 	private _themeMode!: PandaThemeMode;
@@ -74,15 +94,21 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 		// create component template
 		const template = document.createElement("template");
 		template.innerHTML = /*html*/`
-			<div class="theme-switcher" part="theme-switcher">
-				<div class="switcher-cont" part="switcher-cont">
-					<div class="switcher" part="switcher">
-						<div class="btn" part="btn-light">
-							<panda-icon icon="sun" part="light-icon"></panda-icon>
-						</div>
-						<div class="btn" part="btn-dark">
-							<panda-icon icon="moon" part="dark-icon"></panda-icon>
-						</div>
+			<div class="switcher-cont" part="switcher-cont">
+				<div class="switcher" part="switcher">
+					<div
+						data-mode="light"
+						class="btn"
+						part="btn-light"
+					>
+						<panda-icon icon="sun" part="light-icon"></panda-icon>
+					</div>
+					<div
+						data-mode="dark"
+						class="btn"
+						part="btn-dark"
+					>
+						<panda-icon icon="moon" part="dark-icon"></panda-icon>
 					</div>
 				</div>
 			</div>
@@ -100,18 +126,25 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 
 		// get template element handles
 		if (this.shadowRoot) {
+			this._switcherContEl = this.shadowRoot.querySelector(".switcher-cont") as HTMLDivElement;
 			this._switcherEl = this.shadowRoot.querySelector(".switcher") as HTMLDivElement;
 		}
 	}
 
 	connectedCallback() {
 		// add event listeners to component template
-		this._switcherEl.addEventListener("click", () => this._themeModeChangeEvent("system"));
+		this._switcherEl.addEventListener("click", this._themeModeChangeEvent);
 	}
 
 	disconnectedCallback() {
 		// remove event listeners
 		this._switcherEl.removeEventListener("click", this._themeModeChangeEvent);
+	}
+
+	onThemeChange(themeState: PandaThemeState): void {
+		const { finalThemeMode } = themeState;
+		this._themeMode = finalThemeMode;
+		this._updateState();
 	}
 
 	/**
@@ -124,13 +157,15 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 		switch (_name) {
 			case "light-icon":
 				this._lightIcon = _newValue;
-				this._updateState();
 				break;
 			case "dark-icon":
 				this._darkIcon = _newValue;
-				this._updateState();
+				break;
+			case "disabled":
+				this._disabled = this._parseBooleanAttribute(_newValue);
 				break;
 		}
+		this._updateState();
 	}
 
 	// ================================================================================================================
@@ -146,9 +181,23 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Parses an attribute value to boolean.
+	 * @param value value to parse
+	 * @description Parses a value to boolean. If the value is "true" or true, it returns true, otherwise false.
+	 * @returns {Boolean}
+	 */
+	private _parseBooleanAttribute(value: unknown): boolean {
+		return value === "true" || value === true || value === "";
+	}
+
 	/** Update the component state based on the current value. */
 	private _updateState(): void {
-
+		if (this._themeMode === PandaThemeMode.LIGHT) {
+			this._switcherContEl.classList.add("flip");
+		} else {
+			this._switcherContEl.classList.remove("flip");
+		}
 	}
 
 	// ================================================================================================================
@@ -159,15 +208,20 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 	 * Handle theme change events.
 	 * @param themeMode The new theme mode value.
 	 */
-	private _onThemeModeChange(themeMode: PandaThemeMode): void {
-		this._themeMode = themeMode;
-		pandaThemeController.setThemeMode(themeMode);
-		this._updateState();
-		this.dispatchEvent(new CustomEvent<PandaThemeModeChangeEventDetails>("change", {
-			detail: {
-				themeMode: this._themeMode
-			}
-		}));
+	private _onThemeModeChange(event: MouseEvent): void {
+		const clickedItem = (event.target as HTMLDivElement).closest(".btn") as HTMLDivElement;
+		if (clickedItem != null) {
+			this._themeMode = clickedItem.dataset.mode as PandaThemeMode;
+			console.log(`%c ⚡ (_onThemeModeChange) ${this._themeMode}`, "font-size: 24px; color: crimson; background: black;");
+
+			pandaThemeController.setThemeMode(this._themeMode);
+			this._updateState();
+			this.dispatchEvent(new CustomEvent<PandaThemeModeChangeEventDetails>("change", {
+				detail: {
+					themeMode: this._themeMode
+				}
+			}));
+		}
 	}
 }
 

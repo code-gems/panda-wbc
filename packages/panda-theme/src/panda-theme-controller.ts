@@ -311,6 +311,7 @@ class PandaThemeController {
 				themeGroupId: this._selectedThemeGroupId,
 				themeId: this._selectedThemeId,
 				themeMode: this._selectedThemeMode,
+				finalThemeMode: this._getFinalThemeMode(),
 				accentColorId: this._selectedAccentColorId,
 			};
 			callback(themeState);
@@ -516,6 +517,7 @@ class PandaThemeController {
 					themeGroupId: this._selectedThemeGroupId,
 					themeId: this._selectedThemeId,
 					themeMode: this._selectedThemeMode,
+					finalThemeMode: this._getFinalThemeMode(),
 					accentColorId: this._selectedAccentColorId,
 				};
 				callback(themeState);
