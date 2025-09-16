@@ -194,6 +194,8 @@ export class PandaThemeModeSelect extends HTMLElement {
 		this._themePreviewSystemEl.addEventListener("click", () => this._themeModeChangeEvent("system"));
 		this._themePreviewLightEl.addEventListener("click", () => this._themeModeChangeEvent("light"));
 		this._themePreviewDarkEl.addEventListener("click", () => this._themeModeChangeEvent("dark"));
+		this._updateState();
+		this._updateThemeLabel();
 	}
 
 	disconnectedCallback() {
