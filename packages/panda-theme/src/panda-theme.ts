@@ -33,7 +33,7 @@ export class PandaTheme extends HTMLElement {
 	attributeChangedCallback(_name: string, _oldValue: string, _newValue: string): void {
 		if (_name === "theme") {
 			this._theme = _newValue;
-			pandaThemeController.applyTheme(this._theme);
+			pandaThemeController.setThemeId(this._theme);
 		}
 	}
 }

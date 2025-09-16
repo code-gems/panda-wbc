@@ -1,9 +1,8 @@
 {
-	"name": "@panda-wbc/panda-theme-select",
+	"name": "@panda-wbc/panda-theme-controls",
 	"version": "1.0.0",
-	"description": "Native based web component - theme select",
+	"description": "Collection of native web components for panda-theme control. Works with panda-theme library.",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-theme-select.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -13,20 +12,21 @@
 	},
 	"keywords": [
 		"native web component",
+		"custom elements",
 		"panda-wbc",
 		"ui component",
 		"ui",
 		"theme selector",
-		"theme preview"
+		"theme preview",
+		"theme switcher"
 	],
 	"author": "code-gems",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"@panda-wbc/panda-icon": "workspace:*"
+		"@panda-wbc/panda-icon": "workspace:*",
+		"@panda-wbc/panda-theme": "workspace:*"
 	},
 	"files": [
-		"src",
-		"lib",
 		"index.d.ts"
 	],
 	"types": "index.d.ts",

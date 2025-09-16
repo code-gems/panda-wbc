@@ -1,5 +1,5 @@
 // style
-import { previewStyles } from "./styles/styles";
+import { styles } from "./styles/theme-preview-styles";
 
 export class PandaThemePreview extends HTMLElement {
 	// ================================================================================================================
@@ -80,12 +80,11 @@ export class PandaThemePreview extends HTMLElement {
 
 	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(previewStyles);
+		cssStyleSheet.replaceSync(styles);
 		if (this.shadowRoot) {
 			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
 		}
 	}
-
 
 	private _getThemePreviewTemplate(): string {
 		return `

@@ -1,5 +1,5 @@
 // style
-import { accentColorItemStyles } from "./styles/styles";
+import { styles } from "./styles/theme-accent-color-item-styles";
 
 // components
 import "@panda-wbc/panda-icon";
@@ -180,7 +180,7 @@ export class PandaThemeAccentColorItem extends HTMLElement {
 	/** Apply component styles. */
 	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(accentColorItemStyles);
+		cssStyleSheet.replaceSync(styles);
 		if (this.shadowRoot) {
 			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
 		}

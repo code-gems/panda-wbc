@@ -18,7 +18,7 @@ export const gotoPage: Reducer<Store, GotoPageAction> = (state, { pathname, sear
 
 export const changeTheme: Reducer<Store, ChangeThemeAction> = (state, { themeName }): Store => ({
 	...state,
-	selectedTheme: themeName
+	// selectedTheme: themeName
 });
 
 export const toggleDevMode: Reducer<Store, ToggleDevModeAction> = (state, { devMode }): Store => ({

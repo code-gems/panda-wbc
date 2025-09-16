@@ -2,6 +2,7 @@ declare module "panda-design-typings" {
 	import { TemplateResult } from "lit";
 	import { Action } from "redux";
 	import { SearchParams } from "@panda-wbc/panda-router";
+	import { PandaThemeMode } from "@panda-wbc/panda-theme";
 
 	export const enum PageCategory {
 		HOME = "HOME",
@@ -75,7 +76,11 @@ declare module "panda-design-typings" {
 
 	export interface Store {
 		devMode: boolean;
-		selectedTheme: string | null;
+		// theme
+		selectedThemeGroupId: string | null;
+		selectedThemeMode: PandaThemeMode;
+		selectedAccentColorId: string | null;
+		// router/navigation
 		currentPageDetails: {
 			pathname: string;
 			search: string;

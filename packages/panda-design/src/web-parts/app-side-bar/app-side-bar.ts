@@ -8,12 +8,12 @@ import { uiComponents } from "../../styles/styles";
 import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components & web parts
-import "@panda-wbc/panda-theme-switcher";
+// import "@panda-wbc/panda-theme-controls/lib/panda-theme-switcher";
 import "../dragon-logo/dragon-logo";
 
 // utils
 import { html, LitElement, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import PageLibrary from "../../utils/page-library";
 import { appStore, reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
@@ -33,11 +33,8 @@ class AppSideBar extends LitElement {
 		];
 	}
 
-	@property({ type: String })
-	selectedTheme: string | null = null;
-
-	@property({ type: String })
-	pathname!: string;
+	@state()
+	private _pathname!: string;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -45,13 +42,11 @@ class AppSideBar extends LitElement {
 
 	stateChanged(state: Store) {
 		const {
-			selectedTheme,
 			currentPageDetails: {
 				pathname
 			}
 		} = state;
-		this.pathname = pathname;
-		this.selectedTheme = selectedTheme;
+		this._pathname = pathname;
 	}
 
 	// ================================================================================================================
@@ -59,10 +54,6 @@ class AppSideBar extends LitElement {
 	// ================================================================================================================
 
 	protected render() {
-		const selectedTheme = this.selectedTheme === "panda-theme-light"
-			? PandaThemeSwitcherTheme.LIGHT
-			: PandaThemeSwitcherTheme.DARK;
-
 		return html`
 			<div class="side-bar">
 				<div class="header">
@@ -75,11 +66,7 @@ class AppSideBar extends LitElement {
 					${this._renderSideMenu()}
 				</div>
 				<div class="footer">
-					<panda-theme-switcher
-						.selectedTheme="${selectedTheme}"
-						@change="${this._onChangeTheme}"
-					>
-					<panda-theme-switcher>
+					<panda-theme-mode-switcher></panda-theme-mode-switcher>
 				</div>
 			</div>
 		`;
@@ -91,7 +78,7 @@ class AppSideBar extends LitElement {
 
 		allPages.forEach((page) => {
 			// console.log("%c page", "font-size: 24px; color: green;", page);
-			const active = page.pageUri === this.pathname
+			const active = page.pageUri === this._pathname
 				? "active"
 				: "";
 
@@ -101,7 +88,7 @@ class AppSideBar extends LitElement {
 					@click="${(e: MouseEvent) => navigate(page.pageUri, e)}"
 				>
 					<div class="icon">
-						<panda-icon icon="${page.icon}"></panda-icon>
+						<panda-icon .icon="${page.icon}"></panda-icon>
 					</div>
 					<label>${page.pageName}</label>
 				</div>

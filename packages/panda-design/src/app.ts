@@ -1,12 +1,16 @@
 // types
 import { Store } from "panda-design-typings";
 import { PandaRouterNavigateEvent, RouterConfig } from "@panda-wbc/panda-router";
+import { PandaThemeMode } from "@panda-wbc/panda-theme";
 
 // styles
 import { styles } from "./styles/styles";
 
+// theme service
+import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
+
 // custom themes
-import { pandaThemeTurquoise } from "./themes/panda-theme-turquoise";
+import { redAlertTheme } from "./themes/red-alert-theme/red-alert-theme";
 
 // components
 import "@panda-wbc/panda-theme";
@@ -22,10 +26,9 @@ import "./pages/core/core-page";
 
 // utils & config
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { appStore, reduxify } from "./redux/store";
 import { getRouterConfig } from "./router-config";
-import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 // actions
 import { gotoPage, changeTheme } from "./redux/actions/common";
@@ -38,8 +41,14 @@ class PandaApp extends LitElement {
 		return styles;
 	}
 
-	@property({ type: String })
-	selectedTheme: string | null = null;
+	@state()
+	private _selectedThemeGroupId!: string | null;
+
+	@state()
+	private _selectedThemeMode!: PandaThemeMode;
+
+	@state()
+	private _selectedAccentColorId!: string | null;
 
 	private readonly _routerConfig: RouterConfig = getRouterConfig();
 
@@ -48,31 +57,27 @@ class PandaApp extends LitElement {
 	// ================================================================================================================
 
 	protected firstUpdated(): void {
-		// register custom themes
-		// pandaThemeController.registerThemeGroup({
-		// 	groupName: "Panda Design",
-		// 	options: [
-		// 		{
-		// 			id: "panda-theme-turquoise",
-		// 			name: "Turquoise",
-		// 			theme: pandaThemeTurquoise
-		// 		},
-		// 	]
-		// });
 		// get selected theme or select default one
-		const selectedTheme = localStorage.getItem("theme") ?? "panda-theme-turquoise";
-		appStore.dispatch(
-			changeTheme({
-				themeName: selectedTheme
-			})
-		);
+		const themeGroupId = localStorage.getItem("themeGroupId") ?? "panda-theme-light";
+		const themeMode = localStorage.getItem("themeMode") ?? "light";
+		const accentColorId = localStorage.getItem("accentColorId") ?? "blue";
+		
+		// register custom themes
+		pandaThemeController.registerThemeGroup(redAlertTheme);
+		pandaThemeController.setThemeGroupId(themeGroupId);
+		pandaThemeController.setThemeMode(themeMode as PandaThemeMode);
+		pandaThemeController.setAccentColorId(accentColorId);
 	}
 
 	stateChanged(state: Store) {
 		const {
-			selectedTheme
+			selectedThemeGroupId,
+			selectedThemeMode,
+			selectedAccentColorId,
 		} = state;
-		this.selectedTheme = selectedTheme;
+		this._selectedThemeGroupId = selectedThemeGroupId;
+		this._selectedThemeMode = selectedThemeMode;
+		this._selectedAccentColorId = selectedAccentColorId;
 	}
 
 	// ================================================================================================================
@@ -81,7 +86,6 @@ class PandaApp extends LitElement {
 
 	protected render() {
 		return html`
-			<panda-theme .theme="${this.selectedTheme ?? ""}"></panda-theme>
 			<panda-notifications
 				position="top-center"
 				show-dismiss-all-button
@@ -98,7 +102,7 @@ class PandaApp extends LitElement {
 	// ================================================================================================================
 
 	private _onNavigate(event: PandaRouterNavigateEvent): void {
-		console.log("%c [APP] _onNavigate", "font-size: 24px; color: green;", event);
+		// console.log("%c [APP] _onNavigate", "font-size: 24px; color: green;", event);
 		const {
 			pathname,
 			search,

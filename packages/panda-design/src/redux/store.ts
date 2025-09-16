@@ -77,9 +77,9 @@ export const reduxify = () => {
 				this.__safeInvoke(super.disconnectedCallback);
 			}
 
-			__safeInvoke(f: any, ...args: any[]) {
-				if (f) {
-					f.bind(this)(...args);
+			__safeInvoke(fn: any, ...args: any[]) {
+				if (fn) {
+					fn.bind(this)(...args);
 				}
 			}
 		}

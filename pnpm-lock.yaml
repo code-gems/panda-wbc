@@ -347,9 +347,9 @@ importers:
       '@panda-wbc/panda-theme':
         specifier: workspace:*
         version: link:../panda-theme
-      '@panda-wbc/panda-theme-select':
+      '@panda-wbc/panda-theme-controls':
         specifier: workspace:*
-        version: link:../panda-theme-select
+        version: link:../panda-theme-controls
       '@panda-wbc/panda-theme-switcher':
         specifier: workspace:*
         version: link:../panda-theme-switcher
@@ -756,11 +756,14 @@ importers:
         specifier: workspace:*
         version: link:../panda-utils
 
-  packages/panda-theme-select:
+  packages/panda-theme-controls:
     dependencies:
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
+      '@panda-wbc/panda-theme':
+        specifier: workspace:*
+        version: link:../panda-theme
 
   packages/panda-theme-switcher:
     dependencies:

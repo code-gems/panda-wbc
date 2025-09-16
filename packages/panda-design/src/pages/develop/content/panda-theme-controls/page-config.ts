@@ -5,13 +5,13 @@ import { Page, PageCategory, ContentSectionName } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
-	pageName: "Theme Select",
-	pageId: "panda-theme-select",
-	pageUri: `/develop?page=panda-theme-select`,
+	pageName: "Theme Controls",
+	pageId: "panda-theme-controls",
+	pageUri: `/develop?page=panda-theme-controls`,
 
 	category: PageCategory.DEVELOP,
-	keywords: ["native", "theme", "select"],
-	description: ["Showcase of a panda-theme-select component."],
+	keywords: ["native", "theme", "controls", "switcher", "accent colors", "theme mode"],
+	description: ["Showcase of a panda-theme-controls component."],
 	native: true,
 	createdTimestamp: 1757053855785,
 

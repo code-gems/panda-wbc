@@ -14,9 +14,8 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
-		"web component",
+		"native web component",
+		"custom element",
 		"panda-wbc",
 		"panda-theme",
 		"themes"
@@ -28,6 +27,8 @@
 	},
 	"files": [
 		"src",
-		"lib"
-	]
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts"
 }

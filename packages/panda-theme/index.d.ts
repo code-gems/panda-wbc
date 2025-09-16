@@ -4,6 +4,13 @@ export const enum PandaThemeMode {
 	SYSTEM = "system",
 }
 
+export type PandaThemeState = {
+	themeGroupId: string;
+	themeId: string;
+	themeMode: PandaThemeMode;
+	accentColorId: string;
+}
+
 export type PandaThemeAccentColor = {
 	id: string; // unique value eg. panda-theme-accent-red
 	name: string; // accent color name eg.: "Crimson Red"
@@ -22,7 +29,8 @@ export interface PandaThemeDetails {
 }
 
 export interface PandaThemeGroup {
-	groupName: string; // theme group name eg.: "Panda Theme"
+	id: string;
+	name: string; // theme group name eg.: "Panda Theme"
 	light: PandaThemeDetails;
 	dark: PandaThemeDetails;
 }
@@ -32,7 +40,15 @@ export interface PandaThemeGroup {
 // ====================================================================================================================
 
 export interface PandaThemeChangeEventDetail {
+	themeGroupId: string;
+	themeId: string;
+	themeMode: string;
+	accentColorId: string;
+
+	// legacy props
+	/** @deprecated */
 	id: string | undefined; // selected theme id
+	/** @deprecated */
 	name: string | undefined; // selected theme name
 }
 

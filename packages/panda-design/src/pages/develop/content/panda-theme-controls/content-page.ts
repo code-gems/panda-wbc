@@ -1,14 +1,18 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
-import { PandaThemeAccentColorListChangeEvent, PandaThemeSelectChangeEvent, PandaThemeSelectI18nConfig } from "@panda-wbc/panda-theme-select";
+import {
+	PandaThemeAccentColorListChangeEvent,
+	PandaThemeModeChangeEvent,
+	PandaThemeSelectI18nConfig,
+} from "@panda-wbc/panda-theme-controls";
 
 // styles
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-theme-select";
-import "@panda-wbc/panda-theme-select/lib/panda-theme-accent-color-list";
-import "@panda-wbc/panda-theme-select/lib/panda-theme-accent-color-item";
+import "@panda-wbc/panda-theme-controls/lib/panda-theme-mode-select";
+import "@panda-wbc/panda-theme-controls/lib/panda-theme-mode-switcher";
+import "@panda-wbc/panda-theme-controls/lib/panda-theme-accent-color-list";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -42,26 +46,8 @@ export class ContentPage extends ContentPageTemplate {
 	];
 
 	@state()
-	private _selectedTheme: string = "";
-
-	@state()
-	private _i18n: PandaThemeSelectI18nConfig | null = null;
+	private _i18n!: PandaThemeSelectI18nConfig;
 	
-	private readonly _accentColorList = [
-		{
-			id: "panda-theme-accent-blue",
-			primaryColor: "hsl(209deg 78% 46%)",
-			primaryTextColor: "hsl(0deg 0% 100%)",
-			secondaryColor: "hsl(207deg 64% 35%)",
-		},
-		{
-			id: "panda-theme-accent-green",
-			primaryColor: "hsl(160deg 81% 43%)",
-			primaryTextColor: "hsl(0deg 0% 100%)",
-			secondaryColor: "hsl(174deg 100% 29%)",
-		},	
-	];
-
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -99,44 +85,39 @@ export class ContentPage extends ContentPageTemplate {
 						<div class="rows">
 							<div class="row">
 								<div class="col-full">
-
-									<panda-theme-select
-										.value="${this._selectedTheme}"
+									<panda-theme-mode-select
 										.i18n="${this._i18n}"
-										@change="${this._onThemeChange}"
-									>
-									</panda-theme-select>
-
+										@change="${this._onThemeModeChange}"
+									></panda-theme-mode-select>
 								</div>
 							</div>
 
 							<div class="row">
-								<div class="col-3">
-
-									<panda-button
-										@click="${this._onChangeI18nConfigToChinese}"
-									>
-										Change i18n to Chinese
-									</panda-button>
-
-								</div>
-								<div class="col-3">
-
-									<panda-button
-										@click="${this._onChangeI18nConfigToEnglish}"
-									>
-										Change i18n to English
-									</panda-button>
-
+								<div class="col-full">
+									<panda-theme-mode-switcher
+										@change="${this._onThemeModeChange}"
+									></panda-theme-mode-switcher>
 								</div>
 							</div>
 
 							<div class="row">
-								<div class="col-half">
+								<div class="col-full">
 									<panda-theme-accent-color-list
-										.list="${this._accentColorList}"
 										@change="${this._onAccentColorChange}"
 									></panda-theme-accent-color-list>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onChangeI18nConfigToChinese}">
+										Change i18n to Chinese
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onChangeI18nConfigToEnglish}">
+										Change i18n to English
+									</panda-button>
 								</div>
 							</div>
 
@@ -231,11 +212,13 @@ export class ContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onThemeChange(event: PandaThemeSelectChangeEvent) {
-		console.log(`%c (_onThemeChange)`, "font-size: 24px; color: crimson; background: black;", event);
-		this._selectedTheme = event.detail.theme;
+	private _onThemeModeChange(event: PandaThemeModeChangeEvent) {
+		// console.log(`%c 🚀 (_onThemeModeChange) themeMode`, "font-size: 24px; color: green; background: black;", event.detail.themeMode);
+		const themeMode = event.detail.themeMode;
+		localStorage.setItem("themeMode", themeMode);
+
 		toastCenter.createToast({
-			message: `Theme changed to ${this._selectedTheme}`,
+			message: `Theme mode changed to ${themeMode}`,
 			theme: "done",
 			icon: "check-circle",
 		});
@@ -246,15 +229,15 @@ export class ContentPage extends ContentPageTemplate {
 			lightHeaderText: "亮色",
 			lightFooterText: "使用亮色主题",
 			lightFooterDescription: "界面将以亮色主题呈现",
+
 			darkHeaderText: "暗色",
 			darkFooterText: "使用暗色主题",
 			darkFooterDescription: "界面将以暗色主题呈现",
+
 			systemHeaderText: "系统偏好设置",
 			systemFooterText: "跟随系统主题",
 			systemFooterDescription: "界面主题将根据系统偏好设置自动切换",
 		};
-
-		pandaThemeController.setAccentColor("panda-theme-accent-green");
 	}
 
 	private _onChangeI18nConfigToEnglish(): void {
@@ -274,10 +257,14 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onAccentColorChange(event: PandaThemeAccentColorListChangeEvent): void {
-		const accentColorId = event.detail.selected;
-		
-		if (accentColorId) {
-			pandaThemeController.setAccentColor(accentColorId);
-		}
+		const accentColorId = event.detail.accentColorId;
+		// console.log(`%c 🚀 (_onAccentColorChange) accentColorId`, "font-size: 24px; color: green; background: black;", accentColorId);
+		localStorage.setItem("accentColorId", accentColorId);
+
+		toastCenter.createToast({
+			message: `Accent color changed to ${accentColorId}`,
+			theme: "done",
+			icon: "check-circle",
+		});
 	}
 }

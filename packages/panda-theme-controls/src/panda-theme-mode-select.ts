@@ -1,36 +1,24 @@
 // types
-import { PandaThemeSelectChangeEventDetails, PandaThemeSelectI18nConfig } from "../index";
+import { PandaThemeMode, PandaThemeState } from "@panda-wbc/panda-theme";
+import { PandaThemeModeChangeEventDetails, PandaThemeSelectI18nConfig } from "..";
 import { PandaThemePreview } from "./panda-theme-preview";
 
+// theme service
+import { pandaThemeController, themeWatch } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
+
 // style
-import { styles } from "./styles/styles";
+import { styles } from "./styles/theme-mode-select-styles";
 
 // components
 import "@panda-wbc/panda-icon";
 import "./panda-theme-preview";
 
-export class PandaThemeSelect extends HTMLElement {
+@themeWatch()
+export class PandaThemeModeSelect extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 	
-	static readonly observedAttributes = ["value"];
-
-	// value ==========================================================================================================
-	private _value!: string;
-	
-	get value(): string {
-		return this._value;
-	}
-
-	set value(value: string) {
-		if (this._value !== value) {
-			this._value = value;
-			// reflect to attribute
-			this.setAttribute("value", this._value);
-		}
-	}
-
 	// i18n ===========================================================================================================
 	private _i18n!: PandaThemeSelectI18nConfig;
 
@@ -47,6 +35,8 @@ export class PandaThemeSelect extends HTMLElement {
 	}
 
 	// view properties ================================================================================================
+
+	private _themeMode!: PandaThemeMode;
 
 	// template elements
 	private readonly _themePreviewSystemEl!: PandaThemePreview;
@@ -69,7 +59,7 @@ export class PandaThemeSelect extends HTMLElement {
 	private readonly _footerDescriptionDarkEl!: HTMLDivElement;
 
 	// events
-	private readonly _themeChangeEvent!: any;
+	private readonly _themeModeChangeEvent!: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -171,11 +161,11 @@ export class PandaThemeSelect extends HTMLElement {
 		this.shadowRoot!.appendChild(template.content.cloneNode(true));
 
 		// initialize class properties
-		this._value = "";
+		this._themeMode = pandaThemeController.getThemeMode();
 		this._i18n = this._getDefaultI18nConfig();
 
 		// init events
-		this._themeChangeEvent = this._onThemeChange.bind(this);
+		this._themeModeChangeEvent = this._onThemeModeChange.bind(this);
 
 		// get template element handles
 		if (this.shadowRoot) {
@@ -201,29 +191,22 @@ export class PandaThemeSelect extends HTMLElement {
 
 	connectedCallback() {
 		// add event listeners to component template
-		this._themePreviewSystemEl.addEventListener("click", () => this._themeChangeEvent("system"));
-		this._themePreviewLightEl.addEventListener("click", () => this._themeChangeEvent("light"));
-		this._themePreviewDarkEl.addEventListener("click", () => this._themeChangeEvent("dark"));
+		this._themePreviewSystemEl.addEventListener("click", () => this._themeModeChangeEvent("system"));
+		this._themePreviewLightEl.addEventListener("click", () => this._themeModeChangeEvent("light"));
+		this._themePreviewDarkEl.addEventListener("click", () => this._themeModeChangeEvent("dark"));
 	}
 
 	disconnectedCallback() {
 		// remove event listeners
-		this._themePreviewSystemEl.removeEventListener("click", this._themeChangeEvent);
-		this._themePreviewLightEl.removeEventListener("click", this._themeChangeEvent);
-		this._themePreviewDarkEl.removeEventListener("click", this._themeChangeEvent);
+		this._themePreviewSystemEl.removeEventListener("click", this._themeModeChangeEvent);
+		this._themePreviewLightEl.removeEventListener("click", this._themeModeChangeEvent);
+		this._themePreviewDarkEl.removeEventListener("click", this._themeModeChangeEvent);
 	}
 
-	/**
-	 * Handle attribute changes.
-	 * @param _name The name of the attribute that changed.
-	 * @param _oldValue The old value of the attribute.
-	 * @param _newValue The new value of the attribute.
-	 */
-	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
-		if (_name === "value") {
-			this._value = _newValue;
-			this._updateState();
-		}
+	onThemeChange(themeState: PandaThemeState): void {
+		const { themeMode } = themeState;
+		this._themeMode = themeMode;
+		this._updateState();
 	}
 
 	// ================================================================================================================
@@ -241,7 +224,7 @@ export class PandaThemeSelect extends HTMLElement {
 
 	/** Update the component state based on the current value. */
 	private _updateState(): void {
-		switch (this._value) {
+		switch (this._themeMode) {
 			case "system":
 				this._themePreviewSystemEl.classList.add("selected");
 				this._themePreviewLightEl.classList.remove("selected");
@@ -307,14 +290,15 @@ export class PandaThemeSelect extends HTMLElement {
 
 	/**
 	 * Handle theme change events.
-	 * @param theme The new theme value.
+	 * @param themeMode The new theme value.
 	 */
-	private _onThemeChange(theme: string): void {
-		this._value = theme;
+	private _onThemeModeChange(themeMode: PandaThemeMode): void {
+		this._themeMode = themeMode;
+		pandaThemeController.setThemeMode(themeMode);
 		this._updateState();
-		this.dispatchEvent(new CustomEvent<PandaThemeSelectChangeEventDetails>("change", {
+		this.dispatchEvent(new CustomEvent<PandaThemeModeChangeEventDetails>("change", {
 			detail: {
-				theme: this._value
+				themeMode: this._themeMode
 			}
 		}));
 	}
@@ -322,12 +306,12 @@ export class PandaThemeSelect extends HTMLElement {
 }
 
 // Register the custom element
-if (!customElements.get("panda-theme-select")) {
-	customElements.define("panda-theme-select", PandaThemeSelect);
+if (!customElements.get("panda-theme-mode-select")) {
+	customElements.define("panda-theme-mode-select", PandaThemeModeSelect);
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-theme-select": PandaThemeSelect;
+		"panda-theme-mode-select": PandaThemeModeSelect;
 	}
 }
