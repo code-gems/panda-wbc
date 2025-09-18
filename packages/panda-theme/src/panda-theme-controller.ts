@@ -255,7 +255,7 @@ class PandaThemeController {
 	 */
 	public setThemeMode(themeMode: PandaThemeMode): void {
 		// check if value changed
-		if (themeMode === this._selectedThemeMode) {
+		if (themeMode === this._selectedThemeMode && themeMode !== PandaThemeMode.SYSTEM) {
 			return;
 		}
 		const thisThemeGroup = this._getThemeGroup();
@@ -316,10 +316,6 @@ class PandaThemeController {
 			};
 			callback(themeState);
 		}
-		console.log(
-			`%c 🧪 [PANDA THEME CONTROLLER] Theme change callback registered: ${callbackId}`,
-			"font-size: 16px; color: limegreen; background: black;"
-		);
 		return callbackId;
 	}
 
@@ -329,10 +325,6 @@ class PandaThemeController {
 	 */
 	public unsubscribe(callbackId: string): void {
 		// remove subscription
-		console.log(
-			`%c 🧪 [PANDA THEME CONTROLLER] Callback unregistered: ${callbackId}`,
-			"font-size: 16px; color: limegreen; background: black;"
-		);
 		this._callbackList.delete(callbackId);
 	}
 
@@ -529,15 +521,10 @@ class PandaThemeController {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onDeviceThemeChange(event: MediaQueryListEvent): void {
+	private _onDeviceThemeChange(): void {
 		// check if theme mode is SYSTEM and handle the change
-		if (this._selectedThemeMode !== PandaThemeMode.SYSTEM) {
-			return;
-		}
-		if (event.matches) {
-			this.setThemeMode(PandaThemeMode.DARK);
-		} else {
-			this.setThemeMode(PandaThemeMode.LIGHT);
+		if (this._selectedThemeMode === PandaThemeMode.SYSTEM) {
+			this.setThemeMode(PandaThemeMode.SYSTEM);
 		}
 	}
 }

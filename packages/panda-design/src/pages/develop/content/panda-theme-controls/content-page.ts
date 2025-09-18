@@ -27,7 +27,6 @@ import {
 	installationSnippet,
 } from "./snippets/snippets";
 import { toastCenter } from "../../../../utils/toast-center";
-import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 @page(pageConfig)
 @customElement("panda-theme-select-content-page")
@@ -213,7 +212,6 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onThemeModeChange(event: PandaThemeModeChangeEvent) {
-		// console.log(`%c 🚀 (_onThemeModeChange) themeMode`, "font-size: 24px; color: green; background: black;", event.detail.themeMode);
 		const themeMode = event.detail.themeMode;
 		localStorage.setItem("themeMode", themeMode);
 
@@ -258,7 +256,6 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onAccentColorChange(event: PandaThemeAccentColorListChangeEvent): void {
 		const accentColorId = event.detail.accentColorId;
-		// console.log(`%c 🚀 (_onAccentColorChange) accentColorId`, "font-size: 24px; color: green; background: black;", accentColorId);
 		localStorage.setItem("accentColorId", accentColorId);
 
 		toastCenter.createToast({
