@@ -1,6 +1,6 @@
 {
 	"name": "@panda-wbc/panda-button",
-	"version": "0.0.2",
+	"version": "1.0.0",
 	"description": "Lit based web component - button",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-button.js",
