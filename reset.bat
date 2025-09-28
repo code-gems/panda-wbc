@@ -1,7 +1,7 @@
 echo "Cleaning up Panda UI packages..."
 echo "This will remove all node_modules and lib folders from all packages."
 echo "Press any key to continue or Ctrl+C to cancel."
-pause >nul
+pause
 echo "Cleaning up..."
 
 cd /d .\packages\panda-accordion\
@@ -232,11 +232,23 @@ cd /d ..\panda-text-field\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
+cd /d ..\panda-text-scroller\
+call rmdir /s /q node_modules
+call rmdir /s /q lib
+
+cd /d ..\panda-text-slider\
+call rmdir /s /q node_modules
+call rmdir /s /q lib
+
 cd /d ..\panda-textarea\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
 cd /d ..\panda-theme\
+call rmdir /s /q node_modules
+call rmdir /s /q lib
+
+cd /d ..\panda-theme-controls\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
