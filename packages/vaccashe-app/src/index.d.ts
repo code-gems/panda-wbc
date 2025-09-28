@@ -1,0 +1,137 @@
+declare module "panda-design-typings" {
+	import { TemplateResult } from "lit";
+	import { Action } from "redux";
+	import { SearchParams } from "@panda-wbc/panda-router";
+	import { PandaThemeMode } from "@panda-wbc/panda-theme";
+
+	export const enum PageCategory {
+		HOME = "HOME",
+		DEVELOP = "DEVELOP",
+		THEMES = "THEMES",
+		CORE = "CORE",
+		ABOUT = "ABOUT",
+	}
+
+	export const enum ContentSectionName {
+		OVERVIEW = "overview",
+		INSTALLATION = "installation",
+		USAGE = "usage",
+		COMPONENT_STATES = "component-states",
+		FEATURES = "features",
+		VALIDATION = "validation",
+		THEMING = "theming",
+		CUSTOMIZATION = "customization",
+		PROPERTIES = "properties",
+		EVENTS = "events",
+		INTERFACE = "interface",
+		// miscellaneous 
+		LIST = "list",
+	}
+
+	export interface ContextMenuItem {
+		name: string;
+		contextId: string;
+	}
+
+	export interface Page {
+		pageId: string;
+		pageName: string;
+		pageUri: string;
+		description: string[];
+		category: string;
+		template: TemplateResult;
+		
+		icon?: string;
+		parent?: boolean;
+		keywords?: string[];
+		native?: boolean;
+		createdTimestamp?: number;
+		updatedTimestamp?: number;
+		contextMenu?: ContextMenuItem[];
+		order?: number;
+
+		subpageList?: Page[];
+	}
+
+	export interface ThunkDispatch<S, E, A extends Action> {
+		(action: A): Action;
+		<R, T extends Action>(asyncAction: ThunkAction<R, S, E, T>): R;
+	}
+
+	export type ThunkAction<R, S, E, A extends Action> = (
+		dispatch: ThunkDispatch<S, E, A>,
+		getState: () => S,
+		extraArgument: E
+	) => R;
+
+	export type ActionCreator<P, A extends Action> = (param: P) => A;
+
+	export type AsyncActionCreator<P, A extends Action> = (param: P) => ThunkAction<Promise<void> | void, Store, void, A>;
+
+	export type Reducer<S, A extends Action> = (state: S, action: A) => S;
+
+	export interface ReducerList {
+		[reducerName: string]: Reducer<Store, any>;
+	}
+
+	export interface Store {
+		devMode: boolean;
+		// theme
+		selectedThemeGroupId: string | null;
+		selectedThemeMode: PandaThemeMode;
+		selectedAccentColorId: string | null;
+		// router/navigation
+		currentPageDetails: {
+			pathname: string;
+			search: string;
+			searchParams: SearchParams;
+		};
+	}
+
+	export interface ComponentPropertyDetails {
+		name: string;
+		defaultValue: string;
+		type: string;
+		description: string;
+		options?: string[];
+		attribute?: string;
+	}
+
+	export interface ComponentEventDetails {
+		name: string;
+		returnType: string;
+		description: string;
+	}
+
+	export interface ComponentInterfaceDetails {
+		method: string;
+		returnType: string;
+		description: string;
+	}
+
+	export interface ComponentCssVariableDetails {
+		cssClass: string;
+		cssVariable: string;
+		description: string;
+		addText?: boolean;
+		sampleText?: string;
+	}
+
+	// ================================================================================================================
+	// ACTIONS ========================================================================================================
+	// ================================================================================================================
+
+	export interface GotoPageAction extends Action {
+		pathname: string;
+		search: string;
+		searchParams: SearchParams;
+	}
+
+	export interface ChangeThemeAction extends Action {
+		themeName: string;
+	}
+
+	export interface ToggleDevModeAction extends Action {
+		devMode: boolean;
+	}
+}

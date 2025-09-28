@@ -18,7 +18,7 @@
 		"test:button": "pnpm --filter \"@panda-wbc/panda-button\" test"
 	},
 	"devDependencies": {
-		"pnpm": "^8.5.1",
+		"pnpm": "^10.0.0",
 		"rimraf": "^6.0.0",
 		"typescript": "^5.9.2",
 		"commander": "^10.0.0",
