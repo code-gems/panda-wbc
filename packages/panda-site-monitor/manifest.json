@@ -1,0 +1,31 @@
+{
+	"manifest_version": 3,
+	"name": "Panda Site Monitor",
+	"version": "1.0.0",
+	"minimum_chrome_version": "116",
+	"description": "Monitor website availability and performance using Panda Design components.",
+	"author": "code-gems",
+	"host_permissions": ["http://*/*", "https://*/*", "file:///*"],
+	"permissions": [
+		"sidePanel",
+		"contextMenus",
+		"scripting",
+		"activeTab",
+		"tabs"
+	],
+	"side_panel": {
+		"default_path": "side-panel.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["http://*/*", "https://*/*", "file:///*"],
+			"js": ["content.js"]
+		}
+	],
+	"background": {
+		"service_worker": "service-worker.js"
+	},
+	"icons": {
+		"128": "assets/icon-128.png"
+	}
+}

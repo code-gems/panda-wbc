@@ -1,6 +1,5 @@
 // types
 import { Store } from "panda-design-typings";
-import { PandaThemeSwitcherToggleEvent, PandaThemeSwitcherTheme } from "@panda-wbc/panda-theme-switcher";
 
 // styles
 import { styles } from "./styles/styles";
@@ -19,7 +18,7 @@ import { appStore, reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
 // actions
-import { changeTheme } from "../../redux/actions/common";
+// import { changeTheme } from "../../redux/actions/common";
 
 @customElement("app-side-bar")
 @reduxify()
@@ -102,19 +101,4 @@ class AppSideBar extends LitElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onChangeTheme(event: PandaThemeSwitcherToggleEvent) {
-		const selectedTheme = event.detail.value;
-		let themeName = "panda-theme-light";
-		if (selectedTheme === PandaThemeSwitcherTheme.LIGHT) {
-			themeName = "panda-theme-light";
-		} else {
-			themeName = "panda-theme-dark";
-		}
-
-		appStore.dispatch(
-			changeTheme({
-				themeName
-			})
-		);
-	}
 }

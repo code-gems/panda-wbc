@@ -63,7 +63,6 @@ class PandaApp extends LitElement {
 		const accentColorId = localStorage.getItem("accentColorId") ?? "blue";
 		
 		// register custom themes
-		pandaThemeController.registerThemeGroup(redAlertTheme);
 		pandaThemeController.setThemeGroupId(themeGroupId);
 		pandaThemeController.setThemeMode(themeMode as PandaThemeMode);
 		pandaThemeController.setAccentColorId(accentColorId);

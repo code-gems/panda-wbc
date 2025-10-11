@@ -1,0 +1,15 @@
+:root {
+	--panda-primary-color: #4CAF50;
+	--panda-secondary-color: #ff9800;
+	--panda-font-family: 'Arial, sans-serif';
+	--panda-border-radius: 5px;
+	--panda-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+	color: black;
+	font-family: var(--panda-font-family);
+	margin: 20px;
+
+	background-color: white;
+}

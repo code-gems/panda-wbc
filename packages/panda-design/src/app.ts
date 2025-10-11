@@ -118,3 +118,8 @@ class PandaApp extends LitElement {
 		);
 	}
 }
+
+(window as any).panda = {
+	name: "Panda Design",
+	version: "0.1.0",
+}

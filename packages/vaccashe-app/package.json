@@ -26,6 +26,7 @@
 
 		"@panda-wbc/panda-button": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
+		"@panda-wbc/panda-search": "workspace:*",
 		"@panda-wbc/panda-text-field": "workspace:*",
 		"@panda-wbc/panda-password-field": "workspace:*",
 		"lit": "^3.0.2",
