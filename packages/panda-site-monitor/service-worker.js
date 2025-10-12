@@ -24,10 +24,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
+	console.log('[Service worker] Active info:', activeInfo);
 	console.log('[Service worker] Active tab changed to tabId:', activeInfo.tabId);
 	
 	// You can also get full tab details if needed
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
+		console.log('[Service worker] New active tab details:', tab);
 		console.log('[Service worker] New active tab URL:', tab.url);
 	});
 });

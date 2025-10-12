@@ -43,6 +43,7 @@ window.onload = () => {
 
 							const event = new CustomEvent('panda-dev-tools-init', {});
 							document.dispatchEvent(event);
+							window.location.reload();
 						},
 					});
 				}
