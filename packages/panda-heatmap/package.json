@@ -1,0 +1,37 @@
+{
+	"name": "@panda-wbc/panda-heatmap",
+	"version": "1.0.0",
+	"description": "Lit based web component - heatmap",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-heatmap.js",
+	"scripts": {
+		"compile": "tsc",
+		"share": "pnpm publish",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"lit",
+		"lit-element",
+		"web component",
+		"ui component",
+		"heatmap",
+		"data visualization"
+	],
+	"author": "code-gems",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@panda-wbc/panda-spinner": "workspace:*"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

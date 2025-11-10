@@ -81,7 +81,7 @@ class PandaThemeController {
 		this._selectedThemeId = this._defaultThemeId;
 		this._selectedThemeMode = this._defaultThemeMode;
 		this._selectedAccentColorId = this._defaultAccentColorId;
-		this._darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+		this._darkModeMediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
 		this._selectedBrowserThemeMode = this._getBrowserThemeMode();
 		this._callbackList = new Map();
 
@@ -381,8 +381,8 @@ class PandaThemeController {
 	 * @returns browser theme mode
 	 */
 	private _getBrowserThemeMode(): PandaThemeMode {
-		const isLightMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)");
-		const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+		const isLightMode = globalThis.matchMedia && globalThis.matchMedia("(prefers-color-scheme: light)");
+		const isDarkMode = globalThis.matchMedia && globalThis.matchMedia("(prefers-color-scheme: dark)");
 
 		if (isLightMode.matches) {
 			return PandaThemeMode.LIGHT;

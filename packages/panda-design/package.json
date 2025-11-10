@@ -36,6 +36,7 @@
 		"@panda-wbc/panda-flag": "workspace:*",
 		"@panda-wbc/panda-full-page": "workspace:*",
 		"@panda-wbc/panda-grid-layout": "workspace:*",
+		"@panda-wbc/panda-heatmap": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-menu": "workspace:*",
 		"@panda-wbc/panda-mixins": "workspace:*",

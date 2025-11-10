@@ -247,11 +247,17 @@ export const pandaThemeLight = /*css*/ `
 		--panda-link-color-visited: hsl(271deg 100% 50%);
 		--panda-link-color-active: hsl(271deg 100% 60%);
 
-		--panda-padding-xs: 2px;
-		--panda-padding-s: 5px;
-		--panda-padding-m: 10px;
-		--panda-padding-l: 15px;
-		--panda-padding-xl: 30px;
+		--panda-gap-xs: 2px;
+		--panda-gap-s: 5px;
+		--panda-gap-m: 10px;
+		--panda-gap-l: 15px;
+		--panda-gap-xl: 30px;
+
+		--panda-padding-xs: var(--panda-gap-xs);
+		--panda-padding-s: var(--panda-gap-s);
+		--panda-padding-m: var(--panda-gap-m);
+		--panda-padding-l: var(--panda-gap-l);
+		--panda-padding-xl: var(--panda-gap-xl);
 
 		--panda-border-radius-xs: 2px;
 		--panda-border-radius-s: 3px;

@@ -199,22 +199,46 @@ const colorNameToRgb = (colorName: string): { red: number, green: number, blue: 
 };
 
 /**
- * Convert percentage or decimal value of alpha to number
- * @param {String} alpha - alpha value
- * @returns {Number} numeric value of alpha [0-100] [default: 100]
+ * Clamp alpha value between 0 and 100
  */
-const parseAlphaValue = (alpha: string | null | undefined): number => {
-	if (alpha === null || alpha === undefined) {
+const clampAlpha = (value: number): number => {
+	return Math.max(0, Math.min(100, Math.round(value)));
+};
+
+/**
+ * Convert percentage or decimal value of opacity to number
+ * @param {String} opacity opacity value
+ * @returns {Number} numeric value of opacity [0-100] [default: 100]
+ */
+const parseOpacityValue = (opacity: string | number | null | undefined): number => {
+	if (opacity == null) {
 		return 100;
 	}
-	// parse alpha value
-	if (alpha.includes("%")) {
+	// handle number value case
+	if (typeof opacity === "number") {
+		// Assume numbers are decimals (0-1 range) or percentages (0-100 range)
+		const value = opacity <= 1 ? opacity * 100 : opacity;
+		return Math.max(0, Math.min(100, Math.round(value)));
+	}
+
+	// Handle string input
+	const trimmedOpacity = opacity.toString().trim();
+	
+	if (trimmedOpacity === "") {
+		return 100;
+	}
+
+	// parse opacity value
+	if (trimmedOpacity.includes("%")) {
 		// handle percentage value case
-		const match = alpha.match(/^(\d+)/);
-		return match !== null ? Number(match[0]) : 100;
+		const match = trimmedOpacity.match(/^([\d.]+)%$/);
+		if (!match) {
+			return 100;
+		}
+		return clampAlpha(Number(match[1]));
 	} else {
 		// handle decimal value case
-		return Math.round(Number(alpha) * 100);
+		return Math.round(Number(trimmedOpacity) * 100);
 	}
 }
 
@@ -286,7 +310,7 @@ export const parseColorString = (color: string): PandaParticleColor => {
 				hue = Number(match[1]);
 				saturation = Number(match[2]);
 				lightness = Number(match[3]);
-				alpha = parseAlphaValue(match[4]);
+				alpha = parseOpacityValue(match[4]);
 			} else {
 				console.warn("%c ✨ [PANDA PARTICLE BANNER] invalid color value!", "font-size: 16px;", color);
 			}
@@ -298,7 +322,7 @@ export const parseColorString = (color: string): PandaParticleColor => {
 				red = Number(match[1]);
 				green = Number(match[2]);
 				blue = Number(match[3]);
-				alpha = parseAlphaValue(match[4]);
+				alpha = parseOpacityValue(match[4]);
 			} else {
 				console.warn("%c ✨ [PANDA PARTICLE BANNER] invalid color value!", "font-size: 16px;", color);
 			}
@@ -308,27 +332,27 @@ export const parseColorString = (color: string): PandaParticleColor => {
 
 			if (color.length === 3) {
 				// handle hex short format eg. #fff
-				red = parseInt(color.substring(0, 1).repeat(2), 16);
-				green = parseInt(color.substring(1, 2).repeat(2), 16);
-				blue = parseInt(color.substring(2, 3).repeat(2), 16);
+				red = Number.parseInt(color.substring(0, 1).repeat(2), 16);
+				green = Number.parseInt(color.substring(1, 2).repeat(2), 16);
+				blue = Number.parseInt(color.substring(2, 3).repeat(2), 16);
 			} else if (color.length === 4) {
 				// handle hex short format with alpha channel eg. #fffc
-				red = parseInt(color.substring(0, 1).repeat(2), 16);
-				green = parseInt(color.substring(1, 2).repeat(2), 16);
-				blue = parseInt(color.substring(2, 3).repeat(2), 16);
-				alpha = parseInt(color.substring(3, 4).repeat(2), 16);
+				red = Number.parseInt(color.substring(0, 1).repeat(2), 16);
+				green = Number.parseInt(color.substring(1, 2).repeat(2), 16);
+				blue = Number.parseInt(color.substring(2, 3).repeat(2), 16);
+				alpha = Number.parseInt(color.substring(3, 4).repeat(2), 16);
 				alpha = Math.round(alpha * 100 / 255);
 			} else if (color.length === 6) {
 				// handle hex long format eg. #ffffff
-				red = parseInt(color.substring(0, 2), 16);
-				green = parseInt(color.substring(2, 4), 16);
-				blue = parseInt(color.substring(4, 6), 16);
+				red = Number.parseInt(color.substring(0, 2), 16);
+				green = Number.parseInt(color.substring(2, 4), 16);
+				blue = Number.parseInt(color.substring(4, 6), 16);
 			} else if (color.length === 8) {
 				// handle hex long format with alpha channel eg. #ffffffcc
-				red = parseInt(color.substring(0, 2), 16);
-				green = parseInt(color.substring(2, 4), 16);
-				blue = parseInt(color.substring(4, 6), 16);
-				alpha = parseInt(color.substring(6, 8), 16);
+				red = Number.parseInt(color.substring(0, 2), 16);
+				green = Number.parseInt(color.substring(2, 4), 16);
+				blue = Number.parseInt(color.substring(4, 6), 16);
+				alpha = Number.parseInt(color.substring(6, 8), 16);
 				alpha = Math.round(alpha * 100 / 255);
 			} else {
 				console.warn("%c ✨ [PANDA PARTICLE BANNER] invalid color value!", "font-size: 16px;", color);

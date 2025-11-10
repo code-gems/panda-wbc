@@ -251,6 +251,9 @@ importers:
       '@panda-wbc/panda-grid-layout':
         specifier: workspace:*
         version: link:../panda-grid-layout
+      '@panda-wbc/panda-heatmap':
+        specifier: workspace:*
+        version: link:../panda-heatmap
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
@@ -446,6 +449,12 @@ importers:
       lit:
         specifier: ^3.0.2
         version: 3.3.1
+
+  packages/panda-heatmap:
+    dependencies:
+      '@panda-wbc/panda-spinner':
+        specifier: workspace:*
+        version: link:../panda-spinner
 
   packages/panda-icon: {}
 
