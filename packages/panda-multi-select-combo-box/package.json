@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-multi-input",
+	"name": "@panda-wbc/panda-multi-select-combo-box",
 	"version": "1.0.0",
 	"description": "Lit based web component adding multi input component to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-multi-input.js",
+	"main": "lib/panda-multi-select-combo-box.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,21 +12,22 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
+		"custom element",
 		"web component",
 		"ui component",
-		"input field",
-		"multiple options",
-		"email input",
-		"tag input"
+		"multi-select",
+		"multiselect",
+		"combo-box",
+		"dropdown"
 	],
 	"author": "code-gems",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"lit": "^3.0.2",
 		"@panda-wbc/panda-icon": "workspace:*",
-		"@panda-wbc/panda-spinner": "workspace:*"
+		"@panda-wbc/panda-spinner": "workspace:*",
+		"@panda-wbc/panda-text-slider": "workspace:*",
+		"@panda-wbc/panda-text-field": "workspace:*",
+		"@panda-wbc/panda-button": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",
@@ -34,6 +35,8 @@
 	},
 	"files": [
 		"src",
-		"lib"
-	]
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts"
 }

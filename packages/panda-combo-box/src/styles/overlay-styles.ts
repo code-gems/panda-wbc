@@ -26,11 +26,6 @@ export const styles = css`
 		opacity: 1;
 	}
 
-	.overlay-footer {
-		display: flex;
-		flex-flow: row nowrap;
-	}
-
 	.dropdown {
 		display: flex;
 		flex-flow: column;

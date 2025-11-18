@@ -235,6 +235,10 @@ export class PandaHeatmap extends HTMLElement {
 
 	cellRenderer!: (value: number) => string;
 
+	// tooltipRenderer ================================================================================================
+
+	tooltipRenderer!: (value: number) => string;
+
 	// private props
 	private _minColorParsed!: string;
 	private _maxColorParsed!: string;
@@ -543,7 +547,7 @@ export class PandaHeatmap extends HTMLElement {
 									class="heatmap-cell"
 									part="heatmap-cell"
 									style="background-color: ${color}; color: ${textColor};"
-									${this._showTooltip ? `title="${value}"` : "asd"}
+									${this._showTooltip ? `title="${value}"` : ""}
 								>
 									${parsedValue}
 								</div>

@@ -50,7 +50,7 @@ declare module "panda-design-typings" {
 		contextMenu?: ContextMenuItem[];
 		order?: number;
 
-		subpageList?: Page[];
+		children?: Page[];
 	}
 
 	export interface ThunkDispatch<S, E, A extends Action> {

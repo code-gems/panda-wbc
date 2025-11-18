@@ -40,7 +40,7 @@
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-menu": "workspace:*",
 		"@panda-wbc/panda-mixins": "workspace:*",
-		"@panda-wbc/panda-multi-input": "workspace:*",
+		"@panda-wbc/panda-multi-select-combo-box": "workspace:*",
 		"@panda-wbc/panda-notifications": "workspace:*",
 		"@panda-wbc/panda-pagination": "workspace:*",
 		"@panda-wbc/panda-particle-banner": "workspace:*",

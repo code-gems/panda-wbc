@@ -176,7 +176,6 @@ export class ContentPage extends ContentPageTemplate {
 		`;
 	}
 
-
 	private _renderInstallationSection(): TemplateResult {
 		return html`
 			<!-- INSTALLATION -->

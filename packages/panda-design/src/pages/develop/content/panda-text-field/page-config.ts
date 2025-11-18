@@ -23,4 +23,4 @@ export const pageConfig: Page = {
 	],
 
 	template: html`<panda-text-field-content-page></panda-text-field-content-page>`
-};
+}

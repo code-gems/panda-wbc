@@ -263,9 +263,9 @@ importers:
       '@panda-wbc/panda-mixins':
         specifier: workspace:*
         version: link:../panda-mixins
-      '@panda-wbc/panda-multi-input':
+      '@panda-wbc/panda-multi-select-combo-box':
         specifier: workspace:*
-        version: link:../panda-multi-input
+        version: link:../panda-multi-select-combo-box
       '@panda-wbc/panda-notifications':
         specifier: workspace:*
         version: link:../panda-notifications
@@ -473,17 +473,23 @@ importers:
         specifier: ^3.0.2
         version: 3.3.1
 
-  packages/panda-multi-input:
+  packages/panda-multi-select-combo-box:
     dependencies:
+      '@panda-wbc/panda-button':
+        specifier: workspace:*
+        version: link:../panda-button
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
-      lit:
-        specifier: ^3.0.2
-        version: 3.3.1
+      '@panda-wbc/panda-text-field':
+        specifier: workspace:*
+        version: link:../panda-text-field
+      '@panda-wbc/panda-text-slider':
+        specifier: workspace:*
+        version: link:../panda-text-slider
     devDependencies:
       rimraf:
         specifier: ^6.0.0

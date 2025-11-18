@@ -135,6 +135,10 @@ export class PandaButton extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		// do not process if value did not change
+		if (_oldValue === _newValue) {
+			return;
+		}
 		switch (_name) {
 			case "theme":
 				this._theme = _newValue;

@@ -633,6 +633,7 @@ export const uiComponents = {
 		.width-90 { width: 90dvw; }
 		.width-100 { width: 100dvw; }
 
+		/*
 		code {
 			padding: 0px var(--panda-padding-s);
 			line-height: 1.6em;
@@ -641,6 +642,7 @@ export const uiComponents = {
 			border-radius: var(--panda-border-radius-m);
 			background-color: var(--panda-background-color-700);
 		}
+			*/
 		
 		.code {
 			padding: 0px var(--panda-padding-m);
