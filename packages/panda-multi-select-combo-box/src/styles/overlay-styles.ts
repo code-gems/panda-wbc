@@ -56,7 +56,7 @@ export const styles = /*css*/`
 		display: flex;
 		flex-flow: column;
 		overflow: auto;
-		gap: var(--panda-select-dropdown-list-gap, var(--panda-gap-s, 5px));
+		gap: var(--panda-select-dropdown-list-gap, 0px);
 		padding: var(--panda-select-dropdown-list-padding, 0px);
 		outline: none;
 	}
@@ -65,7 +65,6 @@ export const styles = /*css*/`
 		display: flex;
 		flex-flow: row;
 		align-items: center;
-		padding: var(--panda-select-dropdown-list-item-padding, var(--panda-padding-s, 5px));
 		
 		transition: var(--panda-select-transition, all 0.3s ease-in-out);
 		cursor: pointer;
@@ -82,8 +81,11 @@ export const styles = /*css*/`
 		display: flex;
 		flex-grow: 1;
 		align-items: center;
-		padding: 0px 10px;
-		min-height: var(--panda-select-dropdown-list-item-height-size-m, 40px);
+		padding-top: var(--panda-select-dropdown-list-item-padding-top, 8px);
+		padding-bottom: var(--panda-select-dropdown-list-item-padding-bottom, 8px);
+		padding-left: var(--panda-select-dropdown-list-item-padding-left, 10px);
+		padding-right: var(--panda-select-dropdown-list-item-padding-right, 10px);
+		min-height: var(--panda-select-dropdown-list-item-height-size-m, 30px);
 		
 		color: var(--panda-select-dropdown-list-item-text-color, var(--panda-text-color, hsl(210deg 5% 25%)));
 		font-size: var(--panda-select-dropdown-list-item-font-size, var(--panda-font-size-m, 14px));
