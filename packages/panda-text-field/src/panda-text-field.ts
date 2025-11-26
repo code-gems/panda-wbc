@@ -809,6 +809,9 @@ export class PandaTextField extends HTMLElement {
 		if (this._withSuffix) {
 			css.push("with-suffix");
 		}
+		if (this._showClearButton && this._value && !this._disabled && !this._readonly) {
+			css.push(`with-clear-button`);
+		}
 		
 		const cssString = css.join(" ");
 		// update class names and parts

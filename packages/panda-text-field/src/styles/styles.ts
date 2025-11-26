@@ -127,6 +127,10 @@ export const styles = /*css*/`
 		padding-right: var(--panda-input-slot-gap-size-m, 0px);
 	}
 
+	.input.with-clear-button {
+		padding-right: var(--panda-input-clear-button-size-m, 0px);
+	}
+
 	/* PLACEHOLDER STYLES */
 	.placeholder {
 		position: absolute;
@@ -153,8 +157,8 @@ export const styles = /*css*/`
 		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
+		width: var(--panda-input-clear-button-size-m, var(--panda-component-size-m, 40px));
 		height: 100%;
-		padding: var(--panda-input-clear-button-icon-padding, var(--panda-padding-s, 5px));
 		box-sizing: border-box;
 	}
 	
@@ -391,6 +395,10 @@ export const styles = /*css*/`
 		padding-right: var(--panda-input-slot-gap-size-s, 0px);
 	}
 
+	:host([theme~="size-s"]) .clear-button {
+		width: var(--panda-input-clear-button-size-s, var(--panda-component-size-s, 32px));
+	}
+
 	:host([theme~="size-s"]) .clear-button .icon {
 		padding: var(--panda-input-clear-button-icon-padding-s, 0px);
 		--panda-icon-size: var(--panda-input-clear-button-icon-size-s, var(--panda-input-icon-size-s, 16px));
@@ -458,6 +466,10 @@ export const styles = /*css*/`
 		padding-right: var(--panda-input-slot-gap-size-l, 0px);
 	}
 
+	:host([theme~="size-l"]) .clear-button {
+		width: var(--panda-input-clear-button-size-l, var(--panda-component-size-l, 48px));
+	}
+
 	:host([theme~="size-l"]) .clear-button .icon {
 		padding: var(--panda-input-clear-button-icon-padding-l, 0px);
 		--panda-icon-size: var(--panda-input-clear-button-icon-size-l, var(--panda-input-icon-size-l, 32px));
@@ -523,6 +535,10 @@ export const styles = /*css*/`
 
 	:host([theme~="size-xl"]) .input.with-suffix {
 		padding-right: var(--panda-input-slot-gap-size-xl, 0px);
+	}
+
+	:host([theme~="size-xl"]) .clear-button {
+		width: var(--panda-input-clear-button-size-xl, var(--panda-component-size-xl, 56px));
 	}
 
 	:host([theme~="size-xl"]) .clear-button .icon {
