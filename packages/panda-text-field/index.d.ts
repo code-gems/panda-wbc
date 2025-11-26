@@ -1,6 +1,4 @@
-import { PandaTextField } from "./src/panda-text-field";
-
-export type PandaTextField = typeof PandaTextField;
+export type { PandaTextField } from "./src/panda-text-field";
 
 // ====================================================================================================================
 // EVENTS =============================================================================================================

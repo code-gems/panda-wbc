@@ -148,6 +148,38 @@ export const styles = /*css*/`
 		--panda-text-slider-padding-right: var(--panda-input-slot-gap-size-m, 0px);
 	}
 
+	.clear-button {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		padding: var(--panda-input-clear-button-icon-padding, var(--panda-padding-s, 5px));
+		box-sizing: border-box;
+	}
+	
+	.clear-button .icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--panda-input-clear-button-icon-padding-m, 0px);
+		
+		transition: var(--panda-input-clear-button-icon-transition, all 0.3s ease-in-out);
+		cursor: pointer;
+
+		border-radius: var(--panda-input-clear-button-icon-border-radius, var(--panda-border-radius-m, 5px));
+		background-color: var(--panda-input-clear-button-background-color, transparent);
+		box-sizing: border-box;
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-input-clear-button-icon-color, var(--panda-input-icon-color, hsl(191deg 19% 23%)));
+		--panda-icon-size: var(--panda-input-clear-button-icon-size-m, var(--panda-input-icon-size-m, 20px));
+	}
+
+	.clear-button:hover .icon {
+		background-color: var(--panda-input-clear-button-background-color-hover, hsl(210deg 5% 90%));
+		--panda-icon-color: var(--panda-input-clear-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
+	}
+
 	slot[name="prefix"],
 	slot[name="suffix"] {
 		flex-shrink: 0;
@@ -359,6 +391,11 @@ export const styles = /*css*/`
 		padding-right: var(--panda-input-slot-gap-size-s, 0px);
 	}
 
+	:host([theme~="size-s"]) .clear-button .icon {
+		padding: var(--panda-input-clear-button-icon-padding-s, 0px);
+		--panda-icon-size: var(--panda-input-clear-button-icon-size-s, var(--panda-input-icon-size-s, 16px));
+	}
+
 	/* SPINNER STYLES */
 	:host([theme~="size-s"]) .spinner-cont {
 		border-radius: var(--panda-input-border-radius-size-s, 5px);
@@ -421,6 +458,11 @@ export const styles = /*css*/`
 		padding-right: var(--panda-input-slot-gap-size-l, 0px);
 	}
 
+	:host([theme~="size-l"]) .clear-button .icon {
+		padding: var(--panda-input-clear-button-icon-padding-l, 0px);
+		--panda-icon-size: var(--panda-input-clear-button-icon-size-l, var(--panda-input-icon-size-l, 32px));
+	}
+
 	/* SPINNER STYLES */
 	:host([theme~="size-l"]) .spinner-cont {
 		border-radius: var(--panda-input-border-radius-size-l, 10px);
@@ -481,6 +523,11 @@ export const styles = /*css*/`
 
 	:host([theme~="size-xl"]) .input.with-suffix {
 		padding-right: var(--panda-input-slot-gap-size-xl, 0px);
+	}
+
+	:host([theme~="size-xl"]) .clear-button .icon {
+		padding: var(--panda-input-clear-button-icon-padding-xl, 0px);
+		--panda-icon-size: var(--panda-input-clear-button-icon-size-xl, var(--panda-input-icon-size-xl, 48px));
 	}
 
 	/* SPINNER STYLES */

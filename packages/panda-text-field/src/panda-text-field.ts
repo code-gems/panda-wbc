@@ -25,6 +25,7 @@ export class PandaTextField extends HTMLElement {
 		"min-length",
 		"max-length",
 		"show-character-counter",
+		"show-clear-button",
 		"disabled",
 		"working",
 		"readonly",
@@ -341,6 +342,25 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
+	// showClearButton ================================================================================================
+	private _showClearButton!: boolean;
+
+	get showClearButton(): boolean {
+		return this._showClearButton;
+	}
+
+	set showClearButton(value: boolean) {
+		if (this._showClearButton !== value) {
+			this._showClearButton = this._parseBooleanAttribute(value);
+			// reflect to attribute
+			if (this._showClearButton) {
+				this.setAttribute("show-clear-button", "");
+			} else {
+				this.removeAttribute("show-clear-button");
+			}
+		}
+	}
+
 	// view properties ================================================================================================
 	private _ready!: boolean;
 	private _focused!: boolean;
@@ -362,6 +382,8 @@ export class PandaTextField extends HTMLElement {
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 	private readonly _textFieldEl!: HTMLDivElement;
 	private readonly _inputWrapEl!: HTMLDivElement;
+	private readonly _clearButtonEl!: HTMLDivElement;
+	private readonly _clearButtonIconEl!: HTMLDivElement;
 
 	// events
 	private readonly _inputEvent!: any;
@@ -369,6 +391,7 @@ export class PandaTextField extends HTMLElement {
 	private readonly _blurInputEvent!: any;
 	private readonly _prefixSlotChangeEvent!: any;
 	private readonly _suffixSlotChangeEvent!: any;
+	private readonly _clearButtonClickEvent!: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -424,6 +447,7 @@ export class PandaTextField extends HTMLElement {
 		this._blurInputEvent = this._onBlur.bind(this);
 		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
 		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
+		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
 
 		// create placeholder element
 		this._placeholderEl = document.createElement("panda-text-slider");
@@ -458,6 +482,17 @@ export class PandaTextField extends HTMLElement {
 		this._counterEl.className = "counter";
 		this._counterEl.part = "counter";
 
+		// create clear button element
+		this._clearButtonEl = document.createElement("div");
+		this._clearButtonEl.className = "clear-button";
+		this._clearButtonEl.part = "clear-button";
+		this._clearButtonEl.innerHTML = /*html*/`
+			<div class="icon" part="icon">
+				<panda-icon icon="close"></panda-icon>
+			</div>
+		`;
+		this._clearButtonIconEl = this._clearButtonEl.querySelector(".icon") as HTMLDivElement;
+
 		// get template element handles
 		if (this.shadowRoot) {
 			// assign template elements
@@ -481,6 +516,7 @@ export class PandaTextField extends HTMLElement {
 		this._inputEl.addEventListener("blur", this._blurInputEvent);
 		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
+		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
 		
 		// update mandatory flag
 		this._evaluateMandatoryFlag();
@@ -649,6 +685,10 @@ export class PandaTextField extends HTMLElement {
 					this._counterEl.remove();
 				}
 				break;
+
+			case "show-clear-button":
+				this._showClearButton = this._parseBooleanAttribute(_newValue);
+				break;
 		}
 		this._updateComponent();
 	}
@@ -659,11 +699,11 @@ export class PandaTextField extends HTMLElement {
 			this._inputEl.value = this._value ?? "";
 		
 			// check if label is defined
-			if (this._label != null) {
+			if (this._label == null) {
+				this._labelEl.remove();
+			} else {
 				this._labelEl.innerHTML = this._label;
 				this.shadowRoot!.insertBefore(this._labelEl, this._textFieldEl);
-			} else {
-				this._labelEl.remove();
 			}
 
 			// update working state
@@ -689,6 +729,15 @@ export class PandaTextField extends HTMLElement {
 			} else {
 				this._descriptionEl.remove();
 			}
+
+			// update text length
+			this._textLength = this._value?.length || 0;
+			// shake counter if limit reached
+			if (this._maxLength != null && this._textLength === this._maxLength) {
+				this._counterEl.classList.add("shake");
+			} else {
+				this._counterEl.classList.remove("shake");
+			}
 			
 			// check if max length is defined
 			if (this._maxLength || this._showCharacterCounter) {
@@ -708,18 +757,19 @@ export class PandaTextField extends HTMLElement {
 				}
 			}
 
+			// update clear button
+			if (this._showClearButton && this._value && !this._disabled && !this._readonly) {
+				// add clear button to input wrap
+				this._textFieldEl.insertBefore(this._clearButtonEl, this._inputWrapEl.nextSibling);
+			} else {
+				// remove clear button from input wrap
+				this._clearButtonEl.remove();
+			}
+
 			// update mandatory flag
 			this._evaluateMandatoryFlag();
-
 			// update css classes
-			this._textFieldEl.className = "text-field " + this._getStateCssClass();
-			this._textFieldEl.part = "text-field " + this._getStateCssClass();
-			this._inputEl.className = "input " + this._getStateCssClass();
-			this._inputEl.part = "input " + this._getStateCssClass();
-			this._placeholderEl.className = "placeholder " + this._getStateCssClass();
-			this._placeholderEl.part = "placeholder " + this._getStateCssClass();
-			this._inputWrapEl.className = "input-wrap " + this._getStateCssClass();
-			this._inputWrapEl.part = this._inputWrapEl.className;
+			this._updateTemplateCss();
 		}
 	}
 
@@ -735,31 +785,41 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
-	/** Get css classes based on component state */
-	private _getStateCssClass(): string {
-		const cssClasses: string[] = [];
+	/** Update template CSS classes and parts */
+	private _updateTemplateCss(): void {
+		const css: string[] = [];
 		if (this._working) {
-			cssClasses.push("working");
+			css.push("working");
 		}
 		if (this._readonly) {
-			cssClasses.push("readonly");
+			css.push("readonly");
 		}
 		if (this._disabled) {
-			cssClasses.push("disabled");
+			css.push("disabled");
 		}
 		if (this._showMandatoryFlag) {
-			cssClasses.push("mandatory");
+			css.push("mandatory");
 		}
 		if (this._focused) {
-			cssClasses.push("focused");
+			css.push("focused");
 		}
 		if (this._withPrefix) {
-			cssClasses.push("with-prefix");
+			css.push("with-prefix");
 		}
 		if (this._withSuffix) {
-			cssClasses.push("with-suffix");
+			css.push("with-suffix");
 		}
-		return cssClasses.join(" ");
+		
+		const cssString = css.join(" ");
+		// update class names and parts
+		this._textFieldEl.className = "text-field " + cssString;
+		this._textFieldEl.part = this._textFieldEl.className;
+		this._inputEl.className = "input " + cssString;
+		this._inputEl.part = this._inputEl.className;
+		this._placeholderEl.className = "placeholder " + cssString;
+		this._placeholderEl.part = this._placeholderEl.className;
+		this._inputWrapEl.className = "input-wrap " + cssString;
+		this._inputWrapEl.part = this._inputWrapEl.className;
 	}
 
 	/**
@@ -853,13 +913,6 @@ export class PandaTextField extends HTMLElement {
 
 	private _onInput(event: Event): void {
 		this._value = (event.target as HTMLInputElement).value;
-		this._textLength = this._value?.length || 0;
-		// shake counter if limit reached
-		if (this._maxLength != null && this._textLength === this._maxLength) {
-			this._counterEl.classList.add("shake");
-		} else {
-			this._counterEl.classList.remove("shake");
-		}
 		this._triggerInputEvent();
 		this._updateComponent();
 	}
@@ -881,7 +934,14 @@ export class PandaTextField extends HTMLElement {
 
 	private _onBlur(): void {
 		this._focused = false;
+		this._updateTemplateCss();
+	}
+
+	private _onClearButtonClick(): void {
+		this._value = "";
 		this._updateComponent();
+		this._inputEl.focus();
+		this._triggerInputEvent();
 	}
 }
 
