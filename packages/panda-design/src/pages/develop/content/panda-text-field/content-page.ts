@@ -115,6 +115,9 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	@state()
 	private _showCharacterCounter = false;
 
+	@state()
+	private _showClearButton = false;
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -193,8 +196,7 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.value="${this._selectedDemoTheme}"
 										.items="${this._themeList}"
 										@change="${this._onThemeChange}"
-									>
-									</panda-combo-box>
+									></panda-combo-box>
 								</div>
 							</div><!-- row -->
 
@@ -297,6 +299,11 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										Toggle Char Counter (${this._showCharacterCounter ? "ON" : "OFF"})
 									</panda-button>
 								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleClearButton}">
+										Toggle Clear Button (${this._showClearButton ? "ON" : "OFF"})
+									</panda-button>
+								</div>
 							</div><!-- row -->
 
 							<div class="row">
@@ -318,8 +325,9 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.autoselect="${this._autoselect}"
 										.autocomplete="${this._autocomplete ? "username email" : "off"}"
 										.showCharacterCounter="${this._showCharacterCounter}"
+										.showClearButton="${this._showClearButton}"
 										@on-input="${this._onInput}"
-										spinner-type="gooey-balls"
+										spinner-type="dots-bounce"
 									>
 										<div slot="prefix" class="icon">
 											<panda-icon icon="user"></panda-icon>
@@ -373,40 +381,6 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 									</svg>
 								</div>
 
-<!--
-								<div class="col-3">
-									<panda-text-field
-										label="Working"
-										placeholder="Enter..."
-										working
-										.value="${"Doe"}"
-										@on-input="${this._onInput}"
-									>
-									</panda-text-field>
-								</div>
-
-								<div class="col-3">
-									<panda-text-field
-										label="Readonly"
-										placeholder="Enter..."
-										readonly
-										.value="${"Wall St."}"
-										@on-input="${this._onInput}"
-									>
-									</panda-text-field>
-								</div>
-
-								<div class="col-3">
-									<panda-text-field
-										label="Disabled"
-										placeholder="Enter..."
-										disabled
-										.value="${"Wall St."}"
-										@on-input="${this._onInput}"
-									>
-									</panda-text-field>
-								</div>
--->
 						</div><!-- row -->
 
 						</div><!-- rows -->
@@ -725,6 +699,10 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 		this._maxLength = this._maxLength
 			? null
 			: 30;
+	}
+
+	private _onToggleClearButton(): void {
+		this._showClearButton = !this._showClearButton;
 	}
 
 	private _onToggleCharacterCounter(): void {

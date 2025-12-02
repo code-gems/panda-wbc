@@ -23,11 +23,12 @@
 	"author": "code-gems",
 	"license": "Apache-2.0",
 	"dependencies": {
+		"@panda-wbc/panda-button": "workspace:*",
+		"@panda-wbc/panda-checkbox": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
-		"@panda-wbc/panda-text-slider": "workspace:*",
 		"@panda-wbc/panda-text-field": "workspace:*",
-		"@panda-wbc/panda-button": "workspace:*"
+		"@panda-wbc/panda-text-slider": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",

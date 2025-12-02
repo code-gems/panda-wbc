@@ -31,6 +31,7 @@ declare module "panda-design-typings" {
 	export interface ContextMenuItem {
 		name: string;
 		contextId: string;
+		children?: ContextMenuItem[];
 	}
 
 	export interface Page {
@@ -49,8 +50,6 @@ declare module "panda-design-typings" {
 		updatedTimestamp?: number;
 		contextMenu?: ContextMenuItem[];
 		order?: number;
-
-		children?: Page[];
 	}
 
 	export interface ThunkDispatch<S, E, A extends Action> {

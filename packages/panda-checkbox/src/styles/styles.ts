@@ -3,7 +3,7 @@ import { css } from "lit"
 export const styles = css`
 	:host {
 		display: inline-block;
-		height: var(--panda-component-size-m, 30px);
+		height: var(--panda-checkbox-size-m, var(--panda-component-size-m, 30px));
 	}
 
 	:host slot {

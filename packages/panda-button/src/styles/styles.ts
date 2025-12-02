@@ -116,7 +116,7 @@ export const styles = /*css*/`
 		text-shadow: var(--panda-button-text-shadow-focused, none);
 		border-color: var(--panda-button-border-color-focused, hsl(207deg 1% 85%));
 		background-color: var(--panda-button-background-color-focused, hsl(0deg 0% 100%));
-		box-shadow: var(--panda-button-outline, 0px 0px 4px 2px hsl(203deg 67% 85%));
+		box-shadow: var(--panda-button-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
 	}
 
 	/* ACTIVE */

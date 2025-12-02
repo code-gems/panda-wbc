@@ -69,8 +69,8 @@ export const styles = /*css*/`
 		background-color: var(--panda-input-background-color-working, hsl(0deg 0% 100%));
 		z-index: 2;
 		/* SPINNER STYLE */
-		--panda-spinner-color: var(--panda-input-spinner-color, hsl(0deg 0% 100%));
-		--panda-spinner-size: var(--panda-input-spinner-size-m, 20px);
+		--panda-spinner-color: var(--panda-input-spinner-color, hsl(191deg 19% 23%));
+		--panda-spinner-size: var(--panda-input-spinner-size-m, var(--panda-icon-size-m, 20px));
 	}
 
 	.text-field {
@@ -159,7 +159,6 @@ export const styles = /*css*/`
 		align-items: center;
 		width: var(--panda-input-clear-button-size-m, var(--panda-component-size-m, 40px));
 		height: 100%;
-		box-sizing: border-box;
 	}
 	
 	.clear-button .icon {

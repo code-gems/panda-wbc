@@ -478,6 +478,9 @@ importers:
       '@panda-wbc/panda-button':
         specifier: workspace:*
         version: link:../panda-button
+      '@panda-wbc/panda-checkbox':
+        specifier: workspace:*
+        version: link:../panda-checkbox
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon

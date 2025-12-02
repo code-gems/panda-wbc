@@ -11,10 +11,14 @@ import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-text-slider";
 
 export class PandaTextField extends HTMLElement {
+	/** Version of the component. */
+	public readonly version: string = "1.0.0";
+	
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
+	// observed attributes ============================================================================================
 	static readonly observedAttributes = [
 		"theme",
 		"value",
@@ -40,7 +44,7 @@ export class PandaTextField extends HTMLElement {
 	// theme ==========================================================================================================
 	private _theme!: string;
 
-	get theme(): string {
+	get theme() {
 		return this._theme;
 	}
 
@@ -55,7 +59,7 @@ export class PandaTextField extends HTMLElement {
 	// value ==========================================================================================================
 	private _value!: any;
 
-	get value(): any {
+	get value() {
 		return this._value;
 	}
 
@@ -69,7 +73,7 @@ export class PandaTextField extends HTMLElement {
 	// label ==========================================================================================================
 	private _label!: string;
 
-	get label(): string {
+	get label() {
 		return this._label;
 	}
 
@@ -84,7 +88,7 @@ export class PandaTextField extends HTMLElement {
 	// placeholder ====================================================================================================
 	private _placeholder!: string | string[];
 
-	get placeholder(): string | string[] {
+	get placeholder() {
 		return this._placeholder;
 	}
 
@@ -103,7 +107,7 @@ export class PandaTextField extends HTMLElement {
 	// placeholderInterval ============================================================================================
 	private _placeholderInterval!: number | null;
 
-	get placeholderInterval(): number | null {
+	get placeholderInterval() {
 		return this._placeholderInterval;
 	}
 
@@ -118,7 +122,7 @@ export class PandaTextField extends HTMLElement {
 	// description ====================================================================================================
 	private _description!: string;
 
-	get description(): string {
+	get description() {
 		return this._description;
 	}
 
@@ -133,7 +137,7 @@ export class PandaTextField extends HTMLElement {
 	// minLength ======================================================================================================
 	private _minLength!: number | null;
 
-	get minLength(): number | null {
+	get minLength() {
 		return this._minLength;
 	}
 
@@ -148,7 +152,7 @@ export class PandaTextField extends HTMLElement {
 	// maxLength ======================================================================================================
 	private _maxLength!: number | null;
 
-	get maxLength(): number | null {
+	get maxLength() {
 		return this._maxLength;
 	}
 
@@ -163,7 +167,7 @@ export class PandaTextField extends HTMLElement {
 	// showCharacterCounter ===========================================================================================
 	private _showCharacterCounter!: boolean;
 
-	get showCharacterCounter(): boolean {
+	get showCharacterCounter() {
 		return this._showCharacterCounter;
 	}
 
@@ -182,7 +186,7 @@ export class PandaTextField extends HTMLElement {
 	// disabled =======================================================================================================
 	private _disabled!: boolean;
 
-	get disabled(): boolean {
+	get disabled() {
 		return this._disabled;
 	}
 
@@ -201,7 +205,7 @@ export class PandaTextField extends HTMLElement {
 	// working ========================================================================================================
 	private _working!: boolean;
 
-	get working(): boolean {
+	get working() {
 		return this._working;
 	}
 
@@ -220,7 +224,7 @@ export class PandaTextField extends HTMLElement {
 	// readonly =======================================================================================================
 	private _readonly!: boolean;
 
-	get readonly(): boolean {
+	get readonly() {
 		return this._readonly;
 	}
 
@@ -239,7 +243,7 @@ export class PandaTextField extends HTMLElement {
 	// autofocus ======================================================================================================
 	private _autofocus!: boolean;
 
-	get autofocus(): boolean {
+	get autofocus() {
 		return this._autofocus;
 	}
 
@@ -258,7 +262,7 @@ export class PandaTextField extends HTMLElement {
 	// autoselect =====================================================================================================
 	private _autoselect!: boolean;
 
-	get autoselect(): boolean {
+	get autoselect() {
 		return this._autoselect;
 	}
 
@@ -277,7 +281,7 @@ export class PandaTextField extends HTMLElement {
 	// autocomplete ===================================================================================================
 	private _autocomplete!: string;
 
-	get autocomplete(): string {
+	get autocomplete() {
 		return this._autocomplete;
 	}
 
@@ -292,7 +296,7 @@ export class PandaTextField extends HTMLElement {
 	// spellcheck =====================================================================================================
 	private _spellcheck!: boolean;
 
-	get spellcheck(): boolean {
+	get spellcheck() {
 		return this._spellcheck;
 	}
 
@@ -311,7 +315,7 @@ export class PandaTextField extends HTMLElement {
 	// mandatory ======================================================================================================
 	private _mandatory!: boolean;
 
-	get mandatory(): boolean {
+	get mandatory() {
 		return this._mandatory;
 	}
 
@@ -330,7 +334,7 @@ export class PandaTextField extends HTMLElement {
 	// spinnerType ====================================================================================================
 	private _spinnerType!: string;
 
-	get spinnerType(): string {
+	get spinnerType() {
 		return this._spinnerType;
 	}
 
@@ -345,7 +349,7 @@ export class PandaTextField extends HTMLElement {
 	// showClearButton ================================================================================================
 	private _showClearButton!: boolean;
 
-	get showClearButton(): boolean {
+	get showClearButton() {
 		return this._showClearButton;
 	}
 
@@ -812,9 +816,8 @@ export class PandaTextField extends HTMLElement {
 		if (this._showClearButton && this._value && !this._disabled && !this._readonly) {
 			css.push(`with-clear-button`);
 		}
-		
-		const cssString = css.join(" ");
 		// update class names and parts
+		const cssString = css.join(" ");
 		this._textFieldEl.className = "text-field " + cssString;
 		this._textFieldEl.part = this._textFieldEl.className;
 		this._inputEl.className = "input " + cssString;
@@ -848,14 +851,14 @@ export class PandaTextField extends HTMLElement {
 		}
 		// check if already a number and if it's valid
 		if (typeof value === "number") {
-			return isNaN(value) || !isFinite(value)
+			return Number.isNaN(value) || !Number.isFinite(value)
 				? fallbackValue
 				: value;
 		}
 		// Try to parse as number
 		const parsedValue = Number(value);
 		// return fallback if parsing resulted in NaN or infinity
-		return isNaN(parsedValue) || !isFinite(parsedValue)
+		return Number.isNaN(parsedValue) || !Number.isFinite(parsedValue)
 			? fallbackValue
 			: parsedValue;
 	}

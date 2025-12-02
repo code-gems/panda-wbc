@@ -1,7 +1,15 @@
-export const enum PostMessageType {
+export const enum MessageType {
 	CLOSE = "CLOSE",
-	SELECT = "SELECT",
 	DESELECT = "DESELECT",
+	RESET = "RESET",
+	SELECT_ALL = "SELECT_ALL",
+	UPDATE = "UPDATE",
+	UPDATE_AND_CLOSE = "UPDATE_AND_CLOSE",
+}
+
+export const enum DropdownPosition {
+	TOP = "top",
+	BOTTOM = "bottom",
 }
 
 export type ElementDetails = {
@@ -13,7 +21,10 @@ export type ElementDetails = {
 	right: number;
 }
 
+/** Superset type for items */
 export type SuperItem = {
+	index: number;
+	group: string;
 	label: string;
 	value: any;
 	selected: boolean;
@@ -22,8 +33,8 @@ export type SuperItem = {
 } 
 
 export type PostMessageEventDetails = {
-	action: PostMessageType;
-	value: any;
+	messageType: MessageType;
+	items: SuperItem[];
 }
 
 export interface PostMessageEvent extends CustomEvent<PostMessageEventDetails> { }

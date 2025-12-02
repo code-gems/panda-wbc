@@ -9,7 +9,7 @@ import "@panda-wbc/panda-multi-select-combo-box";
 
 // utils & config
 import { TemplateResult, html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
@@ -19,6 +19,8 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 // ...
 
 import { SyntaxHighlighter } from "./code";
+import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
+import { PandaComboBoxChangeEvent } from "@panda-wbc/panda-combo-box";
 
 @page(pageConfig)
 @customElement("panda-multi-select-combo-box-content-page")
@@ -30,20 +32,86 @@ export class ContentPage extends ContentPageTemplate {
 	// demo props
 
 	private readonly _items: PandaMultiSelectComboBoxItem[] = [
-		{ label: "Poland", value: "PL" },
-		{ label: "Singapore", value: "SG" },
-		{ label: "Vietnam", value: "VN" },
-		{ label: "China", value: "CN", disabled: true },
+		{ label: "Argentina", value: "AR", group: "South America" },
+		{ label: "Austria", value: "AT", group: "Europe" },
+		{ label: "Brazil", value: "BR", group: "South America" },
+		{ label: "China", value: "CN", group: "Asia" },
+		{ label: "Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia", value: "CO", group: "South America" },
+		{ label: "France", value: "FR", group: "Europe" },
+		{ label: "Germany", value: "DE", group: "Europe" },
+		{ label: "Italy", value: "IT", group: "Europe", disabled: true },
+		{ label: "Mexico", value: "MX", group: "North America" },
+		{ label: "Netherlands", value: "NL", group: "Europe" },
+		{ label: "Peru", value: "PE", group: "South America", disabled: true },
+		{ label: "Poland", value: "PL", group: "Europe" },
+		{ label: "Portugal", value: "PT", group: "Europe" },
+		{ label: "Singapore", value: "SG", group: "Asia" },
+		{ label: "Spain", value: "ES", group: "Europe" },
+		{ label: "Switzerland", value: "CH", group: "Europe" },
+		{ label: "United States", value: "US", group: "North America" },
+		{ label: "Vietnam", value: "VN", group: "Asia", disabled: true },
 	];
 
 	private readonly _itemsCustom: any[] = [
-		{ name: "Poland", code: "PL" },
-		{ name: "Singapore", code: "SG" },
-		{ name: "Vietnam", code: "VN" },
+		{ name: "Argentina", group: "South America", code: "AR" },
+		{ name: "Austria", code: "AT", group: "Europe" },
+		{ name: "Belgium", code: "BE", group: "Europe" },
+		{ name: "Brazil", code: "BR", group: "South America" },
+		{ name: "Canada", code: "CA", group: "North America" },
 		{ name: "China", code: "CN", disabled: true },
+		{ name: "Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia", code: "CO", group: "South America" },
+		{ name: "France", code: "FR", group: "Europe" },
+		{ name: "Germany", code: "DE", group: "Europe" },
+		{ name: "Italy", code: "IT", group: "Europe" },
+		{ name: "Mexico", code: "MX", group: "North America" },
+		{ name: "Netherlands", code: "NL", group: "Europe" },
+		{ name: "Peru", code: "PE", group: "South America" },
+		{ name: "Poland", code: "PL", group: "Europe", disabled: true },
+		{ name: "Portugal", code: "PT", group: "Europe" },
+		{ name: "Russia", code: "RU", group: "Europe" },
+		{ name: "Singapore", code: "SG", group: "Asia" },
+		{ name: "Spain", code: "ES", group: "Europe" },
+		{ name: "Switzerland", code: "CH", group: "Europe" },
+		{ name: "United States", code: "US", group: "North America" },
+		{ name: "Vietnam", code: "VN", group: "Asia", disabled: true },
+		{ name: "Zimbabwe", code: "ZW" },
 	];
 
-	private _value = "SG";
+	private readonly _sizes = [
+		{ label: "[default]", value: "" },
+		{ label: "Size S", value: "size-s" },
+		{ label: "Size L", value: "size-l" },
+		{ label: "Size XL", value: "size-xl" },
+	];
+
+	@state()
+	private _size: string = "";
+
+	private _value = null;
+
+	@state()
+	private _multiselect = false;
+
+	@state()
+	private _mandatory = false;
+
+	@state()
+	private _readonly = false;
+
+	@state()
+	private _working = false;
+
+	@state()
+	private _disabled = false;
+
+	@state()
+	private _autoExpand = false;
+
+	@state()
+	private _showClearButton = false;
+
+	@state()
+	private _showFilter = false;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -91,7 +159,7 @@ const xxx = async (name: string): void => {
 					</p>
 				</div>
 
-				<div class="sample-cont" style="height: 2000px;">
+				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
@@ -100,19 +168,40 @@ const xxx = async (name: string): void => {
 								</div>
 							</div>
 							<div class="row">
+								<div class="col-2">
+									<panda-combo-box
+										label="Select size:"
+										.value="${this._size}"
+										.items="${this._sizes}"
+										@change="${this._onSizeChange}"
+									></panda-combo-box>
+								</div>
+							</div>
+							<div class="row">
 
 								<div class="col-half">
 									<panda-multi-select-combo-box
+										theme="${this._size}"
 										label="Select country:"
-										help-text="this is a help text"
 										error-message="this is an error message"
-										placeholder="Select..."
-										.items="${this._itemsCustom}"
-										.value="${["VN", "PL"]}"
+										placeholder="Select country..."
 										item-label-path="name"
 										item-value-path="code"
+										.items="${this._itemsCustom}"
+										.value="${this._value}"
+										.filterPlaceholder="${["Type to filter...", "eg. poland"]}"
+
+										.autoExpand="${this._autoExpand}"
+										.showFilter="${this._showFilter}"
+										.showClearButton="${this._showClearButton}"
+										.readonly="${this._readonly}"
+										.multiselect="${this._multiselect}"
+										.mandatory="${this._mandatory}"
+										.working="${this._working}"
+										.disabled="${this._disabled}"
+										@change="${this._onChange}"
 									>
-										<div slot="prefix">
+										<div slot="prefix" class="icon">
 											<panda-icon icon="check"></panda-icon>
 										</div>
 										<div slot="suffix">
@@ -121,7 +210,97 @@ const xxx = async (name: string): void => {
 									</panda-multi-select-combo-box>
 								</div>
 
+								<div class="col-half">
+									<div id="value-cont">
+										<b>Selected value:</b>
+										${this._renderValues(this._value)}
+									</div>
+								</div>
+
 							</div>
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleMultiselect}">
+										Toggle Multiselect (${this._multiselect ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleReadonly}">
+										Toggle Readonly (${this._readonly ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleWorking}">
+										Toggle Working (${this._working ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDisabled}">
+										Toggle Disabled (${this._disabled ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleAutoExpand}">
+										Toggle Auto-Expand (${this._autoExpand ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleShowClearButton}">
+										Toggle Clear Button (${this._showClearButton ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleShowFilter}">
+										Toggle Filter (${this._showFilter ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleMandatory}">
+										Toggle Mandatory (${this._mandatory ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onAsyncDisable}">
+										Async Disable (2 sec)
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onAsyncReadonly}">
+										Async Readonly (2 sec)
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onAsyncWorking}">
+										Async Working (2 sec)
+									</panda-button>
+								</div>
+							</div>
+
+<!--
+							<div class="row">
+								<div class="col-half">
+									<panda-multi-select-combo-box
+										label="Select country: (single)"
+										placeholder="Select..."
+										show-filter
+										show-clear-button
+										.items="${this._items}"
+										.value="${"CO"}"
+										@change="${this._onChange}"
+									>
+										<div slot="prefix" class="icon">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-multi-select-combo-box>
+								</div>
+							</div>
+-->
 						</div>
 					</div>
 				</div>
@@ -130,7 +309,89 @@ const xxx = async (name: string): void => {
 		`;
 	}
 
+	private _renderValues(value: any): TemplateResult | TemplateResult[] {
+		if (value == null || value?.length === 0) {
+			return html`<i>[no values]</i>`;
+		} else if (Array.isArray(value)) {
+			return html`${value.join(", ")}`;
+		} else {
+			return html`<div>${value}</div>`;
+		}
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+
+	private _onChange(event: PandaSelectChangeEvent): void {
+		console.log(`%c ⚡ [DEMO] (_onChange) event`, "font-size: 24px; color: blue;", event.detail);
+		this._value = event.detail.value;
+		this.requestUpdate();
+	}
+	
+	private _onToggleMultiselect(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleMultiselect)`, "font-size: 24px; color: blue;", !this._multiselect);
+		this._multiselect = !this._multiselect;
+	}
+	
+	private _onToggleReadonly(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleReadonly)`, "font-size: 24px; color: blue;", !this._readonly);
+		this._readonly = !this._readonly;
+	}
+
+	private _onToggleWorking(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleWorking)`, "font-size: 24px; color: blue;", !this._working);
+		this._working = !this._working;
+	}
+
+	private _onToggleDisabled(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleDisabled)`, "font-size: 24px; color: blue;", !this._disabled);
+		this._disabled = !this._disabled;
+	}
+
+	private _onToggleAutoExpand(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleAutoExpand)`, "font-size: 24px; color: blue;", !this._autoExpand);
+		this._autoExpand = !this._autoExpand;
+	}
+
+	private _onToggleShowClearButton(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleShowClearButton)`, "font-size: 24px; color: blue;", !this._showClearButton);
+		this._showClearButton = !this._showClearButton;
+	}
+
+	private _onToggleShowFilter(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleShowFilter)`, "font-size: 24px; color: blue;", !this._showFilter);
+		this._showFilter = !this._showFilter;
+	}
+
+	private _onToggleMandatory(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleMandatory)`, "font-size: 24px; color: blue;", !this._mandatory);
+		this._mandatory = !this._mandatory;
+	}
+
+	private async _onAsyncDisable(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onAsyncDisable)`, "font-size: 24px; color: blue;");
+
+		await new Promise((r) => setTimeout(r, 2000));
+		this._disabled = !this._disabled;
+	}
+
+	private async _onAsyncReadonly(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onAsyncReadonly)`, "font-size: 24px; color: blue;");
+
+		await new Promise((r) => setTimeout(r, 2000));
+		this._readonly = !this._readonly;
+	}
+
+	private async _onAsyncWorking(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onAsyncWorking)`, "font-size: 24px; color: blue;");
+
+		await new Promise((r) => setTimeout(r, 2000));
+		this._working = !this._working;
+	}
+
+	private _onSizeChange(event: PandaComboBoxChangeEvent): void {
+		this._size = event.detail.value;
+		console.log(`%c ⚡ [DEMO] (_onSizeChange)`, "font-size: 24px; color: blue;", this._size);
+	}
 }

@@ -1,10 +1,11 @@
 // types
-import { PandaMultiSelectComboBoxItem } from "../index";
+import { PandaMultiSelectComboBoxItem, PandaSelectChangeEvent, PandaSelectChangeEventDetails, PandaSelectI18nConfig } from "../index";
 import { PandaMultiSelectComboBoxOverlay } from "./panda-multi-select-combo-box-overlay";
+import { PandaSpinner } from "@panda-wbc/panda-spinner";
 import {
 	ElementDetails,
 	PostMessageEvent,
-	PostMessageType,
+	MessageType,
 	SuperItem,
 } from "./types";
 
@@ -18,25 +19,37 @@ import "@panda-wbc/panda-text-slider";
 import "./panda-multi-select-combo-box-overlay";
 
 // utils
-import { getItemDisabledFlag, getItemLabel, getItemValue, includes } from "./utils/utils";
+import { getI18nConfig, getItemDisabledFlag, getItemLabel, getItemValue, includes } from "./utils/utils";
+import { PandaTextSlider } from "@panda-wbc/panda-text-slider";
 
 export class PandaMultiSelectComboBox extends HTMLElement {
+	/** Version of the component. */
+	public readonly version: string = "1.0.0";
+	
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
-	
+
+	// observed attributes ============================================================================================
 	static get observedAttributes() {
 		return [
 			"theme",
+			"min",
+			"max",
 			"label",
 			"help-text",
 			"error-message",
 			"item-label-path",
 			"item-value-path",
 			"placeholder",
+			"filter-placeholder",
 			"show-filter",
+			"show-item-count",
+			"show-clear-button",
 			"disabled",
 			"working",
+			"readonly",
+			"auto-expand",
 			"spinner-type",
 			"multiselect",
 			"mandatory",
@@ -44,9 +57,10 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// theme ==========================================================================================================
+	/** Theme of the component. */
 	private _theme!: string;
 	
-	get theme(): string {
+	get theme() {
 		return this._theme;
 	}
 
@@ -54,14 +68,19 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		if (this._theme !== value) {
 			this._theme = value;
 			// reflect to attribute
-			this.setAttribute("theme", this._theme);
+			if (value) {
+				this.setAttribute("theme", value);
+			} else {
+				this.removeAttribute("theme");
+			}
 		}
 	}
 
 	// value ==========================================================================================================
+	/** Currently selected value(s). */
 	private _value!: any[];
 	
-	get value(): unknown {
+	get value() {
 		return this._value;
 	}
 
@@ -72,25 +91,30 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				if (!this._multiselect && value.length > 1) {
 					// keep only the first value
 					this._value = [value[0]];
-					console.warn(`⚠️ [PANDA MULTI_SELECT] Non-multiselect mode: only the first value is kept. Use the 'multiselect' attribute to enable multi-selection.`);
+					console.warn(
+						`⚠️ [PANDA SELECT] Non-multiselect mode: only the first value is kept. 
+						Use the 'multiselect' attribute to enable multi-selection.`
+					);
 				} else {
-					this._value = [...value];
+					this._value = value;
 				}
 			} else if (value == null) {
 				this._value = [];
 			} else {
 				this._value = [value];
 			}
-
 			// parse new items
 			this._parseItems();
 		}
 	}
 
 	// items ==========================================================================================================
+	/**
+	 * Array of items for the select box to select from.
+	 */
 	private _items!: PandaMultiSelectComboBoxItem[];
 
-	get items(): PandaMultiSelectComboBoxItem[] {
+	get items() {
 		return this._items;
 	}
 
@@ -103,9 +127,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// itemLabelPath ==================================================================================================
+	/**
+	 * Path to the label property in the item objects.
+	 * Default is "label".
+	 */
 	private _itemLabelPath!: string | null;
 
-	get itemLabelPath(): string | null {
+	get itemLabelPath() {
 		return this._itemLabelPath;
 	}
 
@@ -118,9 +146,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// itemValuePath ==================================================================================================
+	/**
+	 * Path to the value property in the item objects.
+	 * Default is "value".
+	 */
 	private _itemValuePath!: string | null;
 
-	get itemValuePath(): string | null {
+	get itemValuePath() {
 		return this._itemValuePath;
 	}
 
@@ -133,9 +165,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// label ==========================================================================================================
+	/**
+	 * Label text for the select box.
+	 * Default is an empty string.
+	 */
 	private _label!: string;
 
-	get label(): string {
+	get label() {
 		return this._label;
 	}
 
@@ -148,9 +184,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// helpText =======================================================================================================
+	/**
+	 * Help text to display below the select box.
+	 * Default is an empty string.
+	 */
 	private _helpText!: string;
 
-	get helpText(): string {
+	get helpText() {
 		return this._helpText;
 	}
 
@@ -163,9 +203,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// errorMessage ===================================================================================================
+	/**
+	 * Error message to display below the select box.
+	 * Default is an empty string.
+	 */
 	private _errorMessage!: string;
 
-	get errorMessage(): string {
+	get errorMessage() {
 		return this._errorMessage;
 	}
 
@@ -178,27 +222,36 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// placeholder ====================================================================================================
-	private _placeholder!: string | string[];
+	/**
+	 * Placeholder text for the select input field.
+	 * Default is an empty string.
+	 */
+	private _placeholder!: string[];
 
-	get placeholder(): string | string[] {
+	get placeholder() {
 		return this._placeholder;
 	}
 
 	set placeholder(value: string | string[]) {
 		if (this._placeholder !== value) {
-			this._placeholder = value;
-			// convert placeholder to an array
-			const placeholders = Array.isArray(this.placeholder)
-				? this.placeholder
-				: [...this.placeholder];
-			// this._placeholderEl.slides = placeholders;
+			// set placeholder value
+			if (Array.isArray(value)) {
+				this._placeholder = value.map((placeholderText) => placeholderText + "");
+			} else {
+				this._placeholder = [value + ""];
+			}
+			this._placeholderEl.slides = this._placeholder;
 		}
 	}
 
 	// showFilter =======================================================================================================
+	/**
+	 * If true, the overlay filter input field is shown.
+	 * Default is false.
+	 */
 	private _showFilter!: boolean;
 	
-	get showFilter(): boolean {
+	get showFilter() {
 		return this._showFilter;
 	}
 
@@ -214,10 +267,117 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
+	// filterPlaceholder ==============================================================================================
+	/**
+	 * Placeholder text for the overlay filter input field.
+	 * Default is an empty string.
+	 */
+	private _filterPlaceholder!: string[];
+
+	get filterPlaceholder() {
+		return this._filterPlaceholder;
+	}
+
+	set filterPlaceholder(value: string | string[]) {
+		if (this._filterPlaceholder !== value) {
+			if (Array.isArray(value)) {
+				this._filterPlaceholder = value.map((placeholderText) => placeholderText + "");
+			} else {
+				this._filterPlaceholder = [value + ""];
+			}
+			// check if overlay is shown
+			if (this._overlayEl) {
+				this._overlayEl.filterPlaceholder = this._filterPlaceholder;
+			}
+		}
+	}
+
+	// filterPlaceholderInterval ======================================================================================
+	/**
+	 * Interval in milliseconds for updating the filter placeholder text.
+	 * Value must be greater than or equal to 1000 ms.
+	 * Default is 3000 ms.
+	 */
+	private _filterPlaceholderInterval!: number;
+
+	get filterPlaceholderInterval() {
+		return this._filterPlaceholderInterval;
+	}
+
+	set filterPlaceholderInterval(value: number) {
+		if (this._filterPlaceholderInterval !== value) {
+			const interval = Number(value);
+			if (Number.isNaN(interval) || interval < 1000) {
+				this._filterPlaceholderInterval = 3000;
+				console.warn(`⚠️ [PANDA SELECT] filterPlaceholderInterval must be a number greater than or equal to 1000 ms.`);
+				// reflect to attribute
+				this.removeAttribute("filter-placeholder-interval");
+			} else {
+				this._filterPlaceholderInterval = interval;
+				// reflect to attribute
+				this.setAttribute("filter-placeholder-interval", this._filterPlaceholderInterval + "");
+			}
+			// check if overlay is shown
+			if (this._overlayEl) {
+				this._overlayEl.filterPlaceholderInterval = this._filterPlaceholderInterval;
+			}
+		}
+	}
+
+	// min ============================================================================================================
+	/**
+	 * The minimum amount of items that can be selected.
+	 * Default is null (no minimum).
+	 */
+	private _min!: number | null;
+
+	get min() {
+		return this._min;
+	}
+
+	set min(value: number | null) {
+		if (this._min !== value) {
+			this._min = value;
+			// reflect to attribute
+			if (value == null) {
+				this.removeAttribute("min");
+			} else {
+				this.setAttribute("min", value + "");
+			}
+		}
+	}
+
+	// max ============================================================================================================
+	/**
+	 * The maximum amount of items that can be selected.
+	 * Default is null (no maximum).
+	 */
+	private _max!: number | null;
+
+	get max() {
+		return this._max;
+	}
+
+	set max(value: number | null) {
+		if (this._max !== value) {
+			this._max = value;
+			// reflect to attribute
+			if (value == null) {
+				this.removeAttribute("max");
+			} else {
+				this.setAttribute("max", value + "");
+			}
+		}
+	}
+
 	// disabled =======================================================================================================
+	/**
+	 * If true, the component is disabled and cannot be interacted with.
+	 * Default is false.
+	 */
 	private _disabled!: boolean;
 	
-	get disabled(): boolean {
+	get disabled() {
 		return this._disabled;
 	}
 
@@ -230,13 +390,19 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			} else {
 				this.removeAttribute("disabled");
 			}
+			// update items
+			this._renderItems();
 		}
 	}
 
 	//  working =======================================================================================================
+	/**
+	 * If true, the component is in working state and shows a spinner.
+	 * Default is false.
+	 */
 	private _working!: boolean;
 	
-	get working(): boolean {
+	get working() {
 		return this._working;
 	}
 
@@ -253,9 +419,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// readonly =======================================================================================================
+	/**
+	 * If true, the component is read-only and cannot be modified by the user. 
+	 * Default is false.
+	 */
 	private _readonly!: boolean;
 	
-	get readonly(): boolean {
+	get readonly() {
 		return this._readonly;
 	}
 
@@ -268,13 +438,19 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			} else {
 				this.removeAttribute("readonly");
 			}
+			// update items
+			this._renderItems();
 		}
 	}
 
 	// spinnerType ====================================================================================================
+	/**
+	 * Type of spinner to show when in working state.
+	 * Default is "dots".
+	 */
 	private _spinnerType!: string;
 		
-	get spinnerType(): string {
+	get spinnerType() {
 		return this._spinnerType;
 	}
 
@@ -282,14 +458,19 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		if (this._spinnerType !== value) {
 			this._spinnerType = value;
 			// reflect to attribute
+			this._spinnerEl.spinner = this._spinnerType;
 			this.setAttribute("spinner-type", this._spinnerType);
 		}
 	}
 
 	// multiselect ====================================================================================================
+	/**
+	 * If true, multiple items can be selected.
+	 * Default is false.
+	 */
 	private _multiselect!: boolean;
 	
-	get multiselect(): boolean {
+	get multiselect() {
 		return this._multiselect;
 	}
 
@@ -302,13 +483,38 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			} else {
 				this.removeAttribute("multiselect");
 			}
+			// update items
+			this._renderItems();
+		}
+	}
+
+	// autoExpand =====================================================================================================
+	/**
+	 * If true, the overlay will automatically expand to show all items without scrolling.
+	 * Default is false.
+	 */
+	private _autoExpand!: boolean;
+
+	get autoExpand() {
+		return this._autoExpand;
+	}
+
+	set autoExpand(value: boolean) {
+		if (this._autoExpand !== value) {
+			this._autoExpand = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("auto-expand", "");
+			} else {
+				this.removeAttribute("auto-expand");
+			}
 		}
 	}
 
 	// mandatory ======================================================================================================
 	private _mandatory!: boolean;
 	
-	get mandatory(): boolean {
+	get mandatory() {
 		return this._mandatory;
 	}
 
@@ -325,9 +531,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	// showItemCount ==================================================================================================
+	/**
+	 * If true, the count of selected items is shown in the select box.
+	 * Default is false.
+	 */
 	private _showItemCount!: boolean;
 	
-	get showItemCount(): boolean {
+	get showItemCount() {
 		return this._showItemCount;
 	}
 
@@ -343,6 +553,45 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
+	// showClearButton ================================================================================================
+	/**
+	 * If true, a clear button is shown on the select box.
+	 * Default is false.
+	 */
+	private _showClearButton!: boolean;
+
+	get showClearButton() {
+		return this._showClearButton;
+	}
+
+	set showClearButton(value: boolean) {
+		if (this._showClearButton !== value) {
+			this._showClearButton = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("show-clear-button", "");
+			} else {
+				this.removeAttribute("show-clear-button");
+			}
+		}
+	}
+
+	// i18n ===========================================================================================================
+	private _i18n!: PandaSelectI18nConfig;
+
+	get i18n() {
+		return this._i18n;
+	}
+
+	set i18n(value: PandaSelectI18nConfig) {
+		if (this._i18n !== value) {
+			this._i18n = {
+				...getI18nConfig(),
+				...value,
+			};
+		}
+	}
+
 	// cellRenderer ===================================================================================================
 
 	itemRenderer!: () => string;
@@ -354,15 +603,37 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	// view properties ================================================================================================
 
 	private _parsedItems!: SuperItem[];
+	/** Flag to indicate if the component is ready. */
+	private _showMandatoryFlag!: boolean;
+	private _withPrefix!: boolean;
+	private _withSuffix!: boolean;
+	private _ready!: boolean;
 
 	// elements
-	private _selectEl!: HTMLDivElement;
 	private _overlayEl!: PandaMultiSelectComboBoxOverlay | null;
+	private readonly _selectEl!: HTMLDivElement;
+	private readonly _itemsContEl!: HTMLDivElement;
+	private readonly _itemsEl!: HTMLDivElement;
+	private readonly _spinnerEl!: PandaSpinner;
+	private readonly _spinnerContEl!: HTMLDivElement;
+	private readonly _placeholderEl!: PandaTextSlider;
+	private readonly _iconEl!: HTMLDivElement;
+	private readonly _clearButtonEl!: HTMLDivElement;
+	private readonly _labelEl!: HTMLDivElement;
+	private readonly _helpTextEl!: HTMLDivElement;
+	private readonly _errorMessageEl!: HTMLDivElement;
+	private readonly _prefixSlotEl!: HTMLSlotElement;
+	private readonly _suffixSlotEl!: HTMLSlotElement;
 
 	// events
+	private readonly _keyDownEvent!: any;
 	private readonly _showOverlayEvent!: any;
 	private readonly _closeOverlayEvent!: any;
 	private readonly _postMessageEvent!: any;
+	private readonly _clearButtonClickEvent!: any;
+	private readonly _removeItemEvent!: any;
+	private readonly _prefixSlotChangeEvent!: any;
+	private readonly _suffixSlotChangeEvent!: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -371,46 +642,155 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open", delegatesFocus: true });
+
 		// apply component styles
 		this._applyStyles();
+
+		// create component template
+		const template = document.createElement("template");
+		template.innerHTML = /*html*/`
+			<div
+				id="select"
+				class="select"
+				part="select"
+			>
+				<slot name="prefix" part="prefix"></slot>
+				<div
+					id="items-cont"
+					class="items-cont"
+					part="items-cont"
+				>
+					<div
+						id="items"
+						class="items"
+						part="items"
+					></div>
+				</div>
+				<slot name="suffix" part="suffix"></slot>
+				<div
+					id="icon"
+					class="icon"
+					part="icon"
+				>
+					<panda-icon icon="chevron-down" part="icon-image"></panda-icon>
+				</div>
+			</div>
+		`;
+
+		// create spinner element
+		this._spinnerContEl = document.createElement("div");
+		this._spinnerContEl.className = "spinner-cont";
+		this._spinnerContEl.part = "spinner-cont";
+		this._spinnerContEl.innerHTML = /*html*/`<panda-spinner part="spinner"></panda-spinner>`;
+		// get spinner element handle
+		this._spinnerEl = this._spinnerContEl.querySelector("panda-spinner") as PandaSpinner;
+		this._spinnerEl.spinner = this._spinnerType ?? "dots";
+
+		// create placeholder element
+		this._placeholderEl = document.createElement("panda-text-slider");
+		this._placeholderEl.className = "placeholder";
+		this._placeholderEl.part = "placeholder";
+		this._placeholderEl.hide = true;
+
+		// create clear button element
+		this._clearButtonEl = document.createElement("div");
+		this._clearButtonEl.className = "clear-button";
+		this._clearButtonEl.part = "clear-button";
+		this._clearButtonEl.innerHTML = /*html*/`
+			<div class="clear-button-icon">
+				<panda-icon icon="close" part="clear-button-icon"></panda-icon>
+			</div>
+		`;
+
+		// create label element
+		this._labelEl = document.createElement("div");
+		this._labelEl.className = "label";
+		this._labelEl.part = "label";
+		
+		// create help text element
+		this._helpTextEl = document.createElement("div");
+		this._helpTextEl.className = "help-text";
+		this._helpTextEl.part = "help-text";
+		
+		// create error message element
+		this._errorMessageEl = document.createElement("div");
+		this._errorMessageEl.className = "error-message";
+		this._errorMessageEl.part = "error-message";
+
+		// apply template
+		this.shadowRoot!.appendChild(template.content.cloneNode(true));
+
 		// initialize class properties
+		this._i18n = getI18nConfig();
+		this._spinnerType = "dots";
 		this._label = "";
 		this._helpText = "";
 		this._errorMessage = "";
-		this._placeholder = "";
+		this._placeholder = [];
+		this._filterPlaceholder = this._i18n.filterPlaceholder;
 		this._theme = "";
 		this._items = [];
 		this._value = [];
 		this._itemLabelPath = null;
 		this._itemValuePath = null;
+		this._min = null;
+		this._max = null;
+		this._autoExpand = false;
 		this._multiselect = false;
 		this._disabled = false;
 		this._working = false;
-		this._spinnerType = "dots";
-
+		this._showFilter = false;
+		this._readonly = false;
+		this._mandatory = false;
+		this._showItemCount = false;
+		this._showClearButton = false;
+		this._showMandatoryFlag = false;
 		this._parsedItems = [];
-
+		this._withPrefix = false;
+		this._withSuffix = false;
+		this._ready = false;
+		
 		// init events
+		this._keyDownEvent = this._onKeyDown.bind(this);
 		this._showOverlayEvent = this._onShowOverlay.bind(this);
 		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
 		this._postMessageEvent = this._onPostMessage.bind(this);
-		// render template
-		this._render();
-	}
+		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
+		this._removeItemEvent = this._onRemoveItem.bind(this);
+		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
+		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 
-	connectedCallback(): void {
+		// get template element handles
 		if (this.shadowRoot) {
 			// get elements handle
 			this._selectEl = this.shadowRoot.getElementById("select") as HTMLDivElement;
+			this._itemsContEl = this.shadowRoot.getElementById("items-cont") as HTMLDivElement;
+			this._itemsEl = this.shadowRoot.getElementById("items") as HTMLDivElement;
+			this._iconEl = this.shadowRoot.getElementById("icon") as HTMLDivElement;
+			this._itemsContEl.insertBefore(this._placeholderEl, this._itemsEl);
+			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
+			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 
 			// add event listeners
 			this._selectEl.addEventListener("click", this._showOverlayEvent);
+			this._selectEl.addEventListener("keydown", this._keyDownEvent);
+			this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
+			this._itemsEl.addEventListener("click", this._removeItemEvent);
+			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		}
+	}
+
+	connectedCallback(): void {
+		this._ready = true;
+		this._evaluateMandatoryFlag();
+		this._updateComponent();
 	}
 
 	disconnectedCallback(): void {
 		// remove event listeners
 		this._selectEl.removeEventListener("click", this._showOverlayEvent);
+		this._selectEl.removeEventListener("keydown", this._keyDownEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -428,6 +808,12 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			case "item-value-path":
 				this._itemValuePath = _newValue;
 				break;
+			case "min":
+				this._min = this._parseNumberAttribute(_newValue);
+				break;
+			case "max":
+				this._max = this._parseNumberAttribute(_newValue);
+				break;
 			case "label":
 				this._label = _newValue;
 				break;
@@ -438,10 +824,25 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				this._errorMessage = _newValue;
 				break;
 			case "placeholder":
-				this._placeholder = _newValue;
+				this._placeholder = [_newValue];
+				break;
+			case "filter-placeholder":
+				this._filterPlaceholder = _newValue;
+				break;
+			case "auto-expand":
+				this._autoExpand = this._parseBooleanAttribute(_newValue);
+				break;
+			case "mandatory":
+				this._mandatory = this._parseBooleanAttribute(_newValue);
 				break;
 			case "multiselect":
 				this._multiselect = this._parseBooleanAttribute(_newValue);
+				break;
+			case "show-item-count":
+				this._showItemCount = this._parseBooleanAttribute(_newValue);
+				break;
+			case "show-clear-button":
+				this._showClearButton = this._parseBooleanAttribute(_newValue);
 				break;
 			case "show-filter":
 				this._showFilter = this._parseBooleanAttribute(_newValue);
@@ -459,96 +860,156 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				this._spinnerType = _newValue;
 				break;
 		}
-		this._render();
+		this._updateComponent();
+	}
+
+	private _updateComponent(): void {
+		if (this._ready) {
+			// make component focusable
+			if (this._disabled || this._working) {
+				this._selectEl.tabIndex = -1;
+			} else {
+				this._selectEl.tabIndex = 0;
+			}
+			
+			// close overlay if component is disabled, working or readonly
+			if (this._disabled || this._working || this._readonly) {
+				this._onCloseOverlay();
+			}
+
+			// show or hide placeholder
+			if (this._value.length) {
+				this._placeholderEl.hide = true;
+			} else {
+				// stop placeholder animation if component is disabled, working or readonly
+				if (this._disabled || this._working || this._readonly) {
+					this._placeholderEl.stop();
+				}
+
+				this._placeholderEl.slides = this._placeholder;
+				this._placeholderEl.hide = false;
+			}
+
+			// add or remove spinner
+			if (this._working) {
+				this._selectEl.appendChild(this._spinnerContEl);
+			} else {
+				this._spinnerContEl.remove();
+			}
+
+			// add or remove label
+			if (this._label) {
+				this._labelEl.textContent = this._label;
+				this.shadowRoot!.insertBefore(this._labelEl, this._selectEl);
+			} else {
+				this._labelEl.remove();
+			}
+
+			// add or remove label
+			if (this._helpText) {
+				this._helpTextEl.textContent = this._helpText;
+				this.shadowRoot!.appendChild(this._helpTextEl);
+			} else {
+				this._helpTextEl.remove();
+			}
+			
+			// add or remove error message
+			if (this._errorMessage) {
+				this._errorMessageEl.textContent = this._errorMessage;
+				this.shadowRoot!.appendChild(this._errorMessageEl);
+			} else {
+				this._errorMessageEl.remove();
+			}
+
+			// show clear button
+			if (
+				this._showClearButton &&
+				this._value.length &&
+				!this._disabled &&
+				!this._readonly &&
+				!this._working
+			) {
+				// insert clear button before dropdown icon
+				this._selectEl.insertBefore(this._clearButtonEl, this._iconEl);
+			} else {
+				this._clearButtonEl.remove();
+			}
+
+			// update template css classes and parts
+			this._updateTemplateCss();
+		}
 	}
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	private _render() {
-		if (this.shadowRoot) {
-			// check for working state
-			const spinnerHtml = this._working
-				? /*html*/`
-					<div class="spinner-cont" part="spinner-cont">
-						<panda-spinner
-							theme="${this._theme ?? ""}"
-							part="spinner"
-							spinner="${this._spinnerType ?? "dots"}"
-						></panda-spinner>
+	/** Render the items in the select box. */
+	private _renderItems(): void {
+		// render selected items
+		if (this._multiselect) {
+			// check if show item count is enabled
+			if (this._showItemCount) {
+				const selectedItemsLabel = this._i18n.selectedItems ?? "Selected items";
+				const itemCount = this._parsedItems.filter((item) => item.selected).length;
+				// update items element
+				this._itemsEl.innerHTML = /*html*/`
+					<div
+						class="item single-item"
+						part="item single-item"
+					>
+						${selectedItemsLabel} (${itemCount})
 					</div>
-				`
-				: "";
-			
-			// generate label html
-			const labelHtml = this._label
-				? /*html*/`
-					<div class="label" part="label">
-						${this._label}
-					</div>
-				`
-				: "";
-			// generate help text html
-			const helpTextHtml = this._helpText
-				? /*html*/`
-					<div class="help-text" part="help-text">
-						${this._helpText}
-					</div>
-				`
-				: "";
-			// generate error message html
-			const errorMessageHtml = this._errorMessage
-				? /*html*/`
-					<div class="error-message" part="error-message">
-						${this._errorMessage}
-					</div>
-				`
-				: "";
+				`;
+			} else {
+				const itemsHtml: string[] = [];
 
-			// render component template
-			this.shadowRoot.innerHTML = /*html*/`
-				${labelHtml}
-				<div
-					id="select"
-					class="select"
-					part="select"
-				>
-					<slot name="prefix" part="prefix"></slot>
-					${this._renderItems()}
-					<slot name="suffix" part="suffix"></slot>
-					${spinnerHtml}
-				</div>
-				${helpTextHtml}
-				${errorMessageHtml}
-			`;
-		}
-	}
+				for (const [index, item] of this._parsedItems.entries()) {
+					const { label, selected, disabled } = item;
 
-	private _renderItems(): string {
-		console.log(
-			`%c ⚡ (_renderItems)`,
-			"font-size: 24px; color: crimson; background: black;",
-			this._parsedItems
-		);
-		const itemsHtml: string[] = [];
+					if (selected) {
+						const removeBtnHtml = disabled || this._readonly || this._disabled
+							? ""
+							: /*html*/`
+								<div
+									class="remove-button"
+									part="remove-button"
+									data-index="${index}"
+								>
+									<panda-icon icon="close" part="remove-button-icon"></panda-icon>
+								</div>
+							`;
 
-		for (const item of this._parsedItems) {
-			const { label, value, selected } = item;
-			if (selected) {
-				itemsHtml.push(/*html*/`
-					<div>
-						${label}
-					</div>
-				`);
+						itemsHtml.push(/*html*/`
+							<div class="item chip" part="item chip">
+								<div class="label">${label}</div>
+								${removeBtnHtml}
+							</div>
+						`);
+					}
+				}
+				// update items element
+				this._itemsEl.innerHTML = itemsHtml.join("");
 			}
-		}
+		} else {
+			const itemsHtml: string[] = [];
 
-		return /*html*/`
-			<div class="items-cont" part="items-cont">
-				${itemsHtml.join("\n")}
-			</div>
-		`;
+			for (const item of this._parsedItems) {
+				const { label, selected } = item;
+				if (selected) {
+					itemsHtml.push(/*html*/`
+						<div
+							class="item single-item"
+							part="item single-item"
+						>
+							${label}
+						</div>
+					`);
+				}
+			}
+			// update items element
+			this._itemsEl.innerHTML = itemsHtml.join("");
+		}
 	}
 
 	// ================================================================================================================
@@ -572,6 +1033,31 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	 */
 	private _parseBooleanAttribute(value: unknown): boolean {
 		return value === "true" || value === true || value === "";
+	}
+
+	/**
+	 * Parses an attribute value to a number
+	 * @param value value to parse
+	 * @param {Number} fallbackValue fallback value if provided value is invalid
+	 * @returns {Number}
+	 */
+	private _parseNumberAttribute(value: unknown, fallbackValue: number | null = null): number | null {
+		// check for null and undefined
+		if (value == null) {
+			return fallbackValue;
+		}
+		// check if already a number and if it's valid
+		if (typeof value === "number") {
+			return Number.isNaN(value) || !Number.isFinite(value)
+				? fallbackValue
+				: value;
+		}
+		// Try to parse as number
+		const parsedValue = Number(value);
+		// return fallback if parsing resulted in NaN or infinity
+		return Number.isNaN(parsedValue) || !Number.isFinite(parsedValue)
+			? fallbackValue
+			: parsedValue;
 	}
 
 	/**
@@ -603,7 +1089,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			// for non-multiselect mode, track if an item is already selected
 			let alreadySelected = false;
 			// parse items
-			for (const item of this._items) {
+			for (const [index, item] of this._items.entries()) {
+				const group = item.group ?? "";
 				const label = getItemLabel(item, this._itemLabelPath);
 				const value = getItemValue(item, this._itemValuePath);
 				const disabled = getItemDisabledFlag(item);
@@ -621,6 +1108,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				}
 
 				this._parsedItems.push({
+					index,
+					group,
 					label,
 					value,
 					selected,
@@ -631,38 +1120,146 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		} else {
 			this._parsedItems = [];
 		}
-		this._render();
+		// update items
+		this._renderItems();
 	}
 
 	private _showOverlay(): void {
-		console.log(`%c ⚡ (_showOverlay)`, "font-size: 24px; color: crimson; background: black;");
 		// check if overlay element is already shown
 		if (this._overlayEl == null && !this._disabled && !this._working && !this._readonly) {
 			// show overlay
 			this._overlayEl = document.createElement("panda-multi-select-combo-box-overlay");
 			this._overlayEl.items = this._parsedItems;
 			this._overlayEl.multiselect = this._multiselect;
+			this._overlayEl.max = this._max;
 			this._overlayEl.showFilter = this._showFilter;
+			this._overlayEl.filterPlaceholder = this._filterPlaceholder;
+			this._overlayEl.filterPlaceholderInterval = this._filterPlaceholderInterval;
+			this._overlayEl.i18n = this._i18n;
 			this._overlayEl.parentDetails = this._getElementDetails();
 
 			// add event listeners
 			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
 			this._overlayEl.addEventListener("close", this._closeOverlayEvent);
 			document.body.appendChild(this._overlayEl);
+
+			// add rotate class from icon element
+			this._iconEl.classList.add("rotate");
+		}
+	}
+
+	private _triggerChangeEvent(): void {
+		const value: string | string[] = this._multiselect
+				? [...this._value]
+				: this._value[0];
+		const event: PandaSelectChangeEvent = new CustomEvent("change", {
+			detail: {
+				value,
+			},
+			bubbles: true,
+			composed: true,
+		});
+		this.dispatchEvent(event);
+	}
+
+	/** Update css classes and parts on the component template */
+	private _updateTemplateCss(): void {
+		const css: string[] = [];
+
+		if (this._working) {
+			css.push("working");
+		}
+		if (this._readonly) {
+			css.push("readonly");
+		}
+		if (this._disabled) {
+			css.push("disabled");
+		}
+		if (this._showMandatoryFlag) {
+			css.push("mandatory");
+		}
+		if (this._withPrefix) {
+			css.push("with-prefix");
+		}
+		if (this._withSuffix) {
+			css.push("with-suffix");
+		}
+		// update class names and parts
+		const cssString = css.join(" ");
+		this._selectEl.className = `select ${cssString}`;
+		this._selectEl.part = this._selectEl.className;
+		this._itemsContEl.className = `items-cont ${cssString}`;
+		this._itemsContEl.part = this._itemsContEl.className;
+
+		// add feature specific classes
+		if (this._autoExpand) {
+			this._selectEl.classList.add("auto-expand");
+		} else {
+			this._selectEl.classList.remove("auto-expand");
+		}
+
+		// add gap if component has help or error message
+		if (this._helpText || this._errorMessage) {
+			this._selectEl.classList.add("with-message");
+		} else {
+			this._selectEl.classList.remove("with-message");
+		}
+	}
+
+	/** Update mandatory flag */
+	private _evaluateMandatoryFlag(): void {
+		// evaluate only for default component state
+		if (this._mandatory && !this._disabled && !this._working && !this._readonly) {
+			if (
+				this._min == null && this._value.length > 0 ||
+				this._min != null && this._value.length >= this._min
+			) {
+				this._showMandatoryFlag = false;
+			} else {
+				this._showMandatoryFlag = true;
+			}
+		} else {
+			this._showMandatoryFlag = false;
 		}
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+	
+	private _onPrefixSlotChanged(): void {
+		this._withPrefix = true;
+		this._updateComponent();
+	}
 
-	private _onShowOverlay(event: MouseEvent): void {
-		console.log(`%c ⚡ (_onShowOverlay)`, "font-size: 24px; color: crimson; background: black;", event);
+	private _onSuffixSlotChanged(): void {
+		this._withSuffix = true;
+		this._updateComponent();
+	}
+
+	private _onKeyDown(event: KeyboardEvent): void {
+		switch (event.code) {
+			case "ArrowUp":
+			case "ArrowDown":
+				event.preventDefault();
+				this._showOverlay();
+				break;
+			case "ArrowLeft":
+			case "ArrowRight":
+				event.preventDefault();
+				break;
+			case "Tab":
+			case "Escape":
+				this._onCloseOverlay();
+				break;
+		}
+	}
+
+	private _onShowOverlay(): void {
 		this._showOverlay();
 	}
 
 	private _onCloseOverlay(): void {
-		console.log(`%c ⚡ (_onCloseOverlay)`, "font-size: 24px; color: crimson; background: black;");
 		if (this._overlayEl) {
 			// remove event listeners
 			this._overlayEl.removeEventListener("post-message", this._postMessageEvent);
@@ -670,21 +1267,88 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			// remove overlay element from DOM
 			this._overlayEl.remove();
 			this._overlayEl = null;
+			// remove rotate class from icon element
+			this._iconEl.classList.remove("rotate");
+			// set focus back to element
+			this.focus();
+		}
+	}
+
+	private _onClearButtonClick(event: MouseEvent): void {
+		event.preventDefault();
+		event.stopPropagation();
+		// clear value
+		this._parsedItems = this._parsedItems.map((item) => {
+			// only deselect item if not disabled
+			item.selected = item.disabled
+				? item.selected
+				: false;
+			return item;
+		});
+		// update value
+		this._value = this._parsedItems
+			.filter((item) => item.selected)
+			.map((item) => item.value);
+		this._renderItems();
+		this._evaluateMandatoryFlag();
+		this._triggerChangeEvent();
+		this._updateComponent();
+	}
+
+	private _onRemoveItem(event: MouseEvent): void {
+		const removeBtn = (event.target as HTMLElement).closest(".remove-button") as HTMLDivElement;
+
+		if (removeBtn) {
+			// prevent opening overlay
+			event.preventDefault();
+			event.stopPropagation();
+
+			// get index of item to remove
+			const index = Number.parseInt(removeBtn.dataset["index"] || "-1", 10);
+			// deselect item
+			this._parsedItems[index].selected = false;
+			
+			// update value
+			this._value = this._parsedItems
+				.filter((item) => item.selected)
+				.map((item) => item.value);
+			this._renderItems();
+			this._evaluateMandatoryFlag();
+			this._triggerChangeEvent();
+			this._updateComponent();
 		}
 	}
 
 	private _onPostMessage(event: PostMessageEvent): void {
-		console.log(`%c ⚡ (_onPostMessage)`, "font-size: 24px; color: crimson; background: black;", event);
-		const { action, value } = event.detail;
+		const { messageType, items } = event.detail;
 
-		switch (action) {
-			case PostMessageType.SELECT:
+		switch (messageType) {
+			case MessageType.UPDATE:
 				// handle item selection
+				this._value = items
+					.filter((item) => item.selected)
+					.map((item) => item.value);
+				this._parsedItems = items;
+				// update items in select box
+				this._renderItems();
+				this._evaluateMandatoryFlag();
+				this._triggerChangeEvent();
+				this._updateComponent();
 				break;
-			case PostMessageType.DESELECT:
-				// handle item deselection
+			case MessageType.UPDATE_AND_CLOSE:
+				// handle item selection
+				this._value = items
+					.filter((item) => item.selected)
+					.map((item) => item.value);
+				this._parsedItems = items;
+				// update items in select box
+				this._renderItems();
+				this._evaluateMandatoryFlag();
+				this._triggerChangeEvent();
+				this._onCloseOverlay();
+				this._updateComponent();
 				break;
-			case PostMessageType.CLOSE:
+			case MessageType.CLOSE:
 				this._onCloseOverlay();
 				break;
 		}
