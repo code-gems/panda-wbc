@@ -152,6 +152,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _showClearButton = false;
+	
+	@state()
+	private _disableAutoOpen = false;
 
 	@state()
 	private _showFilter = false;
@@ -249,6 +252,7 @@ const xxx = async (name: string): void => {
 										.autoExpand="${this._autoExpand}"
 										.showFilter="${this._showFilter}"
 										.showClearButton="${this._showClearButton}"
+										.disableAutoOpen="${this._disableAutoOpen}"
 										.readonly="${this._readonly}"
 										.multiselect="${this._multiselect}"
 										.mandatory="${this._mandatory}"
@@ -275,15 +279,9 @@ const xxx = async (name: string): void => {
 							</div>
 
 							<div class="row">
-								<div class="col-half">
+								<div class="col-3">
 									<panda-text-field
 										placeholder="Enter..."
-										.theme="${this._size + " " + this._theme}"
-									></panda-text-field>
-								</div>
-								<div class="col-half">
-									<panda-text-field
-										.placeholder="${["Enter..."]}"
 										.theme="${this._size + " " + this._theme}"
 									></panda-text-field>
 								</div>
@@ -354,6 +352,14 @@ const xxx = async (name: string): void => {
 								<div class="col-3">
 									<panda-button @click="${this._onSetMinValue}">
 										Set min value (${this._min ? "2" : "null"})
+									</panda-button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDisableAutoOpen}">
+										Toggle AutoOpen (${this._disableAutoOpen ? "ON" : "OFF"})
 									</panda-button>
 								</div>
 							</div>
@@ -468,6 +474,11 @@ const xxx = async (name: string): void => {
 	private _onToggleShowFilter(): void {
 		console.log(`%c ⚡ [DEMO] (_onToggleShowFilter)`, "font-size: 24px; color: blue;", !this._showFilter);
 		this._showFilter = !this._showFilter;
+	}
+
+	private async _onToggleDisableAutoOpen(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onToggleDisableAutoOpen)`, "font-size: 24px; color: blue;");
+		this._disableAutoOpen = !this._disableAutoOpen;
 	}
 
 	private _onToggleMandatory(): void {

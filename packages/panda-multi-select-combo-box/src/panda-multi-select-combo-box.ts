@@ -46,6 +46,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			"show-filter",
 			"show-item-count",
 			"show-clear-button",
+			"disable-auto-open",
 			"disabled",
 			"working",
 			"readonly",
@@ -581,6 +582,29 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
+	// disableAutoOpen ================================================================================================
+	/**
+	 * If true, the overlay will not open automatically when the select box is clicked.
+	 * Default is false.
+	 */
+	private _disableAutoOpen!: boolean;
+
+	get disableAutoOpen() {
+		return this._disableAutoOpen;
+	}
+
+	set disableAutoOpen(value: boolean) {
+		if (this._disableAutoOpen !== value) {
+			this._disableAutoOpen = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("disable-auto-open", "");
+			} else {
+				this.removeAttribute("disable-auto-open");
+			}
+		}
+	}
+
 	// i18n ===========================================================================================================
 	private _i18n!: PandaSelectI18nConfig;
 
@@ -660,6 +684,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	private readonly _showOverlayEvent!: any;
 	private readonly _closeOverlayEvent!: any;
 	private readonly _postMessageEvent!: any;
+	private readonly _iconButtonClickEvent!: any;
 	private readonly _clearButtonClickEvent!: any;
 	private readonly _removeItemEvent!: any;
 	private readonly _prefixSlotChangeEvent!: any;
@@ -785,6 +810,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		this._showOverlayEvent = this._onShowOverlay.bind(this);
 		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
 		this._postMessageEvent = this._onPostMessage.bind(this);
+		this._iconButtonClickEvent = this._onIconClick.bind(this);
 		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
 		this._removeItemEvent = this._onRemoveItem.bind(this);
 		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
@@ -805,6 +831,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			this._selectEl.addEventListener("click", this._showOverlayEvent);
 			this._selectEl.addEventListener("keydown", this._keyDownEvent);
 			this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
+			this._iconEl.addEventListener("click", this._iconButtonClickEvent);
 			this._itemsEl.addEventListener("click", this._removeItemEvent);
 			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
@@ -821,6 +848,11 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		// remove event listeners
 		this._selectEl.removeEventListener("click", this._showOverlayEvent);
 		this._selectEl.removeEventListener("keydown", this._keyDownEvent);
+		this._clearButtonEl.removeEventListener("click", this._clearButtonClickEvent);
+		this._iconEl.removeEventListener("click", this._iconButtonClickEvent);
+		this._itemsEl.removeEventListener("click", this._removeItemEvent);
+		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
+		this._suffixSlotEl.removeEventListener("slotchange", this._suffixSlotChangeEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -876,6 +908,9 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				break;
 			case "show-filter":
 				this._showFilter = this._parseBooleanAttribute(_newValue);
+				break;
+			case "disable-auto-open":
+				this._disableAutoOpen = this._parseBooleanAttribute(_newValue);
 				break;
 			case "disabled":
 				this._disabled = this._parseBooleanAttribute(_newValue);
@@ -1300,7 +1335,18 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	}
 
 	private _onShowOverlay(): void {
+		// check if auto open is disabled
+		if (this._disableAutoOpen) {
+			return;
+		}
 		this._showOverlay();
+	}
+
+	private _onIconClick(): void {
+		// check if auto open is disabled
+		if (this._disableAutoOpen) {
+			this._showOverlay();
+		}
 	}
 
 	private _onCloseOverlay(): void {
