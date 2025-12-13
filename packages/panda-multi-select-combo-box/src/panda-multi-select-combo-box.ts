@@ -42,6 +42,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			"item-label-path",
 			"item-value-path",
 			"placeholder",
+			"placeholder-interval",
 			"filter-placeholder",
 			"filter-placeholder-interval",
 			"show-filter",
@@ -247,7 +248,36 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
-	// showFilter =======================================================================================================
+	// placeholderInterval ============================================================================================
+	/**
+	 * Interval in milliseconds for updating the placeholder text.
+	 * Value must be greater than or equal to 1000 ms.
+	 * Default is 3000 ms.
+	 */
+	private _placeholderInterval!: number;
+
+	get placeholderInterval() {
+		return this._placeholderInterval;
+	}
+
+	set placeholderInterval(value: number) {
+		if (this._placeholderInterval !== value) {
+			const interval = Number(value);
+
+			if (Number.isNaN(interval) || interval < 1000) {
+				this._placeholderInterval = 3000;
+				console.warn(`⚠️ [PANDA SELECT] placeholderInterval must be a number greater than or equal to 1000 ms.`);
+				// reflect to attribute
+				this.removeAttribute("placeholder-interval");
+			} else {
+				this._placeholderInterval = interval;
+				// reflect to attribute
+				this.setAttribute("placeholder-interval", this._placeholderInterval + "");
+			}
+		}
+	}
+
+	// showFilter =====================================================================================================
 	/**
 	 * If true, the overlay filter input field is shown.
 	 * Default is false.
@@ -310,6 +340,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	set filterPlaceholderInterval(value: number) {
 		if (this._filterPlaceholderInterval !== value) {
 			const interval = Number(value);
+
 			if (Number.isNaN(interval) || interval < 1000) {
 				this._filterPlaceholderInterval = 3000;
 				console.warn(`⚠️ [PANDA SELECT] filterPlaceholderInterval must be a number greater than or equal to 1000 ms.`);
@@ -894,6 +925,10 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				break;
 			case "placeholder":
 				this._placeholder = [_newValue];
+				break;
+			case "placeholder-interval":
+				this.placeholderInterval = this._parseNumberAttribute(_newValue) ?? 3000;
+				this._placeholderEl.sliderInterval = this._placeholderInterval;
 				break;
 			case "filter-placeholder":
 				this._filterPlaceholder = _newValue;
