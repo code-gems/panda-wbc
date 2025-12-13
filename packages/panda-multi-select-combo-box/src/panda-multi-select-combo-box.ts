@@ -241,6 +241,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				this._placeholder = [value + ""];
 			}
 			this._placeholderEl.slides = this._placeholder;
+			this._updateComponent();
 		}
 	}
 
@@ -360,7 +361,11 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 
 	set max(value: number | null) {
 		if (this._max !== value) {
-			this._max = value;
+			if (value == null || value <= 0) {
+				this._max = null;
+			} else {
+				this._max = value;
+			}
 			// reflect to attribute
 			if (value == null) {
 				this.removeAttribute("max");
@@ -592,9 +597,34 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
+	// customStyle ====================================================================================================
+	private _customStyle!: string;
+
+	get customStyle() {
+		return this._customStyle;
+	}
+
+	set customStyle(value: string) {
+		if (this._customStyle !== value) {
+			this._customStyle = value;
+			// apply custom style to overlay if exists
+			if (this._overlayEl) {
+				this._overlayEl.customStyle = value;
+			}
+		}
+	}
+
+	// groupRenderer ==================================================================================================
+
+	groupRenderer!: (groupName: string, items: SuperItem[]) => string;
+
 	// cellRenderer ===================================================================================================
 
-	itemRenderer!: () => string;
+	itemRenderer!: (item: SuperItem) => string;
+
+	// footerRenderer =================================================================================================
+
+	footerRenderer!: (items: SuperItem[]) => string;
 
 	// filter =========================================================================================================
 	
@@ -860,6 +890,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				this._spinnerType = _newValue;
 				break;
 		}
+		this._evaluateMandatoryFlag();
 		this._updateComponent();
 	}
 
@@ -1137,6 +1168,11 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			this._overlayEl.filterPlaceholderInterval = this._filterPlaceholderInterval;
 			this._overlayEl.i18n = this._i18n;
 			this._overlayEl.parentDetails = this._getElementDetails();
+			this._overlayEl.customStyle = this._customStyle;
+			this._overlayEl.groupRenderer = this.groupRenderer;
+			this._overlayEl.itemRenderer = this.itemRenderer;
+			this._overlayEl.footerRenderer = this.footerRenderer;
+			this._overlayEl.filter = this.filter;
 
 			// add event listeners
 			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
@@ -1190,6 +1226,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		this._selectEl.part = this._selectEl.className;
 		this._itemsContEl.className = `items-cont ${cssString}`;
 		this._itemsContEl.part = this._itemsContEl.className;
+		this._prefixSlotEl.part = this._withPrefix ? `prefix ${cssString}` : "prefix";
+		this._suffixSlotEl.part = this._withSuffix ? `suffix ${cssString}` : "suffix";
 
 		// add feature specific classes
 		if (this._autoExpand) {
@@ -1210,10 +1248,16 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	private _evaluateMandatoryFlag(): void {
 		// evaluate only for default component state
 		if (this._mandatory && !this._disabled && !this._working && !this._readonly) {
-			if (
-				this._min == null && this._value.length > 0 ||
-				this._min != null && this._value.length >= this._min
-			) {
+			if (this._multiselect) {
+				if (
+					this._min == null && this._value.length > 0 ||
+					this._min != null && this._value.length >= this._min
+				) {
+					this._showMandatoryFlag = false;
+				} else {
+					this._showMandatoryFlag = true;
+				}
+			} else if (!this._multiselect && this._value.length > 0) {
 				this._showMandatoryFlag = false;
 			} else {
 				this._showMandatoryFlag = true;

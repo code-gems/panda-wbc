@@ -6,6 +6,7 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-multi-select-combo-box";
+import "@panda-wbc/panda-text-field"
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -14,7 +15,7 @@ import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
 import { PandaMultiSelectComboBoxItem } from "@panda-wbc/panda-multi-select-combo-box";
-import {unsafeHTML} from 'lit/directives/unsafe-html.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 // code snippets
 // ...
 
@@ -84,8 +85,50 @@ export class ContentPage extends ContentPageTemplate {
 		{ label: "Size XL", value: "size-xl" },
 	];
 
+	private readonly _customStyle = `
+		.country-item {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+		}
+
+		.country-item .flag {
+			display: flex;
+			flex-shrink: 0;
+			justify-content: center;
+			align-items: center;
+			width: 24px;
+			height: 100%;
+		}
+
+		.country-item .label {
+			font-weight: 500;
+		}
+
+		.footer-actions {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 5px;
+			background-color: var(--panda-background-color-300);
+			border-radius: 5px;
+		}
+	`;
+
 	@state()
 	private _size: string = "";
+
+	@state()
+	private _theme: string = "";
+
+	private readonly _themes = [
+		{ label: "[default]", value: "" },
+		{ label: "Mandatory", value: "mandatory" },
+		{ label: "Valid", value: "valid" },
+		{ label: "Invalid", value: "invalid" },
+	];
 
 	private _value = null;
 
@@ -112,6 +155,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _showFilter = false;
+
+	@state()
+	private _min: number | null = null;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -176,12 +222,20 @@ const xxx = async (name: string): void => {
 										@change="${this._onSizeChange}"
 									></panda-combo-box>
 								</div>
+								<div class="col-2">
+									<panda-combo-box
+										label="Select theme:"
+										.value="${this._theme}"
+										.items="${this._themes}"
+										@change="${this._onThemeChange}"
+									></panda-combo-box>
+								</div>
 							</div>
 							<div class="row">
 
-								<div class="col-half">
+								<div class="col-3">
 									<panda-multi-select-combo-box
-										theme="${this._size}"
+										theme="${this._size + " " + this._theme}"
 										label="Select country:"
 										error-message="this is an error message"
 										placeholder="Select country..."
@@ -191,6 +245,7 @@ const xxx = async (name: string): void => {
 										.value="${this._value}"
 										.filterPlaceholder="${["Type to filter...", "eg. poland"]}"
 
+										.min="${this._min}"
 										.autoExpand="${this._autoExpand}"
 										.showFilter="${this._showFilter}"
 										.showClearButton="${this._showClearButton}"
@@ -199,14 +254,15 @@ const xxx = async (name: string): void => {
 										.mandatory="${this._mandatory}"
 										.working="${this._working}"
 										.disabled="${this._disabled}"
+
+										.itemRenderer="${this._itemRenderer}"
+										.groupRenderer="${this._groupRenderer}"
+										.footerRenderer="${this._renderFooter}"
+
+										.customStyle="${this._customStyle}"
+
 										@change="${this._onChange}"
 									>
-										<div slot="prefix" class="icon">
-											<panda-icon icon="check"></panda-icon>
-										</div>
-										<div slot="suffix">
-											SOME TEXT
-										</div>
 									</panda-multi-select-combo-box>
 								</div>
 
@@ -216,8 +272,23 @@ const xxx = async (name: string): void => {
 										${this._renderValues(this._value)}
 									</div>
 								</div>
-
 							</div>
+
+							<div class="row">
+								<div class="col-half">
+									<panda-text-field
+										placeholder="Enter..."
+										.theme="${this._size + " " + this._theme}"
+									></panda-text-field>
+								</div>
+								<div class="col-half">
+									<panda-text-field
+										.placeholder="${["Enter..."]}"
+										.theme="${this._size + " " + this._theme}"
+									></panda-text-field>
+								</div>
+							</div>
+
 							<div class="row">
 								<div class="col-3">
 									<panda-button @click="${this._onToggleMultiselect}">
@@ -280,6 +351,11 @@ const xxx = async (name: string): void => {
 										Async Working (2 sec)
 									</panda-button>
 								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onSetMinValue}">
+										Set min value (${this._min ? "2" : "null"})
+									</panda-button>
+								</div>
 							</div>
 
 <!--
@@ -319,6 +395,36 @@ const xxx = async (name: string): void => {
 		}
 	}
 
+	private _itemRenderer(item: any): string {
+		return `
+			<div class="country-item">
+				<div class="flag">
+					<panda-flag flag="${item.value}"></panda-flag>
+				</div>
+				<div class="label">
+					${item.label}
+				</div>
+			</div>
+		`;
+	}
+
+	private _groupRenderer(groupName: string, items: any[]): string {
+		const selectedCount = items.filter(i => i.selected).length;
+		return `
+			${groupName} <panda-badge theme="info size-s">${selectedCount}/${items.length}</panda-badge>
+		`;
+	}
+
+	private _renderFooter(items: any[]): string {
+		return `
+			<div class="footer-actions">
+				<div class="label">
+					Total items: ${items.length}
+				</div>
+			</div>
+		`;
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
@@ -328,12 +434,12 @@ const xxx = async (name: string): void => {
 		this._value = event.detail.value;
 		this.requestUpdate();
 	}
-	
+
 	private _onToggleMultiselect(): void {
 		console.log(`%c ⚡ [DEMO] (_onToggleMultiselect)`, "font-size: 24px; color: blue;", !this._multiselect);
 		this._multiselect = !this._multiselect;
 	}
-	
+
 	private _onToggleReadonly(): void {
 		console.log(`%c ⚡ [DEMO] (_onToggleReadonly)`, "font-size: 24px; color: blue;", !this._readonly);
 		this._readonly = !this._readonly;
@@ -393,5 +499,15 @@ const xxx = async (name: string): void => {
 	private _onSizeChange(event: PandaComboBoxChangeEvent): void {
 		this._size = event.detail.value;
 		console.log(`%c ⚡ [DEMO] (_onSizeChange)`, "font-size: 24px; color: blue;", this._size);
+	}
+
+	private _onThemeChange(event: PandaComboBoxChangeEvent): void {
+		this._theme = event.detail.value;
+		console.log(`%c ⚡ [DEMO] (_onThemeChange)`, "font-size: 24px; color: blue;", this._theme);
+	}
+
+	private _onSetMinValue(): void {
+		console.log(`%c ⚡ [DEMO] (_onSetMinValue)`, "font-size: 24px; color: blue;");
+		this._min = this._min ? null : 2;
 	}
 }

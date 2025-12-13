@@ -1,0 +1,16 @@
+check EyeDropper API
+
+ if ('EyeDropper' in window) {
+        // The EyeDropper API is supported
+    } else {
+        // The API is not supported in this browser
+        console.log("EyeDropper API is not supported in this browser.");
+    }
+
+	try {
+        const result = await eyeDropper.open();
+        const selectedColorHex = result.sRGBHex; // The selected color in #RRGGBB format
+        console.log("Selected color:", selectedColorHex);
+    } catch (error) {
+        console.error("Eyedropper operation cancelled or failed:", error);
+    }

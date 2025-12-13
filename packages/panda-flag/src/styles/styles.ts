@@ -1,12 +1,12 @@
 export const styles = /*css*/`
 	:host {
 		display: inline-block;
-		width: var(--panda-flag-size, var(--panda-component-size-m), 30px);
+		width: var(--panda-flag-size, var(--panda-component-size-m, 30px));
 	}
 
 	:host([square]) {
-		width: var(--panda-flag-size, var(--panda-component-size-m), 30px);
-		height: var(--panda-flag-size, var(--panda-component-size-m), 30px);
+		width: var(--panda-flag-size, var(--panda-component-size-m, 30px));
+		height: var(--panda-flag-size, var(--panda-component-size-m, 30px));
 	}
 
 	.flag {

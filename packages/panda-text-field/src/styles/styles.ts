@@ -68,6 +68,7 @@ export const styles = /*css*/`
 		border-radius: var(--panda-input-border-radius-size-m, 10px);
 		background-color: var(--panda-input-background-color-working, hsl(0deg 0% 100%));
 		z-index: 2;
+
 		/* SPINNER STYLE */
 		--panda-spinner-color: var(--panda-input-spinner-color, hsl(191deg 19% 23%));
 		--panda-spinner-size: var(--panda-input-spinner-size-m, var(--panda-icon-size-m, 20px));
@@ -77,18 +78,20 @@ export const styles = /*css*/`
 		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
-		height: var(--panda-input-height-size-m, 40px);
+		height: var(--panda-input-height-size-m, var(--panda-component-size-m, 40px));
 		outline: none;
 
-		transition: all 300ms ease-in-out;
+		transition: all 0.3s ease-in-out;
 
-		border-radius: var(--panda-input-border-radius-size-m, 10px);
+		border-radius: var(--panda-input-border-radius-size-m, var(--panda-border-radius-m, 5px));
 		border-width: var(--panda-input-border-width, 1px);
 		border-style: var(--panda-input-border-style, solid);
 		border-color: var(--panda-input-border-color, hsl(207deg 1% 85%));
 		background-color: var(--panda-input-background-color, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-input-elevation, none);
 		box-sizing: border-box;
+
+		/* ICON STYLES */
 		--panda-icon-color: var(--panda-input-icon-color, hsl(191deg 19% 23%));
 		--panda-icon-size: var(--panda-input-slot-icon-size-m, 20px);
 	}
@@ -136,8 +139,8 @@ export const styles = /*css*/`
 		position: absolute;
 		inset: 0;
 
-		color: var(--panda-input-placeholder-color, hsl(0deg 0% 80%));
-		font-size: var(--panda-input-placeholder-font-size-m, 14px);
+		color: var(--panda-input-placeholder-color, var(--panda-placeholder-color, hsl(0deg 0% 80%)));
+		font-size: var(--panda-input-placeholder-font-size-m, var(--panda-font-size-m, 14px));
 		font-family: var(--panda-input-placeholder-font-family-size-m, "Poppins");
 		font-weight: var(--panda-input-placeholder-font-weight-size-m, 500);
 		text-shadow: var(--panda-input-placeholder-text-shadow-size-m, none);
@@ -342,8 +345,8 @@ export const styles = /*css*/`
 	/* ============================================================================================================= */
 
 	/* MANDATORY */
-	:host([theme~="mandatory"]) .text-field:not(.disabled),
-	:host([theme~="mandatory"]) .text-field:not(.disabled):hover {
+	:host([theme~="mandatory"]) .text-field:not(.disabled):not(.readonly),
+	:host([theme~="mandatory"]) .text-field:not(.disabled):not(.readonly):hover {
 		border-width: var(--panda-input-border-width-mandatory, 1px);
 		border-style: var(--panda-input-border-style-mandatory, solid);
 		border-color: var(--panda-input-border-color-mandatory, hsl(29deg 100% 59%));
@@ -352,8 +355,8 @@ export const styles = /*css*/`
 	}
 	
 	/* VALID */
-	:host([theme~="valid"]) .text-field:not(.disabled),
-	:host([theme~="valid"]) .text-field:not(.disabled):hover {
+	:host([theme~="valid"]) .text-field:not(.disabled):not(.readonly),
+	:host([theme~="valid"]) .text-field:not(.disabled):not(.readonly):hover {
 		color: var(--panda-input-color-valid, hsl(160deg 81% 43%));
 		border-width: var(--panda-input-border-width-valid, 1px);
 		border-style: var(--panda-input-border-style-valid, solid);
@@ -363,8 +366,8 @@ export const styles = /*css*/`
 	}
 	
 	/* INVALID */
-	:host([theme~="invalid"]) .text-field:not(.disabled),
-	:host([theme~="invalid"]) .text-field:not(.disabled):hover {
+	:host([theme~="invalid"]) .text-field:not(.disabled):not(.readonly),
+	:host([theme~="invalid"]) .text-field:not(.disabled):not(.readonly):hover {
 		color: var(--panda-input-color-invalid, hsl(14deg 77% 62%));
 		border-width: var(--panda-input-border-width-invalid, 1px);
 		border-style: var(--panda-input-border-style-invalid, solid);
@@ -576,6 +579,8 @@ export const styles = /*css*/`
 		font-family: var(--panda-input-placeholder-font-family-size-xl, "Poppins");
 		font-weight: var(--panda-input-placeholder-font-weight-size-xl, 500);
 		text-shadow: var(--panda-input-placeholder-text-shadow-size-xl, none);
+		--panda-text-slider-padding-left: 15px;
+		--panda-text-slider-padding-right: 15px;
 	}
 
 	:host([theme~="size-xl"]) .placeholder.with-prefix {

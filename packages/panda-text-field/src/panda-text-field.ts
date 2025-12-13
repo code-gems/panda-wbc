@@ -86,7 +86,7 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	// placeholder ====================================================================================================
-	private _placeholder!: string | string[];
+	private _placeholder!: string[];
 
 	get placeholder() {
 		return this._placeholder;
@@ -94,12 +94,13 @@ export class PandaTextField extends HTMLElement {
 
 	set placeholder(value: string | string[]) {
 		if (this._placeholder !== value) {
-			this._placeholder = value;
-			// convert placeholder to an array
-			const placeholders = Array.isArray(this.placeholder)
-				? this.placeholder
-				: [...this.placeholder];
-			this._placeholderEl.slides = placeholders;
+			// set placeholder value
+			if (Array.isArray(value)) {
+				this._placeholder = value.map((placeholderText) => placeholderText + "");
+			} else {
+				this._placeholder = [value + ""];
+			}
+			this._placeholderEl.slides = this._placeholder;
 			this._updateComponent();
 		}
 	}
@@ -428,7 +429,7 @@ export class PandaTextField extends HTMLElement {
 		this._theme = "";
 		this._label = "";
 		this._description = "";
-		this._placeholder = "";
+		this._placeholder = [];
 		this._placeholderInterval = null;
 		this._working = false;
 		this._readonly = false;
@@ -561,7 +562,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "placeholder":
-				this._placeholder = _newValue;
+				this._placeholder = [_newValue];
 				break;
 
 			case "placeholder-interval":
@@ -585,7 +586,14 @@ export class PandaTextField extends HTMLElement {
 
 			case "max-length":
 				this._maxLength = this._parseNumberAttribute(_newValue);
-				if (this._maxLength != null) {
+				if (this._maxLength == null) {
+					// clear max length from input element
+					this._inputEl.removeAttribute("maxLength");
+					// remove counter from footer element
+					if (!this._showCharacterCounter) {
+						this._counterEl.remove();
+					}
+				} else {
 					// set max-length onto input element
 					this._inputEl.maxLength = this._maxLength;
 					// check if text is longer than max length
@@ -598,13 +606,6 @@ export class PandaTextField extends HTMLElement {
 					}
 					// add counter to footer element
 					this._footerEl.appendChild(this._counterEl);
-				} else {
-					// clear max length from input element
-					this._inputEl.removeAttribute("maxLength");
-					// remove counter from footer element
-					if (!this._showCharacterCounter) {
-						this._counterEl.remove();
-					}
 				}
 				break;
 
@@ -753,12 +754,16 @@ export class PandaTextField extends HTMLElement {
 			}
 
 			// update placeholder
-			if (this._placeholder) {
-				this._placeholderEl.hide = !!this._value;
+			if (this._value == null || this._value === "") {
+				this._placeholderEl.hide = false;
 				// don't animate placeholder if component is either disabled, working or readonly 
 				if (this._disabled || this._working || this._readonly) {
 					this._placeholderEl.stop();
 				}
+				this._placeholderEl.slides = this._placeholder;
+				this._placeholderEl.hide = false;
+			} else {
+				this._placeholderEl.hide = true;
 			}
 
 			// update clear button

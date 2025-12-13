@@ -30,29 +30,35 @@ export const styles = /*css*/`
 		z-index: 9999;
 	}
 
-	.header {
+	.dropdown .header {
 		display: flex;
 		flex-flow: column;
 		gap: var(--panda-select-dropdown-header-gap, var(--panda-gap-m, 10px));
 		padding: var(--panda-select-dropdown-header-padding, var(--panda-gap-m, 10px));
 	}
 
-	.filter {
+	.dropdown .header .filter {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		padding: var(--panda-select-dropdown-filter-padding, 0px);
 	}
 
-	.buttons {
+	.dropdown .header .buttons {
 		display: flex;
 		flex-flow: row;
 		justify-content: space-between;
 		align-items: center;
 		padding: var(--panda-select-dropdown-buttons-padding, 0px);
 	}
+	
+	.dropdown .footer {
+		display: flex;
+		flex-shrink: 0;
+		padding-top: var(--panda-select-dropdown-footer-padding-top, var(--panda-padding-s, 5px));
+	}
 
-	.list {
+	.dropdown .list {
 		display: flex;
 		flex-flow: column;
 		overflow: auto;

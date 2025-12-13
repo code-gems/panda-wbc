@@ -1,5 +1,4 @@
 // types
-import { PandaTextField, PandaTextFieldOnInputEvent } from "@panda-wbc/panda-text-field";
 import { PandaSelectI18nConfig } from "../index";
 import {
 	ElementDetails,
@@ -8,6 +7,8 @@ import {
 	SuperItem,
 	DropdownPosition,
 } from "./types";
+import { PandaTextField, PandaTextFieldOnInputEvent } from "@panda-wbc/panda-text-field";
+import { PandaButton } from "@panda-wbc/panda-button";
 
 // styles
 import { styles } from "./styles/overlay-styles";
@@ -153,10 +154,33 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		this._updateComponent();
 	}
 
+	// customStyle ====================================================================================================
+	private _customStyle!: string;
+
+	get customStyle() {
+		return this._customStyle;
+	}
+
+	set customStyle(value: string) {
+		if (this._customStyle !== value) {
+			this._customStyle = value;
+			this._applyCustomStyle();
+		}
+	}
+
+	// groupRenderer ==================================================================================================
+
+	groupRenderer!: (groupName: string, items: SuperItem[]) => string;
+
 	// itemRenderer ===================================================================================================
 
 	/** Custom item template render function. */
 	itemRenderer!: (item: SuperItem) => string;
+
+	// footerRenderer ===================================================================================================
+
+	/** Footer template render function. */
+	footerRenderer!: (items: SuperItem[]) => string;
 
 	// filter =========================================================================================================
 
@@ -179,6 +203,9 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 	/** Total number of items in the list (filtered). */
 	private _itemCount!: number | null;
 
+	/** Flag to indicate if the maximum selection limit has been reached. */
+	private _maxLimitReached!: boolean;
+
 	/**
 	 * Flag to indicate if the dropdown position has been updated.
 	 * It is used to control when dropdown should get its position recomputed.
@@ -193,23 +220,22 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 	 */
 	private _initialPosition!: DropdownPosition | null;
 
-
-
-	// elements
+	// elements =======================================================================================================
 	private readonly _overlayEl!: HTMLDivElement;
 	private readonly _dropdownEl!: PandaMultiSelectComboBoxOverlay;
 	private readonly _headerEl!: HTMLDivElement;
 	private readonly _buttonsEl!: HTMLDivElement;
-	private readonly _selectAllBtnEl!: HTMLDivElement;
-	private readonly _resetBtnEl!: HTMLDivElement;
+	private readonly _selectAllBtnEl!: PandaButton;
+	private readonly _resetBtnEl!: PandaButton;
 	private readonly _listEl!: HTMLDivElement;
 	private readonly _filterEl!: HTMLDivElement;
 	private readonly _textFieldEl!: PandaTextField;
 	private readonly _filterTabKeyEvent!: any;
 	private readonly _calloutEl!: HTMLDivElement;
 	private readonly _calloutMessageEl!: HTMLDivElement;
+	private readonly _footerEl!: HTMLDivElement;
 
-	// events
+	// events =========================================================================================================
 	private readonly _documentKeyDownEvent: any;
 	private readonly _closeEvent: any;
 	private readonly _preventMouseEvent: any;
@@ -257,11 +283,6 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 						part="list"
 						tabindex="0"
 					></div>
-					<div
-						id="footer"
-						class="footer"
-						part="footer"
-					></div>
 				</div>
 			</div>
 		`;
@@ -293,6 +314,12 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 				theme="plain size-s"
 			></panda-button>
 		`;
+
+		// create footer template
+		this._footerEl = document.createElement("div");
+		this._footerEl.className = "footer";
+		this._footerEl.part = "footer";
+		this._footerEl.innerHTML = ``;
 
 		// create callout template
 		this._calloutEl = document.createElement("div");
@@ -349,6 +376,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			this._selectEvent = this._onSelect.bind(this);
 
 			// add event listeners
+			window.addEventListener("resize", this._closeEvent);
 			document.addEventListener("keydown", this._documentKeyDownEvent);
 			this._overlayEl.addEventListener("click", this._closeEvent);
 			this._overlayEl.addEventListener("keydown", this._overlayTabKeyEvent);
@@ -375,6 +403,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 
 	disconnectedCallback(): void {
 		// remove events
+		window.removeEventListener("resize", this._closeEvent);
 		document.removeEventListener("keydown", this._documentKeyDownEvent);
 		this._overlayEl.removeEventListener("click", this._closeEvent);
 		this._overlayEl.removeEventListener("keydown", this._overlayTabKeyEvent);
@@ -407,14 +436,30 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			// add/remove buttons element
 			if (this._multiselect) {
 				const selectAllLabel = this._i18n.selectAll ?? "Select All";
-				const counter = getSelectableItemsCount(this._items);
-				// update buttons text
-				this._selectAllBtnEl.textContent = `${selectAllLabel} (${counter})`;
+
+				if (this._max == null) {
+					const counter = getSelectableItemsCount(this._items);
+					// update buttons text
+					this._selectAllBtnEl.textContent = `${selectAllLabel} (${counter})`;
+				} else {
+					this._selectAllBtnEl.disabled = true;
+					this._selectAllBtnEl.textContent = selectAllLabel;
+				}
+
 				this._resetBtnEl.textContent = this._i18n.reset ?? "Reset";
 				// append buttons
 				this._headerEl.appendChild(this._buttonsEl);
 			} else {
 				this._buttonsEl.remove();
+			}
+
+			// render footer if footerRenderer is defined
+			if (this.footerRenderer != null && typeof this.footerRenderer === "function") {
+				this._dropdownEl.appendChild(this._footerEl);
+				this._footerEl.innerHTML = this.footerRenderer(this._items);
+			} else {
+				this._footerEl.innerHTML = "";
+				this._footerEl.remove();
 			}
 
 			// generate list items
@@ -435,10 +480,16 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		const groupsHtml: string[] = [];
 		const itemMap = new Map<string, SuperItem[]>();
 		let hasGroups = false;
+		let selectedItems = 0;
 
 		for (const item of this._items) {
-			const { group, label } = item;
+			const { group, label, selected } = item;
 			let match = true;
+
+			// count selected items
+			if (selected) {
+				selectedItems++;
+			}
 
 			// apply filter
 			if (this._filterText != "") {
@@ -474,6 +525,8 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			for (const item of items) {
 				const { index, label, value, selected, disabled } = item;
 				const cssClasses: string[] = ["item"];
+				// check if selection limit is reached
+				this._maxLimitReached = this._max !== null && selectedItems >= this._max;
 				let checkboxHtml = "";
 				let labelHtml = "";
 
@@ -497,7 +550,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 						<div class="checkbox">
 							<panda-checkbox
 								${selected ? "checked" : ""}
-								${disabled ? "disabled" : ""}
+								${disabled || (this._maxLimitReached && !selected) ? "disabled" : ""}
 								tabindex="-1"
 							></panda-checkbox>
 						</div>
@@ -518,10 +571,11 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 				itemsHtml.push(/*html*/`
 					<div
 						class="${cssClasses.join(" ")}"
+						part="${cssClasses.join(" ")}"
 						tabindex="${disabled ? -1 : 0}"
 						data-index="${index}"
 						data-order="${disabled ? -1 : itemOrder}"
-						${selected && !disabled ? "selected" : ""}
+						data-disabled="${this._maxLimitReached && !selected ? "true" : "false"}"
 					>
 						${checkboxHtml}
 						${labelHtml}
@@ -537,11 +591,21 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			if (itemsHtml.length) {
 				let groupHeaderHtml = "";
 				if (hasGroups && group !== "") {
-					groupHeaderHtml = /*html*/`
-						<div class="group-header" part="group-header">
-							${group}
-						</div>
-					`;
+					// check if group renderer is defined
+					if (this.groupRenderer != null && typeof this.groupRenderer === "function") {
+						const content = this.groupRenderer(group, items);
+						groupHeaderHtml = /*html*/`
+							<div class="group-header" part="group-header">
+								${content}
+							</div>
+						`;
+					} else {
+						groupHeaderHtml = /*html*/`
+							<div class="group-header" part="group-header">
+								${group}
+							</div>
+						`;
+					}
 				}
 				// add group header
 				groupsHtml.push(/*html*/`
@@ -555,7 +619,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 
 		// store rendered item count
 		this._itemCount = itemOrder - 1;
-		
+
 		// show/hide callout message
 		if (groupsHtml.length) {
 			this._calloutEl.remove();
@@ -579,6 +643,14 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		cssStyleSheet.replaceSync(styles);
 		if (this.shadowRoot) {
 			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
+		}
+	}
+
+	private _applyCustomStyle(): void {
+		if (this.shadowRoot && this._customStyle) {
+			const customStyleSheet = new CSSStyleSheet();
+			customStyleSheet.replaceSync(this._customStyle);
+			this.shadowRoot.adoptedStyleSheets.push(customStyleSheet);
 		}
 	}
 
@@ -650,7 +722,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 	 */
 	private _updateSingleItem(index: number, selected: boolean): void {
 		const itemEl: HTMLDivElement | null = this._listEl.querySelector(`.item[data-index="${index}"]`);
-		
+
 		if (itemEl && this._multiselect) {
 			// find item and checkbox element in the list
 			const checkboxEl = itemEl.querySelector("panda-checkbox") as any;
@@ -659,7 +731,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 				checkboxEl.checked = selected;
 			}
 		}
-		
+
 		if (itemEl && !this._multiselect) {
 			// update item selected state
 			if (selected) {
@@ -690,7 +762,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		// ensure active element is visible
 		this._showActiveElement();
 	}
-	
+
 	private _moveToPreviousItem(): void {
 		// focus the list element to enable keyboard navigation
 		this._listEl.focus();
@@ -723,7 +795,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			const selectedEl: HTMLDivElement | null = this._listEl.querySelector("[selected]");
 			// scroll to selected element
 			if (selectedEl) {
-				selectedEl.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest" });
+				selectedEl.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
 				selectedEl.classList.add("active");
 				this._activeItemIndex = Number.parseInt(selectedEl.dataset["order"] || "0", 10);
 			}
@@ -756,6 +828,12 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		const index = Number.parseInt(itemEl.dataset["index"] || "-1", 10);
 		const selectedItem = this._items[index];
 
+		// check if item is soft disabled due to max selection limit
+		const softDisable = itemEl.dataset.disabled === "true";
+		if (softDisable) {
+			return;
+		}
+
 		// ignore disabled items
 		if (selectedItem.disabled) {
 			this._activeItemIndex = null;
@@ -766,8 +844,14 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		// toggle selected flag
 		if (this._multiselect) {
 			selectedItem.selected = !selectedItem.selected;
-			// update single list item element
-			this._updateSingleItem(index, selectedItem.selected);
+			// check if max selection limit is set
+			if (this._max == null) {
+				// update single list item element
+				this._updateSingleItem(index, selectedItem.selected);
+			} else {
+				// re-render entire list to enforce max selection limit
+				this._renderListItems();
+			}
 		} else {
 			// get currently selected item
 			const currentlySelectedItem = this._items.find((item) => item.selected);
@@ -923,7 +1007,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 
 	private _onDocumentKeyDown(event: KeyboardEvent): void {
 		const activeItemEl = this._getActiveItemElement();
-		
+
 		switch (event.code) {
 			case "ArrowDown":
 				event.preventDefault();

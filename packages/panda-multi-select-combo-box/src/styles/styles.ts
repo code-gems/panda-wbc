@@ -125,6 +125,7 @@ export const styles = /*css*/`
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		padding-left: var(--panda-select-single-item-padding-left, 5px);
 	}
 
 	.item.chip {
@@ -173,16 +174,16 @@ export const styles = /*css*/`
 		cursor: pointer;
 
 		border-radius: var(--panda-select-chip-remove-button-border-radius-size-m, var(--panda-border-radius-m, 5px));
-		background-color: var(--panda-select-chip-clear-button-background-color, transparent);
+		background-color: var(--panda-select-chip-remove-button-background-color, transparent);
 		box-sizing: border-box;
 
 		/* ICON STYLES */
-		--panda-icon-color: var(--panda-select-chip-clear-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
-		--panda-icon-size: var(--panda-select-chip-clear-button-icon-size-m, 18px);
+		--panda-icon-color: var(--panda-select-chip-remove-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
+		--panda-icon-size: var(--panda-select-chip-remove-button-icon-size-m, 18px);
 	}
 
 	.item.chip .remove-button:hover {
-		background-color: var(--panda-select-chip-clear-button-background-color-hover, hsl(0deg 0% 90%));
+		background-color: var(--panda-select-chip-remove-button-background-color-hover, hsl(0deg 0% 90%));
 	}
 
 	.icon,
@@ -206,7 +207,7 @@ export const styles = /*css*/`
 	}
 
 	.clear-button {
-		width: var(--panda-select-clear-button-size-m, var(--panda-component-size-m, 40px));
+		width: var(--panda-select-clear-button-size-m, 16px);
 		z-index: 1;
 	}
 
@@ -224,7 +225,7 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-select-clear-button-icon-color, var(--panda-select-icon-color, hsl(191deg 19% 23%)));
-		--panda-icon-size: var(--panda-select-clear-button-icon-size-m, var(--panda-select-icon-size-m, 20px));
+		--panda-icon-size: var(--panda-select-clear-button-icon-size-m, var(--panda-icon-size-m, 20px));
 	}
 
 	.clear-button-icon:hover {
@@ -237,7 +238,7 @@ export const styles = /*css*/`
 		position: absolute;
 		inset: 0;
 		color: var(--panda-select-placeholder-color, var(--panda-placeholder-color, hsl(0deg 0% 80%)));
-		font-size: var(--panda-select-placeholder-font-size-m, 16px);
+		font-size: var(--panda-select-placeholder-font-size-m, var(--panda-font-size-m, 14px));
 		font-family: var(--panda-select-placeholder-font-family-size-m, "Poppins");
 		font-weight: var(--panda-select-placeholder-font-weight-size-m, 500);
 		text-shadow: var(--panda-select-placeholder-text-shadow-size-m, none);
@@ -304,7 +305,13 @@ export const styles = /*css*/`
 
 	/* HOVER */
 	.select:not(.disabled):hover {
+		border-color: var(--panda-select-border-color-hover, hsl(207deg 1% 85%));
+		background-color: var(--panda-select-background-color-hover, hsl(0deg 0% 100%));
+		box-shadow: var(--panda-select-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
 
+	.select.readonly:not(.disabled):hover .icon {
+		--panda-icon-color: var(--panda-select-icon-color-hover, hsl(188deg 5% 75%));
 	}
 
 	/* READONLY */
@@ -395,10 +402,42 @@ export const styles = /*css*/`
 	/* THEMES ====================================================================================================== */
 	/* ============================================================================================================= */
 
+	/* MANDATORY */
+	:host([theme~="mandatory"]) .select:not(.disabled):not(.readonly) {
+		border-width: var(--panda-select-border-width-mandatory, 1px);
+		border-style: var(--panda-select-border-style-mandatory, solid);
+		border-color: var(--panda-select-border-color-mandatory, hsl(29deg 100% 59%));
+		border-color: var(--panda-select-border-color-mandatory, var(--panda-action-color-warn, hsl(29deg 100% 59%)));
+		background-color: var(--panda-select-background-color-mandatory, hsl(29deg 100% 59% / 10%));
+		box-shadow: var(--panda-select-outline-mandatory, 0px 0px 2px 2px hsl(29deg 100% 59%));
+	}
+
+	/* PLACEHOLDER STYLES */
+	:host([theme~="mandatory"]) .select:not(.disabled):not(.readonly) .placeholder {
+		color: var(--panda-select-placeholder-color-mandatory, hsl(29deg 100% 59%));
+	}
 
 	/* VALID */
-
+	:host([theme~="valid"]) .select:not(.disabled):not(.readonly),
+	:host([theme~="valid"]) .select:not(.disabled):not(.readonly):hover {
+		color: var(--panda-select-color-valid, hsl(160deg 81% 43%));
+		border-width: var(--panda-select-border-width-valid, 1px);
+		border-style: var(--panda-select-border-style-valid, solid);
+		border-color: var(--panda-select-border-color-valid, hsl(160deg 81% 43%));
+		background-color: var(--panda-select-background-color-valid, hsl(160deg 81% 43% / 10%));
+		box-shadow: var(--panda-select-outline-valid, 0px 0px 2px 2px hsl(160deg 81% 43%));
+	}
+	
 	/* INVALID */
+	:host([theme~="invalid"]) .select:not(.disabled):not(.readonly),
+	:host([theme~="invalid"]) .select:not(.disabled):not(.readonly):hover {
+		color: var(--panda-select-color-invalid, hsl(14deg 77% 62%));
+		border-width: var(--panda-select-border-width-invalid, 1px);
+		border-style: var(--panda-select-border-style-invalid, solid);
+		border-color: var(--panda-select-border-color-invalid, hsl(14deg 77% 62%));
+		background-color: var(--panda-select-background-color-invalid, hsl(14deg 77% 62% / 10%));
+		box-shadow: var(--panda-select-outline-invalid, 0px 0px 2px 2px hsl(14deg 77% 62%));
+	}
 
 	/* SIZE-S ====================================================================================================== */
 	:host([theme~="size-s"]) .select {
@@ -461,14 +500,14 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="size-s"]) .clear-button {
-		width: var(--panda-select-clear-button-size-s, var(--panda-component-size-s, 32px));
+		width: var(--panda-select-clear-button-size-s, 12px);
 	}
 
 	:host([theme~="size-s"]) .clear-button-icon {
 		padding: var(--panda-select-clear-button-icon-padding-size-s, 0px);
 		border-radius: var(--panda-select-clear-button-icon-border-radius-size-s, var(--panda-border-radius-s, 2px));
 		/* ICON STYLES */
-		--panda-icon-size: var(--panda-select-clear-button-icon-size-s, var(--panda-select-icon-size-s, 18px));
+		--panda-icon-size: var(--panda-select-clear-button-icon-size-s, var(--panda-icon-size-s, 18px));
 	}
 
 	/* AUTO-EXPAND */
@@ -532,7 +571,7 @@ export const styles = /*css*/`
 		padding: var(--panda-select-items-padding-size-l, 0px);
 	}
 
-	:host([theme~="size-s"]) .item {
+	:host([theme~="size-l"]) .item {
 		font-size: var(--panda-select-font-size-size-l, var(--panda-font-size-l, 16px));
 		font-family: var(--panda-select-font-family-size-l, var(--panda-font-family, "Poppins"));
 		font-weight: var(--panda-select-font-weight-size-l, var(--panda-font-weight, 500));
@@ -563,14 +602,14 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="size-l"]) .clear-button {
-		width: var(--panda-select-clear-button-size-l, var(--panda-component-size-l, 48px));
+		width: var(--panda-select-clear-button-size-l, 20px);
 	}
 
 	:host([theme~="size-l"]) .clear-button-icon {
 		padding: var(--panda-select-clear-button-icon-padding-size-l, 0px);
 		border-radius: var(--panda-select-clear-button-icon-border-radius-size-l, var(--panda-border-radius-l, 10px));
 		/* ICON STYLES */
-		--panda-icon-size: var(--panda-select-clear-button-icon-size-l, var(--panda-select-icon-size-l, 24px));
+		--panda-icon-size: var(--panda-select-clear-button-icon-size-l, var(--panda-icon-size-l, 24px));
 	}
 
 	/* AUTO-EXPAND */
@@ -605,5 +644,106 @@ export const styles = /*css*/`
 	}
 
 	/* SIZE-XL ===================================================================================================== */
+	:host([theme~="size-xl"]) .select {
+		height: var(--panda-select-height-size-xl, var(--panda-component-size-xl, 56px));
+		border-radius: var(--panda-select-border-radius-size-xl, var(--panda-border-radius-xl, 15px));
+		/* ICON STYLE */
+		--panda-icon-size: var(--panda-select-slot-icon-size-xl, var(--panda-icon-size-xl, 24px));
+	}
 
+	:host([theme~="size-xl"]) .select .items-cont {
+		padding-left: var(--panda-select-items-cont-padding-left-size-xl, 10px);
+		padding-right: var(--panda-select-items-cont-padding-right-size-xl, 10px);
+	}
+
+	:host([theme~="size-xl"]) .select .items-cont.with-prefix {
+		padding-left: var(--panda-select-slot-gap-size-xl, 0px);
+	}
+
+	:host([theme~="size-xl"]) .select .items-cont.with-suffix {
+		padding-right: var(--panda-select-slot-gap-size-xl, 0px);
+	}
+
+	:host([theme~="size-xl"]) .select.with-message {
+		margin-bottom: var(--panda-select-with-message-gap-size-xl, var(--panda-padding-xl, 15px));
+	}
+
+	:host([theme~="size-xl"]) .items {
+		gap: var(--panda-select-items-gap-size-xl, 10px);
+		padding: var(--panda-select-items-padding-size-xl, 0px);
+	}
+
+	:host([theme~="size-xl"]) .item {
+		font-size: var(--panda-select-font-size-size-xl, var(--panda-font-size-xl, 16px));
+		font-family: var(--panda-select-font-family-size-xl, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-select-font-weight-size-xl, var(--panda-font-weight, 500));
+		text-shadow: var(--panda-select-text-shadow-size-xl, none);
+	}
+
+	:host([theme~="size-xl"]) .item.chip {
+		height: var(--panda-select-chip-height-size-xl, 36px);
+		border-radius: var(--panda-select-chip-border-radius-size-xl, var(--panda-border-radius-xl, 10px));
+	}
+
+	:host([theme~="size-xl"]) .item.chip .label {
+		padding: 0px var(--panda-select-chip-padding-right-size-xl, 10px);
+		font-size: var(--panda-select-chip-font-size-xl, var(--panda-font-size-xl, 16px));
+	}
+
+	:host([theme~="size-xl"]) .item.chip .remove-button {
+		width: var(--panda-select-chip-height-size-xl, 36px);
+		min-height: var(--panda-select-chip-height-size-xl, 36px);
+		border-radius: var(--panda-select-chip-remove-button-border-radius-size-xl, var(--panda-border-radius-xl, 10px));
+		/* ICON STYLES */
+		--panda-icon-size: var(--panda-select-chip-clear-button-icon-size-xl, 18px);
+	}
+
+	:host([theme~="size-xl"]) .icon,
+	:host([theme~="size-xl"]) .clear-button {
+		width: var(--panda-select-icon-size-xl, var(--panda-component-size-xl, 48px));
+	}
+
+	:host([theme~="size-xl"]) .clear-button {
+		width: var(--panda-select-clear-button-size-xl, 24px);
+	}
+
+	:host([theme~="size-xl"]) .clear-button-icon {
+		padding: var(--panda-select-clear-button-icon-padding-size-xl, 0px);
+		border-radius: var(--panda-select-clear-button-icon-border-radius-size-xl, var(--panda-border-radius-xl, 10px));
+		/* ICON STYLES */
+		--panda-icon-size: var(--panda-select-clear-button-icon-size-xl, var(--panda-icon-size-xl, 24px));
+	}
+
+	/* AUTO-EXPAND */
+	:host([theme~="size-xl"]) .select.auto-expand {
+		height: unset;
+		min-height: var(--panda-select-height-size-xl, var(--panda-component-size-xl, 56px));
+	}
+
+	:host([theme~="size-xl"]) .select.auto-expand .items-cont {
+		padding-top: var(--panda-select-items-padding-top-size-xl, 5px);
+		padding-bottom: var(--panda-select-items-padding-bottom-size-xl, 5px);
+	}
+
+	:host([theme~="size-xl"]) .select.auto-expand .item.chip {
+		height: unset;
+		min-height: var(--panda-select-chip-height-size-xl, 36px);
+	}
+
+	/* SPINNER STYLES */
+	:host([theme~="size-xl"]) .spinner-cont {
+		border-radius: var(--panda-select-border-radius-size-xl, var(--panda-border-radius-xl, 10px));
+		--panda-spinner-size: var(--panda-select-spinner-size-xl, var(--panda-icon-size-xl, 24px));
+	}
+	
+	/* PLACEHOLDER STYLES */
+	:host([theme~="size-xl"]) .placeholder {
+		font-size: var(--panda-select-placeholder-font-size-xl, 16px);
+		--panda-text-slider-padding-left: 15px;
+		--panda-text-slider-padding-right: 15px;
+	}
+
+	:host([theme~="size-xl"])  ::slotted(.icon) {
+		min-width: var(--panda-select-height-size-xl, var(--panda-component-size-xl, 56px));
+	}
 `;
