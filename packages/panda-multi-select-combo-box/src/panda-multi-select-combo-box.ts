@@ -43,6 +43,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			"item-value-path",
 			"placeholder",
 			"filter-placeholder",
+			"filter-placeholder-interval",
 			"show-filter",
 			"show-item-count",
 			"show-clear-button",
@@ -464,8 +465,12 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		if (this._spinnerType !== value) {
 			this._spinnerType = value;
 			// reflect to attribute
-			this._spinnerEl.spinner = this._spinnerType;
-			this.setAttribute("spinner-type", this._spinnerType);
+			if (value == null || value === "") {
+				this._spinnerType = "dots";
+				this.removeAttribute("spinner-type");
+			} else {
+				this.setAttribute("spinner-type", this._spinnerType + "");
+			}
 		}
 	}
 
@@ -893,6 +898,9 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			case "filter-placeholder":
 				this._filterPlaceholder = _newValue;
 				break;
+			case "filter-placeholder-interval":
+				this.filterPlaceholderInterval = this._parseNumberAttribute(_newValue) ?? 3000;
+				break;
 			case "auto-expand":
 				this._autoExpand = this._parseBooleanAttribute(_newValue);
 				break;
@@ -925,6 +933,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				break;
 			case "spinner-type":
 				this._spinnerType = _newValue;
+				this._spinnerEl.spinner = this._spinnerType;
 				break;
 		}
 		this._evaluateMandatoryFlag();
