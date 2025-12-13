@@ -828,6 +828,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 
 			// add event listeners
+			window.addEventListener("resize", this._closeOverlayEvent);
 			this._selectEl.addEventListener("click", this._showOverlayEvent);
 			this._selectEl.addEventListener("keydown", this._keyDownEvent);
 			this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
@@ -846,6 +847,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 
 	disconnectedCallback(): void {
 		// remove event listeners
+		window.removeEventListener("resize", this._closeOverlayEvent);
 		this._selectEl.removeEventListener("click", this._showOverlayEvent);
 		this._selectEl.removeEventListener("keydown", this._keyDownEvent);
 		this._clearButtonEl.removeEventListener("click", this._clearButtonClickEvent);
