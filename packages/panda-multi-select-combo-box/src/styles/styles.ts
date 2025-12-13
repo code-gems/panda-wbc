@@ -299,6 +299,15 @@ export const styles = /*css*/`
 		white-space: normal;
 	}
 
+	/* HIDE DROPDOWN BUTTON */
+	.select.hide-dropdown-button .icon {
+		display: none;
+	}
+
+	.select.hide-dropdown-button .clear-button {
+		width: var(--panda-select-icon-size-m, var(--panda-component-size-m, 40px));
+	}
+
 	/* ============================================================================================================= */
 	/* COMPONENT STATE ============================================================================================= */
 	/* ============================================================================================================= */
@@ -494,13 +503,16 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-select-chip-clear-button-icon-size-s, 14px);
 	}
 
-	:host([theme~="size-s"]) .icon,
-	:host([theme~="size-s"]) .clear-button {
+	:host([theme~="size-s"]) .icon {
 		width: var(--panda-select-icon-size-s, var(--panda-component-size-s, 32px));
 	}
 
 	:host([theme~="size-s"]) .clear-button {
 		width: var(--panda-select-clear-button-size-s, 12px);
+	}
+
+	:host([theme~="size-s"]) .hide-dropdown-button .clear-button {
+		width: var(--panda-select-icon-size-s, var(--panda-component-size-s, 32px));
 	}
 
 	:host([theme~="size-s"]) .clear-button-icon {
@@ -596,13 +608,16 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-select-chip-clear-button-icon-size-l, 18px);
 	}
 
-	:host([theme~="size-l"]) .icon,
-	:host([theme~="size-l"]) .clear-button {
+	:host([theme~="size-l"]) .icon {
 		width: var(--panda-select-icon-size-l, var(--panda-component-size-l, 48px));
 	}
 
 	:host([theme~="size-l"]) .clear-button {
 		width: var(--panda-select-clear-button-size-l, 20px);
+	}
+
+	:host([theme~="size-l"]) .hide-dropdown-button .clear-button {
+		width: var(--panda-select-icon-size-l, var(--panda-component-size-l, 48px));
 	}
 
 	:host([theme~="size-l"]) .clear-button-icon {
@@ -698,13 +713,16 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-select-chip-clear-button-icon-size-xl, 18px);
 	}
 
-	:host([theme~="size-xl"]) .icon,
-	:host([theme~="size-xl"]) .clear-button {
+	:host([theme~="size-xl"]) .icon {
 		width: var(--panda-select-icon-size-xl, var(--panda-component-size-xl, 48px));
 	}
 
 	:host([theme~="size-xl"]) .clear-button {
 		width: var(--panda-select-clear-button-size-xl, 24px);
+	}
+
+	:host([theme~="size-xl"]) .hide-dropdown-button .clear-button {
+		width: var(--panda-select-icon-size-xl, var(--panda-component-size-xl, 48px));
 	}
 
 	:host([theme~="size-xl"]) .clear-button-icon {

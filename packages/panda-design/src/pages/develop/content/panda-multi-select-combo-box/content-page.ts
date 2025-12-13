@@ -157,6 +157,9 @@ export class ContentPage extends ContentPageTemplate {
 	private _disableAutoOpen = false;
 
 	@state()
+	private _hideDropdownButton = false;
+
+	@state()
 	private _showFilter = false;
 
 	@state()
@@ -247,7 +250,7 @@ const xxx = async (name: string): void => {
 										.items="${this._itemsCustom}"
 										.value="${this._value}"
 										.filterPlaceholder="${["Type to filter...", "eg. poland"]}"
-
+										.hideDropdownButton="${this._hideDropdownButton}"
 										.min="${this._min}"
 										.autoExpand="${this._autoExpand}"
 										.showFilter="${this._showFilter}"
@@ -360,6 +363,11 @@ const xxx = async (name: string): void => {
 								<div class="col-3">
 									<panda-button @click="${this._onToggleDisableAutoOpen}">
 										Toggle AutoOpen (${this._disableAutoOpen ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDropdownButton}">
+										Toggle Dropdown Button (${this._hideDropdownButton ? "ON" : "OFF"})
 									</panda-button>
 								</div>
 							</div>
@@ -484,6 +492,11 @@ const xxx = async (name: string): void => {
 	private _onToggleMandatory(): void {
 		console.log(`%c ⚡ [DEMO] (_onToggleMandatory)`, "font-size: 24px; color: blue;", !this._mandatory);
 		this._mandatory = !this._mandatory;
+	}
+
+	private _onToggleDropdownButton(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleDropdownButton)`, "font-size: 24px; color: blue;");
+		this._hideDropdownButton = !this._hideDropdownButton;
 	}
 
 	private async _onAsyncDisable(): Promise<void> {

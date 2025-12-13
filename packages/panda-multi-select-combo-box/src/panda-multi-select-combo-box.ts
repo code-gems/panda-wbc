@@ -49,6 +49,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			"show-item-count",
 			"show-clear-button",
 			"disable-auto-open",
+			"hide-dropdown-button",
 			"disabled",
 			"working",
 			"readonly",
@@ -618,6 +619,30 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
+	// hideDropdownButton =============================================================================================
+	/**
+	 * If true, the dropdown button is hidden on the select box.
+	 * Incompatible with disableAutoOpen=true.
+	 * Default is false.
+	 */
+	private _hideDropdownButton!: boolean;
+
+	get hideDropdownButton() {
+		return this._hideDropdownButton;
+	}
+
+	set hideDropdownButton(value: boolean) {
+		if (this._hideDropdownButton !== value) {
+			this._hideDropdownButton = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("hide-dropdown-button", "");
+			} else {
+				this.removeAttribute("hide-dropdown-button");
+			}
+		}
+	}
+
 	// disableAutoOpen ================================================================================================
 	/**
 	 * If true, the overlay will not open automatically when the select box is clicked.
@@ -709,6 +734,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 	private readonly _placeholderEl!: PandaTextSlider;
 	private readonly _iconEl!: HTMLDivElement;
 	private readonly _clearButtonEl!: HTMLDivElement;
+	private readonly _clearButtonIconEl!: HTMLDivElement;
 	private readonly _labelEl!: HTMLDivElement;
 	private readonly _helpTextEl!: HTMLDivElement;
 	private readonly _errorMessageEl!: HTMLDivElement;
@@ -788,10 +814,16 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		this._clearButtonEl.className = "clear-button";
 		this._clearButtonEl.part = "clear-button";
 		this._clearButtonEl.innerHTML = /*html*/`
-			<div class="clear-button-icon">
-				<panda-icon icon="close" part="clear-button-icon"></panda-icon>
+			<div
+				id="clear-button-icon"
+				class="clear-button-icon"
+				part="clear-button-icon"
+			>
+				<panda-icon icon="close"></panda-icon>
 			</div>
 		`;
+		// get clear button icon element handle
+		this._clearButtonIconEl = this._clearButtonEl.querySelector("#clear-button-icon") as HTMLDivElement;
 
 		// create label element
 		this._labelEl = document.createElement("div");
@@ -836,6 +868,10 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		this._showItemCount = false;
 		this._showClearButton = false;
 		this._showMandatoryFlag = false;
+		this._disableAutoOpen = false;
+		this._hideDropdownButton = false;
+		this._placeholderInterval = 3000;
+		this._filterPlaceholderInterval = 3000;
 		this._parsedItems = [];
 		this._withPrefix = false;
 		this._withSuffix = false;
@@ -867,7 +903,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			window.addEventListener("resize", this._closeOverlayEvent);
 			this._selectEl.addEventListener("click", this._showOverlayEvent);
 			this._selectEl.addEventListener("keydown", this._keyDownEvent);
-			this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
+			this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
 			this._iconEl.addEventListener("click", this._iconButtonClickEvent);
 			this._itemsEl.addEventListener("click", this._removeItemEvent);
 			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
@@ -886,7 +922,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		window.removeEventListener("resize", this._closeOverlayEvent);
 		this._selectEl.removeEventListener("click", this._showOverlayEvent);
 		this._selectEl.removeEventListener("keydown", this._keyDownEvent);
-		this._clearButtonEl.removeEventListener("click", this._clearButtonClickEvent);
+		this._clearButtonIconEl.removeEventListener("click", this._clearButtonClickEvent);
 		this._iconEl.removeEventListener("click", this._iconButtonClickEvent);
 		this._itemsEl.removeEventListener("click", this._removeItemEvent);
 		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
@@ -953,6 +989,9 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				break;
 			case "show-filter":
 				this._showFilter = this._parseBooleanAttribute(_newValue);
+				break;
+			case "hide-dropdown-button":
+				this._hideDropdownButton = this._parseBooleanAttribute(_newValue);
 				break;
 			case "disable-auto-open":
 				this._disableAutoOpen = this._parseBooleanAttribute(_newValue);
@@ -1045,6 +1084,11 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				this._selectEl.insertBefore(this._clearButtonEl, this._iconEl);
 			} else {
 				this._clearButtonEl.remove();
+			}
+
+			// warn about incompatible features
+			if (this._hideDropdownButton && this._disableAutoOpen) {
+				console.warn(`⚠️ [PANDA SELECT] hide-dropdown-button cannot be used together with disable-auto-open.`);
 			}
 
 			// update template css classes and parts
@@ -1254,6 +1298,9 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			this._overlayEl.itemRenderer = this.itemRenderer;
 			this._overlayEl.footerRenderer = this.footerRenderer;
 			this._overlayEl.filter = this.filter;
+			// check for css variables
+			// const overlayWidth = getComputedStyle(this).getPropertyValue("--panda-select-overlay-width");
+			// this._overlayEl.dropdownWidth = overlayWidth || this._overlayWidth;
 
 			// add event listeners
 			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
@@ -1301,6 +1348,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		if (this._withSuffix) {
 			css.push("with-suffix");
 		}
+
 		// update class names and parts
 		const cssString = css.join(" ");
 		this._selectEl.className = `select ${cssString}`;
@@ -1315,6 +1363,13 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			this._selectEl.classList.add("auto-expand");
 		} else {
 			this._selectEl.classList.remove("auto-expand");
+		}
+		
+		// show or hide dropdown icon
+		if (this._hideDropdownButton) {
+			this._selectEl.classList.add("hide-dropdown-button");
+		} else {
+			this._selectEl.classList.remove("hide-dropdown-button");
 		}
 
 		// add gap if component has help or error message
