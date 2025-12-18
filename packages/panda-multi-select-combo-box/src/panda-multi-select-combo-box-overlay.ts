@@ -109,8 +109,14 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 
 	set filterPlaceholder(value: string | string[]) {
 		if (this._filterPlaceholder !== value) {
-			this._filterPlaceholder = value;
-			this._textFieldEl.placeholder = value;
+			if (Array.isArray(value) && value?.length === 0) {
+				this._filterPlaceholder = [];
+			} else {
+				this._filterPlaceholder = value;
+			}
+			this._textFieldEl.placeholder = this._filterPlaceholder
+				? this._filterPlaceholder
+				: this._i18n.filterPlaceholder;
 			this._updateComponent();
 		}
 	}
@@ -151,6 +157,10 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 
 	set i18n(value: PandaSelectI18nConfig) {
 		this._i18n = value;
+		// update filter placeholder if not set
+		if (this._filterPlaceholder.length === 0) {
+			this._textFieldEl.placeholder = this._i18n.filterPlaceholder;
+		}
 		this._updateComponent();
 	}
 

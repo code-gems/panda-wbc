@@ -8,6 +8,7 @@ import { SuperItem } from "../types";
  */
 export const getI18nConfig = (): PandaSelectI18nConfig => {
 	return {
+		allItems: "All",
 		selectAll: "Select All",
 		selectedItems: "Selected items",
 		reset: "Reset",

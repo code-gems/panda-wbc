@@ -40,17 +40,17 @@ export class ContentPage extends ContentPageTemplate {
 		{ label: "Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia", value: "CO", group: "South America" },
 		{ label: "France", value: "FR", group: "Europe" },
 		{ label: "Germany", value: "DE", group: "Europe" },
-		{ label: "Italy", value: "IT", group: "Europe", disabled: true },
+		{ label: "Italy", value: "IT", group: "Europe" },
 		{ label: "Mexico", value: "MX", group: "North America" },
 		{ label: "Netherlands", value: "NL", group: "Europe" },
-		{ label: "Peru", value: "PE", group: "South America", disabled: true },
+		{ label: "Peru", value: "PE", group: "South America" },
 		{ label: "Poland", value: "PL", group: "Europe" },
 		{ label: "Portugal", value: "PT", group: "Europe" },
 		{ label: "Singapore", value: "SG", group: "Asia" },
 		{ label: "Spain", value: "ES", group: "Europe" },
 		{ label: "Switzerland", value: "CH", group: "Europe" },
 		{ label: "United States", value: "US", group: "North America" },
-		{ label: "Vietnam", value: "VN", group: "Asia", disabled: true },
+		{ label: "Vietnam", value: "VN", group: "Asia" },
 	];
 
 	private readonly _itemsCustom: any[] = [
@@ -130,6 +130,15 @@ export class ContentPage extends ContentPageTemplate {
 		{ label: "Invalid", value: "invalid" },
 	];
 
+	private readonly _i18nChinese = {
+		allItems: "所有选项",
+		selectAll: "全选",
+		selectedItems: "已选项",
+		reset: "重置",
+		filterPlaceholder: ["输入以过滤..."],
+		noDataFound: "未找到数据",
+	};
+
 	private _value = null;
 
 	@state()
@@ -161,6 +170,9 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _showFilter = false;
+
+	@state()
+	private _showItemCount = false;
 
 	@state()
 	private _min: number | null = null;
@@ -245,15 +257,14 @@ const xxx = async (name: string): void => {
 										label="Select country:"
 										error-message="this is an error message"
 										placeholder="Select country..."
-										item-label-path="name"
-										item-value-path="code"
-										.items="${this._itemsCustom}"
+										.items="${this._items}"
 										.value="${this._value}"
-										.filterPlaceholder="${["Type to filter...", "eg. poland"]}"
+										
 										.hideDropdownButton="${this._hideDropdownButton}"
 										.min="${this._min}"
 										.autoExpand="${this._autoExpand}"
 										.showFilter="${this._showFilter}"
+										.showItemCount="${this._showItemCount}"
 										.showClearButton="${this._showClearButton}"
 										.disableAutoOpen="${this._disableAutoOpen}"
 										.readonly="${this._readonly}"
@@ -261,6 +272,7 @@ const xxx = async (name: string): void => {
 										.mandatory="${this._mandatory}"
 										.working="${this._working}"
 										.disabled="${this._disabled}"
+
 
 										.itemRenderer="${this._itemRenderer}"
 										.groupRenderer="${this._groupRenderer}"
@@ -368,6 +380,11 @@ const xxx = async (name: string): void => {
 								<div class="col-3">
 									<panda-button @click="${this._onToggleDropdownButton}">
 										Toggle Dropdown Button (${this._hideDropdownButton ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleItemCount}">
+										Toggle Item Count (${this._showItemCount ? "ON" : "OFF"})
 									</panda-button>
 								</div>
 							</div>
@@ -533,5 +550,10 @@ const xxx = async (name: string): void => {
 	private _onSetMinValue(): void {
 		console.log(`%c ⚡ [DEMO] (_onSetMinValue)`, "font-size: 24px; color: blue;");
 		this._min = this._min ? null : 2;
+	}
+
+	private _onToggleItemCount(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleItemCount)`, "font-size: 24px; color: blue;");
+		this._showItemCount = !this._showItemCount;
 	}
 }

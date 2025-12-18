@@ -593,6 +593,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			} else {
 				this.removeAttribute("show-item-count");
 			}
+			// update items
+			this._renderItems();
 		}
 	}
 
@@ -679,6 +681,10 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				...getI18nConfig(),
 				...value,
 			};
+			// update overlay if exists
+			if (this._overlayEl) {
+				this._overlayEl.i18n = this._i18n;
+			}
 		}
 	}
 
@@ -850,7 +856,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		this._helpText = "";
 		this._errorMessage = "";
 		this._placeholder = [];
-		this._filterPlaceholder = this._i18n.filterPlaceholder;
+		this._filterPlaceholder = [];
 		this._theme = "";
 		this._items = [];
 		this._value = [];
@@ -1108,15 +1114,30 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			if (this._showItemCount) {
 				const selectedItemsLabel = this._i18n.selectedItems ?? "Selected items";
 				const itemCount = this._parsedItems.filter((item) => item.selected).length;
-				// update items element
-				this._itemsEl.innerHTML = /*html*/`
-					<div
+				if (itemCount === this._parsedItems.length) {
+					const allItemsLabel = this._i18n.allItems ?? "All";
+					// update items element
+					this._itemsEl.innerHTML = /*html*/`
+						<div
+							class="item single-item"
+							part="item single-item"
+						>
+							${allItemsLabel} (${itemCount})
+						</div>
+					`;
+				} else if (itemCount > 0) {
+					// update items element
+					this._itemsEl.innerHTML = /*html*/`
+						<div
 						class="item single-item"
 						part="item single-item"
-					>
-						${selectedItemsLabel} (${itemCount})
-					</div>
-				`;
+						>
+							${selectedItemsLabel} (${itemCount})
+						</div>
+					`;
+				} else {
+					this._itemsEl.innerHTML = "";
+				}
 			} else {
 				const itemsHtml: string[] = [];
 

@@ -2,6 +2,7 @@ export type { PandaMultiSelectComboBox } from "./src/panda-multi-select-combo-bo
 export type { PandaMultiSelectComboBoxOverlay } from "./src/panda-multi-select-combo-box-overlay";
 
 export interface PandaSelectI18nConfig {
+	allItems: string;
 	selectAll: string;
 	selectedItems: string;
 	reset: string;
