@@ -1,18 +1,19 @@
-# Welcome to Panda Icon
-Panda Icon is a Lit based web component that adds cool icons to your UI. Extremely lightweight and easy to use.
+# Welcome to Panda Checkbox
+Panda Checkbox is a native web component.
 Enjoy!
 
 ### Installation
-```npm install @panda-wbc/panda-icon```
+```npm install @panda-wbc/panda-checkbox```
 
 or 
 
-```yarn add @panda-wbc/panda-icon```
+```yarn add @panda-wbc/panda-checkbox```
 
 ### Usage
 
 ```html
-<panda-icon icon="menu"></panda-icon>
+<panda-checkbox name="gender">Male</panda-checkbox>
+<panda-checkbox name="gender">Female</panda-checkbox>
 ```
 
 ## Change Log

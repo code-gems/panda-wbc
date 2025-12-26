@@ -19,8 +19,8 @@ import "@panda-wbc/panda-notifications";
 
 // pages
 import "./pages/home/home-page";
-import "./pages/get-started/get-started-page";
-import "./pages/develop/develop-page";
+import "./pages/docs/docs-page";
+import "./pages/components/components-page";
 import "./pages/themes/themes-page";
 import "./pages/core/core-page";
 

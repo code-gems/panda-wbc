@@ -136,15 +136,28 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 	}
 
 	// dropdownWidth ==================================================================================================
-	private _dropdownWidth!: string;
+	private _dropdownWidth!: string | null;
 
 	get dropdownWidth() {
 		return this._dropdownWidth;
 	}
 
-	set dropdownWidth(value: string) {
+	set dropdownWidth(value: string | null) {
 		if (this._dropdownWidth !== value) {
 			this._dropdownWidth = value;
+		}
+	}
+
+	// dropdownMaxHeight ==================================================================================================
+	private _dropdownMaxHeight!: string | null;
+
+	get dropdownMaxHeight() {
+		return this._dropdownMaxHeight;
+	}
+
+	set dropdownMaxHeight(value: string | null) {
+		if (this._dropdownMaxHeight !== value) {
+			this._dropdownMaxHeight = value;
 		}
 	}
 
@@ -464,13 +477,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			}
 
 			// render footer if footerRenderer is defined
-			if (this.footerRenderer != null && typeof this.footerRenderer === "function") {
-				this._dropdownEl.appendChild(this._footerEl);
-				this._footerEl.innerHTML = this.footerRenderer(this._items);
-			} else {
-				this._footerEl.innerHTML = "";
-				this._footerEl.remove();
-			}
+			this._renderFooter();
 
 			// generate list items
 			this._renderListItems();
@@ -643,6 +650,17 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		}
 	}
 
+	private _renderFooter(): void {
+		// render footer if footerRenderer is defined
+		if (this.footerRenderer != null && typeof this.footerRenderer === "function") {
+			this._dropdownEl.appendChild(this._footerEl);
+			this._footerEl.innerHTML = this.footerRenderer(this._items);
+		} else {
+			this._footerEl.innerHTML = "";
+			this._footerEl.remove();
+		}
+	}
+
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
@@ -673,12 +691,17 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 
 		let dropdownTop = this._parentDetails.bottom - document.documentElement.scrollTop;
 		let dropdownLeft = this._parentDetails.left - document.documentElement.scrollLeft;
-
-		// check if we have enough space at the bottom of the dropdown to display it fully
 		let dropdownHight = dropdownRect.height;
-		if (dropdownTop - window.scrollY + dropdownRect.height > window.innerHeight) {
+
+		// check if dropdown max height was set		
+		if (this._dropdownMaxHeight != null && this._dropdownMaxHeight !== "") {
+			dropdownHight = parseInt(this._dropdownMaxHeight);
+		}
+		
+		// check if we have enough space at the bottom of the dropdown to display it fully
+		if (dropdownTop - window.scrollY + dropdownHight > window.innerHeight) {
 			// correct dropdown height if it protrude out the visible space
-			const _hightOffset = this.parentDetails.top - dropdownRect.height - document.documentElement.scrollTop;
+			const _hightOffset = this._parentDetails.top - dropdownHight - document.documentElement.scrollTop;
 			dropdownTop = Math.max(_hightOffset, 10);
 			if (_hightOffset < 0) {
 				dropdownHight = dropdownHight - 10 + _hightOffset;
@@ -695,7 +718,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		}
 
 		// check if dropdown width css variable was set
-		const dropdownWidth = this.dropdownWidth ?? `${this.parentDetails.width}px`;
+		const dropdownWidth = this.dropdownWidth ?? `${this._parentDetails.width}px`;
 		// set drop down container's width
 		this._dropdownEl.style.width = dropdownWidth;
 		// set drop down container's height
@@ -713,7 +736,7 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 	/**
 	 * Communicate with component using custom event
 	 * @param {MessageType} messageType - type of message to be sent
-	 * @param {Any} value - value to be selected
+	 * @param {Array<SuperItem>} items - items data to be sent
 	 */
 	private _triggerPostMessageEvent(messageType: MessageType, items: SuperItem[] = []): void {
 		const event: PostMessageEvent = new CustomEvent("post-message", {
@@ -883,6 +906,9 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 			this._renderListItems();
 		}
 
+		// re-render footer
+		this._renderFooter();
+
 		// trigger select event
 		const messageType = this._multiselect
 			? MessageType.UPDATE
@@ -923,6 +949,8 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		});
 		// update the list item elements
 		this._renderListItems();
+		// re-render footer
+		this._renderFooter();
 		// trigger select all event
 		this._triggerPostMessageEvent(MessageType.UPDATE, this._items);
 	}
@@ -953,6 +981,8 @@ export class PandaMultiSelectComboBoxOverlay extends HTMLElement {
 		});
 		// update the list item elements
 		this._renderListItems();
+		// re-render footer
+		this._renderFooter();
 		// trigger select all event
 		this._triggerPostMessageEvent(MessageType.UPDATE, this._items);
 	}

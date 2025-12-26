@@ -1,14 +1,12 @@
-import { PandaCheckbox } from "./src/panda-checkbox";
-
-export type PandaCheckbox = typeof PandaCheckbox;
+import type { PandaCheckbox } from "./src/panda-checkbox";
 
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-type PandaCheckboxChange = {
-	name: string;
+type PandaCheckboxChangeEventDetails = {
+	name?: string;
 	checked: boolean;
 }
 
-export interface PandaCheckboxChangeEvent extends CustomEvent<PandaCheckboxChange> {}
+export interface PandaCheckboxChangeEvent extends CustomEvent<PandaCheckboxChangeEventDetails> {}

@@ -23,6 +23,7 @@
 		"@panda-wbc/panda-callout": "workspace:*",
 		"@panda-wbc/panda-carousel": "workspace:*",
 		"@panda-wbc/panda-chart": "workspace:*",
+		"@panda-wbc/panda-checkbox-group": "workspace:*",
 		"@panda-wbc/panda-checkbox": "workspace:*",
 		"@panda-wbc/panda-chips": "workspace:*",
 		"@panda-wbc/panda-circular-progress-bar": "workspace:*",

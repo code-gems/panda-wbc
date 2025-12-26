@@ -24,6 +24,7 @@ declare module "panda-design-typings" {
 		PROPERTIES = "properties",
 		EVENTS = "events",
 		INTERFACE = "interface",
+		RELATED_PAGES = "related-pages",
 		// miscellaneous 
 		LIST = "list",
 	}
@@ -50,6 +51,8 @@ declare module "panda-design-typings" {
 		updatedTimestamp?: number;
 		contextMenu?: ContextMenuItem[];
 		order?: number;
+		designTokens?: TokenDetails[];
+		relatedPages?: string[];
 	}
 
 	export interface ThunkDispatch<S, E, A extends Action> {
@@ -114,6 +117,17 @@ declare module "panda-design-typings" {
 		description: string;
 		addText?: boolean;
 		sampleText?: string;
+	}
+
+	export type TokenDetails = {
+		tokenName: string;
+		description: string;
+	}
+
+	export type TokenLibraryEntry = {
+		label: string;
+		tokenList: TokenDetails[];
+		componentName?: string;
 	}
 
 	// ================================================================================================================

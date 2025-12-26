@@ -1,5 +1,5 @@
 // types
-import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails, ComponentInterfaceDetails } from "panda-design-typings";
+import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails, ComponentInterfaceDetails, ContentSectionName, Page } from "panda-design-typings";
 
 // styles
 import { uiComponents } from "../styles/styles";
@@ -13,7 +13,7 @@ import "../web-parts/code-sample/code-sample";
 
 // utils
 import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";
-import { query, queryAll, property } from "lit/decorators.js";
+import { query, queryAll, property, state } from "lit/decorators.js";
 import PageLibrary from "../utils/page-library";
 
 export abstract class ContentPageTemplate extends LitElement {
@@ -31,8 +31,9 @@ export abstract class ContentPageTemplate extends LitElement {
 		];
 	}
 
-	// page details
-	abstract pageId: string;
+	@state()
+	public contentPageConfig!: Page;
+
 	public customStyles!: CSSResultGroup;
 
 	@property({ type: Array })
@@ -124,33 +125,82 @@ export abstract class ContentPageTemplate extends LitElement {
 	abstract _renderPageContent(): TemplateResult;
 
 	private _renderContextMenu() {
-		const contextMenuHtml: TemplateResult[] = [];
-		// extract context menu object
-		const selectedPage = new PageLibrary().getPageById(this.pageId);
-		this._contextMenu = selectedPage?.contextMenu ?? [];
-		// generate context menu items
-		this._contextMenu.forEach(({ name, contextId }) => {
-			contextMenuHtml.push(html`
-				<div
-					class="list-item"
-					@click="${() => this._onContextMenuClick(contextId)}"
-				>
-					<div class="icon">
-						<panda-icon icon="chevron-right"></panda-icon>
-					</div>
-					<label>${name}</label>
-				</div>
-			`);
-		});
+		const selectedPage = new PageLibrary().getPageById(this.contentPageConfig?.pageId);
+		const contextMenu = selectedPage?.contextMenu ?? [];
+		
+		if (contextMenu != null) {
+			const contextMenuHtml: TemplateResult[] = [];
+			// generate context menu items
+			contextMenu.forEach(({ name, contextId, children }) => {
+				let childrenContHtml: TemplateResult = html``;
+				const childrenHtml: TemplateResult[] = [];
 
-		return html`
-			<div id="content-list" class="content-list">
-				<div class="header">On this page</div>
-				<div class="list">
-					${contextMenuHtml}
+				// check for children
+				if (children != null && children.length > 0) {
+					children.forEach(({ name, contextId }) => {
+						childrenHtml.push(html`
+							<div
+								class="subitem"
+								@click="${() => this._onContextMenuClick(contextId)}"
+							>
+								<div class="label">${name}</div>
+							</div>
+						`);
+					});
+
+					childrenContHtml = html`
+						<div class="subitem-list">
+							${childrenHtml}
+						</div>
+					`;
+				}
+
+				contextMenuHtml.push(html`
+					<div
+						class="list-item"
+						@click="${() => this._onContextMenuClick(contextId)}"
+					>
+						${name}
+					</div>
+					${childrenContHtml}
+				`);
+			});
+
+			if (this.contentPageConfig?.designTokens) {
+				contextMenuHtml.push(html`
+					<div
+						class="list-item"
+						@click="${() => this._onContextMenuClick(ContentSectionName.CUSTOMIZATION)}"
+					>
+						Customization
+					</div>
+				`);
+			}
+
+			if (this.contentPageConfig?.relatedPages) {
+				contextMenuHtml.push(html`
+					<div
+						class="list-item"
+						@click="${() => this._onContextMenuClick(ContentSectionName.RELATED_PAGES)}"
+					>
+						Related Pages
+					</div>
+				`);
+			}
+
+			return html`
+				<div class="context-menu">
+					<div class="content-list">
+						<div class="header">
+							<div class="text">On this page</div>
+						</div>
+						<div class="list scrollbar">
+							${contextMenuHtml}
+						</div>
+					</div>
 				</div>
-			</div>
-		`;
+			`;
+		}
 	}
 
 	private _renderScrollTopButton() {
@@ -317,9 +367,9 @@ export abstract class ContentPageTemplate extends LitElement {
 		const contextMenuRect: DOMRect = this._contextMenuEl.getBoundingClientRect();
 		// check if context menu container is outside of the view port
 		if (contextMenuRect.top < 0) {
-			this._contentListEl.classList.add("fixed");
+			// this._contentListEl.classList.add("fixed");
 		} else {
-			this._contentListEl.classList.remove("fixed");
+			// this._contentListEl.classList.remove("fixed");
 		}
 	}
 }

@@ -1,0 +1,34 @@
+{
+	"name": "@panda-wbc/panda-checkbox-group",
+	"version": "1.0.0",
+	"description": "Native web component - checkbox group",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-checkbox-group.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"custom element",
+		"web component",
+		"ui component",
+		"checkbox",
+		"check box group",
+		"tick box"
+	],
+	"author": "code-gems",
+	"license": "Apache-2.0",
+	"dependencies": {},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

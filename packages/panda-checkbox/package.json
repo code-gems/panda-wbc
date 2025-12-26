@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-checkbox",
 	"version": "1.0.0",
-	"description": "Lit based web component - checkbox",
+	"description": "Native web component - checkbox",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-checkbox.js",
 	"scripts": {
@@ -12,8 +12,7 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
+		"custom element",
 		"web component",
 		"ui component",
 		"checkbox",
@@ -22,10 +21,7 @@
 	],
 	"author": "code-gems",
 	"license": "Apache-2.0",
-	"dependencies": {
-		"@panda-wbc/panda-icon": "workspace:*",
-		"lit": "^3.0.2"
-	},
+	"dependencies": {},
 	"files": [
 		"src",
 		"lib",

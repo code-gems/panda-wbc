@@ -108,14 +108,9 @@ importers:
         specifier: ^3.0.2
         version: 3.3.1
 
-  packages/panda-checkbox:
-    dependencies:
-      '@panda-wbc/panda-icon':
-        specifier: workspace:*
-        version: link:../panda-icon
-      lit:
-        specifier: ^3.0.2
-        version: 3.3.1
+  packages/panda-checkbox: {}
+
+  packages/panda-checkbox-group: {}
 
   packages/panda-chips:
     dependencies:
@@ -215,6 +210,9 @@ importers:
       '@panda-wbc/panda-checkbox':
         specifier: workspace:*
         version: link:../panda-checkbox
+      '@panda-wbc/panda-checkbox-group':
+        specifier: workspace:*
+        version: link:../panda-checkbox-group
       '@panda-wbc/panda-chips':
         specifier: workspace:*
         version: link:../panda-chips

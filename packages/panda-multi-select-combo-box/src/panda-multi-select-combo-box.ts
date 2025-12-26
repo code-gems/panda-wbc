@@ -57,6 +57,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			"spinner-type",
 			"multiselect",
 			"mandatory",
+			"dropdown-width",
+			"dropdown-max-height",
 		];
 	}
 
@@ -107,6 +109,7 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			} else {
 				this._value = [value];
 			}
+			console.log(`%c ⚡ (set value)`, "font-size: 24px; color: crimson; background: black;", this._value);
 			// parse new items
 			this._parseItems();
 		}
@@ -705,6 +708,32 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 	}
 
+	// dropdownWidth ==================================================================================================
+	private _dropdownWidth!: string | null;
+
+	get dropdownWidth() {
+		return this._dropdownWidth;
+	}
+
+	set dropdownWidth(value: string | null) {
+		if (this._dropdownWidth !== value) {
+			this._dropdownWidth = value;
+		}
+	}
+
+	// dropdownMaxHeight ==================================================================================================
+	private _dropdownMaxHeight!: string | null;
+
+	get dropdownMaxHeight() {
+		return this._dropdownMaxHeight;
+	}
+
+	set dropdownMaxHeight(value: string | null) {
+		if (this._dropdownMaxHeight !== value) {
+			this._dropdownMaxHeight = value;
+		}
+	}
+
 	// groupRenderer ==================================================================================================
 
 	groupRenderer!: (groupName: string, items: SuperItem[]) => string;
@@ -1015,6 +1044,12 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				this._spinnerType = _newValue;
 				this._spinnerEl.spinner = this._spinnerType;
 				break;
+			case "dropdown-width":
+				this._dropdownWidth = _newValue;
+				break;
+			case "dropdown-max-height":
+				this._dropdownMaxHeight = _newValue;
+				break;
 		}
 		this._evaluateMandatoryFlag();
 		this._updateComponent();
@@ -1274,6 +1309,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 				const isSelected = includes(this._value, value);
 				let selected = false;
 
+				console.log(`%c ⚡ (_parseItems)`, "font-size: 24px; color: crimson; background: black;", index, label, value, isSelected);
+
 				if (this._multiselect) {
 					// allow multiple selected items
 					selected = isSelected;
@@ -1299,6 +1336,8 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		}
 		// update items
 		this._renderItems();
+		// update component
+		this._updateComponent();
 	}
 
 	private _showOverlay(): void {
@@ -1319,13 +1358,24 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 			this._overlayEl.itemRenderer = this.itemRenderer;
 			this._overlayEl.footerRenderer = this.footerRenderer;
 			this._overlayEl.filter = this.filter;
-			// check for css variables
-			// const overlayWidth = getComputedStyle(this).getPropertyValue("--panda-select-overlay-width");
-			// this._overlayEl.dropdownWidth = overlayWidth || this._overlayWidth;
+			
+			// check for dropdown width css token value
+			const dropdownWidth = this._dropdownWidth
+				? this._dropdownWidth
+				: getComputedStyle(this).getPropertyValue("--panda-select-dropdown-width");
+			this._overlayEl.dropdownWidth = dropdownWidth == null || dropdownWidth === ""
+				? null
+				: dropdownWidth;
+			// check dropdown max height css token value
+			const dropdownMaxHeight = this._dropdownMaxHeight
+				? this._dropdownMaxHeight
+				: getComputedStyle(this).getPropertyValue("--panda-select-dropdown-max-height");
+			this._overlayEl.dropdownMaxHeight = dropdownMaxHeight == null || dropdownMaxHeight === ""
+				? null
+				: dropdownMaxHeight;
 
 			// add event listeners
 			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
-			this._overlayEl.addEventListener("close", this._closeOverlayEvent);
 			document.body.appendChild(this._overlayEl);
 
 			// add rotate class from icon element
@@ -1475,7 +1525,6 @@ export class PandaMultiSelectComboBox extends HTMLElement {
 		if (this._overlayEl) {
 			// remove event listeners
 			this._overlayEl.removeEventListener("post-message", this._postMessageEvent);
-			this._overlayEl.removeEventListener("close", this._closeOverlayEvent);
 			// remove overlay element from DOM
 			this._overlayEl.remove();
 			this._overlayEl = null;
