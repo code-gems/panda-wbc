@@ -10,6 +10,7 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-checkbox";
 import "@panda-wbc/panda-checkbox-group";
 import "@panda-wbc/panda-particle-banner";
+import "@panda-wbc/panda-select";
 
 // utils
 import { html, TemplateResult } from "lit";
@@ -23,6 +24,7 @@ import {
 	implementationSnippet,
 	installationSnippet
 } from "./snippets/snippets";
+import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
 
 @page(pageConfig)
 @customElement("panda-checkbox-group-content-page")
@@ -58,6 +60,18 @@ export class PandaCheckboxGroupContentPage extends ContentPageTemplate {
 
 	@state()
 	private _horizontal = false;
+
+	@state()
+	private _selectedTheme = "";
+
+	private _themeList = [
+		{ label: "Info", value: "info" },
+		{ label: "Done", value: "done" },
+		{ label: "Warn", value: "warn" },
+		{ label: "Alert", value: "alert" },
+		{ label: "Light", value: "light" },
+		{ label: "Dark", value: "dark" },
+	];
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -110,11 +124,10 @@ export class PandaCheckboxGroupContentPage extends ContentPageTemplate {
 
 		if (this._showOption4) {
 			option4html = html`
-				<panda-checkbox
-					name="option-4"
-				>
+				<panda-checkbox name="option-4">
 					Study
 				</panda-checkbox>
+				<div>Fake option</div>
 			`;
 		}
 
@@ -129,14 +142,20 @@ export class PandaCheckboxGroupContentPage extends ContentPageTemplate {
 				</div>
 
 				<div class="sample-cont">
-					<div class="sample">
+					<div class="sample rows">
 
 						<div class="row">
 							<div class="col-3">
-								<panda-button @click="${this._onToggleOption}">
-									TOGGLE OPTION 4
-								</panda-button>
+								<panda-select
+									label="Select theme:"
+									.items="${this._themeList}"
+									.value="${this._selectedTheme}"
+									@change="${this._onThemeChange}"
+								></panda-select>
 							</div>
+						</div>
+
+						<div class="row">
 							<div class="col-3">
 								<panda-button @click="${this._onToggleDisabled}">
 									TOGGLE DISABLED (${this._disabled ? "ON" : "OFF"})
@@ -152,12 +171,18 @@ export class PandaCheckboxGroupContentPage extends ContentPageTemplate {
 									TOGGLE HORIZONTAL (${this._horizontal ? "ON" : "OFF"})
 								</panda-button>
 							</div>
+							<div class="col-3">
+								<panda-button @click="${this._onToggleOption}">
+									TOGGLE OPTION 4
+								</panda-button>
+							</div>
 						</div>
-						
+
 						<div class="row">
 							<div class="col-full">
 								<panda-checkbox-group
 									label="Select your options:"
+									.theme="${this._selectedTheme}"
 									.horizontal="${this._horizontal}"
 									.alignRight="${this._alignRight}"
 									.disabled="${this._disabled}"
@@ -331,7 +356,7 @@ export class PandaCheckboxGroupContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	private _onChange(event: PandaCheckboxChangeEvent): void {
-		console.log("%c ⚡ [CHECKBOX DEMO PAGE] checked", "font-size: 24px; color: orange;", event.detail);
+		console.log("%c ⚡ [CHECKBOX GROUP DEMO PAGE] checked", "font-size: 24px; color: orange;", event.detail);
 
 	}
 
@@ -349,5 +374,9 @@ export class PandaCheckboxGroupContentPage extends ContentPageTemplate {
 
 	private _onToggleHorizontal(): void {
 		this._horizontal = !this._horizontal;
+	}
+
+	private _onThemeChange(event: PandaSelectChangeEvent): void {
+		this._selectedTheme = event.detail.value;
 	}
 }

@@ -160,4 +160,82 @@ export const styles = /*css*/`
 	.checkbox.disabled .dash {
 		stroke: var(--panda-checkbox-check-color-disabled, hsl(210deg 5% 80%));
 	}
+
+	/* ============================================================================================================= */
+	/* THEMES ====================================================================================================== */
+	/* ============================================================================================================= */
+
+	/* INFO */
+	:host([theme="info"]) svg .box-outline,
+	:host([theme="info"]) svg .box {
+		fill: var(--panda-checkbox-icon-color-info, var(--panda-action-color-info, hsl(261deg 66% 58%)));
+	}
+
+	:host([theme="info"]) svg .check,
+	:host([theme="info"]) svg .dash {
+		stroke: var(--panda-checkbox-check-color-info, var(--panda-action-text-color-info, hsl(0deg 0% 100%)));
+	}
+
+	/* DONE */
+	:host([theme="done"]) svg .box-outline,
+	:host([theme="done"]) svg .box {
+		fill: var(--panda-checkbox-icon-color-done, var(--panda-action-color-done, hsl(160deg 81% 43%)));
+	}
+
+	:host([theme="done"]) svg .check,
+	:host([theme="done"]) svg .dash {
+		stroke: var(--panda-checkbox-check-color-done, var(--panda-action-text-color-done, hsl(0deg 0% 100%)));
+	}
+
+	/* WARN */
+	:host([theme="warn"]) svg .box-outline,
+	:host([theme="warn"]) svg .box {
+		fill: var(--panda-checkbox-icon-color-warn, var(--panda-action-color-warn, hsl(35deg 91% 62%)));
+	}
+
+	:host([theme="warn"]) svg .check,
+	:host([theme="warn"]) svg .dash {
+		stroke: var(--panda-checkbox-check-color-warn, var(--panda-action-text-color-warn, hsl(0deg 0% 100%)));
+	}
+
+	/* ALERT */
+	:host([theme="alert"]) svg .box-outline,
+	:host([theme="alert"]) svg .box {
+		fill: var(--panda-checkbox-icon-color-alert, var(--panda-action-color-alert, hsl(14deg 77% 62%)));
+	}
+
+	:host([theme="alert"]) svg .check,
+	:host([theme="alert"]) svg .dash {
+		stroke: var(--panda-checkbox-check-color-alert, var(--panda-action-text-color-alert, hsl(0deg 0% 100%)));
+	}
+
+	/* LIGHT */
+	:host([theme="light"]) .checkbox .label {
+		color: var(--panda-checkbox-label-color-light, var(--panda-white-color, hsl(0deg 0% 100%)));
+	}
+
+	:host([theme="light"]) svg .box-outline,
+	:host([theme="light"]) svg .box {
+		fill: var(--panda-checkbox-icon-color-light, var(--panda-white-color, hsl(0deg 0% 100%)));
+	}
+
+	:host([theme="light"]) svg .check,
+	:host([theme="light"]) svg .dash {
+		stroke: var(--panda-checkbox-check-color-light, var(--panda-black-color, hsl(0deg 0% 0%)));
+	}
+
+	/* DARK */
+	:host([theme="dark"]) .checkbox .label {
+		color: var(--panda-checkbox-label-color-dark, var(--panda-black-color, hsl(0deg 0% 0%)));
+	}
+
+	:host([theme="dark"]) svg .box-outline,
+	:host([theme="dark"]) svg .box {
+		fill: var(--panda-checkbox-icon-color-dark, var(--panda-black-color, hsl(0deg 0% 0%)));
+	}
+
+	:host([theme="dark"]) svg .check,
+	:host([theme="dark"]) svg .dash {
+		stroke: var(--panda-checkbox-check-color-dark, var(--panda-white-color, hsl(0deg 0% 100%)));
+	}
 `;

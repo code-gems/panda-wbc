@@ -420,7 +420,7 @@ export class PandaCheckbox extends HTMLElement {
 	}
 
 	private _triggerChangeEvent(): void {
-		const event: PandaCheckboxChangeEvent = new CustomEvent("changed", {
+		const event: PandaCheckboxChangeEvent = new CustomEvent("change", {
 			detail: {
 				checked: this._checked,
 				name: this._name || undefined

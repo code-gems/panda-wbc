@@ -132,14 +132,14 @@ export class PandaCheckboxGroup extends HTMLElement {
 
 	// view properties ================================================================================================
 	private _ready!: boolean;
+	private _checkboxEls!: Element[];
 
 	// elements
-	private _checkboxGroupEl!: HTMLDivElement;
+	private _checkboxGroupEl!: HTMLSlotElement;
 	private _labelEl!: HTMLDivElement;
 
 	// events
 	private readonly _slotChangeEvent!: any;
-	private readonly _changeEvent!: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -170,19 +170,19 @@ export class PandaCheckboxGroup extends HTMLElement {
 
 		// initialize class properties
 		this._label = "";
-		this._disabled = false;
-		this._horizontal = false;
 		this._theme = "";
+		this._disabled = false;
+		this._alignRight = false;
+		this._horizontal = false;
+		this._checkboxEls = [];
 
 		// init events
 		this._slotChangeEvent = this._onSlotChange.bind(this);
-		this._changeEvent = this._onChange.bind(this);
 
 		// get template element handles
 		if (this.shadowRoot) {
 			// get elements handle
-			this._checkboxGroupEl = this.shadowRoot.querySelector(".checkbox-group") as HTMLDivElement;
-
+			this._checkboxGroupEl = this.shadowRoot.querySelector(".checkbox-group") as HTMLSlotElement;
 			// attach event listeners
 			this._checkboxGroupEl.addEventListener("slotchange", this._slotChangeEvent);
 		}
@@ -199,21 +199,24 @@ export class PandaCheckboxGroup extends HTMLElement {
 			return;
 		}
 		switch (_name) {
-			case "theme":
-				this._theme = _newValue;
+			case "horizontal":
+				this._horizontal = this._parseBooleanAttribute(_newValue);
 				break;
 			case "label":
 				this._label = _newValue;
 				break;
+			case "theme":
+				this._theme = _newValue;
+				this._updateCheckboxes();
+				break;
 			case "disabled":
 				this._disabled = this._parseBooleanAttribute(_newValue);
-				break;
-			case "horizontal":
-				this._horizontal = this._parseBooleanAttribute(_newValue);
+				this._updateCheckboxes();
 				break;
 			case "alignright":
 			case "align-right":
 				this._alignRight = this._parseBooleanAttribute(_newValue);
+				this._updateCheckboxes();
 				break;
 		}
 
@@ -263,24 +266,54 @@ export class PandaCheckboxGroup extends HTMLElement {
 		return value === "true" || value === true || value === "";
 	}
 
-	private _triggerChangeEvent(event: any): void {
-		console.log(`%c ⚡ _triggerChangeEvent`, "font-size: 24px; color: crimson; background: black;", event);
+	/** Parses the checkboxes assigned to the slot and updates the internal list. */
+	private _parseCheckboxes(): void {
+		console.log(`%c ⚡ (_parseCheckboxes)`, "font-size: 24px; color: crimson; background: black;");
+		const assignedElements = this._checkboxGroupEl.assignedElements({ flatten: true });
+		this._checkboxEls = [];
+		assignedElements.forEach((checkboxEl) => {
+			console.log(`%c ⚡ (_parseCheckboxes) checkboxEl`, "font-size: 24px; color: crimson; background: black;", checkboxEl, checkboxEl.tagName);
+			if (checkboxEl.tagName.toLowerCase() === "panda-checkbox") {
+				this._checkboxEls.push(checkboxEl);
+			}
+		});
+		console.log(`%c ⚡ (_parseCheckboxes) final`, "font-size: 24px; color: crimson; background: black;", this._checkboxEls);
+	}
+
+	/** Updates all checkboxes in the group based on the group properties. */
+	private _updateCheckboxes(): void {
+		this._checkboxEls.forEach((checkboxEl) => {
+			if (this._theme != null && this._theme !== "") {
+				checkboxEl.setAttribute("theme", this._theme);
+			} else {
+				checkboxEl.removeAttribute("theme");
+			}
+
+			if (this._disabled) {
+				checkboxEl.setAttribute("disabled", "true");
+			} else {
+				checkboxEl.removeAttribute("disabled");
+			}
+
+			if (this._alignRight) {
+				checkboxEl.setAttribute("align-right", "true");
+			} else {
+				checkboxEl.removeAttribute("align-right");
+			}
+		});
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 	
+	/** Handles the slotchange event to re-parse checkboxes and update the component. */
 	private _onSlotChange(): void {
 		console.log(`%c ⚡ (_onSlotChange)`, "font-size: 24px; color: crimson; background: black;");
-	}
-	
-	private _onChange(event: PandaCheckboxChangeEvent): void {
-		console.log(`%c ⚡ (_onChange)`, "font-size: 24px; color: crimson; background: black;", event);
-		
+		this._parseCheckboxes();
+		this._updateCheckboxes();
 	}
 }
-
 
 // Register the custom element
 if (!customElements.get("panda-checkbox-group")) {
@@ -292,120 +325,3 @@ declare global {
 		"panda-checkbox-group": PandaCheckboxGroup;
 	}
 }
-
-
-
-
-// 	// css styles
-// 	static get styles() {
-// 		return groupStyles;
-// 	}
-
-// 	@property({ type: String, reflect: true })
-// 	label!: string;
-
-// 	@property({ type: Boolean, reflect: true })
-// 	disabled: boolean = false;
-
-// 	@property({ type: Boolean, reflect: true })
-// 	horizontal: boolean = false;
-
-// 	// state props
-// 	@queryAssignedElements()
-// 	private _slotNodes!: HTMLElement[];
-
-// 	private _checkboxEls: HTMLElement[] = []; // all checkbox elements with event listeners
-
-// 	@state()
-// 	initialized: boolean = false;
-
-// 	// events
-// 	private _onChangeEvent: any = this._onChange.bind(this);
-
-// 	// ================================================================================================================
-// 	// LIFE CYCLE =====================================================================================================
-// 	// ================================================================================================================
-
-// 	disconnectedCallback(): void {
-// 		super.disconnectedCallback();
-// 		// remove event listeners
-// 		this._checkboxEls.forEach((checkboxEl) => {
-// 			checkboxEl.removeEventListener("change", this._onChangeEvent);
-// 		});
-// 		// clean up
-// 		this._checkboxEls = [];
-// 	}
-
-// 	// ================================================================================================================
-// 	// RENDERERS ======================================================================================================
-// 	// ================================================================================================================
-
-// 	protected render(): TemplateResult {
-// 		const horizontal = this.horizontal ? " horizontal" : "";
-// 		let labelHtml: TemplateResult = html``;
-
-// 		if (this.label) {
-// 			labelHtml = html`<div class="label" part="label">${this.label}</div>`;
-// 		}
-
-// 		return html`
-// 			${labelHtml}
-// 			<slot
-// 				class="checkbox-group"
-// 				part="checkbox-group"
-// 				@slotchange="${this._onSlotChange}"
-// 			>
-// 			</slot>
-// 		`;
-// 	}
-
-// 	// ================================================================================================================
-// 	// HELPERS ========================================================================================================
-// 	// ================================================================================================================
-
-// 	private _triggerChangeEvent(name: string, checked: boolean): void {
-// 		const event: PandaCheckboxChangeEvent = new CustomEvent('change', {
-// 			detail: {
-// 				name,
-// 				checked,
-// 			}
-// 		});
-// 		this.dispatchEvent(event);
-// 		console.log("%c _triggerChangeEvent", "font-size: 24px; color: orange;", event);
-// 	}
-
-// 	// ================================================================================================================
-// 	// EVENTS =========================================================================================================
-// 	// ================================================================================================================
-
-// 	private _onSlotChange(): void {
-// 		console.log("%c _onSlotChange", "font-size: 24px; color: red;", this._slotNodes);
-// 		// remove existing event listeners
-// 		if (this.initialized) {
-// 			this._checkboxEls.forEach((checkboxEl) => {
-// 				checkboxEl.removeEventListener("change", this._onChangeEvent);
-// 			});
-// 			// clean up
-// 			this._checkboxEls = [];
-// 		}
-// 		// add event listeners
-// 		this._slotNodes.forEach((checkboxEl) => {
-// 			console.log("%c _onSlotChange -> _slotNodes", "font-size: 24px; color: red;", checkboxEl);
-// 			checkboxEl.addEventListener("change", this._onChangeEvent);
-// 			this._checkboxEls.push(checkboxEl);
-// 		});
-// 	}
-
-// 	private _onChange(event: PandaCheckboxChangeEvent): void {
-// 		if (!this.disabled) {
-// 			const { name, checked } = event.detail;
-// 			this._triggerChangeEvent(name, checked);
-// 		}
-// 	}
-// }
-
-// declare global {
-// 	interface HTMLElementTagNameMap {
-// 		"panda-checkbox-group": PandaCheckboxGroup;
-// 	}
-// }
