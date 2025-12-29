@@ -1,6 +1,3 @@
-// types
-import { PandaCheckboxChangeEvent } from "../index";
-
 // styles
 import { styles } from "./styles/styles";
 
@@ -225,7 +222,6 @@ export class PandaCheckboxGroup extends HTMLElement {
 
 	private _updateComponent(): void {
 		if (this._ready) {
-			console.log(`%c ⚡ (_updateComponent)`, "font-size: 24px; color: crimson; background: black;");
 			// add or remove label
 			if (this._label) {
 				this._labelEl.textContent = this._label;
@@ -268,16 +264,14 @@ export class PandaCheckboxGroup extends HTMLElement {
 
 	/** Parses the checkboxes assigned to the slot and updates the internal list. */
 	private _parseCheckboxes(): void {
-		console.log(`%c ⚡ (_parseCheckboxes)`, "font-size: 24px; color: crimson; background: black;");
 		const assignedElements = this._checkboxGroupEl.assignedElements({ flatten: true });
 		this._checkboxEls = [];
 		assignedElements.forEach((checkboxEl) => {
-			console.log(`%c ⚡ (_parseCheckboxes) checkboxEl`, "font-size: 24px; color: crimson; background: black;", checkboxEl, checkboxEl.tagName);
+			// only add panda-checkbox elements
 			if (checkboxEl.tagName.toLowerCase() === "panda-checkbox") {
 				this._checkboxEls.push(checkboxEl);
 			}
 		});
-		console.log(`%c ⚡ (_parseCheckboxes) final`, "font-size: 24px; color: crimson; background: black;", this._checkboxEls);
 	}
 
 	/** Updates all checkboxes in the group based on the group properties. */
@@ -309,7 +303,6 @@ export class PandaCheckboxGroup extends HTMLElement {
 	
 	/** Handles the slotchange event to re-parse checkboxes and update the component. */
 	private _onSlotChange(): void {
-		console.log(`%c ⚡ (_onSlotChange)`, "font-size: 24px; color: crimson; background: black;");
 		this._parseCheckboxes();
 		this._updateCheckboxes();
 	}

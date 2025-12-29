@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        @property --angle {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        body {
+            background-color: #101220;
+        }
+
+        .hover-card {
+            position: relative;
+            padding: 1em;
+            width: 300px;
+            color: #dadada;
+            background-color: #101220;
+            border-radius: 10px;
+            border: 1px solid #545968;
+            box-sizing: border-box;
+        }
+
+        .hover-card::before,
+        .hover-card::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            z-index: -1;
+            padding: 2px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            
+            border-radius: inherit;
+            background-image: conic-gradient(from var(--angle), #080c18, #9901d7, #08cbef, #ffffff, #ffffff, #ffffff, #34bdee, #34bdee, #9901d7, #9901d7, #080c18);
+            animation: spin 3s linear infinite;
+        }
+
+        .hover-card::before {
+            filter: blur(1.5rem);
+        }
+
+        .hover-card:hover::before{
+            opacity: 0;
+        }
+
+        .hover-card:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes spin {
+            0% {
+                --angle: 0deg;
+            }
+            
+            100% {
+                --angle: 360deg;
+            }
+        }
+    </style>
+
+    <div class="card-container">
+        <div class="hover-card">
+            <!-- Your content here -->
+            <h2>Hover Me</h2>
+        </div>
+    </div>
+
+</body>
+
+</html>

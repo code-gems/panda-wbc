@@ -1,6 +1,9 @@
 // types
-import { RGBAColor } from "../../index";
+import { PandaHeatmapI18nConfig, RGBAColor } from "../../index";
 
+export const getI18nConfig = (): PandaHeatmapI18nConfig => ({
+	noDataText: "No data available"
+});
 
 export const colorStringToRGBA = (color: string): RGBAColor => {
 	if (!color) {

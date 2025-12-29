@@ -31,7 +31,7 @@ export const styles = /*css*/`
 	.checkbox .label-cont {
 		display: flex;
 		flex-direction: column;
-		gap: var(--panda-gap-s, 5px);
+		gap: var(--panda-checkbox-label-gap, var(--panda-gap-s, 5px));
 	}
 
 	.checkbox .label {
