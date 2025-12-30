@@ -389,7 +389,6 @@ export class PandaCheckbox extends HTMLElement {
 		if (this._checked) {
 			css.push("checked");
 		}
-
 		if (this._indeterminate) {
 			css.push("indeterminate");
 		}
