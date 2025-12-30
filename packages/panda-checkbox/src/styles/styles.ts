@@ -13,6 +13,10 @@ export const styles = /*css*/`
 		width: fit-content;
 	}
 
+	.checkbox.no-label {
+		gap: 0px;
+	}
+
 	.checkbox .icon {
 		display: flex;
 		flex-shrink: 0;
@@ -101,9 +105,11 @@ export const styles = /*css*/`
 	/* FOCUSED */
 	.icon:not(.disabled):focus,
 	.icon:not(.disabled):focus-visible,
+	.icon:not(.disabled):hover:focus,
+	.icon:not(.disabled):hover:focus-visible,
 	.checkbox:not(.disabled):focus .icon,
 	.checkbox:not(.disabled):focus-visible .icon {
-		box-shadow: var(--panda-checkbox-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
+		box-shadow: var(--panda-checkbox-outline, var(--panda-component-outline, 0px 0px 2px 2px hsl(209deg 78% 46%)));
 	}
 
 	/* CHECKED */
@@ -166,76 +172,76 @@ export const styles = /*css*/`
 	/* ============================================================================================================= */
 
 	/* INFO */
-	:host([theme="info"]) svg .box-outline,
-	:host([theme="info"]) svg .box {
+	:host([theme="info"]) .checkbox:not(.disabled) svg .box-outline,
+	:host([theme="info"]) .checkbox:not(.disabled) svg .box {
 		fill: var(--panda-checkbox-icon-color-info, var(--panda-action-color-info, hsl(261deg 66% 58%)));
 	}
 
-	:host([theme="info"]) svg .check,
-	:host([theme="info"]) svg .dash {
+	:host([theme="info"]) .checkbox:not(.disabled) svg .check,
+	:host([theme="info"]) .checkbox:not(.disabled) svg .dash {
 		stroke: var(--panda-checkbox-check-color-info, var(--panda-action-text-color-info, hsl(0deg 0% 100%)));
 	}
 
 	/* DONE */
-	:host([theme="done"]) svg .box-outline,
-	:host([theme="done"]) svg .box {
+	:host([theme="done"]) .checkbox:not(.disabled) svg .box-outline,
+	:host([theme="done"]) .checkbox:not(.disabled) svg .box {
 		fill: var(--panda-checkbox-icon-color-done, var(--panda-action-color-done, hsl(160deg 81% 43%)));
 	}
 
-	:host([theme="done"]) svg .check,
-	:host([theme="done"]) svg .dash {
+	:host([theme="done"]) .checkbox:not(.disabled) svg .check,
+	:host([theme="done"]) .checkbox:not(.disabled) svg .dash {
 		stroke: var(--panda-checkbox-check-color-done, var(--panda-action-text-color-done, hsl(0deg 0% 100%)));
 	}
 
 	/* WARN */
-	:host([theme="warn"]) svg .box-outline,
-	:host([theme="warn"]) svg .box {
+	:host([theme="warn"]) .checkbox:not(.disabled) svg .box-outline,
+	:host([theme="warn"]) .checkbox:not(.disabled) svg .box {
 		fill: var(--panda-checkbox-icon-color-warn, var(--panda-action-color-warn, hsl(35deg 91% 62%)));
 	}
 
-	:host([theme="warn"]) svg .check,
-	:host([theme="warn"]) svg .dash {
+	:host([theme="warn"]) .checkbox:not(.disabled) svg .check,
+	:host([theme="warn"]) .checkbox:not(.disabled) svg .dash {
 		stroke: var(--panda-checkbox-check-color-warn, var(--panda-action-text-color-warn, hsl(0deg 0% 100%)));
 	}
 
 	/* ALERT */
-	:host([theme="alert"]) svg .box-outline,
-	:host([theme="alert"]) svg .box {
+	:host([theme="alert"]) .checkbox:not(.disabled) svg .box-outline,
+	:host([theme="alert"]) .checkbox:not(.disabled) svg .box {
 		fill: var(--panda-checkbox-icon-color-alert, var(--panda-action-color-alert, hsl(14deg 77% 62%)));
 	}
 
-	:host([theme="alert"]) svg .check,
-	:host([theme="alert"]) svg .dash {
+	:host([theme="alert"]) .checkbox:not(.disabled) svg .check,
+	:host([theme="alert"]) .checkbox:not(.disabled) svg .dash {
 		stroke: var(--panda-checkbox-check-color-alert, var(--panda-action-text-color-alert, hsl(0deg 0% 100%)));
 	}
 
 	/* LIGHT */
-	:host([theme="light"]) .checkbox .label {
+	:host([theme="light"]) .checkbox:not(.disabled) .label {
 		color: var(--panda-checkbox-label-color-light, var(--panda-white-color, hsl(0deg 0% 100%)));
 	}
 
-	:host([theme="light"]) svg .box-outline,
-	:host([theme="light"]) svg .box {
+	:host([theme="light"]) .checkbox:not(.disabled) svg .box-outline,
+	:host([theme="light"]) .checkbox:not(.disabled) svg .box {
 		fill: var(--panda-checkbox-icon-color-light, var(--panda-white-color, hsl(0deg 0% 100%)));
 	}
 
-	:host([theme="light"]) svg .check,
-	:host([theme="light"]) svg .dash {
+	:host([theme="light"]) .checkbox:not(.disabled) svg .check,
+	:host([theme="light"]) .checkbox:not(.disabled) svg .dash {
 		stroke: var(--panda-checkbox-check-color-light, var(--panda-black-color, hsl(0deg 0% 0%)));
 	}
 
 	/* DARK */
-	:host([theme="dark"]) .checkbox .label {
+	:host([theme="dark"]) .checkbox:not(.disabled) .label {
 		color: var(--panda-checkbox-label-color-dark, var(--panda-black-color, hsl(0deg 0% 0%)));
 	}
 
-	:host([theme="dark"]) svg .box-outline,
-	:host([theme="dark"]) svg .box {
+	:host([theme="dark"]) .checkbox:not(.disabled) svg .box-outline,
+	:host([theme="dark"]) .checkbox:not(.disabled) svg .box {
 		fill: var(--panda-checkbox-icon-color-dark, var(--panda-black-color, hsl(0deg 0% 0%)));
 	}
 
-	:host([theme="dark"]) svg .check,
-	:host([theme="dark"]) svg .dash {
+	:host([theme="dark"]) .checkbox:not(.disabled) svg .check,
+	:host([theme="dark"]) .checkbox:not(.disabled) svg .dash {
 		stroke: var(--panda-checkbox-check-color-dark, var(--panda-white-color, hsl(0deg 0% 100%)));
 	}
 `;

@@ -322,9 +322,9 @@ export const pandaThemeLight = /*css*/ `
 		--panda-border-color-disabled: hsl(207deg 1% 87%);
 
 		/* OUTLINE & FOCUS */
-		--panda-outline-color: var(--panda-primary-color-40opc);
+		--panda-outline-color: var(--panda-primary-color);
 		--panda-outline-color-disabled: var(--panda-primary-color-20opc);
-		--panda-component-outline: 0px 0px 0px 2px var(--panda-outline-color);
+		--panda-component-outline: 0px 0px 2px 2px var(--panda-outline-color);
 
 		/* VALIDATION */
 		--panda-form-validation-mandatory: var(--panda-action-color-warn);

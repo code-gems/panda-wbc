@@ -208,6 +208,7 @@ export class PandaCheckbox extends HTMLElement {
 
 	// view properties ================================================================================================
 
+	private _hasLabel!: boolean;
 	private _ready!: boolean;
 
 	// elements
@@ -215,10 +216,12 @@ export class PandaCheckbox extends HTMLElement {
 	private readonly _labelEl!: HTMLDivElement;
 	private readonly _helpTextEl!: HTMLDivElement;
 	private readonly _iconEl!: HTMLDivElement;
+	private readonly _slotEl!: HTMLSlotElement;
 
 	// events
 	private readonly _onClickEvent!: any;
 	private readonly _onKeyDownEvent!: any;
+	private readonly _slotChangeEvent!: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -271,17 +274,19 @@ export class PandaCheckbox extends HTMLElement {
 		// initialize class properties
 		this._theme = "";
 		this._name = "";
+		this._helpText = "";
 		this._checked = false;
 		this._disabled = false;
 		this._indeterminate = false;
-		this._helpText = "";
 		this._strikethrough = false;
 		this._alignRight = false;
+		this._hasLabel = false;
 		this._ready = false;
 
 		// init events
 		this._onClickEvent = this._onClick.bind(this);
 		this._onKeyDownEvent = this._onKeyDown.bind(this);
+		this._slotChangeEvent = this._onSlotChange.bind(this);
 
 		// get template element handles
 		if (this.shadowRoot) {
@@ -290,17 +295,27 @@ export class PandaCheckbox extends HTMLElement {
 			this._helpTextEl = this.shadowRoot.querySelector(".help-text") as HTMLDivElement;
 			this._iconEl = this.shadowRoot.querySelector(".icon") as HTMLDivElement;
 			this._labelEl = this.shadowRoot.querySelector(".label") as HTMLDivElement;
+			this._slotEl = this.shadowRoot.querySelector("slot") as HTMLSlotElement;
 
 			// add event listeners
 			this._checkboxEl.addEventListener("keydown", this._onKeyDownEvent);
 			this._labelEl.addEventListener("click", this._onClickEvent);
 			this._iconEl.addEventListener("click", this._onClickEvent);
+			this._slotEl.addEventListener("slotchange", this._slotChangeEvent);
 		}
 	}
 
 	connectedCallback(): void {
 		this._ready = true;
 		this._updateComponent();
+	}
+
+	disconnectedCallback(): void {
+		// remove event listeners
+		this._checkboxEl.removeEventListener("keydown", this._onKeyDownEvent);
+		this._labelEl.removeEventListener("click", this._onClickEvent);
+		this._iconEl.removeEventListener("click", this._onClickEvent);
+		this._slotEl.removeEventListener("slotchange", this._slotChangeEvent);
 	}
 
 	attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
@@ -318,6 +333,7 @@ export class PandaCheckbox extends HTMLElement {
 				break;
 			case "help-text":
 				this._helpText = newValue || "";
+				this._hasLabel = true;
 				break;
 			case "checked":
 				this._checked = this._parseBooleanAttribute(newValue);
@@ -394,6 +410,15 @@ export class PandaCheckbox extends HTMLElement {
 		this._labelEl.part = this._labelEl.className;
 		this._helpTextEl.className = `help-text ${cssString}`;
 		this._helpTextEl.part = this._helpTextEl.className;
+
+		// handle no label case
+		if (this._hasLabel) {
+			this._checkboxEl.classList.remove("no-label");
+			this._checkboxEl.part = this._checkboxEl.className;
+		} else {
+			this._checkboxEl.classList.add("no-label");
+			this._checkboxEl.part = this._checkboxEl.className;
+		}
 	}
 
 	// ================================================================================================================
@@ -463,6 +488,10 @@ export class PandaCheckbox extends HTMLElement {
 				this._onClick();
 				break;
 		}
+	}
+
+	private _onSlotChange(): void {
+		this._hasLabel = true;
 	}
 }
 
