@@ -95,7 +95,11 @@ export const styles = /*css*/`
 		--panda-icon-color: var(--panda-input-icon-color, hsl(191deg 19% 23%));
 		--panda-icon-size: var(--panda-input-slot-icon-size-m, 20px);
 	}
-	
+
+	.text-field.shake {
+		animation: shake-horizontal 500ms;
+	}
+
 	.input-wrap {
 		position: relative;
 		flex-grow: 1;
@@ -366,6 +370,8 @@ export const styles = /*css*/`
 	}
 	
 	/* INVALID */
+	.text-field:not(.disabled):not(.readonly).invalid,
+	.text-field:not(.disabled):not(.readonly).invalid:hover,
 	:host([theme~="invalid"]) .text-field:not(.disabled):not(.readonly),
 	:host([theme~="invalid"]) .text-field:not(.disabled):not(.readonly):hover {
 		color: var(--panda-input-color-invalid, hsl(14deg 77% 62%));
@@ -607,5 +613,20 @@ export const styles = /*css*/`
 		80% { transform: rotate(5deg); }
 		90% { transform: rotate(-5deg); }
 		100% { transform: rotate(0deg); }
+	}
+
+	@keyframes shake-horizontal {
+		10%, 90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+		20%, 80% {
+			transform: translate3d(2px, 0, 0);
+		}
+		30%, 50%, 70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+		40%, 60% {
+			transform: translate3d(4px, 0, 0);
+		}
 	}
 `; 

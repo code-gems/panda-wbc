@@ -117,6 +117,12 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	@state()
 	private _showClearButton = false;
 
+	@state()
+	private _pattern = "";
+	
+	@state()
+	private _allowedCharPattern = "";
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -272,6 +278,19 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 									</panda-button>
 								</div>
 							</div><!-- row -->
+							
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onTogglePattern}">
+										Toggle Pattern (${this._pattern ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleAllowedCharPattern}">
+										Toggle Allowed Char Pattern (${this._allowedCharPattern ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div><!-- row -->
 
 							<div class="row">
 
@@ -293,15 +312,15 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 										.autocomplete="${this._autocomplete ? "username email" : "off"}"
 										.showCharacterCounter="${this._showCharacterCounter}"
 										.showClearButton="${this._showClearButton}"
+										.pattern="${this._pattern}"
+										.allowedCharPattern="${this._allowedCharPattern}"
 										@on-input="${this._onInput}"
 										spinner-type="dots-bounce"
 									>
 										<div slot="prefix" class="icon">
 											<panda-icon icon="user"></panda-icon>
 										</div>
-										<div slot="suffix">
-											.com
-										</div>
+										<div slot="suffix">.com</div>
 									</panda-text-field>
 								</div>
 
@@ -674,5 +693,17 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 
 	private _onToggleCharacterCounter(): void {
 		this._showCharacterCounter = !this._showCharacterCounter;
+	}
+
+	private _onTogglePattern(): void {
+		this._pattern = this._pattern
+			? ""
+			: "^\\d{3}$";
+	}
+
+	private _onToggleAllowedCharPattern(): void {
+		this._allowedCharPattern = this._allowedCharPattern
+			? ""
+			: "[0-9]";
 	}
 }

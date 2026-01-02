@@ -413,7 +413,7 @@ export const pandaThemeLight = /*css*/ `
 		--panda-input-text-shadow-focused: none;
 		--panda-input-border-color-focused: hsl(207deg 1% 85%);
 		--panda-input-background-color-focused: hsl(0deg 0% 100%);
-		--panda-input-outline: 0px 0px 2px 2px hsl(160deg 81% 43%);
+		--panda-input-outline: var(--panda-component-outline);
 		--panda-input-icon-color-focused: hsl(191deg 19% 23%);
 		/* STATE - WORKING */
 		--panda-input-border-color-working: hsl(212deg 1% 95%);

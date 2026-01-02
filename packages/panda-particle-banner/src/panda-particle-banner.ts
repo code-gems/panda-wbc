@@ -266,7 +266,7 @@ class PandaParticleBanner extends LitElement {
 		} = particleGroup;
 		let colorIndex = 0;
 		const colorCount = colors.length;
-		console.log("%c [GENERATOR] colors", "font-size: 24px; color: red;", colors);
+		// console.log("%c [GENERATOR] colors", "font-size: 24px; color: red;", colors);
 
 		while (true) {
 			// particle style ==================================

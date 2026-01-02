@@ -96,7 +96,7 @@ export abstract class ContentPageTemplate extends LitElement {
 		if (location.hash) {
 			this._scrollToHash();
 		}
-		console.log(`%c ⚡ contentPageConfig`, "font-size: 24px; color: crimson; background: black;", this.contentPageConfig);
+		// console.log(`%c ⚡ contentPageConfig`, "font-size: 24px; color: crimson; background: black;", this.contentPageConfig);
 
 		
 		const packageFile = import("../../../panda-heatmap/package.json");
@@ -106,7 +106,7 @@ export abstract class ContentPageTemplate extends LitElement {
 	}
 
 	updated(_changedProps: PropertyValues): void {
-		console.log(`%c ⚡ _changedProps`, "font-size: 24px; color: crimson; background: black;", _changedProps);
+		// console.log(`%c ⚡ _changedProps`, "font-size: 24px; color: crimson; background: black;", _changedProps);
 	}
 
 	connectedCallback(): void {
@@ -149,7 +149,7 @@ export abstract class ContentPageTemplate extends LitElement {
 	}
 	
 	private _renderPageBanner(): TemplateResult {
-		console.log(`%c ⚡ (_renderPageBanner)`, "font-size: 24px; color: crimson; background: black;");
+		// console.log(`%c ⚡ (_renderPageBanner)`, "font-size: 24px; color: crimson; background: black;");
 
 		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
 		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");

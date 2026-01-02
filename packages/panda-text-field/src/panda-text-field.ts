@@ -40,6 +40,7 @@ export class PandaTextField extends HTMLElement {
 		"mandatory",
 		"spinner-type",
 		"pattern",
+		"allowed-char-pattern",
 	];
 
 	// theme ==========================================================================================================
@@ -390,25 +391,25 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
-	// allowed characters =============================================================================================
+	// allowed characters pattern =====================================================================================
 	/**
 	 * A regular expression string that defines the set of characters allowed in the input field.
 	 * If defined, the input will block any character that is not part of this set.
 	 */
-	private _allowedCharacters!: string;
+	private _allowedCharPattern!: string;
 
-	get allowedCharacters() {
-		return this._allowedCharacters;
+	get allowedCharPattern() {
+		return this._allowedCharPattern;
 	}
 
-	set allowedCharacters(value: string) {
-		if (this._allowedCharacters !== value) {
-			this._allowedCharacters = value;
+	set allowedCharPattern(value: string) {
+		if (this._allowedCharPattern !== value) {
+			this._allowedCharPattern = value;
 			// reflect to attribute
 			if (value == null || value === "") {
-				this.removeAttribute("allowed-characters");
+				this.removeAttribute("allowed-char-pattern");
 			} else {
-				this.setAttribute("allowed-characters", this._allowedCharacters);
+				this.setAttribute("allowed-char-pattern", this._allowedCharPattern);
 			}
 		}
 	}
@@ -419,6 +420,7 @@ export class PandaTextField extends HTMLElement {
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
 	private _showMandatoryFlag!: boolean;
+	private _invalid!: boolean;
 	private _textLength!: number;
 
 	// elements
@@ -444,6 +446,11 @@ export class PandaTextField extends HTMLElement {
 	private readonly _prefixSlotChangeEvent!: any;
 	private readonly _suffixSlotChangeEvent!: any;
 	private readonly _clearButtonClickEvent!: any;
+	private readonly _inputKeyDownEvent!: any;
+	private readonly _inputPasteEvent!: any;
+
+	// timers
+	private _inputShakeAnimationTimer!: ReturnType<typeof setTimeout>| null;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -469,37 +476,6 @@ export class PandaTextField extends HTMLElement {
 			</div>
 			<div class="footer" part="footer"></div>
 		`;
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
-
-		// initialize class properties
-		this._theme = "";
-		this._label = "";
-		this._description = "";
-		this._placeholder = [];
-		this._placeholderInterval = null;
-		this._working = false;
-		this._readonly = false;
-		this._disabled = false;
-		this._maxLength = null;
-		this._showCharacterCounter = false;
-		this._spinnerType = "dots";
-
-		// view props
-		this._ready = false;
-		this._focused = false;
-		this._withPrefix = false;
-		this._withSuffix = false;
-		this._showMandatoryFlag = false;
-		this._textLength = 0;
-
-		// init events
-		this._inputEvent = this._onInput.bind(this);
-		this._focusInputEvent = this._onFocus.bind(this);
-		this._blurInputEvent = this._onBlur.bind(this);
-		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
-		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
-		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
 
 		// create placeholder element
 		this._placeholderEl = document.createElement("panda-text-slider");
@@ -545,6 +521,51 @@ export class PandaTextField extends HTMLElement {
 		`;
 		this._clearButtonIconEl = this._clearButtonEl.querySelector(".icon") as HTMLDivElement;
 
+		// apply template
+		this.shadowRoot!.appendChild(template.content.cloneNode(true));
+
+		// initialize class properties
+		this._theme = "";
+		this._label = "";
+		this._description = "";
+		this._placeholder = [];
+		this._placeholderInterval = null;
+		this._working = false;
+		this._readonly = false;
+		this._disabled = false;
+		this._maxLength = null;
+		this._showCharacterCounter = false;
+		this._spinnerType = "dots";
+		this._mandatory = false;
+		this._autocomplete = "off";
+		this._autoselect = false;
+		this._autofocus = false;
+		this._spellcheck = false;
+		this._showClearButton = false;
+		this._pattern = "";
+		this._allowedCharPattern = "";
+
+		// view props
+		this._ready = false;
+		this._focused = false;
+		this._withPrefix = false;
+		this._withSuffix = false;
+		this._showMandatoryFlag = false;
+		this._invalid = false;
+		this._textLength = 0;
+		// init timers
+		this._inputShakeAnimationTimer = null;
+
+		// init events
+		this._inputEvent = this._onInput.bind(this);
+		this._focusInputEvent = this._onFocus.bind(this);
+		this._blurInputEvent = this._onBlur.bind(this);
+		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
+		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
+		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
+		this._inputKeyDownEvent = this._onKeyDown.bind(this);
+		this._inputPasteEvent = this._onPaste.bind(this);
+
 		// get template element handles
 		if (this.shadowRoot) {
 			// assign template elements
@@ -558,18 +579,20 @@ export class PandaTextField extends HTMLElement {
 			this._footerEl = this.shadowRoot.querySelector(".footer") as HTMLInputElement;
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
+
+			// add event listeners to component template
+			this._inputEl.addEventListener("input", this._inputEvent);
+			this._inputEl.addEventListener("focus", this._focusInputEvent);
+			this._inputEl.addEventListener("blur", this._blurInputEvent);
+			this._inputEl.addEventListener("keydown", this._inputKeyDownEvent);
+			this._inputEl.addEventListener("paste", this._inputPasteEvent);
+			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
+			this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
 		}
 	}
 
 	connectedCallback() {
-		// add event listeners to component template
-		this._inputEl.addEventListener("input", this._inputEvent);
-		this._inputEl.addEventListener("focus", this._focusInputEvent);
-		this._inputEl.addEventListener("blur", this._blurInputEvent);
-		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
-		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
-		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
-		
 		// update mandatory flag
 		this._evaluateMandatoryFlag();
 
@@ -590,9 +613,19 @@ export class PandaTextField extends HTMLElement {
 		this._inputEl.removeEventListener("blur", this._blurInputEvent);
 		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.removeEventListener("slotchange", this._suffixSlotChangeEvent);
+
+		// clear timers
+		if (this._inputShakeAnimationTimer) {
+			clearTimeout(this._inputShakeAnimationTimer);
+			this._inputShakeAnimationTimer = null;
+		}
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		if (_oldValue === _newValue) {
+			return;
+		}
+
 		switch (_name) {
 			case "value":
 				this._value = _newValue;
@@ -741,6 +774,15 @@ export class PandaTextField extends HTMLElement {
 			case "show-clear-button":
 				this._showClearButton = this._parseBooleanAttribute(_newValue);
 				break;
+
+			case "pattern":
+				this._pattern = _newValue;
+				// this._validateInput();
+				break;
+
+			case "allowed-char-pattern":
+				this._allowedCharPattern = _newValue;
+				break;
 		}
 		this._updateComponent();
 	}
@@ -822,6 +864,13 @@ export class PandaTextField extends HTMLElement {
 				this._clearButtonEl.remove();
 			}
 
+			// validate min length
+			if (this._minLength != null && this._textLength < this._minLength) {
+				this._inputEl.setCustomValidity("Minimum length not reached");
+			} else {
+				this._inputEl.setCustomValidity("");
+			}
+
 			// update mandatory flag
 			this._evaluateMandatoryFlag();
 			// update css classes
@@ -867,6 +916,9 @@ export class PandaTextField extends HTMLElement {
 		}
 		if (this._showClearButton && this._value && !this._disabled && !this._readonly) {
 			css.push(`with-clear-button`);
+		}
+		if (this._invalid) {
+			css.push("invalid");
 		}
 		// update class names and parts
 		const cssString = css.join(" ");
@@ -942,6 +994,45 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
+	/** Validates the input against the pattern */
+	private _validateInput(): void {
+		// validate pattern
+		if (this._pattern != null && this._pattern !== "") {
+			const regex = new RegExp(this._pattern);
+
+			// set custom validity message
+			if (regex.test(this._inputEl.value)) {
+				this._inputEl.setCustomValidity("");
+				this._invalid = false;
+			} else {
+				this._inputEl.setCustomValidity("Invalid input format.");
+				this._invalid = true;
+			}
+		} else {
+			this._inputEl.setCustomValidity("");
+			this._invalid = false;
+		}
+		// update template css
+		this._updateTemplateCss();
+	}
+
+	/** Starts the input field shake animation */
+	private _startInputShakeAnimation(): void {
+		if (this._inputShakeAnimationTimer == null) {
+			this._textFieldEl.classList.add("shake");
+			this._inputShakeAnimationTimer = setTimeout(this._clearInputShakeAnimation.bind(this), 500);
+		}
+	}
+
+	/** Clears the input field animation timer and removes "shake" class if it exists */
+	private _clearInputShakeAnimation(): void {
+		if (this._inputShakeAnimationTimer) {
+			this._textFieldEl.classList.remove("shake");
+			clearTimeout(this._inputShakeAnimationTimer);
+			this._inputShakeAnimationTimer = null;
+		}
+	}
+
 	// ================================================================================================================
 	// API ============================================================================================================
 	// ================================================================================================================
@@ -973,6 +1064,11 @@ export class PandaTextField extends HTMLElement {
 		this._value = (event.target as HTMLInputElement).value;
 		this._triggerInputEvent();
 		this._updateComponent();
+		
+		// re-validate input if already invalid
+		if (this._invalid) {
+			this._validateInput();
+		}
 	}
 
 	private _onFocus(event: FocusEvent): void {
@@ -993,6 +1089,62 @@ export class PandaTextField extends HTMLElement {
 	private _onBlur(): void {
 		this._focused = false;
 		this._updateTemplateCss();
+		this._validateInput()
+	}
+
+	private _onPaste(event: ClipboardEvent): void {
+		// check allowed characters pattern
+		if (this._allowedCharPattern) {
+			const regex = new RegExp(this._allowedCharPattern);
+			const pasteData = event.clipboardData?.getData("text") || "";
+	
+			// prevent paste if it contains disallowed characters
+			if (!regex.test(pasteData)) {
+				event.preventDefault();
+				// start shake animation
+				this._startInputShakeAnimation();
+			}
+		}
+	}
+
+	private _onKeyDown(event: KeyboardEvent): void {
+		// check allowed characters pattern
+		if (this._allowedCharPattern) {
+			const regex = new RegExp(this._allowedCharPattern);
+			const key = event.key;
+
+			// list of keys that are always allowed
+			const alwaysAllowed = [
+				"Backspace",
+				"Delete",
+				"ArrowLeft",
+				"ArrowRight",
+				"ArrowUp",
+				"ArrowDown",
+				"Tab",
+				"Home",
+				"End",
+				"Enter"
+			];
+
+			// check for always allowed keys
+			if (alwaysAllowed.includes(key)) {
+				return;
+			}
+
+			// allow control keys
+			if (
+				key.length === 1 && // only process single character keys
+				!regex.test(key) &&
+				!event.ctrlKey &&
+				!event.metaKey &&
+				!event.altKey
+			) {
+				event.preventDefault();
+				// start shake animation
+				this._startInputShakeAnimation();
+			}
+		}
 	}
 
 	private _onClearButtonClick(): void {
