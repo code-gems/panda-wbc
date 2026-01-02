@@ -45,6 +45,7 @@ export class ContentPage extends ContentPageTemplate {
 	];
 
 	private readonly _xAxisLabels: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+	private readonly _xAxisLabelsShort: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 	private readonly _yAxisLabels: string[] = ["8 AM", "10 AM", "12 PM", "2 PM", "4 PM"];
 	 
@@ -62,15 +63,6 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small">
-				<h1>Heatmap</h1>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
 
 	_renderPageContent(): TemplateResult {
 		return html`
@@ -130,10 +122,14 @@ export class ContentPage extends ContentPageTemplate {
 
 									<panda-heatmap
 										.data="${this._heatmapData}"
-										.xAxisLabels="${this._xAxisLabels}"
+										.xAxisLabels="${this._xAxisLabelsShort}"
 										.yAxisLabels="${this._yAxisLabels}"
-										show-legend
 										.orientation="${this._orientation}"
+										show-legend
+										max-color="pink"
+										x-axis-label-position="bottom"
+										y-axis-label-position="right"
+										@select="${this._onSelect}"
 									></panda-heatmap>
 
 								</div>
@@ -142,16 +138,20 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-full">
 
 									<panda-heatmap
-										theme="done"
-										.data="${this._heatmapData}"
-										.xAxisLabels="${this._xAxisLabels}"
-										.yAxisLabels="${this._yAxisLabels}"
+										class="large-heatmap"
+										theme="alert"
 										max-value="100"
 										min-value="0"
 										show-legend
 										show-tooltip
-										.cellRenderer="${cellRenderer}"
+										max-color="green"
+										.data="${this._heatmapData}"
+										.xAxisLabels="${this._xAxisLabels}"
+										.yAxisLabels="${this._yAxisLabels}"
 										.orientation="${this._orientation}"
+										.cellRenderer="${cellRenderer}"
+										@select="${this._onSelect}"
+										working
 									></panda-heatmap>
 
 								</div>
@@ -164,6 +164,8 @@ export class ContentPage extends ContentPageTemplate {
 										.xAxisLabels="${this._xAxisLabels}"
 										.yAxisLabels="${this._yAxisLabels}"
 										.orientation="${this._orientation}"
+										working
+										@select="${this._onSelect}"
 									></panda-heatmap>
 
 								</div>
@@ -260,5 +262,10 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onChangeOrientation(event: PandaRadioGroupChangeEvent): void {
 		this._orientation = event.detail.value;
+	}
+
+	private _onSelect(event: CustomEvent): void {
+		const { column, row, value } = event.detail;
+		console.log(`%c ⚡ Cell Selected`, "font-size: 24px; color: green; background: black;", column, row, value);
 	}
 }

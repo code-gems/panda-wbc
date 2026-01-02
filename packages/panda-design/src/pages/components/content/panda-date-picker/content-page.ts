@@ -62,10 +62,6 @@ export class ContentPage extends ContentPageTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderPageBanner(): TemplateResult {
-		return html``;
-	}
-
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}

@@ -38,16 +38,6 @@ export class PandaSliderContentPage extends ContentPageTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small">
-				<h1>TETRIS</h1>
-
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
-
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}

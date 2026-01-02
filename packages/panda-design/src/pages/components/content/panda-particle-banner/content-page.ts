@@ -58,48 +58,11 @@ export class PandaParticleBannerContentPage extends ContentPageTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderPageBanner(): TemplateResult {
-		// const bannerConfig: PandaParticleBannerConfig = {
-		// 	particleCount: 80,
-		// 	interactive: true,
-		// 	mouseOffsetXSensitivity: 10,
-		// 	mouseOffsetYSensitivity: 10,
-
-		// 	minSpeedX: -0.1,
-		// 	maxSpeedX: 0.1,
-		// 	minSpeedY: -0.1,
-		// 	maxSpeedY: 0.1,
-
-		// 	sizeMin: 5,
-		// 	sizeMax: 100,
-
-		// 	blur: true,
-		// 	blurMin: 5,
-		// 	blurMax: 10,
-		// };
-
-		return html`banner`;
-		// return html`
-		// 	<div class="banner small">
-		// 		<panda-particle-banner
-		// 			.config="${bannerConfig}"
-					
-		// 		>
-		// 			<div>
-		// 				<h1>PARTICLE BANNER</h1>
-		// 				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-		// 			</div>
-		// 		</panda-particle-banner>
-		// 	</div>
-		// `;
-	}
-
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
 		`;
 	}
-
 
 	private _renderOverviewSection(): TemplateResult {
 		const bannerConfig: PandaParticleBannerConfig = {

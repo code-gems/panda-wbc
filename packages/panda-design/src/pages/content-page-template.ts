@@ -1,5 +1,13 @@
 // types
-import { ContextMenuItem, ComponentPropertyDetails, ComponentEventDetails, ComponentInterfaceDetails, ContentSectionName, Page } from "panda-design-typings";
+import {
+	ContextMenuItem,
+	ComponentPropertyDetails,
+	ComponentEventDetails,
+	ComponentInterfaceDetails,
+	ContentSectionName,
+	Page,
+} from "panda-design-typings";
+import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { uiComponents } from "../styles/styles";
@@ -12,8 +20,8 @@ import "../web-parts/version-shield/version-shield";
 import "../web-parts/code-sample/code-sample";
 
 // utils
-import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";
-import { query, queryAll, property, state } from "lit/decorators.js";
+import { LitElement, CSSResultGroup, TemplateResult, html, PropertyValues } from "lit";
+import { query, queryAll, state } from "lit/decorators.js";
 import PageLibrary from "../utils/page-library";
 
 export abstract class ContentPageTemplate extends LitElement {
@@ -36,7 +44,10 @@ export abstract class ContentPageTemplate extends LitElement {
 
 	public customStyles!: CSSResultGroup;
 
-	@property({ type: Array })
+	@state()
+	private _componentVersion!: string;
+
+	@state()
 	private _contextMenu!: ContextMenuItem[];
 
 	// elements
@@ -85,6 +96,21 @@ export abstract class ContentPageTemplate extends LitElement {
 		if (location.hash) {
 			this._scrollToHash();
 		}
+		console.log(`%c ⚡ contentPageConfig`, "font-size: 24px; color: crimson; background: black;", this.contentPageConfig);
+
+		
+		const packageFile = import("../../../panda-heatmap/package.json");
+		packageFile.then((pkg) => {
+			this._componentVersion = pkg.version;
+		});
+	}
+
+	updated(_changedProps: PropertyValues): void {
+		console.log(`%c ⚡ _changedProps`, "font-size: 24px; color: crimson; background: black;", _changedProps);
+	}
+
+	connectedCallback(): void {
+		super.connectedCallback();
 	}
 
 	disconnectedCallback(): void {
@@ -96,6 +122,8 @@ export abstract class ContentPageTemplate extends LitElement {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
+
+	abstract _renderPageContent(): TemplateResult;
 
 	protected render() {
 		return html`
@@ -119,10 +147,48 @@ export abstract class ContentPageTemplate extends LitElement {
 			</div>
 		`;
 	}
+	
+	private _renderPageBanner(): TemplateResult {
+		console.log(`%c ⚡ (_renderPageBanner)`, "font-size: 24px; color: crimson; background: black;");
 
-	abstract _renderPageBanner(): TemplateResult;
+		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
+		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
+		const tertiaryColor = getComputedStyle(this).getPropertyValue("--panda-tertiary-color");
 
-	abstract _renderPageContent(): TemplateResult;
+		const bannerConfig: PandaParticleBannerConfig = {
+			particleGroup: [{
+				particleCount: 50,
+				blur: true,
+				blurMax: 5,
+				blurMin: 2,
+				colors: [primaryColor, secondaryColor, tertiaryColor],
+				colorOpacityVariation: 50,
+				colorSaturationVariation: 30,
+				maxSpeedX: 0.1,
+				minSpeedX: -0.1,
+				maxSpeedY: -0.5,
+				minSpeedY: -0.1,
+				sizeMax: 80,
+				sizeMin: 40,
+			}],
+			showFps: true
+		};
+
+		return html`
+			<div class="banner small particle-banner">
+				<panda-particle-banner .config="${bannerConfig}">
+					<div class="content">
+						<h1>${this.contentPageConfig?.pageName}</h1>
+					</div>
+				</panda-particle-banner>
+				<version-shield
+					prefix="version"
+					version="${this._componentVersion}"
+					color="orange"
+				></version-shield>
+			</div>
+		`;
+	}
 
 	private _renderContextMenu() {
 		const selectedPage = new PageLibrary().getPageById(this.contentPageConfig?.pageId);

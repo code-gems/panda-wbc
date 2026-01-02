@@ -35,17 +35,6 @@ class BaseColorsContentPage extends ContentPageTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small">
-				<h1>BASE COLORS</h1>
-				<p>
-					...
-				</p>
-			</div>
-		`;
-	}
-
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}

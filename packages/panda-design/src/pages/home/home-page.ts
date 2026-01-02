@@ -17,7 +17,6 @@ import { customElement, property } from "lit/decorators.js";
 import { PageLibrary, page } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { PandaParticleBannerConfig, ParticleShape } from "@panda-wbc/panda-particle-banner";
-import { bannerConfig3 } from "../../utils/particle-banner-presets";
 
 @customElement("home-page")
 @page({
@@ -154,15 +153,7 @@ class HomePage extends LitElement {
 		return html`
 			<div class="body-wrap scroll">
 				<panda-particle-banner
-					.config="${bannerConfig3}"
-				>
-				</panda-particle-banner>
-			</div>
-		`;
-		return html`
-			<div class="body-wrap scroll">
-				<panda-particle-banner
-					.config="${bannerConfig3}"
+					.config="${bannerConfig}"
 				>
 					${pandaLogo}
 					some text here

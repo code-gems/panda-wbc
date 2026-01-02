@@ -4,7 +4,6 @@ import {
 	ComponentPropertyDetails,
 	ContentSectionName,
 } from "panda-design-typings";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
@@ -121,38 +120,6 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small">
-				<h1>TEXT FIELD</h1>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
-		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
-		const tertiaryColor = getComputedStyle(this).getPropertyValue("--panda-tertiary-color");
-
-		const bannerConfig: PandaParticleBannerConfig = {
-			particleGroup: [{
-				particleCount: 50,
-				blur: true,
-				colors: [primaryColor, secondaryColor, tertiaryColor]
-			}]
-		};
-		return html`
-			<div class="banner small particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig}"					
-				>
-					<div class="content">
-						<h1>TEXT FIELD</h1>
-					</div>
-					<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-				</panda-particle-banner>
-			</div>
-		`;
-	}
 
 	_renderPageContent(): TemplateResult {
 		return html`

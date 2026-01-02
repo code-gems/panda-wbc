@@ -1,6 +1,5 @@
 // types
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 type Log = {
 	message: string;
@@ -129,182 +128,12 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderPageBanner(): TemplateResult {
-		const bannerConfig: PandaParticleBannerConfig = {
-			particleGroup: [
-				{
-					particleCount: 10,
-					sizeMin: 200,
-					sizeMax: 100,
-
-					colors: ["#ff4778", "#6f36bc", "#36174D"],
-					colorOpacityVariation: 70,
-					colorHueVariation: 20,
-
-					minSpeedX: -0.2,
-					maxSpeedX: 0.2,
-					minSpeedY: -0.2,
-					maxSpeedY: 0.2,
-
-					blur: true,
-					blurMin: 5,
-					blurMax: 15,
-				},
-				{
-					particleCount: 50,
-					sizeMin: 3,
-					sizeMax: 5,
-
-					colors: ["#ff4778", "#6f36bc", "#36174D"],
-					colorOpacityVariation: 70,
-
-					minSpeedX: -0.3,
-					maxSpeedX: 0.3,
-					minSpeedY: -0.3,
-					maxSpeedY: 0.3,
-
-					blur: true,
-				}
-			]
-		};
-		return html`
-			<div class="banner small particle-banner">
-			<!--	
-				<panda-particle-banner .config="${bannerConfig}">
-					<div class="content">
-						<h1>COMBO BOX</h1>
-					</div>
-				</panda-particle-banner>
-			-->
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
-
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
 			${this._renderFeaturesSection()}
-		`;
-
-		const customStyle = css`
-			.dropdown .item {
-				padding: 5px !important;
-			}
-
-			.language {
-				display: flex;
-				flex-flow: row nowrap;
-				gap: var(--panda-padding-m);
-				height: 100%;
-			}
-
-			.icon {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: var(--panda-component-size);
-				height: 100%;
-			}
-
-			.label {
-				line-height: var(--panda-component-size-m);
-			}
-		`;
-
-		const customRenderer: (params: any) => any = ({ label, value, active, selected, data }) => {
-			return html`
-				<div class="language">
-					<div class="icon">
-						<panda-flag flag="${value}"></panda-flag>
-					</div>
-					<div class="label">${label}</div>
-				</div>
-			`;
-		};
-
-		return html`
-			<panda-combo-box
-				label="Select Language:"
-				placeholder="Select..."
-				.items="${this._languageList}"
-				.renderer="${customRenderer}"
-				.customStyle="${customStyle}"
-				@change="${this._onChange}"
-			>
-			</panda-combo-box>
-		`;
-		return html`
-			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
-				<div class="section">
-					<panda-combo-box
-						label="Select Destination:"
-						.value="${this._selectedValue}"
-						.items="${this._stateList}"
-						.allowCustomValue="${this._allowCustomValue}"
-						.disableAutoOpen="${this._disableAutoOpen}"
-						@change="${this._onChange}"
-					>
-					</panda-combo-box>
-					<br />
-					${this._selectedValue}
-					<hr />
-					<panda-checkbox
-						.checked="${this._allowCustomValue}"
-						@change="${this._onToggleAllowCustomValue}"
-					>
-						allow-custom-value
-					</panda-checkbox>
-					<br />
-
-					<panda-checkbox
-						.checked="${this._disableAutoOpen}"
-						@change="${this._onToggleDisableAutoOpen}"
-					>
-						disable-auto-open
-					</panda-checkbox>
-					
-					<hr />
-					${this._renderLogs()}
-					
-					<hr />
-					<panda-combo-box
-						label="Select Destination:"
-						.value="${undefined}"
-						.items="${[1, 2, 3, 4]}"
-						.allowCustomValue="${this._allowCustomValue}"
-						.disableAutoOpen="${this._disableAutoOpen}"
-						@change="${this._onChange}"
-					>
-					</panda-combo-box>
-
-				</div>
-			</div>
-		`;
-		// return html`
-		// 	${this._renderOverviewSection()}
-		// 	${this._renderInstallationSection()}
-		// 	${this._renderUsageSection()}
-		// `;
-	}
-
-	private _renderLogs(): TemplateResult {
-		return html`
-			<div class="console-log">
-				${this._log.map(
-			({ message, timestamp }) => html`
-							<div class="log">
-								<div class="message">${message}</div>
-								<div class="timestamp">
-									<panda-time-ago .time="${timestamp}"></panda-time-ago>
-								</div>
-							</div>
-						`
-		)
-			}
-			</div>
 		`;
 	}
 
@@ -587,13 +416,5 @@ export class PandaComboBoxContentPage extends ContentPageTemplate {
 		setTimeout(() => {
 			this._disabled = false;
 		}, 2000);
-	}
-
-	private _onToggleAllowCustomValue(): void {
-		this._allowCustomValue = !this._allowCustomValue;
-	}
-
-	private _onToggleDisableAutoOpen(): void {
-		this._disableAutoOpen = !this._disableAutoOpen;
 	}
 }

@@ -8,12 +8,11 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-button";
 
 // utils
+import { ContentPageTemplate } from "../../../content-page-template";
 import { CSSResultGroup, html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
-import { ContentPageTemplate } from "../../../content-page-template";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // code snippets
 import {
@@ -51,69 +50,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	_renderPageBanner(): TemplateResult {
-		const bannerConfig: PandaParticleBannerConfig = {
-			showFps: true,
-			particleGroup: [{
-				particleCount: 100,
-				colors: ["black"],
-				// colorOpacityVariation: 50,
-				walls: true,
-
-				minSpeedX: -0.1,
-				maxSpeedX: 0.1,
-				minSpeedY: -0.1,
-				maxSpeedY: 0.1,
-				// maxDeltaSpeedX: 0.01,
-				// minDeltaSpeedX: 0.01,
-				// maxDeltaSpeedY: 0.01,
-				// minDeltaSpeedY: 0.01,
-				// deltaSpeedLimitX: 2,
-				// deltaSpeedLimitY: 2,
-
-				sizeMin: 1,
-				sizeMax: 3,
-				// blur: true,
-				// blurMax: 1,
-				connect: true,
-				// connectionLineDash: [1, 1],
-				// getConnectionLineColor: (distance) => {
-				// 	const alphaMax = 128;
-				// 	const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
-				// 	const hexColor = `#36174D${alpha.toString(16).padStart(2, '0')}`;
-				// 	return hexColor.toUpperCase(); // Convert to uppercase for consistency
-				// },
-				connectionLineColor: "lightgray",
-				connectionDistance: 100,
-				getConnectionLineOpacity: (distance) => {
-					const alphaMax = 100;
-					const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
-
-					return alpha;
-				},
-				// shadowBlur: 1,
-				// shadowColor: "#ff4778",
-			}],
-			// smudge: true
-		};
-		return html`
-			<div class="banner small particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig}"					
-				>
-					<div class="content">
-						<h1>BUTTON</h1>
-					</div>
-				</panda-particle-banner>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
-
 	_renderPageContent(): TemplateResult {
-		return html`
-			${this._renderOverviewSection()}
-		`;
 		return html`
 			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}

@@ -17,7 +17,6 @@ import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
-import { bannerConfig1 } from "../../../../utils/particle-banner-presets";
 
 // code snippets
 import {
@@ -53,21 +52,6 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig1}"					
-				>
-					<div class="content">
-						<h1>TOGGLE</h1>
-					</div>
-				</panda-particle-banner>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
 
 	_renderPageContent(): TemplateResult {
 		return html`

@@ -25,4 +25,5 @@ export type RGBAColor = {
 
 export type PandaHeatmapI18nConfig = {
 	noDataText?: string;
+	loadingText?: string;
 }

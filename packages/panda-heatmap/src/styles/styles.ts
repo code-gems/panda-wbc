@@ -33,15 +33,15 @@ export const styles = /*css*/`
 
 	.heatmap-wrapper {
 		display: grid;
-		gap: 0;
+		gap: var(--panda-heatmap-cell-gap, var(--panda-gap-s, 5px));
 	}
 
 	.heatmap-wrapper.has-y-axis-labels {
-		grid-template-columns: var(--panda-heatmap-y-axis-label-width, 80px) 1fr;
+		grid-template-columns: var(--panda-heatmap-y-axis-label-width, auto) 1fr;
 	}
 
 	.heatmap-wrapper.has-x-axis-labels {
-		grid-template-rows: var(--panda-heatmap-x-axis-label-height, 30px) 1fr;
+		grid-template-rows: var(--panda-heatmap-x-axis-label-height, auto) 1fr;
 	}
 
 	.corner-spacer {
@@ -88,8 +88,9 @@ export const styles = /*css*/`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--panda-heatmap-cell-width, var(--panda-component-size-m, 40px));
-		height: var(--panda-heatmap-cell-height, var(--panda-component-size-m, 40px));
+		width: var(--panda-heatmap-cell-width, unset);
+		height: var(--panda-heatmap-cell-height, unset);
+		padding: var(--panda-heatmap-cell-padding, var(--panda-padding-s, 5px) var(--panda-padding-m, 10px));
 
 		font-size: var(--panda-heatmap-cell-font-size, var(--panda-font-size-m, 14px));
 		font-family: var(--panda-heatmap-cell-font-family, var(--panda-font-family-bold, "Poppins-Bold"));
@@ -98,6 +99,7 @@ export const styles = /*css*/`
 		user-select: none;
 
 		border-radius: var(--panda-heatmap-cell-border-radius, var(--panda-border-radius-m, 5px));
+		box-sizing: border-box;
 	}
 
 	.heatmap-cell:not(.empty):hover {
@@ -113,21 +115,22 @@ export const styles = /*css*/`
 
 	.legend {
 		display: flex;
-		justify-content: end;
-		align-items: center;
+		flex-flow: column;
+		align-items: flex-end;
 		padding-top: var(--panda-heatmap-legend-padding-top, var(--panda-padding-m, 10px));
 	}
 
 	.legend-gradient {
 		height: var(--panda-heatmap-legend-height, 20px);
-		width: var(--panda-heatmap-legend-width, 300px);
+		width: var(--panda-heatmap-legend-width, 60%);
 		border-radius: var(--panda-heatmap-legend-border-radius, var(--panda-border-radius-m, 5px));
+		box-shadow: var(--panda-elevation-s);
 	}
 
 	.legend-labels {
 		display: flex;
 		justify-content: space-between;
-		width: var(--panda-heatmap-legend-width, 300px);
+		width: var(--panda-heatmap-legend-width, 60%);
 		padding-top: var(--panda-heatmap-legend-padding-top, var(--panda-padding-s, 5px));
 
 		color: var(--panda-heatmap-label-color, var(--panda-label-color, hsl(191deg 19% 23%)));

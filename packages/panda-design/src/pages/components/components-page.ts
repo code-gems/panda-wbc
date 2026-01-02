@@ -17,7 +17,6 @@ import { customElement } from "lit/decorators.js";
 import { ParentPageTemplate } from "../parent-page-template";
 import { pageConfig } from "./page-config";
 import { page } from "../../utils/page-library";
-import { bannerConfig2 } from "../../utils/particle-banner-presets";
 
 @page(pageConfig)
 @customElement("components-page")
@@ -32,18 +31,14 @@ class ComponentsPage extends ParentPageTemplate {
 
 	_renderBanner(): TemplateResult {
 		return html`
-			<div class="banner particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig2()}"					
-				>
-					<div class="content">
-						<h1>COMPONENTS</h1>
-						<p>
-							Welcome to Panda Components Section.
-							Panda Components is a collection of pre-built and reusable user interface components and elements that are specifically designed for a particular application or website. 
-						</p>
-					</div>
-				</panda-particle-banner>
+			<div class="banner">
+				<div class="content">
+					<h1>COMPONENTS</h1>
+					<p>
+						Welcome to Panda Components Section.
+						Panda Components is a collection of pre-built and reusable user interface components and elements that are specifically designed for a particular application or website. 
+					</p>
+				</div>
 			</div>
 		`;
 	}

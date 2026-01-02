@@ -16,7 +16,6 @@ import { ContentPageTemplate } from "../../../content-page-template";
 import { reduxify } from "../../../../redux/store";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
-import { bannerConfig2 } from "../../../../utils/particle-banner-presets";
 
 // code snippets
 import {
@@ -50,22 +49,6 @@ export class ContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-
-	_renderPageBanner(): TemplateResult {
-		const bannerConfig = bannerConfig2();
-		return html`
-			<div class="banner small particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig}"					
-				>
-					<div class="content">
-						<h1>CIRCULAR PROGRESS BAR</h1>
-					</div>
-				</panda-particle-banner>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
 
 	_renderPageContent(): TemplateResult {
 		return html`

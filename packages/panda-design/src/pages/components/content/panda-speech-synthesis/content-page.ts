@@ -77,23 +77,8 @@ export class ContentPage extends ContentPageTemplate {
 	private readonly _pandaSpeechSynthesis: PandaSpeechSynthesis = new PandaSpeechSynthesis(this._pandaSpeechSynthesisConfig);
 
 	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
-	// ...
-
-	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small">
-				<h1>SPEECH SYNTHESIS</h1>
-				<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-			</div>
-		`;
-	}
 
 	_renderPageContent(): TemplateResult {
 		return html`

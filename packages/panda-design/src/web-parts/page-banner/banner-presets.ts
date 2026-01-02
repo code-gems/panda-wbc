@@ -1,7 +1,7 @@
 // types
 import { PandaParticleBannerConfig, ParticleShape } from "@panda-wbc/panda-particle-banner";
 
-export const bannerConfig1: PandaParticleBannerConfig = {
+export const bannerConfig1 = (): PandaParticleBannerConfig => (	{
 	particleGroup: [{
 		particleCount: 70,
 		walls: true,
@@ -23,7 +23,7 @@ export const bannerConfig1: PandaParticleBannerConfig = {
 			return alpha;
 		},
 	}]
-};
+});
 
 export const bannerConfig2 = (): PandaParticleBannerConfig => {
 	const root = document.documentElement;
@@ -71,7 +71,7 @@ export const bannerConfig2 = (): PandaParticleBannerConfig => {
 			}
 		],	
 	};
-};
+}
 
 export const bannerConfig3: PandaParticleBannerConfig = {
 	showFps: true,
@@ -134,4 +134,68 @@ export const bannerConfig3: PandaParticleBannerConfig = {
 
 		// }
 	],	
-};
+}
+
+export const classicDots: PandaParticleBannerConfig = {
+	showFps: true,
+	particleGroup: [{
+		particleCount: 100,
+		colors: ["black"],
+		// colorOpacityVariation: 50,
+		walls: true,
+
+		minSpeedX: -0.1,
+		maxSpeedX: 0.1,
+		minSpeedY: -0.1,
+		maxSpeedY: 0.1,
+		// maxDeltaSpeedX: 0.01,
+		// minDeltaSpeedX: 0.01,
+		// maxDeltaSpeedY: 0.01,
+		// minDeltaSpeedY: 0.01,
+		// deltaSpeedLimitX: 2,
+		// deltaSpeedLimitY: 2,
+
+		sizeMin: 1,
+		sizeMax: 3,
+		// blur: true,
+		// blurMax: 1,
+		connect: true,
+		// connectionLineDash: [1, 1],
+		// getConnectionLineColor: (distance) => {
+		// 	const alphaMax = 128;
+		// 	const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
+		// 	const hexColor = `#36174D${alpha.toString(16).padStart(2, '0')}`;
+		// 	return hexColor.toUpperCase(); // Convert to uppercase for consistency
+		// },
+		connectionLineColor: "lightgray",
+		connectionDistance: 100,
+		getConnectionLineOpacity: (distance) => {
+			const alphaMax = 100;
+			const alpha = alphaMax - Math.round((distance * alphaMax) / 100);
+
+			return alpha;
+		},
+		// shadowBlur: 1,
+		// shadowColor: "#ff4778",
+	}],
+	// smudge: true
+}
+
+export const lavaLamp: PandaParticleBannerConfig = {
+	particleGroup: [{
+		particleCount: 50,
+		blur: true,
+		blurMax: 5,
+		blurMin: 2,
+		// lava lamp
+		colors: ["hsl(17 88% 49%)", "hsl(42 88% 50%)"],
+		colorOpacityVariation: 50,
+		colorSaturationVariation: 30,
+		maxSpeedX: 0.1,
+		minSpeedX: -0.1,
+		maxSpeedY: -0.2,
+		minSpeedY: -0.1,
+		sizeMax: 80,
+		sizeMin: 20
+	}]
+}

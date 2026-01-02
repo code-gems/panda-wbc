@@ -19,7 +19,6 @@ import { customElement } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
-import { bannerConfig2 } from "../../../../utils/particle-banner-presets";
 
 // code snippets
 import {
@@ -64,21 +63,6 @@ export class PandaTextFieldContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-
-	_renderPageBanner(): TemplateResult {
-		return html`
-			<div class="banner small particle-banner">
-				<panda-particle-banner
-					.config="${bannerConfig2()}"					
-				>
-					<div class="content">
-						<h1>PASSWORD FIELD</h1>
-					</div>
-					<version-shield prefix="version" version="1.0.0" color="orange"></version-shield>
-				</panda-particle-banner>
-			</div>
-		`;
-	}
 
 	_renderPageContent(): TemplateResult {
 		return html`

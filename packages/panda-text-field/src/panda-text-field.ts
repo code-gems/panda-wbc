@@ -39,6 +39,7 @@ export class PandaTextField extends HTMLElement {
 		"spellcheck",
 		"mandatory",
 		"spinner-type",
+		"pattern",
 	];
 
 	// theme ==========================================================================================================
@@ -362,6 +363,52 @@ export class PandaTextField extends HTMLElement {
 				this.setAttribute("show-clear-button", "");
 			} else {
 				this.removeAttribute("show-clear-button");
+			}
+		}
+	}
+
+	// pattern ========================================================================================================
+	/**
+	 * The pattern is a regular expression that validates the complete input value. 
+	 * If the value doesn't match the pattern, the field becomes invalid.
+	 */
+	private _pattern!: string;
+
+	get pattern() {
+		return this._pattern;
+	}
+
+	set pattern(value: string) {
+		if (this._pattern !== value) {
+			this._pattern = value;
+			// reflect to attribute
+			if (value == null || value === "") {
+				this.removeAttribute("pattern");
+			} else {
+				this.setAttribute("pattern", this._pattern);
+			}
+		}
+	}
+
+	// allowed characters =============================================================================================
+	/**
+	 * A regular expression string that defines the set of characters allowed in the input field.
+	 * If defined, the input will block any character that is not part of this set.
+	 */
+	private _allowedCharacters!: string;
+
+	get allowedCharacters() {
+		return this._allowedCharacters;
+	}
+
+	set allowedCharacters(value: string) {
+		if (this._allowedCharacters !== value) {
+			this._allowedCharacters = value;
+			// reflect to attribute
+			if (value == null || value === "") {
+				this.removeAttribute("allowed-characters");
+			} else {
+				this.setAttribute("allowed-characters", this._allowedCharacters);
 			}
 		}
 	}

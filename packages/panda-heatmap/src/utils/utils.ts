@@ -2,10 +2,11 @@
 import { PandaHeatmapI18nConfig, RGBAColor } from "../../index";
 
 export const getI18nConfig = (): PandaHeatmapI18nConfig => ({
-	noDataText: "No data available"
+	noDataText: "No data available",
+	loadingText: "Loading...",
 });
 
-export const colorStringToRGBA = (color: string): RGBAColor => {
+const colorStringToRGBA = (color: string): RGBAColor => {
 	if (!color) {
 		return { r: 0, g: 0, b: 0, a: 100 };
 	}
