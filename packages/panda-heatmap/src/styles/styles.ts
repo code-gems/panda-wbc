@@ -14,11 +14,34 @@ export const styles = /*css*/`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: var(--panda-heatmap-border-radius-size, 10px);
-		background-color: var(--panda-heatmap-background-color-working, hsl(0deg 0% 100%));
+		border-radius: var(--panda-heatmap-spinner-border-radius-size, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-heatmap-spinner-background-color, hsl(0deg 0% 100%));
+	}
+
+	.spinner-cont .spinner-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--panda-heatmap-spinner-gap, var(--panda-gap-s, 5px));
+
+		border-radius: var(--panda-heatmap-spinner-wrap-border-radius-size, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-heatmap-spinner-wrap-background-color, hsl(0deg 0% 92%));
+		padding: var(--panda-heatmap-spinner-wrap-padding, var(--panda-padding-m, 10px));
+		box-shadow: var(--panda-heatmap-spinner-wrap-box-shadow, var(--panda-elevation-s, 0px 1px 2px hsl(0deg 0% 0% / 20%)));
+	}
+
+	.spinner-cont .spinner-wrap .spinner {
 		/* SPINNER STYLE */
 		--panda-spinner-color: var(--panda-heatmap-spinner-color, hsl(191deg 19% 23%));
 		--panda-spinner-size: var(--panda-heatmap-spinner-size, 20px);
+	}
+
+	.spinner-cont .spinner-wrap .spinner-text {
+		color: var(--panda-heatmap-spinner-text-color, var(--panda-heatmap-spinner-text-color, hsl(191deg 19% 23%)));
+		font-size: var(--panda-heatmap-spinner-text-font-size, var(--panda-font-size-m, 14px));
+		font-family: var(--panda-heatmap-spinner-text-font-family, var(--panda-font-family, "Poppins"));
+		text-shadow: var(--panda-heatmap-spinner-text-shadow, var(--panda-text-shadow, none));
+		user-select: none;
 	}
 
 	.heatmap-container {
@@ -103,8 +126,8 @@ export const styles = /*css*/`
 	}
 
 	.heatmap-cell:not(.empty):hover {
-		transform: scale(1.15);
-		box-shadow: var(--panda-heatmap-cell-elevation-hover, var(--panda-elevation-m, 0px 2px 4px hsl(0deg 0% 0% / 20%)));
+		transform: var(--panda-heatmap-cell-transform-hover, scale(1.15));
+		box-shadow: var(--panda-heatmap-cell-elevation-hover, var(--panda-elevation-s, 0px 1px 2px hsl(0deg 0% 0% / 20%)));
 		z-index: 10;
 	}
 

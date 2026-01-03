@@ -73,7 +73,7 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
-		const cellRenderer = (value: number) => {
+		const cellRenderer = (value: number, column: number, row: number) => {
 			let text = "";
 			if (value > 25) {
 				text = "high";
@@ -142,6 +142,7 @@ export class ContentPage extends ContentPageTemplate {
 										theme="alert"
 										max-value="100"
 										min-value="0"
+										show-values
 										show-legend
 										show-tooltip
 										max-color="green"
@@ -150,6 +151,7 @@ export class ContentPage extends ContentPageTemplate {
 										.yAxisLabels="${this._yAxisLabels}"
 										.orientation="${this._orientation}"
 										.cellRenderer="${cellRenderer}"
+										.tooltipRenderer="${(value: number) => `Value: ${value}`}"
 										@select="${this._onSelect}"
 										working
 									></panda-heatmap>

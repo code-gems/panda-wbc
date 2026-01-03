@@ -31,6 +31,7 @@ export class PandaHeatmap extends HTMLElement {
 			"x-axis-label-position",
 			"min-color",
 			"max-color",
+			"show-values",
 			"show-legend",
 			"show-tooltip",
 			"spinner-type",
@@ -238,6 +239,25 @@ export class PandaHeatmap extends HTMLElement {
 		}
 	}
 
+	// showValues =====================================================================================================
+	private _showValues!: boolean;
+
+	get showValues() {
+		return this._showValues;
+	}
+
+	set showValues(value: boolean) {
+		if (this._showValues !== value) {
+			this._showValues = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("show-values", "");
+			} else {
+				this.removeAttribute("show-values");
+			}
+		}
+	}
+
 	// showLegend =====================================================================================================
 	private _showLegend!: boolean;
 
@@ -337,11 +357,11 @@ export class PandaHeatmap extends HTMLElement {
 
 	// cellRenderer ===================================================================================================
 
-	cellRenderer!: (value: number) => string;
+	cellRenderer!: (value: number, column: number, row: number) => string;
 
 	// tooltipRenderer ================================================================================================
 
-	tooltipRenderer!: (value: number) => string;
+	tooltipRenderer!: (value: number, column: number, row: number) => string;
 
 	// private props
 	private _minColorParsed!: string;
@@ -392,10 +412,12 @@ export class PandaHeatmap extends HTMLElement {
 		this._spinnerContEl.className = "spinner-cont";
 		this._spinnerContEl.part = "spinner-cont";
 		this._spinnerContEl.innerHTML = /*html*/`
-			<div class="spinner" part="spinner">
-				<panda-spinner part="spinner"></panda-spinner>
+			<div class="spinner-wrap" part="spinner-wrap">
+				<div class="spinner" part="spinner">
+					<panda-spinner></panda-spinner>
+				</div>
+				<div class="spinner-text" part="spinner-text"></div>
 			</div>
-			<div class="spinner-text" part="spinner-text"></div>
 		`;
 		// get spinner element handle
 		this._spinnerEl = this._spinnerContEl.querySelector("panda-spinner") as PandaSpinner;
@@ -450,6 +472,7 @@ export class PandaHeatmap extends HTMLElement {
 		this._yAxisLabels = [];
 		this._xAxisLabelPosition = PandaHeatmapXAxisPosition.TOP;
 		this._yAxisLabelPosition = PandaHeatmapYAxisPosition.LEFT;
+		this._showValues = false;
 		this._showLegend = false;
 		this._showTooltip = false;
 		this._working = false;
@@ -537,6 +560,9 @@ export class PandaHeatmap extends HTMLElement {
 				break;
 			case "spinner-type":
 				this._spinnerType = _newValue || "dots";
+				break;
+			case "show-values":
+				this._showValues = this._parseBooleanAttribute(_newValue);
 				break;
 			case "show-legend":
 				this._showLegend = this._parseBooleanAttribute(_newValue);
@@ -745,9 +771,25 @@ export class PandaHeatmap extends HTMLElement {
 						);
 
 						// check if cell renderer function is defined
-						let parsedValue = value.toString();
-						if (this.cellRenderer && typeof this.cellRenderer === "function") {
-							parsedValue = this.cellRenderer(value);
+						let parsedValue = "";
+						if (this._showValues) {
+							// check if cell renderer function is defined
+							if (this.cellRenderer && typeof this.cellRenderer === "function") {
+								parsedValue = this.cellRenderer(value, col, row);
+							} else {
+								parsedValue = value.toString();
+							}
+						}
+
+						// show tooltip if enabled
+						let tooltipValue = "";
+						if (this._showTooltip) {
+							// check if tooltip renderer function is defined
+							if (this.tooltipRenderer && typeof this.tooltipRenderer === "function") {
+								tooltipValue = this.tooltipRenderer(value, col, row);
+							} else {
+								tooltipValue = value.toString();
+							}
 						}
 
 						// determine text color for readability
@@ -758,7 +800,7 @@ export class PandaHeatmap extends HTMLElement {
 								class="heatmap-cell"
 								part="heatmap-cell"
 								style="background-color: ${color}; color: ${textColor};"
-								${this._showTooltip ? `title="${value}"` : ""}
+								${this._showTooltip ? `title="${tooltipValue}"` : ""}
 								data-row="${row}"
 								data-column="${col}"
 								data-value="${value}"
@@ -788,9 +830,25 @@ export class PandaHeatmap extends HTMLElement {
 						);
 
 						// check if cell renderer function is defined
-						let parsedValue = value.toString();
-						if (this.cellRenderer && typeof this.cellRenderer === "function") {
-							parsedValue = this.cellRenderer(value);
+						let parsedValue = "";
+						if (this._showValues) {
+							// check if cell renderer function is defined
+							if (this.cellRenderer && typeof this.cellRenderer === "function") {
+								parsedValue = this.cellRenderer(value, col, row);
+							} else {
+								parsedValue = value.toString();
+							}
+						}
+
+						// show tooltip if enabled
+						let tooltipValue = "";
+						if (this._showTooltip) {
+							// check if tooltip renderer function is defined
+							if (this.tooltipRenderer && typeof this.tooltipRenderer === "function") {
+								tooltipValue = this.tooltipRenderer(value, col, row);
+							} else {
+								tooltipValue = value.toString();
+							}
 						}
 
 						// determine text color for readability
@@ -801,7 +859,7 @@ export class PandaHeatmap extends HTMLElement {
 								class="heatmap-cell"
 								part="heatmap-cell"
 								style="background-color: ${color}; color: ${textColor};"
-								${this._showTooltip ? `title="${value}"` : ""}
+								${this._showTooltip ? `title="${tooltipValue}"` : ""}
 								data-row="${row}"
 								data-column="${col}"
 								data-value="${value}"
