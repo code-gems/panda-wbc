@@ -25,7 +25,7 @@ export class PandaTextField extends HTMLElement {
 		"label",
 		"placeholder",
 		"placeholder-interval",
-		"description",
+		"help-text",
 		"min-length",
 		"max-length",
 		"show-character-counter",
@@ -122,18 +122,18 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
-	// description ====================================================================================================
-	private _description!: string;
+	// helpText =======================================================================================================
+	private _helpText!: string;
 
-	get description() {
-		return this._description;
+	get helpText() {
+		return this._helpText;
 	}
 
-	set description(value: string) {
-		if (this._description !== value) {
+	set helpText(value: string) {
+		if (this._helpText !== value) {
 			// reflect to attribute
-			this._description = value ?? "";
-			this.setAttribute("description", this._description);
+			this._helpText = value ?? "";
+			this.setAttribute("help-text", this._helpText);
 		}
 	}
 
@@ -425,7 +425,7 @@ export class PandaTextField extends HTMLElement {
 
 	// elements
 	private readonly _counterEl!: HTMLDivElement;
-	private readonly _descriptionEl!: HTMLDivElement;
+	private readonly _helpTextEl!: HTMLDivElement;
 	private readonly _footerEl!: HTMLDivElement;
 	private readonly _inputEl!: HTMLInputElement;
 	private readonly _labelEl!: HTMLDivElement;
@@ -500,10 +500,10 @@ export class PandaTextField extends HTMLElement {
 		this._labelEl.className = "label";
 		this._labelEl.part = "label";
 
-		// create description element
-		this._descriptionEl = document.createElement("div");
-		this._descriptionEl.className = "description";
-		this._descriptionEl.part = "description";
+		// create help text element
+		this._helpTextEl = document.createElement("div");
+		this._helpTextEl.className = "help-text";
+		this._helpTextEl.part = "help-text";
 
 		// create counter element
 		this._counterEl = document.createElement("div");
@@ -527,7 +527,7 @@ export class PandaTextField extends HTMLElement {
 		// initialize class properties
 		this._theme = "";
 		this._label = "";
-		this._description = "";
+		this._helpText = "";
 		this._placeholder = [];
 		this._placeholderInterval = null;
 		this._working = false;
@@ -650,8 +650,8 @@ export class PandaTextField extends HTMLElement {
 				this._placeholderEl.sliderInterval = this._placeholderInterval as number;
 				break;
 
-			case "description":
-				this._description = _newValue;
+			case "help-text":
+				this._helpText = _newValue;
 				break;
 
 			case "spinner-type":
@@ -809,19 +809,19 @@ export class PandaTextField extends HTMLElement {
 				this._spinnerContEl.remove();
 			}
 			
-			// check if description is defined
-			if (this._description) {
-				this._descriptionEl.innerHTML = this._description;
+			// check if help text is defined
+			if (this._helpText) {
+				this._helpTextEl.innerHTML = this._helpText;
 				// check if max-length is enabled
 				if (this._maxLength != null || this._showCharacterCounter) {
-					// insert description element before counter element
-					this._footerEl.insertBefore(this._descriptionEl, this._counterEl);
+					// insert help text element before counter element
+					this._footerEl.insertBefore(this._helpTextEl, this._counterEl);
 				} else {
-					// insert description element to footer
-					this._footerEl.appendChild(this._descriptionEl);
+					// insert help text element to footer
+					this._footerEl.appendChild(this._helpTextEl);
 				}
 			} else {
-				this._descriptionEl.remove();
+				this._helpTextEl.remove();
 			}
 
 			// update text length

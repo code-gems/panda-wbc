@@ -27,14 +27,14 @@ export const styles = /*css*/`
 		width: 100%;
 	}
 
-	.footer .description {
+	.footer .help-text {
 		flex-grow: 1;
 		margin-top: var(--panda-input-footer-gap, 10px);
-		line-height: var(--panda-input-description-line-height, 1.2rem);
-		color: var(--panda-input-description-color, hsl(191deg 19% 23%));
-		font-size: var(--panda-input-description-font-size, 14px);
-		font-family: var(--panda-input-description-font-family, "Poppins");
-		text-shadow: var(--panda-input-description-text-shadow, none);
+		line-height: var(--panda-input-help-text-line-height, 1.2rem);
+		color: var(--panda-input-help-text-color, hsl(191deg 19% 23%));
+		font-size: var(--panda-input-help-text-font-size, 14px);
+		font-family: var(--panda-input-help-text-font-family, "Poppins");
+		text-shadow: var(--panda-input-help-text-text-shadow, none);
 	}
 	
 	.footer .counter {
