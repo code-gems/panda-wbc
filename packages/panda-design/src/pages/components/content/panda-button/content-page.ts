@@ -52,9 +52,7 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	// ================================================================================================================
 
 	_renderPageContent(): TemplateResult {
-		return html`
-			${this._renderOverviewSection()}
-		`;
+
 		return html`
 			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}
@@ -82,11 +80,46 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 						<div class="rows">
 							<div class="row">
 								<div class="col-2">
-									<panda-button-new
+									<panda-button>
+										Fancy Button
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button working>
+										Fancy Button
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button disabled>
+										Fancy Button
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button theme="icon">
+										<panda-icon icon="heart"></panda-icon>
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button>
+										<div slot="prefix" class="icon">
+											<panda-icon icon="heart"></panda-icon>
+										</div>
+										Like
+									</panda-button>
+								</div>
+								<div class="col-2">
+									<panda-button theme="icon" disabled>
+										<panda-icon icon="heart"></panda-icon>
+									</panda-button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-2">
+									<panda-button
 										@click="${this._onClick}"
 									>
-										Default New
-									</panda-button-new>
+										Default
+									</panda-button>
 								</div>
 								<div class="col-2">
 									<panda-button

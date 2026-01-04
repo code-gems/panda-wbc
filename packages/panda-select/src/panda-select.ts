@@ -923,7 +923,6 @@ export class PandaSelect extends HTMLElement {
 		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
 		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 
-		// get template element handles
 		if (this.shadowRoot) {
 			// get elements handle
 			this._selectEl = this.shadowRoot.getElementById("select") as HTMLDivElement;

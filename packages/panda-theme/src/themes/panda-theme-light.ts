@@ -599,7 +599,23 @@ export const pandaThemeLight = /*css*/ `
 
 		/* BUTTON - TERTIARY ======================================================================================= */
 
+		--panda-button-border-color: transparent;
+		--panda-button-border-color-hover: transparent;
+		--panda-button-border-gradient: linear-gradient(
+			to bottom, 
+			hsl(207deg 1% 85%), 
+			hsl(207deg 1% 75%)
+		);
+		--panda-button-border-gradient-hover: linear-gradient(
+			to bottom, 
+			hsl(207deg 1% 85%) 90%, 
+			hsl(187deg 100% 42%)
+		);
+		--panda-button-background: hsl(0deg 0% 100%);
 
+		--panda-button-elevation-hover: 0px 0px 5px hsl(0deg 0% 0% / 10%),
+										0px 2px 4px hsl(187deg 100% 42% / 20%),
+										0px -1px 2px hsl(187deg 100% 42% / 20%) inset;
 
 		/* ========================================================================================================= */
 		/* BUTTON GROUP ============================================================================================ */

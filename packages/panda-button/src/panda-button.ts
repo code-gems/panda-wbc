@@ -1,3 +1,6 @@
+// types
+import { PandaSpinner } from "@panda-wbc/panda-spinner";
+
 // style
 import { styles } from "./styles/styles";
 
@@ -90,8 +93,12 @@ export class PandaButton extends HTMLElement {
 	// view properties ================================================================================================
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
+	private _ready!: boolean;
 
-	// template elements
+	// elements
+	private _buttonEl!: HTMLButtonElement;
+	private _spinnerContEl!: HTMLDivElement;
+	private _spinnerEl!: PandaSpinner;
 	private _prefixSlotEl!: HTMLSlotElement;
 	private _suffixSlotEl!: HTMLSlotElement;
 
@@ -106,29 +113,58 @@ export class PandaButton extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open", delegatesFocus: true });
+
 		// apply component styles
 		this._applyStyles();
+
+		// create component template
+		const template = document.createElement("template");
+		template.innerHTML = /*html*/`
+			<button class="button" part="button">
+				<slot name="prefix" part="prefix"></slot>
+				<slot part="slot"></slot>
+				<slot name="suffix" part="suffix"></slot>
+			</button>
+		`;
+
+		// create spinner element
+		this._spinnerContEl = document.createElement("div");
+		this._spinnerContEl.className = "spinner-cont";
+		this._spinnerContEl.part = "spinner-cont";
+		this._spinnerContEl.innerHTML = /*html*/`<panda-spinner part="spinner"></panda-spinner>`;
+		// get spinner element handle
+		this._spinnerEl = this._spinnerContEl.querySelector("panda-spinner") as PandaSpinner;
+		this._spinnerEl.spinner = this._spinnerType ?? "dots";
+
+		// apply template
+		this.shadowRoot!.appendChild(template.content.cloneNode(true));
+
 		// initialize class properties
 		this._theme = "";
 		this._disabled = false;
 		this._working = false;
 		this._spinnerType = "dots";
+		this._ready = false;
+
 		// init events
 		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
 		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
-		// render component
-		this._render();
-	}
 
-	connectedCallback() {
 		if (this.shadowRoot) {
-			// find slot elements
+			// get elements handle
+			this._buttonEl = this.shadowRoot.querySelector(".button") as HTMLButtonElement;
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
+
 			// add event listeners to component template
 			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		}
+	}
+
+	connectedCallback() {
+		this._ready = true;
+		this._updateComponent();
 	}
 
 	disconnectedCallback() {
@@ -156,61 +192,30 @@ export class PandaButton extends HTMLElement {
 				this._spinnerType = _newValue;
 				break;
 		}
-		this._render();
+		// update component
+		this._updateComponent();
 	}
 
-	// ================================================================================================================
-	// RENDERERS ======================================================================================================
-	// ================================================================================================================
-
-	private _render() {
-		if (this.shadowRoot) {
-			// check for working state
-			const spinnerHtml = this._working
-				? /*html*/`
-					<div class="spinner-cont" part="spinner-cont">
-						<panda-spinner
-							theme="${this._theme ?? ""}"
-							part="spinner"
-							spinner="${this._spinnerType ?? "dots"}"
-						>
-						</panda-spinner>
-					</div>
-				`
-				: "";
-			
-			// get tab index based on the component state
-			const tabIndex = this._disabled ? "-1" : "0"
-
-			// get css classes based on component state
-			const cssClasses: string[] = [];
-			if (this._disabled) {
-				cssClasses.push("disabled");
+	private _updateComponent(): void {
+		if (this._ready) {
+			// make component focusable
+			if (this._disabled || this._working) {
+				this._buttonEl.tabIndex = -1;
+				this._buttonEl.disabled = true;
+			} else {
+				this._buttonEl.tabIndex = 0;
+				this._buttonEl.disabled = false;
 			}
+
+			// add or remove spinner element
 			if (this._working) {
-				cssClasses.push("working");
-			}
-			if (this._withPrefix) {
-				cssClasses.push("with-prefix");
-			}
-			if (this._withSuffix) {
-				cssClasses.push("with-suffix");
+				this._buttonEl.appendChild(this._spinnerContEl);
+			} else {
+				this._spinnerContEl.remove();
 			}
 
-			// render component template
-			this.shadowRoot.innerHTML = /*html*/`
-				<button
-					class="button ${cssClasses.join(" ")} ${this._theme}"
-					part="button ${cssClasses.join(" ")} ${this._theme}"
-					${this._disabled || this._working? "disabled" : ""}
-					tabindex="${tabIndex}"
-				>
-					<slot name="prefix" part="prefix"></slot>
-					<slot part="slot"></slot>
-					<slot name="suffix" part="suffix"></slot>
-					${spinnerHtml}
-				</button>
-			`;
+			// update template css classes and parts
+			this._updateTemplateCss();
 		}
 	}
 
@@ -237,18 +242,39 @@ export class PandaButton extends HTMLElement {
 		return value === "true" || value === true || value === "";
 	}
 
+	/** Update css classes and parts on the component template */
+	private _updateTemplateCss(): void {
+		const css: string[] = [];
+
+		if (this._disabled) {
+			css.push("disabled");
+		}
+		if (this._working) {
+			css.push("working");
+		}
+		if (this._withPrefix) {
+			css.push("with-prefix");
+		}
+		if (this._withSuffix) {
+			css.push("with-suffix");
+		}
+		// update class names and parts
+		this._buttonEl.className = `button ${css.join(" ")} ${this._theme}`;
+		this._buttonEl.part = this._buttonEl.className;
+	}
+
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 	
 	private _onPrefixSlotChanged(): void {
 		this._withPrefix = true;
-		this._render();
+		this._updateComponent();
 	}
 	
 	private _onSuffixSlotChanged(): void {
 		this._withSuffix = true;
-		this._render();
+		this._updateComponent();
 	}
 }
 

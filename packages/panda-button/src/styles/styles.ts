@@ -1,10 +1,12 @@
 export const styles = /*css*/`
 	:host {
+		position: sticky;
 		display: inline-block;
 		height: var(--panda-button-height-size-m, 40px);
 		user-select: none;
 		outline: none;
 		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
 	}
 
 	.spinner-cont {
@@ -33,29 +35,42 @@ export const styles = /*css*/`
 		width: 100%;
 		cursor: pointer;
 		outline: none;
-		overflow: hidden;
 		padding: var(--panda-button-padding-size-m, 0px 16px);
 
 		color: var(--panda-button-text-color, hsl(191deg 19% 23%));
-		font-size: var(--panda-button-font-size-m, 16px);
-		font-family: var(--panda-button-font-family-size-m, "Poppins");
+		font-size: var(--panda-button-font-size-m, var(--panda-font-size-m, 16px));
+		font-family: var(--panda-button-font-family-size-m, var(--panda-font-family, "Poppins"));
 		font-weight: var(--panda-button-font-weight-size-m, 500);
 		text-shadow: var(--panda-button-text-shadow, none);
 		text-overflow: ellipsis;
 		text-align: center;
 		white-space: nowrap;
-		transition: all 300ms ease-in-out;
+		transition: var(--panda-button-transition, all 0.3s ease-in-out);
 
 		border-radius: var(--panda-button-border-radius-size-m, 10px);
 		border-width: var(--panda-button-border-width, 1px);
 		border-style: var(--panda-button-border-style, solid);
 		border-color: var(--panda-button-border-color, hsl(207deg 1% 85%));
-		background-color: var(--panda-button-background-color, hsl(0deg 0% 100%));
+		background: var(--panda-button-background, hsl(0deg 0% 100%));
+		background-clip: padding-box;
 		box-shadow: var(--panda-button-elevation, none);
 		box-sizing: border-box;
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-icon-color, hsl(191deg 19% 23%));
 		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
+	}
+
+	.button::before {
+		position: absolute;
+		content: "";
+		inset: 0;
+		margin: calc(-1 * var(--panda-button-border-width, 1px));
+
+		transition: var(--panda-button-border-transition, all 0.3s ease-in-out);
+
+		border-radius: inherit;
+		background: var(--panda-button-border-gradient, transparent);
+		z-index: -1;
 	}
 
 	.button.with-prefix {
@@ -108,6 +123,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-background-color-hover, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
+
+	.button:not(.disabled):hover::before {
+		background: var(--panda-button-border-gradient-hover, transparent);
+	}
 	
 	/* FOCUSED */
 	.button:focus-visible,
@@ -119,6 +138,11 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
 	}
 
+	.button:focus-visible::before,
+	.button:focus-visible:hover::before {
+		background: var(--panda-button-border-gradient-focused, transparent);
+	}
+
 	/* ACTIVE */
 	.button:not(.disabled):active {
 		color: var(--panda-button-text-color-active, hsl(191deg 19% 23%));
@@ -127,13 +151,21 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-background-color-active, hsl(201deg 1% 97%));
 		box-shadow: var(--panda-button-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
-	
+
+	.button:not(.disabled):active::before {
+		background: var(--panda-button-border-gradient-active, transparent);
+	}
+
 	/* WORKING */
 	.button.working:not(.disabled) {
 		cursor: not-allowed;
 		border-color: var(--panda-button-border-color-working, hsl(212deg 1% 95%));
 		background-color: var(--panda-button-background-color-working, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-elevation-working, none);
+	}
+
+	.button.working:not(.disabled)::before {
+		background: var(--panda-button-border-gradient-working, transparent);
 	}
 
 	.button.working slot { visibility: hidden; }
@@ -147,6 +179,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-background-color-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+
+	.button.disabled::before {
+		background: var(--panda-button-border-gradient-disabled, transparent);
 	}
 
 	/* ============================================================================================================= */
@@ -165,6 +201,10 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-button-primary-icon-size, 24px);
 	}
 
+	:host([theme~="primary"]) .button:not(.disabled)::before {
+		background: var(--panda-button-primary-border-gradient, transparent);
+	}
+
 	:host([theme~="primary"]) .spinner-cont {
 		background-color: var(--panda-button-primary-background-color, hsl(209deg 78% 46%));
 		/* SPINNER STYLE */
@@ -181,6 +221,10 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-primary-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
+	:host([theme~="primary"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-primary-border-gradient-hover, transparent);
+	}
+
 	/* PRIMARY - FOCUSED */
 	:host([theme~="primary"]) .button:focus-visible,
 	:host([theme~="primary"]) .button:focus-visible:hover {
@@ -191,6 +235,11 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-primary-outline, 0px 0px 4px 2px hsl(203deg 67% 85%));
 	}
 	
+	:host([theme~="primary"]) .button:focus-visible::before,
+	:host([theme~="primary"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-primary-border-gradient-focused, transparent);
+	}
+
 	/* PRIMARY - ACTIVE */
 	:host([theme~="primary"]) .button:not(.disabled):active {
 		color: var(--panda-button-primary-text-color-active, hsl(0deg 0% 100%));
@@ -200,6 +249,10 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-primary-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 	
+	:host([theme~="primary"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-primary-border-gradient-active, transparent);
+	}
+
 	/* PRIMARY - DISABLED */
 	:host([theme~="primary"]) .button.disabled {
 		color: var(--panda-button-primary-text-color-disabled, hsl(188deg 5% 75%));
@@ -208,6 +261,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-primary-background-color-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-primary-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-primary-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+	
+	:host([theme~="primary"]) .button.disabled::before {
+		background: var(--panda-button-primary-border-gradient-disabled, transparent);
 	}
 
 	/* SECONDARY THEME ============================================================================================= */
@@ -220,6 +277,10 @@ export const styles = /*css*/`
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-secondary-icon-color, hsl(0deg 0% 100%));
 		--panda-icon-size: var(--panda-button-secondary-icon-size, 24px);
+	}
+
+	:host([theme~="secondary"]) .button:not(.disabled)::before {
+		background: var(--panda-button-secondary-border-gradient, transparent);
 	}
 
 	:host([theme~="secondary"]) .spinner-cont {
@@ -237,7 +298,11 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-secondary-background-color-hover, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
-	
+
+	:host([theme~="secondary"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-secondary-border-gradient-hover, transparent);
+	}
+
 	/* SECONDARY - FOCUSED */
 	:host([theme~="secondary"]) .button:focus-visible,
 	:host([theme~="secondary"]) .button:focus-visible:hover {
@@ -248,6 +313,11 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-secondary-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
 
+	:host([theme~="secondary"]) .button:focus-visible::before,
+	:host([theme~="secondary"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-secondary-border-gradient-focused, transparent);
+	}
+
 	/* SECONDARY - ACTIVE */
 	:host([theme~="secondary"]) .button:not(.disabled):active {
 		color: var(--panda-button-secondary-text-color-active, hsl(0deg 0% 100%));
@@ -255,6 +325,10 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-secondary-border-color-active, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-secondary-background-color-active, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+
+	:host([theme~="secondary"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-secondary-border-gradient-active, transparent);
 	}
 	
 	/* SECONDARY - DISABLED */
@@ -265,6 +339,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-secondary-background-color-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-secondary-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+
+	:host([theme~="secondary"]) .button.disabled::before {
+		background: var(--panda-button-secondary-border-gradient-disabled, transparent);
 	}
 
 	/* PLAIN THEME ================================================================================================= */
@@ -279,6 +357,10 @@ export const styles = /*css*/`
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-plain-icon-color, hsl(191deg 19% 23%));
 		--panda-icon-size: var(--panda-button-plain-icon-size, 24px);
+	}
+
+	:host([theme~="plain"]) .button:not(.disabled)::before {
+		background: var(--panda-button-plain-border-gradient, transparent);
 	}
 
 	:host([theme~="plain"]) .spinner-cont {
@@ -296,14 +378,24 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-plain-background-color-hover, hsl(0deg 0% 95%));
 		box-shadow: var(--panda-button-plain-elevation-hover, none);
 	}
+
+	:host([theme~="plain"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-plain-border-gradient-hover, transparent);
+	}
 	
 	/* PLAIN - FOCUSED */
-	:host([theme~="plain"]) .button:focus-visible {
+	:host([theme~="plain"]) .button:focus-visible,
+	:host([theme~="plain"]) .button:focus-visible:hover {
 		color: var(--panda-button-plain-text-color-focused, hsl(191deg 19% 23%));
 		text-shadow: var(--panda-button-plain-text-shadow-focused, none);
 		border-color: var(--panda-button-plain-border-color-focused, transparent);
 		background-color: var(--panda-button-plain-background-color-focused, transparent);
 		box-shadow: var(--panda-button-plain-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
+	}
+
+	:host([theme~="plain"]) .button:focus-visible::before,
+	:host([theme~="plain"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-plain-border-gradient-focused, transparent);
 	}
 
 	/* PLAIN - ACTIVE */
@@ -313,6 +405,10 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-plain-border-color-active, transparent);
 		background-color: var(--panda-button-plain-background-color-active, hsl(0deg 0% 96%));
 		box-shadow: var(--panda-button-plain-elevation-active, none);
+	}
+
+	:host([theme~="plain"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-plain-border-gradient-active, transparent);
 	}
 	
 	/* PLAIN - DISABLED */
@@ -325,6 +421,10 @@ export const styles = /*css*/`
 		--panda-icon-color: var(--panda-button-plain-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
+	:host([theme~="plain"]) .button.disabled::before {
+		background: var(--panda-button-plain-border-gradient-disabled, transparent);
+	}
+
 	/* ACTION - INFO =============================================================================================== */
 	:host([theme~="info"]) .button:not(.disabled) {
 		color: var(--panda-button-action-info-text-color, hsl(0deg 0% 100%));
@@ -335,6 +435,10 @@ export const styles = /*css*/`
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-info-icon-color, hsl(0deg 0% 100%));
 		--panda-icon-size: var(--panda-button-action-info-icon-size, 24px);
+	}
+
+	:host([theme~="info"]) .button:not(.disabled)::before {
+		background: var(--panda-button-action-info-border-gradient, transparent);
 	}
 
 	:host([theme~="info"]) .spinner-cont {
@@ -353,6 +457,10 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-action-info-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
+	:host([theme~="info"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-action-info-border-gradient-hover, transparent);
+	}
+
 	/* ACTION - INFO - FOCUSED */
 	:host([theme~="info"]) .button:focus-visible,
 	:host([theme~="info"]) .button:focus-visible:hover {
@@ -362,6 +470,11 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-action-info-background-color-focused, hsl(261deg 66% 58%));
 		box-shadow: var(--panda-button-action-info-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
+
+	:host([theme~="info"]) .button:focus-visible::before,
+	:host([theme~="info"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-action-info-border-gradient-focused, transparent);
+	}
 	
 	/* ACTION - INFO - ACTIVE */
 	:host([theme~="info"]) .button:not(.disabled):active {
@@ -370,6 +483,10 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-action-info-border-color-active, hsl(209deg 78% 42%));
 		background-color: var(--panda-button-action-info-background-color-active, hsl(261deg 66% 58%));
 		box-shadow: var(--panda-button-action-info-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+
+	:host([theme~="info"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-action-info-border-gradient-active, transparent);
 	}
 	
 	/* ACTION - INFO - DISABLED */
@@ -382,6 +499,10 @@ export const styles = /*css*/`
 		--panda-icon-color: var(--panda-button-action-info-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
+	:host([theme~="info"]) .button.disabled::before {
+		background: var(--panda-button-action-info-border-gradient-disabled, transparent);
+	}
+
 	/* ACTION - DONE =============================================================================================== */
 	:host([theme~="done"]) .button:not(.disabled) {
 		color: var(--panda-button-action-done-text-color, hsl(0deg 0% 100%));
@@ -392,6 +513,10 @@ export const styles = /*css*/`
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-done-icon-color, hsl(0deg 0% 100%));
 		--panda-icon-size: var(--panda-button-action-done-icon-size, 24px);
+	}
+
+	:host([theme~="done"]) .button:not(.disabled)::before {
+		background: var(--panda-button-action-done-border-gradient, transparent);
 	}
 
 	:host([theme~="done"]) .spinner-cont {
@@ -410,6 +535,10 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-action-done-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
+	:host([theme~="done"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-action-done-border-gradient-hover, transparent);
+	}
+
 	/* ACTION - DONE - FOCUSED */
 	:host([theme~="done"]) .button:focus-visible,
 	:host([theme~="done"]) .button:focus-visible:hover {
@@ -418,6 +547,11 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-action-done-border-color-focused, hsl(160deg 81% 43%));
 		background-color: var(--panda-button-action-done-background-color-focused, hsl(160deg 81% 43%));
 		box-shadow: var(--panda-button-action-done-outline, 0px 0px 2px 2px hsl(0deg 0% 0% / 10%));
+	}
+
+	:host([theme~="done"]) .button:focus-visible::before,
+	:host([theme~="done"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-action-done-border-gradient-focused, transparent);
 	}
 	
 	/* ACTION - DONE - ACTIVE */
@@ -428,6 +562,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-action-done-background-color-active, hsl(160deg 81% 35%));
 		box-shadow: var(--panda-button-action-done-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
+
+	:host([theme~="done"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-action-done-border-gradient-active, transparent);
+	}
 	
 	/* ACTION - DONE - DISABLED */
 	:host([theme~="done"]) .button.disabled {
@@ -437,6 +575,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-action-done-background-color-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-done-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-action-done-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+
+	:host([theme~="done"]) .button.disabled::before {
+		background: var(--panda-button-action-done-border-gradient-disabled, transparent);
 	}
 	
 	/* ACTION - WARN =============================================================================================== */
@@ -449,6 +591,10 @@ export const styles = /*css*/`
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-warn-icon-color, hsl(0deg 0% 100%));
 		--panda-icon-size: var(--panda-button-action-warn-icon-size, 24px);
+	}
+
+	:host([theme~="warn"]) .button:not(.disabled)::before {
+		background: var(--panda-button-action-warn-border-gradient, transparent);
 	}
 
 	:host([theme~="warn"]) .spinner-cont {
@@ -467,6 +613,10 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-action-warn-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
+	:host([theme~="warn"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-action-warn-border-gradient-hover, transparent);
+	}
+
 	/* ACTION - WARN - FOCUSED */
 	:host([theme~="warn"]) .button:focus-visible,
 	:host([theme~="warn"]) .button:focus-visible:hover {
@@ -476,6 +626,11 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-action-warn-background-color-focused, hsl(35deg 91% 62%));
 		box-shadow: var(--panda-button-action-warn-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
+
+	:host([theme~="warn"]) .button:focus-visible::before,
+	:host([theme~="warn"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-action-warn-border-gradient-focused, transparent);
+	}
 	
 	/* ACTION - WARN - ACTIVE */
 	:host([theme~="warn"]) .button:not(.disabled):active {
@@ -484,6 +639,10 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-action-warn-border-color-active, hsl(35deg 91% 62%));
 		background-color: var(--panda-button-action-warn-background-color-active, hsl(35deg 91% 52%));
 		box-shadow: var(--panda-button-action-warn-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+	}
+
+	:host([theme~="warn"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-action-warn-border-gradient-active, transparent);
 	}
 	
 	/* ACTION - WARN - DISABLED */
@@ -496,6 +655,10 @@ export const styles = /*css*/`
 		--panda-icon-color: var(--panda-button-action-warn-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 
+	:host([theme~="warn"]) .button.disabled::before {
+		background: var(--panda-button-action-warn-border-gradient-disabled, transparent);
+	}
+
 	/* ACTION - ALERT ============================================================================================== */
 	:host([theme~="alert"]) .button:not(.disabled) {
 		color: var(--panda-button-action-alert-text-color, hsl(0deg 0% 100%));
@@ -506,6 +669,10 @@ export const styles = /*css*/`
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-alert-icon-color, hsl(0deg 0% 100%));
 		--panda-icon-size: var(--panda-button-action-alert-icon-size, 24px);
+	}
+
+	:host([theme~="alert"]) .button:not(.disabled)::before {
+		background: var(--panda-button-action-alert-border-gradient, transparent);
 	}
 
 	:host([theme~="alert"]) .spinner-cont {
@@ -524,6 +691,10 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-button-action-alert-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
+	:host([theme~="alert"]) .button:not(.disabled):hover::before {
+		background: var(--panda-button-action-alert-border-gradient-hover, transparent);
+	}
+
 	/* ACTION - ALERT - FOCUSED */
 	:host([theme~="alert"]) .button:focus-visible,
 	:host([theme~="alert"]) .button:focus-visible:hover {
@@ -532,6 +703,11 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-action-alert-border-color-focused, hsl(14deg 77% 62%));
 		background-color: var(--panda-button-action-alert-background-color-focused, hsl(14deg 77% 62%));
 		box-shadow: var(--panda-button-action-alert-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
+	}
+
+	:host([theme~="alert"]) .button:focus-visible::before,
+	:host([theme~="alert"]) .button:focus-visible:hover::before {
+		background: var(--panda-button-action-alert-border-gradient-focused, transparent);
 	}
 	
 	/* ACTION - ALERT - ACTIVE */
@@ -542,6 +718,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-action-alert-background-color-active, hsl(14deg 77% 52%));
 		box-shadow: var(--panda-button-action-alert-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
+
+	:host([theme~="alert"]) .button:not(.disabled):active::before {
+		background: var(--panda-button-action-alert-border-gradient-active, transparent);
+	}
 	
 	/* ACTION - ALERT - DISABLED */
 	:host([theme~="alert"]) .button.disabled {
@@ -551,6 +731,10 @@ export const styles = /*css*/`
 		background-color: var(--panda-button-action-alert-background-color-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-alert-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-action-alert-icon-color-disabled, hsl(188deg 5% 75%));
+	}
+
+	:host([theme~="alert"]) .button.disabled::before {
+		background: var(--panda-button-action-alert-border-gradient-disabled, transparent);
 	}
 
 	/* ICON THEMES ================================================================================================= */
@@ -587,7 +771,7 @@ export const styles = /*css*/`
 		flex-grow: 1;
 		text-align: right;
 	}
-
+	
 	/* ============================================================================================================= */
 	/* SIZE THEMES ================================================================================================= */
 	/* ============================================================================================================= */

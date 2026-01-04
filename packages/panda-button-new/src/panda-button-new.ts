@@ -5,125 +5,76 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-spinner";
 
 export class PandaButtonNew extends HTMLElement {
-	/** Version of the component. */
-	public readonly version: string = "1.0.0";
-
-	// ================================================================================================================
-	// PROPERTIES =====================================================================================================
-	// ================================================================================================================
 	
-	static readonly observedAttributes = [
-		"theme",
-		"disabled",
-		"working",
-		"spinner-type",
-	];
-	
-	// theme ==========================================================================================================
-	private _theme!: string;
-	
-	get theme(): string {
-		return this._theme;
-	}
+constructor() {
+                super();
+                this.attachShadow({ mode: 'open', delegatesFocus: true });
 
-	set theme(value: string) {
-		if (this._theme !== value) {
-			this._theme = value;
-			// reflect to attribute
-			this.setAttribute("theme", this._theme);
-		}
-	}
+                const template = document.createElement('template');
+                template.innerHTML = `
+                    <style>
+                        :host {
+							position: sticky;
+							display: inline-block;
+                            height: var(--panda-button-height-size-m, 40px);
+                            user-select: none;
+                            outline: none;
+                        }
 
-	// disabled =======================================================================================================
-	private _disabled!: boolean;
-	
-	get disabled(): boolean {
-		return this._disabled;
-	}
+                        .button {
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            width: fit-content;
+                            height: 100%;
+                            padding: 0px 16px;
 
-	set disabled(value: boolean) {
-		if (this._disabled !== value) {
-			this._disabled = value;
-			// reflect to attribute
-			if (value) {
-				this.setAttribute("disabled", "");
-			} else {
-				this.removeAttribute("disabled");
-			}
-		}
-	}
+                    		outline: none;
+                            cursor: pointer;
 
-	// working ========================================================================================================
-	private _working!: boolean;
-	
-	get working(): boolean {
-		return this._working;
-	}
+                            
+                            border-radius: 10px;
+                            border: solid 1px transparent;
+                            background: #E4E4E4;
+                            background-clip: padding-box;
+                            box-shadow: 0px 1px 0px #ECECEC inset,
+                                0px -1px 0px #DDDDDD inset,
+                                0px 1px 2px hsl(0deg 0% 0% / 10%);
+                            box-sizing: border-box;
+                        }
+                        
+                        .button::before {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            bottom: 0;
+                            left: 0;
+                            margin: -1px;
 
-	set working(value: boolean) {
-		if (this._working !== value) {
-			this._working = value;
-			// reflect to attribute
-			if (value) {
-				this.setAttribute("working", "");
-			} else {
-				this.removeAttribute("working");
-			}
-		}
-	}
-
-	// spinnerType ====================================================================================================
-	private _spinnerType!: string;
-		
-	get spinnerType(): string {
-		return this._spinnerType;
-	}
-
-	set spinnerType(value: string) {
-		if (this._spinnerType !== value) {
-			this._spinnerType = value;
-			// reflect to attribute
-			this.setAttribute("spinner-type", this._spinnerType);
-		}
-	}
-
-	// view properties ================================================================================================
-	private _withPrefix!: boolean;
-	private _withSuffix!: boolean;
-
-	// template elements
-	private _prefixSlotEl!: HTMLSlotElement;
-	private _suffixSlotEl!: HTMLSlotElement;
-
-	// events
-	private readonly _prefixSlotChangeEvent!: any;
-	private readonly _suffixSlotChangeEvent!: any;
-
-	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
-	constructor() {
-		super();
-		this.attachShadow({ mode: "open", delegatesFocus: true });
-
-		// apply component styles
-		this._applyStyles();
-
-		// create component template
-		const template = document.createElement("template");
-		template.innerHTML = /*html*/`
-			<div class="button">
-				<slot name="prefix"></slot>
-				<div class="label"><slot></slot></div>
-				<slot name="suffix"></slot>
-			</div>
-		`;
-		
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
-
-	}
+                            border-radius: inherit;
+                            background: linear-gradient(to bottom, #fff, #000);
+                            z-index: -1;
+                        }
+                        
+                        .label {
+                            display: flex;
+                            align-items: center;
+                            height: 100%;
+                            color: #000;
+                            font-size: 14px;
+                            font-weight: 700;
+                            font-family: "Poppins", sans-serif;
+                        }
+                    </style>
+                    <div class="button">
+                        <slot name="prefix"></slot>
+                        <div class="label"><slot></slot></div>
+                        <slot name="suffix"></slot>
+                    </div>
+                `;
+                this.shadowRoot!.appendChild(template.content.cloneNode(true));
+            }
 
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
@@ -136,16 +87,6 @@ export class PandaButtonNew extends HTMLElement {
 		if (this.shadowRoot) {
 			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
 		}
-	}
-
-	/**
-	 * Parses an attribute value to boolean.
-	 * @param value value to parse
-	 * @description Parses a value to boolean. If the value is "true" or true, it returns true, otherwise false.
-	 * @returns {Boolean}
-	 */
-	private _parseBooleanAttribute(value: unknown): boolean {
-		return value === "true" || value === true || value === "";
 	}
 
 	// ================================================================================================================

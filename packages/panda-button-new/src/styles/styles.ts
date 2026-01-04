@@ -1,5 +1,6 @@
 export const styles = /*css*/`
 	:host {
+		position: fixed;
 		display: inline-block;
 		height: var(--panda-button-height-size-m, 40px);
 		user-select: none;
@@ -42,5 +43,15 @@ export const styles = /*css*/`
 		border-radius: inherit;
 		background: linear-gradient(to bottom, #D0D0D0, #BDBDBD);
 		z-index: -1;
+	}
+	
+	.label {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		color: #000;
+		font-size: 14px;
+		font-weight: 700;
+		font-family: "Poppins", sans-serif;
 	}
 `;
