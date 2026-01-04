@@ -21,7 +21,6 @@ import "./content/panda-heatmap/content-page";
 import "./content/panda-icon/content-page";
 import "./content/panda-line-chart/content-page";
 import "./content/panda-menu/content-page";
-import "./content/panda-multi-select-combo-box/content-page";
 import "./content/panda-notifications/content-page";
 import "./content/panda-pagination/content-page";
 import "./content/panda-particle-banner/content-page";

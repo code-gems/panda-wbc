@@ -1,15 +1,16 @@
 {
-	"name": "@panda-wbc/panda-button",
+	"name": "@panda-wbc/panda-button-new",
 	"version": "1.0.0",
 	"description": "Native web component - button",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-button.js",
+	"main": "lib/panda-button-new.js",
 	"scripts": {
 		"compile": "tsc",
 		"share": "pnpm publish",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
+		"test": "jest",
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [

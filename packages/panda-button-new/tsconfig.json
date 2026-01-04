@@ -1,9 +1,8 @@
 {
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"target": "es6",
-		"outDir": "./lib",
-		"useDefineForClassFields": false
+		"target": "es2020",
+		"outDir": "./lib"
 	},
 	"include": [
 		"src/**/*"

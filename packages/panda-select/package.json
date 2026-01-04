@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-select",
 	"version": "1.0.0",
-	"description": "Lit based web component - select dropdown",
+	"description": "Native web component adding select component to your UI",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-select.js",
 	"scripts": {
@@ -12,20 +12,27 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
+		"custom element",
 		"web component",
 		"ui component",
-		"select",
+		"multi-select",
+		"multiselect",
+		"combo-box",
 		"dropdown"
 	],
 	"author": "code-gems",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"lit": "^3.0.2",
+		"@panda-wbc/panda-button": "workspace:*",
+		"@panda-wbc/panda-checkbox": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
-		"@panda-wbc/panda-mixins": "workspace:*"
+		"@panda-wbc/panda-text-field": "workspace:*",
+		"@panda-wbc/panda-text-slider": "workspace:*"
+	},
+	"devDependencies": {
+		"rimraf": "^6.0.0",
+		"ts-loader": "^9.2.6"
 	},
 	"files": [
 		"src",

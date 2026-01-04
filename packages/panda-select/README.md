@@ -1,7 +1,3 @@
-# Welcome to Panda Select
-Panda Select is a Lit based web component. Extremely lightweight and easy to use.
-Enjoy!
-
 ### Installation
 ```npm install @panda-wbc/panda-select```
 
@@ -13,10 +9,7 @@ or
 
 ```html
 <panda-select
-	.value="${...}"
-	.items="${[...]}"
-	.busy="${true|false}"
-	.disabled="${true|false}"
+	@change="${(event: PandaSelectChangeEvent) => onChange(event)}"
 ></panda-select>
 ```
 

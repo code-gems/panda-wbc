@@ -1,27 +1,29 @@
-export interface PandaSelectItem {
-	label?: string;
-	value?: string | number | any;
-	disabled?: boolean;
+export type { PandaSelect } from "./src/panda-select";
+export type { PandaSelectOverlay } from "./src/panda-select-overlay";
 
-	group?: string;
-	[propertyName: string]: string | number | any;
+export interface PandaSelectI18nConfig {
+	allItems: string;
+	selectAll: string;
+	selectedItems: string;
+	reset: string;
+	filterPlaceholder: string[];
+	noDataFound: string;
 }
 
-export type PandaSelectRenderer = {
-	value: any;
+export type PandaSelectItem = {
 	label: string;
-	active: boolean;
-	selected: boolean;
-	disabled: boolean;
-	data: any;
+	value: any;
+	// extras
+	group?: string;
+	disabled?: boolean;
 }
 
 // ====================================================================================================================
 // EVENTS =============================================================================================================
 // ====================================================================================================================
 
-export type PandaSelectChangeEventDetail = {
-	value: string | number | any;
+export interface PandaSelectChangeEventDetails {
+	value: any | any[];
 }
 
-export interface PandaSelectChangeEvent extends CustomEvent<PandaSelectChangeEventDetail> {}
+export interface PandaSelectChangeEvent extends CustomEvent<PandaSelectChangeEventDetails> { }

@@ -6,6 +6,7 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-button-new";
 
 // utils
 import { ContentPageTemplate } from "../../../content-page-template";
@@ -53,6 +54,9 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
+		`;
+		return html`
+			${this._renderOverviewSection()}
 			${this._renderInstallationSection()}
 			${this._renderUsageSection()}
 			${this._renderComponentStatesSection()}
@@ -78,11 +82,11 @@ export class PandaButtonContentPage extends ContentPageTemplate {
 						<div class="rows">
 							<div class="row">
 								<div class="col-2">
-									<panda-button
+									<panda-button-new
 										@click="${this._onClick}"
 									>
-										Default
-									</panda-button>
+										Default New
+									</panda-button-new>
 								</div>
 								<div class="col-2">
 									<panda-button

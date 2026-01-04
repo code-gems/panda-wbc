@@ -1,5 +1,4 @@
-import { PandaHeatmap } from "./src/panda-heatmap";
-export type PandaHeatmap = typeof PandaHeatmap;
+export type { PandaHeatmap } from "./src/panda-heatmap";
 
 export const enum PandaHeatmapXAxisPosition {
 	TOP = "top",

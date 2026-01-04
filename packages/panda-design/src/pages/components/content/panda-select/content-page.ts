@@ -1,105 +1,182 @@
 // types
-import {
-	ComponentCssVariableDetails,
-	ComponentPropertyDetails,
-	ComponentEventDetails,
-	PageCategory,
-} from "panda-design-typings";
+import { ContentSectionName } from "panda-design-typings";
+import { PandaSelectItem } from "@panda-wbc/panda-select";
 
 // styles
 import { styles } from "./styles/styles";
-import { uiComponents } from "../../../../styles/styles";
-import { scrollbar } from "@panda-wbc/panda-mixins";
 
 // components
 import "@panda-wbc/panda-select";
+import "@panda-wbc/panda-text-field"
 
-// utils
-import { css, html, TemplateResult } from "lit";
-import { customElement } from "lit/decorators.js";
+// utils & config
+import { TemplateResult, html } from "lit";
+import { customElement, state } from "lit/decorators.js";
 import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
-import {
-	pageId,
-	pageName,
-	pageUri,
-	keywords,
-	description,
-	contextMenu
-} from "./page-config";
-import { installationSnippet } from "./snippets/snippets";
+import { pageConfig } from "./page-config";
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+// code snippets
+// ...
 
-// static data
-import { getCountryList } from "../../static-data";
+import { SyntaxHighlighter } from "./code";
+import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
+import { PandaComboBoxChangeEvent } from "@panda-wbc/panda-combo-box";
 
-@customElement("panda-select-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-select-content-page></panda-select-content-page>`
-})
-export class PandaSelectContentPage extends ContentPageTemplate {
-	// css styles
-	static get styles() {
-		return [
-			styles,
-			scrollbar,
-			uiComponents.banner,
-			uiComponents.table,
-			uiComponents.sample,
-			uiComponents.form,
-			uiComponents.appLayout,
-			uiComponents.columnSystem,
-			uiComponents.modifiers,
-		];
-	}
-
+@page(pageConfig)
+@customElement("panda-multi-select-combo-box-content-page")
+export class ContentPage extends ContentPageTemplate {
 	// page details
-	pageId: string = pageId;
+	public contentPageConfig = pageConfig;
+	public customStyles = styles;
 
-	private readonly _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "items", type: "PandaSelectItem[]", defaultValue: "[]", options: ["String[]", "Number[]"], description: "An array of items to display as available options" },
-		{ name: "value", type: "String", defaultValue: "-", description: "Value to display that correlates to provided preset" },
-		{ name: "label", type: "string", defaultValue: "-", description: "Component label that appears above the component" },
-		{ name: "placeholder", type: "string", defaultValue: "-", description: "Text to show in case no value is selected" },
-		{ name: "theme", type: "string", defaultValue: "-", description: "Apply one of the color themes to the component." },
-		{ name: "spinnerType", type: "string", defaultValue: "dots", description: "Spinner animation type for working state" },
-		{ name: "itemLabelPath", type: "string", defaultValue: "label", description: "Property path to the item's label" },
-		{ name: "itemValuePath", type: "string", defaultValue: "value", description: "Property path to the item's value" },
-		{ name: "disableAutoOpen", type: "boolean", defaultValue: "false", description: "Determines weather component options will be shown only upon clicking dropdown button. Incompatible with hideDropdownButton!" },
-		{ name: "hideClearButton", type: "boolean", defaultValue: "false", description: "Hide clear value button from component's interface" },
-		{ name: "hideDropdownButton", type: "boolean", defaultValue: "false", description: "Hide dropdown button from component's interface" },
-		{ name: "disabled", type: "boolean", defaultValue: "false", description: "Sets a disabled status for the component" },
-		{ name: "working", type: "boolean", defaultValue: "false", description: "Sets working status for the component" },
-		{ name: "mandatory", type: "boolean", defaultValue: "false", description: "Visually indicates required field if value is not set" },
+	// demo props
+
+	private readonly _items: PandaSelectItem[] = [
+		{ label: "Argentina", value: "AR", group: "South America" },
+		{ label: "Austria", value: "AT", group: "Europe" },
+		{ label: "Brazil", value: "BR", group: "South America" },
+		{ label: "China", value: "CN", group: "Asia" },
+		{ label: "Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia", value: "CO", group: "South America" },
+		{ label: "France", value: "FR", group: "Europe" },
+		{ label: "Germany", value: "DE", group: "Europe" },
+		{ label: "Italy", value: "IT", group: "Europe" },
+		{ label: "Mexico", value: "MX", group: "North America" },
+		{ label: "Netherlands", value: "NL", group: "Europe" },
+		{ label: "Peru", value: "PE", group: "South America" },
+		{ label: "Poland", value: "PL", group: "Europe" },
+		{ label: "Portugal", value: "PT", group: "Europe" },
+		{ label: "Singapore", value: "SG", group: "Asia" },
+		{ label: "Spain", value: "ES", group: "Europe" },
+		{ label: "Switzerland", value: "CH", group: "Europe" },
+		{ label: "United States", value: "US", group: "North America" },
+		{ label: "Vietnam", value: "VN", group: "Asia" },
 	];
 
-	private readonly _componentEvents: ComponentEventDetails[] = [
-		{ name: "change", returnType: "PandaButtonChangeEvent", description: "" }
+	private readonly _itemsCustom: any[] = [
+		{ name: "Argentina", group: "South America", code: "AR" },
+		{ name: "Austria", code: "AT", group: "Europe" },
+		{ name: "Belgium", code: "BE", group: "Europe" },
+		{ name: "Brazil", code: "BR", group: "South America" },
+		{ name: "Canada", code: "CA", group: "North America" },
+		{ name: "China", code: "CN", disabled: true },
+		{ name: "Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia Colombia", code: "CO", group: "South America" },
+		{ name: "France", code: "FR", group: "Europe" },
+		{ name: "Germany", code: "DE", group: "Europe" },
+		{ name: "Italy", code: "IT", group: "Europe" },
+		{ name: "Mexico", code: "MX", group: "North America" },
+		{ name: "Netherlands", code: "NL", group: "Europe" },
+		{ name: "Peru", code: "PE", group: "South America" },
+		{ name: "Poland", code: "PL", group: "Europe", disabled: true },
+		{ name: "Portugal", code: "PT", group: "Europe" },
+		{ name: "Russia", code: "RU", group: "Europe" },
+		{ name: "Singapore", code: "SG", group: "Asia" },
+		{ name: "Spain", code: "ES", group: "Europe" },
+		{ name: "Switzerland", code: "CH", group: "Europe" },
+		{ name: "United States", code: "US", group: "North America" },
+		{ name: "Vietnam", code: "VN", group: "Asia", disabled: true },
+		{ name: "Zimbabwe", code: "ZW" },
 	];
 
-	// static data
-	private _items = [
-		{ label: "Item # 1", value: 1 },
-		{ label: "Item # 2", value: 2, disabled: true },
-		{ label: "Item # 3", value: 3 },
-		{ label: "Item # 4", value: 4 },
+	private readonly _sizes = [
+		{ label: "[default]", value: "" },
+		{ label: "Size S", value: "size-s" },
+		{ label: "Size L", value: "size-l" },
+		{ label: "Size XL", value: "size-xl" },
 	];
 
-	private readonly _languageList = [
-		{ label: "English (UK)", value: "uk", desc: "123123" },
-		{ label: "English (USA)", value: "us", desc: "123123" },
-		{ label: "Polish", value: "pl", desc: "123123" },
-		{ label: "German", value: "de", desc: "123123", disabled: true },
-		{ label: "Chinese", value: "cn", desc: "123123" },
+	private readonly _customStyle = `
+		.country-item {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+		}
+
+		.country-item .flag {
+			display: flex;
+			flex-shrink: 0;
+			justify-content: center;
+			align-items: center;
+			width: 24px;
+			height: 100%;
+		}
+
+		.country-item .label {
+			font-weight: 500;
+		}
+
+		.footer-actions {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 5px;
+			background-color: var(--panda-background-color-300);
+			border-radius: 5px;
+		}
+	`;
+
+	@state()
+	private _size: string = "";
+
+	@state()
+	private _theme: string = "";
+
+	private readonly _themes = [
+		{ label: "[default]", value: "" },
+		{ label: "Mandatory", value: "mandatory" },
+		{ label: "Valid", value: "valid" },
+		{ label: "Invalid", value: "invalid" },
 	];
 
-	private _countryList = getCountryList();
+	private readonly _i18nChinese = {
+		allItems: "所有选项",
+		selectAll: "全选",
+		selectedItems: "已选项",
+		reset: "重置",
+		filterPlaceholder: ["输入以过滤..."],
+		noDataFound: "未找到数据",
+	};
+
+	@state()
+	private _value: any = null;
+
+	@state()
+	private _multiselect = false;
+
+	@state()
+	private _mandatory = false;
+
+	@state()
+	private _readonly = false;
+
+	@state()
+	private _working = false;
+
+	@state()
+	private _disabled = false;
+
+	@state()
+	private _autoExpand = false;
+
+	@state()
+	private _showClearButton = false;
+	
+	@state()
+	private _disableAutoOpen = false;
+
+	@state()
+	private _hideDropdownButton = false;
+
+	@state()
+	private _showFilter = false;
+
+	@state()
+	private _showItemCount = false;
+
+	@state()
+	private _min: number | null = null;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -109,189 +186,378 @@ export class PandaSelectContentPage extends ContentPageTemplate {
 		return html`
 			${this._renderOverviewSection()}
 		`;
-		return html`
-			${this._renderOverviewSection()}
-			${this._renderInstallationSection()}
-			${this._renderUsageSection()}
-			${this._renderComponentStatesSection()}
-		`;
 	}
 
 	private _renderOverviewSection(): TemplateResult {
-		const customStyle = css`
-			.dropdown .item {
-				padding: 5px !important;
-			}
+		const ts = `
+const xxx = async (name: string): void => {
+  // comments
+  console.log(\`Hello, \${name}!\`);
+}
 
-			.language {
-				display: flex;
-				flex-flow: row nowrap;
-				gap: var(--panda-padding-m);
-				height: 100%;
-			}
-
-			.icon {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: var(--panda-component-size);
-				height: 100%;
-			}
-
-			.label {
-				line-height: var(--panda-component-size-m);
-			}
-		`;
-
-		const customRenderer: (params: any) => any = ({ label, value, active, selected, data }) => {
-			return html`
-				<div class="language">
-					<div class="icon">
-						<panda-flag flag="${value}"></panda-flag>
-					</div>
-					<div class="label">${label}</div>
-				</div>
-			`;
-		};
-
+// @syntax-html
+<!-- comments -->
+<div class="asd" disabled>
+  <div class="asd" disabled><p>
+    Some text
+  </div>
+</div>
+`;
+		// const code = new SyntaxHighlighter([{ code: ts, language: 'typescript' }]).highlight();
 		return html`
 			<!-- OVERVIEW -->
-			<div class="content-section" data-content-section-name="overview">
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
 					<p>
-						Select component in web applications offers a flexible and versatile way to create dropdown menus that align with the application's design and functionality requirements. 
-						Its ability to enhance styling, provide customization options, improve accessibility, and support various user interactions makes it a valuable component 
-						for creating a more user-centric and engaging web experience.
+						// describe multiselect component
+
 					</p>
 				</div>
 
-				<!-- OVERVIEW -->
 				<div class="sample-cont">
 					<div class="sample">
-						<panda-select
-							.label="${`Option:`}"
-							.placeholder="${`Select option...`}"
-							.items="${this._languageList}"
-							.value="${"pl"}"
-							.customStyle="${customStyle}"
-							.renderer="${customRenderer}"
-						>
-						</panda-select>
-						<br />
-						<br />
-						<!--
-						<panda-select
-							.label="${`Option:`}"
-							.placeholder="${`Select option...`}"
-							.items="${this._countryList}"
-							item-label-path="name"
-							item-value-path="code"
-						>
-							<div class="prefix" slot="prefix">AUS</div>
-						</panda-select>
-						-->
+						<div class="rows">
+							<div class="row">
+								<div class="col-half">
+									<panda-button>PLACEHOLDER</panda-button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-2">
+									<panda-combo-box
+										label="Select size:"
+										.value="${this._size}"
+										.items="${this._sizes}"
+										@change="${this._onSizeChange}"
+									></panda-combo-box>
+								</div>
+								<div class="col-2">
+									<panda-combo-box
+										label="Select theme:"
+										.value="${this._theme}"
+										.items="${this._themes}"
+										@change="${this._onThemeChange}"
+									></panda-combo-box>
+								</div>
+							</div>
+							<div class="row">
+
+								<div class="col-3">
+									<panda-select
+										theme="${this._size + " " + this._theme}"
+										label="Select country:"
+										error-message="this is an error message"
+										placeholder="Select country..."
+										.items="${this._items}"
+										.value="${this._value}"
+										
+										.hideDropdownButton="${this._hideDropdownButton}"
+										.min="${this._min}"
+										.autoExpand="${this._autoExpand}"
+										.showFilter="${this._showFilter}"
+										.showItemCount="${this._showItemCount}"
+										.showClearButton="${this._showClearButton}"
+										.disableAutoOpen="${this._disableAutoOpen}"
+										.readonly="${this._readonly}"
+										.multiselect="${this._multiselect}"
+										.mandatory="${this._mandatory}"
+										.working="${this._working}"
+										.disabled="${this._disabled}"
+
+										.itemRenderer="${this._itemRenderer}"
+										.groupRenderer="${this._groupRenderer}"
+										.footerRenderer="${this._renderFooter}"
+
+										.customStyle="${this._customStyle}"
+
+										@change="${this._onChange}"
+									>
+									</panda-select>
+								</div>
+
+								<div class="col-half">
+									<div id="value-cont">
+										<b>Selected value:</b>
+										${this._renderValues(this._value)}
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-text-field
+										placeholder="Enter..."
+										.theme="${this._size + " " + this._theme}"
+									></panda-text-field>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleMultiselect}">
+										Toggle Multiselect (${this._multiselect ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleReadonly}">
+										Toggle Readonly (${this._readonly ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleWorking}">
+										Toggle Working (${this._working ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDisabled}">
+										Toggle Disabled (${this._disabled ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleAutoExpand}">
+										Toggle Auto-Expand (${this._autoExpand ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleShowClearButton}">
+										Toggle Clear Button (${this._showClearButton ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleShowFilter}">
+										Toggle Filter (${this._showFilter ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleMandatory}">
+										Toggle Mandatory (${this._mandatory ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onAsyncDisable}">
+										Async Disable (2 sec)
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onAsyncReadonly}">
+										Async Readonly (2 sec)
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onAsyncWorking}">
+										Async Working (2 sec)
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onSetMinValue}">
+										Set min value (${this._min ? "2" : "null"})
+									</panda-button>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDisableAutoOpen}">
+										Toggle AutoOpen (${this._disableAutoOpen ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleDropdownButton}">
+										Toggle Dropdown Button (${this._hideDropdownButton ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+								<div class="col-3">
+									<panda-button @click="${this._onToggleItemCount}">
+										Toggle Item Count (${this._showItemCount ? "ON" : "OFF"})
+									</panda-button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<panda-button @click="${this._onSetValues}">
+										SET VALUES
+									</panda-button>
+								</div>
+							</div>
+
+<!--
+							<div class="row">
+								<div class="col-half">
+									<panda-multi-select-combo-box
+										label="Select country: (single)"
+										placeholder="Select..."
+										show-filter
+										show-clear-button
+										.items="${this._items}"
+										.value="${"CO"}"
+										@change="${this._onChange}"
+									>
+										<div slot="prefix" class="icon">
+											<panda-icon icon="check"></panda-icon>
+										</div>
+									</panda-multi-select-combo-box>
+								</div>
+							</div>
+-->
+						</div>
 					</div>
 				</div>
-			</div>
+
+			</div> <!-- END OF CONTENT SECTION -->
 		`;
 	}
 
-	private _renderInstallationSection(): TemplateResult {
-		return html`
-			<!-- INSTALLATION -->
-			<div class="content-section" data-content-section-name="installation">
-				<div class="section">
-					<internal-link theme="h2">Installation</internal-link>
-					<p>
-						Start by initiating the installation of the npm library through a command executed in either the terminal or command prompt.
-						Utilize the package manager, indicating both the library name and its version for installation.
-					</p>
-	
-					<code-sample header="Installation">
-						${installationSnippet}
-					</code-sample>
+	private _renderValues(value: any): TemplateResult | TemplateResult[] {
+		if (value == null || value?.length === 0) {
+			return html`<i>[no values]</i>`;
+		} else if (Array.isArray(value)) {
+			return html`${value.join(", ")}`;
+		} else {
+			return html`<div>${value}</div>`;
+		}
+	}
+
+	private _itemRenderer(item: any): string {
+		return `
+			<div class="country-item">
+				<div class="flag">
+					<panda-flag flag="${item.value}"></panda-flag>
+				</div>
+				<div class="label">
+					${item.label}
 				</div>
 			</div>
 		`;
 	}
 
-	private _renderUsageSection(): TemplateResult {
-		return html`
-			<!-- USAGE -->
-			<div class="content-section" data-content-section-name="usage">
-				<div class="section">
-					<internal-link theme="h2">Usage</internal-link>
-					<p>
-						Please refer below for instructions on utilizing our component. Experiment with the provided sample code to explore all the features of the component.
-					</p>
-	
-					<code-sample header="Installation">
-						${installationSnippet}
-					</code-sample>
-
-				</div>
-				${this._renderComponentPropertiesSection()}
-				${this._renderComponentEventsSection()}
-			</div>
+	private _groupRenderer(groupName: string, items: any[]): string {
+		const selectedCount = items.filter(i => i.selected).length;
+		return `
+			${groupName} <panda-badge theme="info size-s">${selectedCount}/${items.length}</panda-badge>
 		`;
 	}
 
-	private _renderComponentPropertiesSection(): TemplateResult {
-		return html`
-			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Properties</h3>
-				<p>
-					Component properties play a crucial role in specifying the component's behavior, appearance, and functionality, 
-					and they are frequently employed for data binding purposes. 
-				</p>
-				<p>
-					Here is a compilation of the supported properties/attributes for this particular component:
-				</p>
-				
-				${this._renderComponentPropertyTable(this._componentProperties)}
-			</div>
-		`;
-	}
-
-	private _renderComponentEventsSection(): TemplateResult {
-		return html`
-			<!-- COMPONENT PROPERTIES -->
-			<div class="section">
-				<h3>Events</h3>
-				<p>
-					Component events are instrumental in elevating the interactivity and adaptability of software applications. 
-					These events serve as carefully designed triggers that facilitate communication between the component and the application, 
-					frequently enabling the exchange of data and actions across diverse user interface elements.
-				</p>
-				<p>
-					See list of events provided below:
-				</p>
-				
-				${this._renderComponentEventsTable(this._componentEvents)}
-			</div>
-		`;
-	}
-	
-	private _renderComponentStatesSection(): TemplateResult {
-		return html`
-			<!-- COMPONENT STATES -->
-			<div class="content-section" data-content-section-name="component-states">
-				<div class="section">
-					<internal-link theme="h2">Component States</internal-link>
-					<p>
-						Web components typically exhibit various states that mirror their behavior and appearance, adapting to user interactions or the logic of the application. 
-						Provided below is a selection of commonly encountered states:
-					</p>
-					<ul>
-						<li>default</li>
-						<li>disabled</li>
-						<li>working</li>
-					</ul>
+	private _renderFooter(items: any[]): string {
+		const selected = items.filter((item) => item.selected).length;
+		return `
+			<div class="footer-actions">
+				<div class="label">
+					Selected: ${selected} of ${items.length}
 				</div>
 			</div>
 		`;
 	}
 
+	// ================================================================================================================
+	// EVENTS =========================================================================================================
+	// ================================================================================================================
+
+	private _onChange(event: PandaSelectChangeEvent): void {
+		console.log(`%c ⚡ [DEMO] (_onChange) event`, "font-size: 24px; color: blue;", event.detail);
+		this._value = event.detail.value;
+		this.requestUpdate();
+	}
+
+	private _onToggleMultiselect(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleMultiselect)`, "font-size: 24px; color: blue;", !this._multiselect);
+		this._multiselect = !this._multiselect;
+	}
+
+	private _onToggleReadonly(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleReadonly)`, "font-size: 24px; color: blue;", !this._readonly);
+		this._readonly = !this._readonly;
+	}
+
+	private _onToggleWorking(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleWorking)`, "font-size: 24px; color: blue;", !this._working);
+		this._working = !this._working;
+	}
+
+	private _onToggleDisabled(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleDisabled)`, "font-size: 24px; color: blue;", !this._disabled);
+		this._disabled = !this._disabled;
+	}
+
+	private _onToggleAutoExpand(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleAutoExpand)`, "font-size: 24px; color: blue;", !this._autoExpand);
+		this._autoExpand = !this._autoExpand;
+	}
+
+	private _onToggleShowClearButton(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleShowClearButton)`, "font-size: 24px; color: blue;", !this._showClearButton);
+		this._showClearButton = !this._showClearButton;
+	}
+
+	private _onToggleShowFilter(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleShowFilter)`, "font-size: 24px; color: blue;", !this._showFilter);
+		this._showFilter = !this._showFilter;
+	}
+
+	private async _onToggleDisableAutoOpen(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onToggleDisableAutoOpen)`, "font-size: 24px; color: blue;");
+		this._disableAutoOpen = !this._disableAutoOpen;
+	}
+
+	private _onToggleMandatory(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleMandatory)`, "font-size: 24px; color: blue;", !this._mandatory);
+		this._mandatory = !this._mandatory;
+	}
+
+	private _onToggleDropdownButton(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleDropdownButton)`, "font-size: 24px; color: blue;");
+		this._hideDropdownButton = !this._hideDropdownButton;
+	}
+
+	private async _onAsyncDisable(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onAsyncDisable)`, "font-size: 24px; color: blue;");
+
+		await new Promise((r) => setTimeout(r, 2000));
+		this._disabled = !this._disabled;
+	}
+
+	private async _onAsyncReadonly(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onAsyncReadonly)`, "font-size: 24px; color: blue;");
+
+		await new Promise((r) => setTimeout(r, 2000));
+		this._readonly = !this._readonly;
+	}
+
+	private async _onAsyncWorking(): Promise<void> {
+		console.log(`%c ⚡ [DEMO] (_onAsyncWorking)`, "font-size: 24px; color: blue;");
+
+		await new Promise((r) => setTimeout(r, 2000));
+		this._working = !this._working;
+	}
+
+	private _onSizeChange(event: PandaComboBoxChangeEvent): void {
+		this._size = event.detail.value;
+		console.log(`%c ⚡ [DEMO] (_onSizeChange)`, "font-size: 24px; color: blue;", this._size);
+	}
+
+	private _onThemeChange(event: PandaComboBoxChangeEvent): void {
+		this._theme = event.detail.value;
+		console.log(`%c ⚡ [DEMO] (_onThemeChange)`, "font-size: 24px; color: blue;", this._theme);
+	}
+
+	private _onSetMinValue(): void {
+		console.log(`%c ⚡ [DEMO] (_onSetMinValue)`, "font-size: 24px; color: blue;");
+		this._min = this._min ? null : 2;
+	}
+
+	private _onToggleItemCount(): void {
+		console.log(`%c ⚡ [DEMO] (_onToggleItemCount)`, "font-size: 24px; color: blue;");
+		this._showItemCount = !this._showItemCount;
+	}
+
+	private _onSetValues(): void {
+		console.log(`%c ⚡ [DEMO] (_onSetValues)`, "font-size: 24px; color: blue;");
+		this._value = ["AR", "BR", "CN", "DE"];
+	}
 }

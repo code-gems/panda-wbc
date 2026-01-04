@@ -3,7 +3,7 @@
 	"name": "vaccashe-app",
 	"version": "1.0.0",
 	"description": "Panda Design - Panda UI components showcase.",
-	"main": "./dist/app.js",
+	"main": "dist/app.js",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"scripts": {
 		"start": "webpack serve",

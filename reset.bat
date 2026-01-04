@@ -40,6 +40,10 @@ cd /d ..\panda-checkbox\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
+cd /d ..\panda-checkbox-group\
+call rmdir /s /q node_modules
+call rmdir /s /q lib
+
 cd /d ..\panda-chips\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
@@ -78,7 +82,7 @@ call rmdir /s /q lib
 
 cd /d ..\panda-design\
 call rmdir /s /q node_modules
-call rmdir /s /q lib
+call rmdir /s /q dist
 
 cd /d ..\panda-details-dialog\
 call rmdir /s /q node_modules
@@ -101,6 +105,10 @@ call rmdir /s /q node_modules
 call rmdir /s /q lib
 
 cd /d ..\panda-grid-layout\
+call rmdir /s /q node_modules
+call rmdir /s /q lib
+
+cd /d ..\panda-heatmap\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
@@ -200,6 +208,10 @@ cd /d ..\panda-sortable-list\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
+cd /d ..\panda-speech-synthesis\
+call rmdir /s /q node_modules
+call rmdir /s /q lib
+
 cd /d ..\panda-spinner\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
@@ -295,6 +307,10 @@ call rmdir /s /q lib
 cd /d ..\panda-voice-to-text\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
+
+cd /d ..\vaccashe-app\
+call rmdir /s /q node_modules
+call rmdir /s /q dist
 
 echo "DONE"
 pause

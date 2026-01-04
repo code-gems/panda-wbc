@@ -96,13 +96,6 @@ export abstract class ContentPageTemplate extends LitElement {
 		if (location.hash) {
 			this._scrollToHash();
 		}
-		// console.log(`%c ⚡ contentPageConfig`, "font-size: 24px; color: crimson; background: black;", this.contentPageConfig);
-
-		
-		const packageFile = import("../../../panda-heatmap/package.json");
-		packageFile.then((pkg) => {
-			this._componentVersion = pkg.version;
-		});
 	}
 
 	updated(_changedProps: PropertyValues): void {
