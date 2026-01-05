@@ -109,7 +109,6 @@ export class PandaSelect extends HTMLElement {
 			} else {
 				this._value = [value];
 			}
-			console.log(`%c ⚡ (set value)`, "font-size: 24px; color: crimson; background: black;", this._value);
 			// parse new items
 			this._parseItems();
 		}
@@ -1307,8 +1306,6 @@ export class PandaSelect extends HTMLElement {
 				const disabled = getItemDisabledFlag(item);
 				const isSelected = includes(this._value, value);
 				let selected = false;
-
-				console.log(`%c ⚡ (_parseItems)`, "font-size: 24px; color: crimson; background: black;", index, label, value, isSelected);
 
 				if (this._multiselect) {
 					// allow multiple selected items

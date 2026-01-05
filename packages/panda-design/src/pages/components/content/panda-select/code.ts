@@ -67,7 +67,7 @@ export class SyntaxHighlighter {
 			],
 			types: ['void', 'null', 'undefined', 'boolean', 'number', 'string', 'symbol', 'object', 'any', 'unknown'],
 			builtins: ['console', 'Array', 'Object', 'String', 'Number', 'Boolean', 'Math', 'Date', 'Promise'],
-			operators: ['+', '-', '*', '/', '=', '==', '===', '!=', '!==', '<', '>', '<=', '>=', '&&', '||', '!', '=>'],
+			operators: ['+', '-', '*', '/', '=', '==', '===', '!=', '!==', '<', '>', '<=', '>=', '&&', '||', '!', '=>', "??=", "??"],
 			comments: {
 				line: '//',
 				blockStart: '/*',
@@ -151,17 +151,24 @@ export class SyntaxHighlighter {
 	private defaultLanguage: string;
 
 	constructor(code: string | CodeBlock[], language?: string | string[]) {
-		this.defaultLanguage = typeof language === 'string' ? language : (language?.[0] || 'javascript');
+		this.defaultLanguage = typeof language === 'string'
+			? language
+			: (language?.[0] || 'javascript');
 
 		if (typeof code === 'string') {
 			// Single code string with single or multiple languages
 			if (Array.isArray(language)) {
 				this.code = language.map((lang, idx) => ({
-					code: idx === 0 ? code : '',
+					code: idx === 0
+						? code
+						: '',
 					language: lang
 				}));
 			} else {
-				this.code = [{ code, language: this.defaultLanguage }];
+				this.code = [{
+					code,
+					language: this.defaultLanguage
+				}];
 			}
 		} else {
 			// Array of code blocks
@@ -210,7 +217,7 @@ export class SyntaxHighlighter {
 		return lines.map((line, idx) => {
 			const lineNum = idx + 1;
 			if (highlightedLines.has(lineNum)) {
-				return `<span class="line-highlight">${line}</span>`;
+				return `<div class="line-highlight">${line}</div>`;
 			}
 			return line;
 		}).join('\n');
@@ -222,7 +229,7 @@ export class SyntaxHighlighter {
 		let result = '';
 		let i = 0;
 		while (i < row.length) {
-			result += `<span class="row-number">${row[i]}</span>\n`;
+			result += `<div class="row-number">${row[i]}</div>\n`;
 			i++;
 		}
 		return result;
@@ -244,7 +251,7 @@ export class SyntaxHighlighter {
 			'<': '&lt;',
 			'>': '&gt;',
 			'"': '&quot;',
-			"'": '&#039;'
+			"'": '&#039;',
 		};
 		return text.replace(/[&<>"']/g, m => map[m]);
 	}
@@ -268,16 +275,22 @@ export class SyntaxHighlighter {
 
 		while (i < code.length) {
 			// Check for block comments
-			if (lang.comments.blockStart && code.substr(i, lang.comments.blockStart.length) === lang.comments.blockStart) {
+			if (lang.comments.blockStart && code.substring(i, i + lang.comments.blockStart.length) === lang.comments.blockStart) {
 				const endIdx = code.indexOf(lang.comments.blockEnd!, i + lang.comments.blockStart.length);
 				const end = endIdx === -1 ? code.length : endIdx + lang.comments.blockEnd!.length;
+
+				console.log(
+					`%c ⚡ (highlightBlock) comments`,
+					"font-size: 24px; color: crimson; background: black;"
+				);
+
 				result += `<span class="comment">${this.escapeHtml(code.substring(i, end))}</span>`;
 				i = end;
 				continue;
 			}
 
 			// Check for line comments
-			if (lang.comments.line && code.substr(i, lang.comments.line.length) === lang.comments.line) {
+			if (lang.comments.line && code.substring(i, i + lang.comments.line.length) === lang.comments.line) {
 				const end = code.indexOf('\n', i);
 				const lineEnd = end === -1 ? code.length : end + 1;
 				result += `<span class="comment">${this.escapeHtml(code.substring(i, lineEnd))}</span>`;
@@ -491,18 +504,17 @@ export class SyntaxHighlighter {
 	 */
 	highlight(): string {
 		return this.code
-			.map(block => {
-				let highlighted = this.addRows(block.code);
-				highlighted = this.highlightBlock(highlighted, block.language);
+			.map((block) => {
+				let highlighted = this.highlightBlock(block.code, block.language);
 
 				// Apply line highlighting if specified
 				const finalHtml = block.line
 					? this.wrapHighlightedLines(highlighted, this.parseLineSpec(block.line))
 					: highlighted;
 
-				// const finalHtmlWithRows = this.addRows(finalHtml);
+				const finalHtmlWithRows = this.addRows(finalHtml);
 
-				return `<pre class="syntax-highlight syntax-${block.language}"><code>${finalHtml}</code></pre>`;
+				return `<pre class="syntax-highlight syntax-${block.language}"><code>${finalHtmlWithRows}</code></pre>`;
 			})
 			.join('\n');
 	}

@@ -1,5 +1,7 @@
 // types
 import { ContentSectionName } from "panda-design-typings";
+import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
+import { PandaComboBoxChangeEvent } from "@panda-wbc/panda-combo-box";
 import { PandaSelectItem } from "@panda-wbc/panda-select";
 
 // styles
@@ -16,15 +18,14 @@ import { page } from "../../../../utils/page-library";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { pageConfig } from "./page-config";
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
 // code snippets
 // ...
 
 import { SyntaxHighlighter } from "./code";
-import { PandaSelectChangeEvent } from "@panda-wbc/panda-select";
-import { PandaComboBoxChangeEvent } from "@panda-wbc/panda-combo-box";
 
 @page(pageConfig)
-@customElement("panda-multi-select-combo-box-content-page")
+@customElement("panda-select-content-page")
 export class ContentPage extends ContentPageTemplate {
 	// page details
 	public contentPageConfig = pageConfig;
@@ -190,8 +191,8 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _renderOverviewSection(): TemplateResult {
 		const ts = `
-const xxx = async (name: string): void => {
-  // comments
+const xxx = async (name: string): Promise<void> => {
+  let i ??= 0; // comments
   console.log(\`Hello, \${name}!\`);
 }
 
@@ -203,7 +204,17 @@ const xxx = async (name: string): void => {
   </div>
 </div>
 `;
-		// const code = new SyntaxHighlighter([{ code: ts, language: 'typescript' }]).highlight();
+		const xxx = async (name: string): Promise<void> => {
+			// comments
+			console.log(`Hello, ${name}!`);
+		}
+
+		const code = new SyntaxHighlighter([{
+			code: ts,
+			language: 'typescript',
+			line: "2-4,7"
+		}]).highlight();
+
 		return html`
 			<!-- OVERVIEW -->
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
@@ -214,6 +225,9 @@ const xxx = async (name: string): void => {
 
 					</p>
 				</div>
+				<hr>
+				${unsafeHTML(code)}
+				<hr>
 
 				<div class="sample-cont">
 					<div class="sample">
@@ -390,7 +404,7 @@ const xxx = async (name: string): void => {
 <!--
 							<div class="row">
 								<div class="col-half">
-									<panda-multi-select-combo-box
+									<panda-select
 										label="Select country: (single)"
 										placeholder="Select..."
 										show-filter
@@ -402,7 +416,7 @@ const xxx = async (name: string): void => {
 										<div slot="prefix" class="icon">
 											<panda-icon icon="check"></panda-icon>
 										</div>
-									</panda-multi-select-combo-box>
+									</panda-select>
 								</div>
 							</div>
 -->

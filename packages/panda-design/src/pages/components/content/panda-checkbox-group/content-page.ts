@@ -1,7 +1,6 @@
 // types
 import { ComponentPropertyDetails, ComponentEventDetails, ContentSectionName } from "panda-design-typings";
 import { PandaCheckboxChangeEvent } from "@panda-wbc/panda-checkbox";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";

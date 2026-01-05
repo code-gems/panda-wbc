@@ -1,7 +1,6 @@
 // types
-import { ComponentPropertyDetails, ComponentEventDetails, ContentSectionName, Page } from "panda-design-typings";
+import { ComponentPropertyDetails, ComponentEventDetails, ContentSectionName } from "panda-design-typings";
 import { PandaCheckboxChangeEvent } from "@panda-wbc/panda-checkbox";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { styles } from "./styles/styles";
@@ -86,11 +85,7 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 
 		if (this._showOption4) {
 			option4html = html`
-				<panda-checkbox
-					name="option-4"
-				>
-					Study
-				</panda-checkbox>
+				<panda-checkbox name="option-4">Study</panda-checkbox>
 			`;
 		}
 
@@ -350,7 +345,6 @@ export class PandaCheckboxContentPage extends ContentPageTemplate {
 			</div>
 		`;
 	}
-
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================

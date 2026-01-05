@@ -491,6 +491,7 @@ export class PandaCheckbox extends HTMLElement {
 
 	private _onSlotChange(): void {
 		this._hasLabel = true;
+		this._updateTemplateCss();
 	}
 }
 

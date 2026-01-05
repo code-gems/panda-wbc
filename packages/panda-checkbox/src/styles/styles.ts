@@ -29,7 +29,7 @@ export const styles = /*css*/`
 
 		transition: all .3s ease-in-out;
 		cursor: pointer;
-		border-radius: var(--panda-checkbox-icon-border-radius, 4px);
+		border-radius: var(--panda-checkbox-icon-border-radius, 5px);
 	}
 
 	.checkbox .label-cont {
