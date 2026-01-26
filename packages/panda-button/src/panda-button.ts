@@ -9,7 +9,7 @@ import "@panda-wbc/panda-spinner";
 
 export class PandaButton extends HTMLElement {
 	/** Version of the component. */
-	public readonly version: string = "1.0.0";
+	public static version = "1.0.0";
 
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================

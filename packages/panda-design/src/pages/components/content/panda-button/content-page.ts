@@ -6,7 +6,6 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-button";
-import "@panda-wbc/panda-button-new";
 
 // utils
 import { ContentPageTemplate } from "../../../content-page-template";

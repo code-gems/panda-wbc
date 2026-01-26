@@ -35,7 +35,7 @@ export const styles = css`
 		position: absolute;
 		top: 0;
 		min-width: 1em;
-		margin-left: -2rem;
+		margin-left: -2em;
 		
 		text-align: right;
 		counter-increment: row-counter;
@@ -89,6 +89,7 @@ export const styles = css`
 	display: inline-block;
 	background-color: hsl(157deg 90% 54% / 20%);
 	width: 100%;
+	height: 100%;
 	box-sizing: border-box;
 }
 

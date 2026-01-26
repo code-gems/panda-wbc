@@ -34,19 +34,20 @@ export class SyntaxHighlighter {
 	private languages: LanguageConfig = {
 		javascript: {
 			keywords: [
-				'const', 'let', 'var', 'function', 'return', 'if', 'else', 'for',
-				'while', 'do', 'switch', 'case', 'break', 'continue', 'class',
-				'extends', 'import', 'export', 'default', 'async', 'await', 'try',
-				'catch', 'finally', 'throw', 'new', 'this', 'super', 'typeof',
-				'instanceof', 'in', 'of', 'yield', 'static', 'get', 'set'
+				"const", "let", "var", "function", "return", "if", "else", "for",
+				"while", "do", "switch", "case", "break", "continue", "class",
+				"extends", "import", "export", "default", "async", "await", "try",
+				"catch", "finally", "throw", "new", "this", "super", "typeof",
+				"instanceof", "in", "of", "yield", "static", "get", "set", "constructor",
+				"void", "delete", "require", "module", "exports", "with", "debugger"
 			],
-			types: ['void', 'null', 'undefined', 'boolean', 'number', 'string', 'symbol', 'object'],
-			builtins: ['console', 'Array', 'Object', 'String', 'Number', 'Boolean', 'Math', 'Date', 'Promise'],
-			operators: ['+', '-', '*', '/', '=', '==', '===', '!=', '!==', '<', '>', '<=', '>=', '&&', '||', '!'],
+			types: ["void", "null", "undefined", "boolean", "number", "string", "symbol", "object"],
+			builtins: ["globalThis", "window", "console", "alert", "Array", "Object", "String", "Number", "Boolean", "Math", "Date", "Promise"],
+			operators: ["+", "-", "*", "/", "=", "==", "===", "!=", "!==", "<", ">", "<=", ">=", "&&", "||", "!"],
 			comments: {
-				line: '//',
-				blockStart: '/*',
-				blockEnd: '*/'
+				line: "//",
+				blockStart: "/*",
+				blockEnd: "*/"
 			},
 			strings: {
 				single: true,
@@ -56,22 +57,28 @@ export class SyntaxHighlighter {
 		},
 		typescript: {
 			keywords: [
-				'const', 'let', 'var', 'function', 'return', 'if', 'else', 'for',
-				'while', 'do', 'switch', 'case', 'break', 'continue', 'class',
-				'extends', 'import', 'export', 'default', 'async', 'await', 'try',
-				'catch', 'finally', 'throw', 'new', 'this', 'super', 'typeof',
-				'instanceof', 'in', 'of', 'yield', 'static', 'get', 'set',
-				'interface', 'type', 'enum', 'namespace', 'module', 'declare',
-				'abstract', 'implements', 'private', 'protected', 'public', 'readonly',
-				'as', 'is', 'keyof', 'infer', 'never'
+				"const", "let", "var", "function", "return", "if", "else", "for",
+				"while", "do", "switch", "case", "break", "continue", "class",
+				"extends", "import", "export", "exports", "default", "async", "await",
+				"try", "catch", "finally", "throw", "new", "this", "super", "typeof",
+				"instanceof", "in", "of", "yield", "static", "get", "set",
+				"interface", "type", "enum", "namespace", "module", "declare",
+				"abstract", "implements", "private", "protected", "public", "readonly",
+				"as", "is", "keyof", "infer", "never", "debugger"
 			],
-			types: ['void', 'null', 'undefined', 'boolean', 'number', 'string', 'symbol', 'object', 'any', 'unknown'],
-			builtins: ['console', 'Array', 'Object', 'String', 'Number', 'Boolean', 'Math', 'Date', 'Promise'],
-			operators: ['+', '-', '*', '/', '=', '==', '===', '!=', '!==', '<', '>', '<=', '>=', '&&', '||', '!', '=>', "??=", "??"],
+			types: ["void", "null", "undefined", "boolean", "number", "string", "symbol", "object", "any", "unknown"],
+			builtins: [
+				"globalThis", "window", "console", "alert", "Array", "Object", "String", "Number",
+				"Boolean", "Math", "Date", "Promise", "Map", "Set", "WeakMap", "WeakSet", "ReadonlyArray",
+				"Partial", "Required", "Pick", "Omit", "Record", "Exclude", "Extract", "NonNullable",
+				"ReturnType", "InstanceType", "ThisType", "Iterable", "Iterator", "AsyncIterable", "AsyncIterator",
+				"Symbol", "BigInt",
+			],
+			operators: ["+", "-", "*", "/", "=", "==", "===", "!=", "!==", "<", ">", "<=", ">=", "&&", "||", "!", "=>", "??=", "??"],
 			comments: {
-				line: '//',
-				blockStart: '/*',
-				blockEnd: '*/'
+				line: "//",
+				blockStart: "/*",
+				blockEnd: "*/"
 			},
 			strings: {
 				single: true,
@@ -81,17 +88,17 @@ export class SyntaxHighlighter {
 		},
 		python: {
 			keywords: [
-				'def', 'class', 'if', 'elif', 'else', 'for', 'while', 'return',
-				'import', 'from', 'as', 'try', 'except', 'finally', 'raise',
-				'with', 'pass', 'break', 'continue', 'lambda', 'yield', 'global',
-				'nonlocal', 'assert', 'del', 'and', 'or', 'not', 'is', 'in',
-				'async', 'await'
+				"def", "class", "if", "elif", "else", "for", "while", "return",
+				"import", "from", "as", "try", "except", "finally", "raise",
+				"with", "pass", "break", "continue", "lambda", "yield", "global",
+				"nonlocal", "assert", "del", "and", "or", "not", "is", "in",
+				"async", "await"
 			],
-			types: ['None', 'True', 'False', 'int', 'float', 'str', 'bool', 'list', 'dict', 'tuple', 'set'],
-			builtins: ['print', 'len', 'range', 'enumerate', 'zip', 'map', 'filter', 'open', 'type', 'isinstance'],
-			operators: ['+', '-', '*', '/', '//', '%', '**', '=', '==', '!=', '<', '>', '<=', '>='],
+			types: ["None", "True", "False", "int", "float", "str", "bool", "list", "dict", "tuple", "set"],
+			builtins: ["print", "len", "range", "enumerate", "zip", "map", "filter", "open", "type", "isinstance"],
+			operators: ["+", "-", "*", "/", "//", "%", "**", "=", "==", "!=", "<", ">", "<=", ">="],
 			comments: {
-				line: '#'
+				line: "#"
 			},
 			strings: {
 				single: true,
@@ -100,19 +107,27 @@ export class SyntaxHighlighter {
 		},
 		java: {
 			keywords: [
-				'public', 'private', 'protected', 'static', 'final', 'class', 'interface',
-				'extends', 'implements', 'new', 'return', 'if', 'else', 'for', 'while',
-				'do', 'switch', 'case', 'break', 'continue', 'try', 'catch', 'finally',
-				'throw', 'throws', 'this', 'super', 'abstract', 'synchronized', 'volatile',
-				'transient', 'native', 'strictfp', 'package', 'import', 'instanceof'
+				"public", "private", "protected", "static", "final", "class", "interface",
+				"extends", "implements", "new", "return", "if", "else", "for", "while",
+				"do", "switch", "case", "break", "continue", "try", "catch", "finally",
+				"throw", "throws", "this", "super", "abstract", "synchronized", "volatile",
+				"transient", "native", "strictfp", "package", "import", "instanceof"
 			],
-			types: ['void', 'int', 'long', 'short', 'byte', 'float', 'double', 'char', 'boolean', 'String'],
-			builtins: ['System', 'Object', 'String', 'Integer', 'Double', 'Boolean', 'Math', 'Thread'],
-			operators: ['+', '-', '*', '/', '%', '=', '==', '!=', '<', '>', '<=', '>=', '&&', '||', '!'],
+			types: ["void", "int", "long", "short", "byte", "float", "double", "char", "boolean", "string"],
+			builtins: [
+				"System", "Object", "String", "Integer", "Double", "Boolean", "Math", "Thread", "Exception",
+				"Runnable", "List", "Map", "Set", "ArrayList", "HashMap", "HashSet", "Arrays", "Collections",
+				"PrintStream", "Scanner", "File", "InputStream", "OutputStream", "BufferedReader", "BufferedWriter",
+				"StringBuilder", "StringBuffer", "Character", "ThreadLocal", "Enum", "Iterable", "Comparator",
+				"Iterator", "Optional", "Stream", "Date", "Calendar", "UUID", "Locale", "TimeZone", "Math",
+				"Runtime", "Process", "ProcessBuilder", "BigInteger", "BigDecimal", "Pattern", "Matcher",
+				"Objects", "Files", "Paths", "StandardCharsets"
+			],
+			operators: ["+", "-", "*", "/", "%", "=", "==", "!=", "<", ">", "<=", ">=", "&&", "||", "!"],
 			comments: {
-				line: '//',
-				blockStart: '/*',
-				blockEnd: '*/'
+				line: "//",
+				blockStart: "/*",
+				blockEnd: "*/"
 			},
 			strings: {
 				single: false,
@@ -121,24 +136,24 @@ export class SyntaxHighlighter {
 		},
 		html: {
 			keywords: [
-				'html', 'head', 'body', 'title', 'meta', 'link', 'script', 'style',
-				'div', 'span', 'p', 'a', 'img', 'ul', 'ol', 'li', 'table', 'tr', 'td', 'th',
-				'form', 'input', 'button', 'select', 'option', 'textarea', 'label',
-				'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'footer', 'nav', 'section',
-				'article', 'aside', 'main', 'figure', 'figcaption', 'iframe', 'video',
-				'audio', 'source', 'canvas', 'svg', 'br', 'hr', 'pre', 'code', 'strong',
-				'em', 'b', 'i', 'u', 'small', 'mark', 'del', 'ins', 'sub', 'sup'
+				"html", "head", "body", "title", "meta", "link", "script", "style",
+				"div", "span", "p", "a", "img", "ul", "ol", "li", "table", "tr", "td", "th",
+				"form", "input", "button", "select", "option", "textarea", "label",
+				"h1", "h2", "h3", "h4", "h5", "h6", "header", "footer", "nav", "section",
+				"article", "aside", "main", "figure", "figcaption", "iframe", "video",
+				"audio", "source", "canvas", "svg", "br", "hr", "pre", "code", "strong",
+				"em", "b", "i", "u", "small", "mark", "del", "ins", "sub", "sup"
 			],
 			types: [],
 			builtins: [
-				'class', 'id', 'src', 'href', 'alt', 'title', 'style', 'type', 'name',
-				'value', 'placeholder', 'action', 'method', 'target', 'rel', 'width',
-				'height', 'charset', 'content', 'lang', 'data-'
+				"class", "id", "src", "href", "alt", "title", "style", "type", "name",
+				"value", "placeholder", "action", "method", "target", "rel", "width",
+				"height", "charset", "content", "lang", "data-"
 			],
 			operators: [],
 			comments: {
-				blockStart: '<!--',
-				blockEnd: '-->'
+				blockStart: "<!--",
+				blockEnd: "-->"
 			},
 			strings: {
 				single: true,
@@ -151,17 +166,17 @@ export class SyntaxHighlighter {
 	private defaultLanguage: string;
 
 	constructor(code: string | CodeBlock[], language?: string | string[]) {
-		this.defaultLanguage = typeof language === 'string'
+		this.defaultLanguage = typeof language === "string"
 			? language
-			: (language?.[0] || 'javascript');
+			: (language?.[0] || "javascript");
 
-		if (typeof code === 'string') {
+		if (typeof code === "string") {
 			// Single code string with single or multiple languages
 			if (Array.isArray(language)) {
 				this.code = language.map((lang, idx) => ({
 					code: idx === 0
 						? code
-						: '',
+						: "",
 					language: lang
 				}));
 			} else {
@@ -179,15 +194,16 @@ export class SyntaxHighlighter {
 	/**
 	 * Parse line highlight specification
 	 * Examples: "1", "1,3,5", "3-5", "1,3-5,7"
+	 * @param {String} lineSpec line specification string
 	 */
 	private parseLineSpec(lineSpec: string): Set<number> {
 		const lines = new Set<number>();
-		const parts = lineSpec.split(',').map(p => p.trim());
+		const parts = lineSpec.split(",").map((part) => part.trim());
 
 		for (const part of parts) {
-			if (part.includes('-')) {
+			if (part.includes("-")) {
 				// Range: "3-5"
-				const [start, end] = part.split('-').map(n => parseInt(n.trim(), 10));
+				const [start, end] = part.split("-").map((value) => parseInt(value.trim(), 10));
 				if (!isNaN(start) && !isNaN(end)) {
 					for (let i = start; i <= end; i++) {
 						lines.add(i);
@@ -207,26 +223,34 @@ export class SyntaxHighlighter {
 
 	/**
 	 * Wrap code lines with highlight spans
+	 * @param {String} html highlighted code HTML
+	 * @param {Set<number>} highlightedLines set of line numbers to highlight
+	 * @returns {String} HTML with highlighted lines wrapped
 	 */
 	private wrapHighlightedLines(html: string, highlightedLines: Set<number>): string {
 		if (highlightedLines.size === 0) {
 			return html;
 		}
 
-		const lines = html.split('\n');
+		const lines = html.split("\n");
 		return lines.map((line, idx) => {
 			const lineNum = idx + 1;
 			if (highlightedLines.has(lineNum)) {
 				return `<div class="line-highlight">${line}</div>`;
 			}
 			return line;
-		}).join('\n');
+		}).join("\n");
 	}
 
+	/**
+	 * Add row numbers to code block
+	 * @param {String} html highlighted code HTML
+	 * @returns {String} HTML with row numbers
+	 */
 	private addRows(html: string): string {
-		const row = html.split('\n');
+		const row = html.split("\n");
 		console.log(`%c ⚡ rows`, "font-size: 24px; color: crimson; background: black;", row);
-		let result = '';
+		let result = "";
 		let i = 0;
 		while (i < row.length) {
 			result += `<div class="row-number">${row[i]}</div>\n`;
@@ -247,11 +271,11 @@ export class SyntaxHighlighter {
 	 */
 	private escapeHtml(text: string): string {
 		const map: { [key: string]: string } = {
-			'&': '&amp;',
-			'<': '&lt;',
-			'>': '&gt;',
-			'"': '&quot;',
-			"'": '&#039;',
+			"&": "&amp;",
+			"<": "&lt;",
+			">": "&gt;",
+			'"': "&quot;",
+			"'": "&#039;",
 		};
 		return text.replace(/[&<>"']/g, m => map[m]);
 	}
@@ -270,7 +294,7 @@ export class SyntaxHighlighter {
 			return this.highlightHTML(code, lang);
 		}
 
-		let result = '';
+		let result = "";
 		let i = 0;
 
 		while (i < code.length) {
@@ -291,7 +315,7 @@ export class SyntaxHighlighter {
 
 			// Check for line comments
 			if (lang.comments.line && code.substring(i, i + lang.comments.line.length) === lang.comments.line) {
-				const end = code.indexOf('\n', i);
+				const end = code.indexOf("\n", i);
 				const lineEnd = end === -1 ? code.length : end + 1;
 				result += `<span class="comment">${this.escapeHtml(code.substring(i, lineEnd))}</span>`;
 				i = lineEnd;
@@ -301,7 +325,7 @@ export class SyntaxHighlighter {
 			// Check for strings
 			if (lang.strings.double && code[i] === '"') {
 				let end = i + 1;
-				while (end < code.length && (code[end] !== '"' || code[end - 1] === '\\')) {
+				while (end < code.length && (code[end] !== '"' || code[end - 1] === "\\")) {
 					end++;
 				}
 				result += `<span class="string">${this.escapeHtml(code.substring(i, end + 1))}</span>`;
@@ -311,7 +335,7 @@ export class SyntaxHighlighter {
 
 			if (lang.strings.single && code[i] === "'") {
 				let end = i + 1;
-				while (end < code.length && (code[end] !== "'" || code[end - 1] === '\\')) {
+				while (end < code.length && (code[end] !== "'" || code[end - 1] === "\\")) {
 					end++;
 				}
 				result += `<span class="string">${this.escapeHtml(code.substring(i, end + 1))}</span>`;
@@ -319,9 +343,9 @@ export class SyntaxHighlighter {
 				continue;
 			}
 
-			if (lang.strings.template && code[i] === '`') {
+			if (lang.strings.template && code[i] === "`") {
 				let end = i + 1;
-				while (end < code.length && (code[end] !== '`' || code[end - 1] === '\\')) {
+				while (end < code.length && (code[end] !== "`" || code[end - 1] === "\\")) {
 					end++;
 				}
 				result += `<span class="string">${this.escapeHtml(code.substring(i, end + 1))}</span>`;
@@ -365,7 +389,7 @@ export class SyntaxHighlighter {
 			if (lang.operators) {
 				let matched = false;
 				for (const op of lang.operators.sort((a, b) => b.length - a.length)) {
-					if (code.substr(i, op.length) === op) {
+					if (code.substring(i, i + op.length) === op) {
 						result += `<span class="operator">${this.escapeHtml(op)}</span>`;
 						i += op.length;
 						matched = true;
@@ -516,7 +540,7 @@ export class SyntaxHighlighter {
 
 				return `<pre class="syntax-highlight syntax-${block.language}"><code>${finalHtmlWithRows}</code></pre>`;
 			})
-			.join('\n');
+			.join("\n");
 	}
 
 	/**
@@ -584,6 +608,7 @@ export class SyntaxHighlighter {
   margin: 0 -16px;
   padding: 0 16px;
   border-left: 3px solid #61afef;
+  height: 100%;
 }
 
 .syntax-highlight .plain {

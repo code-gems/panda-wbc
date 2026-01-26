@@ -41,7 +41,35 @@ class ContentPage extends ContentPageTemplate {
 		{ name: "@change", returnType: "Event", description: "Triggered when user changed selected value." }
 	];
 
-	private _items: any[] = [];
+	private _menuItems: any[] = [
+		{
+			id: "profile",
+			label: "Profile",
+			icon: "user",
+			children: [
+				{
+					id: "view-profile",
+					label: "View Profile",
+					icon: "eye",
+					suffix: "",
+				},
+				{
+					id: "edit-profile",
+					label: "Edit Profile",
+					icon: "pencil"
+				},
+				{
+					separator: true,
+					label: "Separator label",
+				},
+				{
+					id: "settings",
+					label: "Settings",
+					icon: "settings"
+				}
+			]
+		}
+	];
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -73,7 +101,7 @@ class ContentPage extends ContentPageTemplate {
 								<div class="col-full">
 	
 									<panda-menu
-										.items="${this._items}"
+										.items="${this._menuItems}"
 									>
 									</panda-menu>
 	

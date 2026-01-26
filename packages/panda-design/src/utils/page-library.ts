@@ -1,6 +1,8 @@
 // types
 import { Page } from "panda-design-typings";
 
+import { html, TemplateResult } from "lit";
+
 export class PageLibrary {
 	static instance: PageLibrary;
 	private _pageIds: Page[];
@@ -71,6 +73,10 @@ export class PageLibrary {
 	 */
 	public getPageById(pageId: string): Page | null {
 		return this._pageIds.find((page) => page.pageId === pageId) || null;
+	}
+
+	public get emptyTemplate(): TemplateResult {
+		return html``;
 	}
 }
 

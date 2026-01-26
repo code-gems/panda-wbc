@@ -1,28 +1,24 @@
 {
-	"name": "@panda-wbc/panda-button-new",
+	"name": "@panda-wbc/panda-code",
 	"version": "1.0.0",
-	"description": "Native web component - button",
+	"description": "Native web component - code",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-button-new.js",
+	"main": "lib/panda-code.js",
 	"scripts": {
 		"compile": "tsc",
 		"share": "pnpm publish",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
-		"test": "jest",
-		"prepublishOnly": "npm run clean && npm run compile"
+		"prepublishOnly": "npm run clean && npm run compile",
+		"test": "vitest"
 	},
 	"keywords": [
 		"web component",
 		"panda-wbc",
-		"ui component",
-		"ui",
-		"panda-button",
-		"button",
-		"navigation",
-		"call to action",
-		"icon button"
+		"panda-code",
+		"code",
+		"syntax highlighting"
 	],
 	"author": "code-gems",
 	"license": "Apache-2.0",

@@ -191,6 +191,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _renderOverviewSection(): TemplateResult {
 		const ts = `
+// @syntax-ts
 const xxx = async (name: string): Promise<void> => {
   let i ??= 0; // comments
   console.log(\`Hello, \${name}!\`);
@@ -211,7 +212,7 @@ const xxx = async (name: string): Promise<void> => {
 
 		const code = new SyntaxHighlighter([{
 			code: ts,
-			language: 'typescript',
+			language: 'html',
 			line: "2-4,7"
 		}]).highlight();
 

@@ -1,5 +1,5 @@
 import { sum } from "../src/utils/utils";
-import { expect, describe, it } from '@jest/globals';
+import { expect, describe, it } from "vitest";
 
 describe("Utils", () => {
   describe("sum", () => {

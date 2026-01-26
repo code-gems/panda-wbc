@@ -9,9 +9,10 @@
 		"start": "webpack serve",
 		"compile": "tsc",
 		"build": "webpack",
-		"clean": "rimraf lib",
+		"clean": "rimraf dist",
 		"patch": "npm version patch",
-		"prepublishOnly": "npm run clean && npm run compile"
+		"prepublishOnly": "npm run clean && npm run compile",
+		"test": "vitest"
 	},
 	"keywords": [],
 	"author": "code-gems",
@@ -20,7 +21,6 @@
 		"@panda-wbc/panda-badge": "workspace:*",
 		"@panda-wbc/panda-button-group": "workspace:*",
 		"@panda-wbc/panda-button": "workspace:*",
-		"@panda-wbc/panda-button-new": "workspace:*",
 		"@panda-wbc/panda-callout": "workspace:*",
 		"@panda-wbc/panda-carousel": "workspace:*",
 		"@panda-wbc/panda-chart": "workspace:*",
@@ -29,6 +29,7 @@
 		"@panda-wbc/panda-chips": "workspace:*",
 		"@panda-wbc/panda-circular-progress-bar": "workspace:*",
 		"@panda-wbc/panda-click-to-copy": "workspace:*",
+		"@panda-wbc/panda-code": "workspace:*",
 		"@panda-wbc/panda-combo-box": "workspace:*",
 		"@panda-wbc/panda-countdown-timer": "workspace:*",
 		"@panda-wbc/panda-counter": "workspace:*",
@@ -80,7 +81,7 @@
 		"@panda-wbc/panda-upload": "workspace:*",
 		"@panda-wbc/panda-utils": "workspace:*",
 		"@panda-wbc/panda-voice-to-text": "workspace:*",
-		"lit": "^3.0.2",
+		"lit": "^3.3.2",
 		"redux": "^4.1.2",
 		"redux-thunk": "^2.4.1"
 	},
