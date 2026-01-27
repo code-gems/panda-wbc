@@ -63,8 +63,9 @@ class PandaApp extends LitElement {
 		const accentColorId = localStorage.getItem("accentColorId") ?? "blue";
 		
 		// register custom themes
-		// pandaThemeController.registerThemeGroup(redAlertTheme);
-		pandaThemeController.setThemeGroupId(themeGroupId);
+		pandaThemeController.registerThemeGroup(redAlertTheme);
+		// pandaThemeController.setThemeGroupId(themeGroupId);
+		pandaThemeController.setThemeGroupId("red-alert-theme");
 		pandaThemeController.setThemeMode(themeMode as PandaThemeMode);
 		pandaThemeController.setAccentColorId(accentColorId);
 
@@ -84,7 +85,6 @@ class PandaApp extends LitElement {
 
 		pandaThemeController.registerCustomCss("panda-theme", PandaThemeMode.LIGHT, customCssLight);
 		pandaThemeController.registerCustomCss("panda-theme", PandaThemeMode.DARK, customCssDark);
-		// pandaThemeController.useStyleSheets(true);
 	}
 
 	stateChanged(state: Store) {

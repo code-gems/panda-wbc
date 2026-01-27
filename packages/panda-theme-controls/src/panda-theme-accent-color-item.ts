@@ -5,6 +5,9 @@ import { styles } from "./styles/theme-accent-color-item-styles";
 import "@panda-wbc/panda-icon";
 
 export class PandaThemeAccentColorItem extends HTMLElement {
+	/** component version */
+	static readonly version: string = "1.0.0";
+	
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
