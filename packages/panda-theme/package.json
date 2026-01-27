@@ -11,7 +11,8 @@
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
-		"prepublishOnly": "npm run clean && npm run compile"
+		"prepublishOnly": "npm run clean && npm run compile",
+		"test": "vitest"
 	},
 	"keywords": [
 		"native web component",

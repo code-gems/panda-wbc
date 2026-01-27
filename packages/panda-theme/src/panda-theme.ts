@@ -2,6 +2,9 @@
 import pandaThemeController from "./panda-theme-controller";
 
 export class PandaTheme extends HTMLElement {
+	/** component version */
+	static readonly version: string = "1.0.0";
+
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
@@ -31,6 +34,11 @@ export class PandaTheme extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: string, _newValue: string): void {
+		// check if value changed
+		if (_oldValue === _newValue) {
+			return;
+		}
+
 		if (_name === "theme") {
 			this._theme = _newValue;
 			pandaThemeController.setThemeId(this._theme);
@@ -42,6 +50,7 @@ export class PandaTheme extends HTMLElement {
 if (!customElements.get("panda-theme")) {
 	customElements.define("panda-theme", PandaTheme);
 }
+
 declare global {
 	interface HTMLElementTagNameMap {
 		"panda-theme": PandaTheme;

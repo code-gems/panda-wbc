@@ -65,8 +65,8 @@ export class ContentPage extends ContentPageTemplate {
 			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
 				<div class="section">
 					<internal-link theme="h2">Overview</internal-link>
-					<p>
-
+					<p class="text-color-code">
+						The <code>&lt;panda-theme-select&gt;</code> component provides users with an intuitive interface to select and switch between different themes for the application.
 					</p>
 				</div>
 

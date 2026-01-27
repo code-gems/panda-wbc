@@ -1,6 +1,6 @@
 // types
 import { PandaThemeMode, PandaThemeState } from "@panda-wbc/panda-theme";
-import { PandaThemeModeChangeEventDetails, PandaThemeSelectI18nConfig } from "..";
+import { PandaThemeModeChangeEventDetails, PandaThemeSelectI18nConfig } from "../index";
 import { PandaThemePreview } from "./panda-theme-preview";
 
 // theme service

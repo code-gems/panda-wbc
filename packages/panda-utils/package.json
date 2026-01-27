@@ -22,7 +22,7 @@
 		"src/**/*",
 		"lib/**/*",
 		"index.ts",
-		"types.d.ts"
+		"types.ts"
 	],
 	"types": "index.ts"
 }

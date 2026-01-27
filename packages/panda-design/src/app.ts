@@ -58,15 +58,33 @@ class PandaApp extends LitElement {
 
 	protected firstUpdated(): void {
 		// get selected theme or select default one
-		const themeGroupId = localStorage.getItem("themeGroupId") ?? "panda-theme-light";
+		const themeGroupId = localStorage.getItem("themeGroupId") ?? "panda-theme";
 		const themeMode = localStorage.getItem("themeMode") ?? "light";
 		const accentColorId = localStorage.getItem("accentColorId") ?? "blue";
 		
 		// register custom themes
-		pandaThemeController.registerThemeGroup(redAlertTheme);
+		// pandaThemeController.registerThemeGroup(redAlertTheme);
 		pandaThemeController.setThemeGroupId(themeGroupId);
 		pandaThemeController.setThemeMode(themeMode as PandaThemeMode);
 		pandaThemeController.setAccentColorId(accentColorId);
+
+		// register custom css
+		const customCssLight = `
+			:root {
+				/* CODE */
+				--panda-code-text-color: hsl(122deg 39% 49%);
+			}
+		`;
+		const customCssDark = `
+			:root {
+				/* CODE */
+				--panda-code-text-color: hsl(262deg 100% 72%);
+			}
+		`;
+
+		pandaThemeController.registerCustomCss("panda-theme", PandaThemeMode.LIGHT, customCssLight);
+		pandaThemeController.registerCustomCss("panda-theme", PandaThemeMode.DARK, customCssDark);
+		// pandaThemeController.useStyleSheets(true);
 	}
 
 	stateChanged(state: Store) {

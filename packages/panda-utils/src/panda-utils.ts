@@ -150,8 +150,8 @@ export const minValue = (value: number, min: number): number => value < min ? mi
  * @returns The singleton instance.
  */
 export const singleton = <S>(name: string, creator: () => S): S => {
-	const singletons = (window as any).__singletons__ || {};
-	(window as any).__singletons__ = singletons;
+	const singletons = (globalThis as any).__singletons__ || {};
+	(globalThis as any).__singletons__ = singletons;
 	const instance: S = singletons[name] || creator();
 	singletons[name] = instance;
 	return instance;

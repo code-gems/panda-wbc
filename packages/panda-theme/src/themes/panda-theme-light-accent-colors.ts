@@ -1,5 +1,5 @@
 // types
-import { PandaThemeAccentColor } from "../../index";
+import { PandaThemeAccentColor } from "../types";
 
 export const lightAccentColors: PandaThemeAccentColor[] = [
 	{

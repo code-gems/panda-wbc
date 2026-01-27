@@ -1,5 +1,5 @@
 // types
-import { PandaThemeAccentColor } from "../../index";
+import { PandaThemeAccentColor } from "../types";
 
 export const darkAccentColors: PandaThemeAccentColor[] = [
 	{
@@ -76,8 +76,8 @@ export const darkAccentColors: PandaThemeAccentColor[] = [
 		`,
 	},
 	{
-		id: "green",
-		name: "Green",
+		id: "violet",
+		name: "Violet",
 		theme: /*css*/ `
 			:root {
 				/* PRIMARY COLOR */

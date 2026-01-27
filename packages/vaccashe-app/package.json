@@ -9,7 +9,7 @@
 		"start": "webpack serve",
 		"compile": "tsc",
 		"build": "webpack",
-		"clean": "rimraf lib",
+		"clean": "rimraf dist",
 		"patch": "npm version patch",
 		"prepublishOnly": "npm run clean && npm run compile"
 	},

@@ -6,7 +6,7 @@ import {
 	PandaThemeGroup,
 	PandaThemeMode,
 	PandaThemeState,
-} from "../index";
+} from "./types";
 
 // themes
 import { pandaThemeLight } from "./themes/panda-theme-light";
@@ -22,6 +22,8 @@ const LOG_STYLES = "font-size: 16px; color: limegreen; background: black;";
 const LOG_STYLES_WARN = "font-size: 16px; color: orange; background: black;";
 
 class PandaThemeController {
+	/** Component version */
+	static readonly version: string = "1.0.0";
 	static instance: PandaThemeController | undefined;
 
 	private readonly _defaultThemeGroupId!: string;
@@ -35,6 +37,7 @@ class PandaThemeController {
 	private _selectedAccentColorId!: string;
 	private _selectedBrowserThemeMode!: PandaThemeMode;
 	private readonly _darkModeMediaQuery!: MediaQueryList;
+	private _useStyleSheets!: boolean;
 	
 	// subscription/callback list
 	private readonly _callbackList!: Map<string, any>;
@@ -84,6 +87,7 @@ class PandaThemeController {
 		this._darkModeMediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
 		this._selectedBrowserThemeMode = this._getBrowserThemeMode();
 		this._callbackList = new Map();
+		this._useStyleSheets = false;
 
 		// initialize events
 		this._deviceThemeChangeEvent = this._onDeviceThemeChange.bind(this);
@@ -95,7 +99,7 @@ class PandaThemeController {
 		this._updateThemeMetadata();
 
 		// get theme element handle
-		this._themeEl = document.querySelector("[panda-theme]");
+		this._themeEl = document.querySelector(`[data-sheet-id="panda-theme"]`);
 
 		// apply default theme
 		this._applyTheme();
@@ -125,9 +129,8 @@ class PandaThemeController {
 		// if theme group exists, update its styles
 		if (existingThemeGroup) {
 			console.log(
-				"%c ⚠️ [PANDA THEME CONTROLLER] (registerThemeGroup) Theme group already registered! Updating group!",
+				`%c ⚠️ [PANDA THEME CONTROLLER] (registerThemeGroup) Theme group ${themeGroup.name} already registered! Updating group!`,
 				LOG_STYLES_WARN,
-				themeGroup.name
 			);
 
 			this._themeGroups = this._themeGroups.map((group) => {
@@ -228,7 +231,7 @@ class PandaThemeController {
 			this._selectedAccentColorId = thisAccentColor.id;
 			this._applyTheme();
 		} else {
-			console.warn(
+			console.log(
 				`%c ⚠️ [PANDA THEME CONTROLLER] (setAccentColor) Accent color with id "${accentColorId}" not found in the current theme.`,
 				LOG_STYLES_WARN
 			);
@@ -321,11 +324,204 @@ class PandaThemeController {
 
 	/**
 	 * Remove subscription for theme state updates.
-	 * @param callbackId callback id to unsubscribe from updates
+	 * @param {String} callbackId callback id to unsubscribe from updates
 	 */
 	public unsubscribe(callbackId: string): void {
 		// remove subscription
 		this._callbackList.delete(callbackId);
+	}
+
+	/**
+	 * Register custom CSS for a specific theme group id and theme mode.
+	 * @param {String} themeGroupId - theme group id to associate the custom CSS with
+	 * @param {PandaThemeMode} themeMode - theme mode (light or dark) to associate the custom CSS with
+	 * @param {String} css - custom CSS string to apply when the theme is active
+	 */
+	public registerCustomCss(themeGroupId: string, themeMode: PandaThemeMode, css: string, accentColorId: string | null = null): void {
+		if (themeMode === PandaThemeMode.SYSTEM) {
+			console.log(
+				"%c ⚠️ [PANDA THEME CONTROLLER] (registerCustomCss) Cannot register custom CSS for SYSTEM mode. Use LIGHT or DARK mode instead.",
+				LOG_STYLES_WARN
+			);
+			return;
+		}
+
+		// find theme group by id
+		const themeGroup = this._themeGroups.find(({ id }) => id === themeGroupId);
+		// check if theme group exists
+		if (!themeGroup) {
+			console.log(
+				`%c ⚠️ [PANDA THEME CONTROLLER] (registerCustomCss) Theme group ${themeGroupId} not found.`,
+				LOG_STYLES_WARN
+			);
+			return;
+		}
+		// find theme details based on mode
+		const themeDetails = themeMode === PandaThemeMode.LIGHT
+			? themeGroup.light
+			: themeGroup.dark;
+		
+		if (!themeDetails) {
+			console.log(
+				`%c ⚠️ [PANDA THEME CONTROLLER] (registerCustomCss) Theme details for mode ${themeMode} in group ${themeGroupId} not found.`,
+				LOG_STYLES_WARN
+			);
+			return;
+		}
+
+		// check if theme accent color id was provided
+		if (accentColorId) {
+			// find accent color
+			const accentColor = themeDetails.accentColors.find(({ id }) => id === accentColorId);
+			if (accentColor) {
+				accentColor.customCss = css;
+			} else {
+				console.log(
+					`%c ⚠️ [PANDA THEME CONTROLLER] (registerCustomCss) Accent color with id "${accentColorId}" not found in theme group "${themeGroupId}".`,
+					LOG_STYLES_WARN
+				);
+				return;
+			}
+		} else {
+			// set custom CSS on theme details
+			themeDetails.customCss = css;
+		}
+
+		console.log(
+			`%c ⚡ [PANDA THEME CONTROLLER] (registerCustomCss) Registered custom CSS for theme "${themeGroupId}" in ${themeMode} mode`,
+			LOG_STYLES
+		);
+
+		// reapply theme if the custom CSS is for the currently active theme
+		const finalThemeMode = this._getFinalThemeMode();
+		if (this._selectedThemeGroupId === themeGroupId && finalThemeMode === themeMode) {
+			this._applyTheme();
+		}
+	}
+
+	/**
+	 * Unregister custom CSS for a specific theme group id and theme mode.
+	 * @param {String} themeGroupId - the theme group id
+	 * @param {PandaThemeMode} themeMode - the theme mode (light or dark)
+	 * @param {String} accentColorId - optional accent color id
+	 */
+	public unregisterCustomCss(themeGroupId: string, themeMode: PandaThemeMode, accentColorId: string | null = null): void {
+		// 1. validate theme mode
+		if (themeMode === PandaThemeMode.SYSTEM) {
+			console.log(
+				"%c ⚠️ [PANDA THEME CONTROLLER] (unregisterCustomCss) Cannot unregister custom CSS for SYSTEM mode. Use LIGHT or DARK mode instead.",
+				LOG_STYLES_WARN
+			);
+			return;
+		}
+
+		// 2. find theme group by id
+		const themeGroup = this._themeGroups.find(({ id }) => id === themeGroupId);
+		// check if theme group exists
+		if (!themeGroup) {
+			console.log(
+				`%c ⚠️ [PANDA THEME CONTROLLER] (unregisterCustomCss) Theme group ${themeGroupId} not found.`,
+				LOG_STYLES_WARN
+			);
+			return;
+		}
+
+		// 3. find theme details based on mode
+		const themeDetails = themeMode === PandaThemeMode.LIGHT
+			? themeGroup.light
+			: themeGroup.dark;
+			
+		if (!themeDetails) {
+			console.log(
+				`%c ⚠️ [PANDA THEME CONTROLLER] (unregisterCustomCss) Theme details for mode ${themeMode} in group ${themeGroupId} not found.`,
+				LOG_STYLES_WARN
+			);
+			return;
+		}
+		
+		// 4. check if theme accent color id was provided
+		if (accentColorId) {
+			// find accent color
+			const accentColor = themeDetails.accentColors.find(({ id }) => id === accentColorId);
+
+			if (accentColor) {
+				accentColor.customCss = "";
+			} else {
+				console.log(
+					`%c ⚠️ [PANDA THEME CONTROLLER] (unregisterCustomCss) Accent color with id "${accentColorId}" not found in theme group "${themeGroupId}".`,
+					LOG_STYLES_WARN
+				);
+				return;
+			}
+		} else {
+			// remove custom CSS from theme details
+			themeDetails.customCss = "";
+		}
+		// reapply theme
+		this._applyTheme();
+	}
+
+	/**
+	 * Get registered custom CSS for a specific theme group id and theme mode.
+	 * @param {String} themeGroupId - the theme group id
+	 * @param {PandaThemeMode|String} themeMode - the theme mode (light or dark)
+	 * @param {String|null} accentColorId - optional accent color id
+	 * @returns {String|null} - the registered custom CSS or null if not found
+	 */
+	public getCustomCss(themeGroupId: string, themeMode: PandaThemeMode, accentColorId: string | null = null): string | null {
+		// find theme group by id
+		const themeGroup = this._themeGroups.find(({ id }) => id === themeGroupId);
+		// check if theme group exists
+		if (!themeGroup) {
+			console.log(
+				`%c ⚠️ [PANDA THEME CONTROLLER] (getCustomCss) Theme group ${themeGroupId} not found.`,
+				LOG_STYLES_WARN
+			);
+			return null;
+		}
+		// find theme details based on mode
+		const themeDetails = themeMode === PandaThemeMode.LIGHT
+			? themeGroup.light
+			: themeGroup.dark;
+
+		if (!themeDetails) {
+			console.log(
+				`%c ⚠️ [PANDA THEME CONTROLLER] (getCustomCss) Theme details for mode ${themeMode} in group ${themeGroupId} not found.`,
+				LOG_STYLES_WARN
+			);
+			return null;
+		}
+
+		if (accentColorId) {
+			// find accent color
+			const accentColor = themeDetails.accentColors.find(({ id }) => id === accentColorId);
+			if (accentColor) {
+				return accentColor.customCss ?? null;
+			} else {
+				console.log(
+					`%c ⚠️ [PANDA THEME CONTROLLER] (getCustomCss) Accent color with id "${accentColorId}" not found in theme group "${themeGroupId}".`,
+					LOG_STYLES_WARN
+				);
+				return null;
+			}
+		} else {
+			return themeDetails.customCss ?? null;
+		}
+	}
+
+	/**
+	 * Enable or disable the use of CSSStyleSheets for theme application.
+	 * @param {boolean} enable - true to enable CSSStyleSheets, false to disable
+	 */
+	public useStyleSheets(enable: boolean): void {
+		this._useStyleSheets = enable;
+
+		if (enable && this._themeEl) {
+			// remove existing style element
+			this._themeEl.remove();
+			this._themeEl = null;
+		}
+		this._applyTheme();
 	}
 
 	// ================================================================================================================
@@ -337,31 +533,41 @@ class PandaThemeController {
 		if (selectedThemeOption) {
 			// aggregate all styles
 			const allStyles: string[] = [];
+			// find selected accent color
+			const selectedAccentColor = selectedThemeOption.accentColors.find(({ id }) => id === this._selectedAccentColorId);
 			// get accent color styles
-			const accentColorsStyles = selectedThemeOption.accentColors.find((color) => color.id === this._selectedAccentColorId)?.theme.toString() ?? "";
-			// add main stylesheet
-			allStyles.push(selectedThemeOption.theme.toString());
-			// add accent colors
-			allStyles.push(accentColorsStyles);
+			const accentColorsStyles = selectedAccentColor?.theme.toString() ?? "";
+			// get custom css styles
+			const customCss = selectedThemeOption.customCss ? selectedThemeOption.customCss.toString() : "";
+			// get custom css for accent color
+			const accentColorCustomCss = selectedAccentColor?.customCss ?? "";
 
+			// add main stylesheet & accent colors
+			allStyles.push(
+				selectedThemeOption.theme.toString(),
+				accentColorsStyles,
+				customCss,
+				accentColorCustomCss,
+			);
+			
 			// check support for StyleSheets
-			if (document.adoptedStyleSheets) {
+			if (document.adoptedStyleSheets && this._useStyleSheets) {
 				// modern browsers
 				const themeStyles = new CSSStyleSheet();
 				// apply stylesheet
-				themeStyles.replaceSync(allStyles.join(" "));
+				themeStyles.replaceSync(allStyles.join("\n"));
 				document.adoptedStyleSheets = [themeStyles];
-			} 
-			else if (this._themeEl) { // check if theme element exists
-				this._themeEl.innerHTML = allStyles.join(" ");
-				this._themeEl.setAttribute("data-theme-id", this._selectedThemeId);
-				this._themeEl.setAttribute("data-accent-colors", this._selectedAccentColorId);
+			} else if (this._themeEl) { // check if theme element exists
+				this._themeEl.innerHTML = allStyles.join("\n");
+				this._themeEl.dataset.themeId = this._selectedThemeId;
+				this._themeEl.dataset.accentColorId = this._selectedAccentColorId;
 			} else {
+				// create style element
 				this._themeEl = document.createElement("style");
-				this._themeEl.innerHTML = allStyles.join(" ");
-				this._themeEl.setAttribute("panda-theme", "");
-				this._themeEl.setAttribute("data-theme-id", this._selectedThemeId);
-				this._themeEl.setAttribute("data-accent-colors", this._selectedAccentColorId);
+				this._themeEl.innerHTML = allStyles.join("\n");
+				this._themeEl.dataset.sheetId = "panda-theme";
+				this._themeEl.dataset.themeId = this._selectedThemeId;
+				this._themeEl.dataset.accentColorId = this._selectedAccentColorId;
 				document.head.appendChild(this._themeEl);
 			}
 			// trigger theme change event
@@ -369,7 +575,7 @@ class PandaThemeController {
 			// notify subscribers
 			this._notify();
 		} else {
-			console.warn(
+			console.log(
 				`%c ⚠️ [PANDA THEME CONTROLLER] (applyTheme) Theme option with id "${this._selectedThemeId}" not found.`,
 				LOG_STYLES_WARN
 			);
@@ -457,7 +663,7 @@ class PandaThemeController {
 	 * @returns {String|null} The value of the token, or null if not found.
 	 */
 	private _findTokenValue(stylesheet: string, tokenName: string): string | null {
-		const regex = new RegExp(`${tokenName}:\\s*([^;]+);`);
+		const regex = new RegExp(String.raw`${tokenName}:\s*([^;]+);`);
 		const match = regex.exec(stylesheet);
 
 		return match?.[1]?.trim() ?? null;
@@ -494,7 +700,7 @@ class PandaThemeController {
 			if (!thisAccentColor) {
 				this._selectedAccentColorId = accentColors[0].id;
 				console.log(
-					`%c 🧪 [PANDA THEME CONTROLLER] (_updateAccentColorId) Theme accent color id not found! defaulting to first accent color!" ${this._selectedAccentColorId}"`,
+					`%c 🧪 [PANDA THEME CONTROLLER] (_updateAccentColorId) Theme accent color id not found! defaulting to first accent color! "${this._selectedAccentColorId}"`,
 					LOG_STYLES_WARN
 				);
 			}
@@ -534,7 +740,7 @@ export const pandaThemeController = singleton("pandaThemeController", () => new 
 export default pandaThemeController;
 
 // register as global variable
-(window as any).pandaThemeController = pandaThemeController;
+(globalThis as any).pandaThemeController = pandaThemeController;
 
 /**
  * Adding onThemeChange() callback to component class.
