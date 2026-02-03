@@ -615,6 +615,7 @@ export const pandaThemeDark = /*css*/`
 		--panda-scrollbar-thumb-border-radius: 3px;
 		--panda-scrollbar-track-background-color: var(--panda-background-color-100);
 		--panda-scrollbar-track-border-radius: 3px;
+
 	}
 
 	body {

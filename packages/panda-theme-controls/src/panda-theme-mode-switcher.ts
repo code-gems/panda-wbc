@@ -215,10 +215,11 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 		const clickedItem = (event.target as HTMLDivElement).closest(".btn") as HTMLDivElement;
 		if (clickedItem != null) {
 			this._themeMode = clickedItem.dataset.mode as PandaThemeMode;
-			console.log(`%c ⚡ (_onThemeModeChange) ${this._themeMode}`, "font-size: 24px; color: crimson; background: black;");
-
+			// set theme mode in theme controller
 			pandaThemeController.setThemeMode(this._themeMode);
+			// update component state
 			this._updateState();
+			// dispatch change event
 			this.dispatchEvent(new CustomEvent<PandaThemeModeChangeEventDetails>("change", {
 				detail: {
 					themeMode: this._themeMode

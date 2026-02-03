@@ -162,6 +162,7 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "voice-mail-box",			iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs", "box"] },
 		{ name: "voice-mail-circle",		iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs", "circle", "round"] },
 		{ name: "microbit",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["device", "microbit"] },
+		{ name: "monitor",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["device", "monitor", "screen", "display", "tv", "television"] },
 		
 		// Map Icon Pack ========================================
 		{ name: "briefcase",				iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "briefcase", "work", "workplace", "job"] },

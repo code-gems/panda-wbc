@@ -36,6 +36,8 @@ export type PandaThemeGroup = {
 	name: string; // theme group name eg.: "Panda Theme"
 	light: PandaThemeDetails;
 	dark: PandaThemeDetails;
+	description?: string; // theme group description
+	previewTokens?: string; // css string for preview tokens
 }
 
 // ====================================================================================================================

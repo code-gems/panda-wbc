@@ -2,6 +2,7 @@
 import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
 import {
 	PandaThemeAccentColorListChangeEvent,
+	PandaThemeGroupChangeEvent,
 	PandaThemeModeChangeEvent,
 	PandaThemeSelectI18nConfig,
 } from "@panda-wbc/panda-theme-controls";
@@ -10,9 +11,11 @@ import {
 import { styles } from "./styles/styles";
 
 // components
+import "@panda-wbc/panda-theme-controls/lib/panda-theme-group-select";
 import "@panda-wbc/panda-theme-controls/lib/panda-theme-mode-select";
 import "@panda-wbc/panda-theme-controls/lib/panda-theme-mode-switcher";
 import "@panda-wbc/panda-theme-controls/lib/panda-theme-accent-color-list";
+import "@panda-wbc/panda-theme-controls/lib/panda-theme-group-preview";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -73,6 +76,15 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
+							<div class="row">
+								<div class="col-full">
+									<panda-theme-group-select
+										@change="${this._themeGroupChangeEvent}"
+									></panda-theme-group-select>
+								</div>
+							</div>
+
+
 							<div class="row">
 								<div class="col-full">
 									<panda-theme-mode-select
@@ -251,6 +263,15 @@ export class ContentPage extends ContentPageTemplate {
 
 		toastCenter.createToast({
 			message: `Accent color changed to ${accentColorId}`,
+			theme: "done",
+			icon: "check-circle",
+		});
+	}
+
+	private _themeGroupChangeEvent(event: PandaThemeGroupChangeEvent): void {
+		const themeGroupId = event.detail.themeGroupId;
+		toastCenter.createToast({
+			message: `Theme group changed to ${themeGroupId}`,
 			theme: "done",
 			icon: "check-circle",
 		});

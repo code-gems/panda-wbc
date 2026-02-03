@@ -30,3 +30,9 @@ export type PandaThemeAccentColorListChangeEventDetails = {
 }
 
 export interface PandaThemeAccentColorListChangeEvent extends CustomEvent<PandaThemeAccentColorListChangeEventDetails> {}
+
+export type PandaThemeGroupChangeEventDetails = {
+	themeGroupId: string;
+}
+
+export interface PandaThemeGroupChangeEvent extends CustomEvent<PandaThemeGroupChangeEventDetails> {}

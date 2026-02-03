@@ -61,6 +61,7 @@ class PandaThemeController {
 		this._themeGroups = [{
 			id: "panda-theme",
 			name: "Panda Theme",
+			description: "The default Panda system theme with light and dark modes.",
 			light: {
 				id: "panda-theme-light",
 				name: "Light Theme",
@@ -117,6 +118,16 @@ class PandaThemeController {
 	/** Get all registered theme groups */
 	public getThemeGroups(): PandaThemeGroup[] {
 		return this._themeGroups;	
+	}
+
+	/**
+	 * Get theme group by id.
+	 * @param {String} themeGroupId theme group id
+	 * @returns {PandaThemeGroup|null} theme group object or null if not found
+	 */
+	public getThemeGroupById(themeGroupId: string): PandaThemeGroup | null {
+		const themeGroup = this._themeGroups.find(({ id }) => id === themeGroupId);
+		return themeGroup ?? null;
 	}
 
 	/**

@@ -8,7 +8,7 @@ export const styles = /*css*/`
 		display: flex;
 		flex-flow: row wrap;
 		gap: var(--panda-theme-mode-select-gap, 10px);
-		background-color: var(--panda-theme-mode-select-background-color, hsl(0deg 0% 100%));
+		background-color: var(--panda-theme-mode-select-background-color, transparent);
 	}
 
 	.theme-select > .theme-item {
@@ -76,7 +76,7 @@ export const styles = /*css*/`
 		color: var(--panda-theme-mode-select-item-header-text-color, var(--panda-text-color, hsl(210deg 5% 25%)));
 		font-family: var(--panda-theme-mode-select-item-header-font-family, var(--panda-font-family, "Poppins"));
 		font-style: var(--panda-theme-mode-select-item-header-font-style, normal);
-		font-size: var(--panda-theme-mode-select-item-header-font-size, var(--panda-font-size-m, 16px));
+		font-size: var(--panda-theme-mode-select-item-header-font-size, var(--panda-font-size-m, 14px));
 		line-height: var(--panda-theme-mode-select-item-header-line-height, 1.2em);
 		user-select: none;
 	}
@@ -116,7 +116,6 @@ export const styles = /*css*/`
 		border-top-style: var(--panda-theme-mode-select-item-footer-border-style, solid);
 		border-top-width: var(--panda-theme-mode-select-item-footer-border-width, 1px);
 		border-top-color: var(--panda-theme-mode-select-item-footer-border-color, var(--panda-border-color, hsl(207deg 1% 85%)));
-		background-color: var(--panda-theme-mode-select-item-footer-background-color, hsl(0deg 0% 96%));
 
 		border-bottom-style: var(--panda-theme-mode-select-item-footer-border-style, solid);
 		border-bottom-width: var(--panda-theme-mode-select-item-footer-border-width, 1px);

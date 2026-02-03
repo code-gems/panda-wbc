@@ -13,6 +13,9 @@ import { styles } from "./styles/theme-mode-select-styles";
 import "@panda-wbc/panda-icon";
 import "./panda-theme-preview";
 
+// utils
+import { getDefaultI18nConfig } from "./utils/utils";
+
 @themeWatch()
 export class PandaThemeModeSelect extends HTMLElement {
 	/** component version */
@@ -31,7 +34,7 @@ export class PandaThemeModeSelect extends HTMLElement {
 
 	set i18n(value: PandaThemeSelectI18nConfig) {
 		this._i18n = {
-			...this._getDefaultI18nConfig(),
+			...getDefaultI18nConfig(),
 			...value,
 		};
 		this._updateThemeLabel();
@@ -165,10 +168,7 @@ export class PandaThemeModeSelect extends HTMLElement {
 
 		// initialize class properties
 		this._themeMode = pandaThemeController.getThemeMode();
-		this._i18n = this._getDefaultI18nConfig();
-
-		// init events
-		this._themeModeChangeEvent = this._onThemeModeChange.bind(this);
+		this._i18n = getDefaultI18nConfig();
 
 		// get template element handles
 		if (this.shadowRoot) {
@@ -189,14 +189,17 @@ export class PandaThemeModeSelect extends HTMLElement {
 			this._headerIconDarkEl = this.shadowRoot.querySelector("#dark .header .icon") as HTMLDivElement;
 			this._footerTextDarkEl = this.shadowRoot.querySelector("#dark .footer .title") as HTMLDivElement;
 			this._footerDescriptionDarkEl = this.shadowRoot.querySelector("#dark .footer .description") as HTMLDivElement;
+
+			// init event binders
+			this._themeModeChangeEvent = this._onThemeModeChange.bind(this);
+			// add event listeners to component template
+			this._themePreviewSystemEl.addEventListener("click", () => this._themeModeChangeEvent("system"));
+			this._themePreviewLightEl.addEventListener("click", () => this._themeModeChangeEvent("light"));
+			this._themePreviewDarkEl.addEventListener("click", () => this._themeModeChangeEvent("dark"));
 		}
 	}
 
 	connectedCallback() {
-		// add event listeners to component template
-		this._themePreviewSystemEl.addEventListener("click", () => this._themeModeChangeEvent("system"));
-		this._themePreviewLightEl.addEventListener("click", () => this._themeModeChangeEvent("light"));
-		this._themePreviewDarkEl.addEventListener("click", () => this._themeModeChangeEvent("dark"));
 		this._updateState();
 		this._updateThemeLabel();
 	}
@@ -266,28 +269,7 @@ export class PandaThemeModeSelect extends HTMLElement {
 		this._footerDescriptionDarkEl.textContent = this._i18n.darkFooterDescription as string;
 	}
 
-	/**
-	 * Get the default internationalization (i18n) configuration.
-	 * @returns {PandaThemeSelectI18nConfig} The default i18n configuration.
-	 */
-	private _getDefaultI18nConfig(): PandaThemeSelectI18nConfig {
-		return {
-			lightHeaderText: "Light Theme",
-			lightHeaderIcon: "sun",
-			lightFooterText: "Light Mode",
-			lightFooterDescription: "Bright and clear light color scheme for well-lit environments",
-
-			darkHeaderText: "Dark Theme",
-			darkHeaderIcon: "moon",
-			darkFooterText: "Dark Mode",
-			darkFooterDescription: "Eyes friendly dark color scheme for low light environments",
-
-			systemHeaderText: "System Theme",
-			systemHeaderIcon: "monitor",
-			systemFooterText: "System Preference",
-			systemFooterDescription: "This theme will fallback to your system settings.",
-		};
-	}
+	
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
