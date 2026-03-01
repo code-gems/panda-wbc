@@ -40,7 +40,7 @@ export class PandaThemeModeSelect extends HTMLElement {
 		this._updateThemeLabel();
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	private _themeMode!: PandaThemeMode;
 

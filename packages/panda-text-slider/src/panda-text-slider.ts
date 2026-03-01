@@ -87,7 +87,7 @@ export class PandaTextSlider extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	private _slideMetadataList!: SlideMetadata[];
 

@@ -206,7 +206,7 @@ export class PandaCheckbox extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	private _hasLabel!: boolean;
 	private _ready!: boolean;

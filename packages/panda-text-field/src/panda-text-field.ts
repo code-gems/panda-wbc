@@ -432,7 +432,7 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 	private _ready!: boolean;
 	private _focused!: boolean;
 	private _withPrefix!: boolean;

@@ -102,6 +102,7 @@ export class PandaDatePicker extends HTMLElement {
 	 * format
 	 * ------
 	 * Defines the format in which the date value is displayed in the input field and how user input is parsed.
+	 * @type {string}
 	 * @default "YYYY-MM-DD"
 	 * @remarks The format string can include the following tokens:
 	 * - YYYY: 4-digit year (e.g., 2020)
@@ -948,7 +949,7 @@ export class PandaDatePicker extends HTMLElement {
 
 	private _i18n!: PandaDatePickerI18nConfig;
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 	private _ready!: boolean;
 	private _focused!: boolean;
 	private _showMandatoryFlag!: boolean;

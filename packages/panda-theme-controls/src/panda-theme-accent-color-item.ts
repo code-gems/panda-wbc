@@ -95,7 +95,7 @@ export class PandaThemeAccentColorItem extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	// template elements
 	private readonly _accentColorEl!: HTMLDivElement;

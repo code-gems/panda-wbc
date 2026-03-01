@@ -71,7 +71,7 @@ export class PandaThemeModeSwitcher extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	private _themeMode!: PandaThemeMode;
 

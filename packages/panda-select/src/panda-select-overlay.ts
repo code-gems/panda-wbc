@@ -210,7 +210,7 @@ export class PandaSelectOverlay extends HTMLElement {
 	/** Custom filter function. */
 	filter!: (item: SuperItem, searchText: string) => boolean;
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	/** Flag to indicate if the component is ready. */
 	private _ready!: boolean;

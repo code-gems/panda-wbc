@@ -90,7 +90,7 @@ export class PandaButton extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
 	private _ready!: boolean;

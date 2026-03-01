@@ -204,7 +204,7 @@ export class PandaDatePickerOverlay extends HTMLElement {
 		this._parentDetails = value;
 	}	
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 	private _ready = false;
 
 	// elements

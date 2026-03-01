@@ -749,7 +749,7 @@ export class PandaSelect extends HTMLElement {
 	
 	filter!: (item: SuperItem, searchText: string) => boolean;
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	private _parsedItems!: SuperItem[];
 	/** Flag to indicate if the component is ready. */

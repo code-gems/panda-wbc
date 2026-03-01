@@ -17,7 +17,7 @@ export class PandaThemeGroupSelect extends HTMLElement {
 	/** component version */
 	static readonly version: string = "1.0.0";
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	private _selectedThemeGroupId!: string;
 

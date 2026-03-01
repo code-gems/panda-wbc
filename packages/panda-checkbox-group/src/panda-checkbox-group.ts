@@ -127,7 +127,7 @@ export class PandaCheckboxGroup extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 	private _ready!: boolean;
 	private _checkboxEls!: Element[];
 

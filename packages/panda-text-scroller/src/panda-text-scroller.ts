@@ -48,7 +48,7 @@ export class PandaTextScroller extends HTMLElement {
 		}
 	}
 
-	// view properties ================================================================================================
+	// private properties =============================================================================================
 
 	/** Indicates if scroll animation is ongoing */
 	private _animating!: boolean;
