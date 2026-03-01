@@ -9,8 +9,8 @@ import { styles } from "./styles/styles";
 // theme service
 import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
-// custom themes
-import { redAlertTheme } from "./themes/red-alert-theme/red-alert-theme";
+// register custom theme
+import "./themes/red-alert-theme/red-alert-theme";
 
 // components
 import "@panda-wbc/panda-theme";
@@ -31,7 +31,7 @@ import { appStore, reduxify } from "./redux/store";
 import { getRouterConfig } from "./router-config";
 
 // actions
-import { gotoPage, changeTheme } from "./redux/actions/common";
+import { gotoPage } from "./redux/actions/common";
 
 @customElement("panda-design-app")
 @reduxify()
@@ -62,10 +62,8 @@ class PandaApp extends LitElement {
 		const themeMode = localStorage.getItem("themeMode") ?? "light";
 		const accentColorId = localStorage.getItem("accentColorId") ?? "blue";
 		
-		// register custom themes
-		pandaThemeController.registerThemeGroup(redAlertTheme);
-		// pandaThemeController.setThemeGroupId(themeGroupId);
-		pandaThemeController.setThemeGroupId("red-alert-theme");
+		pandaThemeController.setThemeGroupId(themeGroupId);
+		// pandaThemeController.setThemeGroupId("red-alert-theme");
 		pandaThemeController.setThemeMode(themeMode as PandaThemeMode);
 		pandaThemeController.setAccentColorId(accentColorId);
 

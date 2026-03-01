@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-text-slider",
 	"version": "1.0.0",
-	"description": "Native based web component - text slider",
+	"description": "Native web component - text slider",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-text-slider.js",
 	"scripts": {
@@ -24,8 +24,10 @@
 	"dependencies": {},
 	"files": [
 		"src",
-		"lib"
+		"lib",
+		"index.d.ts"
 	],
+	"types": "index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	}

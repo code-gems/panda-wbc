@@ -1,0 +1,1 @@
+export type { PandaTextSlider } from "./src/panda-text-slider";

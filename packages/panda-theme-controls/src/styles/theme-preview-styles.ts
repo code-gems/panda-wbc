@@ -20,25 +20,19 @@ export const styles = /*css*/`
 	
 	/* LIGHT THEME */
 	.light .background { fill: var(--panda-theme-preview-background-color, hsl(0deg 0% 95%)); }
-
 	.light .app-background {
 		fill: var(--panda-theme-preview-app-background-color, hsl(0deg 0% 92%));
-		stroke: var(--panda-theme-preview-app-background-border-color, hsl(0deg 0% 80%));
+		stroke: var(--panda-theme-preview-app-border-color, hsl(0deg 0% 80%));
 	}
 
+	.light .tab { fill: var(--panda-theme-preview-tab-color, hsl(0deg 0% 92%)); }
+	.light .tab.selected { fill: var(--panda-theme-preview-tab-color-selected, hsl(0deg 0% 82%)); }
+	.light .tab.primary { fill: var(--panda-theme-preview-tab-color-primary, hsl(209deg 78% 46%)); }
 	.light .tabs-background { fill: var(--panda-theme-preview-tabs-background-color, hsl(0deg 0% 100%)); }
 
-	.light .tab { fill: var(--panda-theme-preview-tab-color, hsl(0deg 0% 92%)); }
-
-	.light .tab.selected { fill: var(--panda-theme-preview-tab-selected-color, hsl(0deg 0% 82%)); }
-
-	.light .tab.primary { fill: var(--panda-theme-preview-tab-primary-color, hsl(209deg 78% 46%)); }
-
-	.light .sidebar-background { fill: var(--panda-theme-preview-sidebar-background-color, hsl(0deg 3% 22%)); }
-
 	.light .sidebar-item { fill: var(--panda-theme-preview-sidebar-item-color, hsl(0deg 3% 32%)); }
-
-	.light .sidebar-item.selected { fill: var(--panda-theme-preview-sidebar-item-selected-color, hsl(0deg 3% 42%)); }
+	.light .sidebar-item.selected { fill: var(--panda-theme-preview-sidebar-item-color-selected, hsl(0deg 3% 42%)); }
+	.light .sidebar-background { fill: var(--panda-theme-preview-sidebar-background-color, hsl(0deg 3% 22%)); }
 
 	.light .content {
 		fill: var(--panda-theme-preview-content-color, hsl(0deg 0% 100%));
@@ -52,26 +46,20 @@ export const styles = /*css*/`
 
 	/* DARK THEME */
 	.dark .background { fill: var(--panda-theme-preview-background-color-dark, hsl(274deg 30% 15%)); }
-
 	.dark .app-background {
 		fill: var(--panda-theme-preview-app-background-color-dark, hsl(274deg 30% 20%));
 		stroke: var(--panda-theme-preview-app-border-color-dark, hsl(274deg 30% 30%));
 	}
 
-	.dark .tabs-background { fill: var(--panda-theme-preview-tabs-background-color-dark, hsl(274deg 30% 25%)); }
-
 	.dark .tab { fill: var(--panda-theme-preview-tab-color-dark, hsl(274deg 30% 35%)); }
-
-	.dark .tab.selected { fill: var(--panda-theme-preview-tab-selected-color-dark, hsl(274deg 30% 40%)); }
-
-	.dark .tab.primary { fill: var(--panda-theme-preview-tab-primary-color-dark, hsl(344deg 100% 64%)); }
-
-	.dark .sidebar-background { fill: var(--panda-theme-preview-sidebar-background-color-dark, hsl(274deg 30% 12%)); }
-
+	.dark .tab.selected { fill: var(--panda-theme-preview-tab-color-selected-dark, hsl(274deg 30% 40%)); }
+	.dark .tab.primary { fill: var(--panda-theme-preview-tab-color-primary-dark, hsl(344deg 100% 64%)); }
+	.dark .tabs-background { fill: var(--panda-theme-preview-tabs-background-color-dark, hsl(274deg 30% 25%)); }
+	
 	.dark .sidebar-item { fill: var(--panda-theme-preview-sidebar-item-color-dark, hsl(274deg 30% 32%)); }
-
-	.dark .sidebar-item.selected { fill: var(--panda-theme-preview-sidebar-item-selected-color-dark, hsl(274deg 30% 42%)); }
-
+	.dark .sidebar-item.selected { fill: var(--panda-theme-preview-sidebar-item-color-selected-dark, hsl(274deg 30% 42%)); }
+	.dark .sidebar-background { fill: var(--panda-theme-preview-sidebar-background-color-dark, hsl(274deg 30% 12%)); }
+	
 	.dark .content {
 		fill: var(--panda-theme-preview-content-color-dark, hsl(274deg 30% 30%));
 		stroke: var(--panda-theme-preview-content-border-color-dark, hsl(275deg 31% 12%));

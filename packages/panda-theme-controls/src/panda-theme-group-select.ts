@@ -5,12 +5,12 @@ import { PandaThemeGroupChangeEventDetails } from "../index";
 // style
 import { styles } from "./styles/theme-group-select-styles";
 
-// theme service
-import pandaThemeController, { themeWatch } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
+// utils
+import { pandaThemeController, themeWatch } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 // components
 import "@panda-wbc/panda-icon";
-import "./panda-theme-preview";
+import "./panda-theme-group-preview";
 
 @themeWatch()
 export class PandaThemeGroupSelect extends HTMLElement {
@@ -24,7 +24,7 @@ export class PandaThemeGroupSelect extends HTMLElement {
 	private _ready!: boolean;
 
 	// elements
-	private _themeGroupSelectEl!: HTMLSelectElement;
+	private readonly _themeGroupSelectEl!: HTMLSelectElement;
 
 	// events
 	private readonly _themeGroupChangeEvent!: any;
@@ -65,6 +65,11 @@ export class PandaThemeGroupSelect extends HTMLElement {
 	connectedCallback(): void {
 		this._ready = true;
 		this._updateState();
+	}
+
+	disconnectedCallback() {
+		// remove event listeners
+		this._themeGroupSelectEl.removeEventListener("click", this._themeGroupChangeEvent);
 	}
 
 	onThemeChange(themeState: PandaThemeState): void {
@@ -150,12 +155,6 @@ export class PandaThemeGroupSelect extends HTMLElement {
 			const themeGroupId = themeGroupItem.dataset.themeGroupId ?? "";
 			this._selectedThemeGroupId = themeGroupId;
 			pandaThemeController.setThemeGroupId(themeGroupId);
-
-			console.log(
-				`%c ⚡ [PANDA THEME GROUP SELECT] (_onThemeGroupChange) themeGroupId`,
-				"font-size: 24px; color: crimson; background: black;",
-				themeGroupId
-			);
 
 			this.dispatchEvent(new CustomEvent<PandaThemeGroupChangeEventDetails>("change", {
 				detail: {

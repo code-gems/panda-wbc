@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-text-scroller",
 	"version": "1.0.0",
-	"description": "Native based web component - text scroller",
+	"description": "Native web component - text scroller",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-text-scroller.js",
 	"scripts": {
@@ -27,8 +27,10 @@
 	"dependencies": {},
 	"files": [
 		"src",
-		"lib"
+		"lib",
+		"index.d.ts"
 	],
+	"types": "index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	}

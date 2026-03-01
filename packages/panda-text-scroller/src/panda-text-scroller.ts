@@ -1,11 +1,5 @@
 // types
-export const enum ScrollSpeed {
-	SLOWER = 0.25,
-	SLOW = 0.5,
-	MEDIUM = 1,
-	FAST = 1.5,
-	FASTER = 2,
-}
+import { ScrollSpeed } from "../index";
 
 // style
 import { styles } from "./styles/styles";
@@ -154,14 +148,14 @@ export class PandaTextScroller extends HTMLElement {
 		}
 		// check if already a number and if it's valid
 		if (typeof value === "number") {
-			return isNaN(value) || !isFinite(value)
+			return Number.isNaN(value) || !Number.isFinite(value)
 				? fallbackValue
 				: value;
 		}
 		// Try to parse as number
 		const parsedValue = Number(value);
 		// return fallback if parsing resulted in NaN or infinity
-		return isNaN(parsedValue) || !isFinite(parsedValue)
+		return Number.isNaN(parsedValue) || !Number.isFinite(parsedValue)
 			? fallbackValue
 			: parsedValue;
 	}

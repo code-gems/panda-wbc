@@ -7,6 +7,7 @@ import { PandaSpinner } from "@panda-wbc/panda-spinner";
 import { styles } from "./styles/styles";
 
 // components
+import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-text-slider";
 
@@ -81,9 +82,13 @@ export class PandaTextField extends HTMLElement {
 
 	set label(value: string) {
 		if (this._label !== value) {
-			this._label = value ?? "";
+			this._label = value;
 			// reflect to attribute
-			this.setAttribute("label", value + "");
+			if (value == null) {
+				this.removeAttribute("label");
+			} else {
+				this.setAttribute("label", value + "");
+			}
 		}
 	}
 
@@ -116,9 +121,13 @@ export class PandaTextField extends HTMLElement {
 
 	set placeholderInterval(value: number | null) {
 		if (this._placeholderInterval !== value) {
-			// reflect to attribute
 			this._placeholderInterval = this._parseNumberAttribute(value);
-			this.setAttribute("placeholder-interval", this._placeholderInterval + "");
+			// reflect to attribute
+			if (this._placeholderInterval == null) {
+				this.removeAttribute("placeholder-interval");
+			} else {
+				this.setAttribute("placeholder-interval", this._placeholderInterval + "");
+			}
 		}
 	}
 
@@ -131,9 +140,13 @@ export class PandaTextField extends HTMLElement {
 
 	set helpText(value: string) {
 		if (this._helpText !== value) {
+			this._helpText = value;
 			// reflect to attribute
-			this._helpText = value ?? "";
-			this.setAttribute("help-text", this._helpText);
+			if (this._helpText == null) {
+				this.removeAttribute("help-text");
+			} else {
+				this.setAttribute("help-text", this._helpText);
+			}
 		}
 	}
 
@@ -282,17 +295,22 @@ export class PandaTextField extends HTMLElement {
 	}
 
 	// autocomplete ===================================================================================================
-	private _autocomplete!: string;
+	private _autocomplete!: AutoFill;
 
 	get autocomplete() {
 		return this._autocomplete;
 	}
 
-	set autocomplete(value: string) {
+	set autocomplete(value: AutoFill) {
 		if (this._autocomplete !== value) {
 			this._autocomplete = value;
 			// reflect to attribute
-			this.setAttribute("autocomplete", this._autocomplete);
+			if (value == null || value === "off") {
+				this._autocomplete = "off";
+				this.removeAttribute("autocomplete");
+			} else {
+				this.setAttribute("autocomplete", this._autocomplete);
+			}
 		}
 	}
 
@@ -468,11 +486,11 @@ export class PandaTextField extends HTMLElement {
 		const template = document.createElement("template");
 		template.innerHTML = /*html*/`
 			<div class="text-field" part="text-field">
-				<slot name="prefix"></slot>
+				<slot name="prefix" part="prefix"></slot>
 				<div class="input-wrap" part="input-wrap">
 					<input id="input" type="text" class="input" part="input" />
 				</div>
-				<slot name="suffix"></slot>
+				<slot name="suffix" part="suffix"></slot>
 			</div>
 			<div class="footer" part="footer"></div>
 		`;
@@ -733,7 +751,7 @@ export class PandaTextField extends HTMLElement {
 			case "autocomplete":
 				this._autocomplete = _newValue;
 				// update input autocomplete property
-				this._inputEl.autocomplete = this._autocomplete as AutoFill;
+				this._inputEl.autocomplete = this._autocomplete ?? "off";
 				break;
 
 			case "autoselect":
@@ -787,7 +805,7 @@ export class PandaTextField extends HTMLElement {
 		this._updateComponent();
 	}
 
-	private _updateComponent() {
+	private _updateComponent(): void {
 		if (this._ready) {
 			// update input value
 			this._inputEl.value = this._value ?? "";
@@ -1081,7 +1099,7 @@ export class PandaTextField extends HTMLElement {
 			// all text will be selected ignoring autoselect flag
 			// set selection caret to the end of the text
 			const _inputValue = (event as any).target.value;
-			this._inputEl.setSelectionRange(_inputValue.length + 1, _inputValue.length + 1);
+			this._inputEl.setSelectionRange(_inputValue.length, _inputValue.length);
 		}
 		this._updateComponent();
 	}
@@ -1089,7 +1107,7 @@ export class PandaTextField extends HTMLElement {
 	private _onBlur(): void {
 		this._focused = false;
 		this._updateTemplateCss();
-		this._validateInput()
+		this._validateInput();
 	}
 
 	private _onPaste(event: ClipboardEvent): void {

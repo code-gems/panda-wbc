@@ -336,6 +336,13 @@ export const pandaThemeLight = /*css*/ `
 		--panda-label-text-shadow: none;
 		--panda-label-font-size: var(--panda-font-size-s);
 		--panda-label-font-family: var(--panda-font-family);
+
+		/* PLACEHOLDER */
+		--panda-placeholder-color: hsl(188deg 5% 75%);
+		--panda-placeholder-font-size: var(--panda-font-size-m);
+		--panda-placeholder-font-family: var(--panda-font-family);
+		--panda-placeholder-font-weight: 500;
+		--panda-placeholder-text-shadow: none;
 		
 		/* ========================================================================================================= */
 		/* INPUT FIELD ============================================================================================= */
@@ -617,6 +624,22 @@ export const pandaThemeLight = /*css*/ `
 										0px 5px 10px hsl(187deg 100% 42% / 20%),
 										0px -1px 2px hsl(187deg 100% 42% / 20%) inset;
 
+		--panda-button-primary-border-color: transparent;
+		--panda-button-primary-border-color-hover: transparent;
+		--panda-button-primary-border-gradient: linear-gradient(
+			to bottom, 
+			hsl(209deg 78% 42%),
+			hsl(209deg 78% 36%)
+		);
+		--panda-button-primary-border-gradient-hover: linear-gradient(
+			to bottom,
+			hsl(209deg 78% 42%),
+			hsl(187deg 100% 42%)
+		);
+		--panda-button-primary-elevation-hover: 0px 0px 5px hsl(0deg 0% 0% / 10%),
+												0px 5px 10px hsl(187deg 100% 42% / 20%),
+												0px -1px 2px hsl(187deg 100% 42% / 20%) inset;
+
 		/* ========================================================================================================= */
 		/* BUTTON GROUP ============================================================================================ */
 		/* ========================================================================================================= */
@@ -876,10 +899,13 @@ export const pandaThemeLight = /*css*/ `
 		/* DIALOG ================================================================================================== */
 		/* ========================================================================================================= */
 
-		--panda-dialog-border: 1px solid var(--panda-border-color);
-		--panda-dialog-border-radius: var(--panda-border-radius-m);
-		--panda-dialog-background-color: var(--panda-background-color-50);
-		--panda-dialog-box-shadow: 0px 2px 4px var(--panda-black-color-20opc);
+		/* BORDER */
+		--panda-dialog-border-width: 1px;
+		--panda-dialog-border-style: solid;
+		--panda-dialog-border-color: var(--panda-border-color);
+		--panda-dialog-border-radius: 15px;
+		--panda-dialog-background-color: hsl(0deg 0% 100%);
+		--panda-dialog-box-shadow: var(--panda-elevation-m);
 		--panda-dialog-overlay-background-color: var(--panda-background-color-50opc);
 
 		/* ========================================================================================================= */

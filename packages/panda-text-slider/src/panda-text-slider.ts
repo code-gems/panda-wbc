@@ -18,7 +18,7 @@ import { styles } from "./styles/styles";
 // constants
 const DEFAULT_SLIDER_INTERVAL = 4000;
 
-class PandaTextSlider extends HTMLElement {
+export class PandaTextSlider extends HTMLElement {
 	// component version
 	public readonly version: string = "1.0.0";
 
@@ -237,14 +237,14 @@ class PandaTextSlider extends HTMLElement {
 		this._slides.forEach((text, index) => {
 			this._slideMetadataList.push({
 				index,
-				status: index !== 0 ? SlideState.HIDE : SlideState.SHOW,
+				status: index == 0 ? SlideState.SHOW : SlideState.HIDE,
 				text,
 			});
 		});
 	}
 
 	private _updateSlideStatus(index: number, state: SlideState): void {
-		// update old "slide-out" statuses tp "hide"
+		// update old "slide-out" statuses to "hide"
 		// there only can be one "slide-out" status"
 		if (state === SlideState.SLIDE_OUT) {
 			this._slideMetadataList.forEach((metadata) => {
@@ -337,6 +337,3 @@ declare global {
 		"panda-text-slider": PandaTextSlider;
 	}
 }
-
-// export type
-export { type PandaTextSlider };

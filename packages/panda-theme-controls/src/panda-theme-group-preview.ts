@@ -1,6 +1,8 @@
 // style
-import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 import { styles } from "./styles/theme-group-preview-styles";
+
+// utils
+import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 export class PandaThemeGroupPreview extends HTMLElement {
 	/** component version */
@@ -10,7 +12,7 @@ export class PandaThemeGroupPreview extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 	
-	static readonly observedAttributes = ["theme", "theme-group-id"];
+	static readonly observedAttributes = ["theme-group-id"];
 
 	// themeGroupId ===================================================================================================
 	private _themeGroupId!: string;
@@ -33,25 +35,6 @@ export class PandaThemeGroupPreview extends HTMLElement {
 		}
 	}
 
-	// theme ==========================================================================================================
-	private _theme!: string;
-	
-	get theme(): string {
-		return this._theme;
-	}
-
-	set theme(value: string) {
-		if (this._theme !== value) {
-			this._theme = value;
-			// reflect to attribute
-			if (value == null) {
-				this.removeAttribute("theme");
-			} else {
-				this.setAttribute("theme", this._theme);
-			}
-		}
-	}
-
 	// private props ==================================================================================================
 
 	private _themePreviewTokens!: string;
@@ -63,7 +46,7 @@ export class PandaThemeGroupPreview extends HTMLElement {
 	constructor() {
 		super();
 		// create shadow root
-		this.attachShadow({ mode: "open", delegatesFocus: true });
+		this.attachShadow({ mode: "open" });
 
 		// apply component styles
 		this._applyStyles();
@@ -99,22 +82,15 @@ export class PandaThemeGroupPreview extends HTMLElement {
 		// initialize class properties
 		this._themePreviewTokens = "";
 		this._themeGroupId = "";
-		this._theme = "";
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
-		console.log(
-			`%c ⚡ [THEME GROUP PREVIEW] (attributeChangedCallback) _name: ${_name}, _oldValue: ${_oldValue}, _newValue: ${_newValue}`,
-			"font-size: 24px; color: crimson; background: black;"
-		);
 		// do not process if value did not change
 		if (_oldValue === _newValue) {
 			return;
 		}
 		// handle attribute changes
-		if (_name === "theme") {
-			this._theme = _newValue;
-		} else if (_name === "theme-group-id") {
+		if (_name === "theme-group-id") {
 			this._themeGroupId = _newValue;
 			// get and apply preview tokens
 			this._getPreviewTokens();
@@ -141,26 +117,14 @@ export class PandaThemeGroupPreview extends HTMLElement {
 	private _getPreviewTokens(): void {
 		if (!this._themeGroupId) {
 			this._themePreviewTokens = "";
-			console.log(
-				`%c ⚡ [THEME GROUP PREVIEW] (_getPreviewTokens) Theme group ID not provided: ${this._themeGroupId}`,
-				"font-size: 24px; color: crimson; background: black;"
-			);
 			return;
 		}
 
 		const themeGroup = pandaThemeController.getThemeGroupById(this._themeGroupId);
 		if (themeGroup?.previewTokens) {
 			this._themePreviewTokens = themeGroup.previewTokens;
-			console.log(
-				`%c ⚡ [THEME GROUP PREVIEW] (_getPreviewTokens) Applying previewTokens: ${themeGroup.previewTokens}`,
-				"font-size: 24px; color: crimson; background: black;"
-			);
 		} else {
 			this._themePreviewTokens = "";
-			console.log(
-				`%c ⚡ [THEME GROUP PREVIEW] (_getPreviewTokens) No preview tokens provided: ${themeGroup?.name}`,
-				"font-size: 24px; color: crimson; background: black;"
-			);
 		}
 		// apply component styles + preview tokens
 		this._applyStyles();

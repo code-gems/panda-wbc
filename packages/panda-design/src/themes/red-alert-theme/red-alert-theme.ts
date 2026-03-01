@@ -1,6 +1,9 @@
 // types
 import { PandaThemeGroup } from "@panda-wbc/panda-theme";
 
+// theme controller
+import { pandaThemeController } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
+
 // import themes
 import { themeLight } from "./theme/them-light";
 import { themeDark } from "./theme/theme-dark";
@@ -40,7 +43,7 @@ export const redAlertTheme: PandaThemeGroup = {
 			--panda-theme-preview-sidebar-background-color: hsl(345deg 86% 34%);
 			
 			--panda-theme-preview-button-color: hsl(345deg 86% 46%);
-			--panda-theme-preview-button-primary-color: hsl(36deg 100% 50%);
+			--panda-theme-preview-button-color-primary: hsl(36deg 100% 50%);
 
 			--panda-theme-preview-top-bar-background-color: hsl(345deg 86% 44%);
 			--panda-theme-preview-top-bar-button-red: hsl(345deg 86% 66%);
@@ -60,7 +63,7 @@ export const redAlertTheme: PandaThemeGroup = {
 			--panda-theme-preview-sidebar-item-color-selected-dark: hsl(274deg 30% 42%);
 			
 			--panda-theme-preview-button-color-dark: hsl(274deg 30% 40%);
-			--panda-theme-preview-button-primary-color-dark: hsl(344deg 100% 64%);
+			--panda-theme-preview-button-color-primary-dark: hsl(344deg 100% 64%);
 
 			--panda-theme-preview-top-bar-background-color-dark: hsl(274deg 30% 35%);
 			--panda-theme-preview-top-bar-button-red-dark: hsl(14deg 82% 53%);
@@ -69,3 +72,6 @@ export const redAlertTheme: PandaThemeGroup = {
 		}
 	`,
 }
+
+// Register the theme group
+pandaThemeController.registerThemeGroup(redAlertTheme);

@@ -9,7 +9,7 @@ import "@panda-wbc/panda-spinner";
 
 export class PandaButton extends HTMLElement {
 	/** Version of the component. */
-	public static version = "1.0.0";
+	public static readonly version = "1.0.0";
 
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
@@ -96,11 +96,11 @@ export class PandaButton extends HTMLElement {
 	private _ready!: boolean;
 
 	// elements
-	private _buttonEl!: HTMLButtonElement;
-	private _spinnerContEl!: HTMLDivElement;
-	private _spinnerEl!: PandaSpinner;
-	private _prefixSlotEl!: HTMLSlotElement;
-	private _suffixSlotEl!: HTMLSlotElement;
+	private readonly _buttonEl!: HTMLButtonElement;
+	private readonly _spinnerContEl!: HTMLDivElement;
+	private readonly _spinnerEl!: PandaSpinner;
+	private readonly _prefixSlotEl!: HTMLSlotElement;
+	private readonly _suffixSlotEl!: HTMLSlotElement;
 
 	// events
 	private readonly _prefixSlotChangeEvent!: any;

@@ -176,10 +176,16 @@ class PandaThemeController {
 	 * @param themeGroupId new theme group id to be selected
 	 */
 	public setThemeGroupId(themeGroupId: string): void {
+		// check if value changed
+		if (this._selectedThemeGroupId === themeGroupId) {
+			return;
+		}
+		
+		// find theme group by id
 		const thisThemeGroup = this._themeGroups.find(({ id }) => id === themeGroupId);
 		if (thisThemeGroup) {
 			this._selectedThemeGroupId = themeGroupId;
-			// get them mode
+			// get theme mode
 			const finalThemeMode = this._getFinalThemeMode();
 			
 			// update themeId and accentColorId after group change

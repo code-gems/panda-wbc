@@ -179,18 +179,21 @@ importers:
 
   packages/panda-date-picker:
     dependencies:
+      '@panda-wbc/panda-button':
+        specifier: workspace:^1.0.0
+        version: link:../panda-button
       '@panda-wbc/panda-icon':
         specifier: workspace:^1.0.0
         version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:^1.0.0
         version: link:../panda-spinner
+      '@panda-wbc/panda-text-slider':
+        specifier: workspace:^1.0.0
+        version: link:../panda-text-slider
       '@panda-wbc/panda-utils':
         specifier: workspace:^1.0.0
         version: link:../panda-utils
-      lit:
-        specifier: ^3.3.2
-        version: 3.3.2
 
   packages/panda-design:
     dependencies:
@@ -733,6 +736,9 @@ importers:
 
   packages/panda-text-field:
     dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner

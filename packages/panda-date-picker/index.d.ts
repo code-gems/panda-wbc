@@ -1,15 +1,8 @@
+export type { PandaDatePicker } from "./panda-date-picker";
+
 export const enum MonthCalendarViewMode {
 	DEFAULT = "DEFAULT",
 	COMPACT = "COMPACT"
-}
-
-export type ElementDetails = {
-	width: number;
-	height: number;
-	top: number;
-	left: number;
-	bottom: number;
-	right: number;
 }
 
 export interface PandaDate {
@@ -69,15 +62,29 @@ export interface PandaParsedEvent extends PandaEvent {
 
 export type PandaDatePreset = {
 	label: string;
-	date?: string;
-	dateFrom?: string;
-	dateTo?: string;
+	date: string;
+} | {
+	label: string;
+	dateFrom: string;
+	dateTo: string;
+}
+
+export type PandaDatePickerI18nConfig = {
+	today: string; // label for "Today" button
+	cancel: string; // label for "Cancel" button
+	select: string; // label for "Select" button
+	months: string[]; // eg. ["Jan", "Feb", "Mar", ... "Dec"]
+	fullMonths: string[]; // eg. ["January", "February", "March", ... "December"]
+	daysOfWeek: string[]; // eg. ["Mon", "Tue", "Wed", ... "Sun"]
+	fullDaysOfWeek: string[]; // eg. ["Monday", "Tuesday", "Wednesday", ... "Sunday"]
 }
 
 // ====================================================================================================================
 // ============================================================================================================= EVENTS
 // ====================================================================================================================
 
-export interface PandaDatePickerChangeEvent {
-	date: string;
+export interface PandaDatePickerChangeEventDetail {
+	value: string;
 }
+
+export interface PandaDatePickerChangeEvent extends CustomEvent<PandaDatePickerChangeEventDetail> {}

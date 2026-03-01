@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-date-picker",
 	"version": "1.0.0",
-	"description": "Lit based web component - date picker",
+	"description": "Native web component - date picker and range picker",
 	"main": "lib/panda-date-picker.js",
 	"scripts": {
 		"compile": "tsc",
@@ -11,24 +11,24 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
+		"panda-wbc",
+		"web component",
+		"ui component",
 		"date picker",
 		"date",
 		"month picker",
 		"month",
 		"calendar",
 		"time",
-		"lit",
-		"lit-element",
-		"panda-wbc",
-		"ui component",
-		"web component"
+		"date range"
 	],
 	"author": "code-gems",
 	"license": "ISC",
 	"dependencies": {
-		"lit": "^3.3.2",
-		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
 		"@panda-wbc/panda-icon": "workspace:^1.0.0",
+		"@panda-wbc/panda-spinner": "workspace:^1.0.0",
+		"@panda-wbc/panda-text-slider": "workspace:^1.0.0",
+		"@panda-wbc/panda-button": "workspace:^1.0.0",
 		"@panda-wbc/panda-utils": "workspace:^1.0.0"
 	},
 	"files": [

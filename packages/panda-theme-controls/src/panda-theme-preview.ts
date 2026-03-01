@@ -1,6 +1,11 @@
 // style
+import { PandaThemeState } from "@panda-wbc/panda-theme";
 import { styles } from "./styles/theme-preview-styles";
 
+// utils
+import { themeWatch, pandaThemeController } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
+
+@themeWatch()
 export class PandaThemePreview extends HTMLElement {
 	/** component version */
 	static readonly version: string = "1.0.0";
@@ -29,6 +34,12 @@ export class PandaThemePreview extends HTMLElement {
 			}
 		}
 	}
+
+	// private props ==================================================================================================
+
+	private _themePreviewTokens!: string;
+
+	private _themeGroupId!: string;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -74,7 +85,15 @@ export class PandaThemePreview extends HTMLElement {
 		this.shadowRoot!.appendChild(template.content.cloneNode(true));
 
 		// initialize class properties
+		this._themePreviewTokens = "";
+		this._themeGroupId = "";
 		this._theme = "";
+	}
+
+	onThemeChange(themeState: PandaThemeState): void {
+		const { themeGroupId } = themeState;
+		this._themeGroupId = themeGroupId;
+		this._getPreviewTokens();
 	}
 
 	// ================================================================================================================
@@ -83,10 +102,30 @@ export class PandaThemePreview extends HTMLElement {
 
 	private _applyStyles(): void {
 		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(styles);
+		cssStyleSheet.replaceSync(styles + this._themePreviewTokens);
 		if (this.shadowRoot) {
 			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
 		}
+	}
+
+	/**
+	 * Get and apply preview tokens for the current theme group.
+	 * @returns void
+	 */
+	private _getPreviewTokens(): void {
+		if (!this._themeGroupId) {
+			this._themePreviewTokens = "";
+			return;
+		}
+
+		const themeGroup = pandaThemeController.getThemeGroupById(this._themeGroupId);
+		if (themeGroup?.previewTokens) {
+			this._themePreviewTokens = themeGroup.previewTokens;
+		} else {
+			this._themePreviewTokens = "";
+		}
+		// apply component styles + preview tokens
+		this._applyStyles();
 	}
 
 	private _getThemePreviewTemplate(): string {

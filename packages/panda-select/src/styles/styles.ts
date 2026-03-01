@@ -178,7 +178,7 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 
 		/* ICON STYLES */
-		--panda-icon-color: var(--panda-select-chip-remove-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
+		--panda-icon-color: var(--panda-select-chip-remove-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(191deg 19% 23%)));
 		--panda-icon-size: var(--panda-select-chip-remove-button-icon-size-m, 18px);
 	}
 
@@ -217,31 +217,32 @@ export const styles = /*css*/`
 		align-items: center;
 		padding: var(--panda-select-clear-button-icon-padding-size-m, 0px);
 		
-		transition: var(--panda-select-clear-button-icon-transition, all 0.3s ease-in-out);
+		transition: var(--panda-select-clear-button-icon-transition, var(--panda-input-clear-button-icon-transition, all 0.3s ease-in-out));
 		cursor: pointer;
 
-		border-radius: var(--panda-select-clear-button-icon-border-radius-size-m, var(--panda-border-radius-m, 5px));
-		background-color: var(--panda-select-clear-button-background-color, transparent);
+		border-radius: var(--panda-select-clear-button-icon-border-radius-size-m, var(--panda-input-clear-button-icon-border-radius, 5px));
+		background-color: var(--panda-select-clear-button-icon-background-color, var(--panda-input-clear-button-icon-background-color, transparent));
 		box-sizing: border-box;
 		/* ICON STYLES */
-		--panda-icon-color: var(--panda-select-clear-button-icon-color, var(--panda-select-icon-color, hsl(191deg 19% 23%)));
-		--panda-icon-size: var(--panda-select-clear-button-icon-size-m, var(--panda-icon-size-m, 20px));
+		--panda-icon-color: var(--panda-select-clear-button-icon-color, var(--panda-input-clear-button-icon-color, hsl(191deg 19% 23%)));
+		--panda-icon-size: var(--panda-select-clear-button-icon-size-m, var(--panda-input-clear-button-icon-size-m, 20px));
 	}
 
 	.clear-button-icon:hover {
-		background-color: var(--panda-select-clear-button-icon-background-color-hover, hsl(0deg 0% 95%));
-		--panda-icon-color: var(--panda-select-clear-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
+		background-color: var(--panda-select-clear-button-icon-background-color-hover, var(--panda-input-clear-button-icon-background-color-hover, hsl(0deg 0% 95%)));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-select-clear-button-icon-color-hover, var(--panda-input-clear-button-icon-color-hover, hsl(191deg 19% 23%)));
 	}
 
 	/* PLACEHOLDER STYLES */
 	.placeholder {
 		position: absolute;
 		inset: 0;
-		color: var(--panda-select-placeholder-color, var(--panda-placeholder-color, hsl(0deg 0% 80%)));
-		font-size: var(--panda-select-placeholder-font-size-m, var(--panda-font-size-m, 14px));
-		font-family: var(--panda-select-placeholder-font-family-size-m, "Poppins");
-		font-weight: var(--panda-select-placeholder-font-weight-size-m, 500);
-		text-shadow: var(--panda-select-placeholder-text-shadow-size-m, none);
+		color: var(--panda-select-placeholder-color, var(--panda-placeholder-color, hsl(188deg 5% 75%)));
+		font-size: var(--panda-select-placeholder-font-size-m, var(--panda-placeholder-font-size, 14px));
+		font-family: var(--panda-select-placeholder-font-family-size-m, var(--panda-placeholder-font-family, "Poppins"));
+		font-weight: var(--panda-select-placeholder-font-weight-size-m, var(--panda-placeholder-font-weight, 500));
+		text-shadow: var(--panda-select-placeholder-text-shadow-size-m, var(--panda-placeholder-text-shadow, none));
 		z-index: 0;
 	}
 
