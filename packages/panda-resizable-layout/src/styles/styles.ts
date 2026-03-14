@@ -1,5 +1,5 @@
 export const styles = /*css*/`
 	:host {
-		display: none;
+		display: block;
 	}
 `;

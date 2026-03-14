@@ -6,14 +6,15 @@ import { ContentSectionName } from "panda-design-typings";
 import { styles } from "./styles/styles";
 
 // components
-import {PandaDatePicker} from "@panda-wbc/panda-date-picker/lib/panda-date-picker";
+import { PandaDatePicker } from "@panda-wbc/panda-date-picker/lib/panda-date-picker";
 import "@panda-wbc/panda-date-picker";
+import "@panda-wbc/panda-date-picker/lib/panda-date-part";
 import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-icon/lib/food-icon-pack";
 
 // utils & config
 import { html, TemplateResult } from "lit";
-import { customElement, query, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
@@ -70,7 +71,7 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _disabled = false;
-	
+
 	@state()
 	private _showClearButton = false;
 
@@ -146,6 +147,10 @@ export class ContentPage extends ContentPageTemplate {
 								.i18n="${this._i18n}"
 								@change="${this._onDateChange}"
 							></panda-date-picker>
+						</div>
+
+						<div class="col-3">
+							<panda-date-part></panda-date-part>
 						</div>
 					</div>
 				</div>

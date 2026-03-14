@@ -426,12 +426,9 @@ importers:
 
   packages/panda-dialog:
     dependencies:
-      '@panda-wbc/panda-mixins':
+      '@panda-wbc/panda-utils':
         specifier: workspace:*
-        version: link:../panda-mixins
-      lit:
-        specifier: ^3.3.2
-        version: 3.3.2
+        version: link:../panda-utils
 
   packages/panda-flag: {}
 
@@ -558,6 +555,15 @@ importers:
       lit:
         specifier: ^3.3.2
         version: 3.3.2
+
+  packages/panda-resizable-layout:
+    dependencies:
+      '@panda-wbc/panda-icon':
+        specifier: workspace:^1.0.0
+        version: link:../panda-icon
+      '@panda-wbc/panda-utils':
+        specifier: workspace:^1.0.0
+        version: link:../panda-utils
 
   packages/panda-router:
     dependencies:

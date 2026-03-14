@@ -103,8 +103,8 @@ export class PandaButton extends HTMLElement {
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 
 	// events
-	private readonly _prefixSlotChangeEvent!: any;
-	private readonly _suffixSlotChangeEvent!: any;
+	private readonly _prefixSlotChangeEvent!: EventListener;
+	private readonly _suffixSlotChangeEvent!: EventListener;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -146,10 +146,6 @@ export class PandaButton extends HTMLElement {
 		this._spinnerType = "dots";
 		this._ready = false;
 
-		// init events
-		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
-		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
-
 		if (this.shadowRoot) {
 			// get elements handle
 			this._buttonEl = this.shadowRoot.querySelector(".button") as HTMLButtonElement;
@@ -157,7 +153,9 @@ export class PandaButton extends HTMLElement {
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 
 			// add event listeners to component template
+			this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
 			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+			this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		}
 	}

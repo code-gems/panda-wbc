@@ -979,14 +979,14 @@ export class PandaDatePicker extends HTMLElement {
 	private _overlayEl!: PandaDatePickerOverlay;
 
 	// events
-	private readonly _datePickerClickEvent!: any;
-	private readonly _inputEvent!: any;
+	private readonly _datePickerClickEvent!: EventListener;
+	private readonly _inputEvent!: EventListener;
 	private readonly _focusInputEvent!: any;
-	private readonly _blurInputEvent!: any;
-	private readonly _prefixSlotChangeEvent!: any;
-	private readonly _suffixSlotChangeEvent!: any;
-	private readonly _clearButtonClickEvent!: any;
-	private readonly _iconClickEvent!: any;
+	private readonly _blurInputEvent!: EventListener;
+	private readonly _prefixSlotChangeEvent!: EventListener;
+	private readonly _suffixSlotChangeEvent!: EventListener;
+	private readonly _clearButtonClickEvent!: EventListener;
+	private readonly _iconClickEvent!: EventListener;
 	private readonly _postMessageEvent!: any;
 
 	// debouncers

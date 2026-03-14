@@ -1,9 +1,8 @@
 {
-	"name": "@panda-wbc/panda-dialog",
+	"name": "@panda-wbc/panda-resizable-layout",
 	"version": "1.0.0",
-	"description": "Native web component. This component allows to create popup dialogs with custom content.",
-	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-dialog.js",
+	"description": "Native web component - resizable layout",
+	"main": "lib/panda-resizable-layout.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
@@ -12,17 +11,22 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"native custom element",
+		"panda-wbc",
 		"web component",
 		"ui component",
-		"popup",
-		"dialog",
-		"modal"
+		"resizable layout",
+		"layout",
+		"grid",
+		"flex",
+		"responsive",
+		"drag",
+		"resize"
 	],
 	"author": "code-gems",
-	"license": "Apache-2.0",
+	"license": "ISC",
 	"dependencies": {
-		"@panda-wbc/panda-utils": "workspace:*"
+		"@panda-wbc/panda-icon": "workspace:^1.0.0",
+		"@panda-wbc/panda-utils": "workspace:^1.0.0"
 	},
 	"files": [
 		"src",

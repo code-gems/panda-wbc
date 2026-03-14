@@ -912,15 +912,7 @@ export class PandaSelect extends HTMLElement {
 		this._ready = false;
 		
 		// init events
-		this._keyDownEvent = this._onKeyDown.bind(this);
-		this._showOverlayEvent = this._onShowOverlay.bind(this);
-		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
 		this._postMessageEvent = this._onPostMessage.bind(this);
-		this._iconButtonClickEvent = this._onIconClick.bind(this);
-		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
-		this._removeItemEvent = this._onRemoveItem.bind(this);
-		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
-		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 
 		if (this.shadowRoot) {
 			// get elements handle
@@ -933,13 +925,21 @@ export class PandaSelect extends HTMLElement {
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 
 			// add event listeners
+			this._closeOverlayEvent = this._onCloseOverlay.bind(this);
 			window.addEventListener("resize", this._closeOverlayEvent);
+			this._showOverlayEvent = this._onShowOverlay.bind(this);
 			this._selectEl.addEventListener("click", this._showOverlayEvent);
+			this._keyDownEvent = this._onKeyDown.bind(this);
 			this._selectEl.addEventListener("keydown", this._keyDownEvent);
+			this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
 			this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
+			this._iconButtonClickEvent = this._onIconClick.bind(this);
 			this._iconEl.addEventListener("click", this._iconButtonClickEvent);
+			this._removeItemEvent = this._onRemoveItem.bind(this);
 			this._itemsEl.addEventListener("click", this._removeItemEvent);
+			this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
 			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+			this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		}
 	}

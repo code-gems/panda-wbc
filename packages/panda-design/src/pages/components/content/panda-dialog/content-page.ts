@@ -1,144 +1,80 @@
 // types
-import { PageCategory } from "panda-design-typings";
+import { ContentSectionName } from "panda-design-typings";
 
 // styles
+import { styles } from "./styles/styles";
 
 // components
+import "@panda-wbc/panda-button";
 import "@panda-wbc/panda-dialog";
-import "@panda-wbc/panda-date-picker";
 
 // utils
-import { html, LitElement, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { html, TemplateResult } from "lit";
+import { customElement, state } from "lit/decorators.js";
+import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
-import { pageId, pageName, pageUri, keywords, description, contextMenu } from "./page-config";
+import { pageConfig } from "./page-config";
 
+@page(pageConfig)
 @customElement("panda-dialog-content-page")
-@page({
-	pageId,
-	pageName,
-	pageUri,
-	category: PageCategory.DEVELOP,
-	keywords,
-	description,
-	contextMenu,
-	template: html`<panda-dialog-content-page></panda-dialog-content-page>`,
-})
-export class PandaDialogContentPage extends LitElement {
-	static get styles() {
-		return css`
-			.button {
-				display: inline-block;
-				text-decoration: none;
-				text-transform: uppercase;
-				letter-spacing: 2px;
-				color: #000;
-				outline: 2px solid;
-				padding: 20px 40px;
-				position: relative;
-				overflow: hidden;
-				transition: color 700ms;
-				cursor: pointer;
-				user-select: none;
-			}
+export class ContentPage extends ContentPageTemplate {
+	// page details
+	public pageId = pageConfig.pageId;
+	public customStyles = styles;
 
-			.button:hover {
-				color: #fff;
-			}
-
-			.button:before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: -50px;
-				width: 0;
-				height: 100%;
-				background-color: #d92390;
-				transform: skewX(35deg);
-				transform-origin: left center;
-				z-index: -1;
-				transition: width 700ms ease-in;
-			}
-
-			.button:after {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: -50px;
-				width: 0;
-				height: 100%;
-				background-color: #000;
-				transform: skewX(35deg);
-				transform-origin: left center;
-				z-index: -1;
-				transition: width 700ms ease-in 200ms;
-			}
-
-			.button:hover::before,
-			.button:hover::after {
-				width: 150%;
-			}
-
-			.promo-button {
-
-			}
-
-			.promo-button:before {
-				content: '';
-				position: absolute;
-				top: -2px;
-				bottom: -2px;
-				left: -2px;
-				right: -2px;
-				background: linear-gradient(45deg, )
-				background-size: 400%;
-			}
-		`;
-	}
-
-	@property({ type: Boolean })
-	private _showDialog: boolean = false;
-
-	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
+	@state()
+	private _showDialog = false;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	_renderPageContent(): TemplateResult {
 		return html`
-			<div style="height: 200vh;">
-				PANDA DIALOG
-
-				<div
-					class="button"
-					@click="${this._onToggleDialog}"
-				>
-					SHOW DIALOG
-				</div>
-
-				${this._renderDialog()}
-			</div>
+			${this._renderOverviewSection()}
 		`;
 	}
 
-	private _renderDialog() {
+	private _renderOverviewSection(): TemplateResult {
+		console.log("%c ⚡ [DEMO] (render)", "font-size: 24px; color: limegreen; background: black;", this._showDialog);
 		return html`
-			<panda-dialog
-				.opened="${this._showDialog}"
-				@close="${this._onDialogClose}"
-			>
-				<div template>
-					DEMO PAGE DIALOG BODY
-					<panda-date-picker
+			<!-- OVERVIEW -->
+			<div class="content-section" data-content-section-name="${ContentSectionName.OVERVIEW}">
+				<div class="section">
+					<internal-link theme="h2">Overview</internal-link>
+					<p>
 
-					>
-					</panda-date-picker>
+					</p>
 				</div>
-			</panda-dialog>
+
+				<div class="rows">
+					<div class="row">
+						<div class="col-3">
+							<panda-button @click="${this._onToggleDialog}">
+								SHOW DIALOG
+							</panda-button>
+
+							<panda-dialog
+								.opened="${this._showDialog}"
+								@close="${this._onDialogClose}"
+							>
+								<div template>
+									<h2>Dialog Title</h2>
+									<p>
+										This is the content of the dialog.<br />
+										You can put any content here, such as text, images, forms, etc.<br />
+										Click the button below to close the dialog.
+									</p>
+									<panda-button @click="${() => this._onDialogClose()}">
+										CLOSE DIALOG
+									</panda-button>
+								</div>
+							</panda-dialog>
+						</div>
+					</div>
+				</div>
+
+			</div>
 		`;
 	}
 
@@ -147,10 +83,12 @@ export class PandaDialogContentPage extends LitElement {
 	// ================================================================================================================
 
 	private _onToggleDialog() {
-		this._showDialog = !this._showDialog;
+		this._showDialog = true;
+		console.log("%c ⚡ [DEMO] (_onToggleDialog)", "font-size: 24px; color: limegreen; background: black;", this._showDialog);
 	}
 
 	private _onDialogClose() {
-		console.log("%c _onDialogClose", "font-size: 24px; color: green;");
+		this._showDialog = false;
+		console.log("%c ⚡ [DEMO] (_onDialogClose)", "font-size: 24px; color: crimson; background: black;", this._showDialog);
 	}
 }

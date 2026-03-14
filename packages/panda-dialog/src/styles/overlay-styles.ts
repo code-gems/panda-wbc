@@ -1,6 +1,4 @@
-import { css } from "lit";
-
-export const styles = css`
+export const styles = /*css*/`
 	:host {
 		display: block;
 	}
@@ -21,16 +19,26 @@ export const styles = css`
 	}
 
 	.content {
-		display: block;
+		display: flex;
+		flex-flow: column;
 		
-		color: var(--panda-text-color, hsl(210deg 5% 25%));
-		font-size: var(--panda-font-size-m, 14px);
-		font-family: var(--panda-font-family, "Poppins");
+		color: var(--panda-dialog-text-color, hsl(210deg 5% 25%));
+		font-size: var(--panda-dialog-font-size, 14px);
+		font-family: var(--panda-dialog-font-family, "Poppins");
+		
+		animation: show 300ms ease-out;
 
-		border: var(--panda-dialog-border, 1px solid hsl(0deg 0% 85%));
+		border-width: var(--panda-dialog-border-width, 1px);
+		border-style: var(--panda-dialog-border-style, solid);
+		border-color: var(--panda-dialog-border-color, hsl(0deg 0% 85%));
 		border-radius: var(--panda-dialog-border-radius, 5px);
 		background-color: var(--panda-dialog-background-color, hsl(0deg 0% 100%));
-		box-shadow: var(--panda-dialog-box-shadow, 0px 2px 4px hsl(0deg 0% 0% / 20%));
+		box-shadow: var(--panda-dialog-elevation, 0px 2px 4px hsl(0deg 0% 0% / 20%));
 		box-sizing: border-box;
+	}
+
+	@keyframes show {
+		from { transform: scale(0.8); }
+		to { transform: scale(1); }
 	}
 `;
