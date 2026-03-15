@@ -1,12 +1,16 @@
 // types
 import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
+// styles
+import { styles } from "./styles/styles";
+
 // components
 import "@panda-wbc/panda-particle-banner";
+import "../version-badge/version-badge";
 
 // utils
-import { LitElement } from "lit";
-import { customElement, property } from "lit/decorators";
+import { html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators.js";
 import { themeWatch } from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 // banner presets
@@ -17,7 +21,7 @@ import { bannerConfig1 } from "./banner-presets";
 class PageBanner extends LitElement {
 	// css styles
 	static get styles() {
-		return [];
+		return styles;
 	}
 
 	@property({ type: String })
@@ -25,6 +29,9 @@ class PageBanner extends LitElement {
 
 	@property({ type: String })
 	version!: string;
+
+	@property({ type: Boolean })
+	native!: boolean;
 
 	// private props
 	private _config!: PandaParticleBannerConfig;
@@ -50,7 +57,29 @@ class PageBanner extends LitElement {
 			this._bannerEl.reload(this._config);
 		}
 	}
+
 	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
+	// RENDERERS ======================================================================================================
 	// ================================================================================================================
+
+	render(): TemplateResult {
+		const versionBadgeHtml = this.version == null
+			? html``
+			: html`
+				<version-badge
+					.version="${this.version}"
+					?native="${this.native}"
+				></version-badge>
+			`;
+
+		return html`
+			<div class="banner">
+				<panda-particle-banner .config="${this._config}"></panda-particle-banner>
+				<div class="header">
+					<div class="text">${this.header}</div>
+					${versionBadgeHtml}
+				</div>
+			</div>
+		`;
+	}
 }

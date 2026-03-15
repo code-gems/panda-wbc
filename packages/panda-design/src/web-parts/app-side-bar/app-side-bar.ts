@@ -14,7 +14,7 @@ import "../dragon-logo/dragon-logo";
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import PageLibrary from "../../utils/page-library";
+import { pageLibrary } from "../../utils/page-library";
 import { appStore, reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
@@ -74,7 +74,7 @@ class AppSideBar extends LitElement {
 
 	private _renderSideMenu() {
 		const btnHtml: TemplateResult[] = [];
-		const allPages = new PageLibrary().getParentPages();
+		const allPages = pageLibrary.getParentPages();
 
 		allPages.forEach((page) => {
 			// console.log("%c page", "font-size: 24px; color: green;", page);

@@ -14,16 +14,26 @@ import { customElement, state } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
 import { pageConfig } from "./page-config";
+import { DialogEvent } from "@panda-wbc/panda-dialog";
 
 @page(pageConfig)
 @customElement("panda-dialog-content-page")
 export class ContentPage extends ContentPageTemplate {
 	// page details
-	public pageId = pageConfig.pageId;
+	public contentPageConfig = pageConfig;
 	public customStyles = styles;
 
 	@state()
 	private _showDialog = false;
+
+	private readonly _dialogEventList: DialogEvent[] = [
+		{
+			type: "click",
+			selector: "panda-button",
+			listener: this._onDialogClose.bind(this),
+			options: false,
+		},
+	];
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -57,17 +67,18 @@ export class ContentPage extends ContentPageTemplate {
 							<panda-dialog
 								.opened="${this._showDialog}"
 								@close="${this._onDialogClose}"
+								.eventList="${this._dialogEventList}"
 							>
 								<div template>
-									<h2>Dialog Title</h2>
-									<p>
-										This is the content of the dialog.<br />
-										You can put any content here, such as text, images, forms, etc.<br />
-										Click the button below to close the dialog.
-									</p>
-									<panda-button @click="${() => this._onDialogClose()}">
-										CLOSE DIALOG
-									</panda-button>
+									<div style="display: flex; flex-flow: column; padding: 10px;">
+										<h2 style="margin: 0;">Dialog Title</h2>
+										<p>
+											This is the content of the dialog.<br />
+											You can put any content here, such as text, images, forms, etc.<br />
+											Click the button below to close the dialog.
+										</p>
+										<panda-button>CLOSE DIALOG</panda-button>
+									</div>
 								</div>
 							</panda-dialog>
 						</div>

@@ -1,4 +1,5 @@
 // types
+import { DialogEvent } from "../index";
 import { PandaDialogOverlay } from "./panda-dialog-overlay";
 
 // styles
@@ -107,6 +108,40 @@ export class PandaDialog extends HTMLElement {
 
 	private _noCloseOnEsc!: boolean;
 
+	/**
+	 * eventList
+	 * ---------
+	 * List of events that are triggered by the dialog component. 
+	 * This can be used by the parent component to listen to dialog events (e.g., "click" event).
+	 * @type {Array<DialogEvent>}
+	 * @public
+	 * @example
+	 * ```javascript
+	 * const dialog = document.querySelector("panda-dialog");
+	 * dialog.eventList = [
+	 * 	{
+	 * 		selector: "panda-button",
+	 * 		type: "click",
+	 * 		listener: () => {
+	 * 			console.log("Button inside dialog clicked!");
+	 * 		}
+	 * 	}
+	 * ];
+	 * // This will listen for click events on any panda-button inside the dialog and log a message when clicked.
+	 * ```
+	 */
+	get eventList(): DialogEvent[] {
+		return this._eventList;
+	}
+
+	set eventList(value: DialogEvent[]) {
+		if (this._eventList !== value) {
+			this._eventList = value;
+		}
+	}
+
+	private _eventList!: DialogEvent[];
+
 	// private properties =============================================================================================
 	private _ready!: boolean;
 
@@ -211,6 +246,7 @@ export class PandaDialog extends HTMLElement {
 			this._dialogEl.template = this._templateEl;
 			this._dialogEl.noCloseOnEsc = this.noCloseOnEsc;
 			this._dialogEl.noCloseOnOutsideClick = this.noCloseOnOutsideClick;
+			this._dialogEl.eventList = this.eventList;
 			// add events listeners
 			this._dialogEl.addEventListener("close", this._dialogCloseEvent);
 			// append overlay to the document body

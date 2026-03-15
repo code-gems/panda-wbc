@@ -10,7 +10,7 @@ import { styles } from "./styles/styles";
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import PageLibrary from "../../utils/page-library";
+import {pageLibrary} from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
@@ -24,16 +24,11 @@ class MainNav extends LitElement {
 		];
 	}
 
-	private _pageLibrary!: PageLibrary;
+	private _pageLibrary = pageLibrary;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-
-	constructor() {
-		super();
-		this._pageLibrary = new PageLibrary();
-	}
 
 	stateChanged(state: Store) {
 		console.log("%c [MAIN NAV] stateChanged", "font-size: 24px; color: green;", state);

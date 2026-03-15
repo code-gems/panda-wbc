@@ -15,7 +15,7 @@ import "@panda-wbc/panda-search";
 // utils
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import PageLibrary from "../../utils/page-library";
+import { pageLibrary } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
@@ -85,13 +85,13 @@ class AppSubmenu extends LitElement {
 
 	private _renderPageList() {
 		const listHtml: TemplateResult[] = [];
-		const allPages = new PageLibrary().getPages(this.pageCategory, true);
+		const allPages = pageLibrary.getPages(this.pageCategory, true);
 
 		allPages.forEach((page) => {
 			const active = page.pageId === this.searchParams.page
 				? "active"
 				: "";
-			
+
 			// filer menu against search text
 			if (this._searchText) {
 				// check page keywords

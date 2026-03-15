@@ -4,7 +4,7 @@ import { PandaRouterNavigateEvent, RouterConfig } from "@panda-wbc/panda-router"
 import { PandaThemeMode } from "@panda-wbc/panda-theme";
 
 // styles
-import { styles } from "./styles/styles";
+import { appStyles } from "./styles/styles";
 
 // theme service
 import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
@@ -38,7 +38,7 @@ import { gotoPage } from "./redux/actions/common";
 class PandaApp extends LitElement {
 	//css styles
 	static get styles() {
-		return styles;
+		return appStyles;
 	}
 
 	@state()

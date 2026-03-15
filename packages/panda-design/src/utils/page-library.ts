@@ -54,7 +54,7 @@ export class PageLibrary {
 	 * Extract all pages for particular category. Category string is case sensitive!
 	 * @param {String} category - Category of pages to extract.
 	 */
-	public getPages(category: string, childrenOnly: boolean = false): Page[] {
+	public getPages(category: string, childrenOnly = false): Page[] {
 		const pages: Page[] = [];
 		this._pageIds.forEach((page) => {
 			if (page.category === category) {
@@ -91,4 +91,6 @@ export const page = (page: Page) => {
 	};
 }
 
-export default PageLibrary;
+export const pageLibrary = new PageLibrary();
+
+(globalThis as any).pageLibrary = pageLibrary;

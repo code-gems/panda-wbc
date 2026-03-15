@@ -46,6 +46,7 @@ declare module "panda-design-typings" {
 		icon?: string;
 		parent?: boolean;
 		keywords?: string[];
+		version?: string;
 		native?: boolean;
 		createdTimestamp?: number;
 		updatedTimestamp?: number;

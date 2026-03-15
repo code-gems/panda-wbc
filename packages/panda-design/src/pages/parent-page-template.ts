@@ -13,7 +13,7 @@ import "../web-parts/app-submenu/app-submenu";
 import { CSSResultGroup, LitElement, TemplateResult, html } from "lit";
 import { property } from "lit/decorators.js";
 import { reduxify } from "../redux/store";
-import PageLibrary from "../utils/page-library";
+import { pageLibrary } from "../utils/page-library";
 
 @reduxify()
 export abstract class ParentPageTemplate extends LitElement {
@@ -31,7 +31,7 @@ export abstract class ParentPageTemplate extends LitElement {
 	// page details
 	@property({ type: String })
 	public pageId!: string
-	
+
 	public customStyles!: CSSResultGroup;
 
 	@property({ type: String })
@@ -40,7 +40,7 @@ export abstract class ParentPageTemplate extends LitElement {
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
 	// ================================================================================================================
-	
+
 	protected stateChanged(state: Store) {
 		if (state?.currentPageDetails) {
 			const {
@@ -55,7 +55,7 @@ export abstract class ParentPageTemplate extends LitElement {
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
-	
+
 	protected render() {
 		return html`
 			<style>
@@ -79,7 +79,7 @@ export abstract class ParentPageTemplate extends LitElement {
 
 	private _renderPageTemplate() {
 		if (this.pageId) {
-			const selectedPage = new PageLibrary().getPageById(this.pageId);
+			const selectedPage = pageLibrary.getPageById(this.pageId);
 			return selectedPage?.template;
 		} else {
 			return html`
@@ -88,7 +88,7 @@ export abstract class ParentPageTemplate extends LitElement {
 			`;
 		}
 	}
-	
+
 	abstract _renderBanner(): TemplateResult;
 
 	abstract _renderPageContent(): TemplateResult;

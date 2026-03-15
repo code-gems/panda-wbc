@@ -1,10 +1,15 @@
 import { css } from "lit";
 
-export const styles = css`
+export const appStyles = css`
 	:host {
 		display: block;
 		width: 100%;
 		height: 100%;
+		/* app tokens */
+		--pd-top-nav-bar-size: 80px;
+		--pd-side-bar-size: 300px;
+		--pd-page-banner-size: 200px;
+		--pd-page-breadcrumbs-size: 70px;
 	}
 `;
 
@@ -39,19 +44,29 @@ export const uiComponents = {
 		}
 
 		.content-page-wrap {
+			display: flex;
+			flex-flow: row nowrap;
+			width: 100%;
 			height: 100%;
 			overflow: auto;
 		}
 
 		.content-page {
 			display: flex;
-			flex-flow: row nowrap;
-			gap: 10px;
-		}
-
-		.content-page .content {
+			flex-flow: column;
 			flex-grow: 1;
 		}
+
+		.content-page.has-context-menu {
+			max-width: calc(100% - var(--pd-size-bar-size));
+		}
+
+		.context-menu {
+			display: block;
+			width: var(--pd-size-bar-size);
+			flex-shrink: 0;
+		}
+
 
 		.content-page .content .content-section {
 			position: relative;

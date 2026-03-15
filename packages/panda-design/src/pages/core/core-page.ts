@@ -11,7 +11,7 @@ import "../../web-parts/main-nav/main-nav";
 // utils
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
-import PageLibrary, { page } from "../../utils/page-library";
+import { page, pageLibrary } from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { debounce } from "@panda-wbc/panda-utils";
 
@@ -37,7 +37,7 @@ class CorePage extends LitElement {
 	// 	];
 	// }
 
-	private readonly _pageLibrary: PageLibrary = new PageLibrary();;
+	private readonly _pageLibrary = pageLibrary;
 
 	private readonly _debounce: Debouncer = debounce(this._debounceCallback, 2000, 4000);
 

@@ -1,4 +1,5 @@
 // styles
+import { DialogEvent } from "..";
 import { styles } from "./styles/overlay-styles";
 
 // utils
@@ -30,7 +31,7 @@ export class PandaDialogOverlay extends HTMLElement {
 
 	set template(value: Element | null) {
 		this._template = value;
-		this.applyContent();
+		this._applyContent();
 	}
 
 	private _template!: Element | null;
@@ -89,9 +90,30 @@ export class PandaDialogOverlay extends HTMLElement {
 
 	private _noCloseOnEsc!: boolean;
 
+	/**
+	 * eventList
+	 * ---------
+	 * List of events that are triggered by the dialog component. 
+	 * This can be used by the parent component to listen to dialog events (e.g., "click" event).
+	 * @type {Array<DialogEvent>}
+	 * @public
+	 */
+	get eventList(): DialogEvent[] {
+		return this._eventList;
+	}
+
+	set eventList(value: DialogEvent[]) {
+		if (this._eventList !== value) {
+			this._eventList = value;
+		}
+	}
+
+	private _eventList!: DialogEvent[];
+
 	// private properties =============================================================================================
 	private _ready!: boolean;
 	private _preventClose!: boolean;
+	private readonly _eventRegistry!: WeakMap<Element, Partial<DialogEvent>[]>;
 
 	// elements
 	private readonly _overlayEl!: HTMLDivElement;
@@ -121,7 +143,13 @@ export class PandaDialogOverlay extends HTMLElement {
 			</div>
 		`;
 
+		// initialize class props
 		this._ready = false;
+		this._preventClose = false;
+		this._noCloseOnOutsideClick = false;
+		this._noCloseOnEsc = false;
+		this._eventList = [];
+		this._eventRegistry = new WeakMap();
 
 		if (this.shadowRoot) {
 			// get elements handle
@@ -142,7 +170,7 @@ export class PandaDialogOverlay extends HTMLElement {
 
 	connectedCallback(): void {
 		this._ready = true;
-		this.applyContent();
+		this._applyContent();
 	}
 
 	disconnectedCallback(): void {
@@ -173,9 +201,26 @@ export class PandaDialogOverlay extends HTMLElement {
 	// ================================================================================================================
 
 	/** Apply template content to dialog overlay */
-	private applyContent() {
+	private _applyContent() {
 		if (this._ready && this.template != null) {
 			this._contentEl.innerHTML = this.template.innerHTML;
+			
+			// check if there are any events to be added to the content and add them
+			if (this.eventList?.length > 0) {
+				this.eventList.forEach(({ selector, type, listener, options }) => {
+					// add event listener to all elements matching the selector
+					this._contentEl.querySelectorAll(selector).forEach((element) => {
+						// check if element is already registered in the event registry, if not add it
+						if (!this._eventRegistry.has(element)) {
+							this._eventRegistry.set(element, []);
+						}
+						// store event listener in registry for later removal
+						this._eventRegistry.get(element)!.push({ type, listener, options });
+						// add event listener to element						
+						element.addEventListener(type, listener, options);
+					});
+				});
+			}
 		}
 	}
 
@@ -189,15 +234,12 @@ export class PandaDialogOverlay extends HTMLElement {
 	// ================================================================================================================
 
 	private _onPreventClose(): void {
-		console.log(`%c ⚡ (_onPreventClose)`, "font-size: 24px; color: crimson; background: black;");
 		// stopping propagation or preventing event will cause input type="file" to not work...
 		// hence this is the working solution
 		this._preventClose = true;
 	}
 
 	private _onCloseOverlay(): void {
-		console.log(`%c ⚡ (_onCloseOverlay)`, "font-size: 24px; color: crimson; background: black;");
-
 		if (this._preventClose) {
 			this._preventClose = false;
 		} else if (!this.noCloseOnOutsideClick) {
@@ -206,8 +248,6 @@ export class PandaDialogOverlay extends HTMLElement {
 	}
 	
 	private _onKeyPress(event: KeyboardEvent): void {
-		console.log(`%c ⚡ (_onKeyPress)`, "font-size: 24px; color: crimson; background: black;", event);
-
 		// check if [ESC] key was pressed
 		if (event.key === "Escape" && !this.noCloseOnEsc) {
 			this._triggerCloseEvent();

@@ -12,6 +12,7 @@ export const pageConfig: Page = {
 	description: ["Showcase of a panda-dialog component."],
 	category: PageCategory.DEVELOP,
 	native: true,
+	version: "v.1.0.0",
 
 	createdTimestamp: 1697059200000,
 

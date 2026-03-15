@@ -10,7 +10,7 @@ import "../../web-parts/main-nav/main-nav";
 // utils
 import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
-import PageLibrary from "../../utils/page-library";
+import {pageLibrary} from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 
 declare var navigate: (pathName: string, e: MouseEvent) => void;
@@ -25,17 +25,11 @@ class DocsPage extends LitElement {
 		];
 	}
 
-	private _pageLibrary!: PageLibrary;
+	private _pageLibrary = pageLibrary;
 
 	// ================================================================================================================
 	// ===================================================================================================== LIFE CYCLE
 	// ================================================================================================================
-
-	constructor() {
-		super();
-		// init page library 
-		this._pageLibrary = new PageLibrary();
-	}
 
 	stateChanged(state: Store) {
 		console.log("%c [GET STARTED PAGE] stateChanged", "font-size: 24px; color: green;", state);

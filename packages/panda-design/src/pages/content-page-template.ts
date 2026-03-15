@@ -1,13 +1,11 @@
 // types
 import {
-	ContextMenuItem,
 	ComponentPropertyDetails,
 	ComponentEventDetails,
 	ComponentInterfaceDetails,
 	ContentSectionName,
 	Page,
 } from "panda-design-typings";
-import { PandaParticleBannerConfig } from "@panda-wbc/panda-particle-banner";
 
 // styles
 import { uiComponents } from "../styles/styles";
@@ -16,13 +14,15 @@ import { scrollbar } from "@panda-wbc/panda-mixins";
 // components & web-parts
 import "@panda-wbc/panda-particle-banner";
 import "../web-parts/internal-link/internal-link";
-import "../web-parts/version-shield/version-shield";
+import "../web-parts/version-badge/version-badge";
 import "../web-parts/code-sample/code-sample";
+import "../web-parts/page-banner/page-banner";
 
 // utils
-import { LitElement, CSSResultGroup, TemplateResult, html, PropertyValues } from "lit";
-import { query, queryAll, state } from "lit/decorators.js";
-import PageLibrary from "../utils/page-library";
+import { LitElement, CSSResultGroup, TemplateResult, html } from "lit";
+import { queryAll, state } from "lit/decorators.js";
+import { pageLibrary } from "../utils/page-library";
+import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
 export abstract class ContentPageTemplate extends LitElement {
 	// css styles
@@ -39,35 +39,21 @@ export abstract class ContentPageTemplate extends LitElement {
 		];
 	}
 
+	// ========================================================================
+
 	@state()
 	public contentPageConfig!: Page;
 
 	public customStyles!: CSSResultGroup;
 
+	// private props ==========================================================
+	
 	@state()
-	private _componentVersion!: string;
-
-	@state()
-	private _contextMenu!: ContextMenuItem[];
-
+	private _hasContextMenu = false;
+	
 	// elements
-	@query("#content-page-wrap")
-	private _contentPageEl!: HTMLDivElement;
-
-	@query("#context-menu")
-	private _contextMenuEl!: HTMLDivElement;
-
-	@query("#content-list")
-	private _contentListEl!: HTMLDivElement;
-
-	@query("#btn-scroll-top")
-	private _btnScrollTopEl!: HTMLDivElement;
-
 	@queryAll("[data-content-section-name]")
 	private _contentSectionsEls!: HTMLDivElement[];
-
-	// events
-	private _contentPageScrollEvent: any = this._onContentPageScroll.bind(this);
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -91,25 +77,14 @@ export abstract class ContentPageTemplate extends LitElement {
      * @category updates
      */
 	firstUpdated(): void {
-		// add events
-		this._contentPageEl.addEventListener("scroll", this._contentPageScrollEvent);
+		// check for internal link
 		if (location.hash) {
 			this._scrollToHash();
 		}
-	}
-
-	updated(_changedProps: PropertyValues): void {
-		// console.log(`%c ⚡ _changedProps`, "font-size: 24px; color: crimson; background: black;", _changedProps);
-	}
-
-	connectedCallback(): void {
-		super.connectedCallback();
-	}
-
-	disconnectedCallback(): void {
-		super.disconnectedCallback();
-		// remove events
-		this._contentPageEl.removeEventListener("scroll", this._contentPageScrollEvent);
+		// check for context menu
+		const selectedPage = pageLibrary.getPageById(this.contentPageConfig?.pageId);
+		const contextMenu = selectedPage?.contextMenu;
+		this._hasContextMenu = contextMenu != null;
 	}
 
 	// ================================================================================================================
@@ -117,75 +92,105 @@ export abstract class ContentPageTemplate extends LitElement {
 	// ================================================================================================================
 
 	abstract _renderPageContent(): TemplateResult;
+	
+	private _renderPageBanner(): TemplateResult {
+			return html`
+			<div class="banner small particle-banner">
+				<pd-page-banner
+					.header="${this.contentPageConfig?.pageName}"
+					.version="${this.contentPageConfig?.version ?? ""}"
+					.native="${!!this.contentPageConfig?.native}"
+				></pd-page-banner>
+			</div>
+		`;
+	}
 
-	protected render() {
+	render(): TemplateResult {
 		return html`
 			<style>
 				${this.customStyles || ""}
 			</style>
-			<div id="content-page-wrap" class="content-page-wrap scrollbar">
-				${this._renderPageBanner()}
+			<div class="content-page-wrap scrollbar">
+				<div class="content-page ${this._hasContextMenu ? "has-context-menu" : ""}">
+					<!-- PAGE BREADCRUMBS -->
+					<pd-breadcrumbs
+						.pageName="${this.contentPageConfig?.pageName}"
+						.pageUri="${this.contentPageConfig?.pageUri}"
+					></pd-breadcrumbs>
+
+					${this._renderPageBanner()}
 				
-				<div class="content-page">
-					<div id="content" class="content">
-						${this._renderPageContent()}
-					</div>
+					<!-- CONTENT PAGE TEMPLATE -->
+					${this._renderPageContent()}
+
+					<!-- CUSTOMIZATION SECTION -->
 					
-					<!-- CONTEXT MENU -->
-					<div id="context-menu" class="context-menu">
-						${this._renderContextMenu()}
-						${this._renderScrollTopButton()}
-					</div>
-				</div> <!-- END OF CONTENT PAGE -->
+					<!-- RENDER PREVIOUS/NEXT PAGE SECTION -->
+					${this._renderPageFooter()}
+				</div>
+					
+				<!-- CONTEXT MENU -->
+				${this._renderContextMenu()}
 			</div>
 		`;
 	}
-	
-	private _renderPageBanner(): TemplateResult {
-		// console.log(`%c ⚡ (_renderPageBanner)`, "font-size: 24px; color: crimson; background: black;");
 
-		const primaryColor = getComputedStyle(this).getPropertyValue("--panda-primary-color");
-		const secondaryColor = getComputedStyle(this).getPropertyValue("--panda-secondary-color");
-		const tertiaryColor = getComputedStyle(this).getPropertyValue("--panda-tertiary-color");
+	private _renderPageFooter(): TemplateResult {
+		const category = this.contentPageConfig?.category;
+		const allPages = pageLibrary.getPages(category, true);
+		let previousPage!: Page;
+		let nextPage!: Page;
 
-		const bannerConfig: PandaParticleBannerConfig = {
-			particleGroup: [{
-				particleCount: 50,
-				blur: true,
-				blurMax: 5,
-				blurMin: 2,
-				colors: [primaryColor, secondaryColor, tertiaryColor],
-				colorOpacityVariation: 50,
-				colorSaturationVariation: 30,
-				maxSpeedX: 0.1,
-				minSpeedX: -0.1,
-				maxSpeedY: -0.5,
-				minSpeedY: -0.1,
-				sizeMax: 80,
-				sizeMin: 40,
-			}],
-			showFps: true
-		};
+		// find previous and next page based on order in page library
+		for (const [index, page] of allPages.entries()) {
+			if (page.pageId === this.contentPageConfig?.pageId) {
+				previousPage = allPages[index - 1];
+				nextPage = allPages[index + 1];
+				break;
+			}
+		}
+
+		const previousPageHtml = previousPage == null
+			? html``
+			: html`
+				<div class="page-btn previous" @click="${() => navigate(previousPage.pageUri)}">
+					<div class="icon">
+						<panda-icon icon="arrow-back"></panda-icon>
+					</div>
+					<div class="body">
+						<div class="label">Previous</div>
+						<div class="title">${previousPage.pageName}</div>
+					</div>
+				</div>
+			`;
+
+		const nextPageHtml = nextPage == null
+			? html``
+			: html`
+				<div class="page-btn next" @click="${() => navigate(nextPage.pageUri)}">
+					<div class="body">
+						<div class="label">Next</div>
+						<div class="title">${nextPage.pageName}</div>
+					</div>
+					<div class="icon">
+						<panda-icon icon="arrow-forward"></panda-icon>
+					</div>
+				</div>
+			`;
 
 		return html`
-			<div class="banner small particle-banner">
-				<panda-particle-banner .config="${bannerConfig}">
-					<div class="content">
-						<h1>${this.contentPageConfig?.pageName}</h1>
-					</div>
-				</panda-particle-banner>
-				<version-shield
-					prefix="version"
-					version="${this._componentVersion}"
-					color="orange"
-				></version-shield>
+			<div class="section">
+				<div class="page-navigation">
+					${previousPageHtml}
+					${nextPageHtml}
+				</div>
 			</div>
 		`;
 	}
 
-	private _renderContextMenu() {
-		const selectedPage = new PageLibrary().getPageById(this.contentPageConfig?.pageId);
-		const contextMenu = selectedPage?.contextMenu ?? [];
+	private _renderContextMenu(): TemplateResult | void {
+		const selectedPage = pageLibrary.getPageById(this.contentPageConfig?.pageId);
+		const contextMenu = selectedPage?.contextMenu;
 		
 		if (contextMenu != null) {
 			const contextMenuHtml: TemplateResult[] = [];
@@ -195,7 +200,7 @@ export abstract class ContentPageTemplate extends LitElement {
 				const childrenHtml: TemplateResult[] = [];
 
 				// check for children
-				if (children != null && children.length > 0) {
+				if (children?.length) {
 					children.forEach(({ name, contextId }) => {
 						childrenHtml.push(html`
 							<div
@@ -260,14 +265,6 @@ export abstract class ContentPageTemplate extends LitElement {
 				</div>
 			`;
 		}
-	}
-
-	private _renderScrollTopButton() {
-		return html`
-			<div id="btn-scroll-top" class="btn-scroll-top">
-				<panda-icon icon="chevron-up"></panda-icon>
-			</div>
-		`;
 	}
 
 	public _renderComponentPropertyTable(componentPropertyList: ComponentPropertyDetails[] = []): TemplateResult {
@@ -417,18 +414,7 @@ export abstract class ContentPageTemplate extends LitElement {
 			}
 		} else {
 			console.warn("%c Unable to locate content section. Please verify your contextMenu config.", "font-size: 16px;", contextId);
-			console.warn("%c Context menu config:", "font-size: 16px;", this._contextMenu);
 			console.warn("%c Content Sections:", "font-size: 16px;", [...this._contentSectionsEls].map((sectionEl) => sectionEl.dataset.contentSectionName));
-		}
-	}
-
-	private _onContentPageScroll(): void {
-		const contextMenuRect: DOMRect = this._contextMenuEl.getBoundingClientRect();
-		// check if context menu container is outside of the view port
-		if (contextMenuRect.top < 0) {
-			// this._contentListEl.classList.add("fixed");
-		} else {
-			// this._contentListEl.classList.remove("fixed");
 		}
 	}
 }

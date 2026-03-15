@@ -14,6 +14,8 @@ export const styles = /*css*/`
 		inset: 0;
 		pointer-events: auto;
 
+		animation: fadeInOverlay 300ms ease-out;
+
 		background-color: var(--panda-dialog-overlay-background-color, hsl(0deg 0% 94% / 50%));
 		z-index: 100;
 	}
@@ -26,7 +28,8 @@ export const styles = /*css*/`
 		font-size: var(--panda-dialog-font-size, 14px);
 		font-family: var(--panda-dialog-font-family, "Poppins");
 		
-		animation: show 300ms ease-out;
+		transform-origin: top center;
+		animation: fadeIn 300ms ease-out;
 
 		border-width: var(--panda-dialog-border-width, 1px);
 		border-style: var(--panda-dialog-border-style, solid);
@@ -37,8 +40,19 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 	}
 
-	@keyframes show {
-		from { transform: scale(0.8); }
-		to { transform: scale(1); }
+	@keyframes fadeInOverlay {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+			transform: scale(1.05) translateY(-10px);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
 	}
 `;
