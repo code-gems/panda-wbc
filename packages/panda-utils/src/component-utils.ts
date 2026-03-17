@@ -1,25 +1,35 @@
 /**
  * Apply component styles to shadow root.
- * @param {string} styles styles to apply
+ * @param {string | string[]} styles styles to apply
  * @param {ShadowRoot} target shadow root to apply styles to
  * @description This function applies the provided styles to the target shadow root. 
  * It first checks if the browser supports adoptedStyleSheets, and if so, it uses that API to apply the styles. 
  * If not, it falls back to creating a style element and appending it to the shadow root.
  */
-export const applyStyles = (styles: string, target: ShadowRoot | null): void => {
-	if (target == null) {
-		console.warn(`%c [COMPONENT UTILS] (applyStyles) Target shadow root is null`, "font-size: 16px;");
+export const applyStyles = (styles: string | string[], target: ShadowRoot | null): void => {
+	if (target == null || styles == null) {
 		return;
 	}
 	// check for adoptedStyleSheets support
 	if (target.adoptedStyleSheets) {
-		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(styles);
-		target.adoptedStyleSheets = [cssStyleSheet];
+		if (Array.isArray(styles)) {
+			const cssStyleSheets = styles.map((style) => {
+				const cssStyleSheet = new CSSStyleSheet();
+				cssStyleSheet.replaceSync(style);
+				return cssStyleSheet;
+			});
+			target.adoptedStyleSheets = cssStyleSheets;
+		} else {
+			const cssStyleSheet = new CSSStyleSheet();
+			cssStyleSheet.replaceSync(styles);
+			target.adoptedStyleSheets = [cssStyleSheet];
+		}
 	} else {
 		// fallback for browsers that do not support adoptedStyleSheets
 		const styleEl = document.createElement("style");
-		styleEl.textContent = styles;
+		styleEl.textContent = Array.isArray(styles)
+			? styles.join("\n")
+			: styles;
 
 		target.appendChild(styleEl);
 	}

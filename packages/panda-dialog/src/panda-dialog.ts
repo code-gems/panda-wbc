@@ -1,5 +1,4 @@
 // types
-import { DialogEvent } from "../index";
 import { PandaDialogOverlay } from "./panda-dialog-overlay";
 
 // styles
@@ -40,7 +39,6 @@ export class PandaDialog extends HTMLElement {
 	}
 
 	set opened(value: boolean) {
-		console.log("%c 🧪 (set opened)", "font-size: 24px; color: red; background: black;", this._opened, "->", value);
 		if (this._opened !== value) {
 			this._opened = parseBooleanAttribute(value);
 			// reflect to attribute
@@ -109,48 +107,58 @@ export class PandaDialog extends HTMLElement {
 	private _noCloseOnEsc!: boolean;
 
 	/**
-	 * eventList
-	 * ---------
-	 * List of events that are triggered by the dialog component. 
-	 * This can be used by the parent component to listen to dialog events (e.g., "click" event).
-	 * @type {Array<DialogEvent>}
+	 * customStyles
+	 * -------------
+	 * Custom styles for the dialog component. This can be used by the 
+	 * parent component to apply custom styles to the dialog content.
+	 * @type {string}
 	 * @public
-	 * @example
+	 * @example (JavaScript)
 	 * ```javascript
+	 * const customStyles = `
+	 *   .dialog {
+	 *     background-color: red;
+	 *   }
+	 * `;
+	 * 
 	 * const dialog = document.querySelector("panda-dialog");
-	 * dialog.eventList = [
-	 * 	{
-	 * 		selector: "panda-button",
-	 * 		type: "click",
-	 * 		listener: () => {
-	 * 			console.log("Button inside dialog clicked!");
-	 * 		}
-	 * 	}
-	 * ];
-	 * // This will listen for click events on any panda-button inside the dialog and log a message when clicked.
+	 * dialog.customStyles = customStyles;
+	 * ```
+	 * @example (HTML)
+	 * ```html
+	 * <panda-dialog>
+	 *   <div template>
+	 *     <div class="dialog">
+	 *       <h1>Custom Styled Dialog</h1>
+	 *       <p>This dialog has custom styles applied to it.</p>
+	 *     </div>
+	 *   </div>
+	 * </panda-dialog>
 	 * ```
 	 */
-	get eventList(): DialogEvent[] {
-		return this._eventList;
+	get customStyles(): string {
+		return this._customStyles;
 	}
 
-	set eventList(value: DialogEvent[]) {
-		if (this._eventList !== value) {
-			this._eventList = value;
+	set customStyles(value: string) {
+		if (this._customStyles !== value) {
+			this._customStyles = value;
+			// apply custom styles to the dialog overlay
+			if (this._dialogEl != null) {
+				applyStyles(this._customStyles, this._dialogEl.shadowRoot);
+			}
 		}
 	}
 
-	private _eventList!: DialogEvent[];
+	private _customStyles!: string;
 
 	// private properties =============================================================================================
-	private _ready!: boolean;
-
 	// elements
-	private readonly _templateEl!: HTMLDivElement;
+	private _templateEl!: Element | null;
 	private _dialogEl!: PandaDialogOverlay | null;
 
 	// events
-	private readonly _dialogCloseEvent!: EventListener;
+	private _dialogCloseEvent!: EventListener;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -163,25 +171,29 @@ export class PandaDialog extends HTMLElement {
 		// apply component styles
 		applyStyles(styles, this.shadowRoot);
 
-		if (this.shadowRoot) {
-			// create template element
-			this._templateEl = document.createElement("div");
-
-			// add event listeners
-			this._dialogCloseEvent = this._onCloseDialogOverlay.bind(this);
-			document.addEventListener("panda-dialog-close", this._dialogCloseEvent);
-		}
+		// initialize class props
+		this._templateEl = document.createElement("div");
+		this._dialogEl = null;
+		this._opened = false;
+		this._noCloseOnOutsideClick = false;
+		this._noCloseOnEsc = false;
 	}
 
 	connectedCallback(): void {
 		Array
 			.from(this.children)
 			.forEach((child) => {
-				if (child.tagName === "TEMPLATE" || typeof child.getAttribute("template") === "string") {
-					this._templateEl.innerHTML = child.innerHTML;
+				if (child.tagName === "TEMPLATE") {
+					this._templateEl = child;
+				} else if (typeof child.getAttribute("template") === "string") {
+					this._templateEl = child;
 				}
 			});
-		this._ready = true;
+		
+		// add event listeners
+		this._dialogCloseEvent = this._onCloseDialogOverlay.bind(this);
+		document.addEventListener("panda-dialog-close", this._dialogCloseEvent);
+		// update component
 		this._updateComponent();
 	}
 
@@ -198,11 +210,9 @@ export class PandaDialog extends HTMLElement {
 		if (_oldValue === _newValue) {
 			return;
 		}
-		console.log("%c 🧪 (attributeChangedCallback) attr", "font-size: 24px; color: red; background: black;", _name);
 		switch (_name) {
 			case "opened":
 				this._opened = parseBooleanAttribute(_newValue);
-				console.log("%c 🧪 (attributeChangedCallback) opened", "font-size: 24px; color: red; background: black;", this._opened);
 				break;
 			case "no-close-on-outside-click":
 				this._noCloseOnOutsideClick = parseBooleanAttribute(_newValue);
@@ -220,8 +230,7 @@ export class PandaDialog extends HTMLElement {
 	// ================================================================================================================
 
 	private _updateComponent(): void {
-		if (this._ready) {
-			console.log("%c 🧪 (_updateComponent)", "font-size: 24px; color: crimson; background: black;", this._opened);
+		if (this.isConnected) {
 			// open or close dialog
 			if (this._opened) {
 				this._openDialog();
@@ -238,15 +247,16 @@ export class PandaDialog extends HTMLElement {
 	}
 
 	private _openDialog(): void {
+		console.log(`%c ⚡ (_openDialog) dialog`, "font-size: 24px; color: crimson; background: black;", this._dialogEl);
 		// check if dialog already exists
-		console.log("%c 🧪 (_openDialog)", "font-size: 24px; color: crimson; background: black;", this._opened, this._dialogEl);
 		if (this._dialogEl == null) {
 			this._dialogEl = document.createElement("panda-dialog-overlay");
 			// set overlay props
+			console.log(`%c ⚡ (_openDialog) template`, "font-size: 24px; color: crimson; background: black;", this._templateEl);
 			this._dialogEl.template = this._templateEl;
 			this._dialogEl.noCloseOnEsc = this.noCloseOnEsc;
 			this._dialogEl.noCloseOnOutsideClick = this.noCloseOnOutsideClick;
-			this._dialogEl.eventList = this.eventList;
+			this._dialogEl.customStyles = this.customStyles;
 			// add events listeners
 			this._dialogEl.addEventListener("close", this._dialogCloseEvent);
 			// append overlay to the document body
@@ -262,14 +272,11 @@ export class PandaDialog extends HTMLElement {
 			this._dialogEl = null;
 			// reset opened state
 			this.opened = false;
-			// trigger close event
-			this._triggerCloseEvent();
-		}
-	}
 
-	private _triggerCloseEvent(): void {
-		const event = new CustomEvent("close", {});
-		this.dispatchEvent(event);
+			// trigger close event
+			const event = new CustomEvent("close", {});
+			this.dispatchEvent(event);
+		}
 	}
 
 	// ================================================================================================================

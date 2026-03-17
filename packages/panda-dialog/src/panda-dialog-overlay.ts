@@ -1,5 +1,4 @@
 // styles
-import { DialogEvent } from "..";
 import { styles } from "./styles/overlay-styles";
 
 // utils
@@ -26,15 +25,14 @@ export class PandaDialogOverlay extends HTMLElement {
 	 * @public
 	 */
 	get template(): Element | null {
-		return this._template;
+		return this._templateEl;
 	}
 
 	set template(value: Element | null) {
-		this._template = value;
-		this._applyContent();
+		this._templateEl = value;
 	}
 
-	private _template!: Element | null;
+	private _templateEl!: Element | null;
 
 	/**
 	 * noCloseOnOutsideClick
@@ -91,39 +89,36 @@ export class PandaDialogOverlay extends HTMLElement {
 	private _noCloseOnEsc!: boolean;
 
 	/**
-	 * eventList
-	 * ---------
-	 * List of events that are triggered by the dialog component. 
-	 * This can be used by the parent component to listen to dialog events (e.g., "click" event).
-	 * @type {Array<DialogEvent>}
+	 * customStyles
+	 * -------------
+	 * Custom styles to be applied to the dialog content. This can be used by the parent component to apply custom styles to the dialog content.
+	 * @type {string}
 	 * @public
 	 */
-	get eventList(): DialogEvent[] {
-		return this._eventList;
+	get customStyles(): string {
+		return this._customStyles;
 	}
 
-	set eventList(value: DialogEvent[]) {
-		if (this._eventList !== value) {
-			this._eventList = value;
+	set customStyles(value: string) {
+		if (this._customStyles !== value) {
+			this._customStyles = value;
 		}
 	}
 
-	private _eventList!: DialogEvent[];
+	private _customStyles!: string;
 
 	// private properties =============================================================================================
-	private _ready!: boolean;
 	private _preventClose!: boolean;
-	private readonly _eventRegistry!: WeakMap<Element, Partial<DialogEvent>[]>;
 
 	// elements
 	private readonly _overlayEl!: HTMLDivElement;
-	private readonly _contentEl!: HTMLDivElement;
+	private readonly _contentEl!: HTMLDivElement | null;
 	
 	// events
-	private readonly _dialogCloseEvent!: EventListener;
-	private readonly _keyPressEvent!: ((event: KeyboardEvent) => void);
-	private readonly _closeOverlayEvent!: EventListener;
-	private readonly _preventCloseEvent!: EventListener;
+	private _dialogCloseEvent!: EventListener;
+	private _keyPressEvent!: ((event: KeyboardEvent) => void);
+	private _closeOverlayEvent!: EventListener;
+	private _preventCloseEvent!: EventListener;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -144,32 +139,33 @@ export class PandaDialogOverlay extends HTMLElement {
 		`;
 
 		// initialize class props
-		this._ready = false;
 		this._preventClose = false;
 		this._noCloseOnOutsideClick = false;
 		this._noCloseOnEsc = false;
-		this._eventList = [];
-		this._eventRegistry = new WeakMap();
 
 		if (this.shadowRoot) {
 			// get elements handle
 			this._overlayEl = this.shadowRoot.querySelector(".dialog-overlay") as HTMLDivElement;
 			this._contentEl = this.shadowRoot.querySelector(".content") as HTMLDivElement;
-
-			// add event listeners
-			this._dialogCloseEvent = this._triggerCloseEvent.bind(this);
-			document.addEventListener("panda-dialog-close", this._dialogCloseEvent);
-			this._keyPressEvent = this._onKeyPress.bind(this);
-			document.addEventListener("keydown", this._keyPressEvent);
-			this._closeOverlayEvent = this._onCloseOverlay.bind(this);
-			this._overlayEl.addEventListener("click", this._closeOverlayEvent);
-			this._preventCloseEvent = this._onPreventClose.bind(this);
-			this._contentEl.addEventListener("click", this._preventCloseEvent);
 		}
 	}
 
 	connectedCallback(): void {
-		this._ready = true;
+		// add event listeners
+		this._dialogCloseEvent = this._triggerCloseEvent.bind(this);
+		document.addEventListener("panda-dialog-close", this._dialogCloseEvent);
+		this._keyPressEvent = this._onKeyPress.bind(this);
+		document.addEventListener("keydown", this._keyPressEvent);
+		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
+		this._overlayEl.addEventListener("click", this._closeOverlayEvent);
+		this._preventCloseEvent = this._onPreventClose.bind(this);
+		this._contentEl!.addEventListener("click", this._preventCloseEvent);
+
+		console.log(`%c ⚡ (connectedCallback) template`, "font-size: 24px; color: crimson; background: black;", this._templateEl, this.isConnected);
+
+		// apply custom styles if any
+		this._applyCustomStyles();
+		// apply content if template is already set
 		this._applyContent();
 	}
 
@@ -178,10 +174,10 @@ export class PandaDialogOverlay extends HTMLElement {
 		document.removeEventListener("panda-dialog-close", this._dialogCloseEvent);
 		document.removeEventListener("keydown", this._keyPressEvent);
 		this._overlayEl.removeEventListener("click", this._closeOverlayEvent);
-		this._contentEl.removeEventListener("click", this._preventCloseEvent);
+		this._contentEl!.removeEventListener("click", this._preventCloseEvent);
 	}
 
-	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+	attributeChangedCallback(_name: string, _oldValue: string, _newValue: string): void {
 		// do not process if value did not change
 		if (_oldValue === _newValue) {
 			return;
@@ -200,33 +196,34 @@ export class PandaDialogOverlay extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
+	/** Apply custom styles to the dialog overlay */
+	private _applyCustomStyles(): void {
+		if (this._customStyles != null) {
+			applyStyles([styles, this._customStyles], this.shadowRoot);
+		}
+	}
+
 	/** Apply template content to dialog overlay */
-	private _applyContent() {
-		if (this._ready && this.template != null) {
-			this._contentEl.innerHTML = this.template.innerHTML;
-			
-			// check if there are any events to be added to the content and add them
-			if (this.eventList?.length > 0) {
-				this.eventList.forEach(({ selector, type, listener, options }) => {
-					// add event listener to all elements matching the selector
-					this._contentEl.querySelectorAll(selector).forEach((element) => {
-						// check if element is already registered in the event registry, if not add it
-						if (!this._eventRegistry.has(element)) {
-							this._eventRegistry.set(element, []);
-						}
-						// store event listener in registry for later removal
-						this._eventRegistry.get(element)!.push({ type, listener, options });
-						// add event listener to element						
-						element.addEventListener(type, listener, options);
-					});
-				});
+	private _applyContent(): void {
+		console.log(`%c ⚡ (applyContent) template`, "font-size: 24px; color: crimson; background: black;", this._templateEl, this.isConnected);
+		if (this.isConnected && this._templateEl != null) {
+			if (this._templateEl instanceof HTMLTemplateElement) {
+				this._contentEl!.appendChild(this._templateEl.content.cloneNode(true));
+			} else {
+				this._contentEl!.appendChild(this._templateEl);
 			}
+		} else {
+			console.log(
+				`%c [PANDA DIALOG OVERLAY] (applyContent) Template element is null or component is not connected`, 
+				"font-size: 16px; color: orange; background: black;", 
+				this._templateEl,
+				this.isConnected
+			);
 		}
 	}
 
 	private _triggerCloseEvent(): void {
-		const event = new CustomEvent("close", {});
-		this.dispatchEvent(event);
+		this.dispatchEvent(new CustomEvent("close", {}));
 	}
 
 	// ================================================================================================================
@@ -242,14 +239,14 @@ export class PandaDialogOverlay extends HTMLElement {
 	private _onCloseOverlay(): void {
 		if (this._preventClose) {
 			this._preventClose = false;
-		} else if (!this.noCloseOnOutsideClick) {
+		} else if (!this._noCloseOnOutsideClick) {
 			this._triggerCloseEvent();
 		}
 	}
 	
 	private _onKeyPress(event: KeyboardEvent): void {
 		// check if [ESC] key was pressed
-		if (event.key === "Escape" && !this.noCloseOnEsc) {
+		if (event.key === "Escape" && !this._noCloseOnEsc) {
 			this._triggerCloseEvent();
 		}
 	}
