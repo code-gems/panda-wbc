@@ -183,9 +183,7 @@ export class PandaDialog extends HTMLElement {
 		Array
 			.from(this.children)
 			.forEach((child) => {
-				if (child.tagName === "TEMPLATE") {
-					this._templateEl = child;
-				} else if (typeof child.getAttribute("template") === "string") {
+				if (child.tagName === "TEMPLATE" || typeof child.getAttribute("template") === "string") {
 					this._templateEl = child;
 				}
 			});
@@ -247,12 +245,10 @@ export class PandaDialog extends HTMLElement {
 	}
 
 	private _openDialog(): void {
-		console.log(`%c ⚡ (_openDialog) dialog`, "font-size: 24px; color: crimson; background: black;", this._dialogEl);
 		// check if dialog already exists
 		if (this._dialogEl == null) {
 			this._dialogEl = document.createElement("panda-dialog-overlay");
 			// set overlay props
-			console.log(`%c ⚡ (_openDialog) template`, "font-size: 24px; color: crimson; background: black;", this._templateEl);
 			this._dialogEl.template = this._templateEl;
 			this._dialogEl.noCloseOnEsc = this.noCloseOnEsc;
 			this._dialogEl.noCloseOnOutsideClick = this.noCloseOnOutsideClick;

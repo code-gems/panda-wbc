@@ -160,9 +160,6 @@ export class PandaDialogOverlay extends HTMLElement {
 		this._overlayEl.addEventListener("click", this._closeOverlayEvent);
 		this._preventCloseEvent = this._onPreventClose.bind(this);
 		this._contentEl!.addEventListener("click", this._preventCloseEvent);
-
-		console.log(`%c ⚡ (connectedCallback) template`, "font-size: 24px; color: crimson; background: black;", this._templateEl, this.isConnected);
-
 		// apply custom styles if any
 		this._applyCustomStyles();
 		// apply content if template is already set
@@ -205,20 +202,12 @@ export class PandaDialogOverlay extends HTMLElement {
 
 	/** Apply template content to dialog overlay */
 	private _applyContent(): void {
-		console.log(`%c ⚡ (applyContent) template`, "font-size: 24px; color: crimson; background: black;", this._templateEl, this.isConnected);
 		if (this.isConnected && this._templateEl != null) {
 			if (this._templateEl instanceof HTMLTemplateElement) {
 				this._contentEl!.appendChild(this._templateEl.content.cloneNode(true));
 			} else {
 				this._contentEl!.appendChild(this._templateEl);
 			}
-		} else {
-			console.log(
-				`%c [PANDA DIALOG OVERLAY] (applyContent) Template element is null or component is not connected`, 
-				"font-size: 16px; color: orange; background: black;", 
-				this._templateEl,
-				this.isConnected
-			);
 		}
 	}
 
