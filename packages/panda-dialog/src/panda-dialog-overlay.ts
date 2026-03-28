@@ -109,7 +109,7 @@ export class PandaDialogOverlay extends HTMLElement {
 
 	// private properties =============================================================================================
 	private _preventClose!: boolean;
-
+	
 	// elements
 	private readonly _overlayEl!: HTMLDivElement;
 	private readonly _contentEl!: HTMLDivElement | null;
@@ -119,6 +119,10 @@ export class PandaDialogOverlay extends HTMLElement {
 	private _keyPressEvent!: ((event: KeyboardEvent) => void);
 	private _closeOverlayEvent!: EventListener;
 	private _preventCloseEvent!: EventListener;
+
+	// timers
+	/** Used to delay close event for animation to finish */
+	private _closeTimer!: ReturnType<typeof setTimeout>;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -172,6 +176,10 @@ export class PandaDialogOverlay extends HTMLElement {
 		document.removeEventListener("keydown", this._keyPressEvent);
 		this._overlayEl.removeEventListener("click", this._closeOverlayEvent);
 		this._contentEl!.removeEventListener("click", this._preventCloseEvent);
+		// clean up
+		if (this._closeTimer) {
+			clearTimeout(this._closeTimer);
+		}
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: string, _newValue: string): void {
@@ -212,7 +220,22 @@ export class PandaDialogOverlay extends HTMLElement {
 	}
 
 	private _triggerCloseEvent(): void {
-		this.dispatchEvent(new CustomEvent("close", {}));
+		this._overlayEl.classList.add("closing");
+		this._contentEl!.classList.add("closing");
+		clearTimeout(this._closeTimer);
+		this._closeTimer = setTimeout(() => {
+			this.dispatchEvent(new CustomEvent("close", {}));
+		}, 300);
+	}
+
+	// ================================================================================================================
+	// API ============================================================================================================
+	// ================================================================================================================
+
+	/** Used by parent component to just trigger closing animation */
+	public triggerCloseAnimationOnly(): void {
+		this._overlayEl.classList.add("closing");
+		this._contentEl!.classList.add("closing");
 	}
 
 	// ================================================================================================================

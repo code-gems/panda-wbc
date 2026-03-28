@@ -20,6 +20,11 @@ export const styles = /*css*/`
 		z-index: 100;
 	}
 
+	.dialog-overlay.closing {
+		animation: fadeOutOverlay 300ms ease-out;
+		animation-fill-mode: forwards;
+	}
+
 	.content {
 		display: flex;
 		flex-flow: column;
@@ -40,19 +45,36 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 	}
 
+	.content.closing {
+		animation: fadeOut 300ms ease-out;
+		animation-fill-mode: forwards;
+	}
+
 	@keyframes fadeInOverlay {
 		0% { opacity: 0; }
 		100% { opacity: 1; }
 	}
 
+	@keyframes fadeOutOverlay {
+		0% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
 	@keyframes fadeIn {
 		0% {
-			opacity: 0;
 			transform: scale(1.05) translateY(-10px);
 		}
 		100% {
-			opacity: 1;
 			transform: scale(1) translateY(0);
+		}
+	}
+
+	@keyframes fadeOut {
+		0% {
+			transform: scale(1) translateY(0);
+		}
+		100% {
+			transform: scale(0.95) translateY(10px);
 		}
 	}
 `;

@@ -28,7 +28,7 @@ export class ContentPage extends ContentPageTemplate {
 	@state()
 	private _showDialog2 = false;
 
-	private readonly _closeDialogEvent = this._onDialogClose.bind(this);
+	private readonly _closeDialogEvent = this._onGlobalDialogClose.bind(this);
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -56,12 +56,12 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="row">
 						<div class="col-3">
 							<panda-button @click="${this._onToggleDialog}">
-								SHOW DIALOG
+								SHOW DIALOG (${this._showDialog ? "Opened" : "Closed"})
 							</panda-button>
 						</div>
 						<div class="col-3">
 							<panda-button @click="${this._onToggleDialog2}">
-								SHOW DIALOG (Template)
+								SHOW DIALOG (Template) (${this._showDialog2 ? "Opened" : "Closed"})
 							</panda-button>
 						</div>
 					</div>
@@ -111,21 +111,26 @@ export class ContentPage extends ContentPageTemplate {
 
 	private _onToggleDialog() {
 		this._showDialog = true;
-		console.log("%c ⚡ [DEMO] (_onToggleDialog)", "font-size: 24px; color: limegreen; background: black;", this._showDialog);
+		console.log("%c 🚀 [DEMO] (_onToggleDialog)", "font-size: 24px; color: blue; background: black;", this._showDialog);
 	}
 
 	private _onToggleDialog2() {
 		this._showDialog2 = true;
-		console.log("%c ⚡ [DEMO] (_onToggleDialog)", "font-size: 24px; color: limegreen; background: black;", this._showDialog2);
+		console.log("%c 🚀 [DEMO] (_onToggleDialog)", "font-size: 24px; color: blue; background: black;", this._showDialog2);
 	}
 
 	private _onDialogClose(): void {
 		this._showDialog = false;
-		console.log("%c ⚡ [DEMO] (_onDialogClose)", "font-size: 24px; color: crimson; background: black;", this._showDialog);
+		console.log("%c 🚀 [DEMO] (_onDialogClose)", "font-size: 24px; color: blue; background: black;", this._showDialog);
 	}
 	
 	private _onDialogClose2(): void {
 		this._showDialog2 = false;
-		console.log("%c ⚡ [DEMO] (_onDialogClose2)", "font-size: 24px; color: crimson; background: black;", this._showDialog2);
+		console.log("%c 🚀 [DEMO] (_onDialogClose2)", "font-size: 24px; color: blue; background: black;", this._showDialog2);
+	}
+
+	private _onGlobalDialogClose(): void {
+		console.log("%c 🚀 [DEMO] (_onGlobalDialogClose)", "font-size: 24px; color: blue; background: black;", this._showDialog);
+		document.dispatchEvent(new CustomEvent("panda-dialog-close", {}));
 	}
 }

@@ -153,12 +153,19 @@ export class PandaDialog extends HTMLElement {
 	private _customStyles!: string;
 
 	// private properties =============================================================================================
+	private _closing = false;
+
 	// elements
 	private _templateEl!: Element | null;
 	private _dialogEl!: PandaDialogOverlay | null;
 
 	// events
 	private _dialogCloseEvent!: EventListener;
+	private _globalDialogCloseEvent!: EventListener;
+
+	// timers
+	/** Used to delay close event for animation to finish */
+	private _closeTimer!: ReturnType<typeof setTimeout>;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -175,6 +182,7 @@ export class PandaDialog extends HTMLElement {
 		this._templateEl = document.createElement("div");
 		this._dialogEl = null;
 		this._opened = false;
+		this._closing = false;
 		this._noCloseOnOutsideClick = false;
 		this._noCloseOnEsc = false;
 	}
@@ -189,8 +197,9 @@ export class PandaDialog extends HTMLElement {
 			});
 		
 		// add event listeners
-		this._dialogCloseEvent = this._onCloseDialogOverlay.bind(this);
-		document.addEventListener("panda-dialog-close", this._dialogCloseEvent);
+		this._dialogCloseEvent = this._closeDialog.bind(this);
+		this._globalDialogCloseEvent = this._onGlobalCloseDialog.bind(this);
+		document.addEventListener("panda-dialog-close", this._globalDialogCloseEvent);
 		// update component
 		this._updateComponent();
 	}
@@ -200,7 +209,7 @@ export class PandaDialog extends HTMLElement {
 			this._dialogEl.remove();
 		}
 		// remove global event listener
-		document.removeEventListener("panda-dialog-close", this._dialogCloseEvent);
+		document.removeEventListener("panda-dialog-close", this._globalDialogCloseEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -211,6 +220,15 @@ export class PandaDialog extends HTMLElement {
 		switch (_name) {
 			case "opened":
 				this._opened = parseBooleanAttribute(_newValue);
+				if (!this._opened && this._dialogEl != null) {
+					this._dialogEl.triggerCloseAnimationOnly();
+					// delay close event for animation to finish
+					clearTimeout(this._closeTimer);
+					this._closing = true;
+					this._closeTimer = setTimeout(() => {
+						this._closeDialog();
+					}, 300);
+				}
 				break;
 			case "no-close-on-outside-click":
 				this._noCloseOnOutsideClick = parseBooleanAttribute(_newValue);
@@ -230,10 +248,8 @@ export class PandaDialog extends HTMLElement {
 	private _updateComponent(): void {
 		if (this.isConnected) {
 			// open or close dialog
-			if (this._opened) {
+			if (this._opened && !this._closing) {
 				this._openDialog();
-			} else {
-				this._closeDialog();
 			}
 			
 			// update dialog props
@@ -260,6 +276,7 @@ export class PandaDialog extends HTMLElement {
 		}
 	}
 
+	/** Handles the close dialog event triggered locally from the dialog element */
 	private _closeDialog() {
 		if (this._dialogEl != null) {
 			// remove event listeners
@@ -268,6 +285,7 @@ export class PandaDialog extends HTMLElement {
 			this._dialogEl = null;
 			// reset opened state
 			this.opened = false;
+			this._closing = false;
 
 			// trigger close event
 			const event = new CustomEvent("close", {});
@@ -275,12 +293,17 @@ export class PandaDialog extends HTMLElement {
 		}
 	}
 
-	// ================================================================================================================
-	// EVENTS =========================================================================================================
-	// ================================================================================================================
-
-	private _onCloseDialogOverlay(): void {
-		this._closeDialog();
+	/** Handles the global close dialog event triggered from document */
+	private _onGlobalCloseDialog(): void {
+		if (this._opened && this._dialogEl != null) {
+			this._dialogEl.triggerCloseAnimationOnly();
+			// delay close event for animation to finish
+			clearTimeout(this._closeTimer);
+			this._closing = true;
+			this._closeTimer = setTimeout(() => {
+				this._closeDialog();
+			}, 300);
+		}
 	}
 }
 
