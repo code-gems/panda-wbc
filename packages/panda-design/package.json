@@ -15,9 +15,10 @@
 		"test": "vitest"
 	},
 	"keywords": [],
-	"author": "code-gems",
+	"author": "code-gems",	
 	"license": "Apache-2.0",
 	"dependencies": {
+		"clock-zone": "workspace:*",
 		"@panda-wbc/panda-badge": "workspace:*",
 		"@panda-wbc/panda-button-group": "workspace:*",
 		"@panda-wbc/panda-button": "workspace:*",

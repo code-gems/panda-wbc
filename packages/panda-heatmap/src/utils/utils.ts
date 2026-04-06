@@ -6,24 +6,29 @@ export const getI18nConfig = (): PandaHeatmapI18nConfig => ({
 	loadingText: "Loading...",
 });
 
-const colorStringToRGBA = (color: string): RGBAColor => {
+/**
+ * Convert color string to RGBAColor object
+ * @param {string} color - color value in various formats (hex, rgb, rgba, hsl, hsla, named colors)
+ * @returns {RGBAColor} RGBAColor object
+ */
+export const colorStringToRGBA = (color: string): RGBAColor => {
 	if (!color) {
 		return { r: 0, g: 0, b: 0, a: 100 };
 	}
 	const trimmed = color.trim();
 
 	// Handle hex format
-	if (trimmed.startsWith('#')) {
+	if (trimmed.startsWith("#")) {
 		return hexToRGBA(trimmed);
 	}
 
 	// Handle rgb/rgba format
-	if (trimmed.startsWith('rgb')) {
+	if (trimmed.startsWith("rgb")) {
 		return rgbStringToRGBA(trimmed);
 	}
 
 	// Handle hsl/hsla format
-	if (trimmed.startsWith('hsl')) {
+	if (trimmed.startsWith("hsl")) {
 		return hslStringToRGBA(trimmed);
 	}
 
@@ -33,10 +38,10 @@ const colorStringToRGBA = (color: string): RGBAColor => {
 
 /**
  * Convert hex color string to RGBAColor
- * @param {String} hex color value in hex format
- * @returns RGBAColor object
+ * @param {string} hex - color value in hex format
+ * @returns {RGBAColor} RGBAColor object
  */
-const hexToRGBA = (hex: string): RGBAColor => {
+export const hexToRGBA = (hex: string): RGBAColor => {
 	// Remove # if present
 	hex = hex.replace("#", "");
 
@@ -72,9 +77,15 @@ const hexToRGBA = (hex: string): RGBAColor => {
 	return { r, g, b, a };
 }
 
-const rgbStringToRGBA = (rgb: string): RGBAColor => {
+/**
+ * Convert rgb/rgba color string to RGBAColor
+ * @param {string} rgb - RGB or RGBA color string
+ * @returns {RGBAColor} RGBAColor object
+ */
+export const rgbStringToRGBA = (rgb: string): RGBAColor => {
 	// Match rgb(r, g, b) or rgba(r, g, b, a)
-	const match = rgb.match(/rgba?\(([^)]+)\)/);
+	const regex = /rgba?\(([^)]+)\)/;
+	const match = regex.exec(rgb);
 	if (!match) {
 		return { r: 0, g: 0, b: 0, a: 100 };
 	}
@@ -90,11 +101,20 @@ const rgbStringToRGBA = (rgb: string): RGBAColor => {
 	return { r, g, b, a };
 }
 
-const hslStringToRGBA = (hsl: string): RGBAColor => {
+/**
+ * Convert hsl/hsla color string to RGBAColor
+ * @param {string} hsl - HSL or HSLA color string
+ * @returns {RGBAColor} RGBAColor object
+ */
+export const hslStringToRGBA = (hsl: string): RGBAColor => {
 	// Match hsl(h, s%, l%) or hsla(h, s%, l%, a) or hsl(hdeg s% l% / a%)
-	const match = hsl.match(/^hsl\((\d+)(?:deg)?(?:,)?\s*([\d.]+)%(?:,)?\s*([\d.]+)%\s*(?:[,/])?\s*([0-9.%]+)?\)$/);
+	const regex = /^hsl\((\d+)(?:deg)?(?:,)?\s*([\d.]+)%(?:,)?\s*([\d.]+)%\s*(?:[,/])?\s*([0-9.%]+)?\)$/;
+	const match = regex.exec(hsl);
 	if (!match) {
-		console.log(`%c ⚠️ [PANDA HEATMAP] Invalid hsl/hsla color: ${hsl}`, "font-size: 24px; color: crimson; background: black;");
+		console.log(
+			`%c ⚠️ [PANDA HEATMAP] Invalid hsl/hsla color: ${hsl}`,
+			"font-size: 16px; color: orange; background: black;"
+		);
 		return { r: 0, g: 0, b: 0, a: 100 };
 	}
 
@@ -108,7 +128,15 @@ const hslStringToRGBA = (hsl: string): RGBAColor => {
 	return hslToRGB(h, s, l, a);
 }
 
-const hslToRGB = (h: number, s: number, l: number, a: number): RGBAColor => {
+/**
+ * Convert HSL color values to RGBAColor
+ * @param {number} h Hue (0-360)
+ * @param {number} s Saturation (0-100)
+ * @param {number} l Lightness (0-100)
+ * @param {number} a Alpha (0-100)
+ * @returns {RGBAColor} RGBAColor object
+ */
+export const hslToRGB = (h: number, s: number, l: number, a: number): RGBAColor => {
 	s /= 100;
 	l /= 100;
 
@@ -148,10 +176,10 @@ const hslToRGB = (h: number, s: number, l: number, a: number): RGBAColor => {
 
 /**
  * Get color value from HTML color name
- * @param {String} colorName - HTML color name
+ * @param {string} colorName - HTML color name
  * @returns color value eg.: { r: 255, g: 10, b: 126, a: 100 }
  */
-const colorNameToRgb = (colorName: string): RGBAColor => {
+export const colorNameToRgb = (colorName: string): RGBAColor => {
 	const colorMap: {[colorName: string]: RGBAColor} = {
 		aliceblue: { r: 240, g: 248, b: 255, a: 100 },
 		antiquewhite: { r: 250, g: 235, b: 215, a: 100 },
@@ -300,12 +328,12 @@ const colorNameToRgb = (colorName: string): RGBAColor => {
 
 /**
  * Interpolates between two colors based on a numeric value.
- * @param {Number} value The numeric value to interpolate.
- * @param {Number} min The minimum value.
- * @param {Number} max The maximum value.
- * @param {String} minColor The color corresponding to the minimum value.
- * @param {String} maxColor The color corresponding to the maximum value.
- * @returns {String} The interpolated color as a string (RGB format).
+ * @param {number} value The numeric value to interpolate.
+ * @param {number} min The minimum value.
+ * @param {number} max The maximum value.
+ * @param {string} minColor The color corresponding to the minimum value.
+ * @param {string} maxColor The color corresponding to the maximum value.
+ * @returns {string} The interpolated color as a string (RGB format).
  */
 export const interpolateColor = (
 	value: number,
@@ -322,31 +350,22 @@ export const interpolateColor = (
 	const minRgb = colorStringToRGBA(minColor);
 	const maxRgb = colorStringToRGBA(maxColor);
 
-	if (!minRgb || !maxRgb) {
-		return minColor;
-	}
-
 	const r = Math.round(minRgb.r + (maxRgb.r - minRgb.r) * normalized);
 	const g = Math.round(minRgb.g + (maxRgb.g - minRgb.g) * normalized);
 	const b = Math.round(minRgb.b + (maxRgb.b - minRgb.b) * normalized);
+	const a = Math.round(minRgb.a + (maxRgb.a - minRgb.a) * normalized);
 
-	return `rgba(${r}, ${g}, ${b}, 1)`;
+	return `rgba(${r}, ${g}, ${b}, ${a / 100})`;
 }
 
 /**
  * Gets the text color for a given background color.
- * @param {String} bgColor The background color.
- * @returns {String} The text color.
+ * @param {string} bgColor The background color.
+ * @returns {string} The text color class.
  */
-export const getTextColor = (bgColor: string): string => {
-	const rgb = colorStringToRGBA(bgColor) || bgColor.match(/\d+/g);
-	if (!rgb) {
-		return "#fff";
-	}
+export const getTextColorClass = (bgColor: string): string => {
+	const rgb = colorStringToRGBA(bgColor);
+	const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
 
-	const brightness = Array.isArray(rgb)
-		? (Number.parseInt(rgb[0]) * 299 + Number.parseInt(rgb[1]) * 587 + Number.parseInt(rgb[2]) * 114) / 1000
-		: (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
-
-	return brightness > 155 ? "#333" : "#fff";
+	return brightness > 155 ? "dark" : "light";
 }

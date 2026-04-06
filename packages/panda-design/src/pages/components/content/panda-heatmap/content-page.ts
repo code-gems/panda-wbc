@@ -56,6 +56,17 @@ export class ContentPage extends ContentPageTemplate {
 		[20, 25, 30, 35, 40, 45, 50],
 		[25, 30, 35, 40, 45, 50, null],
 	];
+	 
+	private readonly _heatmapData2: any[][] = [
+		[null, { id: "Item 1", value: 10 }, { id: "Item 2", value: 15 }, { id: "Item 3", value: 20 }, { id: "Item 4", value: 25 }, { id: "Item 5", value: 30 }, { id: "Item 6", value: 35 }],
+		[null, { id: "Item 7", value: 15 }, { id: "Item 8", value: 20 }, { id: "Item 9", value: 25 }, { id: "Item 10", value: 30 }, { id: "Item 11", value: 35 }, { id: "Item 12", value: 40 }],
+		[{ id: "Item 13", value: 15 }, { id: "Item 14", value: 20 }, { id: "Item 15", value: 25 }, { id: "Item 16", value: 30 }, { id: "Item 17", value: 35 }, { id: "Item 18", value: 40 }, { id: "Item 19", value: 45 }],
+		[{ id: "Item 20", value: 20 }, { id: "Item 21", value: 25 }, { id: "Item 22", value: 30 }, { id: "Item 23", value: 35 }, { id: "Item 24", value: 40 }, { id: "Item 25", value: 45 }, { id: "Item 26", value: 50 }],
+		[{ id: "Item 27", value: 25 }, { id: "Item 28", value: 30 }, { id: "Item 29", value: 35 }, { id: "Item 30", value: 40 }, { id: "Item 31", value: 45 }, { id: "Item 32", value: 50 }, null],
+	];
+
+	@state()
+	private _working = false;
 
 	@state()
 	private _orientation: PandaHeatmapOrientation = PandaHeatmapOrientation.HORIZONTAL;
@@ -100,52 +111,44 @@ export class ContentPage extends ContentPageTemplate {
 				<div class="sample-cont">
 					<div class="sample">
 						<div class="rows">
-							<div class="row">
-								<div class="col-half">
-									<panda-theme-mode-switcher></panda-theme-mode-switcher>
-								</div>
-								<div class="col-half">
-									<panda-radio-group
-										orientation-horizontal
-										label="Orientation"
-										.value="${this._orientation}"
-										@change="${this._onChangeOrientation}"
-									>
-										<panda-radio-button value="horizontal">Horizontal</panda-radio-button>
-										<panda-radio-button value="vertical">Vertical</panda-radio-button>
-									</panda-radio-group>
-								</div>
-							</div>
 
 							<div class="row">
-								<div class="col-full">
-
+								<div class="col-half">
+									<style>
+										panda-heatmap {
+											--panda-heatmap-cell-transform-hover: scale(1.15);
+											--panda-heatmap-cell-elevation-hover: var(--panda-elevation-s, 0px 1px 2px hsl(0deg 0% 0% / 20%));
+										}
+									</style>
 									<panda-heatmap
-										.data="${this._heatmapData}"
+										.data="${this._heatmapData2}"
 										.xAxisLabels="${this._xAxisLabelsShort}"
 										.yAxisLabels="${this._yAxisLabels}"
 										.orientation="${this._orientation}"
 										show-legend
-										max-color="pink"
+										show-values
 										x-axis-label-position="bottom"
 										y-axis-label-position="right"
 										@select="${this._onSelect}"
+										@hover="${this._onMouseOver}"
+										@leave="${this._onMouseOut}"
+										?working="${this._working}"
 									></panda-heatmap>
 
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-full">
+
+								<div class="col-half">
 
 									<panda-heatmap
 										class="large-heatmap"
 										theme="alert"
-										max-value="100"
+										max-value="50"
 										min-value="0"
 										show-values
 										show-legend
 										show-tooltip
-										max-color="green"
+										min-color="hsl(191deg 19% 23% / 1%)"
+										max-color="hsl(330deg 70% 50% / 50%)"
 										.data="${this._heatmapData}"
 										.xAxisLabels="${this._xAxisLabels}"
 										.yAxisLabels="${this._yAxisLabels}"
@@ -153,25 +156,21 @@ export class ContentPage extends ContentPageTemplate {
 										.cellRenderer="${cellRenderer}"
 										.tooltipRenderer="${(value: number) => `Value: ${value}`}"
 										@select="${this._onSelect}"
-										working
+										@hover="${this._onMouseOver}"
+										@leave="${this._onMouseOut}"
 									></panda-heatmap>
 
 								</div>
 							</div>
+
 							<div class="row">
-								<div class="col-full">
-
-									<panda-heatmap
-										theme="done"
-										.xAxisLabels="${this._xAxisLabels}"
-										.yAxisLabels="${this._yAxisLabels}"
-										.orientation="${this._orientation}"
-										working
-										@select="${this._onSelect}"
-									></panda-heatmap>
-
+								<div class="col-3">
+									<panda-button @click="${this._onToggleWorkingState}">
+										Toggle working state
+									</panda-button>
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -267,7 +266,23 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onSelect(event: CustomEvent): void {
-		const { column, row, value } = event.detail;
-		console.log(`%c ⚡ Cell Selected`, "font-size: 24px; color: green; background: black;", column, row, value);
+		const { column, row, value, data } = event.detail;
+		console.log(`%c ⚡ Cell Selected`, "font-size: 24px; color: green; background: black;", column, row, value, data);
+	}
+
+	private _onMouseOver(event: CustomEvent): void {
+		const { column, row, value, data } = event.detail;
+		console.log(`%c 👀 Cell Mouse Over event`, "font-size: 24px; color: orange; background: black;", event);
+		console.log(`%c 👀 Cell Mouse Over`, "font-size: 24px; color: orange; background: black;", column, row, value, data);
+	}
+
+	private _onMouseOut(event: CustomEvent): void {
+		const { column, row, value, data } = event.detail;
+		console.log(`%c 👀 Cell Mouse Out`, "font-size: 24px; color: orange; background: black;", column, row, value, data);
+	}
+
+	// toggle working state for demo purposes
+	private _onToggleWorkingState(): void {
+		this._working = !this._working;
 	}
 }

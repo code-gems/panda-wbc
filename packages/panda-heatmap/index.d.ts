@@ -26,3 +26,8 @@ export type PandaHeatmapI18nConfig = {
 	noDataText?: string;
 	loadingText?: string;
 }
+
+export type PandaHeatmapItem = {
+	id?: string;
+	value: number;
+}

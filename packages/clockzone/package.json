@@ -1,9 +1,9 @@
 {
-	"name": "@panda-wbc/panda-heatmap",
+	"name": "clock-zone",
 	"version": "1.0.0",
-	"description": "Lit based web component - heatmap",
+	"description": "Time zone converter + utility library",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-heatmap.js",
+	"main": "lib/clock-zone.js",
 	"scripts": {
 		"compile": "tsc",
 		"share": "pnpm publish",
@@ -11,28 +11,23 @@
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
 		"prepublishOnly": "npm run clean && npm run compile",
-		"test": "vitest",
-		"coverage": "vitest run --coverage"
+		"test": "vitest"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
-		"web component",
-		"ui component",
-		"heatmap",
-		"data visualization"
+		"time zones",
+		"time zone converter",
+		"world clock",
+		"clock zone"
 	],
 	"author": "code-gems",
-	"license": "Apache-2.0",
+	"license": "MIT",
 	"dependencies": {
 		"@panda-wbc/panda-spinner": "workspace:*"
 	},
 	"files": [
 		"src",
-		"lib",
-		"index.d.ts"
+		"lib"
 	],
-	"types": "index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	}

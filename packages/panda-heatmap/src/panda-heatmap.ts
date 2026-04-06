@@ -1,6 +1,12 @@
 // types
-import { PandaHeatmapI18nConfig, PandaHeatmapOrientation, PandaHeatmapXAxisPosition, PandaHeatmapYAxisPosition } from "../index";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
+import {
+	PandaHeatmapI18nConfig,
+	PandaHeatmapItem,
+	PandaHeatmapOrientation,
+	PandaHeatmapXAxisPosition,
+	PandaHeatmapYAxisPosition,
+} from "../index";
 
 // styles
 import { styles } from "./styles/styles";
@@ -9,7 +15,7 @@ import { styles } from "./styles/styles";
 import "@panda-wbc/panda-spinner";
 
 // utils
-import { interpolateColor, getTextColor, getI18nConfig } from "./utils/utils";
+import { interpolateColor, getTextColorClass, getI18nConfig } from "./utils/utils";
 
 export class PandaHeatmap extends HTMLElement {
 	/** Version of the component. */
@@ -39,9 +45,13 @@ export class PandaHeatmap extends HTMLElement {
 		];
 	}
 
-	// theme ==========================================================================================================
-	private _theme!: string;
-
+	/**
+	 * theme
+	 * -----
+	 * Theme of the heatmap. It can be used to apply different color schemes to the heatmap. 
+	 * @type {string}
+	 * @public
+	 */
 	get theme() {
 		return this._theme;
 	}
@@ -58,17 +68,25 @@ export class PandaHeatmap extends HTMLElement {
 		}
 	}
 
-	// data ===========================================================================================================
-	private _data!: number[][];
+	private _theme!: string;
 
+	/**
+	 * data
+	 * ------
+	 * Data for the heatmap. It can be a 2D array of numbers or a 2D array of objects with value property and id.
+	 * @type {PandaHeatmapItem[][] | number[][]}
+	 * @public
+	 */
 	get data() {
 		return this._data;
 	}
 
-	set data(value: number[][]) {
+	set data(value: PandaHeatmapItem[][] | number[][]) {
 		this._data = value;
 		this._updateMinMaxValues();
 	}
+
+	private _data!: PandaHeatmapItem[][] | number[][];
 
 	// minValue =======================================================================================================
 	private _minValue!: number;
@@ -366,12 +384,11 @@ export class PandaHeatmap extends HTMLElement {
 	// private props
 	private _minColorParsed!: string;
 	private _maxColorParsed!: string;
-	private _ready!: boolean;
 
 	// elements
-	private readonly _heatmapContEl!: HTMLDivElement;
-	private readonly _heatmapWrapperEl!: HTMLDivElement;
-	private readonly _heatmapGridEl!: HTMLDivElement;
+	private _heatmapContEl!: HTMLDivElement;
+	private _heatmapWrapperEl!: HTMLDivElement;
+	private _heatmapGridEl!: HTMLDivElement;
 	private readonly _spinnerContEl!: HTMLDivElement;
 	private readonly _spinnerEl!: PandaSpinner;
 	private readonly _spinnerTextEl!: HTMLDivElement;
@@ -384,8 +401,10 @@ export class PandaHeatmap extends HTMLElement {
 	private readonly _yAxisLabelsEl!: HTMLDivElement;
 
 	// events
-	private readonly _themeChangeEvent!: any;
-	private readonly _gridClickEvent!: any;
+	private _themeChangeEvent!: any;
+	private _gridClickEvent!: any;
+	private _gridMouseOverEvent!: any;
+	private _gridMouseOutEvent!: any;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -398,9 +417,8 @@ export class PandaHeatmap extends HTMLElement {
 		// apply component styles
 		this._applyStyles();
 
-		// create component template
-		const template = document.createElement("template");
-		template.innerHTML = /*html*/`
+		// create component layout
+		this.shadowRoot!.innerHTML = /*html*/`
 			<div class="heatmap-container" part="heatmap-container">
 				<div class="heatmap-wrapper" part="heatmap-wrapper">
 					<div class="heatmap-grid" part="heatmap-grid"></div>
@@ -462,9 +480,6 @@ export class PandaHeatmap extends HTMLElement {
 		this._yAxisLabelsEl.part = "y-axis-labels";
 		this._yAxisLabelsEl.textContent = "";
 
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
-
 		// initialize class properties
 		this._data = [];
 		this._orientation = PandaHeatmapOrientation.HORIZONTAL;
@@ -480,34 +495,36 @@ export class PandaHeatmap extends HTMLElement {
 		this._minColorParsed = "";
 		this._maxColorParsed = "";
 		this._i18n = getI18nConfig();
-		this._ready = false;
-
-		// init events
-		this._gridClickEvent = this._onGridClick.bind(this);
-		this._themeChangeEvent = this._onThemeChange.bind(this);
-
-		// get template element handles
-		if (this.shadowRoot) {
-			// get elements handle
-			this._heatmapContEl = this.shadowRoot.querySelector(".heatmap-container") as HTMLDivElement;
-			this._heatmapWrapperEl = this.shadowRoot.querySelector(".heatmap-wrapper") as HTMLDivElement;
-			this._heatmapGridEl = this.shadowRoot.querySelector(".heatmap-grid") as HTMLDivElement;
-
-			// add event listeners
-			this._heatmapGridEl.addEventListener("click", this._gridClickEvent);
-			document.addEventListener("panda-theme-change", this._themeChangeEvent);
-		}
 	}
 
 	connectedCallback() {
+		// get elements handle
+		this._heatmapContEl = this.shadowRoot!.querySelector(".heatmap-container") as HTMLDivElement;
+		this._heatmapWrapperEl = this.shadowRoot!.querySelector(".heatmap-wrapper") as HTMLDivElement;
+		this._heatmapGridEl = this.shadowRoot!.querySelector(".heatmap-grid") as HTMLDivElement;
+
+		// add event listeners
+		this._gridClickEvent = this._onGridClick.bind(this);
+		this._heatmapGridEl.addEventListener("click", this._gridClickEvent);
+		this._gridMouseOverEvent = this._onGridMouseOver.bind(this);
+		this._heatmapGridEl.addEventListener("mouseover", this._gridMouseOverEvent);
+		this._gridMouseOutEvent = this._onGridMouseOut.bind(this);
+		this._heatmapGridEl.addEventListener("mouseout", this._gridMouseOutEvent);
+		this._themeChangeEvent = this._onThemeChange.bind(this);
+		// add theme change listener to document to listen for theme changes from parent application
+		document.addEventListener("panda-theme-change", this._themeChangeEvent);
+
+		// initial render and setup
 		this._updateColors();
-		this._ready = true;
 		this._updateComponent();
 	}
 
 	disconnectedCallback() {
 		// remove event listeners
 		document.removeEventListener("panda-theme-change", this._themeChangeEvent);
+		this._heatmapGridEl.removeEventListener("click", this._gridClickEvent);
+		this._heatmapGridEl.removeEventListener("mouseover", this._gridMouseOverEvent);
+		this._heatmapGridEl.removeEventListener("mouseout", this._gridMouseOutEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -582,7 +599,7 @@ export class PandaHeatmap extends HTMLElement {
 	// ================================================================================================================
 
 	private _updateComponent() {
-		if (this._ready) {
+		if (this.isConnected) {
 			// add or remove spinner
 			if (this._working) {
 				this._heatmapContEl.appendChild(this._spinnerContEl);
@@ -639,7 +656,7 @@ export class PandaHeatmap extends HTMLElement {
 	}
 
 	private _updateTemplateCss(): void {
-		if (this._ready) {
+		if (this.isConnected) {
 			const rows = this._data.length;
 			const cols = this._data[0]?.length || 0;
 			const isVertical = this._orientation === PandaHeatmapOrientation.VERTICAL;
@@ -756,123 +773,79 @@ export class PandaHeatmap extends HTMLElement {
 			// Vertical orientation: transpose the data
 			for (let col = 0; col < cols; col++) {
 				for (let row = 0; row < rows; row++) {
-					const value = this._data[row][col];
-
-					if (value == null) {
-						cellsHtml += /*html*/`<div class="heatmap-cell empty" part="heatmap-cell empty"></div>`;
-					} else {
-						// compute cell color based on value
-						const color = interpolateColor(
-							value,
-							min,
-							max,
-							this._minColorParsed,
-							this._maxColorParsed
-						);
-
-						// check if cell renderer function is defined
-						let parsedValue = "";
-						if (this._showValues) {
-							// check if cell renderer function is defined
-							if (this.cellRenderer && typeof this.cellRenderer === "function") {
-								parsedValue = this.cellRenderer(value, col, row);
-							} else {
-								parsedValue = value.toString();
-							}
-						}
-
-						// show tooltip if enabled
-						let tooltipValue = "";
-						if (this._showTooltip) {
-							// check if tooltip renderer function is defined
-							if (this.tooltipRenderer && typeof this.tooltipRenderer === "function") {
-								tooltipValue = this.tooltipRenderer(value, col, row);
-							} else {
-								tooltipValue = value.toString();
-							}
-						}
-
-						// determine text color for readability
-						const textColor = getTextColor(color);
-						// append cell html
-						cellsHtml += /*html*/`
-							<div
-								class="heatmap-cell"
-								part="heatmap-cell"
-								style="background-color: ${color}; color: ${textColor};"
-								${this._showTooltip ? `title="${tooltipValue}"` : ""}
-								data-row="${row}"
-								data-column="${col}"
-								data-value="${value}"
-							>
-								${parsedValue}
-							</div>
-						`;
-					}
+					const item = this._data[row][col];
+					cellsHtml += this._renderCell(item, min, max, row, col);
 				}
 			}
 		} else {
 			// Horizontal orientation: use data as-is
 			for (let row = 0; row < rows; row++) {
 				for (let col = 0; col < cols; col++) {
-					const value = this._data[row][col];
-
-					if (value === null || value === undefined) {
-						cellsHtml += /*html*/`<div class="heatmap-cell empty" part="heatmap-cell empty"></div>`;
-					} else {
-						// compute cell color based on value
-						const color = interpolateColor(
-							value,
-							min,
-							max,
-							this._minColorParsed,
-							this._maxColorParsed
-						);
-
-						// check if cell renderer function is defined
-						let parsedValue = "";
-						if (this._showValues) {
-							// check if cell renderer function is defined
-							if (this.cellRenderer && typeof this.cellRenderer === "function") {
-								parsedValue = this.cellRenderer(value, col, row);
-							} else {
-								parsedValue = value.toString();
-							}
-						}
-
-						// show tooltip if enabled
-						let tooltipValue = "";
-						if (this._showTooltip) {
-							// check if tooltip renderer function is defined
-							if (this.tooltipRenderer && typeof this.tooltipRenderer === "function") {
-								tooltipValue = this.tooltipRenderer(value, col, row);
-							} else {
-								tooltipValue = value.toString();
-							}
-						}
-
-						// determine text color for readability
-						const textColor = getTextColor(color);
-						// append cell html
-						cellsHtml += /*html*/`
-							<div
-								class="heatmap-cell"
-								part="heatmap-cell"
-								style="background-color: ${color}; color: ${textColor};"
-								${this._showTooltip ? `title="${tooltipValue}"` : ""}
-								data-row="${row}"
-								data-column="${col}"
-								data-value="${value}"
-							>
-								${parsedValue}
-							</div>
-						`;
-					}
+					const item = this._data[row][col];
+					cellsHtml += this._renderCell(item, min, max, row, col);
 				}
 			}
 		}
 		// update heatmap grid inner HTML
 		this._heatmapGridEl.innerHTML = cellsHtml;
+	}
+
+	private _renderCell(item: number | PandaHeatmapItem | null, min: number, max: number, row: number, col: number): string {
+		if (item == null) {
+			return /*html*/`<div class="heatmap-cell empty" part="heatmap-cell empty"></div>`;
+		} else {
+			const itemValue = typeof item === "number"
+				? item
+				: item.value;
+
+			// compute cell color based on value
+			const color = interpolateColor(
+				itemValue,
+				min,
+				max,
+				this._minColorParsed,
+				this._maxColorParsed,
+			);
+
+			// check if cell renderer function is defined
+			let parsedValue = "";
+			if (this._showValues) {
+				// check if cell renderer function is defined
+				if (this.cellRenderer && typeof this.cellRenderer === "function") {
+					parsedValue = this.cellRenderer(itemValue, col, row);
+				} else {
+					parsedValue = itemValue.toString();
+				}
+			}
+
+			// show tooltip if enabled
+			let tooltipValue = "";
+			if (this._showTooltip) {
+				// check if tooltip renderer function is defined
+				if (this.tooltipRenderer && typeof this.tooltipRenderer === "function") {
+					tooltipValue = this.tooltipRenderer(itemValue, col, row);
+				} else {
+					tooltipValue = itemValue.toString();
+				}
+			}
+
+			// determine text color for readability
+			const textColorCss = getTextColorClass(color);
+
+			return /*html*/`
+				<div
+					class="heatmap-cell ${textColorCss}"
+					part="heatmap-cell ${textColorCss}"
+					style="background-color: ${color};"
+					${this._showTooltip ? `title="${tooltipValue}"` : ""}
+					data-row="${row}"
+					data-column="${col}"
+					data-value="${itemValue}"
+				>
+					<div class="cell-label" part="cell-label ${textColorCss}">${parsedValue}</div>
+				</div>
+			`;
+		}
 	}
 
 	private _renderAxisLabels(): void {
@@ -953,7 +926,7 @@ export class PandaHeatmap extends HTMLElement {
 		const variableString = computedStyles.getPropertyValue(variableName).trim();
 		const variableValue = Number.parseInt(variableString);
 		// check if variableValue is a valid number
-		if (isNaN(variableValue)) {
+		if (Number.isNaN(variableValue)) {
 			return fallback;
 		} else {
 			return `${variableValue}px`;
@@ -997,10 +970,19 @@ export class PandaHeatmap extends HTMLElement {
 			let max = this._maxValue ?? -Infinity;
 
 			for (const row of this._data) {
-				for (const value of row) {
-					if (value != null && typeof value === "number") {
-						min = Math.min(min, value);
-						max = Math.max(max, value);
+				for (const item of row) {
+					// if item is a number, use it for min/max calculation
+					if (item != null && typeof item === "number") {
+						min = Math.min(min, item);
+						max = Math.max(max, item);
+					}
+					// if item is an object with a value property, use that for min/max calculation
+					if (item!= null && typeof item === "object" && "value" in item) {
+						const value = item.value;
+						if (value != null && typeof value === "number") {
+							min = Math.min(min, value);
+							max = Math.max(max, value);
+						}
 					}
 				}
 			}
@@ -1062,13 +1044,61 @@ export class PandaHeatmap extends HTMLElement {
 			const row = cellEl.dataset.row;
 			const column = cellEl.dataset.column;
 			const value = cellEl.dataset.value;
+			const data = this._data[Number(row)][Number(column)];
 
 			// dispatch custom event
 			this.dispatchEvent(new CustomEvent("select", {
 				detail: {
 					row: Number(row),
 					column: Number(column),
-					value: value
+					value,
+					data,
+				},
+				bubbles: true,
+				composed: true
+			}));
+		}
+	}
+
+	private _onGridMouseOver(event: MouseEvent): void {
+		const cellEl = (event.target as HTMLElement).closest(".heatmap-cell") as HTMLDivElement;
+
+		if (cellEl) {
+			const row = cellEl.dataset.row;
+			const column = cellEl.dataset.column;
+			const value = cellEl.dataset.value;
+			const data = this._data[Number(row)][Number(column)];
+
+			// dispatch custom event
+			this.dispatchEvent(new CustomEvent("hover", {
+				detail: {
+					row: Number(row),
+					column: Number(column),
+					value,
+					data,
+				},
+				bubbles: true,
+				composed: true
+			}));
+		}
+	}
+
+	private _onGridMouseOut(event: MouseEvent): void {
+		const cellEl = (event.target as HTMLElement).closest(".heatmap-cell") as HTMLDivElement;
+		
+		if (cellEl) {
+			const row = cellEl.dataset.row;
+			const column = cellEl.dataset.column;
+			const value = cellEl.dataset.value;
+			const data = this._data[Number(row)][Number(column)];
+			
+			// dispatch custom event
+			this.dispatchEvent(new CustomEvent("leave", {
+				detail: {
+					row: Number(row),
+					column: Number(column),
+					value,
+					data,
 				},
 				bubbles: true,
 				composed: true

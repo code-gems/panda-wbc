@@ -126,14 +126,22 @@ export const styles = /*css*/`
 	}
 
 	.heatmap-cell:not(.empty):hover {
-		transform: var(--panda-heatmap-cell-transform-hover, scale(1.15));
-		box-shadow: var(--panda-heatmap-cell-elevation-hover, var(--panda-elevation-s, 0px 1px 2px hsl(0deg 0% 0% / 20%)));
+		transform: var(--panda-heatmap-cell-transform-hover, none);
+		box-shadow: var(--panda-heatmap-cell-elevation-hover, none);
 		z-index: 10;
 	}
 
 	.heatmap-cell.empty {
 		background: transparent !important;
 		pointer-events: none;
+	}
+
+	.heatmap-cell.light {
+		color: var(--panda-heatmap-text-color-light, var(--panda-heatmap-text-color-light, hsl(0deg 0% 100%)));
+	}
+
+	.heatmap-cell.dark {
+		color: var(--panda-heatmap-text-color-dark, var(--panda-heatmap-text-color-dark, hsl(191deg 19% 23%)));
 	}
 
 	.legend {
