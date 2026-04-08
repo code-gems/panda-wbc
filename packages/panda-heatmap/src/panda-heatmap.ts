@@ -337,7 +337,7 @@ export class PandaHeatmap extends HTMLElement {
 	// spinnerType ====================================================================================================
 	/**
 	 * Spinner Type for working state
-	 * @default dots
+	 * @default google
 	 */
 	private _spinnerType!: string;
 
@@ -375,7 +375,7 @@ export class PandaHeatmap extends HTMLElement {
 
 	// cellRenderer ===================================================================================================
 
-	cellRenderer!: (value: number, column: number, row: number) => string;
+	cellRenderer!: (value: number | null, column: number, row: number) => string;
 
 	// tooltipRenderer ================================================================================================
 
@@ -439,7 +439,7 @@ export class PandaHeatmap extends HTMLElement {
 		`;
 		// get spinner element handle
 		this._spinnerEl = this._spinnerContEl.querySelector("panda-spinner") as PandaSpinner;
-		this._spinnerEl.spinner = this._spinnerType ?? "dots";
+		this._spinnerEl.spinner = this._spinnerType ?? "google";
 		this._spinnerTextEl = this._spinnerContEl.querySelector(".spinner-text") as HTMLDivElement;
 		this._spinnerTextEl.textContent = "";
 
@@ -491,7 +491,7 @@ export class PandaHeatmap extends HTMLElement {
 		this._showLegend = false;
 		this._showTooltip = false;
 		this._working = false;
-		this._spinnerType = "dots";
+		this._spinnerType = "google";
 		this._minColorParsed = "";
 		this._maxColorParsed = "";
 		this._i18n = getI18nConfig();
@@ -576,7 +576,7 @@ export class PandaHeatmap extends HTMLElement {
 				this._updateColors();
 				break;
 			case "spinner-type":
-				this._spinnerType = _newValue || "dots";
+				this._spinnerType = _newValue || "google";
 				break;
 			case "show-values":
 				this._showValues = this._parseBooleanAttribute(_newValue);
@@ -792,7 +792,14 @@ export class PandaHeatmap extends HTMLElement {
 
 	private _renderCell(item: number | PandaHeatmapItem | null, min: number, max: number, row: number, col: number): string {
 		if (item == null) {
-			return /*html*/`<div class="heatmap-cell empty" part="heatmap-cell empty"></div>`;
+			let parsedValue = "";
+			if (this._showValues) {
+				// check if cell renderer function is defined
+				if (this.cellRenderer && typeof this.cellRenderer === "function") {
+					parsedValue = this.cellRenderer(null, col, row);
+				}
+			}
+			return /*html*/`<div class="heatmap-cell empty" part="heatmap-cell empty">${parsedValue}</div>`;
 		} else {
 			const itemValue = typeof item === "number"
 				? item

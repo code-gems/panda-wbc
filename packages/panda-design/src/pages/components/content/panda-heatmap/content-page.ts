@@ -84,7 +84,11 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _renderOverviewSection(): TemplateResult {
-		const cellRenderer = (value: number, column: number, row: number) => {
+		const cellRenderer = (value: number | null, column: number, row: number) => {
+			if (value == null) {
+				return "none";
+			}
+
 			let text = "";
 			if (value > 25) {
 				text = "high";
@@ -116,6 +120,7 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-half">
 									<style>
 										panda-heatmap {
+											--panda-heatmap-cell-background-color-empty: var(--panda-background-color);
 											--panda-heatmap-cell-transform-hover: scale(1.15);
 											--panda-heatmap-cell-elevation-hover: var(--panda-elevation-s, 0px 1px 2px hsl(0deg 0% 0% / 20%));
 										}
