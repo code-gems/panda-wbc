@@ -194,4 +194,20 @@ export const styles = /*css*/`
 		text-shadow: var(--panda-heatmap-label-text-shadow, var(--panda-label-text-shadow, none));
 		user-select: none;
 	}
+
+	.no-data-cont {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		inset: 0;
+
+		color: var(--panda-heatmap-no-data-text-color, var(--panda-text-color, hsl(191deg 19% 23%)));
+		font-size: var(--panda-heatmap-no-data-text-font-size, var(--panda-font-size-m, 14px));
+		font-family: var(--panda-heatmap-no-data-text-font-family, var(--panda-font-family, "Poppins"));
+		text-shadow: var(--panda-heatmap-no-data-text-shadow, var(--panda-text-shadow, none));
+		user-select: none;
+
+		background-color: var(--panda-heatmap-no-data-background-color, var(--panda-background-color-50opc, hsl(0deg 0% 92% / 50%)));
+	}
 `;

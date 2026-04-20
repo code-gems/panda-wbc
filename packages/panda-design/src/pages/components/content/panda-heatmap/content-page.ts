@@ -126,7 +126,7 @@ export class ContentPage extends ContentPageTemplate {
 										}
 									</style>
 									<panda-heatmap
-										.data="${this._heatmapData2}"
+										.data="${[]}"
 										.xAxisLabels="${this._xAxisLabelsShort}"
 										.yAxisLabels="${this._yAxisLabels}"
 										.orientation="${this._orientation}"

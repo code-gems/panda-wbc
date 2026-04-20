@@ -33,8 +33,8 @@ export class PandaHeatmap extends HTMLElement {
 			"orientation",
 			"x-axis-labels",
 			"y-axis-labels",
-			"y-axis-label-position",
-			"x-axis-label-position",
+			"y-axis-position",
+			"x-axis-position",
 			"min-color",
 			"max-color",
 			"show-values",
@@ -173,48 +173,48 @@ export class PandaHeatmap extends HTMLElement {
 		this._yAxisLabels = value;
 	}
 
-	// xAxisLabelPosition =============================================================================================
+	// xAxisPosition =============================================================================================
 	/**
-	 * X Axis Label Position
+	 * X Axis Position
 	 * @default top
 	 */
-	private _xAxisLabelPosition!: PandaHeatmapXAxisPosition;
+	private _xAxisPosition!: PandaHeatmapXAxisPosition;
 
-	get xAxisLabelPosition() {
-		return this._xAxisLabelPosition;
+	get xAxisPosition() {
+		return this._xAxisPosition;
 	}
 
-	set xAxisLabelPosition(value: PandaHeatmapXAxisPosition) {
-		if (this._xAxisLabelPosition !== value) {
-			this._xAxisLabelPosition = value;
+	set xAxisPosition(value: PandaHeatmapXAxisPosition) {
+		if (this._xAxisPosition !== value) {
+			this._xAxisPosition = value;
 			// reflect to attribute
 			if (value == null) {
-				this.removeAttribute("x-axis-label-position");
+				this.removeAttribute("x-axis-position");
 			} else {
-				this.setAttribute("x-axis-label-position", this._xAxisLabelPosition);
+				this.setAttribute("x-axis-position", this._xAxisPosition);
 			}
 		}
 	}
 
-	// yAxisLabelPosition =============================================================================================
+	// yAxisPosition =============================================================================================
 	/**
-	 * Y Axis Label Position
+	 * Y Axis Position
 	 * @default left
 	 */
-	private _yAxisLabelPosition!: PandaHeatmapYAxisPosition;
+	private _yAxisPosition!: PandaHeatmapYAxisPosition;
 
-	get yAxisLabelPosition() {
-		return this._yAxisLabelPosition;
+	get yAxisPosition() {
+		return this._yAxisPosition;
 	}
 
-	set yAxisLabelPosition(value: PandaHeatmapYAxisPosition) {
-		if (this._yAxisLabelPosition !== value) {
-			this._yAxisLabelPosition = value;
+	set yAxisPosition(value: PandaHeatmapYAxisPosition) {
+		if (this._yAxisPosition !== value) {
+			this._yAxisPosition = value;
 			// reflect to attribute
 			if (value == null) {
-				this.removeAttribute("y-axis-label-position");
+				this.removeAttribute("y-axis-position");
 			} else {
-				this.setAttribute("y-axis-label-position", this._yAxisLabelPosition);
+				this.setAttribute("y-axis-position", this._yAxisPosition);
 			}
 		}
 	}
@@ -485,8 +485,8 @@ export class PandaHeatmap extends HTMLElement {
 		this._orientation = PandaHeatmapOrientation.HORIZONTAL;
 		this._xAxisLabels = [];
 		this._yAxisLabels = [];
-		this._xAxisLabelPosition = PandaHeatmapXAxisPosition.TOP;
-		this._yAxisLabelPosition = PandaHeatmapYAxisPosition.LEFT;
+		this._xAxisPosition = PandaHeatmapXAxisPosition.TOP;
+		this._yAxisPosition = PandaHeatmapYAxisPosition.LEFT;
 		this._showValues = false;
 		this._showLegend = false;
 		this._showTooltip = false;
@@ -561,11 +561,11 @@ export class PandaHeatmap extends HTMLElement {
 					console.warn("Invalid JSON for y-axis-labels:", error);
 				}
 				break;
-			case "x-axis-label-position":
-				this._xAxisLabelPosition = _newValue || PandaHeatmapXAxisPosition.TOP;
+			case "x-axis-position":
+				this._xAxisPosition = _newValue || PandaHeatmapXAxisPosition.TOP;
 				break;
-			case "y-axis-label-position":
-				this._yAxisLabelPosition = _newValue || PandaHeatmapYAxisPosition.LEFT;
+			case "y-axis-position":
+				this._yAxisPosition = _newValue || PandaHeatmapYAxisPosition.LEFT;
 				break;
 			case "min-color":
 				this._minColor = _newValue;
@@ -609,7 +609,7 @@ export class PandaHeatmap extends HTMLElement {
 			}
 
 			// add or remove no data element
-			if (this._noData()) {
+			if (this._noData() && !this._working) {
 				this._noDataContEl.textContent = this._i18n.noDataText || "No data available";
 				this._heatmapContEl.appendChild(this._noDataContEl);
 			} else {
@@ -657,8 +657,17 @@ export class PandaHeatmap extends HTMLElement {
 
 	private _updateTemplateCss(): void {
 		if (this.isConnected) {
-			const rows = this._data.length;
-			const cols = this._data[0]?.length || 0;
+			let rows = 0;
+			let cols = 0;
+
+			if (this._noData()) {
+				rows = this._yAxisLabels.length;
+				cols = this._xAxisLabels.length;
+			} else {
+				rows = this._data.length;
+				cols = this._data[0]?.length || 0;
+			}
+
 			const isVertical = this._orientation === PandaHeatmapOrientation.VERTICAL;
 			const gridCols = isVertical ? rows : cols;
 			const gridRows = isVertical ? cols : rows;
@@ -670,13 +679,13 @@ export class PandaHeatmap extends HTMLElement {
 			const xAxisLabelsStyle: string[] = [];
 			const yAxisLabelsStyle: string[] = [];
 
-			if (this._xAxisLabelPosition.toLocaleLowerCase() === PandaHeatmapXAxisPosition.BOTTOM) {
+			if (this._xAxisPosition.toLocaleLowerCase() === PandaHeatmapXAxisPosition.BOTTOM) {
 				// move corner spacer to bottom
 				cornerSpacerStyles.push("grid-row: 3;");
 				// move x-axis labels to bottom
 				xAxisLabelsStyle.push("grid-row: 3;");
 			}
-			if (this._yAxisLabelPosition.toLocaleLowerCase() === PandaHeatmapYAxisPosition.RIGHT) {
+			if (this._yAxisPosition.toLocaleLowerCase() === PandaHeatmapYAxisPosition.RIGHT) {
 				// move corner spacer to right
 				cornerSpacerStyles.push("grid-column: 3;");
 				// move y-axis labels to right
@@ -710,8 +719,8 @@ export class PandaHeatmap extends HTMLElement {
 				this._legendGradientEl.setAttribute("style", `background: linear-gradient(to right, ${this._minColorParsed}, ${this._maxColorParsed});`);
 				// update legend labels
 				this._legendLabelsEl.innerHTML = /*html*/`
-					<span>${this._minValue}</span>
-					<span>${this._maxValue}</span>
+					<span>${this._minValue ?? "&nbsp;"}</span>
+					<span>${this._maxValue ?? "&nbsp;"}</span>
 				`;
 			}
 
@@ -856,9 +865,18 @@ export class PandaHeatmap extends HTMLElement {
 	}
 
 	private _renderAxisLabels(): void {
+		let rows = 0;
+		let cols = 0;
+
+		if (this._noData()) {
+			rows = this._yAxisLabels.length;
+			cols = this._xAxisLabels.length;
+		} else {
+			rows = this._data.length;
+			cols = this._data[0]?.length || 0;
+		}
+
 		const isVertical = this._orientation === PandaHeatmapOrientation.VERTICAL;
-		const rows = this._data.length;
-		const cols = this._data[0]?.length || 0;
 		const gridCols = isVertical ? rows : cols;
 		const gridRows = isVertical ? cols : rows;
 
@@ -1037,7 +1055,9 @@ export class PandaHeatmap extends HTMLElement {
 	}
 
 	private _noData(): boolean {
-		return this._data == null || (Array.isArray(this._data) && this._data.length === 0);
+		return this._data == null || // check if data is null or undefined
+			!Array.isArray(this._data) || // check if data is not an array
+			this._data.length === 0; // check if data array is empty
 	}
 
 	// ================================================================================================================
