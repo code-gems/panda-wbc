@@ -45,6 +45,12 @@ importers:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@25.0.3)(@vitest/ui@4.0.18)(jsdom@26.1.0)(terser@5.44.1)
 
+  packages/clockzone:
+    dependencies:
+      '@panda-wbc/panda-spinner':
+        specifier: workspace:*
+        version: link:../panda-spinner
+
   packages/panda-accordion:
     dependencies:
       '@panda-wbc/panda-icon':
@@ -386,6 +392,9 @@ importers:
       '@panda-wbc/panda-voice-to-text':
         specifier: workspace:*
         version: link:../panda-voice-to-text
+      clock-zone:
+        specifier: workspace:*
+        version: link:../clockzone
       lit:
         specifier: ^3.3.2
         version: 3.3.2
@@ -567,9 +576,9 @@ importers:
 
   packages/panda-router:
     dependencies:
-      lit:
-        specifier: ^3.3.2
-        version: 3.3.2
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
 
   packages/panda-sample:
     dependencies:
@@ -630,6 +639,9 @@ importers:
       '@panda-wbc/panda-text-slider':
         specifier: workspace:*
         version: link:../panda-text-slider
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
     devDependencies:
       rimraf:
         specifier: ^6.0.0

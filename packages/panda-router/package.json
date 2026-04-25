@@ -1,7 +1,7 @@
 {
 	"name": "@panda-wbc/panda-router",
 	"version": "1.0.0",
-	"description": "Lit based web component - router",
+	"description": "Native web component - router",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
 	"main": "lib/panda-router.js",
 	"scripts": {
@@ -12,8 +12,6 @@
 		"prepublishOnly": "npm run clean && npm run compile"
 	},
 	"keywords": [
-		"lit",
-		"lit-element",
 		"web component",
 		"ui component",
 		"router"
@@ -21,7 +19,7 @@
 	"author": "code-gems",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"lit": "^3.3.2"
+		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"types": "index.d.ts",
 	"files": [

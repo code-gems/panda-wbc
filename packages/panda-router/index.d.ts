@@ -1,18 +1,22 @@
-import { TemplateResult } from "lit";
-
 export type SearchParams = {
-	[paramName: string]: any;
+	[paramName: string]: unknown;
 }
 
-export interface PandaRouterNavigateEventDetail {
+export type PandaRouterNavigateEventDetail = {
 	pathname: string;
 	search: string;
-	searchParams: SearchParam;
+	searchParams: SearchParams;
 }
 
-export interface RouterConfig {
+export type PageDetails = {
+	title?: (params: { pathname: string, search: string, searchParams: SearchParams }) => string;
+	template: string;
+}
+
+export type RouterConfig = {
+	defaultPageTitle?: string;
 	route: {
-		[patchName: string | number]: TemplateResult;
+		[patchName: string | number]: PageDetails;
 	};
 }
 
