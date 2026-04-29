@@ -6,54 +6,38 @@ declare module "panda-design-typings" {
 
 	export const enum PageCategory {
 		HOME = "HOME",
-		DEVELOP = "DEVELOP",
-		THEMES = "THEMES",
-		CORE = "CORE",
+		MENU = "MENU",
 		ABOUT = "ABOUT",
+		CONTACT = "CONTACT",
+		// add more categories as needed
 	}
 
-	export const enum ContentSectionName {
-		OVERVIEW = "overview",
-		INSTALLATION = "installation",
-		USAGE = "usage",
-		COMPONENT_STATES = "component-states",
-		FEATURES = "features",
-		VALIDATION = "validation",
-		THEMING = "theming",
-		CUSTOMIZATION = "customization",
-		PROPERTIES = "properties",
-		EVENTS = "events",
-		INTERFACE = "interface",
-		// miscellaneous 
-		LIST = "list",
-	}
-
-	export interface ContextMenuItem {
+	export type ContextMenuItem = {
 		name: string;
 		contextId: string;
+		// Supports hierarchical context menus by allowing items to define nested submenu entries.
+		children: ContextMenuItem[];
 	}
 
-	export interface Page {
+	export type Page = {
 		pageId: string;
 		pageName: string;
 		pageUri: string;
 		description: string[];
-		category: string;
-		template: TemplateResult;
+		category: PageCategory;
 		
 		icon?: string;
 		parent?: boolean;
 		keywords?: string[];
-		native?: boolean;
+		order?: number;
 		createdTimestamp?: number;
 		updatedTimestamp?: number;
+		
 		contextMenu?: ContextMenuItem[];
-		order?: number;
-
-		subpageList?: Page[];
+		template: TemplateResult;
 	}
 
-	export interface ThunkDispatch<S, E, A extends Action> {
+	export type ThunkDispatch<S, E, A extends Action> = {
 		(action: A): Action;
 		<R, T extends Action>(asyncAction: ThunkAction<R, S, E, T>): R;
 	}
@@ -70,12 +54,12 @@ declare module "panda-design-typings" {
 
 	export type Reducer<S, A extends Action> = (state: S, action: A) => S;
 
-	export interface ReducerList {
+	export type ReducerList = {
 		[reducerName: string]: Reducer<Store, any>;
 	}
 
-	export interface Store {
-		devMode: boolean;
+	export type Store = {
+		showMobileMenu: boolean;
 		// theme
 		selectedThemeGroupId: string | null;
 		selectedThemeMode: PandaThemeMode;
@@ -86,35 +70,6 @@ declare module "panda-design-typings" {
 			search: string;
 			searchParams: SearchParams;
 		};
-	}
-
-	export interface ComponentPropertyDetails {
-		name: string;
-		defaultValue: string;
-		type: string;
-		description: string;
-		options?: string[];
-		attribute?: string;
-	}
-
-	export interface ComponentEventDetails {
-		name: string;
-		returnType: string;
-		description: string;
-	}
-
-	export interface ComponentInterfaceDetails {
-		method: string;
-		returnType: string;
-		description: string;
-	}
-
-	export interface ComponentCssVariableDetails {
-		cssClass: string;
-		cssVariable: string;
-		description: string;
-		addText?: boolean;
-		sampleText?: string;
 	}
 
 	// ================================================================================================================
@@ -131,7 +86,7 @@ declare module "panda-design-typings" {
 		themeName: string;
 	}
 
-	export interface ToggleDevModeAction extends Action {
-		devMode: boolean;
+	export interface ToggleMobileMenuAction extends Action {
+		show: boolean;
 	}
 }

@@ -10,7 +10,7 @@ import { styles } from "./styles/styles";
 import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-controller";
 
 // custom themes
-// ...
+import "./theme/vaccashe-theme";
 
 // components
 import "@panda-wbc/panda-theme";
@@ -19,10 +19,10 @@ import "@panda-wbc/panda-notifications";
 
 // pages
 import "./pages/home/home-page";
-import "./pages/get-started/get-started-page";
-import "./pages/develop/develop-page";
-import "./pages/themes/themes-page";
-import "./pages/core/core-page";
+import "./pages/about/about-page";
+import "./pages/menu/menu-page";
+import "./pages/contact/contact-page";
+// ... add more pages here
 
 // utils & config
 import { LitElement, html } from "lit";
@@ -33,9 +33,9 @@ import { getRouterConfig } from "./router-config";
 // actions
 import { gotoPage } from "./redux/actions/common";
 
-@customElement("panda-design-app")
+@customElement("vaccashe-app")
 @reduxify()
-class PandaApp extends LitElement {
+class App extends LitElement {
 	//css styles
 	static get styles() {
 		return styles;
@@ -101,7 +101,6 @@ class PandaApp extends LitElement {
 	// ================================================================================================================
 
 	private _onNavigate(event: PandaRouterNavigateEvent): void {
-		// console.log("%c [APP] _onNavigate", "font-size: 24px; color: green;", event);
 		const {
 			pathname,
 			search,

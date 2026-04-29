@@ -2,7 +2,7 @@ export const styles = /*css*/`
 	:host {
 		position: sticky;
 		display: inline-block;
-		height: var(--panda-button-height-size-m, 40px);
+		height: var(--panda-button-height-size-m, var(--panda-component-size-m, 40px));
 		user-select: none;
 		outline: none;
 		-webkit-font-smoothing: antialiased;
@@ -47,17 +47,17 @@ export const styles = /*css*/`
 		white-space: nowrap;
 		transition: var(--panda-button-transition, all 0.3s ease-in-out);
 
-		border-radius: var(--panda-button-border-radius-size-m, 10px);
+		border-radius: var(--panda-button-border-radius-size-m, var(--panda-border-radius-m, 10px));
 		border-width: var(--panda-button-border-width, 1px);
 		border-style: var(--panda-button-border-style, solid);
-		border-color: var(--panda-button-border-color, hsl(207deg 1% 85%));
+		border-color: var(--panda-button-border-color, var(--panda-border-color, hsl(207deg 1% 85%)));
 		background: var(--panda-button-background, hsl(0deg 0% 100%));
 		background-clip: padding-box;
 		box-shadow: var(--panda-button-elevation, none);
 		box-sizing: border-box;
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-icon-color, hsl(191deg 19% 23%));
-		--panda-icon-size: var(--panda-button-icon-size-m, 20px);
+		--panda-icon-size: var(--panda-button-icon-size-m, var(--panda-icon-size-m, 20px));
 	}
 
 	.button::before {
@@ -778,22 +778,22 @@ export const styles = /*css*/`
 
 	/* SIZE-S ====================================================================================================== */
 	:host([theme~="size-s"]) {
-		height: var(--panda-button-height-size-s, 24px);
+		height: var(--panda-button-height-size-s, var(--panda-component-size-s, 36px));
 	}
 	
 	:host([theme~="size-s"][theme~="icon"]) {
-		width: var(--panda-button-height-size-s, 24px);
-		height: var(--panda-button-height-size-s, 24px);
+		width: var(--panda-button-height-size-s, var(--panda-component-size-s, 36px));
+		height: var(--panda-button-height-size-s, var(--panda-component-size-s, 36px));
 	}
 
 	:host([theme~="size-s"]) slot {
-		line-height: var(--panda-button-height-size-s, 24px);
-		--panda-icon-size: var(--panda-button-icon-size-s, 16px);
+		line-height: var(--panda-button-height-size-s, var(--panda-component-size-s, 36px));
+		--panda-icon-size: var(--panda-button-icon-size-s, var(--panda-icon-size-s, 20px));
 	}
 
 	:host([theme~="size-s"]) ::slotted([slot="prefix"]),
 	:host([theme~="size-s"]) ::slotted([slot="suffix"]) {
-		--panda-icon-size: var(--panda-button-icon-size-s, 16px);
+		--panda-icon-size: var(--panda-button-icon-size-s, var(--panda-icon-size-s, 20px));
 	}
 
 	:host([theme~="size-s"]) .button {
@@ -801,8 +801,8 @@ export const styles = /*css*/`
 		font-size: var(--panda-button-font-size-s, 14px);
 		font-family: var(--panda-button-font-family-size-s, "Poppins");
 		font-weight: var(--panda-button-font-weight-size-s, 500);
-		border-radius: var(--panda-button-border-radius-size-s, 5px);
-		--panda-icon-size: var(--panda-button-icon-size-s, 16px);
+		border-radius: var(--panda-button-border-radius-size-s, var(--panda-border-radius-s, 5px));
+		--panda-icon-size: var(--panda-button-icon-size-s, var(--panda-icon-size-s, 20px));
 	}
 
 	:host([theme~="size-s"]) .button.with-prefix {
@@ -814,18 +814,18 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="size-s"]) .spinner-cont {
-		border-radius: var(--panda-button-border-radius-size-s, 5px);
-		--panda-spinner-size: var(--panda-button-spinner-size-s, 16px);
+		border-radius: var(--panda-button-border-radius-size-s, var(--panda-border-radius-s, 5px));
+		--panda-spinner-size: var(--panda-button-spinner-size-s, var(--panda-icon-size-s, 20px));
 	}
 
 	/* SIZE-L ====================================================================================================== */
 	:host([theme~="size-l"]) {
-		height: var(--panda-button-height-size-l, 48px);
+		height: var(--panda-button-height-size-l, var(--panda-component-size-l, 48px));
 	}
 	
 	:host([theme~="size-l"][theme~="icon"]) {
-		width: var(--panda-button-height-size-l, 48px);
-		height: var(--panda-button-height-size-l, 48px);
+		width: var(--panda-button-height-size-l, var(--panda-component-size-l, 48px));
+		height: var(--panda-button-height-size-l, var(--panda-component-size-l, 48px));
 	}
 
 	:host([theme~="size-l"]) slot {

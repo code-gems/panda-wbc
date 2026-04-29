@@ -4,7 +4,7 @@ import {
 	AsyncActionCreator,
 	ChangeThemeAction,
 	GotoPageAction,
-	ToggleDevModeAction,
+	ToggleMobileMenuAction,
 } from "panda-design-typings";
 import { SearchParams } from "@panda-wbc/panda-router";
 
@@ -12,7 +12,7 @@ import { SearchParams } from "@panda-wbc/panda-router";
 export const ACTION_TYPE = {
 	GOTO_PAGE: "APP::GOTO_PAGE",
 	CHANGE_THEME: "APP::CHANGE_THEME",
-	TOGGLE_DEV_MODE: "APP::TOGGLE_DEV_MODE",
+	TOGGLE_MOBILE_MENU: "APP::TOGGLE_MOBILE_MENU",
 };
 
 export const gotoPage: ActionCreator<{
@@ -36,16 +36,9 @@ export const changeTheme: AsyncActionCreator<{
 		type: ACTION_TYPE.CHANGE_THEME,
 		themeName
 	});
-};
+}
 
-export const toggleDevMode: AsyncActionCreator<{
-	devMode: boolean;
-}, ToggleDevModeAction> = ({ devMode }) => (dispatch) => {
-	// store devMode flag
-	localStorage.setItem("devMode", String(devMode));
-
-	dispatch({
-		type: ACTION_TYPE.TOGGLE_DEV_MODE,
-		devMode
-	});
-};
+export const toggleMobileMenu: ActionCreator<{ show: boolean; }, ToggleMobileMenuAction> = ({ show }) => ({
+	type: ACTION_TYPE.TOGGLE_MOBILE_MENU,
+	show
+});

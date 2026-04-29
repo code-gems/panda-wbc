@@ -48,7 +48,7 @@ export abstract class ParentPageTemplate extends LitElement {
 					searchParams
 				}
 			} = state;
-			this.pageId = searchParams?.page || null;
+			this.pageId = searchParams?.page as string;
 		}
 	}
 

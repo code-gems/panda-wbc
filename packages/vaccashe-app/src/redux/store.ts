@@ -4,7 +4,7 @@
 // utils
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import { DEFAULT_STORE } from "./defaults";
+import { getDefaultStore } from "./defaults";
 
 // reducers
 import reducersAppHeader from "./reducers/root";
@@ -35,7 +35,7 @@ const tryCatchMiddleware = (stateApi: any) => (next: any) => async (action: any)
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const appStore = createStore(
 	app,
-	DEFAULT_STORE,
+	getDefaultStore(),
 	composeEnhancers(applyMiddleware(tryCatchMiddleware, thunk))
 );
 

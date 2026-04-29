@@ -8,12 +8,6 @@ import {
 	PandaThemeState,
 } from "./types";
 
-// themes
-import { pandaThemeLight } from "./themes/panda-theme-light";
-import { pandaThemeDark } from "./themes/panda-theme-dark";
-import { lightAccentColors } from "./themes/panda-theme-light-accent-colors";
-import { darkAccentColors } from "./themes/panda-theme-dark-accent-colors";
-
 // utils
 import { singleton, generateUuid } from "@panda-wbc/panda-utils";
 
@@ -58,28 +52,12 @@ class PandaThemeController {
 		}
 		PandaThemeController.instance = this;
 		// initialize properties
-		this._themeGroups = [{
-			id: "panda-theme",
-			name: "Panda Theme",
-			description: "The default Panda system theme with light and dark modes.",
-			light: {
-				id: "panda-theme-light",
-				name: "Light Theme",
-				theme: pandaThemeLight,
-				accentColors: lightAccentColors,
-			},
-			dark: {
-				id: "panda-theme-dark",
-				name: "Dark Theme",
-				theme: pandaThemeDark,
-				accentColors: darkAccentColors,
-			},
-		}];
+		this._themeGroups = [];
 		// set default values
-		this._defaultThemeGroupId = "panda-theme";
-		this._defaultThemeId = "panda-theme-light";
+		this._defaultThemeGroupId = "";
+		this._defaultThemeId = "";
 		this._defaultThemeMode = PandaThemeMode.LIGHT;
-		this._defaultAccentColorId = "blue";
+		this._defaultAccentColorId = "";
 
 		this._selectedThemeGroupId = this._defaultThemeGroupId;
 		this._selectedThemeId = this._defaultThemeId;
@@ -115,14 +93,21 @@ class PandaThemeController {
 	// API ============================================================================================================
 	// ================================================================================================================
 
-	/** Get all registered theme groups */
+	/**
+	 * getThemeGroups()
+	 * ---
+	 * Get all registered theme groups
+	 * @returns {PandaThemeGroup[]} array of registered theme groups
+	 */
 	public getThemeGroups(): PandaThemeGroup[] {
 		return this._themeGroups;	
 	}
 
 	/**
+	 * getThemeGroupById()
+	 * ---
 	 * Get theme group by id.
-	 * @param {String} themeGroupId theme group id
+	 * @param {string} themeGroupId theme group id
 	 * @returns {PandaThemeGroup|null} theme group object or null if not found
 	 */
 	public getThemeGroupById(themeGroupId: string): PandaThemeGroup | null {
@@ -131,10 +116,13 @@ class PandaThemeController {
 	}
 
 	/**
+	 * registerThemeGroup()
+	 * ---
 	 * Register a new theme group.
-	 * @param themeGroup The theme group to register.
+	 * @param {PandaThemeGroup} themeGroup The theme group to register.
+	 * @param {boolean} selectIt Whether to select the theme group after registration.
 	 */
-	public registerThemeGroup(themeGroup: PandaThemeGroup): void {
+	public registerThemeGroup(themeGroup: PandaThemeGroup, selectIt: boolean = false): void {
 		// check if group already exists
 		let existingThemeGroup = this._themeGroups.find(({ id }) => id === themeGroup.id);
 		// if theme group exists, update its styles
@@ -164,16 +152,28 @@ class PandaThemeController {
 		}
 		// update accent color metadata
 		this._updateThemeMetadata();
+
+		// select theme group if requested
+		if (selectIt) {
+			this.setThemeGroupId(themeGroup.id);
+		}
 	}
 
-	/** Get currently selected theme group id */
+	/**
+	 * getThemeGroupId()
+	 * ---
+	 * Get currently selected theme group id
+	 * @returns {string} current theme group id
+	 */
 	public getThemeGroupId(): string {
 		return this._selectedThemeGroupId;
 	}
 
 	/**
+	 * setThemeGroupId()
+	 * ---
 	 * Change theme group id and apply new theme.
-	 * @param themeGroupId new theme group id to be selected
+	 * @param {string} themeGroupId new theme group id to be selected
 	 */
 	public setThemeGroupId(themeGroupId: string): void {
 		// check if value changed
@@ -208,32 +208,20 @@ class PandaThemeController {
 	}
 
 	/**
-	 * Change selected theme id.
-	 * [IMPORTANT] This method is deprecated and will be removed. 
-	 * By right theme id should only be changed internally by controller upon theme mode change
-	 * @deprecated
+	 * getAccentColorId()
+	 * ---
+	 * Get currently selected accent color id for the active theme.
+	 * @returns {string} accent color id
 	 */
-	public setThemeId(themeId: string): void {
-		// find theme group this themeId belongs to
-		const thisThemeGroup = this._getThemeGroupById(themeId);
-		if (thisThemeGroup) {
-			this._selectedThemeId = themeId;
-			this._applyTheme();
-		} else {
-			console.log(
-				`%c ⚠️ [PANDA THEME CONTROLLER] Theme id not registered! ${themeId}`,
-				LOG_STYLES_WARN
-			);
-		}
-	}
-
 	public getAccentColorId(): string {
 		return this._selectedAccentColorId;
 	}
 
 	/**
+	 * setAccentColorId()
+	 * ---
 	 * Change the accent color id of the current theme and apply it to current theme.
-	 * @param accentColorId new accent color id
+	 * @param {string} accentColorId new accent color id
 	 */
 	public setAccentColorId(accentColorId: string): void {
 		// check if value changed
@@ -256,22 +244,31 @@ class PandaThemeController {
 	}
 
 	/**
+	 * getAvailableAccentColors()
+	 * ---
 	 * Get list of accent colors for currently selected theme
-	 * @returns list of accent colors defined for current theme
+	 * @returns {PandaThemeAccentColor[]} list of accent colors defined for current theme
 	 */
 	public getAvailableAccentColors(): PandaThemeAccentColor[] {
 		const selectedThemeGroup = this._getSelectedTheme();
 		return selectedThemeGroup?.accentColors ?? [];
 	}
 
-	/** Get currently selected theme mode */
+	/** 
+	 * getThemeMode()
+	 * ---
+	 * Get currently selected theme mode
+	 * @returns {PandaThemeMode} current theme mode eg. light, dark or system
+	 */
 	public getThemeMode(): PandaThemeMode {
 		return this._selectedThemeMode;
 	}
 
 	/**
+	 * setThemeMode()
+	 * ---
 	 * Change current theme mode for selected theme group and apply it.
-	 * @param themeMode new theme mode
+	 * @param {PandaThemeMode} themeMode new theme mode
 	 */
 	public setThemeMode(themeMode: PandaThemeMode): void {
 		// check if value changed
@@ -317,6 +314,8 @@ class PandaThemeController {
 	}
 
 	/**
+	 * subscribe()
+	 * ---
 	 * Register callback function for theme state changes.
 	 * @param callback function to be called when theme state changed
 	 */
@@ -340,6 +339,8 @@ class PandaThemeController {
 	}
 
 	/**
+	 * unsubscribe()
+	 * ---
 	 * Remove subscription for theme state updates.
 	 * @param {String} callbackId callback id to unsubscribe from updates
 	 */
@@ -349,6 +350,8 @@ class PandaThemeController {
 	}
 
 	/**
+	 * registerCustomCss()
+	 * ---
 	 * Register custom CSS for a specific theme group id and theme mode.
 	 * @param {String} themeGroupId - theme group id to associate the custom CSS with
 	 * @param {PandaThemeMode} themeMode - theme mode (light or dark) to associate the custom CSS with
@@ -417,6 +420,8 @@ class PandaThemeController {
 	}
 
 	/**
+	 * unregisterCustomCss()
+	 * ---
 	 * Unregister custom CSS for a specific theme group id and theme mode.
 	 * @param {String} themeGroupId - the theme group id
 	 * @param {PandaThemeMode} themeMode - the theme mode (light or dark)
@@ -479,6 +484,8 @@ class PandaThemeController {
 	}
 
 	/**
+	 * getCustomCss()
+	 * ---
 	 * Get registered custom CSS for a specific theme group id and theme mode.
 	 * @param {String} themeGroupId - the theme group id
 	 * @param {PandaThemeMode|String} themeMode - the theme mode (light or dark)
@@ -527,6 +534,8 @@ class PandaThemeController {
 	}
 
 	/**
+	 * useStyleSheets()
+	 * ---
 	 * Enable or disable the use of CSSStyleSheets for theme application.
 	 * @param {boolean} enable - true to enable CSSStyleSheets, false to disable
 	 */

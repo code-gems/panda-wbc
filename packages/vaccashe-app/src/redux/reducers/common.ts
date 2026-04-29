@@ -4,7 +4,7 @@ import {
 	Store,
 	GotoPageAction,
 	ChangeThemeAction,
-	ToggleDevModeAction,
+	ToggleMobileMenuAction,
 } from "panda-design-typings"
 
 export const gotoPage: Reducer<Store, GotoPageAction> = (state, { pathname, search, searchParams }): Store => ({
@@ -21,7 +21,7 @@ export const changeTheme: Reducer<Store, ChangeThemeAction> = (state, { themeNam
 	// selectedTheme: themeName
 });
 
-export const toggleDevMode: Reducer<Store, ToggleDevModeAction> = (state, { devMode }): Store => ({
+export const toggleMobileMenu: Reducer<Store, ToggleMobileMenuAction> = (state, { show }): Store => ({
 	...state,
-	devMode
+	showMobileMenu: show
 });

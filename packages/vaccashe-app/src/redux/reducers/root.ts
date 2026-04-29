@@ -9,13 +9,13 @@ import { ACTION_TYPE } from "../actions/common";
 import {
 	gotoPage,
 	changeTheme,
-	toggleDevMode,
+	toggleMobileMenu,
 } from "./common";
 
 const reducerList: ReducerList = {
 	[ACTION_TYPE.GOTO_PAGE]: gotoPage,
 	[ACTION_TYPE.CHANGE_THEME]: changeTheme,
-	[ACTION_TYPE.TOGGLE_DEV_MODE]: toggleDevMode,
+	[ACTION_TYPE.TOGGLE_MOBILE_MENU]: toggleMobileMenu,
 };
 
 const reducers = (state: Store, action: Action<string>): Store => {

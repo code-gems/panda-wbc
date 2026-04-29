@@ -28,7 +28,8 @@
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
 		"@panda-wbc/panda-text-field": "workspace:*",
-		"@panda-wbc/panda-text-slider": "workspace:*"
+		"@panda-wbc/panda-text-slider": "workspace:*",
+		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"devDependencies": {
 		"rimraf": "^6.0.0",

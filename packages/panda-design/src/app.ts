@@ -14,6 +14,7 @@ import "./themes/red-alert-theme/red-alert-theme";
 
 // components
 import "@panda-wbc/panda-theme";
+import "@panda-wbc/panda-theme/lib/themes/panda-theme";
 import "@panda-wbc/panda-router";
 import "@panda-wbc/panda-notifications";
 

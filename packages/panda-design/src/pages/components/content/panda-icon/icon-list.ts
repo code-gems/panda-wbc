@@ -168,6 +168,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "briefcase",				iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "briefcase", "work", "workplace", "job"] },
 		{ name: "briefcase-outline",		iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "briefcase", "work", "workplace", "job", "outline"] },
 		{ name: "terrain",					iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "terrain", "mountain"] },
+		{ name: "map-pin",					iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "location", "pin"] },
+		{ name: "map-pin-outline",			iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "location", "pin", "outline"] },
 		
 		// Mobile Icon Pack =====================================
 
@@ -179,5 +181,8 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "sparks", 					iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "sparks", "stars", "magic"] },
 		{ name: "sparks-more", 				iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "sparks", "stars", "magic", "more"] },
 		
+		// Social Icon Pack =========================================
+		{ name: "instagram", 				iconPack: "social-icons-pack", group: ["Social"], keywords: ["social", "media", "instagram", "photo", "share"] },
+
 	];
 }

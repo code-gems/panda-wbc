@@ -3,7 +3,7 @@ import { Page } from "panda-design-typings";
 
 export class PageLibrary {
 	static instance: PageLibrary;
-	private _pageIds: Page[];
+	private readonly _pageIds: Page[];
 
 	constructor() {
 		if (!PageLibrary.instance) {
@@ -19,7 +19,6 @@ export class PageLibrary {
 	 */
 	public register(page: Page) {
 		this._pageIds.push(page);
-		// console.log("%c register::page", "font-size: 24px; color: red;", page, this._pageIds);
 	}
 
 	public getAllPages(): Page[] {

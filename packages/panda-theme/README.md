@@ -16,7 +16,9 @@ yarm add @panda/panda-theme
 
 ```html
 <panda-theme
-	.theme="light"
+	.theme-group-id="panda-theme"
+	.theme-mode="light"
+	.accent-color-id="blue"
 ></panda-theme>
 ```
 

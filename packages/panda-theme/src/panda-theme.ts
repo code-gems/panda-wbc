@@ -1,3 +1,6 @@
+// types
+import { PandaThemeMode } from "./types";
+
 // utils
 import pandaThemeController from "./panda-theme-controller";
 
@@ -9,20 +12,68 @@ export class PandaTheme extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	static readonly observedAttributes = ["theme"];
+	static readonly observedAttributes = [
+		"theme-group-id",
+		"theme-mode",
+		"accent-color-id",
+	];
 
-	private _theme!: string;
-
-	get theme(): string {
-		return this._theme;
+	/**
+	 * themeGroupId
+	 * ---
+	 * Get or set the current theme group id
+	 * @returns {string} current theme group id
+	 */
+	get themeGroupId(): string {
+		return this._themeId;
 	}
 
-	set theme(value: string) {
-		if (this._theme !== value) {
-			this._theme = value;
-			this.setAttribute("theme", this._theme); // reflect to attribute
+	set themeGroupId(value: string) {
+		if (this._themeId !== value) {
+			this._themeId = value;
+			this.setAttribute("theme-group-id", this._themeId + ""); // reflect to attribute
 		}
 	}
+
+	private _themeId!: string;
+
+	/**
+	 * themeMode
+	 * ---
+	 * Get or set the current theme mode (light/dark)
+	 * @returns {PandaThemeMode} current theme mode
+	 */
+	get themeMode(): PandaThemeMode {
+		return this._themeMode;
+	}
+
+	set themeMode(value: PandaThemeMode) {
+		if (this._themeMode !== value) {
+			this._themeMode = value;
+			this.setAttribute("theme-mode", this._themeMode + ""); // reflect to attribute
+		}
+	}
+
+	private _themeMode!: PandaThemeMode;
+
+	/**
+	 * accentColorId
+	 * ---
+	 * Get or set the current accent color id
+	 * @returns {string} current accent color id
+	 */
+	get accentColorId(): string {
+		return this._accentColorId;
+	}
+
+	set accentColorId(value: string) {
+		if (this._accentColorId !== value) {
+			this._accentColorId = value;
+			this.setAttribute("accent-color-id", this._accentColorId + ""); // reflect to attribute
+		}
+	}
+
+	private _accentColorId!: string;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -39,9 +90,19 @@ export class PandaTheme extends HTMLElement {
 			return;
 		}
 
-		if (_name === "theme") {
-			this._theme = _newValue;
-			pandaThemeController.setThemeId(this._theme);
+		switch (_name) {
+			case "theme-group-id":
+				this._themeId = _newValue;
+				pandaThemeController.setThemeGroupId(this._themeId);
+				break;
+			case "theme-mode":
+				this._themeMode = _newValue as PandaThemeMode;
+				pandaThemeController.setThemeMode(this._themeMode);
+				break;
+			case "accent-color-id":
+				this._accentColorId = _newValue;
+				pandaThemeController.setAccentColorId(this._accentColorId);
+				break;
 		}
 	}
 }

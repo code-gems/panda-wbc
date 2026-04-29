@@ -1,21 +1,31 @@
 // types
 import { RouterConfig } from "@panda-wbc/panda-router";
 
-// utils
-import { html } from "lit";
-
 /**
  * Router config, page mapping
  */
 export const getRouterConfig = (): RouterConfig => ({
 	route: {
-		404: html`(CUSTOM) #404 - Page not found`,
-		"/": html`<home-page></home-page>`,
-		"/home": html`<home-page></home-page>`,
-		"/docs": html`<docs-page></docs-page>`,
-		"/components": html`<components-page></components-page>`,
-		"/themes": html`<themes-page></themes-page>`,
-		"/core": html`<core-page></core-page>`,
-		"/tutorials": html`<tutorials-page></tutorials-page>`,
+		"/": {
+			template: `<home-page></home-page>`
+		},
+		"/home": {
+			template: `<home-page></home-page>`
+		},
+		"/docs": {
+			template: `<docs-page></docs-page>`
+		},
+		"/components": {
+			template: `<components-page></components-page>`
+		},
+		"/themes": {
+			template: `<themes-page></themes-page>`
+		},
+		"/core": {
+			template: `<core-page></core-page>`
+		},
+		"/tutorials": {
+			template: `<tutorials-page></tutorials-page>`
+		},
 	}
 });

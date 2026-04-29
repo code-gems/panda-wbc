@@ -1,89 +1,34 @@
-// types
-import { Store, PageCategory } from "panda-design-typings";
-
 // styles & mixins
 import { styles } from "./styles/styles";
-import { uiComponents } from "../../styles/styles";
 
 // web parts
-import "../../web-parts/app-side-bar/app-side-bar";
-import "../../web-parts/main-nav/main-nav";
+// ...
 
 // utils
-import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { PageLibrary, page } from "../../utils/page-library";
-import { reduxify } from "../../redux/store";
+import { html, TemplateResult } from "lit";
+import { customElement } from "lit/decorators.js";
+import { ParentPageTemplate } from "../parent-page-template";
+import { page } from "../../utils/page-library";
 
+// page config
+import { pageConfig } from "./page-config";
+
+@page(pageConfig)
 @customElement("home-page")
-@page({
-	pageId: "home",
-	pageName: "Home",
-	pageUri: "/home",
-	icon: "home",
-	parent: true,
-	category: PageCategory.HOME,
-	keywords: [],
-	description: [],
-	contextMenu: [],
-	template: html`<home-page></home-page>`
-})
-@reduxify()
-class HomePage extends LitElement {
-	// css styles
-	static get styles() {
-		return [
-			styles,
-			uiComponents.banner,
-			uiComponents.appLayout,
-			uiComponents.modifiers,
-		];
-	}
-
-	@property({ type: String })
-	private _pageId!: string;
-
-	// ================================================================================================================
-	// LIFE CYCLE =====================================================================================================
-	// ================================================================================================================
-
-	stateChanged(state: Store) {
-		console.log("%c [HOME PAGE] stateChanged", "font-size: 24px; color: green;", state);
-	}
+class HomePage extends ParentPageTemplate {
+	// page details
+	pageConfig = pageConfig;
+	customStyles = styles;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
 
-	protected render() {
+	_renderPageContent(): TemplateResult {
 		return html`
-			<div class="app">
-				<div class="side-bar">
-					<app-side-bar></app-side-bar>
-				</div>
-				<div class="body">
-					${this._renderPageTemplate()}
-				</div>
-			</div>
+			Looking for healthy food near you in Canggu? We're open daily and ready to fuel your day.
 		`;
-	}
-
-	private _renderMainPage() {
-		
-
-		return html`
-			home
-		`;
-	}
-
-	private _renderPageTemplate() {
-		if (this._pageId) {
-			const selectedPage = new PageLibrary().getPageById(this._pageId);
-			return selectedPage?.template;
-		} else {
-			return this._renderMainPage();
-		}
-	}
+	};
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================

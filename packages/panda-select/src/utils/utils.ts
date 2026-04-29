@@ -75,16 +75,6 @@ export const getItemDisabledFlag = (item: PandaSelectItem | string | number): bo
 }
 
 /**
- * Check if array includes a value
- * @param {Array<any>} arr array to check
- * @param {any} value value to find
- * @returns {Boolean} boolean indicating if value is in array
- */
-export const includes = (arr: any[], value: any): boolean => {
-	return arr.indexOf(value) !== -1;
-}
-
-/**
  * Get the count of selectable items (items that are not disabled)
  * @param {Array<SuperItem>} items array of items to check
  * @returns {Number} number of selectable items

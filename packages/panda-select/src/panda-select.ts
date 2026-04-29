@@ -2,6 +2,7 @@
 import { PandaSelectItem, PandaSelectChangeEvent, PandaSelectI18nConfig } from "../index";
 import { PandaSelectOverlay } from "./panda-select-overlay";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
+import { PandaTextSlider } from "@panda-wbc/panda-text-slider";
 import {
 	ElementDetails,
 	PostMessageEvent,
@@ -19,8 +20,7 @@ import "@panda-wbc/panda-text-slider";
 import "./panda-select-overlay";
 
 // utils
-import { getI18nConfig, getItemDisabledFlag, getItemLabel, getItemValue, includes } from "./utils/utils";
-import { PandaTextSlider } from "@panda-wbc/panda-text-slider";
+import { getI18nConfig, getItemDisabledFlag, getItemLabel, getItemValue } from "./utils/utils";
 
 export class PandaSelect extends HTMLElement {
 	/** Version of the component. */
@@ -756,7 +756,6 @@ export class PandaSelect extends HTMLElement {
 	private _showMandatoryFlag!: boolean;
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
-	private _ready!: boolean;
 
 	// elements
 	private _overlayEl!: PandaSelectOverlay | null;
@@ -909,10 +908,17 @@ export class PandaSelect extends HTMLElement {
 		this._parsedItems = [];
 		this._withPrefix = false;
 		this._withSuffix = false;
-		this._ready = false;
 		
-		// init events
+		// init event binders
 		this._postMessageEvent = this._onPostMessage.bind(this);
+		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
+		this._showOverlayEvent = this._onShowOverlay.bind(this);
+		this._keyDownEvent = this._onKeyDown.bind(this);
+		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
+		this._iconButtonClickEvent = this._onIconClick.bind(this);
+		this._removeItemEvent = this._onRemoveItem.bind(this);
+		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
+		this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
 
 		if (this.shadowRoot) {
 			// get elements handle
@@ -923,30 +929,22 @@ export class PandaSelect extends HTMLElement {
 			this._itemsContEl.insertBefore(this._placeholderEl, this._itemsEl);
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
-
-			// add event listeners
-			this._closeOverlayEvent = this._onCloseOverlay.bind(this);
-			window.addEventListener("resize", this._closeOverlayEvent);
-			this._showOverlayEvent = this._onShowOverlay.bind(this);
-			this._selectEl.addEventListener("click", this._showOverlayEvent);
-			this._keyDownEvent = this._onKeyDown.bind(this);
-			this._selectEl.addEventListener("keydown", this._keyDownEvent);
-			this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
-			this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
-			this._iconButtonClickEvent = this._onIconClick.bind(this);
-			this._iconEl.addEventListener("click", this._iconButtonClickEvent);
-			this._removeItemEvent = this._onRemoveItem.bind(this);
-			this._itemsEl.addEventListener("click", this._removeItemEvent);
-			this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
-			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
-			this._suffixSlotChangeEvent = this._onSuffixSlotChanged.bind(this);
-			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		}
 	}
 
 	connectedCallback(): void {
-		this._ready = true;
+		// add event listeners
+		window.addEventListener("resize", this._closeOverlayEvent);
+		this._selectEl.addEventListener("click", this._showOverlayEvent);
+		this._selectEl.addEventListener("keydown", this._keyDownEvent);
+		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
+		this._iconEl.addEventListener("click", this._iconButtonClickEvent);
+		this._itemsEl.addEventListener("click", this._removeItemEvent);
+		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
+		// evaluate mandatory flag
 		this._evaluateMandatoryFlag();
+		// update component
 		this._updateComponent();
 	}
 
@@ -1054,7 +1052,7 @@ export class PandaSelect extends HTMLElement {
 	}
 
 	private _updateComponent(): void {
-		if (this._ready) {
+		if (this.isConnected) {
 			// make component focusable
 			if (this._disabled || this._working) {
 				this._selectEl.tabIndex = -1;
@@ -1304,7 +1302,7 @@ export class PandaSelect extends HTMLElement {
 				const label = getItemLabel(item, this._itemLabelPath);
 				const value = getItemValue(item, this._itemValuePath);
 				const disabled = getItemDisabledFlag(item);
-				const isSelected = includes(this._value, value);
+				const isSelected = this._value.includes(value);
 				let selected = false;
 
 				if (this._multiselect) {

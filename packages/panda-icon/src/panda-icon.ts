@@ -47,6 +47,10 @@ export class PandaIcon extends HTMLElement {
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
+		if (_oldValue === _newValue) {
+			return; // no change
+		}
+
 		if (_name === "icon") {
 			this._icon = _newValue;
 		}
@@ -75,19 +79,20 @@ export class PandaIcon extends HTMLElement {
 		}
 	}
 
-	private _renderIcon(): string | void {
+	private _renderIcon(): string {
 		if (this._icon) {
 			const iconTemplate = pandaIconLibrary.getIcon(this._icon);
-			if (iconTemplate) {
-				// Set the inner HTML of the SVG element to the icon template
-				return iconTemplate;
-			} else {
+			if (iconTemplate == null) {
 				console.log(
 					`%c ⚠️ [PANDA ICON] Icon not found: '${this._icon}'`,
 					"font-size: 16px; color: orange; background: black;"
 				);
+			} else {
+				// Set the inner HTML of the SVG element to the icon template
+				return iconTemplate;
 			}
 		}
+		return "";
 	}
 	
 	// ================================================================================================================
