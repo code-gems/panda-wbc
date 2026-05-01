@@ -5,14 +5,13 @@ import { Page, ContentSectionName, PageCategory } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "v.1.0.0",
 	pageId: "panda-dialog",
 	pageName: "Dialog",
 	pageUri: "/components?page=panda-dialog",
-	keywords: ["native", "dialog", "popup", "modal"],
+	keywords: ["dialog", "popup", "modal"],
 	description: ["Showcase of a panda-dialog component."],
 	category: PageCategory.DEVELOP,
-	native: true,
-	version: "v.1.0.0",
 
 	createdTimestamp: 1697059200000,
 

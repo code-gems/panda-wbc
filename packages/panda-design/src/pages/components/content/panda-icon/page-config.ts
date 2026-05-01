@@ -5,15 +5,14 @@ import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "1.0.0",
 	pageName: "Icons",
 	pageId: "panda-icon",
 	pageUri: "/components?page=panda-icon",
 	category: PageCategory.DEVELOP,
-	keywords: ["icon", "icons", "native"],
+	keywords: ["icon", "icons"],
 	description: ["Showcase of a panda-icon element."],
-
-	native: true,
-	updatedTimestamp: 1753769022292,
+	createdTimestamp: 1754202647857,
 	
 	contextMenu: [		
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },

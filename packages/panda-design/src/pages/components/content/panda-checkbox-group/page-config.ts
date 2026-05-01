@@ -12,7 +12,6 @@ export const pageConfig: Page = {
 	category: PageCategory.DEVELOP,
 	keywords: ["checkbox group", "tick", "options"],
 	description: ["Showcase of a panda-checkbox-group component that allows the user to make a binary choice."],
-	native: true,
 
 	contextMenu: [
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },

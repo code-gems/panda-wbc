@@ -9,4 +9,4 @@ export type PandaTimePickerI18nConfig = {
 
 export type PandaTimePickerView = "hours" | "minutes" | "seconds";
 
-export type PandaTimePickerClockType = "12" | "24";
+export type PandaTimePickerTimeFormat = "12" | "24";

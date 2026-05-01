@@ -32,7 +32,7 @@ import {
 import { toastCenter } from "../../../../utils/toast-center";
 
 @page(pageConfig)
-@customElement("panda-theme-select-content-page")
+@customElement("panda-theme-controls-content-page")
 export class ContentPage extends ContentPageTemplate {
 	// page details
 	public contentPageConfig = pageConfig;

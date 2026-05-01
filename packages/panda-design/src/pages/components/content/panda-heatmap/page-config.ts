@@ -5,13 +5,15 @@ import { Page, PageCategory, ContentSectionName } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "1.0.0",
 	pageName: "Heatmap",
 	pageId: "panda-heatmap",
 	pageUri: `/components?page=panda-heatmap`,
 
 	category: PageCategory.DEVELOP,
-	keywords: ["native", "heatmap", "data visualization", "chart", "graph"],
+	keywords: ["heatmap", "data visualization", "chart", "graph"],
 	description: ["Showcase of a panda-heatmap component."],
+	createdTimestamp: 1777637277628,
 	
 	contextMenu: [
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },

@@ -47,7 +47,6 @@ declare module "panda-design-typings" {
 		parent?: boolean;
 		keywords?: string[];
 		version?: string;
-		native?: boolean;
 		createdTimestamp?: number;
 		updatedTimestamp?: number;
 		contextMenu?: ContextMenuItem[];

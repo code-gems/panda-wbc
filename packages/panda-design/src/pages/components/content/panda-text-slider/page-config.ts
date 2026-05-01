@@ -5,14 +5,14 @@ import { Page, PageCategory, ContentSectionName } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "1.0.0",
 	pageName: "Text Slider",
 	pageId: "panda-text-slider",
 	pageUri: `/components?page=panda-text-slider`,
 
 	category: PageCategory.DEVELOP,
-	keywords: ["native", "sliding", "placeholder", "effect"],
+	keywords: ["sliding", "placeholder", "effect"],
 	description: ["Showcase of a panda-text-slider component."],
-	native: true,
 	createdTimestamp: 1754713898708,
 	
 	contextMenu: [

@@ -99,7 +99,6 @@ export abstract class ContentPageTemplate extends LitElement {
 				<pd-page-banner
 					.header="${this.contentPageConfig?.pageName}"
 					.version="${this.contentPageConfig?.version ?? ""}"
-					.native="${!!this.contentPageConfig?.native}"
 				></pd-page-banner>
 			</div>
 		`;

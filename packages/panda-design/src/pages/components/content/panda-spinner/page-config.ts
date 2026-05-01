@@ -5,14 +5,14 @@ import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "1.0.0",
 	pageName: "Spinner",
 	pageId: "panda-spinner",
 	pageUri: "/components?page=panda-spinner",
 	category: PageCategory.DEVELOP,
-	keywords: ["spinner", "ui component", "progress", "animation", "status", "loading", "native"],
+	keywords: ["spinner", "ui component", "progress", "animation", "status", "loading"],
 	description: ["Showcase of a panda-spinner element."],
-	native: true,
-	updatedTimestamp: 1752884534684, // 2024-05-17T12:15:34.684Z
+	createdTimestamp: 1754202647857,
 
 	contextMenu: [
 		{ name: "Overview", contextId: ContentSectionName.OVERVIEW },

@@ -1,5 +1,5 @@
 // types
-import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } from "panda-design-typings";
+import { ContentSectionName } from "panda-design-typings";
 
 // styles
 import { styles } from "./styles/styles";
@@ -13,13 +13,14 @@ import { TemplateResult, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import { ContentPageTemplate } from "../../../content-page-template";
 import { page } from "../../../../utils/page-library";
-import { pageConfig } from "./page-config";
+import { LocalContentSectionName, pageConfig } from "./page-config";
 
 // code snippets
 import {
 	implementationSnippet,
 	installationSnippet,
 } from "./snippets/snippets";
+import { componentEvents, componentProperties } from "./component-data";
 
 @page(pageConfig)
 @customElement("panda-time-picker-content-page")
@@ -27,19 +28,6 @@ export class ContentPage extends ContentPageTemplate {
 	// page details
 	public contentPageConfig = pageConfig;
 	public customStyles = styles;
-
-	// demo props
-	private readonly _componentProperties: ComponentPropertyDetails[] = [
-		{ name: "theme", type: "String", defaultValue: "-", description: "Apply one of the color themes to the component." },
-		{ name: "icon", type: "String", defaultValue: "-", description: "Custom icon to be shown on the component." },
-		{ name: "hideIcon", type: "Boolean", defaultValue: "false", description: "Hide callout icon." },
-		{ name: "closable", type: "Boolean", defaultValue: "false", description: "Adds close button to the callout's header and makes it closable." },
-		{ name: "spinnerType", type: "String", defaultValue: "dots", description: "Spinner animation type for busy state." },
-	];
-
-	private readonly _componentEvents: ComponentEventDetails[] = [
-		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
-	];
 
 	// demo data
 	private readonly _selectItems = [
@@ -55,6 +43,9 @@ export class ContentPage extends ContentPageTemplate {
 	_renderPageContent(): TemplateResult {
 		return html`
 			${this._renderOverviewSection()}
+			${this._renderInstallationSection()}
+			${this._renderUsageSection()}
+			${this._renderFeaturesSection()}
 		`;
 	}
 
@@ -84,7 +75,7 @@ export class ContentPage extends ContentPageTemplate {
 									<panda-time-picker
 										label="Select time:"
 										@change="${this._onInputChange}"
-										clock-type="24"
+										time-format="24"
 									>
 										<div slot="prefix">Time</div>
 										<div slot="suffix">UTC</div>
@@ -110,7 +101,6 @@ export class ContentPage extends ContentPageTemplate {
 			</div> <!-- END OF CONTENT SECTION -->
 		`;
 	}
-
 
 	private _renderInstallationSection(): TemplateResult {
 		return html`
@@ -166,7 +156,7 @@ export class ContentPage extends ContentPageTemplate {
 					Here is a compilation of the supported properties/attributes for this particular component:
 				</p>
 				
-				${this._renderComponentPropertyTable(this._componentProperties)}
+				${this._renderComponentPropertyTable(componentProperties)}
 			</div>
 		`;
 	}
@@ -185,7 +175,50 @@ export class ContentPage extends ContentPageTemplate {
 					See list of events provided below:
 				</p>
 				
-				${this._renderComponentEventsTable(this._componentEvents)}
+				${this._renderComponentEventsTable(componentEvents)}
+			</div>
+		`;
+	}
+
+	private _renderFeaturesSection(): TemplateResult {
+		return html`
+			<div class="content-section" data-content-section-name="${ContentSectionName.FEATURES}">
+				<div class="section">
+					<internal-link theme="h2">Features</internal-link>
+					<p>
+						
+					</p>
+				</div>
+				${this._renderTimeFormatFeatureSection()}
+			</div>
+		`;
+	}
+
+	private _renderTimeFormatFeatureSection(): TemplateResult {
+		return html`
+			<div class="section" data-content-section-name="${LocalContentSectionName.FEATURES_TIME_FORMAT}">
+				<internal-link theme="h3">Time Format</internal-link>
+				<p>
+					The component provides the option to choose between a 12-hour or 24-hour clock format, allowing users to select their preferred time representation.
+				</p>
+				<div class="sample-cont">
+					<div class="sample">
+						<div class="rows">
+							<div class="row">
+								<div class="col-full">
+		
+									<panda-time-picker
+										label="This picker uses 24-hour format:"
+										@change="${this._onInputChange}"
+										time-format="24"
+									></panda-time-picker>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
 			</div>
 		`;
 	}

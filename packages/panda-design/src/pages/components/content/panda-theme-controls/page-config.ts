@@ -5,14 +5,14 @@ import { Page, PageCategory, ContentSectionName } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "1.0.0",
 	pageName: "Theme Controls",
 	pageId: "panda-theme-controls",
 	pageUri: `/components?page=panda-theme-controls`,
 
 	category: PageCategory.DEVELOP,
-	keywords: ["native", "theme", "controls", "switcher", "accent colors", "theme mode"],
+	keywords: ["theme", "controls", "switcher", "accent colors", "theme mode"],
 	description: ["Showcase of a panda-theme-controls component."],
-	native: true,
 	createdTimestamp: 1757053855785,
 
 	contextMenu: [
@@ -24,5 +24,5 @@ export const pageConfig: Page = {
 		// { name: "Customization", contextId: ContentSectionName.CUSTOMIZATION },
 	],
 
-	template: html`<panda-theme-select-content-page></panda-theme-select-content-page>`,
+	template: html`<panda-theme-controls-content-page></panda-theme-controls-content-page>`,
 };

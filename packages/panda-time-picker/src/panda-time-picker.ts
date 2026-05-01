@@ -1,5 +1,5 @@
 // types
-import { PandaTimePickerI18nConfig, PandaTimePickerView, PandaTimePickerClockType } from "../index";
+import { PandaTimePickerI18nConfig, PandaTimePickerView, PandaTimePickerTimeFormat } from "../index";
 import { TimeValue } from "./types";
 import { PandaTimeInput } from "./panda-time-input";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
@@ -18,7 +18,7 @@ import { getI18nConfig, parseTimeValue } from "./utils/utils";
 
 // constants
 const DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"] as PandaTimePickerView[];
-const DEFAULT_CLOCK_TYPE: PandaTimePickerClockType = "12";
+const DEFAULT_TIME_FORMAT: PandaTimePickerTimeFormat = "12";
 
 export class PandaTimePicker extends HTMLElement {
 	/** Version of the component. */
@@ -34,7 +34,7 @@ export class PandaTimePicker extends HTMLElement {
 			"theme",
 			"value",
 			"format",
-			"clock-type",
+			"time-format",
 			"disabled",
 			"readonly",
 			"mandatory",
@@ -166,23 +166,23 @@ export class PandaTimePicker extends HTMLElement {
 
 	private _views!: PandaTimePickerView[];
 
-	get clockType() {
-		return this._clockType;
+	get timeFormat() {
+		return this._timeFormat;
 	}
 
-	set clockType(value: PandaTimePickerClockType) {
-		if (this._clockType !== value) {
-			this._clockType = value;
+	set timeFormat(value: PandaTimePickerTimeFormat) {
+		if (this._timeFormat !== value) {
+			this._timeFormat = value;
 			// reflect to attribute
 			if (value) {
-				this.setAttribute("clock-type", value);
+				this.setAttribute("time-format", value);
 			} else {
-				this.removeAttribute("clock-type");
+				this.removeAttribute("time-format");
 			}
 		}
 	}
 
-	private _clockType!: PandaTimePickerClockType;
+	private _timeFormat!: PandaTimePickerTimeFormat;
 
 	/**
 	 * disabled
@@ -529,7 +529,7 @@ export class PandaTimePicker extends HTMLElement {
 		this._working = false;
 		this._showClearButton = false;
 		this._views = [...DEFAULT_TIME_PICKER_VIEW];
-		this._clockType = DEFAULT_CLOCK_TYPE;
+		this._timeFormat = DEFAULT_TIME_FORMAT;
 
 		// initialize event binders
 		this._inputChangeEvent = this._onInputChange.bind(this);
@@ -581,8 +581,8 @@ export class PandaTimePicker extends HTMLElement {
 				this.format = _newValue;
 				break;
 
-			case "clock-type":
-				this.clockType = _newValue;
+			case "time-format":
+				this.timeFormat = _newValue;
 				break;
 
 			case "theme":
@@ -645,7 +645,7 @@ export class PandaTimePicker extends HTMLElement {
 	private _updateView(): void {
 		if (this.isConnected) {
 			let focusIndex = 0;
-			console.log(`%c ⚡ [panda time picker](_updateView) views/clockType`, "font-size: 24px; color: crimson; background: black;", this._views, this._clockType);
+			console.log(`%c ⚡ [panda time picker](_updateView) views/timeFormat`, "font-size: 24px; color: crimson; background: black;", this._views, this._timeFormat);
 			console.log(`%c ⚡ [panda time picker](_updateView) _inputFieldEl`, "font-size: 24px; color: crimson; background: black;", this._inputFieldEl);
 
 			// check if hours view is enabled
@@ -684,7 +684,7 @@ export class PandaTimePicker extends HTMLElement {
 				this._secondInputEl.remove();
 			}
 
-			if (this._views.includes("hours") && this._clockType !== "24") {
+			if (this._views.includes("hours") && this._timeFormat !== "24") {
 				this._inputFieldEl.appendChild(this._periodInputEl);
 				this._periodInputEl.dataset.focusIndex = focusIndex.toString();
 				this._periodInputEl.placeholder = this._i18n.periodPlaceholder;

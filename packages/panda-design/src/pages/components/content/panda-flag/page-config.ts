@@ -5,27 +5,13 @@ import { ContentSectionName, Page, PageCategory } from "panda-design-typings";
 import { html } from "lit";
 
 export const pageConfig: Page = {
+	version: "1.0.0",
 	pageId: "panda-flag",
 	pageName: "Flag",
 	pageUri: "/components?page=panda-flag",
 	category: PageCategory.DEVELOP,
-	keywords: [
-		"native",
-		"flags",
-		"country",
-		"national",
-		"europe",
-		"african",
-		"american",
-		"americas",
-		"asian",
-		"oceanic",
-		"international",
-		"regions",
-	],
+	keywords: ["flags", "country", "national", "international", "regions"],
 	description: ["Flag description"],
-
-	native: true,
 	updatedTimestamp: 1753769022292,
 	
 	contextMenu: [
@@ -35,5 +21,5 @@ export const pageConfig: Page = {
 		{ name: "Flag List", contextId: ContentSectionName.LIST },
 	],
 
-	template: html`<panda-flag-content-page></panda-flag-content-page>`
+	template: html`<panda-flag-content-page></panda-flag-content-page>`,
 }
