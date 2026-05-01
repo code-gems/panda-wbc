@@ -41,6 +41,13 @@ export class ContentPage extends ContentPageTemplate {
 		{ name: "@on-close", returnType: "Event", description: "Triggered when user tries to close callout." }
 	];
 
+	// demo data
+	private readonly _selectItems = [
+		{ value: "option1", label: "Option 1" },
+		{ value: "option2", label: "Option 2" },
+		{ value: "option3", label: "Option 3" },
+	];
+
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
 	// ================================================================================================================
@@ -67,7 +74,9 @@ export class ContentPage extends ContentPageTemplate {
 						<div class="rows">
 							<div class="row">
 								<div class="col-full">
-									<panda-select></panda-select>
+									<panda-select
+										.items="${this._selectItems}"
+									></panda-select>
 								</div>
 
 								<div class="col-full">
@@ -75,6 +84,7 @@ export class ContentPage extends ContentPageTemplate {
 									<panda-time-picker
 										label="Select time:"
 										@change="${this._onInputChange}"
+										clock-type="24"
 									>
 										<div slot="prefix">Time</div>
 										<div slot="suffix">UTC</div>

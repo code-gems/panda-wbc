@@ -504,11 +504,11 @@ export class PandaTimePicker extends HTMLElement {
 		this._clearButtonEl.className = "clear-button";
 		this._clearButtonEl.part = "clear-button";
 		this._clearButtonEl.innerHTML = /*html*/`
-			<div class="icon" part="icon">
+			<div class="clear-icon" part="clear-icon">
 				<panda-icon icon="close"></panda-icon>
 			</div>
 		`;
-		this._clearButtonIconEl = this._clearButtonEl.querySelector(".icon") as HTMLDivElement;
+		this._clearButtonIconEl = this._clearButtonEl.querySelector(".clear-icon") as HTMLDivElement;
 
 		// create spinner element
 		this._spinnerContEl = document.createElement("div");
@@ -652,6 +652,7 @@ export class PandaTimePicker extends HTMLElement {
 			if (this._views.includes("hours")) {
 				this._inputFieldEl.appendChild(this._hourInputEl);
 				this._hourInputEl.dataset.focusIndex = focusIndex.toString();
+				this._hourInputEl.placeholder = this._i18n.hourPlaceholder;
 				focusIndex++;
 			} else {
 				this._hourInputEl.remove();
@@ -667,6 +668,7 @@ export class PandaTimePicker extends HTMLElement {
 			if (this._views.includes("minutes")) {
 				this._inputFieldEl.appendChild(this._minuteInputEl);
 				this._minuteInputEl.dataset.focusIndex = focusIndex.toString();
+				this._minuteInputEl.placeholder = this._i18n.minutePlaceholder;
 				focusIndex++;
 			} else {
 				this._minuteInputEl.remove();
@@ -676,6 +678,7 @@ export class PandaTimePicker extends HTMLElement {
 			if (this._views.includes("seconds")) {
 				this._inputFieldEl.appendChild(this._secondInputEl);
 				this._secondInputEl.dataset.focusIndex = focusIndex.toString();
+				this._secondInputEl.placeholder = this._i18n.secondPlaceholder;
 				focusIndex++;
 			} else {
 				this._secondInputEl.remove();
@@ -684,6 +687,7 @@ export class PandaTimePicker extends HTMLElement {
 			if (this._views.includes("hours") && this._clockType !== "24") {
 				this._inputFieldEl.appendChild(this._periodInputEl);
 				this._periodInputEl.dataset.focusIndex = focusIndex.toString();
+				this._periodInputEl.placeholder = this._i18n.periodPlaceholder;
 			}
 		}
 	}

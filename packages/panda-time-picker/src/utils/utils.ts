@@ -62,7 +62,7 @@ export const parseTimePeriod = (period: string | null): "am" | "pm" | null => {
  */
 export const getI18nConfig = (): PandaTimePickerI18nConfig => {
 	return {
-		hourPlaceholder: "HH",
+		hourPlaceholder: "hh",
 		minutePlaceholder: "MM",
 		secondPlaceholder: "SS",
 		periodPlaceholder: "AA",

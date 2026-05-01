@@ -76,7 +76,13 @@ export class PandaTimeInput extends HTMLElement {
 
 	set placeholder(value: string) {
 		if (this._placeholder !== value) {
-			this._placeholder = value;
+			this._placeholder = value + "";
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("placeholder", value + "");
+			} else {
+				this.removeAttribute("placeholder");
+			}
 		}
 	}
 

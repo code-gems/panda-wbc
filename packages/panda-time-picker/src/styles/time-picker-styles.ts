@@ -62,13 +62,13 @@ export const styles = /*css*/`
 		padding-block: var(--panda-time-picker-padding-block-m, 0);
 		padding-left: var(--panda-time-picker-padding-left-m, var(--panda-gap-m, 10px));
 		padding-right: var(--panda-time-picker-padding-right-m, 0px);
-		height: var(--panda-time-picker-height-size-m, var(--panda-component-size-m, 40px));
+		height: var(--panda-time-picker-height-m, var(--panda-input-height-m, 40px));
 		outline: none;
 
 		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
 		cursor: text;
 
-		border-radius: var(--panda-time-picker-border-radius-size-m, var(--panda-border-radius-m, 5px));
+		border-radius: var(--panda-time-picker-border-radius-m, var(--panda-border-radius-m, 5px));
 		border-width: var(--panda-time-picker-border-width, var(--panda-input-border-width, 1px));
 		border-style: var(--panda-time-picker-border-style, var(--panda-input-border-style, solid));
 		border-color: var(--panda-time-picker-border-color, var(--panda-input-border-color, hsl(207deg 1% 85%)));
@@ -126,15 +126,17 @@ export const styles = /*css*/`
 		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-time-picker-clear-button-size-m, var(--panda-component-size-m, 40px));
+		width: var(--panda-time-picker-input-height-m, var(--panda-input-height-m, 40px));
 		height: 100%;
 	}
 	
-	.clear-button .icon {
+	.clear-button .clear-icon {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		padding: var(--panda-time-picker-clear-button-icon-padding-m, 0px);
+		width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		height: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
 		
 		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
 		cursor: pointer;
@@ -148,7 +150,7 @@ export const styles = /*css*/`
 		--panda-icon-size: var(--panda-time-picker-clear-button-icon-size-m, var(--panda-time-picker-icon-size-m, 20px));
 	}
 
-	.clear-button:hover .icon {
+	.clear-button:hover .clear-icon {
 		background-color: var(--panda-time-picker-clear-button-background-color-hover, hsl(210deg 5% 90%));
 		--panda-icon-color: var(--panda-time-picker-clear-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
 	}
@@ -159,7 +161,7 @@ export const styles = /*css*/`
 		flex-shrink: 0;
 		justify-content: center;
 		align-items: center;
-		width: var(--panda-time-picker-button-size-m, var(--panda-component-size-m, 40px));
+		width: var(--panda-time-picker-input-size-m, var(--panda-component-size-m, 40px));
 		height: 100%;
 	}
 
@@ -168,6 +170,8 @@ export const styles = /*css*/`
 		justify-content: center;
 		align-items: center;
 		padding: var(--panda-time-picker-button-icon-padding-m, 0px);
+		width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		height: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
 		
 		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
 		cursor: pointer;
@@ -177,8 +181,8 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 
 		/* ICON STYLES */
-		--panda-icon-color: var(--panda-time-picker-button-icon-color, var(--panda-time-picker-icon-color, hsl(191deg 19% 23%)));
-		--panda-icon-size: var(--panda-time-picker-button-icon-size-m, var(--panda-time-picker-icon-size-m, 20px));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color, var(--panda-input-icon-color, hsl(191deg 19% 23%)));
+		--panda-icon-size: var(--panda-time-picker-button-icon-size-m, var(--panda-input-icon-size-m, 20px));
 	}
 
 	.picker-button:hover .picker-icon {
