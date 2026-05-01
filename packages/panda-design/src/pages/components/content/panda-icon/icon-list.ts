@@ -45,6 +45,9 @@ export const getIconListDetails = (): IconDetails[] => {
 
 		// date & time ========================================
 		{ name: "calendar", 				iconPack: "default", group: ["Date & Time"], keywords: ["date", "time", "month", "day"] },
+		{ name: "clock", 					iconPack: "default", group: ["Date & Time"], keywords: ["date", "time", "clock", "watch", "timer"] },
+		{ name: "alarm-clock",				iconPack: "default", group: ["Date & Time"], keywords: ["date", "time", "clock", "watch", "timer", "alarm"] },
+		{ name: "timer",					iconPack: "default", group: ["Date & Time"], keywords: ["date", "time", "clock", "watch", "timer"] },
 
 		// Arrows & Chevrons ==================================
 		{ name: "arrow-back", 				iconPack: "default", group: ["Arrows & Chevrons"], keywords: ["arrow", "chevron", "navigate", "left"] },
@@ -140,10 +143,9 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "visibility",				iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show"] },
 		{ name: "visibility-off",			iconPack: "default", group: ["Miscellaneous"], keywords: ["eye", "show", "hide"] },
 		{ name: "lab",						iconPack: "default", group: ["Miscellaneous"], keywords: ["flask", "sample", "experiment", "bottle"] },
-		{ name: "qrcode",					iconPack: "default", group: ["Miscellaneous"], keywords: ["qr code", "payment", "code"] },
 		{ name: "code-sample",				iconPack: "default", group: ["Miscellaneous"], keywords: ["code", "slash", "coding"] },
 		{ name: "code-slash",				iconPack: "default", group: ["Miscellaneous"], keywords: ["code", "slash", "coding"] },
-		{ name: "browser",					iconPack: "default", group: ["Miscellaneous"], keywords: ["browser", "app"] },
+		{ name: "browser-outline",			iconPack: "default", group: ["Miscellaneous"], keywords: ["browser", "app", "outline"] },
 
 		// Food Icon Pack =======================================
 		{ name: "cake", 					iconPack: "food-icons-pack", group: ["Food"], keywords: ["food", "birthday", "celebration", "anniversary"] },
@@ -161,8 +163,6 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "voice-mail",				iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs"] },
 		{ name: "voice-mail-box",			iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs", "box"] },
 		{ name: "voice-mail-circle",		iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["voice", "audio", "speech", "sound", "tape", "voice mail", "vhs", "circle", "round"] },
-		{ name: "microbit",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["device", "microbit"] },
-		{ name: "monitor",					iconPack: "av-icons-pack", group: ["Audio & Video"], keywords: ["device", "monitor", "screen", "display", "tv", "television"] },
 		
 		// Map Icon Pack ========================================
 		{ name: "briefcase",				iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "briefcase", "work", "workplace", "job"] },
@@ -171,7 +171,12 @@ export const getIconListDetails = (): IconDetails[] => {
 		{ name: "map-pin",					iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "location", "pin"] },
 		{ name: "map-pin-outline",			iconPack: "map-icons-pack", group: ["Map"], keywords: ["map", "gps", "location", "pin", "outline"] },
 		
-		// Mobile Icon Pack =====================================
+		// Device Icon Pack =====================================
+		{ name: "qrcode",					iconPack: "device-icons-pack", group: ["Device"], keywords: ["device", "qr code", "payment", "code"] },
+		{ name: "mobile",					iconPack: "device-icons-pack", group: ["Device"], keywords: ["device", "mobile", "phone"] },
+		{ name: "mobile-outline",			iconPack: "device-icons-pack", group: ["Device"], keywords: ["device", "mobile", "phone", "outline"] },
+		{ name: "monitor",					iconPack: "device-icons-pack", group: ["Device"], keywords: ["device", "monitor", "screen", "display", "tv", "television"] },
+		{ name: "microbit",					iconPack: "device-icons-pack", group: ["Device"], keywords: ["device", "microbit"] },
 
 		// AI Icon Pack =========================================
 		{ name: "bot",						iconPack: "ai-icons-pack", group: ["AI"], keywords: ["artificial", "intelligence", "ai", "robot", "agent", "bot", "automation"] },

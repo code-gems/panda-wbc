@@ -31,14 +31,13 @@
 		"@panda-wbc/panda-text-slider": "workspace:*",
 		"@panda-wbc/panda-utils": "workspace:*"
 	},
-	"devDependencies": {
-		"rimraf": "^6.0.0",
-		"ts-loader": "^9.2.6"
-	},
 	"files": [
 		"src",
 		"lib",
 		"index.d.ts"
 	],
-	"types": "index.d.ts"
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
 }

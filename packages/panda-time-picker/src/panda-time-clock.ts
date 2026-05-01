@@ -1,7 +1,11 @@
-// styles
-import { overlayStyles } from "./styles/styles";
+// types
+import { PandaTimePickerI18nConfig } from "../index";
+import { TimeValue } from "./types";
 
-export default class PandaTimePickerClockView extends HTMLElement {
+// styles
+import { styles } from "./styles/time-picker-clock-styles";
+
+export class PandaTimePickerClock extends HTMLElement {
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
@@ -29,11 +33,12 @@ export default class PandaTimePickerClockView extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open", delegatesFocus: true });
+
 		this._value = "";
 	}
 
 	connectedCallback() {
-		this._applyStyles();
+		
 		this._render();
 	}
 
@@ -78,22 +83,15 @@ export default class PandaTimePickerClockView extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _applyStyles() {
-		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(overlayStyles);
-		if (this.shadowRoot) {
-			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
-		}
-	}
 }
 
 // Register the custom element
-if (!customElements.get("panda-time-picker-clock-view")) {
-	customElements.define("panda-time-picker-clock-view", PandaTimePickerClockView);
+if (!customElements.get("panda-time-picker-clock")) {
+	customElements.define("panda-time-picker-clock", PandaTimePickerClock);
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-time-picker-clock-view": PandaTimePickerClockView;
+		"panda-time-picker-clock": PandaTimePickerClock;
 	}
 }

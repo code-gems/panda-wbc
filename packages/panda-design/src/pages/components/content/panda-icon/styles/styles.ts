@@ -10,7 +10,7 @@ export const styles = css`
 	.icon-list {
 		display: flex;
 		flex-flow: row wrap;
-		gap: 10px;
+		gap: var(--panda-gap-m);
 		box-sizing: border-box;
 	}
 
@@ -24,7 +24,7 @@ export const styles = css`
 		
 		border-radius: var(--panda-border-radius-m);
 		background-color: var(--panda-background-color-700);
-		box-shadow: 0px 1px 2px var(--panda-black-color-20opc);
+		box-shadow: var(--panda-elevation-s);
 	}
 	
 	.icon-list .list-header:hover {
@@ -56,8 +56,8 @@ export const styles = css`
 	.icon-list .list-item {
 		display: flex;
 		flex-flow: column;
-		width: 100px;
-		min-height: 100px;
+		width: 120px;
+		min-height: 120px;
 		flex-shrink: 0;
 		justify-content: space-between;
 		align-items: center;
@@ -68,30 +68,29 @@ export const styles = css`
 
 		border-radius: var(--panda-border-radius-m);
 		background-color: var(--panda-background-color-100);
-		box-shadow: 0px 1px 2px var(--panda-black-color-10opc);
+		box-shadow: var(--panda-elevation-s);
 		box-sizing: border-box;
 	}
 	
 	.icon-list .list-item:hover {
-		box-shadow: 0px 2px 4px var(--panda-black-color-20opc);
-		transform: scale(1.2);
+		box-shadow: var(--panda-elevation-m);
+		transform: scale(1.1);
 	}
 
 	.icon-list .list-item .icon {
 		display: flex;
-		width: 40px;
-		height: 40px;
+		width: 30px;
+		height: 30px;
 		justify-content: center;
 		align-items: center;
 		flex-shrink: 0;
-
-		--panda-icon-width: var(--panda-icon-size-l);
-		--panda-icon-height: var(--panda-icon-size-l);
+		flex-grow: 1;
+		--panda-icon-size: 60px;
 	}
 
 	.icon-list .list-item .name {
 		line-height: 1.1em;
-		color: var(--panda-txt-color);	
+		color: var(--panda-text-color);	
 		font-size: var(--panda-font-size-s);
 		font-family: var(--panda-font-family);
 		text-align: center;

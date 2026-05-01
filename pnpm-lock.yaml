@@ -368,12 +368,12 @@ importers:
       '@panda-wbc/panda-theme-switcher':
         specifier: workspace:*
         version: link:../panda-theme-switcher
-      '@panda-wbc/panda-time':
-        specifier: workspace:*
-        version: link:../panda-time
       '@panda-wbc/panda-time-ago':
         specifier: workspace:*
         version: link:../panda-time-ago
+      '@panda-wbc/panda-time-picker':
+        specifier: workspace:*
+        version: link:../panda-time-picker
       '@panda-wbc/panda-toast':
         specifier: workspace:*
         version: link:../panda-toast
@@ -642,13 +642,6 @@ importers:
       '@panda-wbc/panda-utils':
         specifier: workspace:*
         version: link:../panda-utils
-    devDependencies:
-      rimraf:
-        specifier: ^6.0.0
-        version: 6.1.2
-      ts-loader:
-        specifier: ^9.2.6
-        version: 9.5.4(typescript@5.9.3)(webpack@5.104.1)
 
   packages/panda-shimmer: {}
 
@@ -804,17 +797,26 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2
 
-  packages/panda-time:
-    dependencies:
-      lit:
-        specifier: ^3.3.2
-        version: 3.3.2
-
   packages/panda-time-ago:
     dependencies:
       lit:
         specifier: ^3.3.2
         version: 3.3.2
+
+  packages/panda-time-picker:
+    dependencies:
+      '@panda-wbc/panda-button':
+        specifier: workspace:*
+        version: link:../panda-button
+      '@panda-wbc/panda-icon':
+        specifier: workspace:*
+        version: link:../panda-icon
+      '@panda-wbc/panda-spinner':
+        specifier: workspace:*
+        version: link:../panda-spinner
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
 
   packages/panda-toast:
     dependencies:

@@ -5,7 +5,8 @@ import { ComponentEventDetails, ComponentPropertyDetails, ContentSectionName } f
 import { styles } from "./styles/styles";
 
 // components
-// import "@panda-wbc/panda-time-picker/lib/panda-time-picker-clock-view";
+import "@panda-wbc/panda-time-picker";
+import "@panda-wbc/panda-time-picker/lib/panda-time-input";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -66,9 +67,29 @@ export class ContentPage extends ContentPageTemplate {
 						<div class="rows">
 							<div class="row">
 								<div class="col-full">
+									<panda-select></panda-select>
+								</div>
 
-									<panda-time-picker-clock-view>
-									</panda-time-picker-clock-view>
+								<div class="col-full">
+
+									<panda-time-picker
+										label="Select time:"
+										@change="${this._onInputChange}"
+									>
+										<div slot="prefix">Time</div>
+										<div slot="suffix">UTC</div>
+									</panda-time-picker>
+									
+								</div>
+								
+								<div class="col-full">
+
+									<panda-time-picker
+										label="Select time:"
+										@change="${this._onInputChange}"
+									>
+										<div slot="prefix">Time</div>
+									</panda-time-picker>
 
 								</div>
 							</div>
@@ -163,5 +184,16 @@ export class ContentPage extends ContentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _onInputChange(event: any): void {
+		const inputValue = event.target.value;
+		console.log("Input value changed:", inputValue);
+	}
+
+	private _onFocusNext(): void {
+		console.log("Focus moved to next element");
+	}
+
+	private _onFocusPrev(): void {
+		console.log("Focus moved to previous element");
+	}
 }

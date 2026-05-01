@@ -597,28 +597,25 @@ export class PandaTextField extends HTMLElement {
 			this._footerEl = this.shadowRoot.querySelector(".footer") as HTMLInputElement;
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
-
-			// add event listeners to component template
-			this._inputEl.addEventListener("input", this._inputEvent);
-			this._inputEl.addEventListener("focus", this._focusInputEvent);
-			this._inputEl.addEventListener("blur", this._blurInputEvent);
-			this._inputEl.addEventListener("keydown", this._inputKeyDownEvent);
-			this._inputEl.addEventListener("paste", this._inputPasteEvent);
-			this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
-			this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
-			this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
 		}
 	}
 
 	connectedCallback() {
+		// add event listeners to component template
+		this._inputEl.addEventListener("input", this._inputEvent);
+		this._inputEl.addEventListener("focus", this._focusInputEvent);
+		this._inputEl.addEventListener("blur", this._blurInputEvent);
+		this._inputEl.addEventListener("keydown", this._inputKeyDownEvent);
+		this._inputEl.addEventListener("paste", this._inputPasteEvent);
+		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
+		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
+		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
 		// update mandatory flag
 		this._evaluateMandatoryFlag();
-
 		// check if autofocus flag is enabled
 		if (this.autofocus) {
 			this._inputEl.focus();
 		}
-		
 		// render component
 		this._ready = true;
 		this._updateComponent();
@@ -629,9 +626,11 @@ export class PandaTextField extends HTMLElement {
 		this._inputEl.removeEventListener("input", this._inputEvent);
 		this._inputEl.removeEventListener("focus", this._focusInputEvent);
 		this._inputEl.removeEventListener("blur", this._blurInputEvent);
+		this._inputEl.removeEventListener("keydown", this._inputKeyDownEvent);
+		this._inputEl.removeEventListener("paste", this._inputPasteEvent);
 		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.removeEventListener("slotchange", this._suffixSlotChangeEvent);
-
+		this._clearButtonIconEl.removeEventListener("click", this._clearButtonClickEvent);
 		// clear timers
 		if (this._inputShakeAnimationTimer) {
 			clearTimeout(this._inputShakeAnimationTimer);

@@ -259,11 +259,11 @@ export const pandaThemeLight = /*css*/ `
 		--panda-padding-l: var(--panda-gap-l);
 		--panda-padding-xl: var(--panda-gap-xl);
 
-		--panda-border-radius-xs: 2px;
-		--panda-border-radius-s: 3px;
-		--panda-border-radius-m: 5px;
-		--panda-border-radius-l: 10px;
-		--panda-border-radius-xl: 15px;
+		--panda-border-radius-xs: 3px;
+		--panda-border-radius-s: 5px;
+		--panda-border-radius-m: 10px;
+		--panda-border-radius-l: 15px;
+		--panda-border-radius-xl: 20px;
 
 		/* ========================================================================================================= */
 		/* ELEVATION / DEPTH ======================================================================================= */

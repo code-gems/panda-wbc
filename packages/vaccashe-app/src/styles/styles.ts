@@ -32,7 +32,6 @@ export const uiComponents = {
 		}
 
 		.app .body {
-			margin-top: var(--app-navigation-size);
 			flex-grow: 1;
 			flex-shrink: 0;
 			height: 1000px;

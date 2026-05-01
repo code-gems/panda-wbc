@@ -89,3 +89,28 @@ export const sanitizeString = (value: string): string => {
 		} as Record<string, string>)[char];
 	});
 }
+
+/**
+ * Parses the input mode attribute value and returns a valid input mode string.
+ * @param value The input mode attribute value to parse.
+ * @returns {string} A valid input mode string or an empty string if invalid.
+ */
+export const parseInputModeAttribute = (value: unknown): string => {
+	// check for null and undefined
+	if (value == null) {
+		return "";
+	}
+	// check if already a string
+	const inputModeValue = typeof value === "string" ? value.toLowerCase() : "";
+	const validInputModes: string[] = [
+		"none",
+		"text",
+		"tel",
+		"url",
+		"email",
+		"numeric",
+		"decimal",
+		"search"
+	];
+	return validInputModes.includes(inputModeValue) ? inputModeValue : "";
+}

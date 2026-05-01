@@ -1,15 +1,16 @@
 {
-	"name": "@panda-wbc/panda-time",
+	"name": "@panda-wbc/panda-time-picker",
 	"version": "1.0.0",
 	"description": "Lit based web component - time picker",
 	"homepage": "https://github.com/code-gems/panda-wbc#readme",
-	"main": "lib/panda-time.js",
+	"main": "lib/panda-time-picker.js",
 	"scripts": {
 		"compile": "tsc",
 		"watch": "tsc --watch",
 		"clean": "rimraf lib",
 		"patch": "npm version patch",
-		"prepublishOnly": "npm run clean && npm run compile"
+		"prepublishOnly": "npm run clean && npm run compile",
+		"test": "vitest"
 	},
 	"keywords": [
 		"lit",
@@ -18,18 +19,24 @@
 		"panda-wbc",
 		"ui component",
 		"time",
-		"time picker"
+		"time picker",
+		"time input field",
+		"time clock"
 	],
 	"author": "code-gems",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"lit": "^3.3.2"
+		"@panda-wbc/panda-icon": "workspace:*",
+		"@panda-wbc/panda-spinner": "workspace:*",
+		"@panda-wbc/panda-button": "workspace:*",
+		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"files": [
 		"src",
 		"lib",
 		"index.d.ts"
 	],
+	"types": "index.d.ts",
 	"publishConfig": {
 		"access": "public"
 	}

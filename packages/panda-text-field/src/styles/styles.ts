@@ -65,7 +65,7 @@ export const styles = /*css*/`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: var(--panda-input-border-radius-size-m, 10px);
+		border-radius: var(--panda-input-border-radius-m, var(--panda-border-radius-m, 10px));
 		background-color: var(--panda-input-background-color-working, hsl(0deg 0% 100%));
 		z-index: 2;
 
@@ -78,12 +78,12 @@ export const styles = /*css*/`
 		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
-		height: var(--panda-input-height-size-m, var(--panda-component-size-m, 40px));
+		height: var(--panda-input-height-m, 40px);
 		outline: none;
 
 		transition: all 0.3s ease-in-out;
 
-		border-radius: var(--panda-input-border-radius-size-m, var(--panda-border-radius-m, 5px));
+		border-radius: var(--panda-input-border-radius-m, var(--panda-border-radius-m, 10px));
 		border-width: var(--panda-input-border-width, 1px);
 		border-style: var(--panda-input-border-style, solid);
 		border-color: var(--panda-input-border-color, hsl(207deg 1% 85%));
@@ -109,7 +109,7 @@ export const styles = /*css*/`
 		position: relative;
 		width: 100%;
 		height: 100%;
-		padding: var(--panda-input-padding, 0px 10px);
+		padding: var(--panda-input-padding-m, 0px 10px);
 		outline: none;
 
 		color: var(--panda-input-text-color, hsl(191deg 19% 23%));
@@ -127,15 +127,15 @@ export const styles = /*css*/`
 	}
 
 	.input.with-prefix {
-		padding-left: var(--panda-input-slot-gap-size-m, 0px);
+		padding-left: var(--panda-input-slot-gap-m, 0px);
 	}
 
 	.input.with-suffix {
-		padding-right: var(--panda-input-slot-gap-size-m, 0px);
+		padding-right: var(--panda-input-slot-gap-m, 0px);
 	}
 
 	.input.with-clear-button {
-		padding-right: var(--panda-input-clear-button-size-m, 0px);
+		padding-right: var(--panda-input-clear-button-gap-m, 0px);
 	}
 
 	/* PLACEHOLDER STYLES */
@@ -384,27 +384,27 @@ export const styles = /*css*/`
 
 	/* SIZE-S ====================================================================================================== */
 	:host([theme~="size-s"]) .text-field {
-		height: var(--panda-input-height-size-s, 32px);
-		border-radius: var(--panda-input-border-radius-size-s, 5px);
+		height: var(--panda-input-height-s, 32px);
+		border-radius: var(--panda-input-border-radius-s, 5px);
 	}
 
 	:host([theme~="size-s"]) .input {
-		padding: var(--panda-input-padding-size-s, 0px 5px);
-		font-size: var(--panda-input-font-size-s, 12px);
-		font-family: var(--panda-input-font-family-size-s, "Poppins");
-		font-weight: var(--panda-input-font-weight-size-s, 500);
+		padding: var(--panda-input-padding-s, 0px 5px);
+		font-size: var(--panda-input-font-s, 12px);
+		font-family: var(--panda-input-font-family-s, "Poppins");
+		font-weight: var(--panda-input-font-weight-s, 500);
 	}
 
 	:host([theme~="size-s"]) .input.with-prefix {
-		padding-left: var(--panda-input-slot-gap-size-s, 0px);
+		padding-left: var(--panda-input-slot-gap-s, 0px);
 	}
 
 	:host([theme~="size-s"]) .input.with-suffix {
-		padding-right: var(--panda-input-slot-gap-size-s, 0px);
+		padding-right: var(--panda-input-slot-gap-s, 0px);
 	}
 
 	:host([theme~="size-s"]) .clear-button {
-		width: var(--panda-input-clear-button-size-s, var(--panda-component-size-s, 32px));
+		width: var(--panda-input-clear-button-size-s, var(--panda-input-height-s, 32px));
 	}
 
 	:host([theme~="size-s"]) .clear-button .icon {
@@ -414,68 +414,68 @@ export const styles = /*css*/`
 
 	/* SPINNER STYLES */
 	:host([theme~="size-s"]) .spinner-cont {
-		border-radius: var(--panda-input-border-radius-size-s, 5px);
-		--panda-spinner-size: var(--panda-input-spinner-size-s, 16px);
+		border-radius: var(--panda-input-border-radius-s, var(--panda-border-radius-s, 5px));
+		--panda-spinner-size: var(--panda-input-spinner-size-s, var(--panda-icon-size-s, 16px));
 	}
 
 	:host([theme~="size-s"]) ::slotted([slot="prefix"]),
 	:host([theme~="size-s"]) ::slotted([slot="suffix"]) {
-		--panda-icon-size: var(--panda-input-icon-size-s, 16px);
+		--panda-icon-size: var(--panda-input-icon-size-s, var(--panda-icon-size-s, 16px));
 	}
 
 	:host([theme~="size-s"]) ::slotted([slot="prefix"]) {
-		border-top-left-radius: var(--panda-input-border-radius-size-s, 5px);
-		border-bottom-left-radius: var(--panda-input-border-radius-size-s, 5px);
+		border-top-left-radius: var(--panda-input-border-radius-s, 5px);
+		border-bottom-left-radius: var(--panda-input-border-radius-s, 5px);
 	}
 
 	:host([theme~="size-s"]) ::slotted([slot="suffix"]) {
-		border-top-right-radius: var(--panda-input-border-radius-size-s, 5px);
-		border-bottom-right-radius: var(--panda-input-border-radius-size-s, 5px);
+		border-top-right-radius: var(--panda-input-border-radius-s, var(--panda-border-radius-s, 5px));
+		border-bottom-right-radius: var(--panda-input-border-radius-s, var(--panda-border-radius-s, 5px));
 	}
 
 	:host([theme~="size-s"]) ::slotted(.icon) {
-		min-width: var(--panda-input-height-size-s, 32px);
+		min-width: var(--panda-input-height-s, 32px);
 	}
 
 	/* PLACEHOLDER STYLES */
 	:host([theme~="size-s"]) .placeholder {
-		font-size: var(--panda-input-placeholder-font-size-s, 16px);
-		font-family: var(--panda-input-placeholder-font-family-size-s, "Poppins");
-		font-weight: var(--panda-input-placeholder-font-weight-size-s, 500);
-		text-shadow: var(--panda-input-placeholder-text-shadow-size-s, none);
+		font-size: var(--panda-input-placeholder-font-size-s, var(--panda-font-size-s, 16px));
+		font-family: var(--panda-input-placeholder-font-family-s, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-input-placeholder-font-weight-s, var(--panda-font-weight, 500));
+		text-shadow: var(--panda-input-placeholder-text-shadow-s, none);
 	}
 
 	:host([theme~="size-s"]) .placeholder.with-prefix {
-		--panda-text-slider-padding-left: var(--panda-input-slot-gap-size-s, 0px);
+		--panda-text-slider-padding-left: var(--panda-input-slot-gap-s, 0px);
 	}
 
 	:host([theme~="size-s"]) .placeholder.with-suffix {
-		--panda-text-slider-padding-right: var(--panda-input-slot-gap-size-s, 0px);
+		--panda-text-slider-padding-right: var(--panda-input-slot-gap-s, 0px);
 	}
 
 	/* SIZE-L ====================================================================================================== */
 	:host([theme~="size-l"]) .text-field {
-		height: var(--panda-input-height-size-l, 48px);
-		border-radius: var(--panda-input-border-radius-size-l, 10px);
+		height: var(--panda-input-height-l, 48px);
+		border-radius: var(--panda-input-border-radius-l, var(--panda-border-radius-l, 15px));
 	}
 
 	:host([theme~="size-l"]) .input {
-		padding: var(--panda-input-padding-size-l, 0px 10px);
-		font-size: var(--panda-input-font-size-l, 16px);
-		font-family: var(--panda-input-font-family-size-l, "Poppins");
-		font-weight: var(--panda-input-font-weight-size-l, 500);
+		padding: var(--panda-input-padding-l, 0px 15px);
+		font-size: var(--panda-input-font-size-l, var(--panda-font-size-l, 16px));
+		font-family: var(--panda-input-font-family-l, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-input-font-weight-l, var(--panda-font-weight, 500));
 	}
 
 	:host([theme~="size-l"]) .input.with-prefix {
-		padding-left: var(--panda-input-slot-gap-size-l, 0px);
+		padding-left: var(--panda-input-slot-gap-l, 0px);
 	}
 
 	:host([theme~="size-l"]) .input.with-suffix {
-		padding-right: var(--panda-input-slot-gap-size-l, 0px);
+		padding-right: var(--panda-input-slot-gap-l, 0px);
 	}
 
 	:host([theme~="size-l"]) .clear-button {
-		width: var(--panda-input-clear-button-size-l, var(--panda-component-size-l, 48px));
+		width: var(--panda-input-clear-button-size-l, var(--panda-input-height-l, 48px));
 	}
 
 	:host([theme~="size-l"]) .clear-button .icon {
@@ -485,68 +485,68 @@ export const styles = /*css*/`
 
 	/* SPINNER STYLES */
 	:host([theme~="size-l"]) .spinner-cont {
-		border-radius: var(--panda-input-border-radius-size-l, 10px);
-		--panda-spinner-size: var(--panda-input-spinner-size-l, 24px);
+		border-radius: var(--panda-input-border-radius-l, var(--panda-border-radius-l, 15px));
+		--panda-spinner-size: var(--panda-input-spinner-size-l, var(--panda-icon-size-l, 24px));
 	}
 
 	:host([theme~="size-l"]) ::slotted([slot="prefix"]),
 	:host([theme~="size-l"]) ::slotted([slot="suffix"]) {
-		--panda-icon-size: var(--panda-input-icon-size-l, 24px);
+		--panda-icon-size: var(--panda-input-icon-size-l, var(--panda-icon-size-l, 24px));
 	}
 
 	:host([theme~="size-l"]) ::slotted([slot="prefix"]) {
-		border-top-left-radius: var(--panda-input-border-radius-size-l, 10px);
-		border-bottom-left-radius: var(--panda-input-border-radius-size-l, 10px);
+		border-top-left-radius: var(--panda-input-border-radius-l, var(--panda-border-radius-l, 10px));
+		border-bottom-left-radius: var(--panda-input-border-radius-l, var(--panda-border-radius-l, 10px));
 	}
 
 	:host([theme~="size-l"]) ::slotted([slot="suffix"]) {
-		border-top-right-radius: var(--panda-input-border-radius-size-l, 10px);
-		border-bottom-right-radius: var(--panda-input-border-radius-size-l, 10px);
+		border-top-right-radius: var(--panda-input-border-radius-l, var(--panda-border-radius-l, 10px));
+		border-bottom-right-radius: var(--panda-input-border-radius-l, var(--panda-border-radius-l, 10px));
 	}
 
 	:host([theme~="size-l"]) ::slotted(.icon) {
-		min-width: var(--panda-input-height-size-l, 48px);
+		min-width: var(--panda-input-height-l, 48px);
 	}
 
 	/* PLACEHOLDER STYLES */
 	:host([theme~="size-l"]) .placeholder {
-		font-size: var(--panda-input-placeholder-font-size-l, 16px);
-		font-family: var(--panda-input-placeholder-font-family-size-l, "Poppins");
-		font-weight: var(--panda-input-placeholder-font-weight-size-l, 500);
-		text-shadow: var(--panda-input-placeholder-text-shadow-size-l, none);
+		font-size: var(--panda-input-placeholder-font-size-l, var(--panda-font-size-l, 16px));
+		font-family: var(--panda-input-placeholder-font-family-l, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-input-placeholder-font-weight-l, var(--panda-font-weight, 500));
+		text-shadow: var(--panda-input-placeholder-text-shadow-l, none);
 	}
 
 	:host([theme~="size-l"]) .placeholder.with-prefix {
-		--panda-text-slider-padding-left: var(--panda-input-slot-gap-size-l, 0px);
+		--panda-text-slider-padding-left: var(--panda-input-slot-gap-l, 0px);
 	}
 
 	:host([theme~="size-l"]) .placeholder.with-suffix {
-		--panda-text-slider-padding-right: var(--panda-input-slot-gap-size-l, 0px);
+		--panda-text-slider-padding-right: var(--panda-input-slot-gap-l, 0px);
 	}
 
 	/* SIZE-XL ===================================================================================================== */
 	:host([theme~="size-xl"]) .text-field {
 		height: var(--panda-input-height-size-xl, 56px);
-		border-radius: var(--panda-input-border-radius-size-xl, 15px);
+		border-radius: var(--panda-input-border-radius-size-xl, var(--panda-border-radius-xl, 20px));
 	}
 
 	:host([theme~="size-xl"]) .input {
 		padding: var(--panda-input-padding-size-xl, 0px 15px);
-		font-size: var(--panda-input-font-size-xl, 18px);
-		font-family: var(--panda-input-font-family-size-xl, "Poppins");
-		font-weight: var(--panda-input-font-weight-size-xl, 500);
+		font-size: var(--panda-input-font-size-xl, var(--panda-font-size-xl, 18px));
+		font-family: var(--panda-input-font-family-xl, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-input-font-weight-xl, var(--panda-font-weight, 500));
 	}
 
 	:host([theme~="size-xl"]) .input.with-prefix {
-		padding-left: var(--panda-input-slot-gap-size-xl, 0px);
+		padding-left: var(--panda-input-slot-gap-xl, 0px);
 	}
 
 	:host([theme~="size-xl"]) .input.with-suffix {
-		padding-right: var(--panda-input-slot-gap-size-xl, 0px);
+		padding-right: var(--panda-input-slot-gap-xl, 0px);
 	}
 
 	:host([theme~="size-xl"]) .clear-button {
-		width: var(--panda-input-clear-button-size-xl, var(--panda-component-size-xl, 56px));
+		width: var(--panda-input-clear-button-size-xl, var(--panda-input-height-xl, 56px));
 	}
 
 	:host([theme~="size-xl"]) .clear-button .icon {
@@ -556,45 +556,45 @@ export const styles = /*css*/`
 
 	/* SPINNER STYLES */
 	:host([theme~="size-xl"]) .spinner-cont {
-		border-radius: var(--panda-input-border-radius-size-xl, 15px);
-		--panda-spinner-size: var(--panda-input-spinner-size-xl, 28px);
+		border-radius: var(--panda-input-border-radius-xl, var(--panda-border-radius-xl, 20px));
+		--panda-spinner-size: var(--panda-input-spinner-size-xl, var(--panda-icon-size-xl, 28px));
 	}
 
 	:host([theme~="size-xl"]) ::slotted([slot="prefix"]),
 	:host([theme~="size-xl"]) ::slotted([slot="suffix"]) {
-		--panda-icon-size: var(--panda-input-icon-size-xl, 28px);
+		--panda-icon-size: var(--panda-input-icon-size-xl, var(--panda-icon-size-xl, 28px));
 	}
 
 	:host([theme~="size-xl"]) ::slotted([slot="prefix"]) {
-		border-top-left-radius: var(--panda-input-border-radius-size-xl, 15px);
-		border-bottom-left-radius: var(--panda-input-border-radius-size-xl, 15px);
+		border-top-left-radius: var(--panda-input-border-radius-xl, var(--panda-border-radius-xl, 20px));
+		border-bottom-left-radius: var(--panda-input-border-radius-xl, var(--panda-border-radius-xl, 20px));
 	}
 
 	:host([theme~="size-xl"]) ::slotted([slot="suffix"]) {
-		border-top-right-radius: var(--panda-input-border-radius-size-xl, 15px);
-		border-bottom-right-radius: var(--panda-input-border-radius-size-xl, 15px);
+		border-top-right-radius: var(--panda-input-border-radius-xl, var(--panda-border-radius-xl, 20px));
+		border-bottom-right-radius: var(--panda-input-border-radius-xl, var(--panda-border-radius-xl, 20px));
 	}
 
 	:host([theme~="size-xl"]) ::slotted(.icon) {
-		min-width: var(--panda-input-height-size-xl, 56px);
+		min-width: var(--panda-input-height-xl, 56px);
 	}
 
 	/* PLACEHOLDER STYLES */
 	:host([theme~="size-xl"]) .placeholder {
 		font-size: var(--panda-input-placeholder-font-size-xl, 18px);
-		font-family: var(--panda-input-placeholder-font-family-size-xl, "Poppins");
-		font-weight: var(--panda-input-placeholder-font-weight-size-xl, 500);
-		text-shadow: var(--panda-input-placeholder-text-shadow-size-xl, none);
-		--panda-text-slider-padding-left: 15px;
-		--panda-text-slider-padding-right: 15px;
+		font-family: var(--panda-input-placeholder-font-family-xl, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-input-placeholder-font-weight-xl, var(--panda-font-weight, 500));
+		text-shadow: var(--panda-input-placeholder-text-shadow-xl, none);
+		--panda-text-slider-padding-left: var(--panda-input-slot-gap-xl, 0px);
+		--panda-text-slider-padding-right: var(--panda-input-slot-gap-xl, 0px);
 	}
 
 	:host([theme~="size-xl"]) .placeholder.with-prefix {
-		--panda-text-slider-padding-left: var(--panda-input-slot-gap-size-xl, 0px);
+		--panda-text-slider-padding-left: var(--panda-input-slot-gap-xl, 0px);
 	}
 
 	:host([theme~="size-xl"]) .placeholder.with-suffix {
-		--panda-text-slider-padding-right: var(--panda-input-slot-gap-size-xl, 0px);
+		--panda-text-slider-padding-right: var(--panda-input-slot-gap-xl, 0px);
 	}
 
 	/* ============================================================================================================= */

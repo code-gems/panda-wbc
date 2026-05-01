@@ -62,19 +62,19 @@ export const styles = /*css*/`
 		height: var(--panda-select-height-size-m, var(--panda-component-size-m, 40px));
 		outline: none;
 
-		transition: all 0.3s ease-in-out;
+		transition: var(--panda-select-transition, all 0.3s ease-in-out);
 		cursor: pointer;
 
 		border-radius: var(--panda-select-border-radius-size-m, var(--panda-border-radius-m, 5px));
-		border-width: var(--panda-select-border-width, 1px);
-		border-style: var(--panda-select-border-style, solid);
-		border-color: var(--panda-select-border-color, hsl(207deg 1% 85%));
-		background-color: var(--panda-select-background-color, hsl(0deg 0% 100%));
-		box-shadow: var(--panda-select-elevation, none);
+		border-width: var(--panda-select-border-width, var(--panda-input-border-width, 1px));
+		border-style: var(--panda-select-border-style, var(--panda-input-border-style, solid));
+		border-color: var(--panda-select-border-color, var(--panda-input-border-color, hsl(207deg 1% 85%)));
+		background-color: var(--panda-select-background-color, var(--panda-input-background-color, hsl(0deg 0% 100%)));
+		box-shadow: var(--panda-select-elevation, var(--panda-input-elevation, none));
 		box-sizing: border-box;
 		/* ICON STYLE */
-		--panda-icon-color: var(--panda-select-icon-color, hsl(191deg 19% 23%));
-		--panda-icon-size: var(--panda-select-slot-icon-size-m, var(--panda-icon-size-m, 20px));
+		--panda-icon-color: var(--panda-select-icon-color, var(--panda-input-icon-color, hsl(191deg 19% 23%)));
+		--panda-icon-size: var(--panda-select-icon-size-m, var(--panda-input-icon-size-m, var(--panda-icon-size-m, 20px)));
 	}
 
 	.select .items-cont {
@@ -96,7 +96,7 @@ export const styles = /*css*/`
 	}
 
 	.select.with-message {
-		margin-bottom: var(--panda-select-with-message-gap-size-m, var(--panda-padding-m, 10px));
+		margin-bottom: var(--panda-select-with-message-gap-size-m, var(--panda-gap-m, 10px));
 	}
 
 	.items {
@@ -105,8 +105,8 @@ export const styles = /*css*/`
 		flex-flow: row nowrap;
 		align-items: center;
 		height: 100%;
-		gap: var(--panda-select-items-gap-size-m, 5px);
-		padding: var(--panda-select-items-padding-size-m, 2px);
+		gap: var(--panda-select-items-gap-m, var(--panda-gap-s, 5px));
+		padding: var(--panda-select-items-padding-m, var(--panda-gap-xs, 2px));
 		box-sizing: border-box;
 		z-index: 1;
 	}
@@ -114,10 +114,10 @@ export const styles = /*css*/`
 	.item {
 		user-select: none;
 		color: var(--panda-select-text-color, var(--panda-text-color, hsl(191deg 19% 23%)));
-		font-size: var(--panda-select-font-size-size-m, var(--panda-font-size-m, 16px));
-		font-family: var(--panda-select-font-family-size-m, var(--panda-font-family, "Poppins"));
-		font-weight: var(--panda-select-font-weight-size-m, var(--panda-font-weight, 500));
-		text-shadow: var(--panda-select-text-shadow-size-m, none);
+		font-size: var(--panda-select-font-size-m, var(--panda-font-size-m, 16px));
+		font-family: var(--panda-select-font-family-m, var(--panda-font-family, "Poppins"));
+		font-weight: var(--panda-select-font-weight-m, var(--panda-font-weight, 500));
+		text-shadow: var(--panda-select-text-shadow-m, none);
 	}
 
 	.item.single-item {
@@ -125,7 +125,7 @@ export const styles = /*css*/`
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		padding-left: var(--panda-select-single-item-padding-left, 5px);
+		padding-left: var(--panda-select-single-item-padding-left, var(--panda-gap-s, 5px));
 	}
 
 	.item.chip {

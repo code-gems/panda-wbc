@@ -752,7 +752,6 @@ export class PandaSelect extends HTMLElement {
 	// private properties =============================================================================================
 
 	private _parsedItems!: SuperItem[];
-	/** Flag to indicate if the component is ready. */
 	private _showMandatoryFlag!: boolean;
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;

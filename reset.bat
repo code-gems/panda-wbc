@@ -268,11 +268,7 @@ cd /d ..\panda-theme-switcher\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
-cd /d ..\panda-time\
-call rmdir /s /q node_modules
-call rmdir /s /q lib
-
-cd /d ..\panda-time-ago\
+resetcd /d ..\panda-time-ago\
 call rmdir /s /q node_modules
 call rmdir /s /q lib
 
