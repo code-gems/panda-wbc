@@ -62,10 +62,18 @@ export class PandaSelect extends HTMLElement {
 		];
 	}
 
-	// theme ==========================================================================================================
-	/** Theme of the component. */
-	private _theme!: string;
-	
+	/**
+	 * theme
+	 * ---
+	 * The theme of the component. Can be used to apply different styles based on the theme.
+	 * @type {string}
+	 * @attr theme
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select theme="dark"></panda-select>
+	 * ```
+	 */
 	get theme() {
 		return this._theme;
 	}
@@ -75,17 +83,27 @@ export class PandaSelect extends HTMLElement {
 			this._theme = value;
 			// reflect to attribute
 			if (value) {
-				this.setAttribute("theme", value);
+				this.setAttribute("theme", value + "");
 			} else {
 				this.removeAttribute("theme");
 			}
 		}
 	}
 
-	// value ==========================================================================================================
-	/** Currently selected value(s). */
-	private _value!: any[];
+	private _theme!: string;
 	
+	/**
+	 * value
+	 * ---
+	 * The selected value(s) of the component. Can be a single value or an array of values for multiselect mode.
+	 * @type {any | any[]}
+	 * @attr value
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select value="option1"></panda-select>
+	 * ```
+	 */
 	get value() {
 		return this._value;
 	}
@@ -114,12 +132,24 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// items ==========================================================================================================
+	private _value!: any[];
+	
 	/**
-	 * Array of items for the select box to select from.
+	 * items
+	 * ---
+	 * Array of items to select from. Each item can be a simple value or an object.
+	 * @type {PandaSelectItem[]}
+	 * @default []
+	 * @public
+	 * @example
+	 * ```js
+	 * const selectEl = new PandaSelect();
+	 * selectEl.items = [
+	 * 	{ value: "option1", label: "Option 1" },
+	 * 	{ value: "option2", label: "Option 2" },
+	 * ];
+	 * ```
 	 */
-	private _items!: PandaSelectItem[];
-
 	get items() {
 		return this._items;
 	}
@@ -132,10 +162,20 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// itemLabelPath ==================================================================================================
+	private _items!: PandaSelectItem[];
+
 	/**
+	 * itemLabelPath
+	 * ---
 	 * Path to the label property in the item objects.
-	 * Default is "label".
+	 * @type {string}
+	 * @default "label"
+	 * @attr item-label-path
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select item-label-path="name"></panda-select>
+	 * ```
 	 */
 	private _itemLabelPath!: string | null;
 
@@ -146,18 +186,28 @@ export class PandaSelect extends HTMLElement {
 	set itemLabelPath(value: string | null) {
 		if (this._itemLabelPath !== value) {
 			this._itemLabelPath = value;
-			// parse items
-			this._parseItems();
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("item-label-path", value);
+			} else {
+				this.removeAttribute("item-label-path");
+			}
 		}
 	}
 
-	// itemValuePath ==================================================================================================
 	/**
+	 * itemValuePath
+	 * ---
 	 * Path to the value property in the item objects.
-	 * Default is "value".
+	 * @type {string}
+	 * @default "value"
+	 * @attr item-value-path
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select item-value-path="id"></panda-select>
+	 * ```
 	 */
-	private _itemValuePath!: string | null;
-
 	get itemValuePath() {
 		return this._itemValuePath;
 	}
@@ -165,18 +215,30 @@ export class PandaSelect extends HTMLElement {
 	set itemValuePath(value: string | null) {
 		if (this._itemValuePath !== value) {
 			this._itemValuePath = value;
-			// parse items
-			this._parseItems();
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("item-value-path", value);
+			} else {
+				this.removeAttribute("item-value-path");
+			}
 		}
 	}
 
-	// label ==========================================================================================================
-	/**
-	 * Label text for the select box.
-	 * Default is an empty string.
-	 */
-	private _label!: string;
+	private _itemValuePath!: string | null;
 
+	/**
+	 * label
+	 * ---
+	 * Label to display above the component.
+	 * @type {string}
+	 * @default ""
+	 * @attr label
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select label="Select an option"></panda-select>
+	 * ```
+	 */
 	get label() {
 		return this._label;
 	}
@@ -189,13 +251,21 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// helpText =======================================================================================================
-	/**
-	 * Help text to display below the select box.
-	 * Default is an empty string.
-	 */
-	private _helpText!: string;
+	private _label!: string;
 
+	/**
+	 * helpText
+	 * ---
+	 * Help text to display below the component.
+	 * @type {string}
+	 * @default ""
+	 * @attr help-text
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select help-text="Select an option"></panda-select>
+	 * ```
+	 */
 	get helpText() {
 		return this._helpText;
 	}
@@ -208,13 +278,21 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// errorMessage ===================================================================================================
-	/**
-	 * Error message to display below the select box.
-	 * Default is an empty string.
-	 */
-	private _errorMessage!: string;
+	private _helpText!: string;
 
+	/**
+	 * errorMessage
+	 * ---
+	 * Error message to display below the component.
+	 * @type {string}
+	 * @default ""
+	 * @attr error-message
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select error-message="Invalid selection"></panda-select>
+	 * ```
+	 */
 	get errorMessage() {
 		return this._errorMessage;
 	}
@@ -227,13 +305,29 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// placeholder ====================================================================================================
-	/**
-	 * Placeholder text for the select input field.
-	 * Default is an empty string.
-	 */
-	private _placeholder!: string[];
+	private _errorMessage!: string;
 
+	/**
+	 * placeholder
+	 * ---
+	 * Placeholder text to display when no value is selected. 
+	 * Can be a string or an array of strings for rotating placeholders.
+	 * @type {string | string[]}
+	 * @default ""
+	 * @attr placeholder
+	 * @public
+	 * @example
+	 * ```html
+	 * <!-- single placeholder -->
+	 * <panda-select placeholder="Select an option"></panda-select>
+	 * ```
+	 * @example
+	 * ```js
+	 * // multiple placeholders
+	 * const selectEl = new PandaSelect();
+	 * selectEl.placeholder = ["Select an option", "Choose wisely", "Pick one"];
+	 * ```
+	 */
 	get placeholder() {
 		return this._placeholder;
 	}
@@ -251,14 +345,22 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// placeholderInterval ============================================================================================
+	private _placeholder!: string[];
+
 	/**
+	 * placeholderInterval
+	 * ---
 	 * Interval in milliseconds for updating the placeholder text.
 	 * Value must be greater than or equal to 1000 ms.
-	 * Default is 3000 ms.
+	 * @type {number}
+	 * @default 3000 [ms]
+	 * @attr placeholder-interval
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select placeholder-interval="3000"></panda-select>
+	 * ```
 	 */
-	private _placeholderInterval!: number;
-
 	get placeholderInterval() {
 		return this._placeholderInterval;
 	}
@@ -280,13 +382,21 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
-	// showFilter =====================================================================================================
+	private _placeholderInterval!: number;
+
 	/**
+	 * showFilter
+	 * ---
 	 * If true, the overlay filter input field is shown.
-	 * Default is false.
+	 * @type {boolean}
+	 * @default false
+	 * @attr show-filter
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-select show-filter></panda-select>
+	 * ```
 	 */
-	private _showFilter!: boolean;
-	
 	get showFilter() {
 		return this._showFilter;
 	}
@@ -303,6 +413,8 @@ export class PandaSelect extends HTMLElement {
 		}
 	}
 
+	private _showFilter!: boolean;
+	
 	// filterPlaceholder ==============================================================================================
 	/**
 	 * Placeholder text for the overlay filter input field.
@@ -750,30 +862,37 @@ export class PandaSelect extends HTMLElement {
 	filter!: (item: SuperItem, searchText: string) => boolean;
 
 	// private properties =============================================================================================
-
 	private _parsedItems!: SuperItem[];
 	private _showMandatoryFlag!: boolean;
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
 
-	// elements
+	// elements =======================================================================================================
 	private _overlayEl!: PandaSelectOverlay | null;
 	private readonly _selectEl!: HTMLDivElement;
 	private readonly _itemsContEl!: HTMLDivElement;
 	private readonly _itemsEl!: HTMLDivElement;
+	// spinner elements =======================================================
 	private readonly _spinnerEl!: PandaSpinner;
 	private readonly _spinnerContEl!: HTMLDivElement;
+	// placeholder element ====================================================
 	private readonly _placeholderEl!: PandaTextSlider;
-	private readonly _iconEl!: HTMLDivElement;
+	// dropdown button elements ===============================================
+	private readonly _dropdownButtonContEl!: HTMLDivElement;
+	private readonly _dropdownButtonEl!: HTMLDivElement;
+	private readonly _dropdownButtonIconEl!: HTMLDivElement;
+	// clear button elements ==================================================
+	private readonly _clearButtonContEl!: HTMLDivElement;
 	private readonly _clearButtonEl!: HTMLDivElement;
-	private readonly _clearButtonIconEl!: HTMLDivElement;
+	// label /help text / error message element ===============================
 	private readonly _labelEl!: HTMLDivElement;
 	private readonly _helpTextEl!: HTMLDivElement;
 	private readonly _errorMessageEl!: HTMLDivElement;
+	// prefix / suffix slot elements ==========================================
 	private readonly _prefixSlotEl!: HTMLSlotElement;
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 
-	// events
+	// events =========================================================================================================
 	private readonly _keyDownEvent!: any;
 	private readonly _showOverlayEvent!: any;
 	private readonly _closeOverlayEvent!: any;
@@ -803,9 +922,6 @@ export class PandaSelect extends HTMLElement {
 					<div id="items" class="items" part="items"></div>
 				</div>
 				<slot name="suffix" part="suffix"></slot>
-				<div id="icon" class="icon" part="icon">
-					<panda-icon icon="chevron-down" part="icon-image"></panda-icon>
-				</div>
 			</div>
 		`;
 
@@ -814,7 +930,6 @@ export class PandaSelect extends HTMLElement {
 		this._spinnerContEl.className = "spinner-cont";
 		this._spinnerContEl.part = "spinner-cont";
 		this._spinnerContEl.innerHTML = /*html*/`<panda-spinner part="spinner"></panda-spinner>`;
-		// get spinner element handle
 		this._spinnerEl = this._spinnerContEl.querySelector("panda-spinner") as PandaSpinner;
 		this._spinnerEl.spinner = this._spinnerType ?? "dots";
 
@@ -824,21 +939,30 @@ export class PandaSelect extends HTMLElement {
 		this._placeholderEl.part = "placeholder";
 		this._placeholderEl.hide = true;
 
-		// create clear button element
-		this._clearButtonEl = document.createElement("div");
-		this._clearButtonEl.className = "clear-button";
-		this._clearButtonEl.part = "clear-button";
-		this._clearButtonEl.innerHTML = /*html*/`
-			<div
-				id="clear-button-icon"
-				class="clear-button-icon"
-				part="clear-button-icon"
-			>
-				<panda-icon icon="close"></panda-icon>
+		// create dropdown button element
+		this._dropdownButtonContEl = document.createElement("div");
+		this._dropdownButtonContEl.className = "dropdown-button-cont";
+		this._dropdownButtonContEl.part = "dropdown-button-cont";
+		this._dropdownButtonContEl.innerHTML = /*html*/`
+			<div class="dropdown-button" part="dropdown-button">
+				<panda-icon icon="chevron-down" class="dropdown-icon" part="dropdown-icon"></panda-icon>
 			</div>
 		`;
-		// get clear button icon element handle
-		this._clearButtonIconEl = this._clearButtonEl.querySelector("#clear-button-icon") as HTMLDivElement;
+		this._dropdownButtonEl = this._dropdownButtonContEl.querySelector(".dropdown-button") as HTMLDivElement;
+		this._dropdownButtonIconEl = this._dropdownButtonContEl.querySelector(".dropdown-icon") as HTMLDivElement;
+		this._dropdownButtonEl.tabIndex = 0; // make dropdown button focusable
+
+		// create clear button element
+		this._clearButtonContEl = document.createElement("div");
+		this._clearButtonContEl.className = "clear-button-cont";
+		this._clearButtonContEl.part = "clear-button-cont";
+		this._clearButtonContEl.innerHTML = /*html*/`
+			<div class="clear-button" part="clear-button">
+				<panda-icon icon="close" class="clear-icon" part="clear-icon"></panda-icon>
+			</div>
+		`;
+		this._clearButtonEl = this._clearButtonContEl.querySelector(".clear-button") as HTMLDivElement;
+		this._clearButtonEl.tabIndex = 0; // make clear button focusable
 
 		// create label element
 		this._labelEl = document.createElement("div");
@@ -904,7 +1028,6 @@ export class PandaSelect extends HTMLElement {
 			this._selectEl = this.shadowRoot.getElementById("select") as HTMLDivElement;
 			this._itemsContEl = this.shadowRoot.getElementById("items-cont") as HTMLDivElement;
 			this._itemsEl = this.shadowRoot.getElementById("items") as HTMLDivElement;
-			this._iconEl = this.shadowRoot.getElementById("icon") as HTMLDivElement;
 			this._itemsContEl.insertBefore(this._placeholderEl, this._itemsEl);
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
@@ -916,14 +1039,14 @@ export class PandaSelect extends HTMLElement {
 		window.addEventListener("resize", this._closeOverlayEvent);
 		this._selectEl.addEventListener("click", this._showOverlayEvent);
 		this._selectEl.addEventListener("keydown", this._keyDownEvent);
-		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
-		this._iconEl.addEventListener("click", this._iconButtonClickEvent);
+		this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
+		this._dropdownButtonEl.addEventListener("click", this._iconButtonClickEvent);
 		this._itemsEl.addEventListener("click", this._removeItemEvent);
 		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		// evaluate mandatory flag
 		this._evaluateMandatoryFlag();
-		// update component
+		// initial component render
 		this._updateComponent();
 	}
 
@@ -932,8 +1055,8 @@ export class PandaSelect extends HTMLElement {
 		window.removeEventListener("resize", this._closeOverlayEvent);
 		this._selectEl.removeEventListener("click", this._showOverlayEvent);
 		this._selectEl.removeEventListener("keydown", this._keyDownEvent);
-		this._clearButtonIconEl.removeEventListener("click", this._clearButtonClickEvent);
-		this._iconEl.removeEventListener("click", this._iconButtonClickEvent);
+		this._clearButtonEl.removeEventListener("click", this._clearButtonClickEvent);
+		this._dropdownButtonEl.removeEventListener("click", this._iconButtonClickEvent);
 		this._itemsEl.removeEventListener("click", this._removeItemEvent);
 		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.removeEventListener("slotchange", this._suffixSlotChangeEvent);
@@ -950,9 +1073,13 @@ export class PandaSelect extends HTMLElement {
 				break;
 			case "item-label-path":
 				this._itemLabelPath = _newValue;
+				// parse items with new label path
+				this._parseItems();
 				break;
 			case "item-value-path":
 				this._itemValuePath = _newValue;
+				// parse items with new value path
+				this._parseItems();
 				break;
 			case "min":
 				this._min = this._parseNumberAttribute(_newValue);
@@ -1072,7 +1199,7 @@ export class PandaSelect extends HTMLElement {
 				this._labelEl.remove();
 			}
 
-			// add or remove label
+			// add or remove help text
 			if (this._helpText) {
 				this._helpTextEl.textContent = this._helpText;
 				this.shadowRoot!.appendChild(this._helpTextEl);
@@ -1088,6 +1215,13 @@ export class PandaSelect extends HTMLElement {
 				this._errorMessageEl.remove();
 			}
 
+			// add or remove dropdown button
+			if (this._hideDropdownButton) {
+				this._dropdownButtonContEl.remove();
+			} else {
+				this._selectEl.insertBefore(this._dropdownButtonContEl, this._suffixSlotEl.nextSibling);
+			}
+
 			// show clear button
 			if (
 				this._showClearButton &&
@@ -1097,9 +1231,9 @@ export class PandaSelect extends HTMLElement {
 				!this._working
 			) {
 				// insert clear button before dropdown icon
-				this._selectEl.insertBefore(this._clearButtonEl, this._iconEl);
+				this._selectEl.insertBefore(this._clearButtonContEl, this._suffixSlotEl.nextSibling);
 			} else {
-				this._clearButtonEl.remove();
+				this._clearButtonContEl.remove();
 			}
 
 			// warn about incompatible features
@@ -1352,7 +1486,7 @@ export class PandaSelect extends HTMLElement {
 			document.body.appendChild(this._overlayEl);
 
 			// add rotate class from icon element
-			this._iconEl.classList.add("rotate");
+			this._dropdownButtonIconEl.classList.add("rotate");
 		}
 	}
 
@@ -1502,7 +1636,7 @@ export class PandaSelect extends HTMLElement {
 			this._overlayEl.remove();
 			this._overlayEl = null;
 			// remove rotate class from icon element
-			this._iconEl.classList.remove("rotate");
+			this._dropdownButtonIconEl.classList.remove("rotate");
 			// set focus back to element
 			this.focus();
 		}
