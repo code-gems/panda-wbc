@@ -462,6 +462,7 @@ export class PandaTimeInput extends HTMLElement {
 		// if event.key is undefined or null, we cannot process the input, so we return early
 		// ignore tab key as it is used for navigation
 		if (event.key == null || event.key === "Tab") {
+			console.log(`%c ⚡ [PANDA TIME INPUT] (_onInputKeyDown) ${event.key}`, "font-size: 24px; color: crimson; background: black;");
 			return;
 		}
 		// prevent typing into the input directly, we will handle it manually to have more control over the input behavior
@@ -499,7 +500,9 @@ export class PandaTimeInput extends HTMLElement {
 		}
 	}
 
-	private _onInputClick(): void {
+	private _onInputClick(event: Event): void {
+		event.stopPropagation();
+		this._inputOffset = 0;
 		this._selectAll();
 	}
 

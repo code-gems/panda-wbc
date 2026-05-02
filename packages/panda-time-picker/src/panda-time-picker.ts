@@ -570,18 +570,6 @@ export class PandaTimePicker extends HTMLElement {
 		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
 		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
-
-
-		// this._timePickerEl.addEventListener("focusin", () => {
-		// 	console.log(`%c ⚡ [panda time picker](focusin)`, "font-size: 24px; color: green; background: black;");
-		// 	this.setAttribute("focused", "");
-		// });
-		
-		// this._timePickerEl.addEventListener("focusout", () => {
-		// 	console.log(`%c ⚡ [panda time picker](focusout)`, "font-size: 24px; color: crimson; background: black;");
-		// 	this.removeAttribute("focused");
-		// });
-
 		// evaluate mandatory flag
 		this._evaluateMandatoryFlag();
 		// initial component update
@@ -811,6 +799,7 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _onInputFocusNext = (event: Event): void => {
+		console.log(`%c ⚡ [PANDA TIME PICKER] (_onInputFocusNext)`, "font-size: 24px; color: crimson; background: black;");
 		const inputEl = (event.target as HTMLElement).closest("panda-time-input") as PandaTimeInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 		// set focus to next input element

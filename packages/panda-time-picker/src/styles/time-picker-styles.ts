@@ -129,6 +129,7 @@ export const styles = /*css*/`
 		align-items: center;
 		width: var(--panda-time-picker-input-height-m, var(--panda-input-height-m, 40px));
 		height: 100%;
+		outline: none;
 	}
 	
 	.clear-button .clear-icon {
