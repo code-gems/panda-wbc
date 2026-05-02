@@ -417,9 +417,7 @@ export class PandaTimePicker extends HTMLElement {
 	private _showClearButton!: boolean;
 
 	// private properties =============================================================================================
-	private _focused!: boolean;
 	private _showMandatoryFlag!: boolean;
-	private _ignoreFocusEvent!: boolean;
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
 
@@ -441,8 +439,7 @@ export class PandaTimePicker extends HTMLElement {
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 
 	// events
-	private readonly _timePickerFocusEvent!: EventListener;
-	private readonly _timePickerBlurEvent!: EventListener;
+	private readonly _timePickerClickEvent!: EventListener;
 	private readonly _inputChangeEvent!: EventListener;
 	private readonly _inputFocusNextEvent!: EventListener;
 	private readonly _inputFocusPrevEvent!: EventListener;
@@ -533,7 +530,6 @@ export class PandaTimePicker extends HTMLElement {
 		this._value = null;
 		this._i18n = getI18nConfig();
 		this._spinnerType = "dots";
-		this._focused = false;
 		this._disabled = false;
 		this._readonly = false;
 		this._mandatory = false;
@@ -545,8 +541,7 @@ export class PandaTimePicker extends HTMLElement {
 		this._timeFormat = DEFAULT_TIME_FORMAT;
 
 		// initialize event binders
-		this._timePickerFocusEvent = this._onTimePickerFocus.bind(this);
-		this._timePickerBlurEvent = this._onTimePickerBlur.bind(this);
+		this._timePickerClickEvent = this._onTimePickerClick.bind(this);
 		this._inputChangeEvent = this._onInputChange.bind(this);
 		this._inputFocusNextEvent = this._onInputFocusNext.bind(this);
 		this._inputFocusPrevEvent = this._onInputFocusPrev.bind(this);
@@ -567,8 +562,7 @@ export class PandaTimePicker extends HTMLElement {
 
 	connectedCallback() {
 		// add event listeners
-		this._timePickerEl.addEventListener("focus", this._timePickerFocusEvent);
-		this._timePickerEl.addEventListener("blur", this._timePickerBlurEvent);
+		this._timePickerEl.addEventListener("click", this._timePickerClickEvent);
 		this._inputFieldEl.addEventListener("change", this._inputChangeEvent);
 		this._inputFieldEl.addEventListener("on-focus-next", this._inputFocusNextEvent);
 		this._inputFieldEl.addEventListener("on-focus-prev", this._inputFocusPrevEvent);
@@ -596,8 +590,7 @@ export class PandaTimePicker extends HTMLElement {
 
 	disconnectedCallback() {
 		// remove event listeners
-		this._timePickerEl.removeEventListener("focus", this._timePickerFocusEvent);
-		this._timePickerEl.removeEventListener("blur", this._timePickerBlurEvent);
+		this._timePickerEl.removeEventListener("click", this._timePickerClickEvent);
 		this._inputFieldEl.removeEventListener("change", this._inputChangeEvent);
 		this._inputFieldEl.removeEventListener("on-focus-next", this._inputFocusNextEvent);
 		this._inputFieldEl.removeEventListener("on-focus-prev", this._inputFocusPrevEvent);
@@ -798,20 +791,6 @@ export class PandaTimePicker extends HTMLElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onTimePickerFocus(): void {
-		console.log(`%c ⚡ [panda time picker](focus)`, "font-size: 24px; color: green; background: black;", this._focused);
-		// if (this._ignoreFocusEvent) {
-		// 	this._ignoreFocusEvent = false;
-		// 	return;
-		// }
-		// set focus to first time input element
-		// this._setFocus(0);
-	}
-
-	private _onTimePickerBlur(): void {
-		// console.log(`%c ⚡ [panda time picker](blur)`, "font-size: 24px; color: crimson; background: black;", this._focused);
-	}
-
 	private _onPrefixSlotChanged(): void {
 		this._withPrefix = true;
 		this._updateComponent();
@@ -845,9 +824,12 @@ export class PandaTimePicker extends HTMLElement {
 		if (focusIndex > 0) {
 			// set focus to previous input element
 			this._setFocus(focusIndex - 1);
-		} else {
-			this._ignoreFocusEvent = true;
 		}
+	}
+
+	private _onTimePickerClick = (): void => {
+		console.log(`%c ⚡ [PANDA TIME PICKER] (_onTimePickerClick)`, "font-size: 24px; color: crimson; background: black;");
+		this._setFocus(0);
 	}
 
 	private _onClearButtonClick = (): void => {
@@ -856,11 +838,11 @@ export class PandaTimePicker extends HTMLElement {
 	}
 	
 	private _onPickerButtonClick = (event: Event): void => {
+		// prevent clicking parent container and triggering focus event on time picker element
+		event.stopPropagation();
+
 		console.log(`%c ⚡ [PANDA TIME PICKER] (_onPickerButtonClick)`, "font-size: 24px; color: crimson; background: black;");
 		this._showOverlay();
-		if (!this._focused) {
-			this.focus();
-		}
 	}
 }
 

@@ -219,7 +219,6 @@ export class PandaTimeInput extends HTMLElement {
 			this._inputEl.spellcheck = false;
 			this._inputEl.autocorrect = false;
 			this._inputEl.autocapitalize = "off";
-			// this._inputEl.tabIndex = -1;
 			this._inputEl.draggable = false;
 		}
 	}
