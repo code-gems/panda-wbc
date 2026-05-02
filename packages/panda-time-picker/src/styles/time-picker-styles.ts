@@ -1,7 +1,7 @@
 export const styles = /*css*/`
 	:host {
 		display: inline-block;
-		width: fit-content;
+		width: var(--panda-time-picker-width, 100%);
 		outline: none;
 		-webkit-font-smoothing: antialiased;
 	}
@@ -91,6 +91,7 @@ export const styles = /*css*/`
 	.time-picker .input-field {
 		display: flex;
 		flex-flow: row nowrap;
+		flex-grow: 1;
 		align-items: center;
 		gap: var(--panda-time-picker-input-gap, 0px);
 		color: var(--panda-time-picker-text-color, var(--panda-input-text-color, hsl(191deg 19% 23%)));
