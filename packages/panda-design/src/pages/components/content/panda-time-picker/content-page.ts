@@ -64,13 +64,13 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
-								<div class="col-full">
+								<div class="col-4">
 									<panda-select
 										.items="${this._selectItems}"
 									></panda-select>
 								</div>
 
-								<div class="col-full">
+								<div class="col-3">
 
 									<panda-time-picker
 										label="Select time:"
@@ -83,7 +83,7 @@ export class ContentPage extends ContentPageTemplate {
 									
 								</div>
 								
-								<div class="col-full">
+								<div class="col-3">
 
 									<panda-time-picker
 										label="Select time:"
@@ -93,6 +93,11 @@ export class ContentPage extends ContentPageTemplate {
 									</panda-time-picker>
 
 								</div>
+
+								<div class="col-3">
+									<panda-button>My Button</panda-button>
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -205,12 +210,20 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
-								<div class="col-full">
+								<div class="col-3">
 		
 									<panda-time-picker
 										label="This picker uses 24-hour format:"
 										@change="${this._onInputChange}"
 										time-format="24"
+									></panda-time-picker>
+									
+								</div>
+								<div class="col-3">
+		
+									<panda-time-picker
+										label="This picker uses 12-hour format:"
+										@change="${this._onInputChange}"
 									></panda-time-picker>
 									
 								</div>

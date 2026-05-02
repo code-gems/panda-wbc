@@ -586,7 +586,7 @@ export const uiComponents = {
 		.row {
 			display: grid;
 			grid-template-columns: repeat(12, minmax(0, 1fr));
-			column-gap: var(--panda-padding-m);
+			gap: var(--panda-padding-m);
 		}
 
 		.row.underline {

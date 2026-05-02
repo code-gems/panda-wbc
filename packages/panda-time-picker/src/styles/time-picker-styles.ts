@@ -92,7 +92,7 @@ export const styles = /*css*/`
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
-		gap: var(--panda-time-picker-input-gap, 0.125rem);
+		gap: var(--panda-time-picker-input-gap, 0px);
 		color: var(--panda-time-picker-text-color, var(--panda-input-text-color, hsl(191deg 19% 23%)));
 		font-size: var(--panda-time-picker-font-size-m, var(--panda-input-font-size-m, 14px));
 		font-family: var(--panda-time-picker-font-family, var(--panda-input-font-family, "Poppins"));
@@ -232,5 +232,25 @@ export const styles = /*css*/`
 	/* COMPONENT STATES ==================================================== */
 	/* ===================================================================== */
 
+
+	/* FOCUS STATE */
+	.time-picker:not(.disabled):focus-within,
+	.time-picker:not(.disabled):focus-visible,
+	.time-picker:not(.disabled):focus-visible:hover,
+	:host([focus]).time-picker {
+		border-color: var(--panda-time-picker-border-color-focused, hsl(207deg 1% 85%));
+		box-shadow: var(--panda-time-picker-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
+	}
 	
+	/* MANDATORY */
+	.time-picker.mandatory:not(.disabled):not(.readonly) {
+		border-width: var(--panda-time-picker-border-width-mandatory, 1px);
+		border-style: var(--panda-time-picker-border-style-mandatory, solid);
+		border-color: var(--panda-time-picker-border-color-mandatory, hsl(29deg 100% 59%));
+		background-color: var(--panda-time-picker-background-color-mandatory, hsl(29deg 100% 59% / 10%));
+		box-shadow: var(--panda-time-picker-outline-mandatory, 0px 0px 2px 2px hsl(29deg 100% 59%));
+		--panda-icon-color: var(--panda-time-picker-icon-color-mandatory, hsl(29deg 100% 59%));
+	}
+
+	/* DISABLED STATE */
 `;

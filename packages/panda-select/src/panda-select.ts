@@ -796,31 +796,14 @@ export class PandaSelect extends HTMLElement {
 		this._applyStyles();
 
 		// create component template
-		const template = document.createElement("template");
-		template.innerHTML = /*html*/`
-			<div
-				id="select"
-				class="select"
-				part="select"
-			>
+		this.shadowRoot!.innerHTML = /*html*/`
+			<div id="select" class="select" part="select">
 				<slot name="prefix" part="prefix"></slot>
-				<div
-					id="items-cont"
-					class="items-cont"
-					part="items-cont"
-				>
-					<div
-						id="items"
-						class="items"
-						part="items"
-					></div>
+				<div id="items-cont" class="items-cont" part="items-cont">
+					<div id="items" class="items" part="items"></div>
 				</div>
 				<slot name="suffix" part="suffix"></slot>
-				<div
-					id="icon"
-					class="icon"
-					part="icon"
-				>
+				<div id="icon" class="icon" part="icon">
 					<panda-icon icon="chevron-down" part="icon-image"></panda-icon>
 				</div>
 			</div>
@@ -871,9 +854,6 @@ export class PandaSelect extends HTMLElement {
 		this._errorMessageEl = document.createElement("div");
 		this._errorMessageEl.className = "error-message";
 		this._errorMessageEl.part = "error-message";
-
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
 
 		// initialize class properties
 		this._i18n = getI18nConfig();

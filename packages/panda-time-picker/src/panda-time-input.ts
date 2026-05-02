@@ -219,7 +219,7 @@ export class PandaTimeInput extends HTMLElement {
 			this._inputEl.spellcheck = false;
 			this._inputEl.autocorrect = false;
 			this._inputEl.autocapitalize = "off";
-			this._inputEl.tabIndex = -1;
+			// this._inputEl.tabIndex = -1;
 			this._inputEl.draggable = false;
 		}
 	}
@@ -300,20 +300,26 @@ export class PandaTimeInput extends HTMLElement {
 	}
 
 	private _selectAll(): void {
-		setTimeout(() => {
-			if (globalThis.getSelection && document.createRange) {
-				const range = document.createRange();
-				range.selectNodeContents(this._inputEl);
+		if (globalThis.getSelection && document.createRange) {
+			const range = document.createRange();
+			range.selectNodeContents(this._inputEl);
 
-				const selection = globalThis.getSelection();
-				selection!.removeAllRanges();
-				selection!.addRange(range);
-			} else if ((document.body as any).createTextRange) {
-				const range = (document.body as any).createTextRange();
-				range.moveToElementText(this._inputEl);
-				range.select();
-			}
-		}, 0);
+			const selection = globalThis.getSelection();
+			selection!.removeAllRanges();
+			selection!.addRange(range);
+		} else if ((document.body as any).createTextRange) {
+			const range = (document.body as any).createTextRange();
+			range.moveToElementText(this._inputEl);
+			range.select();
+		}
+	}
+
+	private _clearSelection(): void {
+		if (globalThis.getSelection) {
+			globalThis.getSelection()!.removeAllRanges();
+		} else if ((document as any).selection) {
+			(document as any).selection.empty();
+		}
 	}
 
 	private _triggerChangeEvent(): void {
@@ -499,15 +505,21 @@ export class PandaTimeInput extends HTMLElement {
 	}
 
 	private _onInputFocus(): void {
+		console.log(`%c ⚡ [panda time input](focus)`, "font-size: 24px; color: green; background: black;", this._focused);
+		if (!this._focused) {
+			this._selectAll();
+		}
 		this._focused = true;
 		this.setAttribute("focused", "");
 		this._inputOffset = 0;
 	}
-
+	
 	private _onInputBlur(): void {
+		console.log(`%c ⚡ [panda time input](blur)`, "font-size: 24px; color: crimson; background: black;", this._focused);
 		this._focused = false;
 		this.removeAttribute("focused");
 		this._inputOffset = 0;
+		this._clearSelection();
 	}
 
 	/** Prevent default behavior for certain events */
