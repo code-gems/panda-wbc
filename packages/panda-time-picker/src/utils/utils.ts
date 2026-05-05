@@ -47,7 +47,7 @@ export const formatValue = (
 	timeFormat: string
 ): string => {
 	const { hours, minutes, seconds, period } = valueObject;
-	let parsedFormat = format == null
+	let parsedFormat = format == null || format.trim() === ""
 		? getFormatFromViews(views, timeFormat)
 		: format.toLocaleUpperCase();
 
@@ -56,27 +56,27 @@ export const formatValue = (
 			case "HH":
 				if (views.includes("hours")) {
 					if (timeFormat === "12") {
-						return hours != null ? String(hours).padStart(2, "0") : "HH";
+						return hours != null ? String(hours % 12 || 12).padStart(2, "0") : "00";
 					} else {
-						return hours != null ? String(hours).padStart(2, "0") : "HH";
+						return hours != null ? String(hours).padStart(2, "0") : "00";
 					}
 				}
-				return "HH";
+				return "00";
 			case "MM":
 				if (views.includes("minutes")) {
-					return minutes != null ? String(minutes).padStart(2, "0") : "MM";
+					return minutes != null ? String(minutes).padStart(2, "0") : "00";
 				}
-				return "MM";
+				return "00";
 			case "SS":
 				if (views.includes("seconds")) {
-					return seconds != null ? String(seconds).padStart(2, "0") : "SS";
+					return seconds != null ? String(seconds).padStart(2, "0") : "00";
 				}
-				return "SS";
+				return "00";
 			case "AA":
 				if (views.includes("hours") && timeFormat === "12") {
-					return period != null ? period.toUpperCase() : "AA";
+					return period != null ? period.toUpperCase() : "";
 				}
-				return "AA";
+				return "";
 			default:
 				return match;
 		}
@@ -84,7 +84,7 @@ export const formatValue = (
 
 	// replace format tokens with actual values
 	parsedFormat = parsedFormat.replace(/HH|MM|SS|AA/g, replacer);
-	return parsedFormat;
+	return parsedFormat.trim();
 };
 
 /**

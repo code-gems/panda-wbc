@@ -80,7 +80,7 @@ describe("formatValue", () => {
 
 	it("should use placeholder tokens for null fields", () => {
 		const obj = { hours: null, minutes: null, seconds: null, period: null };
-		expect(formatValue(obj, "HH:MM:SS AA", allViews, "12")).toBe("HH:MM:SS AA");
+		expect(formatValue(obj, "HH:MM:SS AA", allViews, "12")).toBe("00:00:00");
 	});
 
 	it("should derive format from views when format is null", () => {
@@ -89,14 +89,26 @@ describe("formatValue", () => {
 		expect(formatValue(obj, null as any, ["hours", "minutes"], "12")).toBe("10:20 AM");
 	});
 
-	it("should leave SS token when seconds view is not included", () => {
-		const obj = { hours: 1, minutes: 2, seconds: 3, period: "am" as const };
-		expect(formatValue(obj, "HH:MM:SS AA", ["hours", "minutes"], "12")).toBe("01:02:SS AM");
+	it("should derive format from views when format is an empty string", () => {
+		const obj = { hours: 10, minutes: 20, seconds: null, period: "am" as const };
+		// empty string format -> getFormatFromViews(["hours","minutes"], "12") -> "HH:MM AA"
+		expect(formatValue(obj, "" as any, ["hours", "minutes"], "12")).toBe("10:20 AM");
 	});
 
-	it("should leave HH token when hours view is not included", () => {
+	it("should derive format from views when format is an untrimmed empty string", () => {
+		const obj = { hours: 10, minutes: 20, seconds: null, period: "am" as const };
+		// untrimmed empty string format -> getFormatFromViews(["hours","minutes"], "12") -> "HH:MM AA"
+		expect(formatValue(obj, "   " as any, ["hours", "minutes"], "12")).toBe("10:20 AM");
+	});
+
+	it("should leave 00 token when seconds view is not included", () => {
+		const obj = { hours: 1, minutes: 2, seconds: 3, period: "am" as const };
+		expect(formatValue(obj, "HH:MM:SS AA", ["hours", "minutes"], "12")).toBe("01:02:00 AM");
+	});
+
+	it("should leave 00 token when hours view is not included", () => {
 		const obj = { hours: 1, minutes: 5, seconds: 0, period: null };
-		expect(formatValue(obj, "HH:MM", ["minutes"], "24")).toBe("HH:05");
+		expect(formatValue(obj, "HH:MM", ["minutes"], "24")).toBe("00:05");
 	});
 
 	it("should pad single-digit values with leading zeros", () => {
