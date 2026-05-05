@@ -1,6 +1,6 @@
 // types
 import { PandaTimePickerI18nConfig, PandaTimePickerView, PandaTimePickerTimeFormat } from "../index";
-import { RawValue, TimeObject } from "./types";
+import { OnPasteEventDetail, RawValue, TimeObject } from "./types";
 import { PandaTimeInput } from "./panda-time-input";
 import { PandaIcon } from "@panda-wbc/panda-icon";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
@@ -637,6 +637,7 @@ export class PandaTimePicker extends HTMLElement {
 	private readonly _timeInputEvent!: EventListener;
 	private readonly _inputFocusNextEvent!: EventListener;
 	private readonly _inputFocusPrevEvent!: EventListener;
+	private readonly _inputPasteEvent!: EventListener;
 	private readonly _clearButtonClickEvent!: EventListener;
 	private readonly _pickerButtonClickEvent!: EventListener;
 	private readonly _prefixSlotChangeEvent!: EventListener;
@@ -778,6 +779,7 @@ export class PandaTimePicker extends HTMLElement {
 		this._timeInputEvent = this._onTimeInput.bind(this);
 		this._inputFocusNextEvent = this._onInputFocusNext.bind(this);
 		this._inputFocusPrevEvent = this._onInputFocusPrev.bind(this);
+		this._inputPasteEvent = this._onInputPaste.bind(this) as EventListener;
 		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
 		this._pickerButtonClickEvent = this._onPickerButtonClick.bind(this);
 		this._prefixSlotChangeEvent = this._onPrefixSlotChanged.bind(this);
@@ -798,6 +800,7 @@ export class PandaTimePicker extends HTMLElement {
 		this._inputFieldEl.addEventListener("on-input", this._timeInputEvent);
 		this._inputFieldEl.addEventListener("on-focus-next", this._inputFocusNextEvent);
 		this._inputFieldEl.addEventListener("on-focus-prev", this._inputFocusPrevEvent);
+		this._inputFieldEl.addEventListener("on-paste", this._inputPasteEvent);
 		this._pickerButtonEl.addEventListener("click", this._pickerButtonClickEvent);
 		this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
 		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
@@ -1129,7 +1132,7 @@ export class PandaTimePicker extends HTMLElement {
 		const {
 			value,
 			valueObject,
-		} = parseTimeValue(rawValue);
+		} = parseTimeValue(rawValue, this._timeFormat);
 		this._value = value;
 		this._valueObject = valueObject;
 
@@ -1305,7 +1308,6 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _onInputFocusNext = (event: Event): void => {
-		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onInputFocusNext)`, "font-size: 24px; color: crimson; background: black;");
 		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 		// set focus to next input element
@@ -1313,7 +1315,6 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _onInputFocusPrev = (event: Event): void => {
-		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onInputFocusPrev)`, "font-size: 24px; color: crimson; background: black;");
 		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 
@@ -1323,16 +1324,20 @@ export class PandaTimePicker extends HTMLElement {
 		}
 	}
 
+	private _onInputPaste = (event: CustomEvent<OnPasteEventDetail>): void => {
+		const value = event.detail.value;
+		this._parseValue(value);
+		this._triggerChangeEvent();
+	}
+
 	// handle component container clicks to set focus to time inputs
 	private _onTimePickerClick = (): void => {
-		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onTimePickerClick)`, "font-size: 24px; color: crimson; background: black;");
 		this._setFocus(0);
 	}
 
 	private _onClearButtonClick = (event: Event): void => {
 		// prevent clicking parent container and triggering focus event on time picker element
 		event.stopPropagation();
-		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onClearButtonClick)`, "font-size: 24px; color: crimson; background: black;");
 		this._value = null;
 		this._valueObject = getEmptyTimeObject();
 		// clear input fields

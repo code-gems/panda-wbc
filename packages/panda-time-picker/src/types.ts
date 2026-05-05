@@ -15,3 +15,7 @@ export type TimeObject = {
 	seconds: number | null;
 	period: "am" | "pm" | null;
 }
+
+export type OnPasteEventDetail = {
+	value: string;
+}

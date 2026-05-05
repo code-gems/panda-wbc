@@ -1,5 +1,5 @@
 // types
-import { TimeInputValue } from "./types";
+import { OnPasteEventDetail, TimeInputValue } from "./types";
 
 // styles
 import { styles } from "./styles/time-picker-input-styles";
@@ -400,6 +400,35 @@ export class PandaTimeInput extends HTMLElement {
 		}));
 	}
 
+	/**
+	 * Triggers a custom "on-paste" event with the pasted data as detail. 
+	 * This method is called when a paste event is detected on the input field. 
+	 * It reads the pasted data from the clipboard and dispatches a custom event 
+	 * with the pasted data as detail, allowing parent components to handle the 
+	 * paste event and access the pasted data.
+	 */
+	private async _triggerPasteEvent(): Promise<void> {
+		// get pasted data from clipboard
+		const pastedData = await navigator.clipboard.readText();
+		// dispatch custom paste event with the pasted data as detail
+		const event = new CustomEvent<OnPasteEventDetail>("on-paste", {
+			bubbles: true,
+			composed: true,
+			detail: {
+				value: pastedData,
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
+	/**
+	 * Handles numeric input for time values. This method is called when a keydown event is detected on 
+	 * the input field and the key is a valid numeric input (0-9) or an arrow key (up/down).
+	 * It updates the time value based on the input and manages the input offset for multi-digit values. 
+	 * The method also triggers input events and focus navigation as needed.
+	 * @param {string} key - The key that was pressed, which can be a numeric character (0-9) or an arrow key (up/down).
+	 * @returns {void}
+	 */
 	private _handleNumericInput(key: string): void {
 		// handle up arrow key for incrementing the value =====================
 		if (key === "ArrowUp") {
@@ -466,6 +495,15 @@ export class PandaTimeInput extends HTMLElement {
 		}
 	}
 
+	/**
+	 * Handles alphabetic input for time values, specifically for AM/PM values. This method is 
+	 * called when a keydown event is detected on the input field and the key is a valid alphabetic 
+	 * input (A/P) or an arrow key (up/down). * It updates the time value based on the input, 
+	 * toggling between "AM" and "PM" as needed. * The method also triggers input events and manages 
+	 * focus navigation for the input field.
+	 * @param {string} key - The key that was pressed, which can be an alphabetic character (A/P) or an arrow key (up/down).
+	 * @returns {void}
+	 */
 	private _handleAlphabeticInput(key: string): void {
 		// handle up arrow key for incrementing the value =====================
 		if (key === "ArrowUp" || key === "ArrowDown") {
@@ -504,6 +542,9 @@ export class PandaTimeInput extends HTMLElement {
 	// ================================================================================================================
 
 	private _onInputKeyDown(event: KeyboardEvent): void {
+		if (event.key === "v" && event.ctrlKey) {
+			this._triggerPasteEvent();
+		}
 		// if the component is disabled, we do not allow any interaction
 		if (this._disabled) {
 			return;

@@ -151,7 +151,7 @@ export const getEmptyTimeObject = (): TimeObject => ({
  * @param value The value to be parsed into a TimeValue object.
  * @returns A TimeValue object or null if the input is invalid.
  */
-export const parseTimeValue = (value: RawValue): { value: RawValue; valueObject: TimeObject } => {
+export const parseTimeValue = (value: RawValue, timeFormat: string): { value: RawValue; valueObject: TimeObject } => {
 	if (value == null) {
 		return {
 			value,
@@ -159,20 +159,32 @@ export const parseTimeValue = (value: RawValue): { value: RawValue; valueObject:
 		};
 	} else if (typeof value === "number" || (typeof value === "string" && /^\d+$/.test(value))) { // value is a number or all digit sequence string (timestamp) 
 		const date = new Date(value);
-		const hours = date.getHours();
-
+		let hours = date.getHours();
 		return {
 			value,
 			valueObject: {
-				hours: hours % 12 || 12,
+				hours,
 				minutes: date.getMinutes(),
 				seconds: date.getSeconds(),
 				period: hours >= 12 ? "pm" : "am",
 			},
 		};
 	} else if (typeof value === "string") {
-		const [time, period] = value.split(" ");
-		const [hours, minutes, seconds] = time.split(":").map(Number);
+		let [time, period] = value.split(" ");
+		let [hours, minutes, seconds] = time.split(":").map(Number);
+		// convert hours to 12-hour format if timeFormat is "12"
+		if (timeFormat === "12") {
+			if (hours > 12) {
+				hours = hours % 12 || 12; // convert to 12-hour format
+				period = "PM";
+			} else {
+				period = "AM";
+			}
+		}
+		// if time format is 12-hour and period is PM and hours is less than 12, convert hours to 24-hour format by adding 12
+		if (timeFormat === "24" && period === "PM" && hours < 12) {
+			hours += 12;
+		}
 
 		return {
 			value,
