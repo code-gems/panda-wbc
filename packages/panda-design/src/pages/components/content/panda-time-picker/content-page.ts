@@ -521,7 +521,7 @@ export class ContentPage extends ContentPageTemplate {
 	}
 
 	private _onSetValue(): void {
-		this._value = "10:45:30 PM";
+		this._value = "2:45 PM";
 		console.log(
 			`%c ⚡ [DEMO] (_onSetValue) New value: ${this._value}`,
 			"font-size: 24px; color: orange; background: black; padding: 5px; border-radius: 10px;"
