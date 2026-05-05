@@ -1,6 +1,143 @@
 // types
-import { PandaTimePickerI18nConfig } from "../../index";
-import { TimeValue } from "../types";
+import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat } from "../../index";
+import { RawValue, TimeObject } from "../types";
+
+/**
+ * Utility function to generate a time format string based on the provided views and time mode 12/24h.
+ * For example, if the views are ["hours", "minutes"] and the time format is "12", the generated format will be "HH:MM AA".
+ * If the views are ["hours", "minutes", "seconds"] and the time format is "24", the generated format will be "HH:MM:SS".
+ * If no views are provided, it defaults to "HH:MM AA" for 12-hour format and "HH:MM" for 24-hour format.
+ * @param {string[]} views The views to consider (e.g., ["hours", "minutes", "seconds"]).
+ * @param {string} timeFormat The time format ("12" or "24").
+ * @returns {string} The generated time format string.
+ */
+export const getFormatFromViews = (views: string[], timeFormat: string): string => {
+	if (views.length === 0) {
+		return timeFormat !== "24" ? "HH:MM AA" : "HH:MM";
+	}
+
+	let format = "";
+	if (views.includes("hours")) {
+		format += "HH";
+	}
+	if (views.includes("minutes")) {
+		format += (format ? ":" : "") + "MM";
+	}
+	if (views.includes("seconds")) {
+		format += (format ? ":" : "") + "SS";
+	}
+	if (views.includes("hours") && timeFormat !== "24") {
+		format += " AA";
+	}
+	return format;
+}
+
+/**
+ * Formats a time value object into a string based on the provided format, views, and time format.
+ * @param {TimeObject} valueObject The time value object to format.
+ * @param {string} format The format string.
+ * @param {string[]} views The views to consider (e.g., ["hours", "minutes", "seconds"]).
+ * @param {string} timeFormat The time format ("12" or "24").
+ * @returns {string} The formatted time string.
+ */
+export const formatValue = (
+	valueObject: TimeObject,
+	format: string,
+	views: string[],
+	timeFormat: string
+): string => {
+	const { hours, minutes, seconds, period } = valueObject;
+	let parsedFormat = format == null
+		? getFormatFromViews(views, timeFormat)
+		: format.toLocaleUpperCase();
+
+	const replacer = (match: string): string => {
+		switch (match) {
+			case "HH":
+				if (views.includes("hours")) {
+					if (timeFormat === "12") {
+						return hours != null ? String(hours).padStart(2, "0") : "HH";
+					} else {
+						return hours != null ? String(hours).padStart(2, "0") : "HH";
+					}
+				}
+				return "HH";
+			case "MM":
+				if (views.includes("minutes")) {
+					return minutes != null ? String(minutes).padStart(2, "0") : "MM";
+				}
+				return "MM";
+			case "SS":
+				if (views.includes("seconds")) {
+					return seconds != null ? String(seconds).padStart(2, "0") : "SS";
+				}
+				return "SS";
+			case "AA":
+				if (views.includes("hours") && timeFormat === "12") {
+					return period != null ? period.toUpperCase() : "AA";
+				}
+				return "AA";
+			default:
+				return match;
+		}
+	};
+
+	// replace format tokens with actual values
+	parsedFormat = parsedFormat.replace(/HH|MM|SS|AA/g, replacer);
+	return parsedFormat;
+};
+
+/**
+ * Utility function to check if a time ValueObject is complete based on the provided views and time format. 
+ * A ValueObject is considered complete if all the required fields for the specified views are present and valid.
+ * For example, if the views include "hours" and "minutes", then the ValueObject must have valid "hours" and "minutes" properties.
+ * If the time format is 12-hour, then the ValueObject must also have a valid "period" property ("am" or "pm").
+ * 
+ * @param {TimeObject} valueObject The time value object to check.
+ * @param {string[]} views The views to consider (e.g., ["hours", "minutes", "seconds"]).
+ * @param {string} timeFormat The time format ("12" or "24").
+ * @returns {boolean} True if the value object is complete, false otherwise.
+ */
+export const isValueObjectComplete = (valueObject: TimeObject, views: string[], timeFormat: string): boolean => {
+	let complete = true;
+	if (views.includes("hours") && (valueObject.hours == null || isNaN(valueObject.hours))) {
+		complete = false;
+	}
+	if (views.includes("minutes") && (valueObject.minutes == null || isNaN(valueObject.minutes))) {
+		complete = false;
+	}
+	if (views.includes("seconds") && (valueObject.seconds == null || isNaN(valueObject.seconds))) {
+		complete = false;
+	}
+	if (
+		views.includes("hours") && // if hours view is included
+		timeFormat !== "24" && // and time format is 12-hour
+		(
+			valueObject.period == null || // then period must be present and valid
+			(valueObject.period !== "am" && valueObject.period !== "pm") // (must be "am" or "pm")
+		)
+	) {
+		complete = false;
+	}
+
+	// console.log(`%c ⚡ valueObject`, "font-size: 24px; color: crimson; background: black;", valueObject);
+	// console.log(`%c ⚡ views`, "font-size: 24px; color: crimson; background: black;", views);
+	// console.log(`%c ⚡ timeFormat`, "font-size: 24px; color: crimson; background: black;", timeFormat);
+	// console.log(`%c ⚡ complete`, "font-size: 24px; color: crimson; background: black;", complete);
+
+	return complete;
+}
+
+/**
+ * Utility function to create an empty TimeObject with all properties set to null.
+ * @returns {TimeObject} An empty TimeObject.
+ */
+export const getEmptyTimeObject = (): TimeObject => ({
+	hours: null,
+	minutes: null,
+	seconds: null,
+	period: null,
+});
 
 /**
  * Parses a time value from various input formats into a TimeValue object.
@@ -9,37 +146,49 @@ import { TimeValue } from "../types";
  * 2. HH:MM:SS eg. 14:30:45
  * 3. HH:MM AA eg. 02:30 PM
  * 4. HH:MM:SS AA eg. 02:30:45 PM
- * 5. X eg. 1672531199000 (UNIX timestamp in milliseconds)
+ * 5. X eg. 1672531199000 or "1672531199000" (UNIX timestamp in milliseconds)
  * 6. { "hours": number; "minutes": number; "seconds": number; "period": "am" | "pm" }
  * @param value The value to be parsed into a TimeValue object.
  * @returns A TimeValue object or null if the input is invalid.
  */
-export const parseTimeValue = (value: unknown): TimeValue | null => {
+export const parseTimeValue = (value: RawValue): { value: RawValue; valueObject: TimeObject } => {
 	if (value == null) {
-		return null;
-	} else if (typeof value === "string") {
-		const [time, period] = value.split(" ");
-		const [hours, minutes, seconds] = time.split(":").map(Number.parseInt);
-
-
-
 		return {
-			hours: hours || 0,
-			minutes: minutes || 0,
-			seconds: seconds || 0,
-			period: period as "am" | "pm",
+			value,
+			valueObject: getEmptyTimeObject(),
 		};
-	} else if (typeof value === "number") {
+	} else if (typeof value === "number" || (typeof value === "string" && /^\d+$/.test(value))) { // value is a number or all digit sequence string (timestamp) 
 		const date = new Date(value);
 		const hours = date.getHours();
+
 		return {
-			hours: hours % 12 || 12,
-			minutes: date.getMinutes(),
-			seconds: date.getSeconds(),
-			period: hours >= 12 ? "pm" : "am",
+			value,
+			valueObject: {
+				hours: hours % 12 || 12,
+				minutes: date.getMinutes(),
+				seconds: date.getSeconds(),
+				period: hours >= 12 ? "pm" : "am",
+			},
+		};
+	} else if (typeof value === "string") {
+		const [time, period] = value.split(" ");
+		const [hours, minutes, seconds] = time.split(":").map(Number);
+
+		return {
+			value,
+			valueObject: {
+				hours: hours || 0,
+				minutes: minutes || 0,
+				seconds: seconds || 0,
+				period: parseTimePeriod(period),
+			},
 		};
 	} else {
-		return null;
+		console.warn(`%c ⚠️ [PANDA TIME PICKER] Invalid time value: ${value}`, "color: orange; background: black;");
+		return {
+			value,
+			valueObject: getEmptyTimeObject(),
+		};
 	}
 }
 
@@ -66,8 +215,6 @@ export const getI18nConfig = (): PandaTimePickerI18nConfig => {
 		minutePlaceholder: "MM",
 		secondPlaceholder: "SS",
 		periodPlaceholder: "AA",
-		am: "AM",
-		pm: "PM",
 	};
 }
 
@@ -83,6 +230,77 @@ export const validKeyInput = (key: string, inputMode: string): boolean => {
 	} else if (inputMode === "text") {
 		// allow only letters for text input mode
 		if (!allowedKeys.includes(key) && !/^[a-zA-Z]$/.test(key)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+ * Utility function to compare two string arrays for equality.
+ * @param {string[]} a The first array to compare.
+ * @param {string[]} b The second array to compare.
+ * @returns {boolean} True if the arrays are equal, false otherwise.
+ */
+export const arraysEqual = (a: string[], b: string[]): boolean => {
+	if (a.length !== b.length) {
+		return false;
+	}
+	return a.every((val, i) => val === b[i]);
+}
+
+/**
+ * Validates a time value object based on the provided views and time format.
+ * It checks if all the required fields for the specified views are present and valid.
+ * For example, if the views include "hours" and "minutes", then the ValueObject must have valid "hours" and "minutes" properties.
+ * If the time format is 12-hour, then the ValueObject must also have a valid "period" property ("am" or "pm").
+ * @param {TimeObject} valueObject The time value object to validate.
+ * @param {string[]} views The views to consider (e.g., ["hours", "minutes", "seconds"]).
+ * @param {PandaTimePickerTimeFormat} timeFormat The time format ("12" or "24").
+ * @returns {boolean} True, if the value object is valid, false otherwise.
+ */
+export const validateTimeObject = (valueObject: TimeObject, views: string[], timeFormat: PandaTimePickerTimeFormat): boolean => {
+	if (!valueObject) {
+		return false;
+	}
+	const timeObject = { ...getEmptyTimeObject(), ...valueObject };
+	const { hours, minutes, seconds, period } = timeObject;
+
+	// check if view includes hours
+	if (views.includes("hours")) {
+		// check if value is present and a valid number
+		if (hours == null || isNaN(hours)) {
+			return false;
+		}
+		// validate hours based on time format to catch cases like 00:00 AM or 13:00 PM which are invalid in 12-hour format
+		if (
+			hours < 1 && timeFormat === "12" ||
+			hours > 12 && timeFormat === "12"
+		) {
+			return false;
+		}
+	}
+
+	if (views.includes("minutes")) {
+		if (minutes == null || isNaN(minutes)) {
+			return false;
+		}
+		if (minutes < 0 || minutes > 59) {
+			return false;
+		}
+	}
+
+	if (views.includes("seconds")) {
+		if (seconds == null || isNaN(seconds)) {
+			return false;
+		}
+		if (seconds < 0 || seconds > 59) {
+			return false;
+		}
+	}
+
+	if (views.includes("period")) {
+		if (period == null || (period !== "am" && period !== "pm")) {
 			return false;
 		}
 	}

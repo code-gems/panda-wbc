@@ -9,7 +9,7 @@ export const styles = /*css*/`
 	.label {
 		display: block;
 		overflow: hidden;
-		line-height: var(--panda-time-picker-label-line-height, var(--panda-label-line-height, 1.6em));
+		line-height: var(--panda-time-picker-label-line-height, 1.5rem);
 		color: var(--panda-time-picker-label-color, var(--panda-label-color, hsl(0deg 0% 50%)));
 		font-size: var(--panda-time-picker-label-font-size, var(--panda-label-font-size, 12px));
 		font-family: var(--panda-time-picker-label-font-family, var(--panda-label-font-family, "Poppins"));
@@ -19,8 +19,12 @@ export const styles = /*css*/`
 		user-select: none;
 	}
 
+	.label.invalid {
+		color: var(--panda-time-picker-label-color-invalid, var(--panda-action-color-alert, hsl(14deg 77% 62%)));
+	}
+
 	.help-text {
-		line-height: var(--panda-time-picker-help-text-line-height, var(--panda-text-line-height, 1.6em));
+		line-height: var(--panda-time-picker-help-text-line-height, 1.5rem);
 		color: var(--panda-time-picker-help-text-color, var(--panda-text-color, hsl(210deg 5% 25%)));
 		font-size: var(--panda-time-picker-help-text-font-size, var(--panda-font-size-m, 16px));
 		font-family: var(--panda-time-picker-help-text-font-family, var(--panda-font-family, "Poppins"));
@@ -29,7 +33,7 @@ export const styles = /*css*/`
 	}
 
 	.error-message {
-		line-height: var(--panda-time-picker-error-message-line-height, var(--panda-text-line-height, 1.6em));
+		line-height: var(--panda-time-picker-error-message-line-height, 1.5rem);
 		color: var(--panda-time-picker-error-message-color, var(--panda-action-color-alert, hsl(14deg 77% 62%)));
 		font-size: var(--panda-time-picker-error-message-font-size, var(--panda-font-size-m, 16px));
 		font-family: var(--panda-time-picker-error-message-font-family, var(--panda-font-family, "Poppins"));
@@ -45,17 +49,19 @@ export const styles = /*css*/`
 		inset: 0px;
 		justify-content: center;
 		align-items: center;
+		cursor: not-allowed;
 
-		border-radius: var(--panda-time-picker-border-radius-size-m, 10px);
-		background-color: var(--panda-time-picker-background-color-working, hsl(0deg 0% 100%));
+		border-radius: var(--panda-time-picker-border-radius-size-m, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-time-picker-background-color-working, var(--panda-input-background-color-working, hsl(0deg 0% 100%)));
 		z-index: 2;
 
 		/* SPINNER STYLE */
-		--panda-spinner-color: var(--panda-time-picker-spinner-color, hsl(191deg 19% 23%));
+		--panda-spinner-color: var(--panda-time-picker-spinner-color, var(--panda-input-icon-color-working, hsl(191deg 19% 23%)));
 		--panda-spinner-size: var(--panda-time-picker-spinner-size-m, var(--panda-icon-size-m, 20px));
 	}
 
 	.time-picker {
+		position: relative;
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
@@ -63,6 +69,7 @@ export const styles = /*css*/`
 		padding-left: var(--panda-time-picker-padding-left-m, var(--panda-gap-m, 10px));
 		padding-right: var(--panda-time-picker-padding-right-m, 0px);
 		height: var(--panda-time-picker-height-m, var(--panda-input-height-m, 40px));
+		overflow: hidden;
 		outline: none;
 
 		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
@@ -103,12 +110,9 @@ export const styles = /*css*/`
 		-webkit-font-smoothing: antialiased;
 	}
 
-	.time-picker .input-field > span {
-		user-select: none;
-	}
-
 	.time-picker .time-input {
 		color: var(--panda-time-picker-text-color, var(--panda-input-text-color, hsl(210deg 5% 25%)));
+		text-transform: var(--panda-time-picker-text-transform, uppercase);
 	}
 
 	/* PLACEHOLDER */
@@ -119,77 +123,6 @@ export const styles = /*css*/`
 	/* PERIOD INPUT SPECIFIC STYLES */
 	.time-picker .period-input {
 		margin-left: var(--panda-time-picker-period-input-gap-m, 0.25rem);
-	}
-
-	/* CLEAR BUTTON */
-	.clear-button {
-		display: flex;
-		flex-shrink: 0;
-		justify-content: center;
-		align-items: center;
-		width: var(--panda-time-picker-input-height-m, var(--panda-input-height-m, 40px));
-		height: 100%;
-		outline: none;
-	}
-	
-	.clear-button .clear-icon {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: var(--panda-time-picker-clear-button-icon-padding-m, 0px);
-		width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
-		height: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
-		
-		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
-		cursor: pointer;
-
-		border-radius: var(--panda-time-picker-clear-button-icon-border-radius, var(--panda-border-radius-m, 5px));
-		background-color: var(--panda-time-picker-clear-button-background-color, transparent);
-		box-sizing: border-box;
-
-		/* ICON STYLES */
-		--panda-icon-color: var(--panda-time-picker-clear-button-icon-color, var(--panda-time-picker-icon-color, hsl(191deg 19% 23%)));
-		--panda-icon-size: var(--panda-time-picker-clear-button-icon-size-m, var(--panda-time-picker-icon-size-m, 20px));
-	}
-
-	.clear-button:hover .clear-icon {
-		background-color: var(--panda-time-picker-clear-button-background-color-hover, hsl(210deg 5% 90%));
-		--panda-icon-color: var(--panda-time-picker-clear-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
-	}
-
-	/* PICKER BUTTON */
-	.picker-button {
-		display: flex;
-		flex-shrink: 0;
-		justify-content: center;
-		align-items: center;
-		width: var(--panda-time-picker-input-size-m, var(--panda-component-size-m, 40px));
-		height: 100%;
-	}
-
-	.picker-button .picker-icon {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: var(--panda-time-picker-button-icon-padding-m, 0px);
-		width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
-		height: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
-		
-		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
-		cursor: pointer;
-
-		border-radius: var(--panda-time-picker-button-icon-border-radius, var(--panda-border-radius-m, 5px));
-		background-color: var(--panda-time-picker-button-background-color, transparent);
-		box-sizing: border-box;
-
-		/* ICON STYLES */
-		--panda-icon-color: var(--panda-time-picker-button-icon-color, var(--panda-input-icon-color, hsl(191deg 19% 23%)));
-		--panda-icon-size: var(--panda-time-picker-button-icon-size-m, var(--panda-input-icon-size-m, 20px));
-	}
-
-	.picker-button:hover .picker-icon {
-		background-color: var(--panda-time-picker-button-background-color-hover, hsl(210deg 5% 90%));
-		--panda-icon-color: var(--panda-time-picker-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
 	}
 
 	/* SLOTS */
@@ -224,35 +157,239 @@ export const styles = /*css*/`
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		min-width: var(--panda-input-height-size-m, 40px);
+		min-width: var(--panda-time-picker-height-m, var(--panda-input-height-size-m, 40px));
 		height: 100%;
 		padding: 0px;
 		flex-shrink: 0;
+	}
+
+	.hidden {
+		visibility: hidden;
+		pointer-events: none;
 	}
 
 	/* ===================================================================== */
 	/* COMPONENT STATES ==================================================== */
 	/* ===================================================================== */
 
-
 	/* FOCUS STATE */
-	.time-picker:not(.disabled):focus-within,
-	.time-picker:not(.disabled):focus-visible,
-	.time-picker:not(.disabled):focus-visible:hover,
+	.time-picker:not(.disabled):not(.invalid):not(.valid):focus-within,
+	.time-picker:not(.disabled):not(.invalid):not(.valid):focus-visible,
+	.time-picker:not(.disabled):not(.invalid):not(.valid):focus-visible:hover,
 	:host([focus]).time-picker {
-		border-color: var(--panda-time-picker-border-color-focused, hsl(207deg 1% 85%));
-		box-shadow: var(--panda-time-picker-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
+		border-color: var(--panda-time-picker-border-color-focused, var(--panda-input-border-color-focused, hsl(207deg 1% 85%)));
+		box-shadow: var(--panda-time-picker-outline, var(--panda-input-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
 	}
 	
 	/* MANDATORY */
-	.time-picker.mandatory:not(.disabled):not(.readonly) {
+	.time-picker.mandatory:not(.disabled):not(.readonly):not(.working) {
 		border-width: var(--panda-time-picker-border-width-mandatory, 1px);
 		border-style: var(--panda-time-picker-border-style-mandatory, solid);
-		border-color: var(--panda-time-picker-border-color-mandatory, hsl(29deg 100% 59%));
-		background-color: var(--panda-time-picker-background-color-mandatory, hsl(29deg 100% 59% / 10%));
-		box-shadow: var(--panda-time-picker-outline-mandatory, 0px 0px 2px 2px hsl(29deg 100% 59%));
-		--panda-icon-color: var(--panda-time-picker-icon-color-mandatory, hsl(29deg 100% 59%));
+		border-color: var(--panda-time-picker-border-color-mandatory, var(--panda-input-border-color-mandatory, hsl(29deg 100% 59%)));
+		background-color: var(--panda-time-picker-background-color-mandatory, var(--panda-input-background-color-mandatory, hsl(0deg 0% 100%)));
+		box-shadow: var(--panda-time-picker-outline-mandatory, var(--panda-input-outline-mandatory, 0px 0px 1px 1px hsl(29deg 100% 59%)));
+		/* ICON STYLE */
+		--panda-icon-color: var(--panda-time-picker-icon-color-mandatory, var(--panda-input-icon-color-mandatory, hsl(29deg 100% 59%)));
+	}
+
+	/* READONLY STATE */
+	.time-picker.readonly {
+		cursor: default;
+		border-color: var(--panda-time-picker-border-color-readonly, var(--panda-input-border-color-readonly, hsl(189deg 3% 96%)));
+		background-color: var(--panda-time-picker-background-color-readonly, var(--panda-input-background-color-readonly, hsl(189deg 3% 96%)));
+		box-shadow: var(--panda-time-picker-elevation-readonly, var(--panda-input-elevation-readonly, none));
+		/* ICON STYLE */
+		--panda-icon-color: var(--panda-time-picker-icon-color-readonly, var(--panda-input-icon-color-readonly, hsl(191deg 19% 23%)));
+	}
+
+	.time-picker.readonly .time-input {
+		color: var(--panda-time-picker-text-color-readonly, var(--panda-input-text-color-readonly, hsl(191deg 19% 23%)));
+		text-shadow: var(--panda-time-picker-text-shadow-readonly, var(--panda-input-text-shadow-readonly, none));
+	}
+
+	.time-picker.readonly  .input-field > span {
+		color: var(--panda-time-picker-text-color-readonly, var(--panda-input-text-color-readonly, hsl(191deg 19% 23%)));
+	}
+
+	.time-picker.readonly ::slotted([slot="prefix"]),
+	.time-picker.readonly ::slotted([slot="suffix"]) {
+		color: var(--panda-time-picker-text-color-readonly, var(--panda-input-text-color-readonly, hsl(191deg 19% 23%)));
+		text-shadow: var(--panda-time-picker-text-shadow-readonly, var(--panda-input-text-shadow-readonly, none));
+		background-color: var(--panda-time-picker-slot-background-color-readonly, var(--panda-input-slot-background-color-readonly, transparent));
 	}
 
 	/* DISABLED STATE */
+	.time-picker.disabled {
+		cursor: not-allowed;
+		border-color: var(--panda-time-picker-border-color-disabled, var(--panda-input-border-color-disabled, hsl(189deg 3% 96%)));
+		background-color: var(--panda-time-picker-background-color-disabled, var(--panda-input-background-color-disabled, hsl(189deg 3% 96%)));
+		box-shadow: var(--panda-time-picker-elevation-disabled, var(--panda-input-elevation-disabled, none));
+		/* ICON STYLE */
+		--panda-icon-color: var(--panda-time-picker-icon-color-disabled, var(--panda-input-icon-color-disabled, hsl(188deg 5% 75%)));
+	}
+
+	.time-picker.disabled .time-input {
+		color: var(--panda-time-picker-text-color-disabled, var(--panda-input-text-color-disabled, hsl(188deg 5% 75%)));
+		text-shadow: var(--panda-time-picker-text-shadow-disabled, var(--panda-input-text-shadow-disabled, none));
+	}
+
+	.time-picker.disabled  .input-field > span {
+		color: var(--panda-time-picker-text-color-disabled, var(--panda-input-text-color-disabled, hsl(188deg 5% 75%)));
+	}
+
+	.time-picker.disabled ::slotted([slot="prefix"]),
+	.time-picker.disabled ::slotted([slot="suffix"]) {
+		color: var(--panda-time-picker-text-color-disabled, var(--panda-input-text-color-disabled, hsl(188deg 5% 75%)));
+		text-shadow: var(--panda-time-picker-text-shadow-disabled, var(--panda-input-text-shadow-disabled, none));
+		background-color: var(--panda-time-picker-slot-background-color-disabled, var(--panda-input-slot-background-color-disabled, transparent));
+	}
+
+	/* ===================================================================== */
+	/* VALIDATION THEMES =================================================== */
+	/* ===================================================================== */
+
+	/* VALID STATE */
+	.time-picker.valid,
+	:host([theme~="valid"]) .time-picker {
+		color: var(--panda-time-picker-color-valid, var(--panda-input-color-valid, hsl(210deg 5% 25%)));
+		border-width: var(--panda-time-picker-border-width-valid, var(--panda-input-border-width-valid, 1px));
+		border-style: var(--panda-time-picker-border-style-valid, var(--panda-input-border-style-valid, solid));
+		border-color: var(--panda-time-picker-border-color-valid, var(--panda-input-border-color-valid, hsl(160deg 81% 43%)));
+		background-color: var(--panda-time-picker-background-color-valid, var(--panda-input-background-color-valid, hsl(0deg 0% 100%)));
+		box-shadow: var(--panda-time-picker-outline-valid, var(--panda-input-outline-valid, 0px 0px 1px 1px hsl(160deg 81% 43%)));
+	}
+
+	/* INVALID STATE */
+	.time-picker.invalid,
+	:host([theme~="invalid"]) .time-picker {
+		color: var(--panda-time-picker-color-invalid, var(--panda-input-color-invalid, hsl(210deg 5% 25%)));
+		border-width: var(--panda-time-picker-border-width-invalid, var(--panda-input-border-width-invalid, 1px));
+		border-style: var(--panda-time-picker-border-style-invalid, var(--panda-input-border-style-invalid, solid));
+		border-color: var(--panda-time-picker-border-color-invalid, var(--panda-input-border-color-invalid, hsl(14deg 77% 62%)));
+		background-color: var(--panda-time-picker-background-color-invalid, var(--panda-input-background-color-invalid, hsl(0deg 0% 100%)));
+		box-shadow: var(--panda-time-picker-outline-invalid, var(--panda-input-outline-invalid, 0px 0px 1px 1px hsl(14deg 77% 62%)));
+	}
+
+`;
+
+export const pickerButtonStylers = /*css*/`
+	.picker-button-cont {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		width: var(--panda-time-picker-input-height-m, var(--panda-input-height-m, 40px));
+		height: 100%;
+	}
+
+	.picker-button-cont .picker-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--panda-time-picker-button-padding-m, 0px);
+		width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		height: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		outline: none;
+		
+		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
+		will-change: background-color, box-shadow;
+		cursor: pointer;
+
+		border-radius: var(--panda-time-picker-button-border-radius, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-time-picker-button-background-color, transparent);
+		box-sizing: border-box;
+
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-time-picker-button-icon-color, var(--panda-input-icon-color, hsl(191deg 19% 23%)));
+		--panda-icon-size: var(--panda-time-picker-button-icon-size-m, var(--panda-input-icon-size-m, 20px));
+	}
+
+	/* HOVER STATE */
+	.picker-button-cont:not(.disabled) .picker-button:hover {
+		background-color: var(--panda-time-picker-button-background-color-hover, var(--panda-input-button-background-color-hover, hsl(210deg 5% 90%)));
+		box-shadow: var(--panda-time-picker-button-elevation-hover, var(--panda-input-button-elevation-hover, none));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color-hover, var(--panda-input-button-icon-color-hover, hsl(191deg 19% 23%)));
+	}
+
+	/* FOCUSED STATE */
+	.picker-button-cont:not(.disabled) .picker-button:focus-visible,
+	.picker-button-cont:not(.disabled) .picker-button:hover:focus-visible {
+		background-color: var(--panda-time-picker-button-background-color-focus, var(--panda-input-button-background-color-focus, hsl(210deg 5% 90%)));
+		box-shadow: var(--panda-time-picker-button-outline, var(--panda-input-button-outline, 0px 0px 2px 2px hsl(209deg 78% 46%)));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color-focus, var(--panda-input-button-icon-color-focus, hsl(191deg 19% 23%)));
+	}
+
+	/* WORKING STATE */
+	.picker-button-cont:not(.disabled).working .picker-button {
+		display: none;
+	}
+
+	/* READ-ONLY STATE */
+	.picker-button-cont:not(.disabled).readonly .picker-button {
+		cursor: not-allowed;
+		background-color: var(--panda-time-picker-button-background-color-readonly, var(--panda-input-button-background-color-readonly, transparent));
+		box-shadow: var(--panda-time-picker-button-elevation-readonly, var(--panda-input-button-elevation-readonly, none));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color-readonly, var(--panda-input-button-icon-color-readonly, hsl(188deg 5% 75%)));
+	}
+
+	/* DISABLED STATE */
+	.picker-button-cont.disabled .picker-button {
+		cursor: not-allowed;
+		background-color: var(--panda-time-picker-button-background-color-disabled, var(--panda-input-button-background-color-disabled, transparent));
+		box-shadow: var(--panda-time-picker-button-elevation-disabled, var(--panda-input-button-elevation-disabled, none));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color-disabled, var(--panda-input-button-icon-color-disabled, hsl(188deg 5% 75%)));
+	}
+`;
+
+export const clearButtonStylers = /*css*/`
+	.clear-button-cont {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: center;
+		align-items: center;
+		min-width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		height: 100%;
+	}
+
+	.clear-button-cont.without-picker-button {
+		width: var(--panda-time-picker-input-height-m, var(--panda-input-height-m, 40px));
+		min-width: unset;
+	}
+	
+	.clear-button-cont .clear-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: var(--panda-time-picker-button-padding-m, 0px);
+		width: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		height: var(--panda-time-picker-button-size-m, var(--panda-input-button-size-m, 30px));
+		outline: none;
+		
+		transition: var(--panda-time-picker-transition, all 0.3s ease-in-out);
+		will-change: background-color, box-shadow;
+		cursor: pointer;
+
+		border-radius: var(--panda-time-picker-button-icon-border-radius, var(--panda-border-radius-m, 5px));
+		background-color: var(--panda-time-picker-button-background-color, transparent);
+		box-sizing: border-box;
+
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-time-picker-button-icon-color, var(--panda-input-button-icon-color, hsl(191deg 19% 23%)));
+		--panda-icon-size: var(--panda-time-picker-button-icon-size-m, var(--panda-input-button-icon-size-m, 20px));
+	}
+
+	/* HOVER STATE */
+	.clear-button-cont:hover .clear-button {
+		background-color: var(--panda-time-picker-button-background-color-hover, var(--panda-input-button-background-color-hover, hsl(210deg 5% 90%)));
+		box-shadow: var(--panda-time-picker-button-elevation-hover, var(--panda-input-button-elevation-hover, none));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color-hover, var(--panda-input-button-icon-color-hover, hsl(191deg 19% 23%)));
+	}
+
+	/* FOCUSED STATE */
+	.clear-button-cont .clear-button:focus-visible,
+	.clear-button-cont .clear-button:hover:focus-visible {
+		background-color: var(--panda-time-picker-button-background-color-focus, var(--panda-input-button-background-color-focus, hsl(210deg 5% 90%)));
+		box-shadow: var(--panda-time-picker-button-outline, var(--panda-input-button-outline, 0px 0px 2px 2px hsl(209deg 78% 46%)));
+		--panda-icon-color: var(--panda-time-picker-button-icon-color-focus, var(--panda-input-button-icon-color-focus, hsl(191deg 19% 23%)));
+	}
 `;

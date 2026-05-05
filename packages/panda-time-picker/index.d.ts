@@ -3,8 +3,6 @@ export type PandaTimePickerI18nConfig = {
 	minutePlaceholder: string;
 	secondPlaceholder: string;
 	periodPlaceholder: string;
-	am: string;
-	pm: string;
 }
 
 export type PandaTimePickerView = "hours" | "minutes" | "seconds";

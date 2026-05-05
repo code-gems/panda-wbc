@@ -30,13 +30,22 @@ export const styles = /*css*/`
 	.footer .help-text {
 		flex-grow: 1;
 		margin-top: var(--panda-input-footer-gap, 10px);
-		line-height: var(--panda-input-help-text-line-height, 1.2rem);
+		line-height: var(--panda-input-help-text-line-height, 1.5rem);
 		color: var(--panda-input-help-text-color, hsl(191deg 19% 23%));
 		font-size: var(--panda-input-help-text-font-size, 14px);
 		font-family: var(--panda-input-help-text-font-family, "Poppins");
 		text-shadow: var(--panda-input-help-text-text-shadow, none);
 	}
 	
+	.error-message {
+		line-height: var(--panda-input-error-message-line-height, 1.5rem);
+		color: var(--panda-input-error-message-color, var(--panda-action-color-alert, hsl(14deg 77% 62%)));
+		font-size: var(--panda-input-error-message-font-size, var(--panda-font-size-m, 16px));
+		font-family: var(--panda-input-error-message-font-family, var(--panda-font-family, "Poppins"));
+		text-shadow: var(--panda-input-error-message-text-shadow, var(--panda-text-shadow, none));
+		user-select: none;
+	}
+
 	.footer .counter {
 		flex-shrink: 0;
 		height: 1.5rem;

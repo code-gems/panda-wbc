@@ -11,6 +11,10 @@ import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-spinner";
 import "@panda-wbc/panda-text-slider";
 
+// utils
+import { applyStyles, parseBooleanAttribute, parseNumberAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
+import { isEmpty } from "@panda-wbc/panda-utils";
+
 export class PandaTextField extends HTMLElement {
 	/** Version of the component. */
 	public readonly version: string = "1.0.0";
@@ -27,6 +31,7 @@ export class PandaTextField extends HTMLElement {
 		"placeholder",
 		"placeholder-interval",
 		"help-text",
+		"error-message",
 		"min-length",
 		"max-length",
 		"show-character-counter",
@@ -92,6 +97,37 @@ export class PandaTextField extends HTMLElement {
 		}
 	}
 
+	/**
+	 * errorMessage
+	 * ---
+	 * Error message to display below the component.
+	 * @type {string}
+	 * @default ""
+	 * @attr error-message
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker error-message="Invalid time"></panda-time-picker>
+	 * ```
+	 */
+	get errorMessage() {
+		return this._errorMessage;
+	}
+
+	set errorMessage(value: string) {
+		if (this._errorMessage !== value) {
+			this._errorMessage = value ?? "";
+			// reflect to attribute
+			if (isEmpty(value)) {
+				this.removeAttribute("error-message");
+			} else {
+				this.setAttribute("error-message", value + "");
+			}
+		}
+	}
+
+	private _errorMessage!: string;
+
 	// placeholder ====================================================================================================
 	private _placeholder!: string[];
 
@@ -121,7 +157,7 @@ export class PandaTextField extends HTMLElement {
 
 	set placeholderInterval(value: number | null) {
 		if (this._placeholderInterval !== value) {
-			this._placeholderInterval = this._parseNumberAttribute(value);
+			this._placeholderInterval = parseNumberAttribute(value);
 			// reflect to attribute
 			if (this._placeholderInterval == null) {
 				this.removeAttribute("placeholder-interval");
@@ -159,7 +195,7 @@ export class PandaTextField extends HTMLElement {
 
 	set minLength(value: number | null) {
 		if (this._minLength !== value) {
-			this._minLength = this._parseNumberAttribute(value);
+			this._minLength = parseNumberAttribute(value);
 			// reflect to attribute
 			this.setAttribute("min-length", this._minLength + "");
 		}
@@ -174,7 +210,7 @@ export class PandaTextField extends HTMLElement {
 
 	set maxLength(value: number | null) {
 		if (this._maxLength !== value) {
-			this._maxLength = this._parseNumberAttribute(value);
+			this._maxLength = parseNumberAttribute(value);
 			// reflect to attribute
 			this.setAttribute("max-length", this._maxLength + "");
 		}
@@ -189,7 +225,7 @@ export class PandaTextField extends HTMLElement {
 
 	set showCharacterCounter(value: boolean) {
 		if (this._showCharacterCounter !== value) {
-			this._showCharacterCounter = this._parseBooleanAttribute(value);
+			this._showCharacterCounter = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._showCharacterCounter) {
 				this.setAttribute("show-character-counter", "");
@@ -208,7 +244,7 @@ export class PandaTextField extends HTMLElement {
 
 	set disabled(value: boolean) {
 		if (this._disabled !== value) {
-			this._disabled = this._parseBooleanAttribute(value);
+			this._disabled = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._disabled) {
 				this.setAttribute("disabled", "");
@@ -227,7 +263,7 @@ export class PandaTextField extends HTMLElement {
 
 	set working(value: boolean) {
 		if (this._working !== value) {
-			this._working = this._parseBooleanAttribute(value);
+			this._working = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._working) {
 				this.setAttribute("working", "");
@@ -246,7 +282,7 @@ export class PandaTextField extends HTMLElement {
 
 	set readonly(value: boolean) {
 		if (this._readonly !== value) {
-			this._readonly = this._parseBooleanAttribute(value);
+			this._readonly = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._readonly) {
 				this.setAttribute("readonly", "");
@@ -265,7 +301,7 @@ export class PandaTextField extends HTMLElement {
 
 	set autofocus(value: boolean) {
 		if (this._autofocus !== value) {
-			this._autofocus = this._parseBooleanAttribute(value);
+			this._autofocus = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._autofocus) {
 				this.setAttribute("autofocus", "");
@@ -284,7 +320,7 @@ export class PandaTextField extends HTMLElement {
 
 	set autoselect(value: boolean) {
 		if (this._autoselect !== value) {
-			this._autoselect = this._parseBooleanAttribute(value);
+			this._autoselect = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._autoselect) {
 				this.setAttribute("autoselect", "");
@@ -323,7 +359,7 @@ export class PandaTextField extends HTMLElement {
 
 	set spellcheck(value: boolean) {
 		if (this._spellcheck !== value) {
-			this._spellcheck = this._parseBooleanAttribute(value);
+			this._spellcheck = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._spellcheck) {
 				this.setAttribute("spellcheck", "");
@@ -342,7 +378,7 @@ export class PandaTextField extends HTMLElement {
 
 	set mandatory(value: boolean) {
 		if (this._mandatory !== value) {
-			this._mandatory = this._parseBooleanAttribute(value);
+			this._mandatory = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._mandatory) {
 				this.setAttribute("mandatory", "");
@@ -376,7 +412,7 @@ export class PandaTextField extends HTMLElement {
 
 	set showClearButton(value: boolean) {
 		if (this._showClearButton !== value) {
-			this._showClearButton = this._parseBooleanAttribute(value);
+			this._showClearButton = parseBooleanAttribute(value);
 			// reflect to attribute
 			if (this._showClearButton) {
 				this.setAttribute("show-clear-button", "");
@@ -442,20 +478,27 @@ export class PandaTextField extends HTMLElement {
 	private _textLength!: number;
 
 	// elements
-	private readonly _counterEl!: HTMLDivElement;
-	private readonly _helpTextEl!: HTMLDivElement;
-	private readonly _footerEl!: HTMLDivElement;
 	private readonly _inputEl!: HTMLInputElement;
-	private readonly _labelEl!: HTMLDivElement;
-	private readonly _placeholderEl!: PandaTextSlider;
-	private readonly _prefixSlotEl!: HTMLSlotElement;
-	private readonly _spinnerEl!: PandaSpinner;
-	private readonly _spinnerContEl!: HTMLDivElement;
-	private readonly _suffixSlotEl!: HTMLSlotElement;
 	private readonly _textFieldEl!: HTMLDivElement;
 	private readonly _inputWrapEl!: HTMLDivElement;
+	// spinner elements =======================================================
+	private readonly _spinnerContEl!: HTMLDivElement;
+	private readonly _spinnerEl!: PandaSpinner;
+	// label /help text / error message element ===============================
+	private readonly _labelEl!: HTMLDivElement;
+	private readonly _helpTextEl!: HTMLDivElement;
+	private readonly _errorMessageEl!: HTMLDivElement;
+	// placeholder element ====================================================
+	private readonly _placeholderEl!: PandaTextSlider;
+	// clear button elements ==================================================
 	private readonly _clearButtonEl!: HTMLDivElement;
 	private readonly _clearButtonIconEl!: HTMLDivElement;
+	// footer elements ========================================================
+	private readonly _footerEl!: HTMLDivElement;
+	private readonly _counterEl!: HTMLDivElement;
+	// prefix/suffix slot elements ============================================
+	private readonly _prefixSlotEl!: HTMLSlotElement;
+	private readonly _suffixSlotEl!: HTMLSlotElement;
 
 	// events
 	private readonly _inputEvent!: any;
@@ -478,13 +521,7 @@ export class PandaTextField extends HTMLElement {
 		super();
 		// create shadow root
 		this.attachShadow({ mode: "open", delegatesFocus: true });
-
-		// apply component styles to a shadow root
-		this._applyStyles();
-
-		// create component template
-		const template = document.createElement("template");
-		template.innerHTML = /*html*/`
+		this.shadowRoot!.innerHTML = /*html*/`
 			<div class="text-field" part="text-field">
 				<slot name="prefix" part="prefix"></slot>
 				<div class="input-wrap" part="input-wrap">
@@ -494,6 +531,9 @@ export class PandaTextField extends HTMLElement {
 			</div>
 			<div class="footer" part="footer"></div>
 		`;
+
+		// apply component styles to a shadow root
+		applyStyles(styles, this.shadowRoot);
 
 		// create placeholder element
 		this._placeholderEl = document.createElement("panda-text-slider");
@@ -523,6 +563,11 @@ export class PandaTextField extends HTMLElement {
 		this._helpTextEl.className = "help-text";
 		this._helpTextEl.part = "help-text";
 
+		// create error message element
+		this._errorMessageEl = document.createElement("div");
+		this._errorMessageEl.className = "error-message";
+		this._errorMessageEl.part = "error-message";
+
 		// create counter element
 		this._counterEl = document.createElement("div");
 		this._counterEl.className = "counter";
@@ -538,9 +583,6 @@ export class PandaTextField extends HTMLElement {
 			</div>
 		`;
 		this._clearButtonIconEl = this._clearButtonEl.querySelector(".icon") as HTMLDivElement;
-
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
 
 		// initialize class properties
 		this._theme = "";
@@ -663,12 +705,16 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "placeholder-interval":
-				this._placeholderInterval = this._parseNumberAttribute(_newValue);
+				this._placeholderInterval = parseNumberAttribute(_newValue);
 				this._placeholderEl.sliderInterval = this._placeholderInterval as number;
 				break;
 
 			case "help-text":
 				this._helpText = _newValue;
+				break;
+
+			case "error-message":
+				this._errorMessage = _newValue;
 				break;
 
 			case "spinner-type":
@@ -677,12 +723,12 @@ export class PandaTextField extends HTMLElement {
 				break;
 				
 			case "min-length":
-				this._minLength = this._parseNumberAttribute(_newValue, 0);
+				this._minLength = parseNumberAttribute(_newValue, 0);
 				this._inputEl.minLength = this._minLength as number;
 				break;
 
 			case "max-length":
-				this._maxLength = this._parseNumberAttribute(_newValue);
+				this._maxLength = parseNumberAttribute(_newValue);
 				if (this._maxLength == null) {
 					// clear max length from input element
 					this._inputEl.removeAttribute("maxLength");
@@ -707,7 +753,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "disabled":
-				this._disabled = this._parseBooleanAttribute(_newValue);
+				this._disabled = parseBooleanAttribute(_newValue);
 				// update input disabled property
 				this._inputEl.disabled = this._disabled;
 				// update tab index
@@ -721,7 +767,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "working":
-				this._working = this._parseBooleanAttribute(_newValue);
+				this._working = parseBooleanAttribute(_newValue);
 				// stop/start placeholder animation
 				if (this._working) {
 					this._placeholderEl.stop();
@@ -731,7 +777,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "readonly":
-				this._readonly = this._parseBooleanAttribute(_newValue);
+				this._readonly = parseBooleanAttribute(_newValue);
 				// update input readonly property
 				this._inputEl.readOnly = this._readonly;
 				// stop/start placeholder animation
@@ -743,7 +789,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "mandatory":
-				this._mandatory = this._parseBooleanAttribute(_newValue);
+				this._mandatory = parseBooleanAttribute(_newValue);
 				this._inputEl.required = this._mandatory;
 				break;
 
@@ -754,11 +800,11 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "autoselect":
-				this._autoselect = this._parseBooleanAttribute(_newValue);
+				this._autoselect = parseBooleanAttribute(_newValue);
 				break;
 
 			case "autofocus":
-				this._autofocus = this._parseBooleanAttribute(_newValue);
+				this._autofocus = parseBooleanAttribute(_newValue);
 				// update input autofocus property
 				if (this._autofocus) {
 					this._inputEl.autofocus = this._autofocus;
@@ -768,7 +814,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "spellcheck":
-				this._spellcheck = this._parseBooleanAttribute(_newValue);
+				this._spellcheck = parseBooleanAttribute(_newValue);
 				// update input spellcheck property
 				if (this._spellcheck) {
 					this._inputEl.spellcheck = this._spellcheck;
@@ -778,7 +824,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "show-character-counter":
-				this._showCharacterCounter = this._parseBooleanAttribute(_newValue);
+				this._showCharacterCounter = parseBooleanAttribute(_newValue);
 				if (this._showCharacterCounter) {
 					this._textLength = this._value?.length || 0;
 					// add counter to footer element
@@ -789,7 +835,7 @@ export class PandaTextField extends HTMLElement {
 				break;
 
 			case "show-clear-button":
-				this._showClearButton = this._parseBooleanAttribute(_newValue);
+				this._showClearButton = parseBooleanAttribute(_newValue);
 				break;
 
 			case "pattern":
@@ -839,6 +885,19 @@ export class PandaTextField extends HTMLElement {
 				}
 			} else {
 				this._helpTextEl.remove();
+			}
+			
+			// check if error message is defined
+			if (this._errorMessage) {
+				this._errorMessageEl.innerHTML = this._errorMessage;
+				if ((this._maxLength != null || this._showCharacterCounter) && isEmpty(this._helpText)) {
+					// insert error message element after help text element
+					this._footerEl.insertBefore(this._errorMessageEl, this._counterEl);
+				} else {
+					this.shadowRoot!.appendChild(this._errorMessageEl);
+				}
+			} else {
+				this._errorMessageEl.remove();
 			}
 
 			// update text length
@@ -899,14 +958,6 @@ export class PandaTextField extends HTMLElement {
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
 
-	private _applyStyles(): void {
-		const cssStyleSheet = new CSSStyleSheet();
-		cssStyleSheet.replaceSync(styles);
-		if (this.shadowRoot) {
-			this.shadowRoot.adoptedStyleSheets = [cssStyleSheet];
-		}
-	}
-
 	/** Update template CSS classes and parts */
 	private _updateTemplateCss(): void {
 		const css: string[] = [];
@@ -949,41 +1000,7 @@ export class PandaTextField extends HTMLElement {
 		this._inputWrapEl.part = this._inputWrapEl.className;
 	}
 
-	/**
-	 * Parses an attribute value to boolean.
-	 * @param value value to parse
-	 * @description Parses a value to boolean. If the value is "true" or true, it returns true, otherwise false.
-	 * @returns {Boolean}
-	 */
-	private _parseBooleanAttribute(value: unknown): boolean {
-		return value === "true" || value === true || value === "";
-	}
-
-	/**
-	 * Parses an attribute value to a number
-	 * @param value value to parse
-	 * @param {Number} fallbackValue fallback value if provided value is invalid
-	 * @returns {Number}
-	 */
-	private _parseNumberAttribute(value: unknown, fallbackValue: number | null = null): number | null {
-		// check for null and undefined
-		if (value == null) {
-			return fallbackValue;
-		}
-		// check if already a number and if it's valid
-		if (typeof value === "number") {
-			return Number.isNaN(value) || !Number.isFinite(value)
-				? fallbackValue
-				: value;
-		}
-		// Try to parse as number
-		const parsedValue = Number(value);
-		// return fallback if parsing resulted in NaN or infinity
-		return Number.isNaN(parsedValue) || !Number.isFinite(parsedValue)
-			? fallbackValue
-			: parsedValue;
-	}
-
+	/** Dispatches the input event */
 	private _triggerInputEvent(): void {
 		const event: PandaTextFieldOnInputEvent = new CustomEvent("on-input", {
 			detail: {

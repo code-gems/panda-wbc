@@ -9,7 +9,7 @@ export const styles = /*css*/`
 	.label {
 		display: block;
 		overflow: hidden;
-		line-height: var(--panda-select-label-line-height, var(--panda-label-line-height, 1.6em));
+		line-height: var(--panda-select-label-line-height, 1.5rem);
 		color: var(--panda-select-label-color, var(--panda-label-color, hsl(0deg 0% 50%)));
 		font-size: var(--panda-select-label-font-size, var(--panda-label-font-size, 12px));
 		font-family: var(--panda-select-label-font-family, var(--panda-label-font-family, "Poppins"));
@@ -20,7 +20,7 @@ export const styles = /*css*/`
 	}
 
 	.help-text {
-		line-height: var(--panda-select-help-text-line-height, var(--panda-text-line-height, 1.6em));
+		line-height: var(--panda-select-help-text-line-height, 1.5rem);
 		color: var(--panda-select-help-text-color, var(--panda-text-color, hsl(210deg 5% 25%)));
 		font-size: var(--panda-select-help-text-font-size, var(--panda-font-size-m, 16px));
 		font-family: var(--panda-select-help-text-font-family, var(--panda-font-family, "Poppins"));
@@ -29,7 +29,7 @@ export const styles = /*css*/`
 	}
 
 	.error-message {
-		line-height: var(--panda-select-error-message-line-height, var(--panda-text-line-height, 1.6em));
+		line-height: var(--panda-select-error-message-line-height, 1.5rem);
 		color: var(--panda-select-error-message-color, var(--panda-action-color-alert, hsl(14deg 77% 62%)));
 		font-size: var(--panda-select-error-message-font-size, var(--panda-font-size-m, 16px));
 		font-family: var(--panda-select-error-message-font-family, var(--panda-font-family, "Poppins"));
@@ -208,7 +208,7 @@ export const styles = /*css*/`
 		cursor: pointer;
 
 		border-radius: var(--panda-select-button-border-radius, var(--panda-border-radius-m, 10px));
-		background-color: var(--panda-select-button-background-color, transparent);
+		background-color: var(--panda-select-button-background-color, var(--panda-input-button-background-color, transparent));
 		box-sizing: border-box;
 
 		/* ICON STYLES */
@@ -217,7 +217,7 @@ export const styles = /*css*/`
 	}
 
 	.dropdown-button-cont .dropdown-button:hover {
-		background-color: var(--panda-select-button-background-color-hover, hsl(210deg 5% 90%));
+		background-color: var(--panda-select-button-background-color-hover, var(--panda-input-button-background-color-hover, hsl(210deg 5% 90%)));
 		--panda-icon-color: var(--panda-select-button-icon-color-hover, var(--panda-input-icon-color-hover, hsl(188deg 5% 75%)));
 	}
 
@@ -252,7 +252,7 @@ export const styles = /*css*/`
 		cursor: pointer;
 
 		border-radius: var(--panda-select-button-border-radius-m, var(--panda-border-radius-m, 10px));
-		background-color: var(--panda-select-button-icon-background-color, var(--panda-input-button-background-color, transparent));
+		background-color: var(--panda-select-button-background-color, var(--panda-input-button-background-color, transparent));
 		box-sizing: border-box;
 
 		/* ICON STYLES */
@@ -261,7 +261,7 @@ export const styles = /*css*/`
 	}
 
 	.clear-button-cont .clear-button:hover {
-		background-color: var(--panda-select-button-background-color-hover, var(--panda-input-button-background-color-hover, hsl(0deg 0% 95%)));
+		background-color: var(--panda-select-button-background-color-hover, var(--panda-input-button-background-color-hover, hsl(210deg 5% 90%)));
 		--panda-icon-color: var(--panda-select-button-color-hover, var(--panda-input-button-icon-color-hover, hsl(191deg 19% 23%)));
 	}
 

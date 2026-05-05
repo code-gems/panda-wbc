@@ -25,7 +25,8 @@
 	"dependencies": {
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-spinner": "workspace:*",
-		"@panda-wbc/panda-text-slider": "workspace:*"
+		"@panda-wbc/panda-text-slider": "workspace:*",
+		"@panda-wbc/panda-utils": "workspace:*"
 	},
 	"files": [
 		"src",

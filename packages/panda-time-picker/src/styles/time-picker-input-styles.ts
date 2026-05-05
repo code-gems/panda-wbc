@@ -14,10 +14,16 @@ export const styles = /*css*/`
 		font-family: inherit;
 		text-shadow: inherit;
 		line-height: inherit;
+		text-transform: inherit;
 		caret-color: transparent;
 		cursor: text;
 		white-space: nowrap;
 
 		box-sizing: border-box;
+	}
+
+	/* DISABLED STATE */
+	.time-input.disabled {
+		pointer-events: none;
 	}
 `;

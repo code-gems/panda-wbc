@@ -5,7 +5,7 @@ import { TimeInputValue } from "./types";
 import { styles } from "./styles/time-picker-input-styles";
 
 // utils
-import { applyStyles, parseInputModeAttribute, parseNumberAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
+import { applyStyles, parseBooleanAttribute, parseInputModeAttribute, parseNumberAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
 import { validKeyInput } from "./utils/utils";
 
 const DEFAULT_MAX_VALUE = 59;
@@ -26,7 +26,8 @@ export class PandaTimeInput extends HTMLElement {
 			"placeholder",
 			"max",
 			"min",
-			"input-mode"
+			"input-mode",
+			"disabled",
 		];
 	}
 
@@ -34,7 +35,7 @@ export class PandaTimeInput extends HTMLElement {
 	 * value
 	 * ---
 	 * Currently selected time value.
-	 * @type {TimeInputValue}
+	 * @type {string|number|null}
 	 * @default null
 	 * @attr value
 	 * @public
@@ -49,7 +50,9 @@ export class PandaTimeInput extends HTMLElement {
 
 	set value(value: TimeInputValue) {
 		if (this._value !== value) {
-			this._value = parseNumberAttribute(value);
+			this._value = value;
+			// update component to reflect the new value
+			this._updateComponent();
 		}
 	}
 
@@ -164,6 +167,38 @@ export class PandaTimeInput extends HTMLElement {
 
 	private _inputMode!: string;
 
+	/**
+	 * disabled
+	 * ---
+	 * Indicates whether the input field is disabled. 
+	 * When disabled, the input field is non-interactive.
+	 * @type {boolean}
+	 * @default false
+	 * @attr disabled
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-input disabled></panda-time-input>
+	 * ```
+	 */
+	get disabled() {
+		return this._disabled;
+	}
+
+	set disabled(value: boolean) {
+		if (this._disabled !== value) {
+			this._disabled = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("disabled", "");
+			} else {
+				this.removeAttribute("disabled");
+			}
+		}
+	}
+
+	private _disabled!: boolean;
+
 	// private properties =============================================================================================
 
 	private _inputOffset!: number;
@@ -203,6 +238,7 @@ export class PandaTimeInput extends HTMLElement {
 		this._inputMode = "numeric";
 		this._inputOffset = 0;
 		this._focused = false;
+		this._disabled = false;
 		this._max = DEFAULT_MAX_VALUE;
 		this._min = DEFAULT_MIN_VALUE;
 
@@ -253,7 +289,7 @@ export class PandaTimeInput extends HTMLElement {
 
 		switch (_name) {
 			case "value":
-				this._value = parseNumberAttribute(_newValue);
+				this._value = _newValue;
 				break;
 
 			case "placeholder":
@@ -270,6 +306,10 @@ export class PandaTimeInput extends HTMLElement {
 
 			case "input-mode":
 				this._inputMode = parseInputModeAttribute(_newValue);
+				break;
+
+			case "disabled":
+				this._disabled = parseBooleanAttribute(_newValue);
 				break;
 		}
 		// update component to reflect the new value
@@ -295,10 +335,21 @@ export class PandaTimeInput extends HTMLElement {
 			if (this._inputMode != null) {
 				this._inputEl.setAttribute("inputmode", this._inputMode);
 			}
+
+			if (this._disabled) {
+				this._inputEl.setAttribute("contenteditable", "false");
+				this._inputEl.classList.add("disabled");
+			} else {
+				this._inputEl.setAttribute("contenteditable", "true");
+				this._inputEl.classList.remove("disabled");
+			}
 		}
 	}
 
 	private _selectAll(): void {
+		if (this._disabled) {
+			return;
+		}
 		if (globalThis.getSelection && document.createRange) {
 			const range = document.createRange();
 			range.selectNodeContents(this._inputEl);
@@ -314,6 +365,9 @@ export class PandaTimeInput extends HTMLElement {
 	}
 
 	private _clearSelection(): void {
+		if (this._disabled) {
+			return;
+		}
 		if (globalThis.getSelection) {
 			globalThis.getSelection()!.removeAllRanges();
 		} else if ((document as any).selection) {
@@ -321,8 +375,9 @@ export class PandaTimeInput extends HTMLElement {
 		}
 	}
 
-	private _triggerChangeEvent(): void {
-		this.dispatchEvent(new CustomEvent("change", {
+	private _triggerInputEvent(): void {
+		// console.log(`%c ⚡ [PANDA TIME INPUT] (_triggerInputEvent)`, "font-size: 24px; color: orange; background: black;");
+		this.dispatchEvent(new CustomEvent("on-input", {
 			bubbles: true,
 			composed: true,
 			detail: {
@@ -358,7 +413,7 @@ export class PandaTimeInput extends HTMLElement {
 			this._inputOffset = 1;
 			this._updateComponent();
 			this._selectAll();
-			this._triggerChangeEvent();
+			this._triggerInputEvent();
 			return;
 		}
 
@@ -374,7 +429,7 @@ export class PandaTimeInput extends HTMLElement {
 			this._inputOffset = 1;
 			this._updateComponent();
 			this._selectAll();
-			this._triggerChangeEvent();
+			this._triggerInputEvent();
 			return;
 		}
 
@@ -402,7 +457,7 @@ export class PandaTimeInput extends HTMLElement {
 
 		this._updateComponent();
 		this._selectAll();
-		this._triggerChangeEvent();
+		this._triggerInputEvent();
 
 		// trigger focus next event after change event, not before
 		if (this._inputOffset === 2) {
@@ -431,7 +486,7 @@ export class PandaTimeInput extends HTMLElement {
 
 		this._updateComponent();
 		this._selectAll();
-		this._triggerChangeEvent();
+		this._triggerInputEvent();
 	}
 
 	// ================================================================================================================
@@ -449,6 +504,11 @@ export class PandaTimeInput extends HTMLElement {
 	// ================================================================================================================
 
 	private _onInputKeyDown(event: KeyboardEvent): void {
+		// if the component is disabled, we do not allow any interaction
+		if (this._disabled) {
+			return;
+		}
+
 		// trigger focus next event on enter key press ========================
 		if (event.key === "Enter") {
 			this._triggerFocusNext();
@@ -462,7 +522,7 @@ export class PandaTimeInput extends HTMLElement {
 		// if event.key is undefined or null, we cannot process the input, so we return early
 		// ignore tab key as it is used for navigation
 		if (event.key == null || event.key === "Tab") {
-			console.log(`%c ⚡ [PANDA TIME INPUT] (_onInputKeyDown) ${event.key}`, "font-size: 24px; color: crimson; background: black;");
+			// console.log(`%c ⚡ [PANDA TIME INPUT] (_onInputKeyDown) ${event.key}`, "font-size: 24px; color: crimson; background: black;");
 			return;
 		}
 		// prevent typing into the input directly, we will handle it manually to have more control over the input behavior
@@ -479,7 +539,7 @@ export class PandaTimeInput extends HTMLElement {
 			// update component to reflect the new value
 			this._updateComponent();
 			this._selectAll();
-			this._triggerChangeEvent();
+			this._triggerInputEvent();
 			return;
 		}
 		// handle left arrow key for navigation ===============================
@@ -507,7 +567,7 @@ export class PandaTimeInput extends HTMLElement {
 	}
 
 	private _onInputFocus(): void {
-		console.log(`%c ⚡ [panda time input](focus)`, "font-size: 24px; color: green; background: black;", this._focused);
+		// console.log(`%c ⚡ [panda time input](focus)`, "font-size: 24px; color: green; background: black;", this._focused);
 		if (!this._focused) {
 			this._selectAll();
 		}
@@ -517,7 +577,7 @@ export class PandaTimeInput extends HTMLElement {
 	}
 	
 	private _onInputBlur(): void {
-		console.log(`%c ⚡ [panda time input](blur)`, "font-size: 24px; color: crimson; background: black;", this._focused);
+		// console.log(`%c ⚡ [panda time input](blur)`, "font-size: 24px; color: crimson; background: black;", this._focused);
 		this._focused = false;
 		this.removeAttribute("focused");
 		this._inputOffset = 0;

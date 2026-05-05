@@ -756,6 +756,9 @@ importers:
       '@panda-wbc/panda-text-slider':
         specifier: workspace:*
         version: link:../panda-text-slider
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
 
   packages/panda-text-scroller: {}
 

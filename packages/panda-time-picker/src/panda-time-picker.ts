@@ -1,11 +1,12 @@
 // types
 import { PandaTimePickerI18nConfig, PandaTimePickerView, PandaTimePickerTimeFormat } from "../index";
-import { TimeValue } from "./types";
+import { RawValue, TimeObject } from "./types";
 import { PandaTimeInput } from "./panda-time-input";
+import { PandaIcon } from "@panda-wbc/panda-icon";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
 
 // styles
-import { styles } from "./styles/time-picker-styles";
+import { styles, pickerButtonStylers, clearButtonStylers } from "./styles/time-picker-styles";
 
 // components
 import "./panda-time-input";
@@ -14,7 +15,16 @@ import "@panda-wbc/panda-spinner";
 
 // utils
 import { applyStyles, parseBooleanAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
-import { getI18nConfig, parseTimeValue } from "./utils/utils";
+import { isEmpty } from "@panda-wbc/panda-utils/src/panda-utils";
+import {
+	arraysEqual,
+	formatValue,
+	getEmptyTimeObject,
+	getI18nConfig,
+	isValueObjectComplete,
+	parseTimeValue,
+	validateTimeObject,
+} from "./utils/utils";
 
 // constants
 const DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"] as PandaTimePickerView[];
@@ -32,7 +42,11 @@ export class PandaTimePicker extends HTMLElement {
 	static get observedAttributes() {
 		return [
 			"theme",
+			"label",
+			"help-text",
+			"error-message",
 			"value",
+			"views",
 			"format",
 			"time-format",
 			"disabled",
@@ -41,6 +55,8 @@ export class PandaTimePicker extends HTMLElement {
 			"working",
 			"spinner-type",
 			"show-clear-button",
+			"picker-icon",
+			"hide-picker-button",
 		];
 	}
 
@@ -102,13 +118,13 @@ export class PandaTimePicker extends HTMLElement {
 		return this._value;
 	}
 
-	set value(value: unknown) {
-		if (this._value !== value) {
-			this._value = parseTimeValue(value);
+	set value(rawValue: RawValue) {
+		if (this._value !== rawValue) {
+			this._parseValue(rawValue);
 		}
 	}
 
-	private _value!: TimeValue | null;
+	private _value!: RawValue;
 
 	/**
 	 * format
@@ -146,21 +162,30 @@ export class PandaTimePicker extends HTMLElement {
 	 * ---
 	 * The view of the time picker. It determines which time units are displayed and can be selected by the user.
 	 * @type {PandaTimePickerView[]}
+	 * @attr views
 	 * @default ["hours", "minutes"]
 	 * @attr view
 	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker views="hours, minutes, seconds"></panda-time-picker>
+	 * ```
 	 */
 	get views() {
 		return this._views;
 	}
 
 	set views(value: PandaTimePickerView[]) {
-		if (this._views !== value) {
-			if (Array.isArray(value)) {
-				this._views = value;
+		// if the new value is different from the current value, update the views
+		if (Array.isArray(value) &&!arraysEqual(this._views, value)) {
+			// if the value is a non-empty array, use it as the new views, otherwise use the default views
+			if (value.length > 0) {
+				this._views = [...value];
 			} else {
 				this._views = [...DEFAULT_TIME_PICKER_VIEW];
 			}
+			// update the view
+			this._updateViews();
 		}
 	}
 
@@ -183,6 +208,99 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _timeFormat!: PandaTimePickerTimeFormat;
+
+	/**
+	 * label
+	 * ---
+	 * Label to display above the time picker component.
+	 * @type {string}
+	 * @default ""
+	 * @attr label
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker label="Select Time"></panda-time-picker>
+	 * ```
+	 */
+	get label() {
+		return this._label;
+	}
+
+	set label(value: string) {
+		if (this._label !== value) {
+			this._label = value ?? "";
+			// reflect to attribute
+			if (isEmpty(value)) {
+				this.removeAttribute("label");
+			} else {
+				this.setAttribute("label", value + "");
+			}
+		}
+	}
+
+	private _label!: string;
+
+	/**
+	 * helpText
+	 * ---
+	 * Help text to display below the component.
+	 * @type {string}
+	 * @default ""
+	 * @attr help-text
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker help-text="Select a time"></panda-time-picker>
+	 * ```
+	 */
+	get helpText() {
+		return this._helpText;
+	}
+
+	set helpText(value: string) {
+		if (this._helpText !== value) {
+			this._helpText = value ?? "";
+			// reflect to attribute
+			if (isEmpty(value)) {
+				this.removeAttribute("help-text");
+			} else {
+				this.setAttribute("help-text", value + "");
+			}
+		}
+	}
+
+	private _helpText!: string;
+
+	/**
+	 * errorMessage
+	 * ---
+	 * Error message to display below the component.
+	 * @type {string}
+	 * @default ""
+	 * @attr error-message
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker error-message="Invalid time"></panda-time-picker>
+	 * ```
+	 */
+	get errorMessage() {
+		return this._errorMessage;
+	}
+
+	set errorMessage(value: string) {
+		if (this._errorMessage !== value) {
+			this._errorMessage = value ?? "";
+			// reflect to attribute
+			if (isEmpty(value)) {
+				this.removeAttribute("error-message");
+			} else {
+				this.setAttribute("error-message", value + "");
+			}
+		}
+	}
+
+	private _errorMessage!: string;
 
 	/**
 	 * disabled
@@ -416,12 +534,76 @@ export class PandaTimePicker extends HTMLElement {
 
 	private _showClearButton!: boolean;
 
+	/**
+	 * pickerIcon
+	 * ---
+	 * The icon to be displayed in the picker button of the time picker component.
+	 * @type {string}
+	 * @default "clock"
+	 * @attr picker-icon
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker picker-icon="clock"></panda-time-picker>
+	 * ```
+	 */
+	get pickerIcon() {
+		return this._pickerIcon;
+	}
+
+	set pickerIcon(value: string) {
+		if (this._pickerIcon !== value) {
+			this._pickerIcon = value;
+			// reflect to attribute
+			if (value) {
+				this.setAttribute("picker-icon", value + "");
+			} else {
+				this.removeAttribute("picker-icon");
+			}
+		}
+	}
+
+	private _pickerIcon!: string;
+
+	/**
+	 * hidePickerButton
+	 * ---
+	 * If true, the picker button will be hidden in the time picker component.
+	 * @type {boolean}
+	 * @default false
+	 * @attr hide-picker-button
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker hide-picker-button></panda-time-picker>
+	 * ```
+	 */
+	get hidePickerButton() {
+		return this._hidePickerButton;
+	}
+
+	set hidePickerButton(value: boolean) {
+		if (this._hidePickerButton !== value) {
+			this._hidePickerButton = parseBooleanAttribute(value);
+			// reflect to attribute
+			if (this._hidePickerButton) {
+				this.setAttribute("hide-picker-button", "");
+			} else {
+				this.removeAttribute("hide-picker-button");
+			}
+		}
+	}
+
+	private _hidePickerButton!: boolean;
+
 	// private properties =============================================================================================
+	private _invalid!: boolean;
+	private _valueObject!: TimeObject;
 	private _showMandatoryFlag!: boolean;
 	private _withPrefix!: boolean;
 	private _withSuffix!: boolean;
 
-	// elements
+	// elements =======================================================================================================
 	private readonly _timePickerEl!: HTMLDivElement;
 	private readonly _inputFieldEl!: HTMLDivElement;
 	private readonly _hourInputEl!: PandaTimeInput;
@@ -429,18 +611,30 @@ export class PandaTimePicker extends HTMLElement {
 	private readonly _secondInputEl!: PandaTimeInput;
 	private readonly _periodInputEl!: PandaTimeInput;
 	private readonly _separator1El!: HTMLSpanElement;
-	private readonly _overlayEl!: any; // PandaTimePickerOverlay; <---------- swap later for actual type when overlay is implemented
+	private readonly _separator2El!: HTMLSpanElement;
+	// spinner elements =======================================================
 	private readonly _spinnerContEl!: HTMLDivElement;
 	private readonly _spinnerEl!: PandaSpinner;
+	// overlay element
+	private readonly _overlayEl!: any; // PandaTimePickerOverlay; <---------- swap later for actual type when overlay is implemented
+	// label /help text / error message element ===============================
+	private readonly _labelEl!: HTMLDivElement;
+	private readonly _helpTextEl!: HTMLDivElement;
+	private readonly _errorMessageEl!: HTMLDivElement;
+	// clear button elements ==================================================
+	private readonly _clearButtonContEl!: HTMLDivElement;
 	private readonly _clearButtonEl!: HTMLDivElement;
-	private readonly _clearButtonIconEl!: HTMLDivElement;
-	private readonly _pickerButtonIconEl!: HTMLDivElement;
+	// picker button elements =================================================
+	private readonly _pickerButtonContEl!: HTMLDivElement;
+	private readonly _pickerButtonEl!: HTMLDivElement;
+	private readonly _pickerButtonIconEl!: PandaIcon;
+	// prefix/suffix slot elements ============================================
 	private readonly _prefixSlotEl!: HTMLSlotElement;
 	private readonly _suffixSlotEl!: HTMLSlotElement;
 
-	// events
+	// events =========================================================================================================
 	private readonly _timePickerClickEvent!: EventListener;
-	private readonly _inputChangeEvent!: EventListener;
+	private readonly _timeInputEvent!: EventListener;
 	private readonly _inputFocusNextEvent!: EventListener;
 	private readonly _inputFocusPrevEvent!: EventListener;
 	private readonly _clearButtonClickEvent!: EventListener;
@@ -461,29 +655,41 @@ export class PandaTimePicker extends HTMLElement {
 				<slot name="prefix" part="prefix"></slot>
 				<div class="input-field" part="input-field"></div>
 				<slot name="suffix" part="suffix"></slot>
-				<div class="picker-button" part="picker-button">
-					<div class="picker-icon" part="picker-icon" tabindex="0">
-						<panda-icon icon="clock"></panda-icon>
-					</div>
-				</div>
 			</div>
 		`;
 		// apply component styles
-		applyStyles(styles, this.shadowRoot);
+		applyStyles([styles, pickerButtonStylers, clearButtonStylers], this.shadowRoot);
+
+		// create label element
+		this._labelEl = document.createElement("div");
+		this._labelEl.className = "label";
+		this._labelEl.part = "label";
+		
+		// create help text element
+		this._helpTextEl = document.createElement("div");
+		this._helpTextEl.className = "help-text";
+		this._helpTextEl.part = "help-text";
+		
+		// create error message element
+		this._errorMessageEl = document.createElement("div");
+		this._errorMessageEl.className = "error-message";
+		this._errorMessageEl.part = "error-message";
 
 		// create hour input element
 		this._hourInputEl = document.createElement("panda-time-input");
 		this._hourInputEl.placeholder = "HH";
 		this._hourInputEl.className = "time-input";
 		this._hourInputEl.part = "time-input-hour";
+		this._hourInputEl.dataset.timePart = "hours";
 		this._hourInputEl.inputMode = "numeric";
 		this._hourInputEl.max = 23;
-
+		
 		// create minute input element
 		this._minuteInputEl = document.createElement("panda-time-input");
 		this._minuteInputEl.placeholder = "MM";
 		this._minuteInputEl.className = "time-input";
 		this._minuteInputEl.part = "time-input-minute";
+		this._minuteInputEl.dataset.timePart = "minutes";
 		this._minuteInputEl.inputMode = "numeric";
 		this._minuteInputEl.max = 59;
 
@@ -492,6 +698,7 @@ export class PandaTimePicker extends HTMLElement {
 		this._secondInputEl.placeholder = "SS";
 		this._secondInputEl.className = "time-input";
 		this._secondInputEl.part = "time-input-second";
+		this._secondInputEl.dataset.timePart = "seconds";
 		this._secondInputEl.inputMode = "numeric";
 		this._secondInputEl.max = 59;
 
@@ -500,22 +707,39 @@ export class PandaTimePicker extends HTMLElement {
 		this._periodInputEl.placeholder = "AA";
 		this._periodInputEl.className = "time-input period-input";
 		this._periodInputEl.part = "time-input-period";
+		this._periodInputEl.dataset.timePart = "period";
 		this._periodInputEl.inputMode = "text";
 
 		// create separator element
 		this._separator1El = document.createElement("span");
 		this._separator1El.textContent = ":";
+		this._separator2El = document.createElement("span");
+		this._separator2El.textContent = ":";
 
-		// create clear button element
-		this._clearButtonEl = document.createElement("div");
-		this._clearButtonEl.className = "clear-button";
-		this._clearButtonEl.part = "clear-button";
-		this._clearButtonEl.innerHTML = /*html*/`
-			<div class="clear-icon" part="clear-icon">
-				<panda-icon icon="close"></panda-icon>
+		// create picker button element
+		this._pickerButtonContEl = document.createElement("div");
+		this._pickerButtonContEl.className = "picker-button-cont";
+		this._pickerButtonContEl.part = "picker-button-cont";
+		this._pickerButtonContEl.innerHTML = /*html*/`
+			<div class="picker-button" part="picker-button">
+				<panda-icon icon="clock" class="picker-icon" part="picker-icon"></panda-icon>
 			</div>
 		`;
-		this._clearButtonIconEl = this._clearButtonEl.querySelector(".clear-icon") as HTMLDivElement;
+		this._pickerButtonEl = this._pickerButtonContEl.querySelector(".picker-button") as HTMLDivElement;
+		this._pickerButtonEl.tabIndex = 0; // make picker button focusable
+		this._pickerButtonIconEl = this._pickerButtonContEl.querySelector(".picker-icon") as HTMLDivElement;
+
+		// create clear button element
+		this._clearButtonContEl = document.createElement("div");
+		this._clearButtonContEl.className = "clear-button-cont";
+		this._clearButtonContEl.part = "clear-button-cont";
+		this._clearButtonContEl.innerHTML = /*html*/`
+			<div class="clear-button" part="clear-button">
+				<panda-icon icon="close" class="clear-icon" part="clear-icon"></panda-icon>
+			</div>
+		`;
+		this._clearButtonEl = this._clearButtonContEl.querySelector(".clear-button") as HTMLDivElement;
+		this._clearButtonEl.tabIndex = 0; // make clear button focusable
 
 		// create spinner element
 		this._spinnerContEl = document.createElement("div");
@@ -527,22 +751,31 @@ export class PandaTimePicker extends HTMLElement {
 		this._spinnerEl.spinner = this._spinnerType ?? "dots";
 
 		// initialize class properties
-		this._value = null;
+		this._value = undefined;
+		this._valueObject = {
+			hours: null,
+			minutes: null,
+			seconds: null,
+			period: null,
+		};
+		this._theme = "";
 		this._i18n = getI18nConfig();
 		this._spinnerType = "dots";
 		this._disabled = false;
 		this._readonly = false;
 		this._mandatory = false;
 		this._working = false;
-		this._showClearButton = false;
 		this._withPrefix = false;
 		this._withSuffix = false;
+		this._showClearButton = false;
+		this._hidePickerButton = false;
+		this._invalid = false;
 		this._views = [...DEFAULT_TIME_PICKER_VIEW];
 		this._timeFormat = DEFAULT_TIME_FORMAT;
 
 		// initialize event binders
 		this._timePickerClickEvent = this._onTimePickerClick.bind(this);
-		this._inputChangeEvent = this._onInputChange.bind(this);
+		this._timeInputEvent = this._onTimeInput.bind(this);
 		this._inputFocusNextEvent = this._onInputFocusNext.bind(this);
 		this._inputFocusPrevEvent = this._onInputFocusPrev.bind(this);
 		this._clearButtonClickEvent = this._onClearButtonClick.bind(this);
@@ -554,7 +787,6 @@ export class PandaTimePicker extends HTMLElement {
 		if (this.shadowRoot) {
 			this._timePickerEl = this.shadowRoot.querySelector(".time-picker") as HTMLDivElement;
 			this._inputFieldEl = this.shadowRoot.querySelector(".input-field") as HTMLDivElement;
-			this._pickerButtonIconEl = this.shadowRoot.querySelector(".picker-icon") as HTMLDivElement;
 			this._prefixSlotEl = this.shadowRoot.querySelector(`slot[name="prefix"]`) as HTMLSlotElement;
 			this._suffixSlotEl = this.shadowRoot.querySelector(`slot[name="suffix"]`) as HTMLSlotElement;
 		}
@@ -563,27 +795,29 @@ export class PandaTimePicker extends HTMLElement {
 	connectedCallback() {
 		// add event listeners
 		this._timePickerEl.addEventListener("click", this._timePickerClickEvent);
-		this._inputFieldEl.addEventListener("change", this._inputChangeEvent);
+		this._inputFieldEl.addEventListener("on-input", this._timeInputEvent);
 		this._inputFieldEl.addEventListener("on-focus-next", this._inputFocusNextEvent);
 		this._inputFieldEl.addEventListener("on-focus-prev", this._inputFocusPrevEvent);
-		this._pickerButtonIconEl.addEventListener("click", this._pickerButtonClickEvent);
-		this._clearButtonIconEl.addEventListener("click", this._clearButtonClickEvent);
+		this._pickerButtonEl.addEventListener("click", this._pickerButtonClickEvent);
+		this._clearButtonEl.addEventListener("click", this._clearButtonClickEvent);
 		this._prefixSlotEl.addEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.addEventListener("slotchange", this._suffixSlotChangeEvent);
 		// evaluate mandatory flag
 		this._evaluateMandatoryFlag();
 		// initial component update
 		this._updateComponent();
+		// update the view
+		this._updateViews();
 	}
 
 	disconnectedCallback() {
 		// remove event listeners
 		this._timePickerEl.removeEventListener("click", this._timePickerClickEvent);
-		this._inputFieldEl.removeEventListener("change", this._inputChangeEvent);
+		this._inputFieldEl.removeEventListener("on-input", this._timeInputEvent);
 		this._inputFieldEl.removeEventListener("on-focus-next", this._inputFocusNextEvent);
 		this._inputFieldEl.removeEventListener("on-focus-prev", this._inputFocusPrevEvent);
-		this._pickerButtonIconEl.removeEventListener("click", this._pickerButtonClickEvent);
-		this._clearButtonIconEl.removeEventListener("click", this._clearButtonClickEvent);
+		this._pickerButtonEl.removeEventListener("click", this._pickerButtonClickEvent);
+		this._clearButtonEl.removeEventListener("click", this._clearButtonClickEvent);
 		this._prefixSlotEl.removeEventListener("slotchange", this._prefixSlotChangeEvent);
 		this._suffixSlotEl.removeEventListener("slotchange", this._suffixSlotChangeEvent);
 	}
@@ -595,44 +829,72 @@ export class PandaTimePicker extends HTMLElement {
 		}
 
 		switch (_name) {
+			case "label":
+				this._label = _newValue;
+				break;
+
+			case "help-text":
+				this._helpText = _newValue;
+				break;
+
+			case "error-message":
+				this._errorMessage = _newValue;
+				break;
+
 			case "value":
-				this.value = _newValue;
+				this._value = _newValue;
 				break;
 
 			case "format":
-				this.format = _newValue;
+				this._format = _newValue;
 				break;
 
 			case "time-format":
-				this.timeFormat = _newValue;
+				this._timeFormat = _newValue;
+				this._updateViews();
+				this._updateTimePickerValues();
+				this._evaluateMandatoryFlag();
 				break;
 
 			case "theme":
-				this.theme = _newValue;
+				this._theme = _newValue;
 				break;
 
 			case "disabled":
-				this.disabled = parseBooleanAttribute(_newValue);
+				this._disabled = parseBooleanAttribute(_newValue);
 				break;
 
 			case "readonly":
-				this.readonly = parseBooleanAttribute(_newValue);
+				this._readonly = parseBooleanAttribute(_newValue);
 				break;
 
 			case "mandatory":
-				this.mandatory = parseBooleanAttribute(_newValue);
+				this._mandatory = parseBooleanAttribute(_newValue);
 				break;
 
 			case "working":
-				this.working = parseBooleanAttribute(_newValue);
+				this._working = parseBooleanAttribute(_newValue);
 				break;
 
 			case "show-clear-button":
 				this._showClearButton = parseBooleanAttribute(_newValue);
 				break;
 
+			case "hide-picker-button":
+				this._hidePickerButton = parseBooleanAttribute(_newValue);
+				break;
+
+			case "picker-icon":
+				this._pickerIcon = _newValue ?? "clock";
+				break;
+
 			case "spinner-type":
-				this.spinnerType = _newValue;
+				this._spinnerType = _newValue ?? "dots";
+				break;
+
+			case "views":
+				this._views = _newValue.split(",").map((view: string) => view.trim()) as PandaTimePickerView[];
+				this._updateViews();
 				break;
 		}
 		// update component
@@ -642,31 +904,67 @@ export class PandaTimePicker extends HTMLElement {
 	private _updateComponent(): void {
 		if (this.isConnected) {
 			// update spinner
-			if (this._working) {
+			if (this._working && !this._disabled) {
 				// add spinner to input wrap
 				this._timePickerEl.appendChild(this._spinnerContEl);
+				// block input field and hide it
+				this._inputFieldEl.classList.add("hidden");
 			} else {
 				// remove spinner from input wrap
 				this._spinnerContEl.remove();
+				this._inputFieldEl.classList.remove("hidden");
+			}
+
+			// add or remove label
+			if (this._label) {
+				this._labelEl.textContent = this._label;
+				this.shadowRoot!.insertBefore(this._labelEl, this._timePickerEl);
+			} else {
+				this._labelEl.remove();
+			}
+
+			// add or remove help text
+			if (this._helpText) {
+				this._helpTextEl.textContent = this._helpText;
+				this.shadowRoot!.appendChild(this._helpTextEl);
+			} else {
+				this._helpTextEl.remove();
+			}
+			
+			// add or remove error message
+			if (this._errorMessage) {
+				this._errorMessageEl.textContent = this._errorMessage;
+				this.shadowRoot!.appendChild(this._errorMessageEl);
+			} else {
+				this._errorMessageEl.remove();
 			}
 
 			// update clear button
-			if (this._showClearButton && this._value && !this._disabled && !this._readonly) {
+			if (this._showClearButton && this._value != null && !this._disabled && !this._readonly && !this._working) {
 				// add clear button to input wrap
-				this._timePickerEl.insertBefore(this._clearButtonEl, this._inputFieldEl.nextSibling);
+				this._timePickerEl.insertBefore(this._clearButtonContEl, this._suffixSlotEl);
 			} else {
 				// remove clear button from input wrap
-				this._clearButtonEl.remove();
+				this._clearButtonContEl.remove();
 			}
 
-			// update the view
-			this._updateViews();
+			// update picker button
+			if (this._hidePickerButton) {
+				this._pickerButtonContEl.remove();
+			} else {
+				this._timePickerEl.insertBefore(this._pickerButtonContEl, this._suffixSlotEl);
+				this._pickerButtonIconEl.icon = this._pickerIcon ?? "clock"; // default to clock icon if pickerIcon is not set
+			}
+
+			// update time picker state to reflect read-only, working or disabled state
+			this._updateTimePickerState();
 
 			// update template css classes and parts
 			this._updateTemplateCss();
 		}
 	}
 
+	/** Update the time input fields based on the enabled views and time format. */
 	private _updateViews(): void {
 		if (this.isConnected) {
 			let focusIndex = 0;
@@ -675,20 +973,23 @@ export class PandaTimePicker extends HTMLElement {
 				this._inputFieldEl.appendChild(this._hourInputEl);
 				this._hourInputEl.dataset.focusIndex = focusIndex.toString();
 				this._hourInputEl.placeholder = this._i18n.hourPlaceholder;
+				this._hourInputEl.max = this._timeFormat === "12" ? 12 : 23;
+				this._hourInputEl.min = this._timeFormat === "12" ? 1 : 0;
 				this._hourInputEl.tabIndex = 0;
 				focusIndex++;
 			} else {
 				this._hourInputEl.remove();
 			}
 
-			if (this._views.length > 1) {
-				this._inputFieldEl.appendChild(this._separator1El);
-			} else {
-				this._separator1El.remove();
-			}
-			
 			// check if minutes view is enabled
 			if (this._views.includes("minutes")) {
+				// check if hours view is enabled to decide whether to show separator
+				if (this._views.includes("hours")) {
+					this._inputFieldEl.appendChild(this._separator1El);
+				} else {
+					this._separator1El.remove();
+				}
+				// add minute input to input wrap
 				this._inputFieldEl.appendChild(this._minuteInputEl);
 				this._minuteInputEl.dataset.focusIndex = focusIndex.toString();
 				this._minuteInputEl.placeholder = this._i18n.minutePlaceholder;
@@ -699,6 +1000,13 @@ export class PandaTimePicker extends HTMLElement {
 
 			// check if seconds view is enabled
 			if (this._views.includes("seconds")) {
+				// check if hours or minutes view is enabled to decide whether to show separator
+				if (this._views.includes("minutes") || this._views.includes("hours")) {
+					this._inputFieldEl.appendChild(this._separator2El);
+				} else {
+					this._separator2El.remove();
+				}
+				// add second input to input wrap
 				this._inputFieldEl.appendChild(this._secondInputEl);
 				this._secondInputEl.dataset.focusIndex = focusIndex.toString();
 				this._secondInputEl.placeholder = this._i18n.secondPlaceholder;
@@ -706,44 +1014,53 @@ export class PandaTimePicker extends HTMLElement {
 			} else {
 				this._secondInputEl.remove();
 			}
-
-			if (this._views.includes("hours") && this._timeFormat !== "24") {
+			// check if view contains hours and if time format is 12 hours, then show period input
+			if (this._views.includes("hours") && this._timeFormat === "12") {
 				this._inputFieldEl.appendChild(this._periodInputEl);
 				this._periodInputEl.dataset.focusIndex = focusIndex.toString();
 				this._periodInputEl.placeholder = this._i18n.periodPlaceholder;
+			} else {
+				this._periodInputEl.remove();
 			}
+		}
+	}
+
+	/**
+	 * Update time picker values based on the current time format (12h or 24h).
+	 * This method ensures that the hours and period values are correctly adjusted
+	 * when switching between 12-hour and 24-hour formats.
+	 */
+	private _updateTimePickerValues(): void {
+		// if time format is 12 hours and hours value is greater than 12, then convert it to 12 hours format
+		if (this._timeFormat === "12" && this._valueObject.hours != null) {
+			if (this._valueObject.hours > 12) {
+				this._valueObject.hours = this._valueObject.hours - 12;
+				this._valueObject.period = "pm";
+			} else if (this._valueObject.hours === 12) {
+				this._valueObject.period = "pm";
+			} else if (this._valueObject.hours === 0) {
+				this._valueObject.hours = 12;
+				this._valueObject.period = "am";
+			} else {
+				this._valueObject.period = "am";
+			}
+			// update hour and period input fields
+			this._hourInputEl.value = this._valueObject.hours.toString().padStart(2, "0");
+			this._periodInputEl.value = this._valueObject.period;
+		} else if (this._timeFormat === "24" && this._valueObject.hours != null && this._valueObject.period != null) {
+			if (this._valueObject.period === "pm" && this._valueObject.hours < 12) {
+				this._valueObject.hours = this._valueObject.hours + 12;
+			} else if (this._valueObject.period === "am" && this._valueObject.hours === 12) {
+				this._valueObject.hours = 0;
+			}
+			// update hour input field
+			this._hourInputEl.value = this._valueObject.hours.toString().padStart(2, "0");
 		}
 	}
 
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
-
-	private _showOverlay(): void {
-		if (this._overlayEl == null && !this.disabled && !this.readonly && !this.working) {
-
-		}
-	}
-
-	/**
-	 * Set focus to time input element based on the provided index.
-	 * @param {number} index focus index of the element
-	 */
-	private _setFocus(index: number): void {
-		const inputEl = this._inputFieldEl.querySelector(`panda-time-input[data-focus-index="${index}"]`) as PandaTimeInput;
-		if (inputEl) {
-			inputEl.focus();
-		}
-	}
-	
-	/** Update mandatory flag */
-	private _evaluateMandatoryFlag(): void {
-		if (this._value == null) {
-			this._showMandatoryFlag = this._mandatory;
-		} else {
-			this._showMandatoryFlag = false;
-		}
-	}
 
 	/** Update css classes and parts on the component template */
 	private _updateTemplateCss(): void {
@@ -773,6 +1090,195 @@ export class PandaTimePicker extends HTMLElement {
 		this._timePickerEl.className = `time-picker ${cssString}`;
 		this._timePickerEl.part = this._timePickerEl.className;
 
+		this._pickerButtonContEl.className = `picker-button-cont ${cssString}`;
+		this._pickerButtonContEl.part = this._pickerButtonContEl.className;
+
+		this._clearButtonContEl.className = `clear-button-cont ${cssString}`;
+		this._clearButtonContEl.part = this._clearButtonContEl.className;
+
+		// update invalid class
+		if (this._invalid) {
+			this._timePickerEl.classList.add("invalid");
+			this._timePickerEl.part = this._timePickerEl.className;
+			// update label element
+			this._labelEl.classList.add("invalid");
+			this._labelEl.part = this._labelEl.className;
+		} else {
+			this._timePickerEl.classList.remove("invalid");
+			this._timePickerEl.part = this._timePickerEl.className;
+			// update label element
+			this._labelEl.classList.remove("invalid");
+			this._labelEl.part = this._labelEl.className;
+		}
+
+		// update clear button container class for styling based on presence of picker button
+		if (this._hidePickerButton) {
+			this._clearButtonContEl.classList.add("without-picker-button");
+		} else {
+			this._clearButtonContEl.classList.remove("without-picker-button");
+		}
+	}
+	
+	private _showOverlay(): void {
+		if (this._overlayEl == null && !this.disabled && !this.readonly && !this.working) {
+
+		}
+	}
+
+	private _parseValue(rawValue: RawValue): void {
+		const {
+			value,
+			valueObject,
+		} = parseTimeValue(rawValue);
+		this._value = value;
+		this._valueObject = valueObject;
+
+		// console.log("Parsed value:", {
+		// 	value: this._value,
+		// 	valueObject: this._valueObject,
+		// });
+
+		// console.log(`%c (_parseValue) hours:`, "font-size: 24px; color: blue; background: black;", this._valueObject?.hours?.toString().padStart(2, "0"));
+		// console.log(`%c (_parseValue) minutes:`, "font-size: 24px; color: green; background: black;", this._valueObject?.minutes?.toString().padStart(2, "0"));
+		// console.log(`%c (_parseValue) seconds:`, "font-size: 24px; color: red; background: black;", this._valueObject?.seconds?.toString().padStart(2, "0"));
+		// console.log(`%c (_parseValue) period:`, "font-size: 24px; color: purple; background: black;", this._valueObject?.period);
+
+		if (value != null) {
+			// update time input fields based on the new value object
+			this._hourInputEl.value = this._valueObject.hours != null ? this._valueObject.hours.toString().padStart(2, "0") : "";
+			this._minuteInputEl.value = this._valueObject.minutes != null ? this._valueObject.minutes.toString().padStart(2, "0") : "";
+			this._secondInputEl.value = this._valueObject.seconds != null ? this._valueObject.seconds.toString().padStart(2, "0") : "";
+			this._periodInputEl.value = this._valueObject.period;
+		}
+
+		// evaluate mandatory flag based on the new value
+		this._evaluateMandatoryFlag();
+		// update component to reflect changes in value and value object
+		this._updateComponent();
+	}
+
+	/**
+	 * Set focus to time input element based on the provided index.
+	 * @param {number} index focus index of the element
+	 */
+	private _setFocus(index: number): void {
+		const inputEl = this._inputFieldEl.querySelector(`panda-time-input[data-focus-index="${index}"]`) as PandaTimeInput;
+		if (inputEl) {
+			inputEl.focus();
+		}
+	}
+	
+	/** Update mandatory flag */
+	private _evaluateMandatoryFlag(): void {
+		this._showMandatoryFlag = this._mandatory && !isValueObjectComplete(this._valueObject, this._views, this._timeFormat);
+	}
+
+	private _updateValueObject(value: string, timePart: string): void {
+		// if value object is null, initialize it
+		switch (timePart) {
+			case "hours":
+				this._valueObject.hours = parseInt(value) ?? null;
+				break;
+			case "minutes":
+				this._valueObject.minutes = parseInt(value) ?? null;
+				break;
+			case "seconds":
+				this._valueObject.seconds = parseInt(value) ?? null;
+				break;
+			case "period":
+				this._valueObject.period = value
+					? value.toLowerCase() === "pm" ? "pm" : "am"
+					: null;
+				break;
+		}
+
+		// check if time value object is complete
+		const complete = isValueObjectComplete(
+			this._valueObject,
+			this._views,
+			this._timeFormat
+		);
+
+		if (complete) {
+			this._showMandatoryFlag = false;
+			// validate time value object and update valid flag
+			this._invalid = !validateTimeObject(
+				this._valueObject,
+				this._views,
+				this._timeFormat
+			);
+			// only trigger change event if the value object is valid to prevent emitting incomplete or invalid time values
+			if (!this._invalid) {
+				this._triggerChangeEvent();
+			}
+		} else {
+			this._showMandatoryFlag = this._mandatory;
+			this._invalid = false;
+		}
+		// update component to reflect changes in value object
+		this._updateComponent();
+	}
+
+	private _updateTimePickerState(): void {
+		// update tabindex for focusable elements when disabled / readonly / working
+		if (this._disabled || this._readonly || this._working) {
+			this._pickerButtonEl.tabIndex = -1;
+			this._clearButtonEl.tabIndex = -1;
+		} else {
+			this._pickerButtonEl.tabIndex = 0;
+			this._clearButtonEl.tabIndex = 0;
+		}
+
+		// update readonly state
+		if (this._readonly || this._working) {
+			this._timePickerEl.tabIndex = 0; // make entire time picker focusable in read-only state to allow focus retention
+		} else {
+			this._timePickerEl.tabIndex = -1; // remove time picker from tab order when not read-only
+		}
+
+		// update disabled state
+		if (this._disabled) {
+			this._timePickerEl.tabIndex = -1; // remove time picker from tab order when disabled
+		}
+
+		if (this._readonly || this._disabled) {
+			this._hourInputEl.disabled = true;
+			this._minuteInputEl.disabled = true;
+			this._secondInputEl.disabled = true;
+			this._periodInputEl.disabled = true;
+		} else {
+			this._hourInputEl.disabled = false;
+			this._minuteInputEl.disabled = false;
+			this._secondInputEl.disabled = false;
+			this._periodInputEl.disabled = false;
+		}
+
+		// update min value for hour input based on time format
+		if (this._timeFormat === "12") {
+			this._hourInputEl.min = 1;
+		} else {
+			this._hourInputEl.min = 0;
+		}
+	}
+
+	/**
+	 * Trigger change event with the selected time value in the detail. If clear flag is true, value will be null in the event detail.
+	 * @param {boolean} clear if true, value in event detail will be null, otherwise it will be the formatted time string based on the selected time value
+	 */
+	private _triggerChangeEvent(clear: boolean = false): void {
+		let value = null;
+		if (!clear) {
+			value = formatValue(this._valueObject, this._format, this._views, this._timeFormat);
+			this._value = value;
+		}
+		const changeEvent = new CustomEvent("change", {
+			detail: {
+				value,
+			},
+			bubbles: true,
+			composed: true,
+		});
+		this.dispatchEvent(changeEvent);
 	}
 
 	// ================================================================================================================
@@ -789,25 +1295,26 @@ export class PandaTimePicker extends HTMLElement {
 		this._updateComponent();
 	}
 
-	private _onInputChange = (event: Event): void => {
-		const timeInputEl = (event.target as HTMLElement).closest("panda-time-input") as PandaTimeInput;
-		console.log(
-			`%c ⚡ [PANDA TIME PICKER] (_onInputChange)`,
-			"font-size: 24px; color: crimson; background: black;",
-			timeInputEl, timeInputEl.value
+	private _onTimeInput = (event: Event): void => {
+		const timeInputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
+		// update value object based on the input change
+		this._updateValueObject(
+			timeInputEl.value as string,
+			timeInputEl.dataset.timePart as string
 		);
 	}
 
 	private _onInputFocusNext = (event: Event): void => {
-		console.log(`%c ⚡ [PANDA TIME PICKER] (_onInputFocusNext)`, "font-size: 24px; color: crimson; background: black;");
-		const inputEl = (event.target as HTMLElement).closest("panda-time-input") as PandaTimeInput;
+		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onInputFocusNext)`, "font-size: 24px; color: crimson; background: black;");
+		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 		// set focus to next input element
 		this._setFocus(focusIndex + 1);
 	}
 
 	private _onInputFocusPrev = (event: Event): void => {
-		const inputEl = (event.target as HTMLElement).closest("panda-time-input") as PandaTimeInput;
+		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onInputFocusPrev)`, "font-size: 24px; color: crimson; background: black;");
+		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 
 		if (focusIndex > 0) {
@@ -816,21 +1323,36 @@ export class PandaTimePicker extends HTMLElement {
 		}
 	}
 
+	// handle component container clicks to set focus to time inputs
 	private _onTimePickerClick = (): void => {
-		console.log(`%c ⚡ [PANDA TIME PICKER] (_onTimePickerClick)`, "font-size: 24px; color: crimson; background: black;");
+		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onTimePickerClick)`, "font-size: 24px; color: crimson; background: black;");
 		this._setFocus(0);
 	}
 
-	private _onClearButtonClick = (): void => {
-		console.log(`%c ⚡ [PANDA TIME PICKER] (_onClearButtonClick)`, "font-size: 24px; color: crimson; background: black;");
+	private _onClearButtonClick = (event: Event): void => {
+		// prevent clicking parent container and triggering focus event on time picker element
+		event.stopPropagation();
+		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onClearButtonClick)`, "font-size: 24px; color: crimson; background: black;");
 		this._value = null;
+		this._valueObject = getEmptyTimeObject();
+		// clear input fields
+		this._hourInputEl.value = null;
+		this._minuteInputEl.value = null;
+		this._secondInputEl.value = null;
+		this._periodInputEl.value = null;
+		
+		this._triggerChangeEvent(true);
+		this._evaluateMandatoryFlag();
+		this._updateComponent();
+		this._setFocus(0);
 	}
 	
+	// handle picker button click to show time selection overlay
 	private _onPickerButtonClick = (event: Event): void => {
 		// prevent clicking parent container and triggering focus event on time picker element
 		event.stopPropagation();
 
-		console.log(`%c ⚡ [PANDA TIME PICKER] (_onPickerButtonClick)`, "font-size: 24px; color: crimson; background: black;");
+		// console.log(`%c ⚡ [PANDA TIME PICKER] (_onPickerButtonClick)`, "font-size: 24px; color: crimson; background: black;");
 		this._showOverlay();
 	}
 }

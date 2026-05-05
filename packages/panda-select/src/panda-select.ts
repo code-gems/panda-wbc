@@ -1215,13 +1215,6 @@ export class PandaSelect extends HTMLElement {
 				this._errorMessageEl.remove();
 			}
 
-			// add or remove dropdown button
-			if (this._hideDropdownButton) {
-				this._dropdownButtonContEl.remove();
-			} else {
-				this._selectEl.insertBefore(this._dropdownButtonContEl, this._suffixSlotEl.nextSibling);
-			}
-
 			// show clear button
 			if (
 				this._showClearButton &&
@@ -1231,9 +1224,16 @@ export class PandaSelect extends HTMLElement {
 				!this._working
 			) {
 				// insert clear button before dropdown icon
-				this._selectEl.insertBefore(this._clearButtonContEl, this._suffixSlotEl.nextSibling);
+				this._selectEl.insertBefore(this._clearButtonContEl, this._suffixSlotEl);
 			} else {
 				this._clearButtonContEl.remove();
+			}
+
+			// add or remove dropdown button
+			if (this._hideDropdownButton) {
+				this._dropdownButtonContEl.remove();
+			} else {
+				this._selectEl.insertBefore(this._dropdownButtonContEl, this._suffixSlotEl);
 			}
 
 			// warn about incompatible features

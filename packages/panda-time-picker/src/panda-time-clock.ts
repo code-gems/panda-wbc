@@ -1,6 +1,6 @@
 // types
 import { PandaTimePickerI18nConfig } from "../index";
-import { TimeValue } from "./types";
+import { RawValue } from "./types";
 
 // styles
 import { styles } from "./styles/time-picker-clock-styles";
@@ -22,7 +22,7 @@ export class PandaTimePickerClock extends HTMLElement {
 		if (this._value !== value) {
 			this._value = value;
 			this.setAttribute("value", this._value); // reflect to attribute
-			this._render();
+			this._updateComponent();
 		}
 	}
 
@@ -39,13 +39,13 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	connectedCallback() {
 		
-		this._render();
+		this._updateComponent();
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
 		if (_name === "value") {
 			this._value = _newValue;
-			this._render();
+			this._updateComponent();
 		}
 	}
 
@@ -54,7 +54,7 @@ export class PandaTimePickerClock extends HTMLElement {
 	// ================================================================================================================
 
 	/** Renders the badge */
-	private _render() {
+	private _updateComponent() {
 		if (this.shadowRoot) {
 			this.shadowRoot.innerHTML = `
 				<div
