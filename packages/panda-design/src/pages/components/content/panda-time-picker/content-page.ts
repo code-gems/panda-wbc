@@ -512,7 +512,7 @@ export class ContentPage extends ContentPageTemplate {
 		);
 	}
 
-	private _onToggleTimeFormat(event: any): void {
+	private _onToggleTimeFormat(): void {
 		this._timeFormat = this._timeFormat === "12" ? "24" : "12";
 		console.log(
 			`%c ⚡ [DEMO] (_onToggleTimeFormat) New value: ${this._timeFormat}`,
