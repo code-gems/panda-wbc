@@ -21,6 +21,7 @@ import {
 	installationSnippet,
 } from "./snippets/snippets";
 import { componentEvents, componentProperties } from "./component-data";
+import { PandaTimePicker } from "@panda-wbc/panda-time-picker";
 
 @page(pageConfig)
 @customElement("panda-time-picker-content-page")
@@ -38,9 +39,12 @@ export class ContentPage extends ContentPageTemplate {
 
 	@state()
 	private _timeFormat = "12";
-	
+
 	@state()
 	private _value: string | null = null;
+
+	@state()
+	private _testRunning = false;
 
 	// ================================================================================================================
 	// RENDERERS ======================================================================================================
@@ -123,6 +127,7 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-3">
 
 									<panda-time-picker
+										id="test-picker"
 										label="Select time:"
 										show-clear-button
 										@change="${this._onChange}"
@@ -147,6 +152,12 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-3">
 									<panda-button @click="${this._onToggleTimeFormat}">
 										TOGGLE TIME FORMAT (${this._timeFormat}h)
+									</panda-button>
+								</div>
+
+								<div class="col-3">
+									<panda-button @click="${this._onToggleTest}">
+										TEST (${this._testRunning ? "RUNNING" : "IDLE"})
 									</panda-button>
 								</div>
 
@@ -526,5 +537,94 @@ export class ContentPage extends ContentPageTemplate {
 			`%c ⚡ [DEMO] (_onSetValue) New value: ${this._value}`,
 			"font-size: 24px; color: orange; background: black; padding: 5px; border-radius: 10px;"
 		);
+	}
+
+	private async _onToggleTest(): Promise<void> {
+		this._testRunning = !this._testRunning;
+
+		function querySelectorDeep(selector: string, root: Document | ShadowRoot | HTMLElement = document): HTMLElement | null {
+			// 1. Try to find the element in the current scope (Light DOM)
+			const found = root.querySelector<HTMLElement>(selector);
+			if (found) return found;
+
+			// 2. Select all elements in this scope to check for shadowRoots
+			const allElements = root.querySelectorAll('*');
+
+			for (const element of allElements) {
+				const el = element as HTMLElement;
+
+				// 3. If a shadowRoot exists, "dive" into it recursively
+				if (el.shadowRoot) {
+					const result = querySelectorDeep(selector, el.shadowRoot);
+					if (result) return result;
+				}
+			}
+
+			return null;
+		}
+
+		console.log(
+			`%c 🚀 [DEMO] (_onToggleTest) element:`,
+			"font-size: 24px; color: lightblue; background: black; padding: 5px; border-radius: 10px;",
+			querySelectorDeep(`[part="time-input"]`, this.shadowRoot!)
+		);
+
+		return;
+
+		const timePickerComponent = this.shadowRoot!.getElementById("test-picker") as PandaTimePicker;
+		console.log(
+			`%c 🚀 [DEMO] (_onToggleTest) element:`,
+			"font-size: 24px; color: lightblue; background: black; padding: 5px; border-radius: 10px;",
+			timePickerComponent
+		);
+
+		if (timePickerComponent) {
+			const timePickerEl = timePickerComponent.shadowRoot?.querySelector(".time-picker") as HTMLElement;
+			const rect = timePickerEl.getBoundingClientRect();
+
+			// 2. Calculate the center coordinates
+			const centerX = rect.left + rect.width / 2;
+			const centerY = rect.top + rect.height / 2;
+
+			// 3. Create and dispatch the mouse event
+			const clickEvent = new MouseEvent('click', {
+				view: window,
+				bubbles: true,
+				cancelable: true,
+				clientX: centerX,
+				clientY: centerY
+			});
+
+			setTimeout(() => {
+				timePickerEl.dispatchEvent(clickEvent);
+				console.log(
+					`%c 🚀 [DEMO] (_onToggleTest) CLICK:`,
+					"font-size: 24px; color: lightblue; background: black; padding: 5px; border-radius: 10px;",
+					timePickerEl
+				);
+
+			}, 1000);
+
+			setTimeout(() => {
+				const timeInputHHEl = timePickerComponent.shadowRoot?.querySelector(".time-input[placeholder='HH']") as HTMLInputElement;
+				const inputHHEl = timeInputHHEl.shadowRoot?.querySelector(".time-input") as HTMLInputElement;
+				const keyBoardEvent = new KeyboardEvent('keydown', {
+					key: "1",
+					code: "Digit1",
+					bubbles: true,
+					cancelable: true,
+					view: window
+				});
+				inputHHEl.dispatchEvent(keyBoardEvent);
+				inputHHEl.dispatchEvent(keyBoardEvent);
+				console.log(
+					`%c 🚀 [DEMO] (_onToggleTest) KEYBOARD EVENT:`,
+					"font-size: 24px; color: lightblue; background: black; padding: 5px; border-radius: 10px;",
+					inputHHEl
+				);
+			}, 1000);
+
+
+		}
 	}
 }

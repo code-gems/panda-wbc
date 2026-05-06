@@ -1,15 +1,9 @@
-export const installationSnippet = `npm install @panda-wbc/panda-tooltip -S`;
+export const installationSnippet = `npm install @panda-wbc/panda-time-picker -S`;
 
 export const implementationSnippet = `
-import "@panda-wbc/panda-tooltip";
+// @syntax-ts
+import "@panda-wbc/panda-time-picker";
 
-<panda-tooltip
-  theme="primary"
-  .position="end"
->
-  <template>
-	My tooltip<br />
-	content here...
-  </template>
-</panda-tooltip>
+// @syntax-html
+<panda-time-picker></panda-time-picker>
 `;

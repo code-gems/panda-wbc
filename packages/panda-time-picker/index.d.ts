@@ -1,3 +1,5 @@
+export type { PandaTimePicker } from "./src/panda-time-picker";
+
 export type PandaTimePickerI18nConfig = {
 	hourPlaceholder: string;
 	minutePlaceholder: string;

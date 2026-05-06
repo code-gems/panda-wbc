@@ -6,16 +6,14 @@ import { SuperItem } from "../types";
  * Get default internationalization config for component labels and placeholders
  * @returns {PandaSelectI18nConfig} default i18n config
  */
-export const getI18nConfig = (): PandaSelectI18nConfig => {
-	return {
-		allItems: "All",
-		selectAll: "Select All",
-		selectedItems: "Selected items",
-		reset: "Reset",
-		filterPlaceholder: ["Find..."],
-		noDataFound: "No data found",
-	};
-}
+export const getI18nConfig = (): PandaSelectI18nConfig => ({
+	allItems: "All",
+	selectAll: "Select All",
+	selectedItems: "Selected items",
+	reset: "Reset",
+	filterPlaceholder: ["Find..."],
+	noDataFound: "No data found",
+});
 
 /**
  * Get value of an item object
@@ -28,7 +26,7 @@ export const getItemValue = (
 	itemValuePath: string | null
 ): string | number | null => {
 	if (typeof item === "object") {
-		// check if item value patch are defined
+		// check if item value path are defined
 		if (itemValuePath == null) {
 			return item.value ?? "[no value defined]";
 		} else {
@@ -50,7 +48,7 @@ export const getItemLabel = (
 	itemLabelPath: string | null
 ): string => {
 	if (typeof item === "object") {
-		// check if item value patch are defined
+		// check if item label path are defined
 		if (itemLabelPath == null) {
 			return item.label ?? "[no label defined]";
 		} else {
