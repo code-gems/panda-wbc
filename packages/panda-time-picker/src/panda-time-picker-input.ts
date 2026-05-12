@@ -11,7 +11,7 @@ import { validKeyInput } from "./utils/utils";
 const DEFAULT_MAX_VALUE = 59;
 const DEFAULT_MIN_VALUE = 0;
 
-export class PandaTimeInput extends HTMLElement {
+export class PandaTimePickerInput extends HTMLElement {
 	/** Version of the component. */
 	public readonly version: string = "1.0.0";
 
@@ -633,11 +633,11 @@ export class PandaTimeInput extends HTMLElement {
 
 // Register the custom element
 if (!customElements.get("panda-time-input")) {
-	customElements.define("panda-time-input", PandaTimeInput);
+	customElements.define("panda-time-input", PandaTimePickerInput);
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		"panda-time-input": PandaTimeInput;
+		"panda-time-input": PandaTimePickerInput;
 	}
 }

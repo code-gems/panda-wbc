@@ -1,15 +1,17 @@
 // types
 import { PandaTimePickerI18nConfig, PandaTimePickerView, PandaTimePickerTimeFormat } from "../index";
 import { OnPasteEventDetail, RawValue, TimeObject } from "./types";
-import { PandaTimeInput } from "./panda-time-input";
 import { PandaIcon } from "@panda-wbc/panda-icon";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
+import { PandaTimePickerOverlay } from "./panda-time-picker-overlay";
+import { PandaTimePickerInput } from "./panda-time-picker-input";
 
 // styles
 import { styles, pickerButtonStylers, clearButtonStylers } from "./styles/time-picker-styles";
 
 // components
-import "./panda-time-input";
+import "./panda-time-picker-overlay";
+import "./panda-time-picker-input";
 import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-spinner";
 
@@ -27,13 +29,12 @@ import {
 } from "./utils/utils";
 
 // constants
-const DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"] as PandaTimePickerView[];
-const DEFAULT_TIME_FORMAT: PandaTimePickerTimeFormat = "12";
+import { DEFAULT_TIME_FORMAT, DEFAULT_TIME_PICKER_VIEW } from "./constants";
 
 export class PandaTimePicker extends HTMLElement {
 	/** Version of the component. */
 	public readonly version: string = "1.0.0";
-	
+
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
@@ -57,6 +58,8 @@ export class PandaTimePicker extends HTMLElement {
 			"show-clear-button",
 			"picker-icon",
 			"hide-picker-button",
+			"minute-step",
+			"second-step",
 		];
 	}
 
@@ -93,12 +96,12 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _theme!: string;
-	
+
 	/**
 	 * value
 	 * ---
 	 * Currently selected time value.
-	 * @type {string}
+	 * @type {string|number|null}
 	 * @default ""
 	 * @attr value
 	 * @public
@@ -177,7 +180,13 @@ export class PandaTimePicker extends HTMLElement {
 
 	set views(value: PandaTimePickerView[]) {
 		// if the new value is different from the current value, update the views
-		if (Array.isArray(value) &&!arraysEqual(this._views, value)) {
+		if (Array.isArray(value) && !arraysEqual(this._views, value)) {
+
+			console.log(`%c [PANDA TIME PICKER] set views:`,
+				"font-size: 16px; color: cyan; background: black;",
+				value
+			);
+
 			// if the value is a non-empty array, use it as the new views, otherwise use the default views
 			if (value.length > 0) {
 				this._views = [...value];
@@ -191,6 +200,19 @@ export class PandaTimePicker extends HTMLElement {
 
 	private _views!: PandaTimePickerView[];
 
+	/**
+	 * timeFormat
+	 * ---
+	 * The format in which the time value should be displayed.
+	 * @type {PandaTimePickerTimeFormat}
+	 * @default "24hr"
+	 * @attr time-format
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker time-format="12hr"></panda-time-picker>
+	 * ```
+	 */
 	get timeFormat() {
 		return this._timeFormat;
 	}
@@ -403,7 +425,7 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _readonly!: boolean;
-	
+
 	/**
 	 * working
 	 * ---
@@ -500,7 +522,7 @@ export class PandaTimePicker extends HTMLElement {
 			}
 		}
 	}
-	
+
 	private _spinnerType!: string;
 
 	/**
@@ -596,6 +618,73 @@ export class PandaTimePicker extends HTMLElement {
 
 	private _hidePickerButton!: boolean;
 
+	/**
+	 * minuteStep
+	 * ---
+	 * The step value for minutes in the time picker component. It determines the increment/decrement step for minutes when using the spinner or keyboard input.
+	 * For example, if minuteStep is set to 5, the minutes will increment/decrement in steps of 5 (e.g., 0, 5, 10, 15, etc.).
+	 * @type {number}
+	 * @default 1
+	 * @attr minute-step
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker minute-step="15"></panda-time-picker>
+	 * ```
+	 */
+	get minuteStep() {
+		return this._minuteStep;
+	}
+
+	set minuteStep(value: number) {
+		if (this._minuteStep !== value) {
+			// reflect to attribute
+			if (value == null || value <= 0 || isNaN(value) || !isFinite(value) || value > 59) {
+				this._minuteStep = 1;
+				this.removeAttribute("minute-step");
+			} else {
+				this._minuteStep = value;
+				this.setAttribute("minute-step", this._minuteStep + "");
+			}
+		}
+	}
+
+	private _minuteStep!: number;
+
+	/**
+	 * secondStep
+	 * ---
+	 * The step value for seconds in the time picker component. 
+	 * It determines the increment/decrement step for seconds when using the spinner or keyboard input.
+	 * For example, if secondStep is set to 5, the seconds will increment/decrement in steps of 5 (e.g., 0, 5, 10, 15, etc.).
+	 * @type {number}
+	 * @default 1
+	 * @attr second-step
+	 * @public
+	 * @example
+	 * ```html
+	 * <panda-time-picker second-step="15"></panda-time-picker>
+	 * ```
+	 */
+	get secondStep() {
+		return this._secondStep;
+	}
+
+	set secondStep(value: number) {
+		if (this._secondStep !== value) {
+			// reflect to attribute
+			if (value == null || value <= 0 || isNaN(value) || !isFinite(value) || value > 59) {
+				this._secondStep = 1;
+				this.removeAttribute("second-step");
+			} else {
+				this._secondStep = value;
+				this.setAttribute("second-step", this._secondStep + "");
+			}
+		}
+	}
+
+	private _secondStep!: number;
+
 	// private properties =============================================================================================
 	private _invalid!: boolean;
 	private _valueObject!: TimeObject;
@@ -606,17 +695,17 @@ export class PandaTimePicker extends HTMLElement {
 	// elements =======================================================================================================
 	private readonly _timePickerEl!: HTMLDivElement;
 	private readonly _inputFieldEl!: HTMLDivElement;
-	private readonly _hourInputEl!: PandaTimeInput;
-	private readonly _minuteInputEl!: PandaTimeInput;
-	private readonly _secondInputEl!: PandaTimeInput;
-	private readonly _periodInputEl!: PandaTimeInput;
+	private readonly _hourInputEl!: PandaTimePickerInput;
+	private readonly _minuteInputEl!: PandaTimePickerInput;
+	private readonly _secondInputEl!: PandaTimePickerInput;
+	private readonly _periodInputEl!: PandaTimePickerInput;
 	private readonly _separator1El!: HTMLSpanElement;
 	private readonly _separator2El!: HTMLSpanElement;
 	// spinner elements =======================================================
 	private readonly _spinnerContEl!: HTMLDivElement;
 	private readonly _spinnerEl!: PandaSpinner;
 	// overlay element
-	private readonly _overlayEl!: any; // PandaTimePickerOverlay; <---------- swap later for actual type when overlay is implemented
+	private _overlayEl!: PandaTimePickerOverlay;
 	// label /help text / error message element ===============================
 	private readonly _labelEl!: HTMLDivElement;
 	private readonly _helpTextEl!: HTMLDivElement;
@@ -665,12 +754,12 @@ export class PandaTimePicker extends HTMLElement {
 		this._labelEl = document.createElement("div");
 		this._labelEl.className = "label";
 		this._labelEl.part = "label";
-		
+
 		// create help text element
 		this._helpTextEl = document.createElement("div");
 		this._helpTextEl.className = "help-text";
 		this._helpTextEl.part = "help-text";
-		
+
 		// create error message element
 		this._errorMessageEl = document.createElement("div");
 		this._errorMessageEl.className = "error-message";
@@ -684,7 +773,7 @@ export class PandaTimePicker extends HTMLElement {
 		this._hourInputEl.dataset.timePart = "hours";
 		this._hourInputEl.inputMode = "numeric";
 		this._hourInputEl.max = 23;
-		
+
 		// create minute input element
 		this._minuteInputEl = document.createElement("panda-time-input");
 		this._minuteInputEl.placeholder = "MM";
@@ -899,6 +988,14 @@ export class PandaTimePicker extends HTMLElement {
 				this._views = _newValue.split(",").map((view: string) => view.trim()) as PandaTimePickerView[];
 				this._updateViews();
 				break;
+
+			case "minute-step":
+				this.minuteStep = parseInt(_newValue);
+				break;
+
+			case "second-step":
+				this.secondStep = parseInt(_newValue);
+				break;
 		}
 		// update component
 		this._updateComponent();
@@ -933,7 +1030,7 @@ export class PandaTimePicker extends HTMLElement {
 			} else {
 				this._helpTextEl.remove();
 			}
-			
+
 			// add or remove error message
 			if (this._errorMessage) {
 				this._errorMessageEl.textContent = this._errorMessage;
@@ -1121,10 +1218,21 @@ export class PandaTimePicker extends HTMLElement {
 			this._clearButtonContEl.classList.remove("without-picker-button");
 		}
 	}
-	
+
 	private _showOverlay(): void {
 		if (this._overlayEl == null && !this.disabled && !this.readonly && !this.working) {
+			// create overlay element
+			this._overlayEl = document.createElement("panda-time-picker-overlay");
+			
+			console.log(`%c [PANDA TIME PICKER] (_showOverlay) Creating overlay element:`,
+				"font-size: 16px; color: cyan; background: black;",
+				this._views
+			);
+			
+			this._overlayEl.views = this._views;
 
+			// show overlay
+			document.body.appendChild(this._overlayEl);
 		}
 	}
 
@@ -1165,12 +1273,12 @@ export class PandaTimePicker extends HTMLElement {
 	 * @param {number} index focus index of the element
 	 */
 	private _setFocus(index: number): void {
-		const inputEl = this._inputFieldEl.querySelector(`panda-time-input[data-focus-index="${index}"]`) as PandaTimeInput;
+		const inputEl = this._inputFieldEl.querySelector(`panda-time-input[data-focus-index="${index}"]`) as PandaTimePickerInput;
 		if (inputEl) {
 			inputEl.focus();
 		}
 	}
-	
+
 	/** Update mandatory flag */
 	private _evaluateMandatoryFlag(): void {
 		this._showMandatoryFlag = this._mandatory && !isValueObjectComplete(this._valueObject, this._views, this._timeFormat);
@@ -1299,7 +1407,7 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _onTimeInput = (event: Event): void => {
-		const timeInputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
+		const timeInputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimePickerInput;
 		// update value object based on the input change
 		this._updateValueObject(
 			timeInputEl.value as string,
@@ -1308,14 +1416,14 @@ export class PandaTimePicker extends HTMLElement {
 	}
 
 	private _onInputFocusNext = (event: Event): void => {
-		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
+		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimePickerInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 		// set focus to next input element
 		this._setFocus(focusIndex + 1);
 	}
 
 	private _onInputFocusPrev = (event: Event): void => {
-		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimeInput;
+		const inputEl = (event.target as HTMLElement).closest(".time-input") as PandaTimePickerInput;
 		const focusIndex = parseInt(inputEl.dataset.focusIndex ?? "0");
 
 		if (focusIndex > 0) {
@@ -1345,13 +1453,13 @@ export class PandaTimePicker extends HTMLElement {
 		this._minuteInputEl.value = null;
 		this._secondInputEl.value = null;
 		this._periodInputEl.value = null;
-		
+
 		this._triggerChangeEvent(true);
 		this._evaluateMandatoryFlag();
 		this._updateComponent();
 		this._setFocus(0);
 	}
-	
+
 	// handle picker button click to show time selection overlay
 	private _onPickerButtonClick = (event: Event): void => {
 		// prevent clicking parent container and triggering focus event on time picker element

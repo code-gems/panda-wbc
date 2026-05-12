@@ -1450,7 +1450,7 @@ export class PandaSelect extends HTMLElement {
 	private _showOverlay(): void {
 		// check if overlay element is already shown
 		if (this._overlayEl == null && !this._disabled && !this._working && !this._readonly) {
-			// show overlay
+			// initialize overlay element
 			this._overlayEl = document.createElement("panda-select-overlay");
 			this._overlayEl.items = this._parsedItems;
 			this._overlayEl.multiselect = this._multiselect;
@@ -1483,6 +1483,7 @@ export class PandaSelect extends HTMLElement {
 
 			// add event listeners
 			this._overlayEl.addEventListener("post-message", this._postMessageEvent);
+			// show overlay
 			document.body.appendChild(this._overlayEl);
 
 			// add rotate class from icon element

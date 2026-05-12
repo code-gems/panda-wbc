@@ -19,3 +19,8 @@ export type TimeObject = {
 export type OnPasteEventDetail = {
 	value: string;
 }
+
+export type Point = {
+	x: number;
+	y: number;
+}

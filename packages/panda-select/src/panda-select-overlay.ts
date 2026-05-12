@@ -26,11 +26,18 @@ import {
 } from "./utils/utils";
 
 export class PandaSelectOverlay extends HTMLElement {
+	/** Version of the component. */
+	public readonly version: string = "1.0.0";
+
 	// ================================================================================================================
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	// parentDetails =================================================================================================
+	/**
+	 * parentDetails
+	 * ---
+	 * Details of the parent element (panda-select) to which the overlay is attached.
+	 */
 	private _parentDetails!: ElementDetails;
 
 	get parentDetails() {
@@ -38,9 +45,7 @@ export class PandaSelectOverlay extends HTMLElement {
 	}
 
 	set parentDetails(details: ElementDetails) {
-		if (this._parentDetails !== details) {
-			this._parentDetails = details;
-		}
+		this._parentDetails = details;
 	}
 
 	// items ==========================================================================================================
@@ -212,9 +217,6 @@ export class PandaSelectOverlay extends HTMLElement {
 
 	// private properties =============================================================================================
 
-	/** Flag to indicate if the component is ready. */
-	private _ready!: boolean;
-
 	/** Flag to indicate if the close action should be prevented. */
 	private _preventClose!: boolean;
 
@@ -283,8 +285,7 @@ export class PandaSelectOverlay extends HTMLElement {
 		this._applyStyles();
 
 		// create component template
-		const template = document.createElement("template");
-		template.innerHTML = /*html*/`
+		this.shadowRoot!.innerHTML = /*html*/`
 			<div
 				id="overlay"
 				class="overlay"
@@ -309,6 +310,7 @@ export class PandaSelectOverlay extends HTMLElement {
 				</div>
 			</div>
 		`;
+
 		// create filter template
 		this._filterEl = document.createElement("div");
 		this._filterEl.className = "filter";
@@ -356,9 +358,6 @@ export class PandaSelectOverlay extends HTMLElement {
 		`;
 		this._calloutMessageEl = this._calloutEl.querySelector(".text") as HTMLDivElement;
 
-		// apply template
-		this.shadowRoot!.appendChild(template.content.cloneNode(true));
-
 		// initialize class properties
 		this._items = [];
 		this._preventClose = false;
@@ -371,7 +370,19 @@ export class PandaSelectOverlay extends HTMLElement {
 		this._initialPosition = null;
 		this._activeItemIndex = null;
 		this._itemCount = null;
-		this._ready = false;
+
+		// init event handlers
+		this._documentKeyDownEvent = this._onDocumentKeyDown.bind(this);
+		this._overlayTabKeyEvent = this._onOverlayTabKey.bind(this);
+		this._preventMouseEvent = this._onPreventMouseEvent.bind(this);
+		this._closeEvent = this._onClose.bind(this);
+		this._filterChangeEvent = this._onFilterChange.bind(this);
+		this._filterTabKeyEvent = this._onFilterTabKey.bind(this);
+		this._selectAllEvent = this._onSelectAll.bind(this);
+		this._selectAllTabKeyEvent = this._onSelectAllTabKey.bind(this);
+		this._resetEvent = this._onReset.bind(this);
+		this._resetTabKeyEvent = this._onResetTabKey.bind(this);
+		this._selectEvent = this._onSelect.bind(this);
 
 		// get template element handles
 		if (this.shadowRoot) {
@@ -384,38 +395,24 @@ export class PandaSelectOverlay extends HTMLElement {
 			// get buttons elements
 			this._selectAllBtnEl = this._buttonsEl.querySelector("#select-all-btn")!;
 			this._resetBtnEl = this._buttonsEl.querySelector("#reset-btn")!;
-
-			// init event handlers
-			this._documentKeyDownEvent = this._onDocumentKeyDown.bind(this);
-			this._overlayTabKeyEvent = this._onOverlayTabKey.bind(this);
-			this._preventMouseEvent = this._onPreventMouseEvent.bind(this);
-			this._closeEvent = this._onClose.bind(this);
-			this._filterChangeEvent = this._onFilterChange.bind(this);
-			this._filterTabKeyEvent = this._onFilterTabKey.bind(this);
-			this._selectAllEvent = this._onSelectAll.bind(this);
-			this._selectAllTabKeyEvent = this._onSelectAllTabKey.bind(this);
-			this._resetEvent = this._onReset.bind(this);
-			this._resetTabKeyEvent = this._onResetTabKey.bind(this);
-			this._selectEvent = this._onSelect.bind(this);
-
-			// add event listeners
-			window.addEventListener("resize", this._closeEvent);
-			document.addEventListener("keydown", this._documentKeyDownEvent);
-			this._overlayEl.addEventListener("click", this._closeEvent);
-			this._overlayEl.addEventListener("keydown", this._overlayTabKeyEvent);
-			this._dropdownEl.addEventListener("click", this._preventMouseEvent);
-			this._textFieldEl.addEventListener("on-input", this._filterChangeEvent);
-			this._textFieldEl.addEventListener("keydown", this._filterTabKeyEvent);
-			this._selectAllBtnEl.addEventListener("click", this._selectAllEvent);
-			this._selectAllBtnEl.addEventListener("keydown", this._selectAllTabKeyEvent);
-			this._resetBtnEl.addEventListener("click", this._resetEvent);
-			this._resetBtnEl.addEventListener("keydown", this._resetTabKeyEvent);
-			this._listEl.addEventListener("click", this._selectEvent);
 		}
 	}
 
 	connectedCallback(): void {
-		this._ready = true;
+		// add event listeners
+		window.addEventListener("resize", this._closeEvent);
+		document.addEventListener("keydown", this._documentKeyDownEvent);
+		this._overlayEl.addEventListener("click", this._closeEvent);
+		this._overlayEl.addEventListener("keydown", this._overlayTabKeyEvent);
+		this._dropdownEl.addEventListener("click", this._preventMouseEvent);
+		this._textFieldEl.addEventListener("on-input", this._filterChangeEvent);
+		this._textFieldEl.addEventListener("keydown", this._filterTabKeyEvent);
+		this._selectAllBtnEl.addEventListener("click", this._selectAllEvent);
+		this._selectAllBtnEl.addEventListener("keydown", this._selectAllTabKeyEvent);
+		this._resetBtnEl.addEventListener("click", this._resetEvent);
+		this._resetBtnEl.addEventListener("keydown", this._resetTabKeyEvent);
+		this._listEl.addEventListener("click", this._selectEvent);
+		// initial render
 		this._updateComponent();
 
 		// show selected element if not multiselect
@@ -441,7 +438,7 @@ export class PandaSelectOverlay extends HTMLElement {
 	}
 
 	private _updateComponent() {
-		if (this._ready) {
+		if (this.isConnected) {
 			// show/hide header container
 			if (this._showFilter || this._multiselect) {
 				this._headerEl.style.display = "flex";

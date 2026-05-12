@@ -6,7 +6,7 @@ import { styles } from "./styles/styles";
 
 // components
 import "@panda-wbc/panda-time-picker";
-import "@panda-wbc/panda-time-picker/lib/panda-time-input";
+import "@panda-wbc/panda-time-picker/lib/panda-time-picker-clock";
 
 // utils & config
 import { TemplateResult, html } from "lit";
@@ -139,6 +139,8 @@ export class ContentPage extends ContentPageTemplate {
 
 								</div>
 
+
+
 								<div class="col-3">
 									<panda-button>My Button</panda-button>
 								</div>
@@ -161,6 +163,13 @@ export class ContentPage extends ContentPageTemplate {
 									</panda-button>
 								</div>
 
+							</div>
+							<div class="row">
+								<div class="col-full">
+									<panda-time-picker-clock
+									
+									></panda-time-picker-clock>
+								</div>
 							</div>
 						</div>
 					</div>
