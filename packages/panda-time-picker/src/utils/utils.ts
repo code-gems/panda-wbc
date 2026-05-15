@@ -351,3 +351,27 @@ export const parseViewFromString = (value: string, views: PandaTimePickerView[])
 		? view
 		: views[0] || DEFAULT_TIME_PICKER_VIEW[0]; // default to the first view or predefined default view
 }
+
+/**
+ * Utility function to parse a string or number value into a valid step number for minutes or seconds.
+ * It validates that the parsed number is a positive integer between 1 and 59. If the input value is invalid, it defaults to 1.
+ * @param {string | number | null} value The string or number value to parse into a step number.
+ * @returns {number} The parsed step number or the default value of 1.
+ */
+export const parseStepFromValue = (value: string | number | null): number => {
+	// if the value is null or undefined, return the default step value
+	if (value == null) {
+		return 1; // default step value
+	}
+	// if the value is a number, validate it directly
+	if (typeof value === "number") {
+		return isNaN(value) || value <= 0 || !isFinite(value) || value > 59
+			? 1
+			: value;
+	}
+	// if the value is a string, parse it into a number and validate it
+	const parsedValue = parseInt(value, 10);
+	return isNaN(parsedValue) || parsedValue <= 0 || !isFinite(parsedValue) || parsedValue > 59
+		? 1
+		: parsedValue;
+}
