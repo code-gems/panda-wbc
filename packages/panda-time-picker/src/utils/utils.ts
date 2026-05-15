@@ -1,5 +1,6 @@
 // types
-import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat } from "../../index";
+import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../../index";
+import { DEFAULT_TIME_PICKER_VIEW } from "../constants";
 import { RawValue, TimeObject } from "../types";
 
 /**
@@ -317,4 +318,28 @@ export const validateTimeObject = (valueObject: TimeObject, views: string[], tim
 		}
 	}
 	return true;
+}
+
+/**
+ * Utility function to parse a comma-separated string of views into an array of PandaTimePickerView.
+ * If the input string is empty or invalid, it defaults to the predefined DEFAULT_TIME_PICKER_VIEW.
+ * @param {string} value The comma-separated string of views (e.g., "hours,minutes,seconds").
+ * @returns {PandaTimePickerView[]} An array of PandaTimePickerView.
+ */
+export const parseViewsFromAttribute = (value: string): PandaTimePickerView[] => {
+	return value.split(",").map((view) => view.trim()) as PandaTimePickerView[] || [...DEFAULT_TIME_PICKER_VIEW];
+}
+
+/**
+ * Utility function to parse a string value into a PandaTimePickerView based on the provided views.
+ * If the parsed view is not included in the provided views, it defaults to the first view in the array or a predefined default view.
+ * @param {string} value The string value to parse.
+ * @param {PandaTimePickerView[]} views The array of available views.
+ * @returns {PandaTimePickerView} The parsed view or a default view.
+ */
+export const parseViewFromString = (value: string, views: PandaTimePickerView[]): PandaTimePickerView => {
+	const view = value.trim() as PandaTimePickerView;
+	return views.includes(view)
+		? view
+		: views[0] || DEFAULT_TIME_PICKER_VIEW[0];
 }

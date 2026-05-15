@@ -19,6 +19,17 @@ export const styles = /*css*/`
 		fill: var(--panda-time-picker-clock-face-color, hsl(0deg 0% 92%));
 	}
 
+	.clock-scale {
+		fill: var(--panda-time-picker-clock-scale-color, hsl(0deg 0% 70%));
+		stroke: var(--panda-time-picker-clock-scale-color, hsl(0deg 0% 70%));
+		stroke-width: 3px;
+		stroke-linecap: round;
+	}
+
+	.clock-scale-dot {
+		fill: var(--panda-time-picker-clock-scale-color, hsl(0deg 0% 70%));
+	}
+
 	.clock-center {
 		fill: var(--panda-time-picker-clock-center-color, hsl(0deg 0% 50%));
 		transition: r 0.2s ease-out;
@@ -37,23 +48,74 @@ export const styles = /*css*/`
 		transform: translate(-48%, 24%);
 		font-size: var(--panda-time-picker-clock-value-font-size, 24px);
 		font-family: var(--panda-time-picker-clock-value-font-family, var(--panda-font-family, "Poppins"));
+		user-select: none;
+		transition: opacity 0.2s ease-out;
+		will-change: opacity;
 	}
 
 	.active .clock-value {
 		opacity: 1;
 	}
 
+	/* HOUR */
+	.hour-hand-group {
+		display: none;
+	}
 
+	.active-hour .hour-hand-group {
+		display: block;
+	}
 
+	.hour-hand {
+		stroke: var(--panda-time-picker-clock-hour-hand-color, hsl(0deg 0% 50%));
+		stroke-width: var(--panda-time-picker-clock-hour-hand-width, 4px);
+		transition: x2 0.2s ease-out, y2 0.2s ease-out;
+		will-change: x2, y2;
+	}
 
+	.active-hour .hour-hand {
+		stroke: var(--panda-time-picker-clock-hour-hand-active-color, hsl(0deg 0% 70%));
+	}
 
+	/* MINUTE */
+	.minute-hand-group {
+		display: none;
+	}
 
+	.active-minute .minute-hand-group {
+		display: block;
+	}
 
+	.minute-hand {
+		stroke: var(--panda-time-picker-clock-minute-hand-color, hsl(0deg 0% 50%));
+		stroke-width: var(--panda-time-picker-clock-minute-hand-width, 4px);
+		transition: x2 0.2s ease-out, y2 0.2s ease-out;
+		will-change: x2, y2;
+	}
 
+	.active-minute .minute-hand {
+		stroke: var(--panda-time-picker-clock-minute-hand-active-color, hsl(0deg 0% 70%));
+	}
 
+	/* SECOND */
+	.second-hand-group {
+		display: none;
+	}
 
+	.active-second .second-hand-group {
+		display: block;
+	}
 
+	.second-hand {
+		stroke: var(--panda-time-picker-clock-second-hand-color, hsl(0deg 0% 50%));
+		stroke-width: var(--panda-time-picker-clock-second-hand-width, 4px);
+		transition: x2 0.4s ease-out;
+		will-change: x2, y2;
+	}
 
+	.active-second .second-hand {
+		stroke: var(--panda-time-picker-clock-second-hand-active-color, hsl(0deg 0% 70%));
+	}
 
 	.input-field {
 		display: flex;

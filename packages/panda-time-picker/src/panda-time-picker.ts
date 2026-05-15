@@ -25,6 +25,7 @@ import {
 	getI18nConfig,
 	isValueObjectComplete,
 	parseTimeValue,
+	parseViewsFromAttribute,
 	validateTimeObject,
 } from "./utils/utils";
 
@@ -181,12 +182,6 @@ export class PandaTimePicker extends HTMLElement {
 	set views(value: PandaTimePickerView[]) {
 		// if the new value is different from the current value, update the views
 		if (Array.isArray(value) && !arraysEqual(this._views, value)) {
-
-			console.log(`%c [PANDA TIME PICKER] set views:`,
-				"font-size: 16px; color: cyan; background: black;",
-				value
-			);
-
 			// if the value is a non-empty array, use it as the new views, otherwise use the default views
 			if (value.length > 0) {
 				this._views = [...value];
@@ -935,6 +930,7 @@ export class PandaTimePicker extends HTMLElement {
 
 			case "value":
 				this._value = _newValue;
+				this._parseValue(_newValue);
 				break;
 
 			case "format":
@@ -985,7 +981,7 @@ export class PandaTimePicker extends HTMLElement {
 				break;
 
 			case "views":
-				this._views = _newValue.split(",").map((view: string) => view.trim()) as PandaTimePickerView[];
+				this._views = parseViewsFromAttribute(_newValue);
 				this._updateViews();
 				break;
 
@@ -1223,13 +1219,12 @@ export class PandaTimePicker extends HTMLElement {
 		if (this._overlayEl == null && !this.disabled && !this.readonly && !this.working) {
 			// create overlay element
 			this._overlayEl = document.createElement("panda-time-picker-overlay");
-			
-			console.log(`%c [PANDA TIME PICKER] (_showOverlay) Creating overlay element:`,
-				"font-size: 16px; color: cyan; background: black;",
-				this._views
-			);
-			
+			this._overlayEl.value = this._value;
 			this._overlayEl.views = this._views;
+			this._overlayEl.timeFormat = this._timeFormat;
+			this._overlayEl.i18n = this._i18n;
+			this._overlayEl.minuteStep = this._minuteStep;
+			this._overlayEl.secondStep = this._secondStep;
 
 			// show overlay
 			document.body.appendChild(this._overlayEl);

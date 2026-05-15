@@ -13,6 +13,8 @@ import {
 	validKeyInput,
 	arraysEqual,
 	validateTimeObject,
+	parseViewsFromAttribute,
+	parseViewFromString,
 } from "../src/utils/utils";
 
 // ====================================================================================================================
@@ -504,5 +506,81 @@ describe("validateTimeObject", () => {
 		// Only hours provided, minutes required
 		const obj = { hours: 5 } as any;
 		expect(validateTimeObject(obj, ["hours", "minutes"], "12")).toBe(false);
+	});
+});
+
+// ====================================================================================================================
+// parseViewsFromAttribute
+// ====================================================================================================================
+
+describe("parseViewsFromAttribute", () => {
+	it("should parse a single view", () => {
+		expect(parseViewsFromAttribute("hours")).toEqual(["hours"]);
+	});
+
+	it("should parse multiple comma-separated views", () => {
+		expect(parseViewsFromAttribute("hours,minutes,seconds")).toEqual(["hours", "minutes", "seconds"]);
+	});
+
+	it("should trim whitespace around view names", () => {
+		expect(parseViewsFromAttribute("hours, minutes , seconds")).toEqual(["hours", "minutes", "seconds"]);
+	});
+
+	it("should parse two views", () => {
+		expect(parseViewsFromAttribute("hours,minutes")).toEqual(["hours", "minutes"]);
+	});
+
+	it("should handle a single view with surrounding whitespace", () => {
+		expect(parseViewsFromAttribute("  seconds  ")).toEqual(["seconds"]);
+	});
+
+	it("should return default views when input is an empty string", () => {
+		// DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"]
+		expect(parseViewsFromAttribute("")).toEqual(["hours", "minutes"]);
+	});
+
+	it("should return default views when input is only whitespace", () => {
+		// DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"]
+		expect(parseViewsFromAttribute("   ")).toEqual(["hours", "minutes"]);
+	});
+
+	it("should return default views when input is invalid", () => {
+		// DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"]
+		expect(parseViewsFromAttribute("invalid")).toEqual(["hours", "minutes"]);
+	});
+});
+
+// ====================================================================================================================
+// parseView
+// ====================================================================================================================
+
+describe("parseViewFromString", () => {
+	const views = ["hours", "minutes", "seconds"] as any[];
+
+	it("should return the view when it is included in the views array", () => {
+		expect(parseViewFromString("hours", views)).toBe("hours");
+		expect(parseViewFromString("minutes", views)).toBe("minutes");
+		expect(parseViewFromString("seconds", views)).toBe("seconds");
+	});
+
+	it("should trim whitespace from the input value", () => {
+		expect(parseViewFromString("  hours  ", views)).toBe("hours");
+	});
+
+	it("should return the first view when the value is not in the views array", () => {
+		expect(parseViewFromString("invalid", views)).toBe("hours");
+	});
+
+	it("should return the first view when value is an empty string", () => {
+		expect(parseViewFromString("", views)).toBe("hours");
+	});
+
+	it("should fall back to DEFAULT_TIME_PICKER_VIEW[0] when views array is empty", () => {
+		// DEFAULT_TIME_PICKER_VIEW = ["hours", "minutes"]
+		expect(parseViewFromString("minutes", [])).toBe("hours");
+	});
+
+	it("should fall back to DEFAULT_TIME_PICKER_VIEW[0] when views is empty and value is invalid", () => {
+		expect(parseViewFromString("invalid", [])).toBe("hours");
 	});
 });

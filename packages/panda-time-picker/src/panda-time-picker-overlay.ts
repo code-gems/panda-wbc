@@ -1,5 +1,5 @@
 // types
-import { PandaTimePickerI18nConfig, PandaTimePickerView } from "../index";
+import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../index";
 import { RawValue } from "./types";
 
 // styles
@@ -12,6 +12,7 @@ import "./panda-time-picker-clock";
 import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
 import { getI18nConfig } from "./utils/utils";
 import { PandaTimePickerClock } from "./panda-time-picker-clock";
+import { DEFAULT_TIME_PICKER_VIEW } from "./constants";
 
 export class PandaTimePickerOverlay extends HTMLElement {
 	/** Version of the component. */
@@ -21,76 +22,44 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
-	/**
-	 * value
-	 * ---
-	 * Currently selected time value.
-	 * @type {string|number|null}
-	 * @default ""
-	 * @attr value
-	 * @public
-	 * @example
-	 * acceptable input formats:
-	 * 1. HH:MM eg. 14:30
-	 * 2. HH:MM:SS eg. 14:30:45
-	 * 3. HH:MM AA eg. 02:30 PM
-	 * 4. HH:MM:SS AA eg. 02:30:45 PM
-	 * 5. X eg. 1672531199000 (UNIX timestamp in milliseconds)
-	 * ```html
-	 * <panda-time-picker value="14:30"></panda-time-picker>
-	 * <panda-time-picker value="02:30 PM"></panda-time-picker>
-	 * ```
-	 */
 	get value() {
 		return this._value;
 	}
 
 	set value(rawValue: RawValue) {
 		if (this._value !== rawValue) {
-			// this._parseValue(rawValue);
+			this._value = rawValue;
 		}
 	}
 
 	private _value!: RawValue;
 	
-	/**
-	 * view
-	 * ---
-	 * The view of the time picker. It determines which time units are displayed and can be selected by the user.
-	 * @type {PandaTimePickerView[]}
-	 * @attr views
-	 * @default ["hours", "minutes"]
-	 * @attr view
-	 * @public
-	 * @example
-	 * ```html
-	 * <panda-time-picker views="hours, minutes, seconds"></panda-time-picker>
-	 * ```
-	 */
+	get timeFormat() {
+		return this._timeFormat;
+	}
+
+	set timeFormat(value: PandaTimePickerTimeFormat) {
+		if (this._timeFormat !== value) {
+			this._timeFormat = value;
+			// update component
+			this._updateComponent();
+		}
+	}
+
+	private _timeFormat!: PandaTimePickerTimeFormat;
+
 	get views() {
 		return this._views;
 	}
 
 	set views(value: PandaTimePickerView[]) {
 		this._views = [...value];
+		// update component
+		this._updateComponent();
 	}
 
 	private _views!: PandaTimePickerView[];
 	
-	/**
-	 * minuteStep
-	 * ---
-	 * The step value for minutes in the time picker component. It determines the increment/decrement step for minutes when using the spinner or keyboard input.
-	 * For example, if minuteStep is set to 5, the minutes will increment/decrement in steps of 5 (e.g., 0, 5, 10, 15, etc.).
-	 * @type {number}
-	 * @default 1
-	 * @attr minute-step
-	 * @public
-	 * @example
-	 * ```html
-	 * <panda-time-picker minute-step="15"></panda-time-picker>
-	 * ```
-	 */
 	get minuteStep() {
 		return this._minuteStep;
 	}
@@ -98,26 +67,13 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	set minuteStep(value: number) {
 		if (this._minuteStep !== value) {
 			this._minuteStep = value;
+			// update component
+			this._updateComponent();
 		}
 	}
 
 	private _minuteStep!: number;
 
-	/**
-	 * secondStep
-	 * ---
-	 * The step value for seconds in the time picker component. 
-	 * It determines the increment/decrement step for seconds when using the spinner or keyboard input.
-	 * For example, if secondStep is set to 5, the seconds will increment/decrement in steps of 5 (e.g., 0, 5, 10, 15, etc.).
-	 * @type {number}
-	 * @default 1
-	 * @attr second-step
-	 * @public
-	 * @example
-	 * ```html
-	 * <panda-time-picker second-step="15"></panda-time-picker>
-	 * ```
-	 */
 	get secondStep() {
 		return this._secondStep;
 	}
@@ -125,25 +81,13 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	set secondStep(value: number) {
 		if (this._secondStep !== value) {
 			this._secondStep = value;
+			// update component
+			this._updateComponent();
 		}
 	}
 
 	private _secondStep!: number;
 
-	/**
-	 * i18n
-	 * ---
-	 * Internationalization (i18n) configuration for the component. 
-	 * It allows you to customize the display of time values based on different locales and preferences.
-	 * The i18n configuration object can have the following properties:
-	 * - hh: A string representing the hour format (e.g., "HH" for 24-hour format or "hh" for 12-hour format).
-	 * - mm: A string representing the minute format (e.g., "MM").
-	 * - ss: A string representing the second format (e.g., "SS").
-	 * - am: A string representing the ante meridiem (AM) designator (e.g., "AM").
-	 * - pm: A string representing the post meridiem (PM) designator (e.g., "PM").
-	 * @type {PandaTimePickerI18nConfig}
-	 * @default { hh: "HH", mm: "MM", ss: "SS", am: "AM", pm: "PM" }
-	 */
 	get i18n() {
 		return this._i18n;
 	}
@@ -154,6 +98,8 @@ export class PandaTimePickerOverlay extends HTMLElement {
 				...getI18nConfig(),
 				...value,
 			};
+			// update component
+			this._updateComponent();
 		}
 	}
 
@@ -196,6 +142,11 @@ export class PandaTimePickerOverlay extends HTMLElement {
 		applyStyles(styles, this.shadowRoot);
 
 		// initialize class properties
+		this._value = null;
+		this._timeFormat = "24";
+		this._views = [...DEFAULT_TIME_PICKER_VIEW];
+		this._minuteStep = 1;
+		this._secondStep = 1;
 		this._i18n = getI18nConfig();
 
 		// init event handlers
@@ -228,9 +179,11 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	private _updateComponent(): void {
 		if (this.isConnected) {
 			// update component based on current properties
+			this._clockEl.value = this._value;
 			this._clockEl.views = this._views;
 			this._clockEl.minuteStep = this._minuteStep;
 			this._clockEl.secondStep = this._secondStep;
+			this._clockEl.timeFormat = this._timeFormat;
 			this._clockEl.i18n = this._i18n;
 		}
 	}
