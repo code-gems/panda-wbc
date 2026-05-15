@@ -171,28 +171,52 @@ export const parseTimeValue = (value: RawValue, timeFormat: string): { value: Ra
 			},
 		};
 	} else if (typeof value === "string") {
-		let [time, period] = value.split(" ");
-		let [hours, minutes, seconds] = time.split(":").map(Number);
-		// convert hours to 12-hour format if timeFormat is "12"
-		if (timeFormat === "12") {
-			if (hours > 12) {
-				hours = hours % 12 || 12; // convert to 12-hour format
-				period = "pm";
-			} else {
-				period = "am";
-			}
+		const normalizedValue = value.trim();
+		const matches = normalizedValue.match(/^(\d{1,2})(?::(\d{1,2}))?(?::(\d{1,2}))?\s*([aApP][mM]?)?$/);
+
+		let hours = 0;
+		let minutes = 0;
+		let seconds = 0;
+		let period: string | null = null;
+
+		if (matches) {
+			hours = Number(matches[1]);
+			minutes = matches[2] != null ? Number(matches[2]) : 0;
+			seconds = matches[3] != null ? Number(matches[3]) : 0;
+			period = matches[4] ?? null;
+		} else {
+			const [time, rawPeriod] = normalizedValue.split(/\s+/);
+			const [parsedHours, parsedMinutes, parsedSeconds] = (time ?? "").split(":").map(Number);
+			hours = Number.isNaN(parsedHours) ? 0 : parsedHours;
+			minutes = Number.isNaN(parsedMinutes) ? 0 : parsedMinutes;
+			seconds = Number.isNaN(parsedSeconds) ? 0 : parsedSeconds;
+			period = rawPeriod ?? null;
 		}
-		// if time format is 12-hour and period is PM and hours is less than 12, convert hours to 24-hour format by adding 12
-		if (timeFormat === "24" && period === "pm" && hours < 12) {
-			hours += 12;
+
+		const parsedPeriod = parseTimePeriod(period);
+		const originalHours = hours;
+
+		if (timeFormat === "24") {
+			if (parsedPeriod === "pm" && hours < 12) {
+				hours += 12;
+			}
+			if (parsedPeriod === "am" && hours === 12) {
+				hours = 0;
+			}
+			period = hours >= 12 ? "pm" : "am";
+		} else {
+			if (hours > 12) {
+				hours = hours % 12 || 12;
+			}
+			period = parsedPeriod ?? (originalHours >= 12 ? "pm" : "am");
 		}
 
 		return {
 			value,
 			valueObject: {
-				hours: hours || 0,
-				minutes: minutes || 0,
-				seconds: seconds || 0,
+				hours,
+				minutes,
+				seconds,
 				period: parseTimePeriod(period),
 			},
 		};

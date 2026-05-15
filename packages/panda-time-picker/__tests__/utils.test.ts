@@ -231,16 +231,14 @@ describe("parseTimeValue", () => {
 		expect(isNaN(result.valueObject.minutes as number)).toBe(true);
 	});
 
-	it("should parse HH:MM:SS AA string in 12h format (hours=12 maps to am due to >12 check)", () => {
-		// When timeFormat is '12' and hours == 12, the `hours > 12` branch is false,
-		// so the code overwrites the original period with 'AM', resulting in period = 'am'.
+	it("should parse HH:MM:SS AA string in 12h format and preserve provided period", () => {
 		const result = parseTimeValue("12:30:45 pm", "12");
 		expect(result.value).toBe("12:30:45 pm");
 		expect(result.valueObject).toEqual({
 			hours: 12,
 			minutes: 30,
 			seconds: 45,
-			period: "am",
+			period: "pm",
 		});
 	});
 
