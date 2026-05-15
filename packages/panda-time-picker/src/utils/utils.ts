@@ -327,7 +327,15 @@ export const validateTimeObject = (valueObject: TimeObject, views: string[], tim
  * @returns {PandaTimePickerView[]} An array of PandaTimePickerView.
  */
 export const parseViewsFromAttribute = (value: string): PandaTimePickerView[] => {
-	return value.split(",").map((view) => view.trim()) as PandaTimePickerView[] || [...DEFAULT_TIME_PICKER_VIEW];
+	const validViews: PandaTimePickerView[] = ["hours", "minutes", "seconds"];
+	const parsedViews = value
+		.split(",")
+		.map((view) => view.trim())
+		.filter((view): view is PandaTimePickerView => validViews.includes(view as PandaTimePickerView));
+
+	return parsedViews.length > 0
+		? parsedViews
+		: [...DEFAULT_TIME_PICKER_VIEW]; // default to predefined views if no valid views are parsed
 }
 
 /**
@@ -341,5 +349,5 @@ export const parseViewFromString = (value: string, views: PandaTimePickerView[])
 	const view = value.trim() as PandaTimePickerView;
 	return views.includes(view)
 		? view
-		: views[0] || DEFAULT_TIME_PICKER_VIEW[0];
+		: views[0] || DEFAULT_TIME_PICKER_VIEW[0]; // default to the first view or predefined default view
 }

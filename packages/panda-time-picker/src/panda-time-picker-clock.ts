@@ -6,7 +6,7 @@ import { Point, RawValue, TimeObject } from "./types";
 import { styles } from "./styles/time-picker-clock-styles";
 
 // utils
-import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
+import { applyStyles, parseNumberAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
 import { arraysEqual, getI18nConfig, parseTimeValue, parseViewFromString, parseViewsFromAttribute } from "./utils/utils";
 
 // constants
@@ -438,6 +438,14 @@ export class PandaTimePickerClock extends HTMLElement {
 			
 			case "selected-view":
 				this._selectedView = parseViewFromString(_newValue, this._views);
+				break;
+
+			case "minute-step":
+				this._minuteStep = parseNumberAttribute(_newValue, 1) as number;
+				break;
+
+			case "second-step":
+				this._secondStep = parseNumberAttribute(_newValue, 1) as number;
 				break;
 		}
 
