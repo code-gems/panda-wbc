@@ -15,6 +15,7 @@ import {
 	validateTimeObject,
 	parseViewsFromAttribute,
 	parseViewFromString,
+	parseStepFromValue,
 } from "../src/utils/utils";
 
 // ====================================================================================================================
@@ -551,7 +552,7 @@ describe("parseViewsFromAttribute", () => {
 });
 
 // ====================================================================================================================
-// parseView
+// parseViewFromString
 // ====================================================================================================================
 
 describe("parseViewFromString", () => {
@@ -582,5 +583,52 @@ describe("parseViewFromString", () => {
 
 	it("should fall back to DEFAULT_TIME_PICKER_VIEW[0] when views is empty and value is invalid", () => {
 		expect(parseViewFromString("invalid", [])).toBe("hours");
+	});
+});
+
+// ====================================================================================================================
+// parseStepFromValue
+// ====================================================================================================================
+
+describe("parseStepFromValue", () => {
+	it("should return 1 for null", () => {
+		expect(parseStepFromValue(null)).toBe(1);
+	});
+
+	it("should return the same number for valid numeric step values", () => {
+		expect(parseStepFromValue(1)).toBe(1);
+		expect(parseStepFromValue(5)).toBe(5);
+		expect(parseStepFromValue(59)).toBe(59);
+	});
+
+	it("should return 1 for invalid numeric values", () => {
+		expect(parseStepFromValue(0)).toBe(1);
+		expect(parseStepFromValue(-1)).toBe(1);
+		expect(parseStepFromValue(60)).toBe(1);
+		expect(parseStepFromValue(Number.NaN)).toBe(1);
+		expect(parseStepFromValue(Number.POSITIVE_INFINITY)).toBe(1);
+		expect(parseStepFromValue(Number.NEGATIVE_INFINITY)).toBe(1);
+	});
+
+	it("should parse valid integer strings", () => {
+		expect(parseStepFromValue("1")).toBe(1);
+		expect(parseStepFromValue("10")).toBe(10);
+		expect(parseStepFromValue("59")).toBe(59);
+	});
+
+	it("should return 1 for invalid strings", () => {
+		expect(parseStepFromValue("")).toBe(1);
+		expect(parseStepFromValue("abc")).toBe(1);
+		expect(parseStepFromValue("0")).toBe(1);
+		expect(parseStepFromValue("-5")).toBe(1);
+		expect(parseStepFromValue("60")).toBe(1);
+	});
+
+	it("should parse strings with surrounding whitespace", () => {
+		expect(parseStepFromValue(" 7 ")).toBe(7);
+	});
+
+	it("should follow parseInt behavior for mixed strings", () => {
+		expect(parseStepFromValue("5px")).toBe(5);
 	});
 });

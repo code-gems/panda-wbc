@@ -7,7 +7,14 @@ import { styles } from "./styles/time-picker-clock-styles";
 
 // utils
 import { applyStyles, parseNumberAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
-import { arraysEqual, getI18nConfig, parseTimeValue, parseViewFromString, parseViewsFromAttribute } from "./utils/utils";
+import {
+	arraysEqual,
+	getI18nConfig,
+	parseStepFromValue,
+	parseTimeValue,
+	parseViewFromString,
+	parseViewsFromAttribute,
+} from "./utils/utils";
 
 // constants
 import { DEFAULT_TIME_PICKER_VIEW, CLOCK_RADIUS } from "./constants";
@@ -171,12 +178,12 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	set minuteStep(value: number) {
 		if (this._minuteStep !== value) {
+			// validate and parse the value
+			this._minuteStep = parseStepFromValue(value);
 			// reflect to attribute
-			if (value == null || value <= 0 || isNaN(value) || !isFinite(value) || value > 59) {
-				this._minuteStep = 1;
+			if (this._minuteStep === 1) {
 				this.removeAttribute("minute-step");
 			} else {
-				this._minuteStep = value;
 				this.setAttribute("minute-step", this._minuteStep + "");
 			}
 		}
@@ -205,12 +212,12 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	set secondStep(value: number) {
 		if (this._secondStep !== value) {
+			// validate and parse the value
+			this._secondStep = parseStepFromValue(value);
 			// reflect to attribute
-			if (value == null || value <= 0 || isNaN(value) || !isFinite(value) || value > 59) {
-				this._secondStep = 1;
+			if (this._secondStep === 1) {
 				this.removeAttribute("second-step");
 			} else {
-				this._secondStep = value;
 				this.setAttribute("second-step", this._secondStep + "");
 			}
 		}
@@ -441,11 +448,11 @@ export class PandaTimePickerClock extends HTMLElement {
 				break;
 
 			case "minute-step":
-				this._minuteStep = parseNumberAttribute(_newValue, 1) as number;
+				this._minuteStep = parseStepFromValue(_newValue);
 				break;
 
 			case "second-step":
-				this._secondStep = parseNumberAttribute(_newValue, 1) as number;
+				this._secondStep = parseStepFromValue(_newValue);
 				break;
 		}
 
