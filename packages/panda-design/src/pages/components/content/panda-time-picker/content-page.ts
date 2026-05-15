@@ -167,7 +167,7 @@ export class ContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-full">
 									<panda-time-picker-clock
-									
+										.value="${this._value}"
 									></panda-time-picker-clock>
 								</div>
 							</div>

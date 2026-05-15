@@ -177,13 +177,13 @@ export const parseTimeValue = (value: RawValue, timeFormat: string): { value: Ra
 		if (timeFormat === "12") {
 			if (hours > 12) {
 				hours = hours % 12 || 12; // convert to 12-hour format
-				period = "PM";
+				period = "pm";
 			} else {
-				period = "AM";
+				period = "am";
 			}
 		}
 		// if time format is 12-hour and period is PM and hours is less than 12, convert hours to 24-hour format by adding 12
-		if (timeFormat === "24" && period === "PM" && hours < 12) {
+		if (timeFormat === "24" && period === "pm" && hours < 12) {
 			hours += 12;
 		}
 

@@ -53,14 +53,13 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	set value(value: RawValue) {
 		if (this._value !== value) {
-			this._value = value;
-			// this.setAttribute("value", this._value); // reflect to attribute
+			this._parseValue(value);
 			this._updateComponent();
 		}
 	}
 
 	private _value!: RawValue;
-	
+
 	/**
 	 * timeFormat
 	 * ---
@@ -80,7 +79,7 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	set timeFormat(value: PandaTimePickerTimeFormat) {
 		if (this._timeFormat !== value) {
-			this._timeFormat = value;
+			this._timeFormat = value === "24" ? "24" : "12";
 			// reflect to attribute
 			if (value) {
 				this.setAttribute("time-format", value);
@@ -284,6 +283,7 @@ export class PandaTimePickerClock extends HTMLElement {
 	private readonly _separator2El!: HTMLSpanElement;
 
 	// events =========================================================================================================
+	private readonly _togglePeriodEvent!: EventListener;
 	private readonly _mouseMoveEvent!: EventListener;
 	private readonly _mouseDownEvent!: EventListener;
 	private readonly _mouseUpEvent!: EventListener;
@@ -361,13 +361,12 @@ export class PandaTimePickerClock extends HTMLElement {
 
 		// create period input element
 		this._periodInputEl = document.createElement("div");
-		this._periodInputEl.innerHTML = `
-			<span class="period-am" part="period-am">AM</span>
-			<span class="period-pm" part="period-pm">PM</span>
-		`;
 		this._periodInputEl.className = "toggle-period";
 		this._periodInputEl.part = "toggle-period";
-		this._periodInputEl.dataset.timePart = "period";
+		this._periodInputEl.innerHTML = `
+			<span class="period period-am" part="period-am" data-value="am">AM</span>
+			<span class="period period-pm" part="period-pm" data-value="pm">PM</span>
+		`;
 
 		// create separator element
 		this._separator1El = document.createElement("span");
@@ -387,6 +386,7 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._timeFormat = "12";
 
 		// initialize event binders
+		this._togglePeriodEvent = this._onTogglePeriod.bind(this);
 		this._mouseDownEvent = this._onMouseDown.bind(this);
 		this._mouseMoveEvent = this._onMouseMove.bind(this);
 		this._mouseUpEvent = this._onMouseUp.bind(this);
@@ -409,6 +409,7 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	connectedCallback() {
 		// attach event listeners
+		this._periodInputEl.addEventListener("click", this._togglePeriodEvent);
 		this._clockEl.addEventListener("mousedown", this._mouseDownEvent);
 		this._clockEl.addEventListener("mousemove", this._mouseMoveEvent);
 		document.addEventListener("mouseup", this._mouseUpEvent);
@@ -421,6 +422,7 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	disconnectedCallback() {
 		// detach event listeners
+		this._periodInputEl.removeEventListener("click", this._togglePeriodEvent);
 		this._clockEl.removeEventListener("mousedown", this._mouseDownEvent);
 		this._clockEl.removeEventListener("mousemove", this._mouseMoveEvent);
 		document.removeEventListener("mouseup", this._mouseUpEvent);
@@ -435,6 +437,12 @@ export class PandaTimePickerClock extends HTMLElement {
 		switch (_name) {
 			case "value":
 				this._value = _newValue;
+				this._parseValue(this._value);
+				break;
+
+			case "time-format":
+				this._timeFormat = _newValue === "24" ? "24" : "12";
+				this._updateViews();
 				break;
 
 			case "views":
@@ -442,7 +450,7 @@ export class PandaTimePickerClock extends HTMLElement {
 				this._selectedView = this._views[0];
 				this._updateViews();
 				break;
-			
+
 			case "selected-view":
 				this._selectedView = parseViewFromString(_newValue, this._views);
 				break;
@@ -467,7 +475,13 @@ export class PandaTimePickerClock extends HTMLElement {
 	/** Renders the badge */
 	private _updateComponent() {
 		if (this.isConnected) {
-
+			if (this._valueObject.period === "am") {
+				this._periodInputEl.classList.add("am");
+				this._periodInputEl.classList.remove("pm");
+			} else {
+				this._periodInputEl.classList.remove("am");
+				this._periodInputEl.classList.add("pm");
+			}
 		}
 	}
 
@@ -517,24 +531,22 @@ export class PandaTimePickerClock extends HTMLElement {
 			} else {
 				this._secondInputEl.remove();
 			}
-			
+
 			// check if view contains hours and if time format is 12 hours, then show period input
 			if (this._views.includes("hours") && this._timeFormat === "12") {
 				this._inputFieldEl.appendChild(this._periodInputEl);
 			} else {
 				this._periodInputEl.remove();
 			}
-
-			// update clock view based on enabled views
-
 		}
 	}
 
 	// ================================================================================================================
 	// HELPERS ========================================================================================================
 	// ================================================================================================================
-	
+
 	private _parseValue(rawValue: RawValue): void {
+
 		const {
 			value,
 			valueObject,
@@ -542,6 +554,20 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._value = value;
 		this._valueObject = valueObject;
 
+		console.log(
+			`%c 🧪 [CLOCK] (_parseValue) ${rawValue}`,
+			"font-size: 24px; color: limegreen; background: black; padding: 5px; border-radius: 10px;",
+			this._valueObject
+		);
+
+		if (value != null) {
+			// update time input fields based on the new value object
+			this._hourInputEl.innerText = this._valueObject.hours != null ? this._valueObject.hours.toString().padStart(2, "0") : "";
+			this._minuteInputEl.innerText = this._valueObject.minutes != null ? this._valueObject.minutes.toString().padStart(2, "0") : "";
+			this._secondInputEl.innerText = this._valueObject.seconds != null ? this._valueObject.seconds.toString().padStart(2, "0") : "";
+		}
+		// update component
+		this._updateComponent();
 	}
 
 	private _drawClockScale(): void {
@@ -564,7 +590,7 @@ export class PandaTimePickerClock extends HTMLElement {
 			dot.setAttribute("class", "clock-scale-dot");
 			this._clockScaleGroupEl.appendChild(dot);
 		}
-		
+
 		for (let i = 0; i < 12; i++) {
 			const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
 			const x1 = CLOCK_RADIUS + 110 * Math.cos(angle);
@@ -609,8 +635,15 @@ export class PandaTimePickerClock extends HTMLElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onMouseDown(event: Event): void {
+	private _onTogglePeriod(event: Event): void {
+		const periodEl = (event.target as HTMLElement).closest(".period") as HTMLDivElement;
+		if (periodEl) {
+			this._valueObject.period = periodEl.dataset.value as "am" | "pm";
+			this._updateComponent();
+		}
+	}
 
+	private _onMouseDown(event: Event): void {
 		this._dragged = true;
 		if (this._selectedView === "hours") {
 			this._clockEl.classList.add("active-hour");

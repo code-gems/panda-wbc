@@ -254,11 +254,18 @@ describe("parseTimeValue", () => {
 		});
 	});
 
-	it("should parse HH:MM string without seconds in 12h format", () => {
+	it("should parse HH:MM string without seconds in 12h format (AM)", () => {
 		const result = parseTimeValue("09:45 am", "12");
 		expect(result.valueObject.hours).toBe(9);
 		expect(result.valueObject.minutes).toBe(45);
 		expect(result.valueObject.period).toBe("am");
+	});
+
+	it("should parse HH:MM string without seconds in 12h format (PM)", () => {
+		const result = parseTimeValue("09:45 pm", "12");
+		expect(result.valueObject.hours).toBe(9);
+		expect(result.valueObject.minutes).toBe(45);
+		expect(result.valueObject.period).toBe("pm");
 	});
 
 	it("should parse HH:MM:SS string in 24h format", () => {
@@ -274,6 +281,19 @@ describe("parseTimeValue", () => {
 		expect(result.valueObject.minutes).toBe(30);
 	});
 
+	it("should convert 24h time with AM period to 24h hours (e.g. 02:30 AM -> 02)", () => {
+		const result = parseTimeValue("02:30 AM", "24");
+		expect(result.valueObject.hours).toBe(2);
+		expect(result.valueObject.minutes).toBe(30);
+	});
+
+	it("should convert 24h time with invalid period to correct period (e.g. 17:45 AM -> 17)", () => {
+		const result = parseTimeValue("17:45 AM", "24");
+		expect(result.valueObject.hours).toBe(17);
+		expect(result.valueObject.minutes).toBe(45);
+		expect(result.valueObject.period).toBe("pm");
+	});
+
 	it("should convert >12h string to 12h format when timeFormat is '12'", () => {
 		// "14:00" in 12h format should become hours=2, period="PM"
 		const result = parseTimeValue("14:00", "12");
@@ -284,6 +304,16 @@ describe("parseTimeValue", () => {
 	it("should return empty TimeObject for an invalid (non-numeric, non-time) object value", () => {
 		const result = parseTimeValue({ hours: 1 } as any, "12");
 		expect(result.valueObject).toEqual(getEmptyTimeObject());
+	});
+
+	it("should convert 12h time string with provided period without space separation (e.g. 02:30PM -> 02:30 PM)", () => {
+		const result = parseTimeValue("02:30PM", "12");
+		expect(result.valueObject).toEqual({
+			hours: 2,
+			minutes: 30,
+			seconds: 0,
+			period: "pm",
+		});
 	});
 });
 

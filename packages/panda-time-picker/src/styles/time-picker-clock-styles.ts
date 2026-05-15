@@ -162,6 +162,12 @@ export const styles = /*css*/`
 
 	.input-field .toggle-period .period-am,
 	.input-field .toggle-period .period-pm {
-		padding: var(--panda-time-picker-clock-input-padding, var(--panda-gap-s, 5px));
+		padding-inline: var(--panda-time-picker-clock-input-padding, var(--panda-gap-s, 5px));
+	}
+
+	.am .period-am,
+	.pm .period-pm {
+		color: var(--panda-time-picker-clock-period-am-color, hsl(120deg 100% 20%));
+		background-color: var(--panda-time-picker-clock-period-am-background-color, hsl(120deg 100% 80%));
 	}
 `;
