@@ -168,15 +168,14 @@ export class ContentPage extends ContentPageTemplate {
 								<div class="col-6">
 									<panda-time-picker-clock
 										.value="${this._value}"
-										time-format="24"
 										views="hours,minutes,seconds"
 									></panda-time-picker-clock>
 								</div>
 								<div class="col-6">
-									<panda-time-picker-clockk
+									<panda-time-picker-clock
 										.value="${this._value}"
 										views="hours"
-									></panda-time-picker-clockk>
+									></panda-time-picker-clock>
 								</div>
 							</div>
 						</div>
