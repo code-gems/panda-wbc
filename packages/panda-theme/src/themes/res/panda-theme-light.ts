@@ -253,6 +253,17 @@ export const pandaThemeLight = /*css*/ `
 		--panda-gap-l: 15px;
 		--panda-gap-xl: 30px;
 
+		--panda-gap: 5px;
+		--panda-gap-2: calc(var(--panda-gap) * 2);
+		--panda-gap-3: calc(var(--panda-gap) * 3);
+		--panda-gap-4: calc(var(--panda-gap) * 4);
+		--panda-gap-5: calc(var(--panda-gap) * 5);
+		--panda-gap-6: calc(var(--panda-gap) * 6);
+		--panda-gap-7: calc(var(--panda-gap) * 7);
+		--panda-gap-8: calc(var(--panda-gap) * 8);
+		--panda-gap-9: calc(var(--panda-gap) * 9);
+		--panda-gap-10: calc(var(--panda-gap) * 10);
+
 		--panda-padding-xs: var(--panda-gap-xs);
 		--panda-padding-s: var(--panda-gap-s);
 		--panda-padding-m: var(--panda-gap-m);

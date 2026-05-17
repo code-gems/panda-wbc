@@ -3,6 +3,23 @@ export const styles = /*css*/`
 		display: inline-block;
 	}
 
+	.form {
+		display: flex;
+		flex-flow: column;
+		gap: var(--panda-gap-6);
+		width: fit-content;
+		padding: var(--panda-gap-m);
+		
+		background-color: var(--panda-time-picker-clock-form-background-color, var(--panda-form-background-color, hsl(0deg 0% 100%)));
+		box-sizing: border-box;
+	}
+
+	.form .header,
+	.form .body {
+		display: flex;
+		justify-content: center;
+	}
+
 	.clock-cont {
 		position: relative;
 		display: block;
@@ -20,10 +37,9 @@ export const styles = /*css*/`
 	}
 
 	.clock-scale {
-		fill: var(--panda-time-picker-clock-scale-color, hsl(0deg 0% 70%));
-		stroke: var(--panda-time-picker-clock-scale-color, hsl(0deg 0% 70%));
+		stroke: var(--panda-time-picker-clock-scale-color, hsl(0deg 0% 60%));
 		stroke-width: 3px;
-		stroke-linecap: round;
+		stroke-linecap: square;
 	}
 
 	.clock-scale-dot {
@@ -31,91 +47,98 @@ export const styles = /*css*/`
 	}
 
 	.clock-center {
-		fill: var(--panda-time-picker-clock-center-color, hsl(0deg 0% 50%));
+		fill: var(--panda-time-picker-clock-center-color, hsl(209deg 78% 46%));
 		transition: r 0.2s ease-out;
 		will-change: r;
 	}
 
-	.active .clock-center {
-		fill: var(--panda-time-picker-clock-center-active-color, hsl(0deg 0% 70%));
-		r: 30px;
-	}
-
-	.clock-value {
-		opacity: 0;
-		transform-box: fill-box;
-		transform-origin: center;
-		transform: translate(-48%, 24%);
-		font-size: var(--panda-time-picker-clock-value-font-size, 24px);
-		font-family: var(--panda-time-picker-clock-value-font-family, var(--panda-font-family, "Poppins"));
-		user-select: none;
-		transition: opacity 0.2s ease-out;
-		will-change: opacity;
-	}
-
-	.active .clock-value {
-		opacity: 1;
+	.clock-center-dot {
+		fill: var(--panda-time-picker-clock-center-dot-color, hsl(0deg 0% 100%));
 	}
 
 	/* HOUR */
 	.hour-hand-group {
-		display: none;
+		opacity: 0.3;
+		transform-origin: 125px 125px;
+		transition: opacity 0.2s ease-out;
+		will-change: opacity;
 	}
 
-	.active-hour .hour-hand-group {
-		display: block;
+	.hour-view .hour-hand-group {
+		opacity: 1;
 	}
 
 	.hour-hand {
 		stroke: var(--panda-time-picker-clock-hour-hand-color, hsl(0deg 0% 50%));
-		stroke-width: var(--panda-time-picker-clock-hour-hand-width, 4px);
-		transition: x2 0.2s ease-out, y2 0.2s ease-out;
-		will-change: x2, y2;
+		stroke-width: var(--panda-time-picker-clock-hour-hand-width, 8px);
+		stroke-linecap: round;
+		transition: stroke 0.2s ease-out;
+		will-change: stroke;
 	}
 
-	.active-hour .hour-hand {
-		stroke: var(--panda-time-picker-clock-hour-hand-active-color, hsl(0deg 0% 70%));
+	.hour-view .hour-hand {
+		stroke: var(--panda-time-picker-clock-hour-hand-active-color, hsl(209deg 78% 46%));
 	}
 
 	/* MINUTE */
 	.minute-hand-group {
-		display: none;
+		opacity: 0.3;
+		transform-origin: 125px 125px;
+		transition: opacity 0.2s ease-out;
+		will-change: opacity;
 	}
 
-	.active-minute .minute-hand-group {
-		display: block;
+	.minute-view .minute-hand-group {
+		opacity: 1;
 	}
 
 	.minute-hand {
 		stroke: var(--panda-time-picker-clock-minute-hand-color, hsl(0deg 0% 50%));
 		stroke-width: var(--panda-time-picker-clock-minute-hand-width, 4px);
-		transition: x2 0.2s ease-out, y2 0.2s ease-out;
-		will-change: x2, y2;
+		stroke-linecap: round;
+		transition: stroke 0.2s ease-out;
+		will-change: stroke;
 	}
 
-	.active-minute .minute-hand {
-		stroke: var(--panda-time-picker-clock-minute-hand-active-color, hsl(0deg 0% 70%));
+	.minute-view .minute-hand {
+		stroke: var(--panda-time-picker-clock-minute-hand-active-color, hsl(209deg 78% 46%));
 	}
 
 	/* SECOND */
 	.second-hand-group {
-		display: none;
+		opacity: 0.3;
+		transform-origin: 125px 125px;
+		transition: opacity 0.2s ease-out;
+		will-change: opacity;
 	}
 
-	.active-second .second-hand-group {
-		display: block;
+	.second-view .second-hand-group {
+		opacity: 1;
 	}
 
 	.second-hand {
 		stroke: var(--panda-time-picker-clock-second-hand-color, hsl(0deg 0% 50%));
-		stroke-width: var(--panda-time-picker-clock-second-hand-width, 4px);
-		transition: x2 0.4s ease-out;
-		will-change: x2, y2;
+		stroke-linecap: round;
+		transition: stroke 0.2s ease-out;
+		will-change: stroke;
 	}
 
-	.active-second .second-hand {
-		stroke: var(--panda-time-picker-clock-second-hand-active-color, hsl(0deg 0% 70%));
+	.second-view .second-hand {
+		stroke: var(--panda-time-picker-clock-second-hand-active-color, hsl(209deg 78% 46%));
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	.input-field {
 		display: flex;
@@ -132,12 +155,26 @@ export const styles = /*css*/`
 		font-size: var(--panda-time-picker-clock-input-font-size, 42px);
 		font-family: var(--panda-time-picker-clock-input-font-family, var(--panda-font-family-bold, "Poppins Bold"));
 		text-align: center;
+		cursor: pointer;
 
 		border-width: var(--panda-time-picker-clock-input-field-border-width, var(--panda-border-width, 1px));
 		border-color: var(--panda-time-picker-clock-input-field-border-color, var(--panda-border-color, hsl(207deg 1% 85%)));
 		border-style: var(--panda-time-picker-clock-input-field-border-style, solid);
 		border-radius: var(--panda-time-picker-clock-input-field-border-radius, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-time-picker-clock-input-field-background-color, hsl(0deg 0% 92%));
 		box-sizing: border-box;
+	}
+
+	.hour-view .time-input-hour {
+		background-color: var(--panda-time-picker-clock-input-hour-background-color, hsl(209deg 78% 56%));
+	}
+
+	.minute-view .time-input-minute {
+		background-color: var(--panda-time-picker-clock-input-minute-background-color, hsl(209deg 78% 56%));
+	}
+
+	.second-view .time-input-second {
+		background-color: var(--panda-time-picker-clock-input-second-background-color, hsl(209deg 78% 56%));
 	}
 
 	.input-field .toggle-period {
@@ -147,12 +184,14 @@ export const styles = /*css*/`
 
 		font-size: var(--panda-time-picker-clock-input-font-size, 20px);
 		font-family: var(--panda-time-picker-clock-input-font-family, var(--panda-font-family-bold, "Poppins Bold"));
+		cursor: pointer;
 
 		border-width: var(--panda-time-picker-clock-input-field-border-width, var(--panda-border-width, 1px));
 		border-color: var(--panda-time-picker-clock-input-field-border-color, var(--panda-border-color, hsl(207deg 1% 85%)));
 		border-style: var(--panda-time-picker-clock-input-field-border-style, solid);
 		border-radius: var(--panda-time-picker-clock-input-field-border-radius, var(--panda-border-radius-m, 10px));
 		box-sizing: border-box;
+		background-color: var(--panda-time-picker-clock-input-field-background-color, hsl(0deg 0% 92%));
 	}
 
 	.input-field .separator {
@@ -169,5 +208,9 @@ export const styles = /*css*/`
 	.pm .period-pm {
 		color: var(--panda-time-picker-clock-period-am-color, hsl(120deg 100% 20%));
 		background-color: var(--panda-time-picker-clock-period-am-background-color, hsl(120deg 100% 80%));
+	}
+
+	.hidden {
+		display: none;
 	}
 `;

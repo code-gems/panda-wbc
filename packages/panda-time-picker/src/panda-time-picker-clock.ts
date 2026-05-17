@@ -6,7 +6,7 @@ import { Point, RawValue, TimeObject } from "./types";
 import { styles } from "./styles/time-picker-clock-styles";
 
 // utils
-import { applyStyles, parseNumberAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
+import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
 import {
 	arraysEqual,
 	getI18nConfig,
@@ -252,37 +252,38 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	// private properties =============================================================================================
 	private _dragged!: boolean;
+	private _changedValue!: boolean;
 	private _valueObject!: TimeObject;
 	private _mousePosition!: Point;
 
 	// elements =======================================================================================================
+	private _formEl!: HTMLElement;
 	private _clockEl!: HTMLElement;
+	private _clockElRect!: DOMRect;
 	private _clockCenterEl!: HTMLElement;
-	private _clockValueEl!: HTMLElement;
 	private _clockScaleGroupEl!: SVGGElement;
 	// hour hand elements
 	private _hourGroupEl!: SVGGElement;
 	private _hourHandEl!: SVGLineElement;
-	private _hourHandCenterEl!: SVGCircleElement;
 	// minute hand elements
 	private _minuteGroupEl!: SVGGElement;
 	private _minuteHandEl!: SVGLineElement;
-	private _minuteHandCenterEl!: SVGCircleElement;
 	// second hand elements
 	private _secondGroupEl!: SVGGElement;
 	private _secondHandEl!: SVGLineElement;
-	private _secondHandCenterEl!: SVGCircleElement;
+	private _secondHandBackEl!: SVGLineElement;
 
 	// time input elements ====================================================
 	private readonly _inputFieldEl!: HTMLDivElement;
-	private readonly _hourInputEl!: HTMLDivElement;
-	private readonly _minuteInputEl!: HTMLDivElement;
-	private readonly _secondInputEl!: HTMLDivElement;
-	private readonly _periodInputEl!: HTMLDivElement;
+	private readonly _hourDisplayEl!: HTMLDivElement;
+	private readonly _minuteDisplayEl!: HTMLDivElement;
+	private readonly _secondDisplayEl!: HTMLDivElement;
+	private readonly _periodDisplayEl!: HTMLDivElement;
 	private readonly _separator1El!: HTMLSpanElement;
 	private readonly _separator2El!: HTMLSpanElement;
 
 	// events =========================================================================================================
+	private readonly _changeViewEvent!: EventListener;
 	private readonly _togglePeriodEvent!: EventListener;
 	private readonly _mouseMoveEvent!: EventListener;
 	private readonly _mouseDownEvent!: EventListener;
@@ -314,25 +315,23 @@ export class PandaTimePickerClock extends HTMLElement {
 
 							<!-- Hour hand -->
 							<g class="hour-hand-group">
-								<line class="hour-hand" x1="125" y1="125" x2="125" y2="70" />
-								<circle class="hour-hand-center" cx="125" cy="70" r="5" />
+								<line class="hour-hand" x1="125" y1="150" x2="125" y2="40" />
 							</g>
 
 							<!-- Minute hand -->
 							<g class="minute-hand-group">
-								<line class="minute-hand" x1="125" y1="125" x2="125" y2="50" />
-								<circle class="minute-hand-center" cx="125" cy="50" r="5" />
+								<line class="minute-hand" x1="125" y1="160" x2="125" y2="25" />
 							</g>
 
 							<!-- Second hand -->
 							<g class="second-hand-group">
-								<line class="second-hand" x1="125" y1="125" x2="125" y2="40" />
-								<circle class="second-hand-center" cx="125" cy="40" r="5" />
+								<line class="second-hand" x1="125" y1="170" x2="125" y2="10" stroke-width="3" />
+								<line class="second-hand" x1="125" y1="150" x2="125" y2="170" stroke-width="8" />
 							</g>
 
 							<!-- Clock value -->
-							<circle class="clock-center" cx="125" cy="125" r="5" />
-							<text class="clock-value" x="125" y="125"></text>
+							<circle class="clock-center" cx="125" cy="125" r="8" />
+							<circle class="clock-center-dot" cx="125" cy="125" r="5" />
 						</svg>
 					</div>
 				</div>
@@ -342,28 +341,28 @@ export class PandaTimePickerClock extends HTMLElement {
 		applyStyles(styles, this.shadowRoot);
 
 		// create hour input element
-		this._hourInputEl = document.createElement("div");
-		this._hourInputEl.className = "time-input";
-		this._hourInputEl.part = "time-input-hour";
-		this._hourInputEl.dataset.timePart = "hours";
+		this._hourDisplayEl = document.createElement("div");
+		this._hourDisplayEl.className = "time-input time-input-hour";
+		this._hourDisplayEl.part = "time-input-hour";
+		this._hourDisplayEl.dataset.timePart = "hours";
 
 		// create minute input element
-		this._minuteInputEl = document.createElement("div");
-		this._minuteInputEl.className = "time-input";
-		this._minuteInputEl.part = "time-input-minute";
-		this._minuteInputEl.dataset.timePart = "minutes";
+		this._minuteDisplayEl = document.createElement("div");
+		this._minuteDisplayEl.className = "time-input time-input-minute";
+		this._minuteDisplayEl.part = "time-input-minute";
+		this._minuteDisplayEl.dataset.timePart = "minutes";
 
 		// create second input element
-		this._secondInputEl = document.createElement("div");
-		this._secondInputEl.className = "time-input";
-		this._secondInputEl.part = "time-input-second";
-		this._secondInputEl.dataset.timePart = "seconds";
+		this._secondDisplayEl = document.createElement("div");
+		this._secondDisplayEl.className = "time-input time-input-second";
+		this._secondDisplayEl.part = "time-input-second";
+		this._secondDisplayEl.dataset.timePart = "seconds";
 
 		// create period input element
-		this._periodInputEl = document.createElement("div");
-		this._periodInputEl.className = "toggle-period";
-		this._periodInputEl.part = "toggle-period";
-		this._periodInputEl.innerHTML = `
+		this._periodDisplayEl = document.createElement("div");
+		this._periodDisplayEl.className = "toggle-period";
+		this._periodDisplayEl.part = "toggle-period";
+		this._periodDisplayEl.innerHTML = `
 			<span class="period period-am" part="period-am" data-value="am">AM</span>
 			<span class="period period-pm" part="period-pm" data-value="pm">PM</span>
 		`;
@@ -384,8 +383,11 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._views = [...DEFAULT_TIME_PICKER_VIEW];
 		this._selectedView = "hours";
 		this._timeFormat = "12";
+		this._minuteStep = 1;
+		this._secondStep = 1;
 
 		// initialize event binders
+		this._changeViewEvent = this._onChangeView.bind(this);
 		this._togglePeriodEvent = this._onTogglePeriod.bind(this);
 		this._mouseDownEvent = this._onMouseDown.bind(this);
 		this._mouseMoveEvent = this._onMouseMove.bind(this);
@@ -393,23 +395,24 @@ export class PandaTimePickerClock extends HTMLElement {
 
 		// get elements handles
 		if (this.shadowRoot) {
+			this._formEl = this.shadowRoot.querySelector(".form") as HTMLElement;
 			this._clockEl = this.shadowRoot.querySelector(".clock") as HTMLElement;
 			this._clockCenterEl = this.shadowRoot.querySelector(".clock-center") as HTMLElement;
-			this._clockValueEl = this.shadowRoot.querySelector(".clock-value") as HTMLElement;
 			this._clockScaleGroupEl = this.shadowRoot.querySelector(".clock-scale-group") as SVGGElement;
 			this._hourHandEl = this.shadowRoot.querySelector(".hour-hand") as SVGLineElement;
-			this._hourHandCenterEl = this.shadowRoot.querySelector(".hour-hand-center") as SVGCircleElement;
+			this._hourGroupEl = this.shadowRoot.querySelector(".hour-hand-group") as SVGGElement;
 			this._minuteHandEl = this.shadowRoot.querySelector(".minute-hand") as SVGLineElement;
-			this._minuteHandCenterEl = this.shadowRoot.querySelector(".minute-hand-center") as SVGCircleElement;
+			this._minuteGroupEl = this.shadowRoot.querySelector(".minute-hand-group") as SVGGElement;
 			this._secondHandEl = this.shadowRoot.querySelector(".second-hand") as SVGLineElement;
-			this._secondHandCenterEl = this.shadowRoot.querySelector(".second-hand-center") as SVGCircleElement;
+			this._secondGroupEl = this.shadowRoot.querySelector(".second-hand-group") as SVGGElement;
 			this._inputFieldEl = this.shadowRoot.querySelector(".input-field") as HTMLDivElement;
 		}
 	}
 
 	connectedCallback() {
 		// attach event listeners
-		this._periodInputEl.addEventListener("click", this._togglePeriodEvent);
+		this._inputFieldEl.addEventListener("click", this._changeViewEvent);
+		this._periodDisplayEl.addEventListener("click", this._togglePeriodEvent);
 		this._clockEl.addEventListener("mousedown", this._mouseDownEvent);
 		this._clockEl.addEventListener("mousemove", this._mouseMoveEvent);
 		document.addEventListener("mouseup", this._mouseUpEvent);
@@ -422,7 +425,8 @@ export class PandaTimePickerClock extends HTMLElement {
 
 	disconnectedCallback() {
 		// detach event listeners
-		this._periodInputEl.removeEventListener("click", this._togglePeriodEvent);
+		this._inputFieldEl.removeEventListener("click", this._changeViewEvent);
+		this._periodDisplayEl.removeEventListener("click", this._togglePeriodEvent);
 		this._clockEl.removeEventListener("mousedown", this._mouseDownEvent);
 		this._clockEl.removeEventListener("mousemove", this._mouseMoveEvent);
 		document.removeEventListener("mouseup", this._mouseUpEvent);
@@ -475,31 +479,42 @@ export class PandaTimePickerClock extends HTMLElement {
 	/** Renders the badge */
 	private _updateComponent() {
 		if (this.isConnected) {
+			// update period toggle state
 			if (this._valueObject.period === "am") {
-				this._periodInputEl.classList.add("am");
-				this._periodInputEl.classList.remove("pm");
+				this._periodDisplayEl.classList.add("am");
+				this._periodDisplayEl.classList.remove("pm");
 			} else {
-				this._periodInputEl.classList.remove("am");
-				this._periodInputEl.classList.add("pm");
+				this._periodDisplayEl.classList.remove("am");
+				this._periodDisplayEl.classList.add("pm");
 			}
+			
+			// update form css class based on selected view
+			// based on form css class clock show/hide time hands
+			this._formEl.classList.remove("hour-view", "minute-view", "second-view", "active");
+			if (this._selectedView === "hours") {
+				this._formEl.classList.add("hour-view");
+			} else if (this._selectedView === "minutes") {
+				this._formEl.classList.add("minute-view");
+			} else if (this._selectedView === "seconds") {
+				this._formEl.classList.add("second-view");
+			}
+
 		}
 	}
 
-	/** Update the time input fields based on the enabled views and time format. */
+	/**
+	 * Update the time input fields based on the enabled views and time format.
+	 * This method checks which views (hours, minutes, seconds) are enabled and updates the corresponding input fields accordingly.
+	 * It also handles the display of separators between time units and the period input for 12-hour format.
+	 */
 	private _updateViews(): void {
 		if (this.isConnected) {
-
-			console.log(`%c [PANDA TIME PICKER CLOCK] (_updateViews) enabled views:`,
-				"font-size: 16px; color: cyan; background: black;",
-				this._views
-			);
-
 			// check if hours view is enabled
 			if (this._views.includes("hours")) {
-				this._hourInputEl.textContent = this._i18n.hourPlaceholder;
-				this._inputFieldEl.appendChild(this._hourInputEl);
+				this._hourDisplayEl.textContent = this._i18n.hourPlaceholder;
+				this._inputFieldEl.appendChild(this._hourDisplayEl);
 			} else {
-				this._hourInputEl.remove();
+				this._hourDisplayEl.remove();
 			}
 
 			// check if minutes view is enabled
@@ -511,10 +526,10 @@ export class PandaTimePickerClock extends HTMLElement {
 					this._separator1El.remove();
 				}
 				// add minute input to input wrap
-				this._minuteInputEl.textContent = this._i18n.minutePlaceholder;
-				this._inputFieldEl.appendChild(this._minuteInputEl);
+				this._minuteDisplayEl.textContent = this._i18n.minutePlaceholder;
+				this._inputFieldEl.appendChild(this._minuteDisplayEl);
 			} else {
-				this._minuteInputEl.remove();
+				this._minuteDisplayEl.remove();
 			}
 
 			// check if seconds view is enabled
@@ -526,18 +541,28 @@ export class PandaTimePickerClock extends HTMLElement {
 					this._separator2El.remove();
 				}
 				// add second input to input wrap
-				this._secondInputEl.textContent = this._i18n.secondPlaceholder;
-				this._inputFieldEl.appendChild(this._secondInputEl);
+				this._secondDisplayEl.textContent = this._i18n.secondPlaceholder;
+				this._inputFieldEl.appendChild(this._secondDisplayEl);
 			} else {
-				this._secondInputEl.remove();
+				this._secondDisplayEl.remove();
 			}
 
 			// check if view contains hours and if time format is 12 hours, then show period input
 			if (this._views.includes("hours") && this._timeFormat === "12") {
-				this._inputFieldEl.appendChild(this._periodInputEl);
+				this._inputFieldEl.appendChild(this._periodDisplayEl);
 			} else {
-				this._periodInputEl.remove();
+				this._periodDisplayEl.remove();
 			}
+		}
+	}
+
+	/** Update the clock hands based on the current value object. */
+	private _updateClockHands(): void {
+		console.log(`%c ⚡ (_updateClockHands)`, "font-size: 24px; color: crimson; background: black;", this._valueObject);
+		if (this._valueObject) {
+			this._drawHourHand(this._valueObject.hours);
+			this._drawMinuteHand(this._valueObject.minutes);
+			this._drawSecondHand(this._valueObject.seconds);
 		}
 	}
 
@@ -546,7 +571,6 @@ export class PandaTimePickerClock extends HTMLElement {
 	// ================================================================================================================
 
 	private _parseValue(rawValue: RawValue): void {
-
 		const {
 			value,
 			valueObject,
@@ -562,25 +586,22 @@ export class PandaTimePickerClock extends HTMLElement {
 
 		if (value != null) {
 			// update time input fields based on the new value object
-			this._hourInputEl.innerText = this._valueObject.hours != null ? this._valueObject.hours.toString().padStart(2, "0") : "";
-			this._minuteInputEl.innerText = this._valueObject.minutes != null ? this._valueObject.minutes.toString().padStart(2, "0") : "";
-			this._secondInputEl.innerText = this._valueObject.seconds != null ? this._valueObject.seconds.toString().padStart(2, "0") : "";
+			this._hourDisplayEl.innerText = this._valueObject.hours != null ? this._valueObject.hours.toString().padStart(2, "0") : "";
+			this._minuteDisplayEl.innerText = this._valueObject.minutes != null ? this._valueObject.minutes.toString().padStart(2, "0") : "";
+			this._secondDisplayEl.innerText = this._valueObject.seconds != null ? this._valueObject.seconds.toString().padStart(2, "0") : "";
 		}
 		// update component
 		this._updateComponent();
+		this._updateClockHands();
 	}
 
 	private _drawClockScale(): void {
-		// <line class="clock-scale" x1="125" y1="6" x2="125" y2="16" />
-		// <line class="clock-scale" x1="125" y1="234" x2="125" y2="244" />
-
 		// draw clock scale
 		const existingScales = this.shadowRoot!.querySelectorAll(".clock-scale");
 		existingScales.forEach((scale) => scale.remove());
 
-
-		for (let i = 0; i < 48; i++) {
-			const angle = (i / 48) * 2 * Math.PI - Math.PI / 2;
+		for (let i = 0; i < 60; i++) {
+			const angle = (i / 60) * 2 * Math.PI - Math.PI / 2;
 			const x1 = CLOCK_RADIUS + 115 * Math.cos(angle);
 			const y1 = CLOCK_RADIUS + 115 * Math.sin(angle);
 			const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -607,33 +628,73 @@ export class PandaTimePickerClock extends HTMLElement {
 		}
 	}
 
-	private _drawHourHand(hour: number): void {
-		const handLength = 80;
-		// this._hourHandEl.setAttribute("x2", (125 + handLength * Math.cos((hour / 12) * 2 * Math.PI - Math.PI / 2)).toString());
-		// this._hourHandEl.setAttribute("y2", (125 + handLength * Math.sin((hour / 12) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._hourHandCenterEl.setAttribute("cx", (125 + handLength * Math.cos((hour / 12) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._hourHandCenterEl.setAttribute("cy", (125 + handLength * Math.sin((hour / 12) * 2 * Math.PI - Math.PI / 2)).toString());
+	private _drawHourHand(hour?: number | null): void {
+		if (hour == null) {
+			this._hourGroupEl.classList.add("hidden");
+		} else {
+			const tf = this._timeFormat === "24" ? 24 : 12;
+			this._hourGroupEl.classList.remove("hidden");
+			this._hourGroupEl.style.transform = `rotate(${(hour / tf) * 360}deg)`;
+		}
 	}
 
-	private _drawMinuteHand(minute: number): void {
-		const handLength = 100;
-		this._minuteHandEl.setAttribute("x2", (125 + handLength * Math.cos((minute / 60) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._minuteHandEl.setAttribute("y2", (125 + handLength * Math.sin((minute / 60) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._minuteHandCenterEl.setAttribute("cx", (125 + handLength * Math.cos((minute / 60) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._minuteHandCenterEl.setAttribute("cy", (125 + handLength * Math.sin((minute / 60) * 2 * Math.PI - Math.PI / 2)).toString());
+	private _drawMinuteHand(minute?: number | null): void {
+		if (minute == null) {
+			this._minuteGroupEl.classList.add("hidden");
+		} else {
+			this._minuteGroupEl.classList.remove("hidden");
+			this._minuteGroupEl.style.transform = `rotate(${(minute / 60) * 360}deg)`;
+			// let handLength = 110;
+			// this._minuteHandEl.setAttribute("x2", (125 + handLength * Math.cos((minute / 60) * 2 * Math.PI - Math.PI / 2)).toString());
+			// this._minuteHandEl.setAttribute("y2", (125 + handLength * Math.sin((minute / 60) * 2 * Math.PI - Math.PI / 2)).toString());
+		}
 	}
 
-	private _drawSecondHand(second: number): void {
-		const handLength = 110;
-		this._secondHandEl.setAttribute("x2", (125 + handLength * Math.cos((second / 60) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._secondHandEl.setAttribute("y2", (125 + handLength * Math.sin((second / 60) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._secondHandCenterEl.setAttribute("cx", (125 + handLength * Math.cos((second / 60) * 2 * Math.PI - Math.PI / 2)).toString());
-		this._secondHandCenterEl.setAttribute("cy", (125 + handLength * Math.sin((second / 60) * 2 * Math.PI - Math.PI / 2)).toString());
+	private _drawSecondHand(second?: number | null): void {
+		if (second == null) {
+			this._secondGroupEl.classList.add("hidden");
+		} else {
+			this._secondGroupEl.classList.remove("hidden");
+			this._secondGroupEl.style.transform = `rotate(${(second / 60) * 360}deg)`;
+		}
+	}
+
+	private _switchView(view?: PandaTimePickerView): void {
+		// if a specific view is provided and it is included in the available views, switch to that view
+		if (view && this._views.includes(view)) {
+			this._selectedView = view;
+		} else if (view == null) {
+			let currentIndex = this._views.indexOf(this._selectedView);
+			// check if current index is NOT the last item in the views array
+			// do NOT increment if current index is the last item in the views array to avoid switching to the first view
+			if (this._views.length > currentIndex + 1) {
+				currentIndex = (currentIndex + 1) % this._views.length;
+			}
+			// update selected view based on the new index
+			this._selectedView = this._views[currentIndex];
+		}
+		// update clock view and value display based on the selected view
+		this._updateClockHands();
 	}
 
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
+	
+	private _onChangeView(event: Event): void {
+		const timeInputEl = (event.target as HTMLElement).closest(".time-input") as HTMLDivElement;
+		console.log(
+			`%c 🧪 [CLOCK] (_onChangeView) ${timeInputEl?.dataset.timePart}`,
+			"font-size: 24px; color: orange; background: black; padding: 5px; border-radius: 10px;",
+			timeInputEl
+		);
+
+		if (timeInputEl) {
+			const view = timeInputEl.dataset.timePart as PandaTimePickerView;
+			this._switchView(view);
+			this._updateComponent();
+		}
+	}
 
 	private _onTogglePeriod(event: Event): void {
 		const periodEl = (event.target as HTMLElement).closest(".period") as HTMLDivElement;
@@ -643,32 +704,19 @@ export class PandaTimePickerClock extends HTMLElement {
 		}
 	}
 
-	private _onMouseDown(event: Event): void {
+	private _onMouseDown(): void {
 		this._dragged = true;
-		if (this._selectedView === "hours") {
-			this._clockEl.classList.add("active-hour");
-		} else if (this._selectedView === "minutes") {
-			this._clockEl.classList.add("active-minute");
-		} else if (this._selectedView === "seconds") {
-			this._clockEl.classList.add("active-second");
-		}
-		// console.log(`%c ⚡ [PANDA TIME PICKER CLOCK] (_onMouseDown) event:`,
-		// 	"font-size: 24px; color: crimson; background: black;",
-		// 	event
-		// );
-		// console.log(`%c ⚡ [PANDA TIME PICKER CLOCK] (_onMouseDown) rects:`,
-		// 	"font-size: 24px; color: crimson; background: black;",
-		// 	rects
-		// );
+		this._changedValue = false;
+		this._formEl.classList.add("active");
+		this._clockElRect = this._clockEl.getBoundingClientRect();
 	}
 
 	private _onMouseMove(event: Event): void {
 		if (this._dragged) {
-			const rects = this._clockEl.getClientRects();
-			const clockWidth = rects[0].width;
-			const clockHeight = rects[0].height;
-			this._mousePosition.x = (event as MouseEvent).clientX - rects[0].x - clockWidth / 2;
-			this._mousePosition.y = ((event as MouseEvent).clientY - rects[0].y - clockHeight / 2) * -1;
+			const clockWidth = this._clockElRect.width;
+			const clockHeight = this._clockElRect.height;
+			this._mousePosition.x = (event as MouseEvent).clientX - this._clockElRect.x - clockWidth / 2;
+			this._mousePosition.y = ((event as MouseEvent).clientY - this._clockElRect.y - clockHeight / 2) * -1;
 
 			let angle = Math.atan2(this._mousePosition.y, this._mousePosition.x) * (180 / Math.PI);
 			// invert angle to match clock direction and rotate to make 12 o'clock at 0 degrees
@@ -677,45 +725,85 @@ export class PandaTimePickerClock extends HTMLElement {
 				angle = angle + 360;
 			}
 
-			let hour = Math.round(angle / 30);
-			if (hour === 0) {
-				hour = 12;
+			if (this._selectedView === "hours") {
+				// get degrees per hour based on time format
+				const dph = this._timeFormat === "24"
+					? 15 // 360 degrees / 24 hours = 15 degrees per hour
+					: 30; // 360 degrees / 12 hours = 30 degrees per hour
+					
+				// calculate hour value based on the angle of the mouse position
+				let hour = Math.round(angle / dph);
+
+				// if time format is not 24 hours, convert hour value to 12-hour format
+				if (this._timeFormat !== "24") {
+					hour = hour % 12;
+				} else {
+					hour = hour % 24;
+				}
+				// value correction
+				if (hour === 0 && this._timeFormat !== "24") {
+					hour = 12;
+				}
+				// draw hour hand based on the calculated hour value
+				this._drawHourHand(hour);
+				// update selected value
+				this._valueObject.hours = hour;
+				// update hour input field
+				this._hourDisplayEl.innerText = hour.toString().padStart(2, "0");
+				this._changedValue = true;
+
+			} else if (this._selectedView === "minutes") {
+				// calculate minute value based on the angle of the mouse position
+				let minute = Math.round(angle / 6); // 360 degrees / 60 minutes = 6 degrees per minute
+				// round the minute value to the nearest step
+				minute = Math.round(minute / this._minuteStep) * this._minuteStep;
+				// value correction
+				if (minute === 60) {
+					minute = 0;
+				}
+				// draw minute hand based on the calculated minute value
+				this._drawMinuteHand(minute);
+				// update selected value
+				this._valueObject.minutes = minute;
+				// update minute input field
+				this._minuteDisplayEl.innerText = minute.toString().padStart(2, "0");
+				this._changedValue = true;
+
+			} else if (this._selectedView === "seconds") {
+				// calculate second value based on the angle of the mouse position
+				let second = Math.round(angle / 6); // 360 degrees / 60 seconds = 6 degrees per second
+				// round the second value to the nearest step
+				second = Math.round(second / this._secondStep) * this._secondStep;
+				// value correction
+				if (second === 60) {
+					second = 0;
+				}
+				// draw second hand based on the calculated second value
+				this._drawSecondHand(second);
+				// update selected value
+				this._valueObject.seconds = second;
+				// update second input field
+				this._secondDisplayEl.innerText = second.toString().padStart(2, "0");
+				this._changedValue = true;
 			}
-
-			let minute = Math.round(angle / 6);
-			const step = 1;
-			minute = Math.round(minute / step) * step;
-			if (minute === 60) {
-				minute = 0;
-			}
-
-			let second = Math.round(angle / 6);
-			second = Math.round(second / step) * step;
-			if (second === 60) {
-				second = 0;
-			}
-
-			this._drawHourHand(hour);
-
-			// this._drawMinuteHand(minute);
-			// this._drawSecondHand(second);
-
-
-			this._clockValueEl.innerHTML = hour.toFixed(0);
-			// this._clockValueEl.innerHTML = minute.toFixed(0);
-			// this._clockValueEl.innerHTML = second.toFixed(0);
 		}
 	}
 
-	private _onMouseUp(event: Event): void {
-		this._dragged = false;
-		this._clockEl.classList.remove("active-hour", "active-minute", "active-second");
-		// console.log(`%c ⚡ [PANDA TIME PICKER CLOCK] (_onMouseUp) event:`,
-		// 	"font-size: 24px; color: crimson; background: black;",
-		// 	event
-		// );
+	/**
+	 * check if dragging was initiated by mouse down event
+	 * mouse up event is listened on a document which may cause it to trigger without a preceding mouse down event on the clock, 
+	 * so we need to check if dragging was initiated before handling mouse up logic
+	 */
+	private _onMouseUp(): void {
+		if (this._dragged) {
+			this._dragged = false;
+			if (this._changedValue) {
+				this._switchView();
+			}
+			this._formEl.classList.remove("active");
+			this._updateComponent();
+		}
 	}
-
 }
 
 // Register the custom element

@@ -247,13 +247,29 @@ export const pandaThemeDark = /*css*/`
 		--panda-link-color-hover: hsl(216deg 86% 56%);
 		--panda-link-color-visited: hsl(271deg 100% 50%);
 		--panda-link-color-active: hsl(271deg 100% 60%);
+		
+		--panda-gap-xs: 2px;
+		--panda-gap-s: 5px;
+		--panda-gap-m: 10px;
+		--panda-gap-l: 15px;
+		--panda-gap-xl: 30px;
 
-		--panda-padding-xs: 2px;
-		--panda-padding-s: 5px;
-		--panda-padding-m: 10px;
-		--panda-padding-l: 15px;
-		--panda-padding-xl: 30px;
-		--panda-padding-hero: 60px;
+		--panda-gap: 5px;
+		--panda-gap-2: calc(var(--panda-gap) * 2);
+		--panda-gap-3: calc(var(--panda-gap) * 3);
+		--panda-gap-4: calc(var(--panda-gap) * 4);
+		--panda-gap-5: calc(var(--panda-gap) * 5);
+		--panda-gap-6: calc(var(--panda-gap) * 6);
+		--panda-gap-7: calc(var(--panda-gap) * 7);
+		--panda-gap-8: calc(var(--panda-gap) * 8);
+		--panda-gap-9: calc(var(--panda-gap) * 9);
+		--panda-gap-10: calc(var(--panda-gap) * 10);
+
+		--panda-padding-xs: var(--panda-gap-xs);
+		--panda-padding-s: var(--panda-gap-s);
+		--panda-padding-m: var(--panda-gap-m);
+		--panda-padding-l: var(--panda-gap-l);
+		--panda-padding-xl: var(--panda-gap-xl);
 
 		--panda-border-radius-xs: 2px;
 		--panda-border-radius-s: 3px;
