@@ -754,7 +754,7 @@ export class PandaTimePickerClock extends HTMLElement {
 		if (this._dragged) {
 			const clockWidth = this._clockElRect.width;
 			const clockHeight = this._clockElRect.height;
-			const touch = (event as TouchEvent).touches[0];
+			const touch = (event as TouchEvent).touches?.[0];
 			if (touch) {
 				event.preventDefault(); // prevent scrolling on touch devices while dragging
 				this._mousePosition.x = touch.clientX - this._clockElRect.x - clockWidth / 2;
