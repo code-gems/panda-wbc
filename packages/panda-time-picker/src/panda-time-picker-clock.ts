@@ -413,8 +413,11 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._timeDisplayContEl.addEventListener("click", this._timeDisplayClickEvent);
 		this._periodDisplayEl.addEventListener("click", this._togglePeriodEvent);
 		this._clockEl.addEventListener("mousedown", this._mouseDownEvent);
+		this._clockEl.addEventListener("touchstart", this._mouseDownEvent);
 		this._clockEl.addEventListener("mousemove", this._mouseMoveEvent);
+		this._clockEl.addEventListener("touchmove", this._mouseMoveEvent);
 		document.addEventListener("mouseup", this._mouseUpEvent);
+		document.addEventListener("touchend", this._mouseUpEvent);
 		// initial render
 		this._updateComponent();
 		// update the view
@@ -428,8 +431,11 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._timeDisplayContEl.removeEventListener("click", this._timeDisplayClickEvent);
 		this._periodDisplayEl.removeEventListener("click", this._togglePeriodEvent);
 		this._clockEl.removeEventListener("mousedown", this._mouseDownEvent);
+		this._clockEl.removeEventListener("touchstart", this._mouseDownEvent);
 		this._clockEl.removeEventListener("mousemove", this._mouseMoveEvent);
+		this._clockEl.removeEventListener("touchmove", this._mouseMoveEvent);
 		document.removeEventListener("mouseup", this._mouseUpEvent);
+		document.removeEventListener("touchend", this._mouseUpEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -748,8 +754,15 @@ export class PandaTimePickerClock extends HTMLElement {
 		if (this._dragged) {
 			const clockWidth = this._clockElRect.width;
 			const clockHeight = this._clockElRect.height;
-			this._mousePosition.x = (event as MouseEvent).clientX - this._clockElRect.x - clockWidth / 2;
-			this._mousePosition.y = ((event as MouseEvent).clientY - this._clockElRect.y - clockHeight / 2) * -1;
+			const touch = (event as TouchEvent).touches[0];
+			if (touch) {
+				event.preventDefault(); // prevent scrolling on touch devices while dragging
+				this._mousePosition.x = touch.clientX - this._clockElRect.x - clockWidth / 2;
+				this._mousePosition.y = ((touch.clientY - this._clockElRect.y - clockHeight / 2) * -1);
+			} else {
+				this._mousePosition.x = (event as MouseEvent).clientX - this._clockElRect.x - clockWidth / 2;
+				this._mousePosition.y = ((event as MouseEvent).clientY - this._clockElRect.y - clockHeight / 2) * -1;
+			}
 
 			let angle = Math.atan2(this._mousePosition.y, this._mousePosition.x) * (180 / Math.PI);
 			// invert angle to match clock direction and rotate to make 12 o'clock at 0 degrees
