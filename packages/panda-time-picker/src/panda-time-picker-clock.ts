@@ -314,6 +314,7 @@ export class PandaTimePickerClock extends HTMLElement {
 							<!-- Hour hand -->
 							<g class="hour-hand-group">
 								<line class="hour-hand" x1="125" y1="150" x2="125" y2="45" />
+								<line class="hour-hand-center" x1="125" y1="110" x2="125" y2="45" />
 							</g>
 
 							<!-- Minute hand -->
