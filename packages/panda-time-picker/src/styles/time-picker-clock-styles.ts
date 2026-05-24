@@ -20,6 +20,10 @@ export const styles = /*css*/`
 		justify-content: center;
 	}
 
+	/* ===================================================================== */
+	/* CLOCK =============================================================== */
+	/* ===================================================================== */
+
 	.clock-cont {
 		position: relative;
 		display: block;
@@ -150,43 +154,35 @@ export const styles = /*css*/`
 	.second-view .second-hand {
 		stroke: var(--panda-time-picker-clock-second-hand-color-active, hsl(209deg 78% 46%));
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	/* ===================================================================== */
+	/* TIME DISPLAY ======================================================== */
+	/* ===================================================================== */
 
 	.time-display-cont {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
 		justify-content: center;
+		-webkit-font-smoothing: antialiased;
 	}
 
 	.time-display-cont .separator {
-		padding-inline: var(--panda-time-picker-clock-separator-padding-inline, var(--panda-gap-s, 5px));
+		padding-inline: var(--panda-time-picker-clock-separator-padding-inline, 2px);
+		color: var(--panda-time-picker-clock-separator-color, var(--panda-text-color, hsl(210deg 5% 25%)));
 		font-size: var(--panda-time-picker-clock-input-font-size, 32px);
 		font-family: var(--panda-time-picker-clock-input-font-family, var(--panda-font-family-bold, "Poppins Bold"));
 		user-select: none;
 	}
 
 	.time-display {
-		-webkit-font-smoothing: antialiased;
 		flex-shrink: 0;
 		min-width: 3ch;
 		padding: var(--panda-time-picker-clock-time-display-padding, var(--panda-gap-s, 5px));
 		outline: none;
 		
 		color: var(--panda-time-picker-clock-time-display-color, var(--panda-text-color, hsl(210deg 5% 25%)));
-		font-size: var(--panda-time-picker-clock-time-display-font-size, 42px);
+		font-size: var(--panda-time-picker-clock-time-display-font-size, 32px);
 		font-family: var(--panda-time-picker-clock-time-display-font-family, var(--panda-font-family-bold, "Poppins Bold"));
 		font-variant-numeric: var(--panda-time-picker-clock-time-display-font-variant-numeric, tabular-nums);
 		text-align: center;
@@ -205,7 +201,7 @@ export const styles = /*css*/`
 		box-sizing: border-box;
 	}
 
-	/* ACTIVE STATE */
+	/* ACTIVE STATE ======================================================== */
 	.hour-view .time-display-hour,
 	.minute-view .time-display-minute,
 	.second-view .time-display-second {
@@ -215,41 +211,66 @@ export const styles = /*css*/`
 		box-shadow: var(--panda-time-picker-clock-time-display-elevation-active, 0px 0px 1px 1px hsl(209deg 78% 46% / 50%));
 	}
 
-	/* FOCUSED STATE */
+	/* FOCUSED STATE ======================================================== */
 	.time-display:focus-visible {
-		color: var(--panda-time-picker-clock-time-display-color-focused, var(--panda-primary-color, hsl(209deg 78% 46%)));
+		color: var(--panda-time-picker-clock-time-display-color-focused, var(--panda-text-color, hsl(210deg 5% 25%)));
 		border-color: var(--panda-time-picker-clock-time-display-border-color-focused, var(--panda-primary-color, hsl(209deg 78% 46%)));
 		box-shadow: var(--panda-time-picker-clock-time-display-outline, var(--panda-component-outline, 0px 0px 2px 2px hsl(209deg 78% 46%)));
 	}
+	
+	/* ===================================================================== */
+	/* TIME PERIOD TOGGLE ================================================== */
+	/* ===================================================================== */
 
 	.time-display-cont .period-toggle {
 		display: flex;
 		flex-flow: column;
 		margin-left: var(--panda-time-picker-clock-period-toggle-padding, var(--panda-gap-m, 10px));
-		overflow: hidden;
 
-		color: var(--panda-time-picker-clock-period-color, hsl(210deg 5% 25%));
-		font-size: var(--panda-time-picker-clock-period-toggle-font-size, 20px);
-		font-family: var(--panda-time-picker-clock-period-toggle-font-family, var(--panda-font-family-bold, "Poppins Bold"));
-		cursor: pointer;
-
-		border-width: var(--panda-time-picker-clock-period-toggle-border-width, var(--panda-border-width, 1px));
-		border-color: var(--panda-time-picker-clock-period-toggle-border-color, var(--panda-border-color, hsl(207deg 1% 85%)));
+		border-width: var(--panda-time-picker-clock-period-toggle-border-width, 1px);
+		border-color: var(--panda-time-picker-clock-period-toggle-border-color, transparent);
 		border-style: var(--panda-time-picker-clock-period-toggle-border-style, solid);
-		border-radius: var(--panda-time-picker-clock-period-toggle-border-radius, var(--panda-border-radius-m, 10px));
+		border-radius: var(--panda-time-picker-clock-period-toggle-border-radius, none);
+		background-color: var(--panda-time-picker-clock-period-toggle-background-color, transparent);
 		box-sizing: border-box;
-		background-color: var(--panda-time-picker-clock-period-toggle-background-color, hsl(0deg 0% 96%));
+	}
+
+	/* FOCUSED STATE ======================================================== */
+	.time-display-cont .period-toggle:focus-within {
+		border-color: var(--panda-time-picker-clock-period-toggle-border-color-focused, var(--panda-primary-color, hsl(209deg 78% 46%)));
+		box-shadow: var(--panda-time-picker-clock-period-toggle-outline, var(--panda-component-outline, 0px 0px 2px 2px hsl(209deg 78% 46%)));
 	}
 
 	.time-display-cont .period-toggle .period-am,
 	.time-display-cont .period-toggle .period-pm {
 		padding-inline: var(--panda-time-picker-clock-period-button-padding-inline, var(--panda-gap-s, 5px));
+
+		color: var(--panda-time-picker-clock-period-button-color, var(--panda-label-color, hsl(209deg 12% 67%)));
+		font-size: var(--panda-time-picker-clock-period-button-font-size, 20px);
+		font-family: var(--panda-time-picker-clock-period-button-font-family, var(--panda-font-family-bold, "Poppins Bold"));
+		user-select: none;
+		cursor: pointer;
+
+		transition: color 0.2s ease-out, border-color 0.2s ease-out, background-color 0.2s ease-out, box-shadow 0.2s ease-out;
+		will-change: color, border-color, background-color, box-shadow;
+
+		border-width: var(--panda-time-picker-clock-period-button-border-width, 1px);
+		border-color: var(--panda-time-picker-clock-period-button-border-color, transparent);
+		border-style: var(--panda-time-picker-clock-period-button-border-style, solid);
+		border-radius: var(--panda-time-picker-clock-period-button-border-radius, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-time-picker-clock-period-button-background-color, transparent);
 	}
 
-	.am .period-am,
-	.pm .period-pm {
-		color: var(--panda-time-picker-clock-period-color-active, var(--panda-primary-text-color, hsl(0deg 0% 100%)));
-		background-color: var(--panda-time-picker-clock-period-background-color-active, var(--panda-primary-color, hsl(209deg 78% 46%)));
+	.period-toggle.am .period-am,
+	.period-toggle.pm .period-pm {
+		color: var(--panda-time-picker-clock-period-button-color-active, var(--panda-primary-color, hsl(209deg 78% 46%)));
+
+		border-width: var(--panda-time-picker-clock-period-button-border-width-active, 1px);
+		border-color: var(--panda-time-picker-clock-period-button-border-color-active, var(--panda-primary-color, hsl(209deg 78% 46%)));
+		border-style: var(--panda-time-picker-clock-period-button-border-style-active, solid);
+		border-radius: var(--panda-time-picker-clock-period-button-border-radius-active, var(--panda-border-radius-m, 10px));
+		background-color: var(--panda-time-picker-clock-period-button-background-color-active, var(--panda-primary-color-10opc, hsl(209deg 78% 46% / 10%)));
+		box-shadow: var(--panda-time-picker-clock-period-button-elevation-active, 0px 0px 1px 1px hsl(209deg 78% 46% / 50%));
 	}
 
 	.hidden {

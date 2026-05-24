@@ -1,6 +1,6 @@
 // types
 import { PandaTimePickerI18nConfig, PandaTimePickerView, PandaTimePickerTimeFormat } from "../index";
-import { OnPasteEventDetail, RawValue, TimeObject } from "./types";
+import { OnPasteEventDetail, RawValue, TimeObject, TimePeriod } from "./types";
 import { PandaIcon } from "@panda-wbc/panda-icon";
 import { PandaSpinner } from "@panda-wbc/panda-spinner";
 import { PandaTimePickerOverlay } from "./panda-time-picker-overlay";
@@ -1132,22 +1132,22 @@ export class PandaTimePicker extends HTMLElement {
 		if (this._timeFormat === "12" && this._valueObject.hours != null) {
 			if (this._valueObject.hours > 12) {
 				this._valueObject.hours = this._valueObject.hours - 12;
-				this._valueObject.period = "pm";
+				this._valueObject.period = TimePeriod.PM;
 			} else if (this._valueObject.hours === 12) {
-				this._valueObject.period = "pm";
+				this._valueObject.period = TimePeriod.PM;
 			} else if (this._valueObject.hours === 0) {
 				this._valueObject.hours = 12;
-				this._valueObject.period = "am";
+				this._valueObject.period = TimePeriod.AM;
 			} else {
-				this._valueObject.period = "am";
+				this._valueObject.period = TimePeriod.AM;
 			}
 			// update hour and period input fields
 			this._hourInputEl.value = this._valueObject.hours.toString().padStart(2, "0");
-			this._periodInputEl.value = this._valueObject.period;
+			this._periodInputEl.value = this._valueObject.period === TimePeriod.PM ? "PM" : "AM";
 		} else if (this._timeFormat === "24" && this._valueObject.hours != null && this._valueObject.period != null) {
-			if (this._valueObject.period === "pm" && this._valueObject.hours < 12) {
+			if (this._valueObject.period === TimePeriod.PM && this._valueObject.hours < 12) {
 				this._valueObject.hours = this._valueObject.hours + 12;
-			} else if (this._valueObject.period === "am" && this._valueObject.hours === 12) {
+			} else if (this._valueObject.period === TimePeriod.AM && this._valueObject.hours === 12) {
 				this._valueObject.hours = 0;
 			}
 			// update hour input field
@@ -1294,7 +1294,7 @@ export class PandaTimePicker extends HTMLElement {
 				break;
 			case "period":
 				this._valueObject.period = value
-					? value.toLowerCase() === "pm" ? "pm" : "am"
+					? value.toLowerCase() === "pm" ? TimePeriod.PM : TimePeriod.AM
 					: null;
 				break;
 		}

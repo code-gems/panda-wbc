@@ -343,7 +343,7 @@ export const pandaThemeLight = /*css*/ `
 		--panda-form-validation-invalid: var(--panda-action-color-alert);
 
 		/* LABEL */
-		--panda-label-color: hsl(0deg 0% 50%);
+		--panda-label-color: hsl(209deg 12% 67%);
 		--panda-label-text-shadow: none;
 		--panda-label-font-size: var(--panda-font-size-s);
 		--panda-label-font-family: var(--panda-font-family);

@@ -5,6 +5,11 @@
  * These types may be subject to change without a major version bump, as they are not part of the public contract of the component.
  * Consumers of the PandaTimePicker component should not rely on these types in their own code, as they may change or be removed in future updates.
  */
+export const enum TimePeriod {
+	AM = "am",
+	PM = "pm"
+}
+
 export type RawValue = string | number | null | undefined;
 
 export type TimeInputValue = string | number | null;
@@ -13,7 +18,7 @@ export type TimeObject = {
 	hours: number | null;
 	minutes: number | null;
 	seconds: number | null;
-	period: "am" | "pm" | null;
+	period: TimePeriod | null;
 }
 
 export type OnPasteEventDetail = {

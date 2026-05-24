@@ -1,7 +1,7 @@
 // types
 import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../../index";
 import { DEFAULT_TIME_PICKER_VIEW } from "../constants";
-import { RawValue, TimeObject } from "../types";
+import { RawValue, TimeObject, TimePeriod } from "../types";
 
 /**
  * Utility function to generate a time format string based on the provided views and time mode 12/24h.
@@ -167,7 +167,7 @@ export const parseTimeValue = (value: RawValue, timeFormat: string): { value: Ra
 				hours,
 				minutes: date.getMinutes(),
 				seconds: date.getSeconds(),
-				period: hours >= 12 ? "pm" : "am",
+				period: hours >= 12 ? TimePeriod.PM : TimePeriod.AM,
 			},
 		};
 	} else if (typeof value === "string") {
@@ -197,18 +197,18 @@ export const parseTimeValue = (value: RawValue, timeFormat: string): { value: Ra
 		const originalHours = hours;
 
 		if (timeFormat === "24") {
-			if (parsedPeriod === "pm" && hours < 12) {
+			if (parsedPeriod === TimePeriod.PM && hours < 12) {
 				hours += 12;
 			}
-			if (parsedPeriod === "am" && hours === 12) {
+			if (parsedPeriod === TimePeriod.AM && hours === 12) {
 				hours = 0;
 			}
-			period = hours >= 12 ? "pm" : "am";
+			period = hours >= 12 ? TimePeriod.PM : TimePeriod.AM;
 		} else {
 			if (hours > 12) {
 				hours = hours % 12 || 12;
 			}
-			period = parsedPeriod ?? (originalHours >= 12 ? "pm" : "am");
+			period = parsedPeriod ?? (originalHours >= 12 ? TimePeriod.PM : TimePeriod.AM);
 		}
 
 		return {
@@ -229,15 +229,15 @@ export const parseTimeValue = (value: RawValue, timeFormat: string): { value: Ra
 	}
 }
 
-export const parseTimePeriod = (period: string | null): "am" | "pm" | null => {
+export const parseTimePeriod = (period: string | null): TimePeriod | null => {
 	if (period == null) {
 		return null;
 	}
 	const normalizedPeriod = period.trim().toLowerCase();
 	if (normalizedPeriod === "am" || normalizedPeriod === "a") {
-		return "am";
+		return TimePeriod.AM;
 	} else if (normalizedPeriod === "pm" || normalizedPeriod === "p") {
-		return "pm";
+		return TimePeriod.PM;
 	}
 	return null;
 }
