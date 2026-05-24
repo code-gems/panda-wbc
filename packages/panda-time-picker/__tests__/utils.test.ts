@@ -364,6 +364,9 @@ describe("parseTimePeriod", () => {
 describe("getI18nConfig", () => {
 	it("should return the default i18n configuration", () => {
 		expect(getI18nConfig()).toEqual({
+			
+			okButtonLabel: "OK",
+			cancelButtonLabel: "Cancel",
 			hourPlaceholder: "HH",
 			minutePlaceholder: "MM",
 			secondPlaceholder: "SS",
