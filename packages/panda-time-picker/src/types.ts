@@ -21,11 +21,24 @@ export type TimeObject = {
 	period: TimePeriod | null;
 }
 
-export type OnPasteEventDetail = {
-	value: string;
-}
-
 export type Point = {
 	x: number;
 	y: number;
 }
+
+// EVENTS =====================================================================
+
+export type InputPasteEvent = CustomEvent<{
+	value: string;
+}>
+
+export const enum PostMessageEventType {
+	CHANGE = "change",
+	CLOSE = "close"
+}
+
+export type PostMessageEvent = CustomEvent<{
+	type: PostMessageEventType;
+	value: string | null;
+	valueObject: TimeObject | null;
+}>;

@@ -1273,8 +1273,8 @@ export class PandaSelect extends HTMLElement {
 					// update items element
 					this._itemsEl.innerHTML = /*html*/`
 						<div
-						class="item single-item"
-						part="item single-item"
+							class="item single-item"
+							part="item single-item"
 						>
 							${selectedItemsLabel} (${itemCount})
 						</div>

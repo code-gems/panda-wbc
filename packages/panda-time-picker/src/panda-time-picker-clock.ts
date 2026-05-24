@@ -1,5 +1,5 @@
 // types
-import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../index";
+import { PandaTimePickerChangeEvent, PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../index";
 import { Point, RawValue, TimeObject, TimePeriod } from "./types";
 
 // styles
@@ -377,19 +377,16 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._hourDisplayEl.className = "time-display time-display-hour";
 		this._hourDisplayEl.part = "time-display-hour";
 		this._hourDisplayEl.dataset.timePart = "hours";
-		this._hourDisplayEl.tabIndex = 0;
 		// create minute input element
 		this._minuteDisplayEl = document.createElement("div");
 		this._minuteDisplayEl.className = "time-display time-display-minute";
 		this._minuteDisplayEl.part = "time-display-minute";
 		this._minuteDisplayEl.dataset.timePart = "minutes";
-		this._minuteDisplayEl.tabIndex = 0;
 		// create second input element
 		this._secondDisplayEl = document.createElement("div");
 		this._secondDisplayEl.className = "time-display time-display-second";
 		this._secondDisplayEl.part = "time-display-second";
 		this._secondDisplayEl.dataset.timePart = "seconds";
-		this._secondDisplayEl.tabIndex = 0;
 
 		// create period input element
 		this._periodDisplayEl = document.createElement("div");
@@ -452,6 +449,8 @@ export class PandaTimePickerClock extends HTMLElement {
 		this._clockEl.addEventListener("touchmove", this._mouseMoveEvent);
 		document.addEventListener("mouseup", this._mouseUpEvent);
 		document.addEventListener("touchend", this._mouseUpEvent);
+		// default time period to AM if time format is 12 hours and period is not set in the value object
+		this._updateTimePeriod();
 		// initial render
 		this._updateComponent();
 		// update the view
@@ -527,7 +526,7 @@ export class PandaTimePickerClock extends HTMLElement {
 				this._periodDisplayEl.classList.remove("am");
 				this._periodDisplayEl.classList.add("pm");
 			}
-			
+
 			// update form css class based on selected view
 			// based on form css class clock show/hide time hands
 			this._formEl.classList.remove("hour-view", "minute-view", "second-view", "active");
@@ -615,12 +614,8 @@ export class PandaTimePickerClock extends HTMLElement {
 		} = parseTimeValue(rawValue, this._timeFormat);
 		this._value = value;
 		this._valueObject = valueObject;
-
-		console.log(
-			`%c 🧪 [CLOCK] (_parseValue) ${rawValue}`,
-			"font-size: 24px; color: limegreen; background: black; padding: 5px; border-radius: 10px;",
-			this._valueObject
-		);
+		// default time period to AM if time format is 12 hours and period is not set in the value object
+		this._updateTimePeriod();
 
 		if (value != null) {
 			// update time input fields based on the new value object
@@ -631,6 +626,14 @@ export class PandaTimePickerClock extends HTMLElement {
 		// update component
 		this._updateComponent();
 		this._updateClockHands();
+	}
+
+	/** Update the time period based on the current value object. */
+	private _updateTimePeriod(): void {
+		// if time format is 12 hours and period is not set in the value object, default to AM
+		if (this._timeFormat === "12" && this._valueObject.period == null) {
+			this._valueObject.period = TimePeriod.AM;
+		}
 	}
 
 	private _drawClockScale(): void {
@@ -670,18 +673,18 @@ export class PandaTimePickerClock extends HTMLElement {
 		// remove existing labels
 		const existingLabels = this.shadowRoot!.querySelectorAll(".clock-scale-label");
 		existingLabels.forEach((label) => label.remove());
-		
+
 		// draw clock scale labels
 		for (let i = 0; i < 12; i++) {
 			const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
 			const left = CLOCK_RADIUS + 95 * Math.cos(angle);
 			const top = CLOCK_RADIUS + 95 * Math.sin(angle);
-			
+
 			const labelEl = document.createElement("div");
 			labelEl.className = "clock-scale-label";
 			labelEl.part = "clock-scale-label";
 			labelEl.setAttribute("style", `left: ${left.toFixed(0)}px; top: ${top.toFixed(0)}px;`);
-						
+
 			let label = "";
 			if (this._selectedView === "hours") {
 				if (this._timeFormat === "24") {
@@ -749,30 +752,6 @@ export class PandaTimePickerClock extends HTMLElement {
 	}
 
 	/**
-	 * Update the value object based on the provided value and time part.
-	 * This method updates the corresponding property in the value object (hours, minutes, seconds, period) based on the time part being updated.
-	 * @param {number} value The new value to be set for the specified time part (e.g., hours, minutes, seconds, period).
-	 * @param {string} timePart The time part to be updated (e.g., "hours", "minutes", "seconds", "period").
-	 */
-	private _updateValueObject(value: number | string, timePart: string): void {
-		// if value object is null, initialize it
-		switch (timePart) {
-			case "hours":
-				this._valueObject.hours = value as number;
-				break;
-			case "minutes":
-				this._valueObject.minutes = value as number;
-				break;
-			case "seconds":
-				this._valueObject.seconds = value as number;
-				break;
-			case "period":
-				this._valueObject.period = value as TimePeriod;
-				break;
-		}
-	}
-	
-	/**
 	 * Trigger change event with the selected time value in the detail. If clear flag is true, value will be null in the event detail.
 	 * This method checks if the value object is complete (i.e., all required time parts are selected) and if so, 
 	 * formats the value based on the specified format and dispatches a custom "change" event with the formatted value in the event detail. 
@@ -793,10 +772,11 @@ export class PandaTimePickerClock extends HTMLElement {
 				this._views,
 				this._timeFormat
 			);
-			
-			const changeEvent = new CustomEvent("change", {
+
+			const changeEvent: PandaTimePickerChangeEvent = new CustomEvent("change", {
 				detail: {
 					value,
+					valueObject: this._valueObject,
 				},
 				bubbles: true,
 				composed: true,
@@ -808,7 +788,7 @@ export class PandaTimePickerClock extends HTMLElement {
 	// ================================================================================================================
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
-	
+
 	private _onTimeDisplayClick(event: Event): void {
 		const timeDisplayEl = (event.target as HTMLElement).closest(".time-display") as HTMLDivElement;
 		// if a time display element is clicked, switch to the corresponding view based on the data-time-part attribute of the clicked element 
@@ -823,8 +803,9 @@ export class PandaTimePickerClock extends HTMLElement {
 	private _onTogglePeriod(event: Event): void {
 		const periodEl = (event.target as HTMLElement).closest(".period") as HTMLDivElement;
 		if (periodEl) {
-			const value = periodEl.dataset.value === "pm" ? TimePeriod.PM : TimePeriod.AM;
-			this._updateValueObject(value, "period");
+			this._valueObject.period = periodEl.dataset.value === "pm"
+				? TimePeriod.PM
+				: TimePeriod.AM;
 			this._updateComponent();
 			this._triggerChangeEvent();
 		}
@@ -863,7 +844,7 @@ export class PandaTimePickerClock extends HTMLElement {
 				const dph = this._timeFormat === "24"
 					? 15 // 360 degrees / 24 hours = 15 degrees per hour
 					: 30; // 360 degrees / 12 hours = 30 degrees per hour
-					
+
 				// calculate hour value based on the angle of the mouse position
 				let hour = Math.round(angle / dph);
 
@@ -880,7 +861,7 @@ export class PandaTimePickerClock extends HTMLElement {
 				// draw hour hand based on the calculated hour value
 				this._drawHourHand(hour);
 				// update selected value
-				this._updateValueObject(hour, "hours");
+				this._valueObject.hours = hour;
 				// update hour input field
 				this._hourDisplayEl.innerText = hour.toString().padStart(2, "0");
 				this._changedValue = true;
@@ -897,7 +878,7 @@ export class PandaTimePickerClock extends HTMLElement {
 				// draw minute hand based on the calculated minute value
 				this._drawMinuteHand(minute);
 				// update selected value
-				this._updateValueObject(minute, "minutes");
+				this._valueObject.minutes = minute;
 				// update minute input field
 				this._minuteDisplayEl.innerText = minute.toString().padStart(2, "0");
 				this._changedValue = true;
@@ -914,7 +895,7 @@ export class PandaTimePickerClock extends HTMLElement {
 				// draw second hand based on the calculated second value
 				this._drawSecondHand(second);
 				// update selected value
-				this._updateValueObject(second, "seconds");
+				this._valueObject.seconds = second;
 				// update second input field
 				this._secondDisplayEl.innerText = second.toString().padStart(2, "0");
 				this._changedValue = true;

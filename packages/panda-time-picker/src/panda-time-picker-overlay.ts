@@ -1,6 +1,8 @@
 // types
 import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../index";
-import { RawValue } from "./types";
+import { PostMessageEventType, RawValue } from "./types";
+import { PandaTimePickerClock } from "./panda-time-picker-clock";
+import { PandaButton } from "@panda-wbc/panda-button";
 
 // styles
 import { styles } from "./styles/time-picker-overlay-styles";
@@ -11,8 +13,9 @@ import "./panda-time-picker-clock";
 // utils
 import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
 import { getI18nConfig } from "./utils/utils";
-import { PandaTimePickerClock } from "./panda-time-picker-clock";
-import { DEFAULT_TIME_PICKER_VIEW } from "./constants";
+
+// constants
+import { DEFAULT_TIME_FORMAT, DEFAULT_TIME_PICKER_VIEW } from "./constants";
 
 export class PandaTimePickerOverlay extends HTMLElement {
 	/** Version of the component. */
@@ -22,6 +25,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	// PROPERTIES =====================================================================================================
 	// ================================================================================================================
 
+	// value ==========================================================================================================
 	get value() {
 		return this._value;
 	}
@@ -34,6 +38,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _value!: RawValue;
 	
+	// time format ====================================================================================================
 	get timeFormat() {
 		return this._timeFormat;
 	}
@@ -48,6 +53,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _timeFormat!: PandaTimePickerTimeFormat;
 
+	// views ==========================================================================================================
 	get views() {
 		return this._views;
 	}
@@ -60,6 +66,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _views!: PandaTimePickerView[];
 	
+	// minute step ====================================================================================================
 	get minuteStep() {
 		return this._minuteStep;
 	}
@@ -74,6 +81,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _minuteStep!: number;
 
+	// second step ====================================================================================================
 	get secondStep() {
 		return this._secondStep;
 	}
@@ -88,6 +96,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _secondStep!: number;
 
+	// i18n ===========================================================================================================
 	get i18n() {
 		return this._i18n;
 	}
@@ -107,13 +116,19 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	// private properties =============================================================================================
 
+	private _preventCloseOverlay!: boolean;
+
 	// elements =======================================================================================================
 	private _overlayEl!: HTMLElement;
 	private _formEl!: HTMLElement;
 	private _clockEl!: PandaTimePickerClock;
+	private _okButtonEl!: PandaButton;
+	private _cancelButtonEl!: PandaButton;
 
 	// events =========================================================================================================
-	private readonly _overlayTabKeyEvent!: EventListener;
+	private readonly _closeOverlayEvent!: EventListener;
+	private readonly _clockChangeEvent!: EventListener;
+	private readonly _okButtonClickEvent!: EventListener;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -133,7 +148,10 @@ export class PandaTimePickerOverlay extends HTMLElement {
 					<div class="body" part="body">
 						<panda-time-picker-clock></panda-time-picker-clock>
 					</div>
-					<div class="footer" part="footer"></div>
+					<div class="footer" part="footer">
+						<panda-button class="ok-button"></panda-button>
+						<panda-button class="cancel-button"></panda-button>
+					</div>
 				</div>
 			</div>
 		`;
@@ -143,33 +161,45 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 		// initialize class properties
 		this._value = null;
-		this._timeFormat = "24";
+		this._timeFormat = DEFAULT_TIME_FORMAT;
 		this._views = [...DEFAULT_TIME_PICKER_VIEW];
 		this._minuteStep = 1;
 		this._secondStep = 1;
 		this._i18n = getI18nConfig();
 
 		// init event handlers
-		this._overlayTabKeyEvent = this._onOverlayTabKey.bind(this);
+		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
+		this._clockChangeEvent = this._onClockChange.bind(this);
+		this._okButtonClickEvent = this._onClockChange.bind(this);
 
 		if (this.shadowRoot) {
 			this._overlayEl = this.shadowRoot.querySelector(".overlay") as HTMLElement;
 			this._formEl = this.shadowRoot.querySelector(".form") as HTMLElement;
 			this._clockEl = this.shadowRoot.querySelector("panda-time-picker-clock") as PandaTimePickerClock;
+
+			this._okButtonEl = this.shadowRoot.querySelector(".ok-button") as PandaButton;
+			this._cancelButtonEl = this.shadowRoot.querySelector(".cancel-button") as PandaButton;
 		}
 	}
 
 	connectedCallback() {
 		// add event listeners
-		this._overlayEl.addEventListener("keydown", this._overlayTabKeyEvent);
-
+		this._overlayEl.addEventListener("click", this._closeOverlayEvent);
+		this._clockEl.addEventListener("click", this._clockClickEvent);
+		this._clockEl.addEventListener("change", this._clockChangeEvent);
+		this._okButtonEl.addEventListener("click", this._okButtonClickEvent);
+		this._cancelButtonEl.addEventListener("click", this._closeOverlayEvent);
 		// initial render
 		this._updateComponent();
 	}
 
 	disconnectedCallback() {
 		// remove event listeners
-		this._overlayEl.removeEventListener("keydown", this._overlayTabKeyEvent);
+		this._overlayEl.removeEventListener("click", this._closeOverlayEvent);
+		this._clockEl.removeEventListener("click", this._clockClickEvent);
+		this._clockEl.removeEventListener("change", this._clockChangeEvent);
+		this._okButtonEl.removeEventListener("click", this._okButtonClickEvent);
+		this._cancelButtonEl.removeEventListener("click", this._closeOverlayEvent);
 	}
 
 	// ================================================================================================================
@@ -178,6 +208,10 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _updateComponent(): void {
 		if (this.isConnected) {
+			// update button labels
+			this._okButtonEl.textContent = this._i18n.okButtonLabel;
+			this._cancelButtonEl.textContent = this._i18n.cancelButtonLabel;
+			
 			// update component based on current properties
 			this._clockEl.value = this._value;
 			this._clockEl.views = this._views;
@@ -192,11 +226,26 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _onOverlayTabKey(event: Event): void {
-		if (document.activeElement === this && (event as KeyboardEvent).code === "Tab") {
-			// prevent tab key to trap focus inside the overlay
-			event.preventDefault();
-		}
+	private _clockClickEvent(event: Event): void {
+		event.preventDefault();
+		event.stopPropagation();
+	}
+
+	private _onCloseOverlay(): void {
+		console.log(`%c ⚡ [OVERLAY] (_onOverlayClick)`, "font-size: 24px; color: lightblue; background: black;", document.activeElement);
+		// trigger close event
+		const event = new CustomEvent("post-message", {
+			detail: {
+				type: PostMessageEventType.CLOSE,
+				value: null,
+				valueObject: null,
+			}
+		});
+		this.dispatchEvent(event);
+	}
+
+	private _onClockChange(event: Event): void {
+		console.log(`%c ⚡ [OVERLAY] (_onClockChange)`, "font-size: 24px; color: lightgreen; background: black;", event);
 	}
 
 }

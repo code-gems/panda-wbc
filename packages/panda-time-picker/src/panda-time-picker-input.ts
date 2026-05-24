@@ -1,5 +1,5 @@
 // types
-import { OnPasteEventDetail, TimeInputValue } from "./types";
+import { InputPasteEvent, TimeInputValue } from "./types";
 
 // styles
 import { styles } from "./styles/time-picker-input-styles";
@@ -411,12 +411,12 @@ export class PandaTimePickerInput extends HTMLElement {
 		// get pasted data from clipboard
 		const pastedData = await navigator.clipboard.readText();
 		// dispatch custom paste event with the pasted data as detail
-		const event = new CustomEvent<OnPasteEventDetail>("on-paste", {
-			bubbles: true,
-			composed: true,
+		const event: InputPasteEvent = new CustomEvent("on-paste", {
 			detail: {
 				value: pastedData,
-			}
+			},
+			bubbles: true,
+			composed: true,
 		});
 		this.dispatchEvent(event);
 	}
