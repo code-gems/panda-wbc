@@ -34,4 +34,18 @@ export const styles = /*css*/`
 		z-index: 9999;
 	}
 
+	.form .header {
+		flex-shrink: 0;
+	}
+
+	.form .body {
+		flex-grow: 1;
+	}
+
+	.form .footer {
+		display: flex;
+		flex-shrink: 0;
+		justify-content: flex-end;
+		gap: var(--panda-time-picker-overlay-footer-gap, var(--panda-gap-m, 10px));
+	}
 `;

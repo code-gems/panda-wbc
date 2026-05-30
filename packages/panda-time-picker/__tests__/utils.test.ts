@@ -1,3 +1,6 @@
+// types
+import { TimeObject, TimePeriod } from "../src/types";
+
 // utils
 import { expect, describe, it } from "vitest";
 
@@ -72,7 +75,7 @@ describe("formatValue", () => {
 	const allViews = ["hours", "minutes", "seconds"];
 
 	it("should format a complete time object in 12h format", () => {
-		const obj = { hours: 3, minutes: 5, seconds: 9, period: "pm" as const };
+		const obj = { hours: 3, minutes: 5, seconds: 9, period: TimePeriod.PM as const };
 		expect(formatValue(obj, "HH:MM:SS AA", allViews, "12")).toBe("03:05:09 PM");
 	});
 
@@ -87,25 +90,25 @@ describe("formatValue", () => {
 	});
 
 	it("should derive format from views when format is null", () => {
-		const obj = { hours: 10, minutes: 20, seconds: null, period: "am" as const };
+		const obj = { hours: 10, minutes: 20, seconds: null, period: TimePeriod.AM as const };
 		// null format -> getFormatFromViews(["hours","minutes"], "12") -> "HH:MM AA"
 		expect(formatValue(obj, null as any, ["hours", "minutes"], "12")).toBe("10:20 AM");
 	});
 
 	it("should derive format from views when format is an empty string", () => {
-		const obj = { hours: 10, minutes: 20, seconds: null, period: "am" as const };
+		const obj = { hours: 10, minutes: 20, seconds: null, period: TimePeriod.AM as const };
 		// empty string format -> getFormatFromViews(["hours","minutes"], "12") -> "HH:MM AA"
 		expect(formatValue(obj, "" as any, ["hours", "minutes"], "12")).toBe("10:20 AM");
 	});
 
 	it("should derive format from views when format is an untrimmed empty string", () => {
-		const obj = { hours: 10, minutes: 20, seconds: null, period: "am" as const };
+		const obj = { hours: 10, minutes: 20, seconds: null, period: TimePeriod.AM as const };
 		// untrimmed empty string format -> getFormatFromViews(["hours","minutes"], "12") -> "HH:MM AA"
 		expect(formatValue(obj, "   " as any, ["hours", "minutes"], "12")).toBe("10:20 AM");
 	});
 
 	it("should leave 00 token when seconds view is not included", () => {
-		const obj = { hours: 1, minutes: 2, seconds: 3, period: "am" as const };
+		const obj = { hours: 1, minutes: 2, seconds: 3, period: TimePeriod.AM as const };
 		expect(formatValue(obj, "HH:MM:SS AA", ["hours", "minutes"], "12")).toBe("01:02:00 AM");
 	});
 
@@ -115,7 +118,7 @@ describe("formatValue", () => {
 	});
 
 	it("should pad single-digit values with leading zeros", () => {
-		const obj = { hours: 1, minutes: 2, seconds: 3, period: "am" as const };
+		const obj = { hours: 1, minutes: 2, seconds: 3, period: TimePeriod.AM as const };
 		expect(formatValue(obj, "HH:MM:SS AA", allViews, "12")).toBe("01:02:03 AM");
 	});
 });
@@ -126,47 +129,47 @@ describe("formatValue", () => {
 
 describe("isValueObjectComplete", () => {
 	it("should return true for a fully populated object in 12h format", () => {
-		const obj = { hours: 3, minutes: 30, seconds: 0, period: "pm" as const };
+		const obj: TimeObject = { hours: 3, minutes: 30, seconds: 0, period: TimePeriod.PM as const };
 		expect(isValueObjectComplete(obj, ["hours", "minutes", "seconds"], "12")).toBe(true);
 	});
 
 	it("should return true for a fully populated object in 24h format", () => {
-		const obj = { hours: 14, minutes: 30, seconds: 0, period: null };
+		const obj: TimeObject = { hours: 14, minutes: 30, seconds: 0, period: null };
 		expect(isValueObjectComplete(obj, ["hours", "minutes", "seconds"], "24")).toBe(true);
 	});
 
 	it("should return false when hours is null and hours view is required", () => {
-		const obj = { hours: null, minutes: 30, seconds: 0, period: "am" as const };
+		const obj: TimeObject = { hours: null, minutes: 30, seconds: 0, period: TimePeriod.AM as const };
 		expect(isValueObjectComplete(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when minutes is null and minutes view is required", () => {
-		const obj = { hours: 10, minutes: null, seconds: 0, period: "am" as const };
+		const obj: TimeObject = { hours: 10, minutes: null, seconds: 0, period: TimePeriod.AM as const };
 		expect(isValueObjectComplete(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when seconds is null and seconds view is required", () => {
-		const obj = { hours: 10, minutes: 30, seconds: null, period: "am" as const };
+		const obj: TimeObject = { hours: 10, minutes: 30, seconds: null, period: TimePeriod.AM as const };
 		expect(isValueObjectComplete(obj, ["hours", "minutes", "seconds"], "12")).toBe(false);
 	});
 
 	it("should return false when period is null in 12h format", () => {
-		const obj = { hours: 10, minutes: 30, seconds: 0, period: null };
+		const obj: TimeObject = { hours: 10, minutes: 30, seconds: 0, period: null };
 		expect(isValueObjectComplete(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when period is invalid (not am/pm) in 12h format", () => {
-		const obj = { hours: 10, minutes: 30, seconds: 0, period: "xx" as any };
+		const obj: TimeObject = { hours: 10, minutes: 30, seconds: 0, period: "xx" as any };
 		expect(isValueObjectComplete(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return true even with null period in 24h format", () => {
-		const obj = { hours: 14, minutes: 30, seconds: null, period: null };
+		const obj: TimeObject = { hours: 14, minutes: 30, seconds: null, period: null };
 		expect(isValueObjectComplete(obj, ["hours", "minutes"], "24")).toBe(true);
 	});
 
 	it("should return true when seconds view is not included and seconds is null", () => {
-		const obj = { hours: 10, minutes: 30, seconds: null, period: "am" as const };
+		const obj: TimeObject = { hours: 10, minutes: 30, seconds: null, period: TimePeriod.AM as const };
 		expect(isValueObjectComplete(obj, ["hours", "minutes"], "12")).toBe(true);
 	});
 });
@@ -364,7 +367,7 @@ describe("parseTimePeriod", () => {
 describe("getI18nConfig", () => {
 	it("should return the default i18n configuration", () => {
 		expect(getI18nConfig()).toEqual({
-			
+			pickerFormTitle: "Select Time",
 			okButtonLabel: "OK",
 			cancelButtonLabel: "Cancel",
 			hourPlaceholder: "HH",
@@ -470,27 +473,27 @@ describe("validateTimeObject", () => {
 	});
 
 	it("should return true for a valid 12h time object", () => {
-		const obj = { hours: 3, minutes: 30, seconds: 0, period: "pm" as const };
+		const obj = { hours: 3, minutes: 30, seconds: 0, period: TimePeriod.PM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes", "seconds"], "12")).toBe(true);
 	});
 
 	it("should return true for a valid 24h time object", () => {
-		const obj = { hours: 14, minutes: 30, seconds: 0, period: null };
+		const obj: TimeObject = { hours: 14, minutes: 30, seconds: 0, period: null };
 		expect(validateTimeObject(obj, ["hours", "minutes", "seconds"], "24")).toBe(true);
 	});
 
 	it("should return false when hours is null and hours view is required", () => {
-		const obj = { hours: null, minutes: 30, seconds: 0, period: "am" as const };
+		const obj = { hours: null, minutes: 30, seconds: 0, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when hours is 0 in 12h format (out of 1-12 range)", () => {
-		const obj = { hours: 0, minutes: 0, seconds: 0, period: "am" as const };
+		const obj = { hours: 0, minutes: 0, seconds: 0, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when hours > 12 in 12h format", () => {
-		const obj = { hours: 13, minutes: 0, seconds: 0, period: "pm" as const };
+		const obj = { hours: 13, minutes: 0, seconds: 0, period: TimePeriod.PM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
@@ -500,22 +503,22 @@ describe("validateTimeObject", () => {
 	});
 
 	it("should return false when minutes < 0", () => {
-		const obj = { hours: 10, minutes: -1, seconds: 0, period: "am" as const };
+		const obj = { hours: 10, minutes: -1, seconds: 0, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when minutes > 59", () => {
-		const obj = { hours: 10, minutes: 60, seconds: 0, period: "am" as const };
+		const obj = { hours: 10, minutes: 60, seconds: 0, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes"], "12")).toBe(false);
 	});
 
 	it("should return false when seconds < 0", () => {
-		const obj = { hours: 10, minutes: 30, seconds: -1, period: "am" as const };
+		const obj = { hours: 10, minutes: 30, seconds: -1, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes", "seconds"], "12")).toBe(false);
 	});
 
 	it("should return false when seconds > 59", () => {
-		const obj = { hours: 10, minutes: 30, seconds: 60, period: "am" as const };
+		const obj = { hours: 10, minutes: 30, seconds: 60, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes", "seconds"], "12")).toBe(false);
 	});
 
@@ -530,7 +533,7 @@ describe("validateTimeObject", () => {
 	});
 
 	it("should return true when period view is required and period is valid", () => {
-		const obj = { hours: 10, minutes: 30, seconds: 0, period: "am" as const };
+		const obj: TimeObject = { hours: 10, minutes: 30, seconds: 0, period: TimePeriod.AM as const };
 		expect(validateTimeObject(obj, ["hours", "minutes", "period"], "12")).toBe(true);
 	});
 

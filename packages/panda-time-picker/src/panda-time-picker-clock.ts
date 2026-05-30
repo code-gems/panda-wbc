@@ -10,6 +10,7 @@ import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
 import {
 	arraysEqual,
 	formatValue,
+	getEmptyTimeObject,
 	getI18nConfig,
 	isValueObjectComplete,
 	parseStepFromValue,
@@ -268,16 +269,22 @@ export class PandaTimePickerClock extends HTMLElement {
 	 * - ss: A string representing the second format (e.g., "SS").
 	 * - am: A string representing the ante meridiem (AM) designator (e.g., "AM").
 	 * - pm: A string representing the post meridiem (PM) designator (e.g., "PM").
+	 * - pickerFormTitle: A string representing the title of the picker form (e.g., "Select Time").
+	 * - okButtonLabel: A string representing the label of the OK button (e.g., "OK").
+	 * - cancelButtonLabel: A string representing the label of the Cancel button (e.g., "Cancel").
 	 * @type {PandaTimePickerI18nConfig}
-	 * @default { hh: "HH", mm: "MM", ss: "SS", am: "AM", pm: "PM" }
+	 * @default { hh: "HH", mm: "MM", ss: "SS", am: "AM", pm: "PM", pickerFormTitle: "Select Time", okButtonLabel: "OK", cancelButtonLabel: "Cancel" }
 	 * @public
 	 */
 	get i18n(): PandaTimePickerI18nConfig {
 		return this._i18n;
 	}
 
-	set i18n(config: PandaTimePickerI18nConfig) {
-		this._i18n = config;
+	set i18n(config: Partial<PandaTimePickerI18nConfig>) {
+		this._i18n = {
+			...getI18nConfig(),
+			...config,
+		};
 		this._updateComponent();
 	}
 
@@ -407,6 +414,7 @@ export class PandaTimePickerClock extends HTMLElement {
 
 		// initialize properties
 		this._value = "";
+		this._valueObject = getEmptyTimeObject();
 		this._i18n = getI18nConfig();
 		this._dragged = false;
 		this._mousePosition = { x: 0, y: 0 };
@@ -547,9 +555,19 @@ export class PandaTimePickerClock extends HTMLElement {
 	 */
 	private _updateViews(): void {
 		if (this.isConnected) {
+
+			console.log(
+				`%c ⚡ [CLOCK] (_updateViews) Updating views: ${this._views.join(", ")}`,
+				"font-size: 24px; color: crimson; background: black;",
+			);
+
 			// check if hours view is enabled
 			if (this._views.includes("hours")) {
-				this._hourDisplayEl.textContent = this._i18n.hourPlaceholder;
+				if (this._valueObject.hours == null) {
+					this._hourDisplayEl.textContent = this._i18n.hourPlaceholder;
+				} else {
+					this._hourDisplayEl.textContent = this._valueObject.hours.toString().padStart(2, "0");
+				}					
 				this._timeDisplayContEl.appendChild(this._hourDisplayEl);
 			} else {
 				this._hourDisplayEl.remove();
@@ -564,7 +582,11 @@ export class PandaTimePickerClock extends HTMLElement {
 					this._separator1El.remove();
 				}
 				// add minute input to input wrap
-				this._minuteDisplayEl.textContent = this._i18n.minutePlaceholder;
+				if (this._valueObject.minutes == null) {
+					this._minuteDisplayEl.textContent = this._i18n.minutePlaceholder;
+				} else {
+					this._minuteDisplayEl.textContent = this._valueObject.minutes.toString().padStart(2, "0");
+				}
 				this._timeDisplayContEl.appendChild(this._minuteDisplayEl);
 			} else {
 				this._minuteDisplayEl.remove();
@@ -579,7 +601,11 @@ export class PandaTimePickerClock extends HTMLElement {
 					this._separator2El.remove();
 				}
 				// add second input to input wrap
-				this._secondDisplayEl.textContent = this._i18n.secondPlaceholder;
+				if (this._valueObject.seconds == null) {
+					this._secondDisplayEl.textContent = this._i18n.secondPlaceholder;
+				} else {
+					this._secondDisplayEl.textContent = this._valueObject.seconds.toString().padStart(2, "0");
+				}
 				this._timeDisplayContEl.appendChild(this._secondDisplayEl);
 			} else {
 				this._secondDisplayEl.remove();

@@ -466,14 +466,17 @@ export class PandaTimePicker extends HTMLElement {
 	 * - ss: A string representing the second format (e.g., "SS").
 	 * - am: A string representing the ante meridiem (AM) designator (e.g., "AM").
 	 * - pm: A string representing the post meridiem (PM) designator (e.g., "PM").
+	 * - pickerFormTitle: A string representing the title of the picker form (e.g., "Select Time").
+	 * - okButtonLabel: A string representing the label of the OK button (e.g., "OK").
+	 * - cancelButtonLabel: A string representing the label of the Cancel button (e.g., "Cancel").
 	 * @type {PandaTimePickerI18nConfig}
-	 * @default { hh: "HH", mm: "MM", ss: "SS", am: "AM", pm: "PM" }
+	 * @default { hh: "HH", mm: "MM", ss: "SS", am: "AM", pm: "PM", pickerFormTitle: "Select Time", okButtonLabel: "OK", cancelButtonLabel: "Cancel" }
 	 */
 	get i18n() {
 		return this._i18n;
 	}
 
-	set i18n(value: PandaTimePickerI18nConfig) {
+	set i18n(value: Partial<PandaTimePickerI18nConfig>) {
 		if (this._i18n !== value) {
 			this._i18n = {
 				...getI18nConfig(),
@@ -839,12 +842,7 @@ export class PandaTimePicker extends HTMLElement {
 
 		// initialize class properties
 		this._value = undefined;
-		this._valueObject = {
-			hours: null,
-			minutes: null,
-			seconds: null,
-			period: null,
-		};
+		this._valueObject = getEmptyTimeObject();
 		this._theme = "";
 		this._i18n = getI18nConfig();
 		this._spinnerType = "dots";
@@ -1228,10 +1226,7 @@ export class PandaTimePicker extends HTMLElement {
 
 		if (value != null) {
 			// update time input fields based on the new value object
-			this._hourInputEl.value = this._valueObject.hours != null ? this._valueObject.hours.toString().padStart(2, "0") : "";
-			this._minuteInputEl.value = this._valueObject.minutes != null ? this._valueObject.minutes.toString().padStart(2, "0") : "";
-			this._secondInputEl.value = this._valueObject.seconds != null ? this._valueObject.seconds.toString().padStart(2, "0") : "";
-			this._periodInputEl.value = this._valueObject.period;
+			this._updateInputFields();
 		}
 
 		// evaluate mandatory flag based on the new value
@@ -1344,6 +1339,14 @@ export class PandaTimePicker extends HTMLElement {
 		}
 	}
 
+	/** Update time input fields based on the current value object. */
+	private _updateInputFields(): void {
+		this._hourInputEl.value = this._valueObject.hours != null ? this._valueObject.hours.toString().padStart(2, "0") : "";
+		this._minuteInputEl.value = this._valueObject.minutes != null ? this._valueObject.minutes.toString().padStart(2, "0") : "";
+		this._secondInputEl.value = this._valueObject.seconds != null ? this._valueObject.seconds.toString().padStart(2, "0") : "";
+		this._periodInputEl.value = this._valueObject.period;
+	}
+
 	/**
 	 * Trigger change event with the selected time value in the detail. If clear flag is true, value will be null in the event detail.
 	 * @param {boolean} clear if true, value in event detail will be null, otherwise it will be the formatted time string based on the selected time value
@@ -1370,6 +1373,7 @@ export class PandaTimePicker extends HTMLElement {
 			// create overlay element
 			this._overlayEl = document.createElement("panda-time-picker-overlay");
 			this._overlayEl.value = this._value;
+			this._overlayEl.valueObject = this._valueObject;
 			this._overlayEl.views = this._views;
 			this._overlayEl.timeFormat = this._timeFormat;
 			this._overlayEl.i18n = this._i18n;
@@ -1490,6 +1494,18 @@ export class PandaTimePicker extends HTMLElement {
 		switch (type) {
 			case PostMessageEventType.CLOSE:
 				this._closeOverlay();
+				break;
+			case PostMessageEventType.CHANGE:
+				this._value = value;
+				this._valueObject = valueObject;
+				this._triggerChangeEvent();
+				this._closeOverlay();
+				// update input fields based on the new value object
+				this._updateInputFields();
+				// evaluate mandatory flag based on the new value
+				this._evaluateMandatoryFlag();
+				// update component to reflect changes in value and value object
+				this._updateComponent();
 				break;
 		}
 	}

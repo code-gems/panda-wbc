@@ -10,6 +10,11 @@ export const enum TimePeriod {
 	PM = "pm"
 }
 
+export const enum PostMessageEventType {
+	CHANGE = "change",
+	CLOSE = "close"
+}
+
 export type RawValue = string | number | null | undefined;
 
 export type TimeInputValue = string | number | null;
@@ -30,15 +35,10 @@ export type Point = {
 
 export type InputPasteEvent = CustomEvent<{
 	value: string;
-}>
-
-export const enum PostMessageEventType {
-	CHANGE = "change",
-	CLOSE = "close"
-}
+}>;
 
 export type PostMessageEvent = CustomEvent<{
 	type: PostMessageEventType;
 	value: string | null;
-	valueObject: TimeObject | null;
+	valueObject: TimeObject;
 }>;

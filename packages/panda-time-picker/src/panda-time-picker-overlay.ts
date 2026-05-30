@@ -1,6 +1,6 @@
 // types
-import { PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../index";
-import { PostMessageEventType, RawValue } from "./types";
+import { PandaTimePickerChangeEvent, PandaTimePickerI18nConfig, PandaTimePickerTimeFormat, PandaTimePickerView } from "../index";
+import { PostMessageEventType, RawValue, TimeObject } from "./types";
 import { PandaTimePickerClock } from "./panda-time-picker-clock";
 import { PandaButton } from "@panda-wbc/panda-button";
 
@@ -12,7 +12,7 @@ import "./panda-time-picker-clock";
 
 // utils
 import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
-import { getI18nConfig } from "./utils/utils";
+import { getEmptyTimeObject, getI18nConfig } from "./utils/utils";
 
 // constants
 import { DEFAULT_TIME_FORMAT, DEFAULT_TIME_PICKER_VIEW } from "./constants";
@@ -37,6 +37,18 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	}
 
 	private _value!: RawValue;
+
+	// value object ===================================================================================================
+
+	get valueObject() {
+		return this._valueObject;
+	}
+
+	set valueObject(value: TimeObject) {
+		this._valueObject = value;
+	}
+
+ 	private _valueObject!: TimeObject;
 	
 	// time format ====================================================================================================
 	get timeFormat() {
@@ -114,13 +126,10 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _i18n!: PandaTimePickerI18nConfig;
 
-	// private properties =============================================================================================
-
-	private _preventCloseOverlay!: boolean;
-
 	// elements =======================================================================================================
 	private _overlayEl!: HTMLElement;
 	private _formEl!: HTMLElement;
+	private _formTitleEl!: HTMLElement;
 	private _clockEl!: PandaTimePickerClock;
 	private _okButtonEl!: PandaButton;
 	private _cancelButtonEl!: PandaButton;
@@ -149,8 +158,8 @@ export class PandaTimePickerOverlay extends HTMLElement {
 						<panda-time-picker-clock></panda-time-picker-clock>
 					</div>
 					<div class="footer" part="footer">
-						<panda-button class="ok-button"></panda-button>
 						<panda-button class="cancel-button"></panda-button>
+						<panda-button class="ok-button"></panda-button>
 					</div>
 				</div>
 			</div>
@@ -161,6 +170,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 		// initialize class properties
 		this._value = null;
+		this._valueObject = getEmptyTimeObject();
 		this._timeFormat = DEFAULT_TIME_FORMAT;
 		this._views = [...DEFAULT_TIME_PICKER_VIEW];
 		this._minuteStep = 1;
@@ -170,13 +180,13 @@ export class PandaTimePickerOverlay extends HTMLElement {
 		// init event handlers
 		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
 		this._clockChangeEvent = this._onClockChange.bind(this);
-		this._okButtonClickEvent = this._onClockChange.bind(this);
+		this._okButtonClickEvent = this._onOkButtonClick.bind(this);
 
 		if (this.shadowRoot) {
 			this._overlayEl = this.shadowRoot.querySelector(".overlay") as HTMLElement;
 			this._formEl = this.shadowRoot.querySelector(".form") as HTMLElement;
+			this._formTitleEl = this.shadowRoot.querySelector(".title") as HTMLElement;
 			this._clockEl = this.shadowRoot.querySelector("panda-time-picker-clock") as PandaTimePickerClock;
-
 			this._okButtonEl = this.shadowRoot.querySelector(".ok-button") as PandaButton;
 			this._cancelButtonEl = this.shadowRoot.querySelector(".cancel-button") as PandaButton;
 		}
@@ -185,7 +195,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	connectedCallback() {
 		// add event listeners
 		this._overlayEl.addEventListener("click", this._closeOverlayEvent);
-		this._clockEl.addEventListener("click", this._clockClickEvent);
+		this._formEl.addEventListener("click", this._formClickEvent);
 		this._clockEl.addEventListener("change", this._clockChangeEvent);
 		this._okButtonEl.addEventListener("click", this._okButtonClickEvent);
 		this._cancelButtonEl.addEventListener("click", this._closeOverlayEvent);
@@ -196,7 +206,7 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	disconnectedCallback() {
 		// remove event listeners
 		this._overlayEl.removeEventListener("click", this._closeOverlayEvent);
-		this._clockEl.removeEventListener("click", this._clockClickEvent);
+		this._formEl.removeEventListener("click", this._formClickEvent);
 		this._clockEl.removeEventListener("change", this._clockChangeEvent);
 		this._okButtonEl.removeEventListener("click", this._okButtonClickEvent);
 		this._cancelButtonEl.removeEventListener("click", this._closeOverlayEvent);
@@ -208,17 +218,24 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _updateComponent(): void {
 		if (this.isConnected) {
+			console.log(
+				`%c ⚡ [OVERLAY] (_updateComponent)`,
+				"font-size: 24px; color: crimson; background: black;",
+				this._value,
+			);
+
 			// update button labels
 			this._okButtonEl.textContent = this._i18n.okButtonLabel;
 			this._cancelButtonEl.textContent = this._i18n.cancelButtonLabel;
-			
+			// update form title
+			this._formTitleEl.textContent = this._i18n.pickerFormTitle;
 			// update component based on current properties
-			this._clockEl.value = this._value;
+			this._clockEl.i18n = this._i18n;
 			this._clockEl.views = this._views;
 			this._clockEl.minuteStep = this._minuteStep;
 			this._clockEl.secondStep = this._secondStep;
 			this._clockEl.timeFormat = this._timeFormat;
-			this._clockEl.i18n = this._i18n;
+			this._clockEl.value = this._value;
 		}
 	}
 
@@ -226,7 +243,8 @@ export class PandaTimePickerOverlay extends HTMLElement {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	private _clockClickEvent(event: Event): void {
+	/** Prevent propagation of the click event on the form element. */
+	private _formClickEvent(event: Event): void {
 		event.preventDefault();
 		event.stopPropagation();
 	}
@@ -246,8 +264,29 @@ export class PandaTimePickerOverlay extends HTMLElement {
 
 	private _onClockChange(event: Event): void {
 		console.log(`%c ⚡ [OVERLAY] (_onClockChange)`, "font-size: 24px; color: lightgreen; background: black;", event);
+		const {
+			detail: {
+				value,
+				valueObject,
+			},
+		} = event as PandaTimePickerChangeEvent;
+
+		this._value = value;
+		this._valueObject = valueObject;
 	}
 
+	private _onOkButtonClick(): void {
+		console.log(`%c ⚡ [OVERLAY] (_onOkButtonClick)`, "font-size: 24px; color: lightcoral; background: black;");
+		// trigger change event
+		const event = new CustomEvent("post-message", {
+			detail: {
+				type: PostMessageEventType.CHANGE,
+				value: this._value,
+				valueObject: this._valueObject,
+			}
+		});
+		this.dispatchEvent(event);
+	}
 }
 
 // Register the custom element

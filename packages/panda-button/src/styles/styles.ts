@@ -1,5 +1,6 @@
 export const styles = /*css*/`
 	:host {
+		/* position sticky is necessary for the border gradient effect */
 		position: sticky;
 		display: inline-block;
 		height: var(--panda-button-height-size-m, var(--panda-component-size-m, 40px));

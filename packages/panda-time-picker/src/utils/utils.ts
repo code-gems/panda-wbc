@@ -248,6 +248,7 @@ export const parseTimePeriod = (period: string | null): TimePeriod | null => {
  */
 export const getI18nConfig = (): PandaTimePickerI18nConfig => {
 	return {
+		pickerFormTitle: "Select Time",
 		okButtonLabel: "OK",
 		cancelButtonLabel: "Cancel",
 		
