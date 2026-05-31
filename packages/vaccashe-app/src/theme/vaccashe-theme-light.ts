@@ -55,76 +55,6 @@ export const vaccasheThemeLight = /*css*/ `
 		--panda-white-color-90opc: hsl(0deg 0% 100% / 90%);
 
 		/* ========================================================================================================= */
-		/* ACCENT & BRAND COLORS =================================================================================== */
-		/* ========================================================================================================= */
-
-		/* PRIMARY COLOR */
-		--panda-primary-color: hsl(209deg 78% 46%);
-		--panda-primary-text-color: hsl(0deg 0% 100%);
-
-		--panda-primary-color-50: hsl(209deg 78% 76%);
-		--panda-primary-color-100: hsl(209deg 78% 56%);
-		--panda-primary-color-300: hsl(209deg 78% 51%);
-		--panda-primary-color-500: hsl(209deg 78% 46%);
-		--panda-primary-color-700: hsl(209deg 78% 41%);
-		--panda-primary-color-900: hsl(209deg 78% 36%);
-
-		--panda-primary-color-0opc: hsl(209deg 78% 46% / 0%);
-		--panda-primary-color-10opc: hsl(209deg 78% 46% / 10%);
-		--panda-primary-color-20opc: hsl(209deg 78% 46% / 20%);
-		--panda-primary-color-30opc: hsl(209deg 78% 46% / 30%);
-		--panda-primary-color-40opc: hsl(209deg 78% 46% / 40%);
-		--panda-primary-color-50opc: hsl(209deg 78% 46% / 50%);
-		--panda-primary-color-60opc: hsl(209deg 78% 46% / 60%);
-		--panda-primary-color-70opc: hsl(209deg 78% 46% / 70%);
-		--panda-primary-color-80opc: hsl(209deg 78% 46% / 80%);
-		--panda-primary-color-90opc: hsl(209deg 78% 46% / 90%);
-
-		/* SECONDARY */
-		--panda-secondary-color: hsl(160deg 81% 43%);
-		--panda-secondary-text-color: hsl(0deg 0% 100%);
-
-		--panda-secondary-color-50: hsl(160deg 81% 63%);
-		--panda-secondary-color-100: hsl(160deg 81% 53%);
-		--panda-secondary-color-300: hsl(160deg 81% 48%);
-		--panda-secondary-color-500: hsl(160deg 81% 43%);
-		--panda-secondary-color-700: hsl(160deg 81% 38%);
-		--panda-secondary-color-900: hsl(160deg 81% 33%);
-
-		--panda-secondary-color-0opc: hsl(160deg 81% 43% / 0%);
-		--panda-secondary-color-10opc: hsl(160deg 81% 43% / 10%);
-		--panda-secondary-color-20opc: hsl(160deg 81% 43% / 20%);
-		--panda-secondary-color-30opc: hsl(160deg 81% 43% / 30%);
-		--panda-secondary-color-40opc: hsl(160deg 81% 43% / 40%);
-		--panda-secondary-color-50opc: hsl(160deg 81% 43% / 50%);
-		--panda-secondary-color-60opc: hsl(160deg 81% 43% / 60%);
-		--panda-secondary-color-70opc: hsl(160deg 81% 43% / 70%);
-		--panda-secondary-color-80opc: hsl(160deg 81% 43% / 80%);
-		--panda-secondary-color-90opc: hsl(160deg 81% 43% / 90%);
-
-		/* TERTIARY */
-		--panda-tertiary-color: hsl(210deg 15% 30%);
-		--panda-tertiary-text-color: hsl(38deg 48% 95%);
-
-		--panda-tertiary-color-50: hsl(210deg 15% 50%);
-		--panda-tertiary-color-100: hsl(210deg 15% 40%);
-		--panda-tertiary-color-300: hsl(210deg 15% 35%);
-		--panda-tertiary-color-500: hsl(210deg 15% 30%);
-		--panda-tertiary-color-700: hsl(210deg 15% 25%);
-		--panda-tertiary-color-900: hsl(210deg 15% 20%);
-
-		--panda-tertiary-color-0opc: hsl(210deg 15% 30% / 0%);
-		--panda-tertiary-color-10opc: hsl(210deg 15% 30% / 10%);
-		--panda-tertiary-color-20opc: hsl(210deg 15% 30% / 20%);
-		--panda-tertiary-color-30opc: hsl(210deg 15% 30% / 30%);
-		--panda-tertiary-color-40opc: hsl(210deg 15% 30% / 40%);
-		--panda-tertiary-color-50opc: hsl(210deg 15% 30% / 50%);
-		--panda-tertiary-color-60opc: hsl(210deg 15% 30% / 60%);
-		--panda-tertiary-color-70opc: hsl(210deg 15% 30% / 70%);
-		--panda-tertiary-color-80opc: hsl(210deg 15% 30% / 80%);
-		--panda-tertiary-color-90opc: hsl(210deg 15% 30% / 90%);
-
-		/* ========================================================================================================= */
 		/* ACTION COLORS =========================================================================================== */
 		/* ========================================================================================================= */
 		
@@ -224,18 +154,37 @@ export const vaccasheThemeLight = /*css*/ `
 		--panda-text-color-hover: hsl(26deg 23% 12%);
 		--panda-text-color-disabled: hsl(26deg 23% 17%);
 		--panda-text-shadow: none;
-		--panda-text-line-height: 1.6em;
 
 		--panda-header-text-color: hsl(26deg 23% 7%);
 		--panda-header-text-color-hover: hsl(26deg 23% 12%);
 		--panda-header-text-color-disabled: hsl(26deg 23% 17%);
 		--panda-header-text-shadow: none;
 
-		--panda-font-size-xs: 12px;
-		--panda-font-size-s: 14px;
-		--panda-font-size-m: 16px;
-		--panda-font-size-l: 18px;
-		--panda-font-size-xl: 24px;
+		--panda-font-size-xs: .75rem;
+		--panda-line-height-xs: calc(1 / .75);
+		--panda-font-size-s: .875rem;
+		--panda-line-height-s: calc(1.25 / .875);
+		--panda-font-size-m: 1rem;
+		--panda-line-height-m: 1.5;
+		--panda-font-size-l: 1.125rem;
+		--panda-line-height-l: calc(1.75 / 1.125);
+		--panda-font-size-xl: 1.25rem;
+		--panda-line-height-xl: calc(1.75 / 1.25);
+		--panda-font-size-2xl: 1.5rem;
+		--panda-line-height-2xl: calc(2 / 1.5);
+		--panda-font-size-3xl: 1.875rem;
+		--panda-line-height-3xl: calc(2.25 / 1.875);
+		--panda-font-size-4xl: 2.25rem;
+		--panda-line-height-4xl: calc(2.5 / 2.25);
+		--panda-font-size-5xl: 3rem;
+		--panda-line-height-5xl: 1;
+		--panda-font-size-7xl: 4.5rem;
+		--panda-line-height-7xl: 1;
+
+		--panda-font-weight-normal: 400;
+		--panda-font-weight-medium: 500;
+		--panda-font-weight-semibold: 600;
+		--panda-font-weight-bold: 700;
 
 		--panda-header-font-size-xs: 30px;
 		--panda-header-font-size-s: 36px;
@@ -245,6 +194,7 @@ export const vaccasheThemeLight = /*css*/ `
 
 		--panda-font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
 		--panda-font-family-light: "Inter-Light", ui-sans-serif, system-ui, sans-serif;
+		--panda-font-family-semibold: "Inter-SemiBold", ui-sans-serif, system-ui, sans-serif;
 		--panda-font-family-bold: "Inter-Bold", ui-sans-serif, system-ui, sans-serif;
 
 		--panda-header-font-family: "Bebas Neue", "Oswald", "Impact", sans-serif;
@@ -263,9 +213,28 @@ export const vaccasheThemeLight = /*css*/ `
 
 		--panda-gap: .25rem;
 		--panda-gap-2: calc(var(--panda-gap) * 2);
+		--panda-gap-3: calc(var(--panda-gap) * 3);
 		--panda-gap-4: calc(var(--panda-gap) * 4);
+		--panda-gap-5: calc(var(--panda-gap) * 5);
 		--panda-gap-6: calc(var(--panda-gap) * 6);
+		--panda-gap-7: calc(var(--panda-gap) * 7);
 		--panda-gap-8: calc(var(--panda-gap) * 8);
+		--panda-gap-9: calc(var(--panda-gap) * 9);
+		--panda-gap-10: calc(var(--panda-gap) * 10);
+		--panda-gap-11: calc(var(--panda-gap) * 11);
+		--panda-gap-12: calc(var(--panda-gap) * 12);
+		--panda-gap-13: calc(var(--panda-gap) * 13);
+		--panda-gap-14: calc(var(--panda-gap) * 14);
+		--panda-gap-15: calc(var(--panda-gap) * 15);
+		--panda-gap-16: calc(var(--panda-gap) * 16);
+		--panda-gap-17: calc(var(--panda-gap) * 17);
+		--panda-gap-18: calc(var(--panda-gap) * 18);
+		--panda-gap-19: calc(var(--panda-gap) * 19);
+		--panda-gap-20: calc(var(--panda-gap) * 20);
+		--panda-gap-21: calc(var(--panda-gap) * 21);
+		--panda-gap-22: calc(var(--panda-gap) * 22);
+		--panda-gap-23: calc(var(--panda-gap) * 23);
+		--panda-gap-24: calc(var(--panda-gap) * 24);
 
 		--panda-padding-xs: var(--panda-gap-xs);
 		--panda-padding-s: var(--panda-gap-s);
@@ -273,11 +242,22 @@ export const vaccasheThemeLight = /*css*/ `
 		--panda-padding-l: var(--panda-gap-l);
 		--panda-padding-xl: var(--panda-gap-xl);
 
-		--panda-border-radius-xs: 12px;
-		--panda-border-radius-s: 18px;
-		--panda-border-radius-m: 24px;
-		--panda-border-radius-l: 30px;
-		--panda-border-radius-xl: 36px;
+		--panda-radius: 12px;
+		--panda-radius-2: calc(var(--panda-radius) * 1.2);
+		--panda-radius-3: calc(var(--panda-radius) * 1.4);
+		--panda-radius-4: calc(var(--panda-radius) * 1.6);
+		--panda-radius-5: calc(var(--panda-radius) * 1.8);
+		--panda-radius-6: calc(var(--panda-radius) * 2);
+		--panda-radius-7: calc(var(--panda-radius) * 2.2);
+		--panda-radius-8: calc(var(--panda-radius) * 2.4);
+		--panda-radius-9: calc(var(--panda-radius) * 2.6);
+		--panda-radius-10: calc(var(--panda-radius) * 2.8);
+
+		--panda-border-radius-xs: var(--panda-radius);
+		--panda-border-radius-s: calc(var(--panda-radius) * 1.5);
+		--panda-border-radius-m: calc(var(--panda-radius) * 2);
+		--panda-border-radius-l: calc(var(--panda-radius) * 2.5);
+		--panda-border-radius-xl: calc(var(--panda-radius) * 3);
 
 		/* ========================================================================================================= */
 		/* ELEVATION / DEPTH ======================================================================================= */
@@ -460,7 +440,11 @@ export const vaccasheThemeLight = /*css*/ `
 		/* ========================================================================================================= */
 		/* BUTTON ================================================================================================== */
 		/* ========================================================================================================= */
-		
+
+		--panda-button-font-size-m: var(--panda-font-size-s);
+		--panda-button-font-family-m: var(--panda-font-family-semibold);
+		--panda-button-padding-inline-m: 1.25rem;
+		--panda-button-letter-spacing-m: 0.1em;
 
 		/* ========================================================================================================= */
 		/* BUTTON GROUP ============================================================================================ */

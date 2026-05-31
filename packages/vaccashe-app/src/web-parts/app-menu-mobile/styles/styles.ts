@@ -9,7 +9,8 @@ export const styles = css`
 	.menu {
 		display: none;
 		flex-flow: column;
-		gap: var(--panda-gap-m);
+		gap: var(--panda-gap-2);
+		padding: var(--panda-gap-4);
 		width: 100%;
 		
 		border-bottom: 1px solid var(--panda-border-color);
@@ -21,13 +22,22 @@ export const styles = css`
 	}
 
 	.menu > .item {
-		padding: var(--panda-padding-xxs) 0;
+		padding: var(--panda-gap-4);
+
+		color: var(--panda-text-color);
+		font-size: var(--panda-font-size-s);
+		font-family: var(--panda-font-family);
+		font-weight: 700;
+		letter-spacing: .2em;
+		text-transform: uppercase;
 		cursor: pointer;
+		
+		border-radius: var(--panda-radius);
 	}
 
 	.menu > .item:hover,
 	.menu > .item.active {
-		color: var(--panda-primary-color);
+		background-color: var(--panda-background-color-900);
 	}
 
 	@media (max-width: 768px) {

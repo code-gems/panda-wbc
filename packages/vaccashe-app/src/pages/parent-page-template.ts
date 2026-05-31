@@ -8,7 +8,7 @@ import { scrollbar } from "@panda-wbc/panda-mixins";
 // components & web-parts
 import "../web-parts/app-header/app-header";
 import "../web-parts/app-footer/app-footer";
-import "../web-parts/app-mobile-menu/app-mobile-menu";
+import "../web-parts/app-menu-mobile/app-menu-mobile";
 
 // utils
 import { CSSResultGroup, LitElement, TemplateResult, html } from "lit";
@@ -24,6 +24,7 @@ export abstract class ParentPageTemplate extends LitElement {
 			scrollbar,
 			uiComponents.layout,
 			uiComponents.columnSystem,
+			uiComponents.typography,
 			uiComponents.modifiers,
 		];
 	}
@@ -66,7 +67,7 @@ export abstract class ParentPageTemplate extends LitElement {
 			<div class="app">
 				<header>
 					<app-header></app-header>
-					<app-mobile-menu></app-mobile-menu>
+					<app-menu-mobile></app-menu-mobile>
 				</header>
 				<main>
 					<div class="body">

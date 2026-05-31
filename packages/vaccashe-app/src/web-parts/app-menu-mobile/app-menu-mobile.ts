@@ -11,9 +11,9 @@ import PageLibrary from "../../utils/page-library";
 import { reduxify } from "../../redux/store";
 import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
-@customElement("app-mobile-menu")
+@customElement("app-menu-mobile")
 @reduxify()
-class AppMobileMenu extends LitElement {
+class AppMenuMobile extends LitElement {
 	// css styles
 	static get styles() {
 		return styles;
