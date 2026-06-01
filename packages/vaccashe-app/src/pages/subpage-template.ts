@@ -20,7 +20,7 @@ export abstract class ContentPageTemplate extends LitElement {
 			scrollbar,
 			uiComponents.layout,
 			uiComponents.columnSystem,
-			uiComponents.modifiers,
+			uiComponents.utilities,
 		];
 	}
 

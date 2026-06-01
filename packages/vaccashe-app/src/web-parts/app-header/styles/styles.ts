@@ -66,8 +66,7 @@ export const navigation = css`
 		color: var(--panda-primary-color);
 	}
 
-	@media (max-width: 768px) {
-
+	@media (max-width: 48rem) {
 		.mobile {
 			display: flex;
 		}

@@ -20,7 +20,7 @@ export const styles = /*css*/`
 		align-items: center;
 
 		border-radius: var(--panda-button-border-radius-m, 10px);
-		background-color: var(--panda-button-background-color-working, hsl(0deg 0% 100%));
+		background: var(--panda-button-background-working, hsl(0deg 0% 100%));
 		/* SPINNER STYLE */
 		--panda-spinner-color: var(--panda-button-spinner-color, hsl(0deg 0% 100%));
 		--panda-spinner-size: var(--panda-button-spinner-size-m, 20px);
@@ -128,7 +128,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-text-color-hover, hsl(191deg 19% 23%));
 		text-shadow: var(--panda-button-text-shadow-hover, none);
 		border-color: var(--panda-button-border-color-hover, var(--panda-border-color, hsl(0deg 0% 85%)));
-		background-color: var(--panda-button-background-color-hover, hsl(0deg 0% 100%));
+		background: var(--panda-button-background-hover, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -142,7 +142,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-text-color-focused, hsl(191deg 19% 23%));
 		text-shadow: var(--panda-button-text-shadow-focused, none);
 		border-color: var(--panda-button-border-color-focused, var(--panda-border-color, hsl(0deg 0% 85%)));
-		background-color: var(--panda-button-background-color-focused, hsl(0deg 0% 100%));
+		background: var(--panda-button-background-focused, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
 	}
 
@@ -156,7 +156,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-text-color-active, var(--panda-text-color, hsl(191deg 19% 23%)));
 		text-shadow: var(--panda-button-text-shadow-active, none);
 		border-color: var(--panda-button-border-color-active, var(--panda-border-color, hsl(0deg 0% 85%)));
-		background-color: var(--panda-button-background-color-active, hsl(0deg 0% 97%));
+		background: var(--panda-button-background-active, hsl(0deg 0% 97%));
 		box-shadow: var(--panda-button-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -168,7 +168,7 @@ export const styles = /*css*/`
 	.button.working:not(.disabled) {
 		cursor: not-allowed;
 		border-color: var(--panda-button-border-color-working, var(--panda-border-color-working, hsl(0deg 0% 95%)));
-		background-color: var(--panda-button-background-color-working, hsl(0deg 0% 100%));
+		background: var(--panda-button-background-working, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-elevation-working, none);
 	}
 
@@ -184,7 +184,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-text-shadow-disabled, none);
 		border-color: var(--panda-button-border-color-disabled, hsl(189deg 3% 96%));
-		background-color: var(--panda-button-background-color-disabled, hsl(189deg 3% 96%));
+		background: var(--panda-button-background-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -201,8 +201,8 @@ export const styles = /*css*/`
 	:host([theme~="primary"]) .button:not(.disabled) {
 		color: var(--panda-button-primary-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-primary-text-shadow, none);
-		border-color: var(--panda-button-primary-border-color, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-primary-background-color, hsl(209deg 78% 46%));
+		border-color: var(--panda-button-primary-border-color, var(--panda-primary-color, hsl(209deg 78% 46%)));
+		background: var(--panda-button-primary-background, var(--panda-primary-color, hsl(209deg 78% 46%)));
 		box-shadow: var(--panda-button-primary-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-primary-icon-color, hsl(0deg 0% 100%));
@@ -214,18 +214,18 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="primary"]) .spinner-cont {
-		background-color: var(--panda-button-primary-background-color, hsl(209deg 78% 46%));
+		background: var(--panda-button-primary-background, var(--panda-primary-color, hsl(209deg 78% 46%)));
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-primary-spinner-size, 24px);
-		--panda-spinner-color: var(--panda-button-primary-spinner-color, hsl(0deg 0% 100%));
+		--panda-spinner-color: var(--panda-button-primary-spinner-color, var(--panda-primary-text-color, hsl(0deg 0% 100%)));
 	}
 
 	/* PRIMARY - HOVER */
 	:host([theme~="primary"]) .button:not(.disabled):hover {
 		color: var(--panda-button-primary-text-color-hover, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-primary-text-shadow-hover, none);
-		border-color: var(--panda-button-primary-border-color-hover, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-primary-background-color-hover, hsl(209deg 78% 46%));
+		border-color: var(--panda-button-primary-border-color-hover, var(--panda-primary-color, hsl(209deg 78% 46%)));
+		background: var(--panda-button-primary-background-hover, var(--panda-primary-color, hsl(209deg 78% 46%)));
 		box-shadow: var(--panda-button-primary-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -239,7 +239,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-primary-text-color-focused, hsl(191deg 19% 23%));
 		text-shadow: var(--panda-button-primary-text-shadow-focused, none);
 		border-color: var(--panda-button-primary-border-color-focused, hsl(207deg 1% 85%));
-		background-color: var(--panda-button-primary-background-color-focused, hsl(0deg 0% 100%));
+		background: var(--panda-button-primary-background-focused, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-primary-outline, 0px 0px 4px 2px hsl(203deg 67% 85%));
 	}
 	
@@ -253,7 +253,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-primary-text-color-active, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-primary-text-shadow-active, none);
 		border-color: var(--panda-button-primary-border-color-active, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-primary-background-color-active, hsl(209deg 78% 46%));
+		background: var(--panda-button-primary-background-active, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-primary-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 	
@@ -266,7 +266,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-primary-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-primary-text-shadow-disabled, none);
 		border-color: var(--panda-button-primary-border-color-disabled, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-primary-background-color-disabled, hsl(209deg 78% 46%));
+		background: var(--panda-button-primary-background-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-primary-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-primary-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -280,7 +280,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-secondary-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-secondary-text-shadow, none);
 		border-color: var(--panda-button-secondary-border-color, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-secondary-background-color, hsl(209deg 78% 46%));
+		background: var(--panda-button-secondary-background, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-secondary-icon-color, hsl(0deg 0% 100%));
@@ -292,7 +292,7 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="secondary"]) .spinner-cont {
-		background-color: var(--panda-button-secondary-background-color, hsl(209deg 78% 46%));
+		background: var(--panda-button-secondary-background, hsl(209deg 78% 46%));
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-secondary-spinner-size, 24px);
 		--panda-spinner-color: var(--panda-button-secondary-spinner-color, hsl(0deg 0% 100%));
@@ -303,7 +303,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-secondary-text-color-hover, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-secondary-text-shadow-hover, none);
 		border-color: var(--panda-button-secondary-border-color-hover, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-secondary-background-color-hover, hsl(209deg 78% 46%));
+		background: var(--panda-button-secondary-background-hover, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -317,7 +317,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-secondary-text-color-focused, hsl(191deg 19% 23%));
 		text-shadow: var(--panda-button-secondary-text-shadow-focused, none);
 		border-color: var(--panda-button-secondary-border-color-focused, hsl(207deg 1% 85%));
-		background-color: var(--panda-button-secondary-background-color-focused, hsl(0deg 0% 100%));
+		background: var(--panda-button-secondary-background-focused, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-secondary-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
 
@@ -331,7 +331,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-secondary-text-color-active, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-secondary-text-shadow-active, none);
 		border-color: var(--panda-button-secondary-border-color-active, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-secondary-background-color-active, hsl(209deg 78% 46%));
+		background: var(--panda-button-secondary-background-active, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -344,7 +344,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-secondary-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-secondary-text-shadow-disabled, none);
 		border-color: var(--panda-button-secondary-border-color-disabled, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-secondary-background-color-disabled, hsl(209deg 78% 46%));
+		background: var(--panda-button-secondary-background-disabled, hsl(209deg 78% 46%));
 		box-shadow: var(--panda-button-secondary-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-secondary-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -360,7 +360,7 @@ export const styles = /*css*/`
 		border-width: var(--panda-button-plain-border-width, 1px);
 		border-style: var(--panda-button-plain-border-style, solid);
 		border-color: var(--panda-button-plain-border-color, transparent);
-		background-color: var(--panda-button-plain-background-color, transparent);
+		background: var(--panda-button-plain-background, transparent);
 		box-shadow: var(--panda-button-plain-elevation, none);
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-plain-icon-color, hsl(191deg 19% 23%));
@@ -372,7 +372,7 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="plain"]) .spinner-cont {
-		background-color: var(--panda-button-plain-background-color, transparent);
+		background: var(--panda-button-plain-background, transparent);
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-plain-spinner-size, 24px);
 		--panda-spinner-color: var(--panda-button-plain-spinner-color, hsl(191deg 19% 23%));
@@ -383,7 +383,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-plain-text-color-hover, hsl(191deg 19% 18%));
 		text-shadow: var(--panda-button-plain-text-shadow-hover, none);
 		border-color: var(--panda-button-plain-border-color-hover, transparent);
-		background-color: var(--panda-button-plain-background-color-hover, hsl(0deg 0% 95%));
+		background: var(--panda-button-plain-background-hover, hsl(0deg 0% 95%));
 		box-shadow: var(--panda-button-plain-elevation-hover, none);
 	}
 
@@ -397,7 +397,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-plain-text-color-focused, hsl(191deg 19% 23%));
 		text-shadow: var(--panda-button-plain-text-shadow-focused, none);
 		border-color: var(--panda-button-plain-border-color-focused, transparent);
-		background-color: var(--panda-button-plain-background-color-focused, transparent);
+		background: var(--panda-button-plain-background-focused, transparent);
 		box-shadow: var(--panda-button-plain-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
 
@@ -411,7 +411,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-plain-text-color-active, hsl(191deg 19% 18%));
 		text-shadow: var(--panda-button-plain-text-shadow-active, none);
 		border-color: var(--panda-button-plain-border-color-active, transparent);
-		background-color: var(--panda-button-plain-background-color-active, hsl(0deg 0% 96%));
+		background: var(--panda-button-plain-background-active, hsl(0deg 0% 96%));
 		box-shadow: var(--panda-button-plain-elevation-active, none);
 	}
 
@@ -424,7 +424,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-plain-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-plain-text-shadow-disabled, none);
 		border-color: var(--panda-button-plain-border-color-disabled, transparent);
-		background-color: var(--panda-button-plain-background-color-disabled, transparent);
+		background: var(--panda-button-plain-background-disabled, transparent);
 		box-shadow: var(--panda-button-plain-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-plain-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -438,7 +438,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-info-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-info-text-shadow, none);
 		border-color: var(--panda-button-action-info-border-color, hsl(261deg 66% 63%));
-		background-color: var(--panda-button-action-info-background-color, hsl(261deg 66% 58%));
+		background: var(--panda-button-action-info-background, hsl(261deg 66% 58%));
 		box-shadow: var(--panda-button-action-info-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-info-icon-color, hsl(0deg 0% 100%));
@@ -450,7 +450,7 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="info"]) .spinner-cont {
-		background-color: var(--panda-button-action-info-background-color, hsl(261deg 66% 58%));
+		background: var(--panda-button-action-info-background, hsl(261deg 66% 58%));
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-action-info-spinner-size, 24px);
 		--panda-spinner-color: var(--panda-button-action-info-spinner-color, hsl(0deg 0% 100%));
@@ -461,7 +461,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-info-text-color-hover, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-info-text-shadow-hover, none);
 		border-color: var(--panda-button-action-info-border-color-hover, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-action-info-background-color-hover, hsl(261deg 66% 58%));
+		background: var(--panda-button-action-info-background-hover, hsl(261deg 66% 58%));
 		box-shadow: var(--panda-button-action-info-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -475,7 +475,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-info-text-color-focused, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-info-text-shadow-focused, none);
 		border-color: var(--panda-button-action-info-border-color-focused, hsl(207deg 1% 85%));
-		background-color: var(--panda-button-action-info-background-color-focused, hsl(261deg 66% 58%));
+		background: var(--panda-button-action-info-background-focused, hsl(261deg 66% 58%));
 		box-shadow: var(--panda-button-action-info-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
 
@@ -489,7 +489,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-info-text-color-active, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-info-text-shadow-active, none);
 		border-color: var(--panda-button-action-info-border-color-active, hsl(209deg 78% 42%));
-		background-color: var(--panda-button-action-info-background-color-active, hsl(261deg 66% 58%));
+		background: var(--panda-button-action-info-background-active, hsl(261deg 66% 58%));
 		box-shadow: var(--panda-button-action-info-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -502,7 +502,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-info-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-action-info-text-shadow-disabled, none);
 		border-color: var(--panda-button-action-info-border-color-disabled, hsl(189deg 3% 96%));
-		background-color: var(--panda-button-action-info-background-color-disabled, hsl(189deg 3% 96%));
+		background: var(--panda-button-action-info-background-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-info-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-action-info-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -516,7 +516,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-done-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-done-text-shadow, none);
 		border-color: var(--panda-button-action-done-border-color, hsl(160deg 81% 43%));
-		background-color: var(--panda-button-action-done-background-color, hsl(160deg 81% 43%));
+		background: var(--panda-button-action-done-background, hsl(160deg 81% 43%));
 		box-shadow: var(--panda-button-action-done-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-done-icon-color, hsl(0deg 0% 100%));
@@ -528,7 +528,7 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="done"]) .spinner-cont {
-		background-color: var(--panda-button-action-done-background-color, hsl(160deg 81% 43%));
+		background: var(--panda-button-action-done-background, hsl(160deg 81% 43%));
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-action-done-spinner-size, 24px);
 		--panda-spinner-color: var(--panda-button-action-done-spinner-color, hsl(0deg 0% 100%));
@@ -539,7 +539,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-done-text-color-hover, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-done-text-shadow-hover, none);
 		border-color: var(--panda-button-action-done-border-color-hover, hsl(160deg 81% 43%));
-		background-color: var(--panda-button-action-done-background-color-hover, hsl(160deg 81% 40%));
+		background: var(--panda-button-action-done-background-hover, hsl(160deg 81% 40%));
 		box-shadow: var(--panda-button-action-done-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -553,7 +553,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-done-text-color-focused, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-done-text-shadow-focused, none);
 		border-color: var(--panda-button-action-done-border-color-focused, hsl(160deg 81% 43%));
-		background-color: var(--panda-button-action-done-background-color-focused, hsl(160deg 81% 43%));
+		background: var(--panda-button-action-done-background-focused, hsl(160deg 81% 43%));
 		box-shadow: var(--panda-button-action-done-outline, 0px 0px 2px 2px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -567,7 +567,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-done-text-color-active, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-done-text-shadow-active, none);
 		border-color: var(--panda-button-action-done-border-color-active, hsl(160deg 81% 43%));
-		background-color: var(--panda-button-action-done-background-color-active, hsl(160deg 81% 35%));
+		background: var(--panda-button-action-done-background-active, hsl(160deg 81% 35%));
 		box-shadow: var(--panda-button-action-done-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -580,7 +580,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-done-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-action-done-text-shadow-disabled, none);
 		border-color: var(--panda-button-action-done-border-color-disabled, hsl(189deg 3% 96%));
-		background-color: var(--panda-button-action-done-background-color-disabled, hsl(189deg 3% 96%));
+		background: var(--panda-button-action-done-background-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-done-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-action-done-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -594,7 +594,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-warn-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-warn-text-shadow, none);
 		border-color: var(--panda-button-action-warn-border-color, hsl(35deg 91% 62%));
-		background-color: var(--panda-button-action-warn-background-color, hsl(35deg 91% 62%));
+		background: var(--panda-button-action-warn-background, hsl(35deg 91% 62%));
 		box-shadow: var(--panda-button-action-warn-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-warn-icon-color, hsl(0deg 0% 100%));
@@ -606,7 +606,7 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="warn"]) .spinner-cont {
-		background-color: var(--panda-button-action-warn-background-color, hsl(35deg 91% 62%));
+		background: var(--panda-button-action-warn-background, hsl(35deg 91% 62%));
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-action-warn-spinner-size, 24px);
 		--panda-spinner-color: var(--panda-button-action-warn-spinner-color, hsl(0deg 0% 100%));
@@ -617,7 +617,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-warn-text-color-hover, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-warn-text-shadow-hover, none);
 		border-color: var(--panda-button-action-warn-border-color-hover, hsl(35deg 91% 62%));
-		background-color: var(--panda-button-action-warn-background-color-hover, hsl(35deg 91% 57%));
+		background: var(--panda-button-action-warn-background-hover, hsl(35deg 91% 57%));
 		box-shadow: var(--panda-button-action-warn-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -631,7 +631,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-warn-text-color-focused, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-warn-text-shadow-focused, none);
 		border-color: var(--panda-button-action-warn-border-color-focused, hsl(35deg 91% 62%));
-		background-color: var(--panda-button-action-warn-background-color-focused, hsl(35deg 91% 62%));
+		background: var(--panda-button-action-warn-background-focused, hsl(35deg 91% 62%));
 		box-shadow: var(--panda-button-action-warn-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
 
@@ -645,7 +645,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-warn-text-color-active, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-warn-text-shadow-active, none);
 		border-color: var(--panda-button-action-warn-border-color-active, hsl(35deg 91% 62%));
-		background-color: var(--panda-button-action-warn-background-color-active, hsl(35deg 91% 52%));
+		background: var(--panda-button-action-warn-background-active, hsl(35deg 91% 52%));
 		box-shadow: var(--panda-button-action-warn-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -658,7 +658,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-warn-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-action-warn-text-shadow-disabled, none);
 		border-color: var(--panda-button-action-warn-border-color-disabled, hsl(189deg 3% 96%));
-		background-color: var(--panda-button-action-warn-background-color-disabled, hsl(189deg 3% 96%));
+		background: var(--panda-button-action-warn-background-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-warn-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-action-warn-icon-color-disabled, hsl(188deg 5% 75%));
 	}
@@ -672,7 +672,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-alert-text-color, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-alert-text-shadow, none);
 		border-color: var(--panda-button-action-alert-border-color, hsl(14deg 77% 62%));
-		background-color: var(--panda-button-action-alert-background-color, hsl(14deg 77% 62%));
+		background: var(--panda-button-action-alert-background, hsl(14deg 77% 62%));
 		box-shadow: var(--panda-button-action-alert-elevation, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-action-alert-icon-color, hsl(0deg 0% 100%));
@@ -684,7 +684,7 @@ export const styles = /*css*/`
 	}
 
 	:host([theme~="alert"]) .spinner-cont {
-		background-color: var(--panda-button-action-alert-background-color, hsl(14deg 77% 62%));
+		background: var(--panda-button-action-alert-background, hsl(14deg 77% 62%));
 		/* SPINNER STYLE */
 		--panda-spinner-size: var(--panda-button-action-alert-spinner-size, 24px);
 		--panda-spinner-color: var(--panda-button-action-alert-spinner-color, hsl(0deg 0% 100%));
@@ -695,7 +695,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-alert-text-color-hover, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-alert-text-shadow-hover, none);
 		border-color: var(--panda-button-action-alert-border-color-hover, hsl(14deg 77% 62%));
-		background-color: var(--panda-button-action-alert-background-color-hover, hsl(14deg 77% 57%));
+		background: var(--panda-button-action-alert-background-hover, hsl(14deg 77% 57%));
 		box-shadow: var(--panda-button-action-alert-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -709,7 +709,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-alert-text-color-focused, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-alert-text-shadow-focused, none);
 		border-color: var(--panda-button-action-alert-border-color-focused, hsl(14deg 77% 62%));
-		background-color: var(--panda-button-action-alert-background-color-focused, hsl(14deg 77% 62%));
+		background: var(--panda-button-action-alert-background-focused, hsl(14deg 77% 62%));
 		box-shadow: var(--panda-button-action-alert-outline, 0px 0px 2px 2px hsl(160deg 81% 43%));
 	}
 
@@ -723,7 +723,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-alert-text-color-active, hsl(0deg 0% 100%));
 		text-shadow: var(--panda-button-action-alert-text-shadow-active, none);
 		border-color: var(--panda-button-action-alert-border-color-active, hsl(14deg 77% 62%));
-		background-color: var(--panda-button-action-alert-background-color-active, hsl(14deg 77% 52%));
+		background: var(--panda-button-action-alert-background-active, hsl(14deg 77% 52%));
 		box-shadow: var(--panda-button-action-alert-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
 	}
 
@@ -736,7 +736,7 @@ export const styles = /*css*/`
 		color: var(--panda-button-action-alert-text-color-disabled, hsl(188deg 5% 75%));
 		text-shadow: var(--panda-button-action-alert-text-shadow-disabled, none);
 		border-color: var(--panda-button-action-alert-border-color-disabled, hsl(189deg 3% 96%));
-		background-color: var(--panda-button-action-alert-background-color-disabled, hsl(189deg 3% 96%));
+		background: var(--panda-button-action-alert-background-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-action-alert-elevation-disabled, none);
 		--panda-icon-color: var(--panda-button-action-alert-icon-color-disabled, hsl(188deg 5% 75%));
 	}

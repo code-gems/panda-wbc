@@ -25,7 +25,8 @@ export abstract class ParentPageTemplate extends LitElement {
 			uiComponents.layout,
 			uiComponents.columnSystem,
 			uiComponents.typography,
-			uiComponents.modifiers,
+			uiComponents.utilities,
+			uiComponents.effects,
 		];
 	}
 

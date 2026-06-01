@@ -3,6 +3,7 @@ import { Store } from "panda-design-typings";
 
 // styles
 import { styles, navigation } from "./styles/styles";
+import { uiComponents } from "../../styles/styles";
 
 // components & web parts
 import "@panda-wbc/panda-button";
@@ -27,6 +28,7 @@ export class AppHeader extends LitElement {
 		return [
 			styles,
 			navigation,
+			uiComponents.effects,
 		];
 	}
 
@@ -64,6 +66,14 @@ export class AppHeader extends LitElement {
 				<div class="grow"></div>
 				<nav class="menu">
 					${this._renderMenu()}
+
+					<panda-button
+						class="efx-jump-s"
+						theme="primary size-s"
+						@click="${() => navigate("/menu")}"
+					>
+						ORDER NOW
+					</panda-button>
 				</nav>
 				<div class="menu-btn mobile">
 					<panda-button

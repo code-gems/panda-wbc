@@ -71,7 +71,7 @@ export class PandaSelect extends HTMLElement {
 	 * @public
 	 * @example
 	 * ```html
-	 * <panda-select theme="dark"></panda-select>
+	 * <panda-select theme="valid"></panda-select>
 	 * ```
 	 */
 	get theme() {
@@ -861,7 +861,7 @@ export class PandaSelect extends HTMLElement {
 	
 	filter!: (item: SuperItem, searchText: string) => boolean;
 
-	// private properties =============================================================================================
+	// state properties ===============================================================================================
 	private _parsedItems!: SuperItem[];
 	private _showMandatoryFlag!: boolean;
 	private _withPrefix!: boolean;

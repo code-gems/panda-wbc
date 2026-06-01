@@ -25,6 +25,7 @@
 		"@panda-wbc/panda-mixins": "workspace:*",
 
 		"@panda-wbc/panda-button": "workspace:*",
+		"@panda-wbc/panda-chips": "workspace:*",
 		"@panda-wbc/panda-icon": "workspace:*",
 		"@panda-wbc/panda-search": "workspace:*",
 		"@panda-wbc/panda-text-field": "workspace:*",

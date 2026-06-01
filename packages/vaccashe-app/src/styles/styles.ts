@@ -128,6 +128,13 @@ export const uiComponents = {
 		.px-23 { padding-inline: var(--panda-gap-23); }
 		.px-24 { padding-inline: var(--panda-gap-24); }
 
+		.mt { margin-top: var(--panda-gap); }
+		.mt-2 { margin-top: var(--panda-gap-2); }
+		.mt-3 { margin-top: var(--panda-gap-3); }
+		.mt-4 { margin-top: var(--panda-gap-4); }
+		.mt-5 { margin-top: var(--panda-gap-5); }
+		.mt-6 { margin-top: var(--panda-gap-6); }
+
 		@media (min-width: 48rem) {
 			.md\\:py { padding-block: var(--panda-gap); }
 			.md\\:py-2 { padding-block: var(--panda-gap-2); }
@@ -290,7 +297,13 @@ export const uiComponents = {
 		}
 	`,
 	
-	modifiers: css`
+	utilities: css`
+		.flex { display: flex; }
+		.flex-row { flex-flow: row; }
+		.flex-row-wrap { flex-flow: row wrap; }
+		.flex-row-nowrap { flex-flow: row nowrap; }
+		.flex-col { flex-flow: column nowrap; }
+		
 		.flex-justify-center { justify-content: center; }
 		.flex-align-right { align-items: flex-end; }
 		.flex-align-center { align-items: center; }
@@ -303,5 +316,25 @@ export const uiComponents = {
 		.pull-s { margin-bottom: var(--panda-gap-s); }
 		.pull-m { margin-bottom: var(--panda-gap-m); }
 		.pull-l { margin-bottom: var(--panda-gap-l); }
+	`,
+
+	effects: css`
+		.efx-jump {
+			transition: transform 0.2s;
+			transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+		}
+
+		.efx-jump:hover {
+			transform: translateY(-0.5rem);
+		}
+
+		.efx-jump-s {
+			transition: transform 0.2s;
+			transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+		}
+
+		.efx-jump-s:hover {
+			transform: translateY(-0.25rem);
+		}
 	`,
 };

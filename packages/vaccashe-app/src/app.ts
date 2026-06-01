@@ -12,6 +12,9 @@ import pandaThemeController from "@panda-wbc/panda-theme/lib/panda-theme-control
 // custom themes
 import "./theme/vaccashe-theme";
 
+// custom icons
+import "./theme/custom-icons/register";
+
 // components
 import "@panda-wbc/panda-theme";
 import "@panda-wbc/panda-router";

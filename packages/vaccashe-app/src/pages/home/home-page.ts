@@ -2,8 +2,9 @@
 import { styles } from "./styles/styles";
 
 // components
-import "@panda-wbc/panda-icon";
 import "@panda-wbc/panda-button";
+import "@panda-wbc/panda-chips";
+import "@panda-wbc/panda-icon";
 
 // web parts
 // ...
@@ -16,6 +17,7 @@ import { page } from "../../utils/page-library";
 
 // page config
 import { pageConfig } from "./page-config";
+import { navigate } from "@panda-wbc/panda-router/lib/panda-router";
 
 @page(pageConfig)
 @customElement("home-page")
@@ -43,22 +45,37 @@ class HomePage extends ParentPageTemplate {
 						<div class="header-xl">Clean fuel.</div>
 						<div class="header-xl txt-primary">High protein.</div>
 						<div class="header-xl">No seed oils.</div>
-						<div class="text-l">
+						<div class="text-l mt-4">
 							At Vaccashe Superfood we serve real food that performs — built for gym-goers, surfers and anyone chasing a high-performance lifestyle.
 						</div>
-						<div>
+						<div class="actions">
 							<panda-button
+								class="efx-jump"
 								theme="primary"
-								@click=""
+								@click="${this._onNavigateToMenu}"
 							>
 								SEE THE MENU
 								<div slot="suffix" class="icon">
 									<panda-icon icon="check"></panda-icon>
 								</div>
 							</panda-button>
-							<panda-button @click="">
+							<panda-button @click="${this._onNavigateToContact}">
 								VISIT US
 							</panda-button>
+						</div>
+						<div class="flex flex-row mt-4 gap-2">
+							<panda-chip theme="size-s" icon="check">
+								No seed oils
+							</panda-chip>
+							<panda-chip theme="size-s" icon="check">
+								No MSG
+							</panda-chip>
+							<panda-chip theme="size-s" icon="check">
+								High protein
+							</panda-chip>
+							<panda-chip theme="size-s" icon="check">
+								Real ingredients
+							</panda-chip>
 						</div>
 					</div>
 					<div class="col-5 sm:col-12">
@@ -73,5 +90,11 @@ class HomePage extends ParentPageTemplate {
 	// EVENTS =========================================================================================================
 	// ================================================================================================================
 
-	// ...
+	private _onNavigateToMenu(): void {
+		navigate("/menu");
+	}
+
+	private _onNavigateToContact(): void {
+		navigate("/contact");
+	}
 }

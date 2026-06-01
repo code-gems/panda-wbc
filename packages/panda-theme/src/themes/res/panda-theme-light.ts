@@ -596,7 +596,7 @@ export const pandaThemeLight = /*css*/ `
 		--panda-button-primary-border-color: transparent;
 		--panda-button-primary-border-color-hover: transparent;
 		--panda-button-primary-border-gradient: linear-gradient(
-			to bottom, 
+			to bottom,
 			hsl(209deg 78% 42%),
 			hsl(209deg 78% 36%)
 		);

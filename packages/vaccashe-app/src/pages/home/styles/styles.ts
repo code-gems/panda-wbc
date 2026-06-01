@@ -7,4 +7,10 @@ export const styles = css`
 		width: 100%;
 		height: 100%;
 	}
+
+	.actions {
+		display: flex;
+		gap: var(--panda-gap-4);
+		margin-top: var(--panda-gap-8);
+	}
 `;

@@ -125,6 +125,9 @@ importers:
       '@panda-wbc/panda-spinner':
         specifier: workspace:*
         version: link:../panda-spinner
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
 
   packages/panda-circular-progress-bar:
     dependencies:
@@ -870,6 +873,9 @@ importers:
       '@panda-wbc/panda-button':
         specifier: workspace:*
         version: link:../panda-button
+      '@panda-wbc/panda-chips':
+        specifier: workspace:*
+        version: link:../panda-chips
       '@panda-wbc/panda-icon':
         specifier: workspace:*
         version: link:../panda-icon

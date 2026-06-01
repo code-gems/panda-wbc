@@ -441,10 +441,27 @@ export const vaccasheThemeLight = /*css*/ `
 		/* BUTTON ================================================================================================== */
 		/* ========================================================================================================= */
 
+		/* DEFAULT THEME =================================================== */
 		--panda-button-font-size-m: var(--panda-font-size-s);
 		--panda-button-font-family-m: var(--panda-font-family-semibold);
 		--panda-button-padding-inline-m: 1.25rem;
 		--panda-button-letter-spacing-m: 0.1em;
+		/* HOVER */
+		--panda-button-text-color-hover: hsl(37deg 46% 95%);
+		--panda-button-background-hover: hsl(26deg 29% 5%);
+
+		/* PRIMARY THEME =================================================== */
+		--panda-button-primary-border-color: transparent;
+		--panda-button-primary-background: var(--app-primary-gradient);
+		--panda-button-primary-border-color-hover: transparent;
+		--panda-button-primary-background-hover: var(--app-primary-gradient);
+		--panda-button-primary-border-color-active: transparent;
+		--panda-button-primary-background-active: var(--app-primary-gradient);
+
+		/* SIZE-S THEME ==================================================== */
+		--panda-button-padding-inline-s: 1rem;
+		--panda-button-font-size-s: var(--panda-font-size-xs);
+		--panda-button-font-family-s: var(--panda-font-family-semibold);
 
 		/* ========================================================================================================= */
 		/* BUTTON GROUP ============================================================================================ */
