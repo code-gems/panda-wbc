@@ -1012,7 +1012,7 @@ export class PandaSelect extends HTMLElement {
 		this._withPrefix = false;
 		this._withSuffix = false;
 		
-		// init event binders
+		// initialize event binders
 		this._postMessageEvent = this._onPostMessage.bind(this);
 		this._closeOverlayEvent = this._onCloseOverlay.bind(this);
 		this._showOverlayEvent = this._onShowOverlay.bind(this);

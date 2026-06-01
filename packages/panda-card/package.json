@@ -1,0 +1,36 @@
+{
+	"name": "@panda-wbc/panda-card",
+	"version": "1.0.0",
+	"description": "Native web component adding card component to your UI",
+	"homepage": "https://github.com/code-gems/panda-wbc#readme",
+	"main": "lib/panda-card.js",
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc --watch",
+		"clean": "rimraf lib",
+		"patch": "npm version patch",
+		"prepublishOnly": "npm run clean && npm run compile"
+	},
+	"keywords": [
+		"custom element",
+		"web component",
+		"ui component",
+		"card",
+		"card component",
+		"layout"
+	],
+	"author": "code-gems",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@panda-wbc/panda-utils": "workspace:*"
+	},
+	"files": [
+		"src",
+		"lib",
+		"index.d.ts"
+	],
+	"types": "index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	}
+}

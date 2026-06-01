@@ -2,6 +2,7 @@ import "./content/panda-badge/content-page";
 import "./content/panda-button-group/content-page";
 import "./content/panda-button/content-page";
 import "./content/panda-callout/content-page";
+import "./content/panda-card/content-page";
 import "./content/panda-carousel/content-page";
 import "./content/panda-checkbox-group/content-page";
 import "./content/panda-checkbox/content-page";

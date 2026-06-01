@@ -46,7 +46,7 @@ export const styles = /*css*/`
 		justify-content: center;
 		align-items: center;
 
-		border-radius: var(--panda-select-border-radius-size-m, 10px);
+		border-radius: var(--panda-select-border-radius-size-m, var(--panda-border-radius-m, 10px));
 		background-color: var(--panda-select-background-color-working, hsl(0deg 0% 100%));
 		z-index: 2;
 
@@ -262,7 +262,8 @@ export const styles = /*css*/`
 
 	.clear-button-cont .clear-button:hover {
 		background-color: var(--panda-select-button-background-color-hover, var(--panda-input-button-background-color-hover, hsl(210deg 5% 90%)));
-		--panda-icon-color: var(--panda-select-button-color-hover, var(--panda-input-button-icon-color-hover, hsl(191deg 19% 23%)));
+		/* ICON STYLES HOVER */
+		--panda-icon-color: var(--panda-select-button-icon-color-hover, var(--panda-input-button-icon-color-hover, hsl(191deg 19% 23%)));
 	}
 
 	.hide-dropdown-button .clear-button-cont {

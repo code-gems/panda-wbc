@@ -17,6 +17,14 @@ export const styles = /*css*/`
 		fill: var(--panda-icon-color, hsl(210deg 5% 30%));
 	}
 
+	.stroke {
+		stroke: var(--panda-icon-color, hsl(210deg 5% 30%));
+	}
+
+	.no-fill {
+		fill: none;
+	}
+
 	.color-secondary {
 		fill: var(--panda-icon-color-secondary, hsl(210deg 5% 30%));
 	}

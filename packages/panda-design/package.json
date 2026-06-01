@@ -23,6 +23,7 @@
 		"@panda-wbc/panda-button-group": "workspace:*",
 		"@panda-wbc/panda-button": "workspace:*",
 		"@panda-wbc/panda-callout": "workspace:*",
+		"@panda-wbc/panda-card": "workspace:*",
 		"@panda-wbc/panda-carousel": "workspace:*",
 		"@panda-wbc/panda-chart": "workspace:*",
 		"@panda-wbc/panda-checkbox-group": "workspace:*",

@@ -95,6 +95,12 @@ importers:
         specifier: ^3.3.2
         version: 3.3.2
 
+  packages/panda-card:
+    dependencies:
+      '@panda-wbc/panda-utils':
+        specifier: workspace:*
+        version: link:../panda-utils
+
   packages/panda-carousel:
     dependencies:
       '@panda-wbc/panda-icon':
@@ -218,6 +224,9 @@ importers:
       '@panda-wbc/panda-callout':
         specifier: workspace:*
         version: link:../panda-callout
+      '@panda-wbc/panda-card':
+        specifier: workspace:*
+        version: link:../panda-card
       '@panda-wbc/panda-carousel':
         specifier: workspace:*
         version: link:../panda-carousel
@@ -873,6 +882,9 @@ importers:
       '@panda-wbc/panda-button':
         specifier: workspace:*
         version: link:../panda-button
+      '@panda-wbc/panda-card':
+        specifier: workspace:*
+        version: link:../panda-card
       '@panda-wbc/panda-chips':
         specifier: workspace:*
         version: link:../panda-chips

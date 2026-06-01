@@ -76,10 +76,44 @@ export class ContentPage extends ContentPageTemplate {
 							<div class="row">
 								<div class="col-full">
 
-									<panda-chips
-										.chips="${this._chips}"
-									>
-									</panda-chips>
+									<panda-chip closable>
+										Poland
+									</panda-chip>
+									<panda-chip icon="check">
+										Poland
+									</panda-chip>
+									<panda-chip icon="check" closable>
+										Poland
+									</panda-chip>
+									<panda-chip icon="check" closable>
+										Singapore
+									</panda-chip>
+									<panda-chip icon="check" closable>
+										Indonesia
+									</panda-chip>
+
+								</div>
+
+								<div class="col-full">
+									<p>
+										The component is designed to be used as a compact element that represents an input, attribute, or action.
+										It can be utilized in various scenarios, such as representing tags, categories, or user input.
+									</p>
+									<panda-chip icon="check" closable>Default</panda-chip>
+									<panda-chip icon="check" closable readonly>ReadOnly</panda-chip>
+									<panda-chip icon="check" closable working>Working</panda-chip>
+									<panda-chip icon="check" closable disabled>Disabled</panda-chip>
+
+								</div>
+
+								<div class="col-full">
+									<p>
+										The component supports multiple sizes to accommodate different design requirements.
+									</p>
+									<panda-chip theme="size-s" icon="check" closable>Size S</panda-chip>
+									<panda-chip theme="size-m" icon="check" closable>Size M</panda-chip>
+									<panda-chip theme="size-l" icon="check" closable>Size L</panda-chip>
+									<panda-chip theme="size-xl" icon="check" closable>Size XL</panda-chip>
 
 								</div>
 							</div>

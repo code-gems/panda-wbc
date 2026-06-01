@@ -181,8 +181,14 @@ export const pandaThemeLight = /*css*/ `
 		--panda-font-size-7xl: 4.5rem;
 		--panda-line-height-7xl: calc(4.5 / 4.5);
 
-		--panda-font-family: "Poppins";
+		--panda-font-weight-normal: 400;
+		--panda-font-weight-medium: 500;
+		--panda-font-weight-semibold: 600;
+		--panda-font-weight-bold: 700;
+
 		--panda-font-family-light: "Poppins-Light";
+		--panda-font-family: "Poppins";
+		--panda-font-family-semibold: "Poppins-Semibold";
 		--panda-font-family-bold: "Poppins-Bold";
 
 		/* LINK COLOR */
@@ -286,7 +292,7 @@ export const pandaThemeLight = /*css*/ `
 		
 		--panda-border-color: hsl(207deg 1% 85%);
 		--panda-border-color-hover: hsl(207deg 1% 80%);
-		--panda-border-color-active: hsl(207deg 1% 80%);
+		--panda-border-color-focused: hsl(207deg 1% 80%);
 		--panda-border-color-working: hsl(207deg 1% 85%);
 		--panda-border-color-disabled: hsl(207deg 1% 87%);
 

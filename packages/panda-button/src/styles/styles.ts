@@ -32,8 +32,8 @@ export const styles = /*css*/`
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		align-items: center;
+		width: var(--panda-button-width, 100%);
 		height: 100%;
-		width: 100%;
 		cursor: pointer;
 		outline: none;
 		padding-block: var(--panda-button-padding-block-m, 0px);
@@ -130,6 +130,8 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-border-color-hover, var(--panda-border-color, hsl(0deg 0% 85%)));
 		background: var(--panda-button-background-hover, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-elevation-hover, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-button-icon-color-hover, var(--panda-icon-color, hsl(191deg 19% 23%)));
 	}
 
 	.button:not(.disabled):hover::before {
@@ -144,6 +146,8 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-border-color-focused, var(--panda-border-color, hsl(0deg 0% 85%)));
 		background: var(--panda-button-background-focused, hsl(0deg 0% 100%));
 		box-shadow: var(--panda-button-outline, var(--panda-component-outline, 0px 0px 0px 2px hsl(209deg 78% 46% / 40%)));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-button-icon-color-focused, var(--panda-icon-color, hsl(191deg 19% 23%)));
 	}
 
 	.button:focus-visible::before,
@@ -158,6 +162,8 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-border-color-active, var(--panda-border-color, hsl(0deg 0% 85%)));
 		background: var(--panda-button-background-active, hsl(0deg 0% 97%));
 		box-shadow: var(--panda-button-elevation-active, 0px 0px 5px hsl(0deg 0% 0% / 10%));
+		/* ICON STYLES */
+		--panda-icon-color: var(--panda-button-icon-color-active, var(--panda-icon-color, hsl(191deg 19% 23%)));
 	}
 
 	.button:not(.disabled):active::before {
@@ -186,6 +192,7 @@ export const styles = /*css*/`
 		border-color: var(--panda-button-border-color-disabled, hsl(189deg 3% 96%));
 		background: var(--panda-button-background-disabled, hsl(189deg 3% 96%));
 		box-shadow: var(--panda-button-elevation-disabled, none);
+		/* ICON STYLES */
 		--panda-icon-color: var(--panda-button-icon-color-disabled, hsl(188deg 5% 75%));
 	}
 

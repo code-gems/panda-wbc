@@ -7,7 +7,10 @@ import "@panda-wbc/panda-icon";
 import { styles } from "./styles/styles";
 
 // utils
-import { applyStyles } from "@panda-wbc/panda-utils/lib/component-utils";
+import { applyStyles, parseBooleanAttribute } from "@panda-wbc/panda-utils/lib/component-utils";
+import { PandaIcon } from "@panda-wbc/panda-icon";
+import { isEmpty } from "@panda-wbc/panda-utils";
+import { PandaSpinner } from "@panda-wbc/panda-spinner";
 
 export class PandaChip extends HTMLElement {
 	/** Version of the component. */
@@ -26,6 +29,7 @@ export class PandaChip extends HTMLElement {
 			"readonly",
 			"working",
 			"disabled",
+			"closable",
 			"spinner-type",
 		];
 	}
@@ -51,10 +55,10 @@ export class PandaChip extends HTMLElement {
 		if (this._theme !== value) {
 			this._theme = value;
 			// reflect to attribute
-			if (value) {
-				this.setAttribute("theme", value + "");
-			} else {
+			if (isEmpty(value)) {
 				this.removeAttribute("theme");
+			} else {
+				this.setAttribute("theme", value + "");
 			}
 		}
 	}
@@ -82,10 +86,10 @@ export class PandaChip extends HTMLElement {
 		if (this._icon !== value) {
 			this._icon = value;
 			// reflect to attribute
-			if (value) {
-				this.setAttribute("icon", value + "");
-			} else {
+			if (isEmpty(value)) {
 				this.removeAttribute("icon");
+			} else {
+				this.setAttribute("icon", value + "");
 			}
 		}
 	}
@@ -207,7 +211,7 @@ export class PandaChip extends HTMLElement {
 		if (this._spinnerType !== value) {
 			this._spinnerType = value;
 			// reflect to attribute
-			if (value == null || value === "") {
+			if (isEmpty(value)) {
 				this._spinnerType = "dots";
 				this.removeAttribute("spinner-type");
 			} else {
@@ -252,12 +256,17 @@ export class PandaChip extends HTMLElement {
 	// state properties ===============================================================================================
 	
 	// elements =======================================================================================================
-	private _chipEl!: HTMLElement;
-	private _closeButtonContEl!: HTMLDivElement;
-	private _closeButtonEl!: HTMLDivElement;
-	
+	private readonly _chipEl!: HTMLElement;
+	private readonly _iconContEl!: HTMLDivElement;
+	private readonly _iconEl!: PandaIcon;
+	private readonly _closeButtonContEl!: HTMLDivElement;
+	private readonly _closeButtonEl!: HTMLDivElement;
+	private readonly _spinnerContEl!: HTMLDivElement;
+	private readonly _spinnerEl!: PandaSpinner;
+
 	// events =========================================================================================================
-	private _closeEvent!: EventListener;
+	private readonly _closeEvent!: EventListener;
+	private readonly _closeButtonKeyDownEvent!: EventListener;
 
 	// ================================================================================================================
 	// LIFE CYCLE =====================================================================================================
@@ -275,6 +284,14 @@ export class PandaChip extends HTMLElement {
 				<slot class="label" part="label"></slot>
 			</div>
 		`;
+		
+		// create spinner element
+		this._spinnerContEl = document.createElement("div");
+		this._spinnerContEl.className = "spinner-cont";
+		this._spinnerContEl.part = "spinner-cont";
+		this._spinnerContEl.innerHTML = /*html*/`<panda-spinner part="spinner"></panda-spinner>`;
+		this._spinnerEl = this._spinnerContEl.querySelector("panda-spinner") as PandaSpinner;
+		this._spinnerEl.spinner = this._spinnerType ?? "dots";
 
 		// create close button element
 		this._closeButtonContEl = document.createElement("div");
@@ -288,19 +305,39 @@ export class PandaChip extends HTMLElement {
 		this._closeButtonEl = this._closeButtonContEl.querySelector(".close-button") as HTMLDivElement;
 		this._closeButtonEl.tabIndex = 0; // make close button focusable
 
+		// create icon element
+		this._iconContEl = document.createElement("div");
+		this._iconContEl.className = "icon-cont";
+		this._iconContEl.part = "icon-cont";
+		this._iconContEl.innerHTML = /*html*/`
+			<div class="icon" part="icon">
+				<panda-icon icon="check"></panda-icon>
+			</div>
+		`;
+		this._iconEl = this._iconContEl.querySelector("panda-icon") as PandaIcon;
+
+		// initialize event binders
+		this._closeEvent = this._onClose.bind(this);
+		this._closeButtonKeyDownEvent = this._onCloseButtonKeyDown.bind(this) as EventListener;
+
+		if (this.shadowRoot) {
+			// get elements handle
+			this._chipEl = this.shadowRoot.querySelector(".chip") as HTMLElement;
+		}
 	}
 
 	connectedCallback() {
 		// add event listeners
-		this._closeEvent = this._onClose.bind(this);
-		this.addEventListener("close", this._closeEvent);
+		this._closeButtonEl.addEventListener("click", this._closeEvent);
+		this._closeButtonEl.addEventListener("keydown", this._closeButtonKeyDownEvent);
 		// initial component render
 		this._updateComponent();
 	}
 
 	disconnectedCallback(): void {
 		// remove event listeners
-
+		this._closeButtonEl.removeEventListener("click", this._closeEvent);
+		this._closeButtonEl.removeEventListener("keydown", this._closeButtonKeyDownEvent);
 	}
 
 	attributeChangedCallback(_name: string, _oldValue: any, _newValue: any): void {
@@ -312,7 +349,26 @@ export class PandaChip extends HTMLElement {
 			case "theme":
 				this._theme = _newValue;
 				break;
+			case "icon":
+				this._icon = _newValue;
+				break;
+			case "readonly":
+				this._readonly = parseBooleanAttribute(_newValue);
+				break;
+			case "working":
+				this._working = parseBooleanAttribute(_newValue);
+				break;
+			case "disabled":
+				this._disabled = parseBooleanAttribute(_newValue);
+				break;
+			case "closable":
+				this._closable = parseBooleanAttribute(_newValue);
+				break;
+			case "spinner-type":
+				this._spinnerType = _newValue;
+				break;
 		}
+		// update component based on new attribute value
 		this._updateComponent();
 	}
 	
@@ -328,7 +384,54 @@ export class PandaChip extends HTMLElement {
 				this._chipEl.tabIndex = 0;
 			}
 
+			if (isEmpty(this._icon)) {
+				this._iconContEl.remove();
+			} else {
+				this._chipEl.prepend(this._iconContEl);
+				this._iconEl.icon = this._icon;
+			}
+
+			// check if closable
+			if (this._closable && !this.disabled && !this.working && !this._readonly) {
+				this._chipEl.appendChild(this._closeButtonContEl);
+			} else {
+				this._closeButtonContEl.remove();
+			}
+
+			// check if working
+			if (this._working && !this._disabled) {
+				this._chipEl.appendChild(this._spinnerContEl);
+			} else {
+				this._spinnerContEl.remove();
+			}
+
+			// update template css classes and parts
+			this._updateTemplateCss();
 		}
+	}
+
+	// update template css classes and parts
+	private _updateTemplateCss():void {
+		const css: string[] = [];
+
+		if (this._working) {
+			css.push("working");
+		}
+		if (this._readonly) {
+			css.push("readonly");
+		}
+		if (this._disabled) {
+			css.push("disabled");
+		}
+		if (this._closable && !this._disabled && !this._working && !this._readonly) {
+			css.push("closable");
+		}
+		if (!isEmpty(this._icon)) {
+			css.push("with-icon");
+		}
+		// update class names and parts
+		this._chipEl.className = "chip " + css.join(" ");
+		this._chipEl.part = this._chipEl.className;
 	}
 
 	// ================================================================================================================
@@ -336,7 +439,16 @@ export class PandaChip extends HTMLElement {
 	// ================================================================================================================
 
 	private _onClose(): void {
-		this.dispatchEvent(new CustomEvent("close", {}));
+		console.log(`%c ⚡ [PANDA CHIP] (_onClose)`, "font-size: 24px; color: green; background: black;"); // todo: remove
+		this.dispatchEvent(new CustomEvent("on-close", {}));
+	}
+
+	private _onCloseButtonKeyDown(event: KeyboardEvent): void {
+		// trigger close event on Enter or Space key press
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			this._onClose();
+		}
 	}
 }
 

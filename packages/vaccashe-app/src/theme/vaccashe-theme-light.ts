@@ -448,6 +448,7 @@ export const vaccasheThemeLight = /*css*/ `
 		--panda-button-letter-spacing-m: 0.1em;
 		/* HOVER */
 		--panda-button-text-color-hover: hsl(37deg 46% 95%);
+		--panda-button-icon-color-hover: hsl(37deg 46% 95%);
 		--panda-button-background-hover: hsl(26deg 29% 5%);
 
 		/* PRIMARY THEME =================================================== */
@@ -462,6 +463,12 @@ export const vaccasheThemeLight = /*css*/ `
 		--panda-button-padding-inline-s: 1rem;
 		--panda-button-font-size-s: var(--panda-font-size-xs);
 		--panda-button-font-family-s: var(--panda-font-family-semibold);
+
+		/* ========================================================================================================= */
+		/* CHIPS =================================================================================================== */
+		/* ========================================================================================================= */
+
+		--panda-chip-icon-color: var(--panda-primary-color);
 
 		/* ========================================================================================================= */
 		/* BUTTON GROUP ============================================================================================ */

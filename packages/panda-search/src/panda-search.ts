@@ -22,8 +22,7 @@ import "./panda-search-overlay";
 // utils
 import { LitElement, html, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { debounce } from "@panda-wbc/panda-utils";
-import { isEmpty, minValue } from "@panda-wbc/panda-utils";
+import { debounce, isEmpty, minValue } from "@panda-wbc/panda-utils";
 
 @customElement("panda-search")
 export class PandaSearch extends LitElement {
