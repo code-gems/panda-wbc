@@ -74,6 +74,9 @@ export const styles = /*css*/`
 		border-style: var(--panda-card-media-border-style, solid);
 		border-color: var(--panda-card-media-border-color, transparent);
 		border-radius: var(--panda-card-media-border-radius, var(--panda-border-radius-m, .5rem));
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
+
 		box-sizing: border-box;
 	}
 
@@ -88,6 +91,10 @@ export const styles = /*css*/`
 		height: calc(100% + (2 * var(--panda-card-padding, var(--panda-gap-m, .5rem))));
 		margin-right: unset;
 		margin-bottom: calc(-1 * var(--panda-card-padding, var(--panda-gap-m, .5rem)));
+
+		border-bottom-left-radius: var(--panda-card-media-border-radius, var(--panda-border-radius-m, .5rem));
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
 	}
 
 	/* ============================================================================================================= */
