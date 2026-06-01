@@ -48,7 +48,10 @@ export const styles = /*css*/`
 	.card-body {
 		display: flex;
 		flex-flow: column nowrap;
+		flex-grow: 1;
+		flex-shrink: 1;
 		gap: var(--panda-card-gap, var(--panda-gap-m, .5rem));
+		overflow: hidden;
 	}
 
 	/* ============================================================================================================= */
@@ -57,7 +60,6 @@ export const styles = /*css*/`
 
 	slot[name="media"] {
 		display: none;
-		flex-shrink: 0;
 		width: calc(100% + (2 * var(--panda-card-padding, var(--panda-gap-m, .5rem))));
 		height: auto;
 		object-fit: var(--panda-card-media-object-fit, cover);
@@ -77,6 +79,15 @@ export const styles = /*css*/`
 
 	.has-media slot[name="media"] {
 		display: flex;
+	}
+
+	.horizontal slot[name="media"] {
+		flex-shrink: 1;
+		justify-content: center;
+		width: auto;
+		height: calc(100% + (2 * var(--panda-card-padding, var(--panda-gap-m, .5rem))));
+		margin-right: unset;
+		margin-bottom: calc(-1 * var(--panda-card-padding, var(--panda-gap-m, .5rem)));
 	}
 
 	/* ============================================================================================================= */

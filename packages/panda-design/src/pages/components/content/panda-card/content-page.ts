@@ -48,9 +48,9 @@ export class ContentPage extends ContentPageTemplate {
 					<div class="sample">
 						<div class="rows">
 							<div class="row">
-								<div class="col-4">
+								<div class="col-12">
 
-									<panda-card>
+									<panda-card horizontal>
 										<img slot="media" src="https://picsum.photos/id/235/400/200" alt="Card Media">
 										
 										<div slot="header-prefix">
